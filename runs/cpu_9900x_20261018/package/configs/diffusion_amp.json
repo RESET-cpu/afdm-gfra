@@ -1,0 +1,18 @@
+{
+  "schema": "afdm-diffusion-amp-v1",
+  "checkpoint_path": "models/diffusion_amp/score.pt",
+  "checkpoint_sha256": "23c373c0ba81a2fd7998501194fe22ea9b39d4ebfba6b5e5f64770ca1e1d162e",
+  "scale": 0.2647966452702405,
+  "batch_size": 128,
+  "solver": {
+    "iterations": 12,
+    "probes": 8,
+    "damping": 0.5,
+    "divergence_seed": 202610151703
+  },
+  "readout": {
+    "path": "results/diffusion_amp_20261015/comparison_v1/calibration/READOUT.json",
+    "sha256": "cf952ba9846f1cac420d1a91b1da9fc44341462efc75727a373497ff5ce45bea"
+  },
+  "validation_scope": "Four solver-validation scenes; six separate activity-calibration scenes; test untouched at freeze"
+}

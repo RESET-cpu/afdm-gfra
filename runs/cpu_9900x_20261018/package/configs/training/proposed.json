@@ -1,0 +1,106 @@
+{
+  "schema": "proposed-three-stage-training-v1",
+  "generator": "known_phase_geometry_v3",
+  "scale": 0.2647966452702405,
+  "normalization": "fixed_population_coordinate_scale",
+  "shape": [
+    16,
+    16,
+    16
+  ],
+  "noise_support": [
+    0.001,
+    100.0
+  ],
+  "prior_definition": "data/proposed/prior_definition.json",
+  "bank": {
+    "users": 40,
+    "candidates_per_scene": 4,
+    "train_samples": 50000,
+    "validation_samples": 5000,
+    "train_seed_base": 2026100601000000,
+    "validation_seed_base": 2026100602000000,
+    "spread_range_s": [
+      3e-08,
+      5e-08
+    ],
+    "selection": "Uniform candidate indices before activity masking; no direction, energy or receiver-output selection",
+    "minimum_free_bytes": 2147483648
+  },
+  "first": {
+    "initial_checkpoint": "models/initialization/first.pt",
+    "initial_checkpoint_sha256": "47422682e8a136b32d30f72fc76ad91d44dd78702cafc8fa35580f5c633624be",
+    "objective": "direct_cai_dsm",
+    "seed": 202610061000001,
+    "validation_seed": 202610061000002,
+    "batch_size": 64,
+    "microbatch_size": 16,
+    "learning_rate": 0.0001,
+    "minimum_learning_rate": 1e-06,
+    "ema_decay": 0.999,
+    "gradient_clip": 1.0,
+    "checkpoint_seconds": 120,
+    "maximum_epochs": 100,
+    "minimum_epochs": 20,
+    "validation_patience": 15,
+    "meaningful_relative_improvement": 0.001,
+    "selection": "Minimum full fixed-noise validation DSM loss including the warm-start baseline",
+    "stopping": "Validation plateau after minimum_epochs, or declared maximum training budget; maximum budget alone is not proof of convergence"
+  },
+  "runtime": {
+    "device": "mps",
+    "threads": 1
+  },
+  "prior_definition_sha256": "f20b1e25eae1037daff03db58c816a7acc4ccc382c89520016e47e5385b8bc9d",
+  "data_files": {
+    "train": "data/proposed/train_channel.npy",
+    "validation": "data/proposed/validation_channel.npy"
+  },
+  "moments_file": "data/proposed/train_moments.npz",
+  "second": {
+    "initial_checkpoint": "models/initialization/second.pt",
+    "initial_checkpoint_sha256": "ef6308ffa2587615f80e53e665b9444539378c12cad9bf6963541cf9b8b80935",
+    "objective": "direct_cai_global_trace",
+    "seed": 202610061200001,
+    "validation_seed": 202610061200002,
+    "batch_size": 64,
+    "microbatch_size": 16,
+    "learning_rate": 0.0001,
+    "minimum_learning_rate": 1e-06,
+    "ema_decay": 0.999,
+    "gradient_clip": 1.0,
+    "checkpoint_seconds": 120,
+    "maximum_epochs": 80,
+    "minimum_epochs": 20,
+    "validation_patience": 15,
+    "meaningful_relative_improvement": 0.001,
+    "selection": "Minimum full fixed-noise validation Cai trace loss, including warm-start baseline"
+  },
+  "activity": {
+    "initial_checkpoint": "models/initialization/activity.pt",
+    "initial_checkpoint_sha256": "f7765eeee544243a5c5a981bedaa2944ea9cd56cbfc8655c9d72ffef4293573f",
+    "objective": "balanced_binary_cross_entropy; frozen_final_first_full_mean",
+    "training_class_prior": 0.5,
+    "seed": 202610061200003,
+    "validation_seed": 202610061200004,
+    "batch_size": 32,
+    "microbatch_size": 16,
+    "learning_rate": 0.0003,
+    "minimum_learning_rate": 1e-06,
+    "ema_decay": 0.999,
+    "gradient_clip": 1.0,
+    "checkpoint_seconds": 120,
+    "maximum_epochs": 100,
+    "minimum_epochs": 20,
+    "validation_patience": 15,
+    "meaningful_relative_improvement": 0.001,
+    "selection": "Minimum full fixed-noise validation balanced BCE, including warm-start baseline; no MP or test selection"
+  },
+  "first_checkpoint": "models/proposed/first.pt",
+  "first_training_record": "models/proposed/training_records/first/complete.json",
+  "first_training_specification": "models/proposed/training_records/first/specification.json",
+  "second_checkpoint": "models/proposed/second.pt",
+  "second_training_record": "models/proposed/training_records/second/complete.json",
+  "second_training_specification": "models/proposed/training_records/second/specification.json",
+  "receiver_template": "configs/proposed.json"
+}

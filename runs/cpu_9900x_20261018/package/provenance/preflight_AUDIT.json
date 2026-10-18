@@ -1,0 +1,101 @@
+{
+  "status": "PASS",
+  "stage": "preflight",
+  "experiments": [
+    {
+      "experiment": "activity_probability",
+      "records": 20,
+      "saved_conditions": 5,
+      "reused_historical": 0,
+      "native_equivalence_checks": 0,
+      "warnings": 33870,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 5,
+        "fixed_unfolding_depth": 5,
+        "MEAN_CHANGE_STOP": 5,
+        "NOISE_DISCREPANCY": 5
+      }
+    },
+    {
+      "experiment": "channel_denoising",
+      "records": 18,
+      "saved_conditions": 6,
+      "reused_historical": 0,
+      "native_equivalence_checks": 0,
+      "warnings": 72,
+      "stopping_counts": {}
+    },
+    {
+      "experiment": "convergence",
+      "records": 12,
+      "saved_conditions": 3,
+      "reused_historical": 0,
+      "native_equivalence_checks": 12,
+      "warnings": 47868,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 3,
+        "fixed_unfolding_depth": 3,
+        "MEAN_CHANGE_STOP": 3,
+        "NOISE_DISCREPANCY": 3
+      }
+    },
+    {
+      "experiment": "cross_channel",
+      "records": 96,
+      "saved_conditions": 24,
+      "reused_historical": 0,
+      "native_equivalence_checks": 0,
+      "warnings": 137832,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 24,
+        "fixed_unfolding_depth": 24,
+        "MEAN_CHANGE_STOP": 24,
+        "NOISE_DISCREPANCY": 24
+      }
+    },
+    {
+      "experiment": "pilot_frames",
+      "records": 24,
+      "saved_conditions": 6,
+      "reused_historical": 0,
+      "native_equivalence_checks": 0,
+      "warnings": 42564,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 6,
+        "fixed_unfolding_depth": 6,
+        "MEAN_CHANGE_STOP": 6,
+        "NOISE_DISCREPANCY": 6
+      }
+    },
+    {
+      "experiment": "snr_comparison",
+      "records": 24,
+      "saved_conditions": 6,
+      "reused_historical": 24,
+      "native_equivalence_checks": 0,
+      "warnings": 18,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 6,
+        "fixed_unfolding_depth": 6,
+        "MEAN_CHANGE_STOP": 6,
+        "NOISE_DISCREPANCY": 6
+      }
+    },
+    {
+      "experiment": "user_count",
+      "records": 20,
+      "saved_conditions": 5,
+      "reused_historical": 0,
+      "native_equivalence_checks": 0,
+      "warnings": 43398,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 5,
+        "fixed_unfolding_depth": 5,
+        "MEAN_CHANGE_STOP": 5,
+        "NOISE_DISCREPANCY": 5
+      }
+    }
+  ],
+  "total_records": 214,
+  "scope": "Exact saved inference input checks, independent scoring truth, source/result file hashes, complete counts and native convergence equivalence."
+}

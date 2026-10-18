@@ -1,0 +1,30 @@
+{
+  "schema": "cpu-experiment-handoff-v1",
+  "prepared_date": "2026-10-18",
+  "timezone": "Asia/Shanghai",
+  "methods": [
+    "offgrid_sbl",
+    "gnn",
+    "gamp",
+    "somp"
+  ],
+  "experiments": {
+    "user_count": {
+      "scenes": 500,
+      "conditions": 5,
+      "method_results": 10000
+    },
+    "cross_channel": {
+      "scenes": 500,
+      "conditions": 24,
+      "method_results": 48000
+    }
+  },
+  "inherited_results": 116,
+  "remaining_receiver_runs": 57884,
+  "dataset": "14,500 actual public observations and independent scoring truth files; raw inputs fixed before CPU inference",
+  "information": "Each condition estimates phase once and shares it across methods; saved conditional operator is available for subsequent Proposed inference",
+  "tested_host": "Apple M4 Pro; 9900X/Linux/WSL2 execution remains to be checked on the destination",
+  "original_plan_policy": "Original local plans preserved byte-for-byte; package source manifest separately anchors portable files",
+  "suggested_environment": "Linux or WSL2 with Python 3.12"
+}

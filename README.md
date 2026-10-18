@@ -95,3 +95,7 @@ tectonic main.tex
 ```
 
 已附当前阅读版 PDF。论文中的术语及出处统一维护于 `docs/TERMINOLOGY.md`。
+
+## 9900X CPU baseline 实验
+
+用户数与跨信道的代码、配置、固定测试输入下载和 Linux/WSL2 运行步骤见 [9900X 实验交接](runs/cpu_9900x_20261018/README.md)。其余 baseline 在 Mac 继续执行。
