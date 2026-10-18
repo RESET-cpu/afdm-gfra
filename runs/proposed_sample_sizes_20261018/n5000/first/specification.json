@@ -1,0 +1,143 @@
+{
+  "configuration": {
+    "schema": "proposed-three-stage-training-v1",
+    "generator": "known_phase_geometry_v3",
+    "scale": 0.2647966452702405,
+    "normalization": "fixed_population_coordinate_scale",
+    "shape": [
+      16,
+      16,
+      16
+    ],
+    "noise_support": [
+      0.001,
+      100.0
+    ],
+    "prior_definition": "runs/proposed_sample_sizes_20261018/data/n5000/prior_definition.json",
+    "bank": {
+      "users": 40,
+      "candidates_per_scene": 4,
+      "train_samples": 5000,
+      "validation_samples": 5000,
+      "train_seed_base": 2026100601000000,
+      "validation_seed_base": 2026100602000000,
+      "spread_range_s": [
+        3e-08,
+        5e-08
+      ],
+      "selection": "Fixed nested subset of complete physical scenes; no performance selection",
+      "minimum_free_bytes": 2147483648
+    },
+    "first": {
+      "initial_checkpoint": "runs/proposed_sample_sizes_20261018/initialization/first.pt",
+      "initial_checkpoint_sha256": "1b5d78d7c6674c7581c64b51a9e1efef4831292b9ee588c164a348bf729f3710",
+      "objective": "direct_cai_dsm",
+      "seed": 202610180720001,
+      "validation_seed": 202610180720002,
+      "batch_size": 64,
+      "microbatch_size": 16,
+      "learning_rate": 0.0001,
+      "minimum_learning_rate": 1e-06,
+      "ema_decay": 0.999,
+      "gradient_clip": 1.0,
+      "checkpoint_seconds": 120,
+      "maximum_epochs": 200,
+      "minimum_epochs": 200,
+      "validation_patience": 201,
+      "meaningful_relative_improvement": 0.001,
+      "selection": "Minimum fixed-noise validation objective; no test-based selection",
+      "stopping": "Exactly 200 complete data epochs; no validation early stop",
+      "output": "runs/proposed_sample_sizes_20261018/n5000/first"
+    },
+    "runtime": {
+      "device": "mps",
+      "threads": 1
+    },
+    "prior_definition_sha256": "7801ffa96dce4ff1561837edabe29568d3e8e4a52a89afc69525fd6f110dda3d",
+    "data_files": {
+      "train": "runs/proposed_sample_sizes_20261018/data/n5000/train_channel.npy",
+      "validation": "data/proposed/validation_channel.npy"
+    },
+    "moments_file": "runs/proposed_sample_sizes_20261018/data/n5000/train_moments.npz",
+    "second": {
+      "initial_checkpoint": "runs/proposed_sample_sizes_20261018/initialization/second.pt",
+      "initial_checkpoint_sha256": "ab1efa7d423f16e217e79bf60b5fe420dc44f7efbb8329f48bf373d18289c7c7",
+      "objective": "direct_cai_global_trace",
+      "seed": 202610180720003,
+      "validation_seed": 202610180720004,
+      "batch_size": 64,
+      "microbatch_size": 16,
+      "learning_rate": 0.0001,
+      "minimum_learning_rate": 1e-06,
+      "ema_decay": 0.999,
+      "gradient_clip": 1.0,
+      "checkpoint_seconds": 120,
+      "maximum_epochs": 80,
+      "minimum_epochs": 20,
+      "validation_patience": 15,
+      "meaningful_relative_improvement": 0.001,
+      "selection": "Minimum fixed-noise validation objective; no test-based selection"
+    },
+    "activity": {
+      "initial_checkpoint": "runs/proposed_sample_sizes_20261018/initialization/activity.pt",
+      "initial_checkpoint_sha256": "d16731c8505ba2d76f4da1f36dcbd109c9884e0c4d6bb19b1fa637717671756f",
+      "objective": "balanced_binary_cross_entropy; frozen_final_first_full_mean",
+      "training_class_prior": 0.5,
+      "seed": 202610180720005,
+      "validation_seed": 202610180720006,
+      "batch_size": 32,
+      "microbatch_size": 16,
+      "learning_rate": 0.0003,
+      "minimum_learning_rate": 1e-06,
+      "ema_decay": 0.999,
+      "gradient_clip": 1.0,
+      "checkpoint_seconds": 120,
+      "maximum_epochs": 100,
+      "minimum_epochs": 20,
+      "validation_patience": 15,
+      "meaningful_relative_improvement": 0.001,
+      "selection": "Minimum fixed-noise validation objective; no test-based selection"
+    },
+    "first_checkpoint": "runs/proposed_sample_sizes_20261018/n5000/first/first_best.pt",
+    "first_training_record": "runs/proposed_sample_sizes_20261018/n5000/first/complete.json",
+    "first_training_specification": "runs/proposed_sample_sizes_20261018/n5000/first/specification.json",
+    "second_checkpoint": "runs/proposed_sample_sizes_20261018/n5000/second/second_best.pt",
+    "second_training_record": "runs/proposed_sample_sizes_20261018/n5000/second/complete.json",
+    "second_training_specification": "runs/proposed_sample_sizes_20261018/n5000/second/specification.json",
+    "receiver_template": "configs/proposed.json",
+    "paired_training": {
+      "protocol": "runs/proposed_sample_sizes_20261018/PLAN.json",
+      "initialization": "random",
+      "pretraining_samples": 0,
+      "epoch_definition": "One complete pass through this arm's distinct clean-channel bank",
+      "sample_selection_seed": 202610180700001,
+      "smoke_only": false
+    },
+    "output": "runs/proposed_sample_sizes_20261018/n5000"
+  },
+  "configuration_sha256": "65b1b5e2223bfa7bf23c4940fc32d9581a3f76c814a8d09b18abab2234dba6e7",
+  "prior_definition_sha256": "7801ffa96dce4ff1561837edabe29568d3e8e4a52a89afc69525fd6f110dda3d",
+  "source_sha256": {
+    "scripts/train_proposed.py": "c8cec8031f005b704fb9afa8036f54d7c563f8e81a8831190a16f720246c24bf",
+    "src/afdm_jadcedd/experiment/training/proposed/__init__.py": "8397dd95283b0458e742012cbe2c4959fe1ae162e8d7445d2a3a4b9c379cd42d",
+    "src/afdm_jadcedd/experiment/training/proposed/auxiliary.py": "5a83d4daea6c719bc2a5ba3050601caf8c524ed712b51b44d833998202ba420d",
+    "src/afdm_jadcedd/experiment/training/proposed/cli.py": "d45b16f898ecb7283cba962de338e9aaa0f44d05d060eb54c68c0f3774a2f4b9",
+    "src/afdm_jadcedd/experiment/training/proposed/common.py": "4de2945dd74daf4bf26ac53ac673bf75686c7f39d65ca221ce025e9b345912de",
+    "src/afdm_jadcedd/experiment/training/proposed/continuation.py": "a819cd146e696514da9cd9ead6781f35e70144162aa9ce46ce06606bdf927e5f",
+    "src/afdm_jadcedd/experiment/training/proposed/data.py": "6f1f2fd9e637dc2b52c0ce03d78b132f8d564e0da905f43a14988c6e0aa8a1cb",
+    "src/afdm_jadcedd/experiment/training/proposed/first.py": "679e43c39b0a6e2c75e1b5b05a7ffafc752a73c0f6a14c14177f04f94785e96c",
+    "src/afdm_jadcedd/experiment/training/scores/__init__.py": "f7062f41983045d817533906b3d933a6eebf35418efc2d0f9bc9fd3647e2ee28",
+    "src/afdm_jadcedd/experiment/training/scores/checkpoints.py": "97105daf0860953414e1403e834eb6fc4302c0ae806811d8b854f27ca8763c22",
+    "src/afdm_jadcedd/experiment/training/scores/direct_objectives.py": "d00efe5e5f44e59cc4830f6f224b5bbdfbf76bed81a1ef985e59893cc21c6f5e",
+    "src/afdm_jadcedd/experiment/training/scores/score_matching.py": "4c765466866adb7c50f90d2a14fc694c7b18625dc77357311fc9951a1799bc65",
+    "src/afdm_jadcedd/experiment/training/scores/trainer.py": "a7ec8bb9b97a9c8c59a836345531b859bf9010976806a16aafb653e15db77a64",
+    "src/afdm_jadcedd/algorithm/proposed/network.py": "be0b0a452bb64bb654e1065f9e906be3db9df95708f523a5dbb53366c9febc20",
+    "src/afdm_jadcedd/algorithm/proposed/activity.py": "5b269d487c1224cb18de017aed88b176e5a4afdb119fdd1bd3ede6d3aa2f5911",
+    "src/afdm_jadcedd/algorithm/proposed/configuration.py": "bd33ace095ce7f70e75e54ae677be7a086653fa9f9cdf17db547f3d87b5ce10a",
+    "src/afdm_jadcedd/algorithm/proposed/cai_models/__init__.py": "a1ce7f50e3aa8a680f7e041c195392ad91a47cca596378eb5322ef7ee160e4d8",
+    "src/afdm_jadcedd/algorithm/proposed/cai_models/layers.py": "40ece1a54cf43e8687a41979d7b0b874f56950f622c15f88f4e289dd98c823ab",
+    "src/afdm_jadcedd/algorithm/proposed/cai_models/ncsn_channel_diffusion.py": "8e9c9614dad8813a21562915903e480f6d21b3ac4ba45d938f84593e5a0c527a",
+    "src/afdm_jadcedd/algorithm/proposed/cai_models/normalization.py": "f0bd151174513a7523d820b1c8257c10d581e76bf810eaf5adce2e64550e267d"
+  },
+  "device": "mps"
+}

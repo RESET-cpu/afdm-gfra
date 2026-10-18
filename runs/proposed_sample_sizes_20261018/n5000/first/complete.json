@@ -1,0 +1,106 @@
+{
+  "status": "COMPLETED",
+  "stopping_reason": "MAXIMUM_TRAINING_BUDGET",
+  "optimization_converged_proven": false,
+  "epochs": 200,
+  "optimizer_steps": 15800,
+  "selected_epoch": 200,
+  "validation": {
+    "loss": 0.1227808349609375,
+    "samples": 5000,
+    "nmse_db": -6.237339660474463,
+    "error": 4856200.768362403,
+    "reported": 0.0,
+    "error_to_reported": null,
+    "raw_negative_variance_coordinates": 0,
+    "raw_nonpositive_sample_variance_traces": 0,
+    "bands": {
+      "snr_-20_to_-15_db": {
+        "samples": 465,
+        "error": 2298460.028442383,
+        "signal": 1916811.4519042969,
+        "reported": 0.0,
+        "nmse_db": 0.788575601282686,
+        "error_to_reported": null
+      },
+      "snr_-15_to_-10_db": {
+        "samples": 513,
+        "error": 1425574.9965820312,
+        "signal": 2153868.779499054,
+        "reported": 0.0,
+        "nmse_db": -1.7922917158389358,
+        "error_to_reported": null
+      },
+      "snr_-5_to_0_db": {
+        "samples": 519,
+        "error": 307907.7921600342,
+        "signal": 2086415.5544281006,
+        "reported": 0.0,
+        "nmse_db": -8.309801321262961,
+        "error_to_reported": null
+      },
+      "snr_5_to_10_db": {
+        "samples": 480,
+        "error": 40066.476959228516,
+        "signal": 1861624.5579528809,
+        "reported": 0.0,
+        "nmse_db": -16.671109427426842,
+        "error_to_reported": null
+      },
+      "snr_10_to_15_db": {
+        "samples": 509,
+        "error": 16145.715703964233,
+        "signal": 2123812.870414734,
+        "reported": 0.0,
+        "nmse_db": -21.190589472234112,
+        "error_to_reported": null
+      },
+      "snr_15_to_20_db": {
+        "samples": 511,
+        "error": 6090.200831890106,
+        "signal": 2022063.548034668,
+        "reported": 0.0,
+        "nmse_db": -25.211631859147175,
+        "error_to_reported": null
+      },
+      "snr_20_to_25_db": {
+        "samples": 503,
+        "error": 2496.4493329524994,
+        "signal": 2165468.24420166,
+        "reported": 0.0,
+        "nmse_db": -29.382290631488367,
+        "error_to_reported": null
+      },
+      "snr_25_to_30_db": {
+        "samples": 536,
+        "error": 1208.3497668504715,
+        "signal": 2216303.152908325,
+        "reported": 0.0,
+        "nmse_db": -32.63436501664984,
+        "error_to_reported": null
+      },
+      "snr_-10_to_-5_db": {
+        "samples": 471,
+        "error": 644515.0127258301,
+        "signal": 1908955.138168335,
+        "reported": 0.0,
+        "nmse_db": -4.71562684423996,
+        "error_to_reported": null
+      },
+      "snr_0_to_5_db": {
+        "samples": 493,
+        "error": 113735.74585723877,
+        "signal": 1963494.761177063,
+        "reported": 0.0,
+        "nmse_db": -12.371327668817187,
+        "error_to_reported": null
+      }
+    }
+  },
+  "weight_sha256": "eda7987d39b7ddd2f4f74f38f4283098a53eee28c72ebe9ef7b94f372adfdc0d",
+  "specification_sha256": "d555862523f08942ba93994b7daea54ab1f3d5f217955ee92725f0c491f9ed7e",
+  "final_weight_sha256": "eda7987d39b7ddd2f4f74f38f4283098a53eee28c72ebe9ef7b94f372adfdc0d",
+  "continuation": null,
+  "route_specific_training_completed": false,
+  "receiver_evaluation_completed": false
+}

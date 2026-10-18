@@ -3457,7 +3457,7 @@
     }
   },
   "excluded": [
-    "active runs and checkpoints",
+    "Other runs and checkpoints outside the explicitly exported 5,000-sample assets",
     "archive",
     "raw 500-scene records",
     "local virtual environment",
@@ -3473,5 +3473,6 @@
   "manifest_hashes_describe": "Original copied files before cloud-only documentation adaptations",
   "project_name": "AFDM-GFRA",
   "repository": "https://github.com/RESET-cpu/afdm-gfra",
-  "training_assets_manifest": "cloud/TRAINING_ASSETS.json"
+  "training_assets_manifest": "cloud/TRAINING_ASSETS.json",
+  "sample_5000_assets_manifest": "cloud/SAMPLE_5000_ASSETS.json"
 }

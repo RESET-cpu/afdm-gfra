@@ -19,7 +19,7 @@
 - `docs/`：推导、术语依据、主线与来源记录；第三方代码归属见 [ATTRIBUTION.md](docs/ATTRIBUTION.md)。
 - `results/baseline_comparison_500_20261018/`：已完成的比较报告、图与汇总表。
 
-仍在更新的 `runs/`、旧归档、历史逐场景原始结果和论文历次构建记录保留在本地。
+除下述 5,000 样本运行外，其余 `runs/`、旧归档、历史逐场景原始结果和论文历次构建记录保留在本地。
 部分历史文档中的链接因而只适用于完整本地项目；`MAINLINE.json` 保留原始溯源信息。
 当前推断沿用冻结权重。5,000/50,000 样本配对训练尚未完成；50,000 样本版本计划在 Windows 上开始新的独立训练运行。
 **正式密度比消融等待新网络完成后运行。** 本副本的检查不产生论文性能结论。
@@ -58,6 +58,20 @@ python scripts/train_proposed.py --inspect --check-assets --device cpu
 当前 5,000/50,000 样本配对训练入口从完整库确定性选择嵌套场景子集，并自行生成随机初始化；默认三阶段入口使用随仓库提供的历史初始化。两种训练协议见 [scripts/README.md](scripts/README.md)。
 设备与算力由实际运行环境决定；当前训练入口支持 `cpu` 和 `mps`，Windows GPU 配置需另行适配。
 
+## 5,000 样本训练资产
+
+`runs/proposed_sample_sizes_20261018/` 已保留这一组的原始相对路径：
+
+- `data/n5000/`：5,000 个训练信道、样本身份、抽样行号、矩统计及先验定义。
+- `n5000/first/`：一阶网络的最佳/最终权重、训练断点、200 轮训练记录及完成凭据；`n5000/first_receiver.json` 用于一阶网络评估。
+- `initialization/`、`configs/n5000.json` 和 `PLAN.json`：原随机初始化、训练配方及配对计划。计划中引用的另一训练组不随此目录导出。
+
+这一组目前完成了一阶网络（200 轮、15,800 次优化更新）；二阶网络和活动分类器尚未训练。
+验证集共用已上传的 `data/proposed/validation_channel.npy`。原有 `models/proposed/` 完整三网络保持原样。
+新增资产约 1.13 GiB，逐文件大小及 SHA-256 见 [SAMPLE_5000_ASSETS.json](cloud/SAMPLE_5000_ASSETS.json)。
+运行 `python cloud/check_5000.py` 校验该组数据、初始化、权重与完成记录，并执行一次合成输入前向计算；不启动训练。
+原始配方和训练记录保留生成时内容；在 Windows 开始新运行时需指定设备、独立输出目录和匹配的教师权重。
+
 ## 小规模实验
 
 由于云端没有历史逐场景结果，创建计划时显式使用 `--fresh`，并使用新输出目录：
@@ -69,7 +83,7 @@ python experiment/density_ratio_ablation.py run --output results/cloud_smoke
 ```
 
 单场景只能检查流程。正式对照必须绑定同一版本的三网络、固定协议并保留全部计划场景。
-数据可用于新建训练运行；当前 Mac 训练进程及其中间断点仍保留在本地。
+数据可用于新建训练运行；5,000 样本的已有训练资产见下文。
 
 ## 论文
 

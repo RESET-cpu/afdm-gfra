@@ -16,7 +16,7 @@ tmp/
 /archive/
 outputs/
 preservation/
-/runs/
+/runs/*
 /results/*
 !/results/baseline_comparison_500_20261018/
 /data/**/*.npy
@@ -34,3 +34,16 @@ preservation/
 # Frozen training banks and their moment/identity files.
 !/data/proposed/*.npy
 !/data/proposed/*.npz
+
+# Selected 5,000-sample run and its original dependencies.
+!/runs/proposed_sample_sizes_20261018/
+/runs/proposed_sample_sizes_20261018/*
+!/runs/proposed_sample_sizes_20261018/PLAN.json
+!/runs/proposed_sample_sizes_20261018/n5000/
+!/runs/proposed_sample_sizes_20261018/initialization/
+!/runs/proposed_sample_sizes_20261018/configs/
+/runs/proposed_sample_sizes_20261018/configs/*
+!/runs/proposed_sample_sizes_20261018/configs/n5000.json
+!/runs/proposed_sample_sizes_20261018/data/
+/runs/proposed_sample_sizes_20261018/data/*
+!/runs/proposed_sample_sizes_20261018/data/n5000/
