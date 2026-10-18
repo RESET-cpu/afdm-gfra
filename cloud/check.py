@@ -34,7 +34,7 @@ assert all(np.isfinite(a).all() for a in (moments.mean, moments.variance, log_ra
 subprocess.run([sys.executable, "-m", "pytest", "-q",
     "tests/test_density_ratio_ablation.py", "tests/test_array_transforms.py",
     "tests/test_evaluation_metrics.py"], check=True)
-with tempfile.TemporaryDirectory(prefix="jadcedd-plan-") as directory:
+with tempfile.TemporaryDirectory(prefix="afdm-gfra-plan-") as directory:
     subprocess.run([sys.executable, "experiment/density_ratio_ablation.py", "plan",
         "--output", directory, "--scenes", "1", "--values", "0", "--device", "cpu", "--fresh"], check=True)
 report = dict(status="PASS", platform=sys.platform, python=sys.version.split()[0],

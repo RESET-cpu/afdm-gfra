@@ -1,10 +1,12 @@
-# JADCEDD 云端工作副本
+# AFDM-GFRA 云端工作副本
 
 **Generative-Model-Aided Grant-Free Random Access for GNSS-Independent MIMO-AFDM Satellite IoT Systems**
 
+私有仓库：[RESET-cpu/afdm-gfra](https://github.com/RESET-cpu/afdm-gfra)。
+
 这是 2026-10-18 从本地研究项目导出的独立工作副本，用于 Codex Cloud 中的代码修改、论文修订和小规模 CPU 验证。
 算法源码、配置、当前冻结推断权重和论文正文均按原文件复制；导出清单及源文件 SHA-256 见 [EXPORT_MANIFEST.json](cloud/EXPORT_MANIFEST.json)。
-云端说明、Git 配置与 AGENTS.md 第 8 条适配了这个独立副本，未回写本地项目。
+云端说明、Git 配置与 AGENTS.md 第 8 条适配了这个独立副本。项目安装分发名为 `afdm-gfra`；Python 导入路径 `afdm_jadcedd` 沿用冻结实现的路径。
 
 ## 文件与研究状态
 
