@@ -12,14 +12,16 @@
 
 - `src/`：物理模型和接收机；`configs/`：当前冻结配置。
 - `experiment/`：八项实验入口，详见 [实验说明](experiment/README.md)。
+- `data/proposed/`：50,000 个训练信道、5,000 个验证信道及身份、矩统计和先验定义；数组使用 Git LFS。
+- `models/initialization/`：默认三阶段训练配方绑定的三份初始化权重；使用 Git LFS。
 - `models/proposed/`：一阶、二阶及活动分类器冻结权重；`models/gnn/`：GNN 基线权重。通过 Git LFS 保存。
 - `paper/main.tex`、`paper/main.pdf`：当前论文；第 I–V 章及附录已有稿件，实验章节待正式结果齐备后撰写。
 - `docs/`：推导、术语依据、主线与来源记录；第三方代码归属见 [ATTRIBUTION.md](docs/ATTRIBUTION.md)。
 - `results/baseline_comparison_500_20261018/`：已完成的比较报告、图与汇总表。
 
-完整训练数据、仍在更新的 `runs/`、旧归档、历史逐场景原始结果和论文历次构建记录保留在本地。
+仍在更新的 `runs/`、旧归档、历史逐场景原始结果和论文历次构建记录保留在本地。
 部分历史文档中的链接因而只适用于完整本地项目；`MAINLINE.json` 保留原始溯源信息。
-当前上传的是已有冻结权重，5,000/50,000 样本的新网络仍在本地训练。
+当前推断沿用冻结权重。5,000/50,000 样本配对训练尚未完成；50,000 样本版本计划在 Windows 上开始新的独立训练运行。
 **正式密度比消融等待新网络完成后运行。** 本副本的检查不产生论文性能结论。
 
 ## Codex Cloud 环境
@@ -39,8 +41,22 @@ bash cloud/setup.sh
 python cloud/check.py
 ```
 
-检查包括三网络权重绑定、两个合成输入的实际网络前向计算、7 项核心测试，以及单场景消融计划生成；不启动完整接收机批量实验。
+检查包括完整训练资产及初始化绑定、三网络推断权重绑定、两个合成输入的实际网络前向计算、7 项核心测试，以及单场景消融计划生成；不启动完整接收机批量实验。
 运行记录写入忽略提交的 `cloud/VALIDATION.local.json`。
+
+## 下载与检查训练数据
+
+克隆仓库或更新到最新 `main` 后，运行 `git lfs install` 和 `git lfs pull` 获取完整数组与权重。
+新增训练资产约 1.93 GiB；身份清单见 [TRAINING_ASSETS.json](cloud/TRAINING_ASSETS.json)。
+在安装好依赖的环境中运行：
+
+```sh
+python scripts/train_proposed.py --inspect --check-assets --device cpu
+```
+
+该命令读取并校验训练/验证数组、默认初始化权重及教师记录，不进行优化更新。
+当前 5,000/50,000 样本配对训练入口从完整库确定性选择嵌套场景子集，并自行生成随机初始化；默认三阶段入口使用随仓库提供的历史初始化。两种训练协议见 [scripts/README.md](scripts/README.md)。
+设备与算力由实际运行环境决定；当前训练入口支持 `cpu` 和 `mps`，Windows GPU 配置需另行适配。
 
 ## 小规模实验
 
@@ -53,7 +69,7 @@ python experiment/density_ratio_ablation.py run --output results/cloud_smoke
 ```
 
 单场景只能检查流程。正式对照必须绑定同一版本的三网络、固定协议并保留全部计划场景。
-完整训练和大规模实验继续在本地计算资源上运行；本副本不会同步或接管本地训练进程。
+数据可用于新建训练运行；当前 Mac 训练进程及其中间断点仍保留在本地。
 
 ## 论文
 

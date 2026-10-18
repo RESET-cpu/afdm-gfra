@@ -30,3 +30,7 @@ preservation/
 *.log
 *.out
 /cloud/VALIDATION.local.json
+
+# Frozen training banks and their moment/identity files.
+!/data/proposed/*.npy
+!/data/proposed/*.npz

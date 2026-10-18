@@ -20,6 +20,8 @@ from afdm_jadcedd.algorithm.proposed.configuration import load_configuration, ve
 from afdm_jadcedd.algorithm.proposed.receiver import Receiver
 
 torch.set_num_threads(1)
+training_assets = json.loads(subprocess.check_output([sys.executable, "scripts/train_proposed.py",
+    "--inspect", "--check-assets", "--device", "cpu"], text=True))
 config = load_configuration()
 verified = verify(config)
 receiver = Receiver(config, device="cpu")
@@ -39,7 +41,7 @@ with tempfile.TemporaryDirectory(prefix="afdm-gfra-plan-") as directory:
         "--output", directory, "--scenes", "1", "--values", "0", "--device", "cpu", "--fresh"], check=True)
 report = dict(status="PASS", platform=sys.platform, python=sys.version.split()[0],
     torch=torch.__version__, numpy=np.__version__, device="cpu",
-    checkpoint_verification=verified, synthetic_network_queries=2,
+    checkpoint_verification=verified, training_assets=training_assets["assets"], synthetic_network_queries=2,
     unit_tests=7, fresh_ablation_plan="PASS", full_receiver_experiment_run=False)
 (ROOT / "cloud/VALIDATION.local.json").write_text(json.dumps(report, indent=2)+"\n")
 print(json.dumps(report, indent=2))

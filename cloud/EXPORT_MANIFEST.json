@@ -3457,12 +3457,12 @@
     }
   },
   "excluded": [
-    "training datasets",
     "active runs and checkpoints",
     "archive",
     "raw 500-scene records",
     "local virtual environment",
-    "paper history and checks"
+    "paper history and checks",
+    "historical derived training banks not used by current recipe"
   ],
   "source_algorithms_modified": false,
   "cloud_adapted_files": [
@@ -3472,5 +3472,6 @@
   ],
   "manifest_hashes_describe": "Original copied files before cloud-only documentation adaptations",
   "project_name": "AFDM-GFRA",
-  "repository": "https://github.com/RESET-cpu/afdm-gfra"
+  "repository": "https://github.com/RESET-cpu/afdm-gfra",
+  "training_assets_manifest": "cloud/TRAINING_ASSETS.json"
 }

@@ -1,0 +1,62 @@
+{
+  "schema": "afdm-gfra-training-assets-v1",
+  "date": "2026-10-18",
+  "training_samples": 50000,
+  "validation_samples": 5000,
+  "files": {
+    "data/proposed/prior_definition.json": {
+      "bytes": 9054,
+      "sha256": "f20b1e25eae1037daff03db58c816a7acc4ccc382c89520016e47e5385b8bc9d"
+    },
+    "data/proposed/status.json": {
+      "bytes": 203,
+      "sha256": "f779081dff9f950e79847230109d7d5bdb230dd9393ccce87827cf4e9e25cd3a"
+    },
+    "data/proposed/train_channel.npy": {
+      "bytes": 1638400128,
+      "sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+    },
+    "data/proposed/train_complete.json": {
+      "bytes": 3319,
+      "sha256": "e6df4e19e0cb70250298908933f4da9a6f68f9446bc5595ff93260c366a0a068"
+    },
+    "data/proposed/train_identities.npy": {
+      "bytes": 800128,
+      "sha256": "445f4ade5fb30dc5e07fe23a2b276e7c8abc115eeeac236a2e20944eb5b7c96b"
+    },
+    "data/proposed/train_moments.npz": {
+      "bytes": 131884,
+      "sha256": "dd94c4eda65c459183f08e5d102130b3c731da7fbeaf6c15466f5a98bd642ebe"
+    },
+    "data/proposed/validation_channel.npy": {
+      "bytes": 163840128,
+      "sha256": "2b3cd347df5a869948bbd40c74d119764880a998bb82a39ffae8301a7f9f8b0a"
+    },
+    "data/proposed/validation_complete.json": {
+      "bytes": 3332,
+      "sha256": "fce4a372be664f3399b0a3b52e21c68cd1935a26cc94655e017cfd9f93f283bb"
+    },
+    "data/proposed/validation_identities.npy": {
+      "bytes": 80128,
+      "sha256": "a7c065dc608db8914cdaa430e3172db015e2020514e9f998e23cce91773e9434"
+    },
+    "data/proposed/validation_moments.npz": {
+      "bytes": 131884,
+      "sha256": "df5c7238d73ed152c4312dce6f43832a3d536fe1a372cc17cdd532953dddc802"
+    },
+    "models/initialization/activity.pt": {
+      "bytes": 3603227,
+      "sha256": "f7765eeee544243a5c5a981bedaa2944ea9cd56cbfc8655c9d72ffef4293573f"
+    },
+    "models/initialization/first.pt": {
+      "bytes": 130385097,
+      "sha256": "47422682e8a136b32d30f72fc76ad91d44dd78702cafc8fa35580f5c633624be"
+    },
+    "models/initialization/second.pt": {
+      "bytes": 130385543,
+      "sha256": "ef6308ffa2587615f80e53e665b9444539378c12cad9bf6963541cf9b8b80935"
+    }
+  },
+  "bytes": 2067774055,
+  "scope": "Current physical channel banks, identities, moment statistics, prior metadata and default three-stage initialization checkpoints. Paired 5000/50000 training creates nested subsets from this bank."
+}
