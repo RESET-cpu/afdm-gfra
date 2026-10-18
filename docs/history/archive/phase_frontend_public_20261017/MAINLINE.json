@@ -1,0 +1,450 @@
+{
+  "schema": "figure-selected-mainline-v1",
+  "updated_at": "2026-10-16",
+  "default_algorithm": "proposed",
+  "algorithms": {
+    "proposed": {
+      "configuration": "configs/proposed_unknown_phase.json",
+      "implementation": "src/afdm_jadcedd/algorithm/proposed/unknown_phase.py",
+      "status": "SELECTED_MAINLINE",
+      "reference": "results/proposed_unknown_phase_20261015/evaluation",
+      "parameter_selection": {
+        "date": "2026-10-14",
+        "field": "ep.damping",
+        "previous_value": 0.1,
+        "selected_value": 0.2,
+        "interpretation": "new-value weight for both query and feedback moment damping",
+        "historical_configuration": "configs/proposed_figure_20261009.json",
+        "evidence": "results/proposed_uniform_inference_20261014/followup/FROZEN_COMPARISON.json",
+        "evidence_scope": "4 development conditions and 2 fresh physical scenes at -4,0,4 dB; original stopping retained",
+        "record": "results/proposed_default_20261014/DEFAULT_SELECTION.json"
+      },
+      "unknown_phase": {
+        "configuration": "configs/proposed_unknown_phase.json",
+        "implementation": "src/afdm_jadcedd/algorithm/proposed/unknown_phase.py",
+        "status": "SELECTED_ORIGINAL_INFERENCE_AND_CLASSIFIER",
+        "selection_record": "results/proposed_low_snr_20261015/MAINLINE_SELECTION.json"
+      },
+      "conditional_configuration": "configs/proposed.json",
+      "conditional_implementation": "src/afdm_jadcedd/algorithm/proposed/receiver.py",
+      "noise_mode": "known",
+      "historical_reference": "results/proposed_snr_100_20261009",
+      "preservation": {
+        "version": "proposed_mainline_20261015",
+        "status": "FROZEN_AND_REPLAY_VERIFIED",
+        "directory": "archive/proposed_mainline_20261015",
+        "manifest": "archive/proposed_mainline_20261015/MANIFEST.json",
+        "manifest_sha256": "7cfc16469acf910373afd5e97cdc2479709093024380cca3e8827863ddc5d9c3",
+        "files": 979,
+        "bytes": 718561541,
+        "guide": "docs/PROPOSED_MAINLINE.md",
+        "verification": "archive/proposed_mainline_20261015/PRESERVATION_VERIFICATION.json",
+        "phase_mode": "estimated",
+        "noise_mode": "known",
+        "saved_cases": 60,
+        "replay_case": "scene000/snr+00",
+        "replay_all_arrays_exact": true,
+        "future_changes": "Further algorithm exploration requires a new explicit user request; retain this preserved version."
+      },
+      "mainline_confirmation": {
+        "date": "2026-10-16",
+        "status": "CONFIRMED_MAINLINE",
+        "exploration_status": "CLOSED_BY_USER",
+        "original_pilot": "PartialDFTPilot",
+        "planned_evaluation_snr_db": [
+          -4,
+          -2,
+          0,
+          2,
+          4,
+          6,
+          8,
+          10
+        ],
+        "reopen_rule": "Further algorithm exploration requires a new explicit user request",
+        "record": "results/proposed_mainline_confirmation_20261016/DECISION.json",
+        "evaluation_scope_record": "results/proposed_mainline_confirmation_20261016/SNR_SCOPE.json"
+      }
+    },
+    "somp": {
+      "configuration": "configs/baselines.json",
+      "implementation": "src/afdm_jadcedd/algorithm/baselines/somp.py",
+      "status": "SELECTED_FIGURE_MAINLINE",
+      "public_implementation": "src/afdm_jadcedd/algorithm/baselines/unknown_phase_baselines.py",
+      "configuration_scope": "Conditional legacy configuration with the observation-only noise adaptation in configs/baseline_noise.json; public entry estimates phase first.",
+      "noise_mode": "estimated",
+      "noise_configuration": "configs/baseline_noise.json",
+      "estimated_noise_validation": {
+        "numerical_and_information_boundary": "PASS",
+        "quality": "LIMITED_FIXED_REGRESSION_AND_NEW_SCENE_VALIDATION",
+        "record": "results/baseline_noise_audit_20261015/CHECKS.json",
+        "previous_record": "results/baseline_noise_20261015/CHECKS.json",
+        "fresh_conditions": 2,
+        "fresh_independent_scenes": 2,
+        "fresh_aer": 0.0125,
+        "fresh_misses": 1,
+        "fresh_false_alarms": 0,
+        "native_solver_changed": false,
+        "interpretation": "SBL prior revised; the other three retain the same estimator and inference. See method-specific scope in the report."
+      }
+    },
+    "gamp": {
+      "configuration": "configs/baselines.json",
+      "implementation": "src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+      "status": "SELECTED_FIGURE_MAINLINE",
+      "public_implementation": "src/afdm_jadcedd/algorithm/baselines/unknown_phase_baselines.py",
+      "configuration_scope": "Conditional legacy configuration with the observation-only noise adaptation in configs/baseline_noise.json; public entry estimates phase first.",
+      "noise_mode": "estimated",
+      "noise_configuration": "configs/baseline_noise.json",
+      "estimated_noise_validation": {
+        "numerical_and_information_boundary": "PASS",
+        "quality": "VALIDATED_ON_FIXED_REGRESSION_AND_TWO_NEW_SCENES",
+        "record": "results/gamp_noise_20261015/CHECKS.json",
+        "regression_aer": 0.004166666666666667,
+        "regression_false_alarms": 0,
+        "fresh_aer": 0.0,
+        "remaining_noise_bias": "Estimated variance was 84%-91% of true variance across these 12 conditions; limited validation."
+      }
+    },
+    "gnn": {
+      "configuration": "configs/baselines.json",
+      "implementation": "src/afdm_jadcedd/algorithm/baselines/gnn_aspl.py",
+      "status": "SELECTED_FIGURE_MAINLINE",
+      "public_implementation": "src/afdm_jadcedd/algorithm/baselines/unknown_phase_baselines.py",
+      "configuration_scope": "Conditional legacy configuration with the observation-only noise adaptation in configs/baseline_noise.json; public entry estimates phase first.",
+      "noise_mode": "estimated",
+      "noise_configuration": "configs/baseline_noise.json",
+      "estimated_noise_validation": {
+        "numerical_and_information_boundary": "PASS",
+        "quality": "LIMITED_FIXED_REGRESSION_AND_NEW_SCENE_VALIDATION",
+        "record": "results/baseline_noise_audit_20261015/CHECKS.json",
+        "previous_record": "results/baseline_noise_20261015/CHECKS.json",
+        "fresh_conditions": 2,
+        "fresh_independent_scenes": 2,
+        "fresh_aer": 0.0125,
+        "fresh_misses": 1,
+        "fresh_false_alarms": 0,
+        "native_solver_changed": false,
+        "interpretation": "SBL prior revised; the other three retain the same estimator and inference. See method-specific scope in the report."
+      }
+    },
+    "offgrid_sbl": {
+      "configuration": "configs/offgrid_baselines.json",
+      "implementation": "src/afdm_jadcedd/algorithm/baselines/offgrid/sbl.py",
+      "status": "SELECTED_FIGURE_MAINLINE",
+      "reference": "results/offgrid_baselines_20261012",
+      "public_implementation": "src/afdm_jadcedd/algorithm/baselines/unknown_phase_baselines.py",
+      "configuration_scope": "Conditional legacy configuration with the observation-only noise adaptation in configs/baseline_noise.json; public entry estimates phase first.",
+      "noise_mode": "estimated",
+      "noise_configuration": "configs/baseline_noise.json",
+      "estimated_noise_validation": {
+        "numerical_and_information_boundary": "PASS",
+        "quality": "LIMITED_FIXED_REGRESSION_AND_NEW_SCENE_VALIDATION",
+        "record": "results/baseline_noise_audit_20261015/CHECKS.json",
+        "previous_record": "results/baseline_noise_20261015/CHECKS.json",
+        "fresh_conditions": 6,
+        "fresh_independent_scenes": 2,
+        "fresh_aer": 0.0125,
+        "fresh_misses": 3,
+        "fresh_false_alarms": 0,
+        "native_solver_changed": false,
+        "interpretation": "SBL prior revised; the other three retain the same estimator and inference. See method-specific scope in the report."
+      }
+    },
+    "ldamp": {
+      "configuration": "configs/ldamp.json",
+      "implementation": "src/afdm_jadcedd/algorithm/baselines/ldamp/receiver.py",
+      "status": "VALIDATED_PAIRED_10_SCENES",
+      "training_recipe": "configs/training/ldamp.json",
+      "training_status": "results/ldamp_implementation_20261014/beam_bank_five_intervals/BANK.json",
+      "reference": "results/ldamp_implementation_20261014/paired_comparison_10/SUMMARY.json",
+      "diagnosis_report": "results/ldamp_implementation_20261014/REFERENCE_REPORT.md",
+      "implementation_review_status": "COMPLETED",
+      "implementation_review": "results/ldamp_implementation_20261014/REVIEW_20261014.md",
+      "final_audit": "results/ldamp_implementation_20261014/FINAL_AUDIT.json",
+      "public_implementation": "src/afdm_jadcedd/algorithm/baselines/unknown_phase_baselines.py",
+      "configuration_scope": "Conditional legacy configuration with the observation-only noise adaptation in configs/baseline_noise.json; public entry estimates phase first.",
+      "noise_mode": "estimated",
+      "noise_configuration": "configs/baseline_noise.json",
+      "estimated_noise_validation": {
+        "numerical_and_information_boundary": "PASS",
+        "quality": "LIMITED_FIXED_REGRESSION_AND_NEW_SCENE_VALIDATION",
+        "record": "results/baseline_noise_audit_20261015/CHECKS.json",
+        "previous_record": "results/baseline_noise_20261015/CHECKS.json",
+        "fresh_conditions": 2,
+        "fresh_independent_scenes": 2,
+        "fresh_aer": 0.0125,
+        "fresh_misses": 1,
+        "fresh_false_alarms": 0,
+        "native_solver_changed": false,
+        "interpretation": "SBL prior revised; the other three retain the same estimator and inference. See method-specific scope in the report."
+      }
+    }
+  },
+  "registry": "src/afdm_jadcedd/algorithm/registry.py",
+  "frozen_assets": "configs/mainline_assets.json",
+  "evaluation_configuration": "configs/evaluation.json",
+  "primary_comparison": {
+    "methods": [
+      "somp",
+      "gamp",
+      "gnn",
+      "offgrid_sbl",
+      "ldamp"
+    ],
+    "reference_methods": [
+      "proposed"
+    ],
+    "phase_mode": "estimated",
+    "configuration_by_method": {
+      "proposed": "configs/proposed_unknown_phase.json",
+      "somp": "configs/baselines.json",
+      "gamp": "configs/baselines.json",
+      "gnn": "configs/baselines.json",
+      "offgrid_sbl": "configs/offgrid_baselines.json",
+      "ldamp": "configs/ldamp_output_tsvd.json"
+    },
+    "figure": "results/proposed_unknown_phase_20261015/evaluation/comparison.png",
+    "report": "results/proposed_unknown_phase_20261015/evaluation/REPORT.md",
+    "statistics": "results/proposed_unknown_phase_20261015/evaluation/STATISTICS.csv",
+    "scenes_per_snr": {
+      "proposed": 10,
+      "somp": 10,
+      "gamp": 10,
+      "gnn": 10,
+      "offgrid_sbl": 10,
+      "ldamp": 10
+    },
+    "status": "COMPLETE",
+    "scope": "Same 10 public inputs per SNR across six methods, with identical estimated phase. L-DAMP in this saved panel explicitly uses output TSVD; its default conditional configuration remains configs/ldamp.json. The historical known-phase reference uses a different scene set, so a cross-condition gap requires a paired rerun.",
+    "noise_mode": "known",
+    "noise_scope": "Historical supplied-noise comparison; not a result for the current estimated-noise baseline defaults."
+  },
+  "proposed_checkpoint_sha256": {
+    "first_checkpoint": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+    "second_checkpoint": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5",
+    "evidence_checkpoint": "b2e59a36e9ff07f8a53d18305f4ca029f55c16ca6c55a8faee62510d6562f53c"
+  },
+  "retained_network_groups": [
+    "models/proposed"
+  ],
+  "training_structure": {
+    "entry_points": {
+      "proposed": "scripts/train_proposed.py",
+      "gnn": "scripts/train_gnn.py",
+      "ldamp": "scripts/train_ldamp.py"
+    },
+    "configuration": "configs/training/proposed.json",
+    "status": "SELECTED_WEIGHTS_TRAINING_COMPLETE"
+  },
+  "research": {
+    "entry_point": "run.py research",
+    "registry": "src/afdm_jadcedd/algorithm/research.py",
+    "methods": [
+      "em"
+    ],
+    "documentation": "docs/RESEARCH.md"
+  },
+  "network_retention": {
+    "manifest": "results/network_retention_20261014/MANIFEST.json",
+    "proposed": "models/proposed",
+    "training_initialization": "models/initialization",
+    "baseline_weights_preserved": true,
+    "historical_reports_preserved": true
+  },
+  "result_index": "results/INDEX.json",
+  "code_guide": "docs/CODE_GUIDE.md",
+  "network_consolidation": "docs/CURRENT_STAGE.md",
+  "organization_verification": "results/final_mainline_20261014/VERIFICATION.json",
+  "archived_methods": {
+    "mnomp": "archive/mnomp_20261014/README.md"
+  },
+  "default_phase_mode": "estimated",
+  "public_receiver_factory": "src/afdm_jadcedd/algorithm/baselines/unknown_phase_baselines.py",
+  "receiver_input_fields": [
+    "observation",
+    "pilot",
+    "noise_variance",
+    "activity_prior"
+  ],
+  "phase_policy": {
+    "mainline": "Unknown cross-frame phase estimated from observation and original pilots.",
+    "ideal_reference": "Exact cross-frame phase supplied through operator; select --phase-mode known explicitly.",
+    "evaluation": "Evaluate NMSE, AER and computation under estimated phase; measure the gap to the ideal reference on paired physical observations."
+  },
+  "known_phase_reference": {
+    "methods": [
+      "somp",
+      "gamp",
+      "gnn",
+      "offgrid_sbl",
+      "ldamp"
+    ],
+    "reference_methods": [
+      "proposed"
+    ],
+    "configuration_by_method": {
+      "proposed": "configs/proposed_figure_20261009.json",
+      "somp": "configs/baselines.json",
+      "gamp": "configs/baselines.json",
+      "gnn": "configs/baselines.json",
+      "offgrid_sbl": "configs/offgrid_baselines.json",
+      "ldamp": "configs/ldamp.json"
+    },
+    "figure": "results/ldamp_implementation_20261014/paired_comparison_10/comparison.png",
+    "summary": "results/ldamp_implementation_20261014/paired_comparison_10/SUMMARY.json",
+    "scenes_per_snr": {
+      "proposed": 10,
+      "somp": 10,
+      "gamp": 10,
+      "gnn": 10,
+      "offgrid_sbl": 10,
+      "ldamp": 10
+    },
+    "status": "COMPLETE",
+    "scope": "Same 10 public inputs per SNR for all methods. Proposed uses its frozen original comparison configuration; current default damping is different. Pointwise physical-scene bootstrap intervals.",
+    "original_figure": "results/baseline_comparison_20261012/comparison.png",
+    "original_summary": "results/baseline_comparison_20261012/summary.json",
+    "prior_failed_ldamp_comparison": "results/ldamp_20261014/continuation/comparison/SUMMARY.json",
+    "phase_mode": "known",
+    "noise_mode": "known",
+    "noise_scope": "Historical supplied-noise comparison; not a result for the current estimated-noise baseline defaults."
+  },
+  "evaluation_configuration_scope": "Historical known-phase evaluation; current public input and pairing protocol is docs/EXPERIMENT_PROTOCOL.md.",
+  "public_entry_verification": "results/estimated_phase_mainline_20261015/CHECKS.json",
+  "noise_policy": {
+    "baseline_default": "estimated",
+    "proposed_default": "known",
+    "configuration": "configs/baseline_noise.json",
+    "implementation": "src/afdm_jadcedd/algorithm/baselines/baseline_noise.py",
+    "ideal_reference": "Explicit --noise-mode known; phase is controlled separately",
+    "proposed_scope": "Proposed noise estimation is not implemented in this baseline-only change"
+  },
+  "receiver_input_fields_by_method": {
+    "proposed": [
+      "observation",
+      "pilot",
+      "noise_variance",
+      "activity_prior"
+    ],
+    "somp": [
+      "observation",
+      "pilot",
+      "activity_prior"
+    ],
+    "gamp": [
+      "observation",
+      "pilot",
+      "activity_prior"
+    ],
+    "gnn": [
+      "observation",
+      "pilot",
+      "activity_prior"
+    ],
+    "offgrid_sbl": [
+      "observation",
+      "pilot",
+      "activity_prior"
+    ],
+    "ldamp": [
+      "observation",
+      "pilot",
+      "activity_prior"
+    ]
+  },
+  "receiver_input_fields_scope": "Legacy four-field interface and current Proposed; baseline file inputs omit noise_variance or ignore its legacy value.",
+  "baseline_noise_verification": "results/baseline_noise_audit_20261015/CHECKS.json",
+  "baseline_noise_comparison": {
+    "report": "results/baseline_noise_20261015/REPORT.md",
+    "summary": "results/baseline_noise_20261015/SUMMARY.json",
+    "status": "COMPLETE_INTEGRATION_PANEL",
+    "physical_scenes": 2,
+    "snr_db": [
+      -4,
+      0,
+      6
+    ],
+    "paired_outputs": 60,
+    "phase_mode": "estimated",
+    "noise_modes": [
+      "known",
+      "estimated"
+    ],
+    "previously_observed_scenes": true,
+    "scope": "Historical first estimated-noise implementation on five baselines; GAMP and off-grid SBL then used weak priors. Current revisions are recorded in gamp_noise_revision and other_baseline_noise_audit."
+  },
+  "gamp_noise_revision": {
+    "configuration": "configs/baseline_noise.json",
+    "report": "results/gamp_noise_20261015/REPORT.md",
+    "summary": "results/gamp_noise_20261015/SUMMARY.json",
+    "formula": "c=1+LM, d=LM*spatial_noise_estimate",
+    "prior_strength": "Preserved from the established conditional baseline",
+    "scope": "Only GAMP noise hyperparameters changed; no threshold refitting",
+    "historical_failure_report": "results/baseline_noise_20261015/REPORT.md"
+  },
+  "other_baseline_noise_audit": {
+    "report": "results/baseline_noise_audit_20261015/REPORT.md",
+    "summary": "results/baseline_noise_audit_20261015/SUMMARY.json",
+    "checks": "results/baseline_noise_audit_20261015/CHECKS.json",
+    "changed_method": "offgrid_sbl",
+    "offgrid_noise_prior": "c=1+LM, d=LM*spatial_noise_estimate; project adaptation of Wei Eqs. (45)-(46), different from original Sec. VI-A c=d=1e-4",
+    "unchanged_methods": [
+      "somp",
+      "gnn",
+      "ldamp"
+    ],
+    "native_solvers_weights_thresholds_changed": false,
+    "regression_noise_ratio": [
+      0.914816170287406,
+      0.9694565459513552
+    ],
+    "fresh_offgrid_noise_ratio": [
+      0.8835582163856597,
+      0.9671283357785038
+    ],
+    "scope": "Two new physical scenes, six SBL conditions, two conditions each for the other three methods; no broad convergence or unbiasedness claim."
+  },
+  "baseline_1000_experiment": {
+    "methods": [
+      "somp",
+      "gamp",
+      "gnn",
+      "offgrid_sbl"
+    ],
+    "physical_scenes": 1000,
+    "snr_db": [
+      -4,
+      -2,
+      0,
+      2,
+      4,
+      6
+    ],
+    "expected_inferences": 24000,
+    "phase_mode": "estimated",
+    "noise_mode": "estimated",
+    "configuration": "Frozen current defaults",
+    "plan": "results/baselines_1000_20261015/PLAN.json",
+    "status_file": "results/baselines_1000_20261015/STATUS.json",
+    "report": "results/baselines_1000_20261015/REPORT.md",
+    "summary": "results/baselines_1000_20261015/SUMMARY.json",
+    "preflight": "results/baselines_1000_20261015/PREFLIGHT.json",
+    "pipeline_check": "results/baselines_1000_20261015/PIPELINE_CHECK.json",
+    "launched": "2026-10-15",
+    "scope": "Same 1000 physical scenes across six SNR settings and four methods; current progress and completion are read from status_file.",
+    "status": "COMPLETE",
+    "completed_inferences": 24000,
+    "failed_inferences": 0,
+    "missing_inferences": 0,
+    "fully_paired_scenes": 1000,
+    "completed_at": "2026-10-16T00:28:57+08:00",
+    "completion_check": "results/baselines_1000_20261015/COMPLETION_CHECK.json"
+  },
+  "code_organization": {
+    "directory": "src/afdm_jadcedd/algorithm/baselines",
+    "record": "results/baseline_package_20261016/REPORT.md",
+    "previous_source": "archive/baseline_package_20261016/workspace",
+    "scope": "Package relocation; inference equations, weights and numerical controls retained"
+  }
+}
