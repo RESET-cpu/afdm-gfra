@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "device": "mps",
+  "full_original_architecture": true,
+  "physical_training_samples": 2,
+  "optimizer_steps": 0,
+  "source_unchanged": true,
+  "variants": [
+    {
+      "variant": "dsm",
+      "loss": 0.06652339547872543,
+      "dsm": 0.06652339547872543,
+      "phase": 0.0,
+      "gradient_norm": 2.769979476928711,
+      "seconds": 0.992376167094335
+    },
+    {
+      "variant": "augmentation",
+      "loss": 0.06869055330753326,
+      "dsm": 0.06869055330753326,
+      "phase": 0.03810016065835953,
+      "gradient_norm": 2.105438232421875,
+      "seconds": 0.3849140000529587
+    },
+    {
+      "variant": "consistency",
+      "loss": 0.0725005716085434,
+      "dsm": 0.06869055330753326,
+      "phase": 0.03810016065835953,
+      "gradient_norm": 2.2903926372528076,
+      "seconds": 0.2628225840162486
+    }
+  ]
+}

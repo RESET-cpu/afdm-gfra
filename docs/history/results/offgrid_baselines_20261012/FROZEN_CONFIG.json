@@ -1,0 +1,33 @@
+{
+  "schema": "afdm-offgrid-baselines-v1",
+  "validation_status": "DEVELOPMENT",
+  "methods": {
+    "offgrid_sbl": {
+      "paper": "Wei et al., IEEE TWC 2022, DOI 10.1109/TWC.2022.3158616",
+      "solver": {
+        "iterations": 120,
+        "tolerance": 0.0001,
+        "rho": 0.001,
+        "candidates_per_user": 12,
+        "offset_candidates": 48,
+        "offset_sweeps": 5,
+        "warmup": 5,
+        "doppler_step": 0.5
+      }
+    },
+    "mnomp": {
+      "paper": "Zhu et al., Signal Processing 2019, DOI 10.1016/j.sigpro.2019.07.012",
+      "solver": {
+        "max_paths": 32,
+        "newton_steps": 8,
+        "cyclic_rounds": 2,
+        "false_alarm_probability": 0.01,
+        "doppler_step": 0.5
+      }
+    }
+  },
+  "readout": {
+    "path": "configs/offgrid_readout_policy.json",
+    "sha256": "de4935d0262405f0ed60592e4e2af911bfcbadf60d563782b1354aa4a0cb47e1"
+  }
+}

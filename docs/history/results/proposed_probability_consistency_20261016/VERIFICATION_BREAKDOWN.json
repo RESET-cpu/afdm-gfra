@@ -1,0 +1,56 @@
+{
+  "overall_status": "FAIL",
+  "arithmetic_pass": true,
+  "forward_decisions_identical": true,
+  "backend": {
+    "mean": {
+      "maximum": 4.0914146666182205e-05,
+      "failures": 0,
+      "checks": 64,
+      "threshold": 0.001
+    },
+    "evidence_mean": {
+      "maximum": 0.00014605253818444908,
+      "failures": 0,
+      "checks": 64,
+      "threshold": 0.001
+    },
+    "tau_from_mean_probes": {
+      "maximum": 0.00011842611226978254,
+      "failures": 0,
+      "checks": 64,
+      "threshold": 0.001
+    },
+    "tau_from_evidence_probes": {
+      "maximum": 0.011711589996900298,
+      "failures": 7,
+      "checks": 64,
+      "threshold": 0.001
+    },
+    "raw_second_variance": {
+      "maximum": 3.765260015215388e-05,
+      "failures": 0,
+      "checks": 64,
+      "threshold": 0.001
+    }
+  },
+  "signs": {
+    "tau_from_mean_probes": {
+      "disagreements": 0,
+      "checks": 64
+    },
+    "tau_from_evidence_probes": {
+      "disagreements": 0,
+      "checks": 64
+    }
+  },
+  "source_identity": true,
+  "weight_identity": true,
+  "mainline_verification": {
+    "status": "PASS",
+    "preserved_files": 979,
+    "live_files_checked": 56,
+    "failures": []
+  },
+  "scope": "Original gates unchanged; an overall FAIL is not relabeled PASS."
+}

@@ -1,0 +1,270 @@
+{
+  "status": "COMPLETE",
+  "failures": 0,
+  "calibration_scenes_per_snr": 16,
+  "evaluation_scenes_per_snr": 20,
+  "evaluated_snr_scene_pairs": 120,
+  "distinct_evaluation_seeds": 20,
+  "evaluation_sha256": "3fd5caf412fcf95682f0905fb21a57044d4a7febad0e7fca89f692ce6c09cfad",
+  "results": [
+    {
+      "method": "proposed",
+      "snr_db": -4.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -7.585877022043832,
+      "aer": 0.005,
+      "misses": 4,
+      "false_alarms": 0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": -4.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -6.128702773137076,
+      "aer": 0.005,
+      "misses": 4,
+      "false_alarms": 0,
+      "mean_seconds": 1.324091141705867,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 20
+      },
+      "mean_iterations": 120.0,
+      "warning_cases": 20,
+      "mean_linearization_relative_error": 0.28573374304512383
+    },
+    {
+      "method": "mnomp",
+      "snr_db": -4.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -10.376144485847725,
+      "aer": 0.0,
+      "misses": 0,
+      "false_alarms": 0,
+      "mean_seconds": 0.29102252488955854,
+      "stopping_counts": {
+        "DETECTION_THRESHOLD": 20
+      },
+      "mean_iterations": 5.65,
+      "warning_cases": 20
+    },
+    {
+      "method": "proposed",
+      "snr_db": -2.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -9.50259173017516,
+      "aer": 0.0025,
+      "misses": 2,
+      "false_alarms": 0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": -2.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -7.5389702671122985,
+      "aer": 0.00375,
+      "misses": 3,
+      "false_alarms": 0,
+      "mean_seconds": 1.2857440999825485,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 20
+      },
+      "mean_iterations": 120.0,
+      "warning_cases": 20,
+      "mean_linearization_relative_error": 0.2935515840897117
+    },
+    {
+      "method": "mnomp",
+      "snr_db": -2.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -12.130392072082357,
+      "aer": 0.0,
+      "misses": 0,
+      "false_alarms": 0,
+      "mean_seconds": 0.2943303667823784,
+      "stopping_counts": {
+        "DETECTION_THRESHOLD": 20
+      },
+      "mean_iterations": 5.75,
+      "warning_cases": 20
+    },
+    {
+      "method": "proposed",
+      "snr_db": 0.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -11.160222494286522,
+      "aer": 0.0,
+      "misses": 0,
+      "false_alarms": 0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 0.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -8.80207911309801,
+      "aer": 0.0025,
+      "misses": 2,
+      "false_alarms": 0,
+      "mean_seconds": 1.2697818061104045,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 20
+      },
+      "mean_iterations": 120.0,
+      "warning_cases": 20,
+      "mean_linearization_relative_error": 0.2977233898206704
+    },
+    {
+      "method": "mnomp",
+      "snr_db": 0.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -14.137509386780525,
+      "aer": 0.0,
+      "misses": 0,
+      "false_alarms": 0,
+      "mean_seconds": 0.30258496244205163,
+      "stopping_counts": {
+        "DETECTION_THRESHOLD": 20
+      },
+      "mean_iterations": 5.9,
+      "warning_cases": 20
+    },
+    {
+      "method": "proposed",
+      "snr_db": 2.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -12.628227181040529,
+      "aer": 0.0,
+      "misses": 0,
+      "false_alarms": 0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 2.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -9.731889087014842,
+      "aer": 0.0025,
+      "misses": 2,
+      "false_alarms": 0,
+      "mean_seconds": 1.3399863728438504,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 20
+      },
+      "mean_iterations": 120.0,
+      "warning_cases": 20,
+      "mean_linearization_relative_error": 0.29821243413404724
+    },
+    {
+      "method": "mnomp",
+      "snr_db": 2.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -15.59555121790539,
+      "aer": 0.0,
+      "misses": 0,
+      "false_alarms": 0,
+      "mean_seconds": 0.3055402333498932,
+      "stopping_counts": {
+        "DETECTION_THRESHOLD": 20
+      },
+      "mean_iterations": 6.0,
+      "warning_cases": 20
+    },
+    {
+      "method": "proposed",
+      "snr_db": 4.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -13.972329273490114,
+      "aer": 0.0,
+      "misses": 0,
+      "false_alarms": 0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 4.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -10.63654748880775,
+      "aer": 0.0025,
+      "misses": 2,
+      "false_alarms": 0,
+      "mean_seconds": 1.1890261417021974,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 20
+      },
+      "mean_iterations": 120.0,
+      "warning_cases": 20,
+      "mean_linearization_relative_error": 0.28137632891505193
+    },
+    {
+      "method": "mnomp",
+      "snr_db": 4.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -16.92307395690834,
+      "aer": 0.0,
+      "misses": 0,
+      "false_alarms": 0,
+      "mean_seconds": 0.28608202093746515,
+      "stopping_counts": {
+        "DETECTION_THRESHOLD": 20
+      },
+      "mean_iterations": 6.2,
+      "warning_cases": 20
+    },
+    {
+      "method": "proposed",
+      "snr_db": 6.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -15.163426401015286,
+      "aer": 0.0,
+      "misses": 0,
+      "false_alarms": 0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 6.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -11.379993322331103,
+      "aer": 0.0025,
+      "misses": 2,
+      "false_alarms": 0,
+      "mean_seconds": 1.1532946789637208,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 20
+      },
+      "mean_iterations": 120.0,
+      "warning_cases": 20,
+      "mean_linearization_relative_error": 0.26986430055109234
+    },
+    {
+      "method": "mnomp",
+      "snr_db": 6.0,
+      "scenes": 20,
+      "failures": 0,
+      "channel_nmse_db": -18.200703703138398,
+      "aer": 0.0,
+      "misses": 0,
+      "false_alarms": 0,
+      "mean_seconds": 0.30981985402759166,
+      "stopping_counts": {
+        "DETECTION_THRESHOLD": 20
+      },
+      "mean_iterations": 6.4,
+      "warning_cases": 20
+    }
+  ],
+  "limitation": "Initial 20-scene/SNR panel; does not replace the formal 1000-scene baseline study."
+}

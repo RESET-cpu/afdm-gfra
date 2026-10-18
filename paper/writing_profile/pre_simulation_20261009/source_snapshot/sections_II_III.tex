@@ -1,0 +1,851 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=24mm]{geometry}
+\usepackage{amsmath,amssymb,bm,booktabs,array}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\newcommand{\CN}{\mathcal{CN}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\vect}{\operatorname{vec}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\logit}{\operatorname{logit}}
+\newcommand{\sigmoid}{\operatorname{sigmoid}}
+\newcommand{\clip}{\operatorname{clip}}
+\newcommand{\relu}{\operatorname{Re}}
+\newcommand{\imag}{\operatorname{Im}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\Alph{subsection}}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\allowdisplaybreaks
+\title{Joint Activity Detection and Channel Estimation\protect\\
+for AFDM LEO Satellite Uplinks\protect\\[5pt]
+\large Sections II and III}
+\author{}
+\date{Draft: October 8, 2026}
+\begin{document}
+\maketitle
+\vspace{-7mm}
+\setcounter{section}{1}
+
+\section{System Model and Problem Formulation}
+\label{sec:system}
+
+\subsection{Grant-Free Access and Array Channel}
+
+Consider the uplink of a low Earth orbit (LEO) satellite supporting grant-free
+access from $K$ single-antenna terminals. The satellite employs a uniform
+planar array (UPA) with $M=M_yM_z$ antennas. Each access block contains $Q$
+affine frequency division multiplexing (AFDM) pilot frames, each with $N$
+useful samples. The channel geometry and path coefficients remain fixed
+within the access block. Terminal $k$ has activity indicator
+$\alpha_k\in\{0,1\}$, and the receiver jointly estimates the terminal
+activities and their effective channels.
+
+Let $p$ be the terminal access probability before conditioning on a nonempty
+access block. The activity law used to generate such blocks is
+\begin{equation}
+ p_{\rm gen}(\bm\alpha)=
+ \frac{\mathbf{1}\{\sum_{k=1}^{K}\alpha_k\geq1\}}{Z}
+ \prod_{k=1}^{K}p^{\alpha_k}(1-p)^{1-\alpha_k},
+ \qquad Z=1-(1-p)^K.
+ \label{eq:activity-generation}
+\end{equation}
+Its single-terminal marginal is $\rho=p/Z$. This publicly specified
+marginal, together with the observations, determines the activity prior
+used by the receiver.
+
+We fix the complex-envelope convention by
+$s_{\rm RF}(t)=\relu\{x(t)e^{-j2\pi f_ct}\}$ and downconversion by
+$e^{+j2\pi f_ct}$. A path with time-varying propagation delay $\tau(t)$
+then contributes $g\,x(t-\tau(t))e^{+j2\pi f_c\tau(t)}$. Static carrier
+phase is absorbed into the path gain. Under the narrowband block model,
+envelope delays and array directions are held fixed while the first-order
+carrier phase variation is retained.
+
+Denote the satellite position and velocity by $\mathbf{s}$ and
+$\mathbf{v}_{\rm sat}$, respectively, and the position of terminal $k$ by
+$\mathbf{g}_k$. With propagation speed $c_0$ and carrier frequency $f_c$,
+the line-of-sight direction and common terminal Doppler shift are
+\begin{equation}
+ \mathbf{u}_k=\frac{\mathbf{g}_k-\mathbf{s}}
+ {\norm{\mathbf{g}_k-\mathbf{s}}},
+ \qquad \nu_k=-\frac{f_c}{c_0}\mathbf{v}_{\rm sat}^{\mathsf T}\mathbf{u}_k.
+ \label{eq:geometry}
+\end{equation}
+Indeed, the range $L_k=\norm{\mathbf g_k-\mathbf s}$ obeys
+$\dot L_k=-\mathbf v_{\rm sat}^{\mathsf T}\mathbf u_k$, so the chosen
+envelope has Doppler $\nu_k=f_c\dot L_k/c_0$ and time factor
+$e^{+j2\pi\nu_kt}$. The common reference delay below is fixed at the
+block reference time; it does not additionally remove a common Doppler.
+
+Let $\tau_c$ be the propagation time from the satellite to the closest
+ground point in the beam footprint. After compensation of this common
+reference delay, path $\ell$ has residual delay
+\begin{equation}
+ \tau_{k\ell}=\frac{\norm{\mathbf{g}_k-\mathbf{s}}}{c_0}-\tau_c
+             +\delta_\ell\tau_{{\rm spread},k},
+ \label{eq:path-delay}
+\end{equation}
+where $\delta_\ell$ and $\tau_{{\rm spread},k}$ specify the relative path
+delay and terminal delay spread. All paths of a terminal share its spatial
+direction and Doppler shift, following the common spatial response model
+for satellite links in \cite[Sec.~II-C]{li2023} and the common Doppler
+model in \cite[Sec.~II]{huang2026}.
+
+Let $\mu_{y,k}$ and $\mu_{z,k}$ be the projections of $\mathbf{u}_k$ onto
+the fixed unit axes $\mathbf e_y,\mathbf e_z$. The array reference and
+indexing convention are
+$\mathbf s_m=\mathbf s-n_y d_y\mathbf e_y-n_zd_z\mathbf e_z$.
+The far-field delay difference is
+$(n_y d_y\mu_{y,k}+n_zd_z\mu_{z,k})/c_0$; with the envelope convention
+above, the narrowband array response at antenna index $m=n_z+M_zn_y$ is
+\begin{equation}
+ [\mathbf{a}_k]_m=
+ \exp\!\left[j2\pi\left(
+ \frac{d_y}{\lambda}n_y\mu_{y,k}
+ +\frac{d_z}{\lambda}n_z\mu_{z,k}\right)\right],
+ \qquad \norm{\mathbf{a}_k}^2=M,
+ \label{eq:upa}
+\end{equation}
+where $\lambda=c_0/f_c$. The unknown spatial response is included in the
+channel to be estimated.
+
+\subsection{AFDM Channel with Continuous Delays}
+
+Let $B=N\Delta f$ be the sampling rate, $T_s=1/B$, and $N_{\rm CPP}$ the
+chirp-periodic prefix (CPP) length. Following the AFDM modulation in
+\cite[Secs.~II-B and III-A]{bemani2022}, the discrete affine Fourier
+transform (DAFT) matrix $\mathbf{F}_{\rm A}$ is defined by
+\begin{equation}
+ [\mathbf{F}_{\rm A}]_{rt}=\frac{1}{\sqrt N}
+ \exp[-j2\pi(c_2r^2+rt/N+c_1t^2)],
+ \quad r,t\in\{0,\ldots,N-1\}.
+ \label{eq:daft}
+\end{equation}
+An AFDM pilot vector $\mathbf{p}_{qk}$ is mapped by the inverse discrete
+affine Fourier transform (IDAFT) to
+$\mathbf{s}_{qk}=\mathbf{F}_{\rm A}^{\mathsf H}\mathbf{p}_{qk}$. The
+prefix extends the integer-indexed samples according to
+\begin{equation}
+ s_{qk}[t]=\exp\{j2\pi c_1(t^2-\langle t\rangle_N^2)\}
+              s_{qk}[\langle t\rangle_N],
+ \quad -N_{\rm CPP}\leq t<0,
+ \label{eq:cpp}
+\end{equation}
+where $\langle t\rangle_N=t-N\lfloor t/N\rfloor$. The prefix covers the
+residual channel delay, $N_{\rm CPP}T_s\geq\max_{k,\ell}\tau_{k\ell}$.
+This expression retains the chirp phase over every prefix period. The frame duration is
+$T_{\rm frame}=(N+N_{\rm CPP})T_s$.
+
+To define fractional delays, we specify the continuous waveform between
+the discrete samples. For real normalized time $\xi$, set
+$w_\xi=\langle\xi\rangle_N$, $\zeta_n(w)=\lfloor2c_1w+n/N\rfloor$, and
+\begin{equation*}
+ \varphi_n(\xi)=\frac{1}{\sqrt N}
+ \exp\!\left[j2\pi\left(c_2n^2+c_1\xi^2+\frac{nw_\xi}{N}
+ -\zeta_n(w_\xi)w_\xi\right)\right].
+ \tag{6a}\label{eq:continuous-waveform}
+\end{equation*}
+This is the adopted wrapped-chirp waveform model, rather than a
+consequence of discrete samples alone. It agrees with the IDAFT at
+integer useful-sample times and obeys the same cross-period chirp
+extension as \eqref{eq:cpp}. For a delay of $d=\tau/T_s$ samples,
+define $\eta=t-d$, $w=\langle\eta\rangle_N$, and
+$\zeta_{tn}=\lfloor2c_1w+n/N\rfloor$. Substitution into
+$\varphi_n(t-d)$ gives
+\begin{equation}
+ [\mathbf{B}_d]_{tn}=\frac{1}{\sqrt N}
+ \exp\!\left[j2\pi\left(c_2n^2+c_1\eta^2
+                  +\frac{nw}{N}-\zeta_{tn}w\right)\right].
+ \label{eq:continuous-basis}
+\end{equation}
+We use the Doppler modulation convention $\exp(+j2\pi\nu tT_s)$.
+For useful-window start index $g$, the corresponding path matrix is
+\begin{equation}
+ \mathbf{G}(d,\nu;g)=\mathbf{F}_{\rm A}
+ \diag\{e^{j2\pi\nu T_s(g+t)}\}_{t=0}^{N-1}\mathbf{B}_d.
+ \label{eq:path-operator}
+\end{equation}
+Expanding its entries, with $2Nc_1\in\mathbb N_+$ and integer receive
+index $t$, gives
+\begin{equation*}
+ \begin{split}
+ G_{rn}&=\frac{e^{j2\pi[c_1d^2+c_2(n^2-r^2)-nd/N+\nu T_sg]}}{N}\\
+ &\quad\times\sum_{t=0}^{N-1}
+ e^{j2\pi[(n-r)/N-2c_1d+\nu T_s]t}
+ e^{j2\pi\zeta_{tn}d}.
+ \end{split}
+ \tag{8a}\label{eq:path-entry-expansion}
+\end{equation*}
+The interval-wise sum is the fractional-delay form in
+\cite[Sec.~II, eq.~(5)]{huang2026}, with Doppler signs explicitly
+converted: $k_{\nu,\mathrm{Huang}}=-\nu NT_s$. The useful-window phase
+is retained in \eqref{eq:path-operator} and can be included in the
+reference-frame path gain. At integer $d$, the final exponential in
+\eqref{eq:path-entry-expansion} equals one.
+
+The chirp parameters satisfy $2Nc_1\in\mathbb{N}_{+}$. At an integer
+delay $d$, \eqref{eq:path-operator} reduces to
+\begin{align}
+ \mathbf{G}(d,\nu;g)&=\mathbf{F}_{\rm A}\mathbf{D}_{\nu,g}
+             \bm\Omega_d\bm\Pi_{d\bmod N}\mathbf{F}_{\rm A}^{\mathsf H},
+ \label{eq:integer-operator}\\
+ [\bm\Omega_d]_{tt}&=
+ e^{j2\pi c_1[(t-d)^2-\langle t-d\rangle_N^2]},
+ \label{eq:integer-prefix-phase}
+\end{align}
+where $\bm\Pi_l\mathbf{s}$ has entries $s[\langle t-l\rangle_N]$.
+Thus the full residual delay enters the prefix phase, while its remainder
+determines the cyclic shift.
+
+At the reference frame, whose useful-window start is $N_{\rm CPP}$,
+terminal $k$ has the DAFT-domain channel
+\begin{equation}
+ \mathbf{G}_k=\sum_{\ell}g_{k\ell}
+ \mathbf{G}(\tau_{k\ell}/T_s,\nu_k;N_{\rm CPP}),
+ \qquad H_{kmrn}=[\mathbf{a}_k]_m[\mathbf{G}_k]_{rn}.
+ \label{eq:channel}
+\end{equation}
+Here $g_{k\ell}$ includes the complex path gain after large-scale power
+compensation. The tensor $H_k\in\mathbb{C}^{M\times N\times N}$ contains
+all antenna, DAFT output, and DAFT input coordinates. Its spatial unfolding
+$\mathbf{H}_k\in\mathbb{C}^{M\times N^2}$ has rank at most one under the
+common spatial response assumption. The receiver learns the distribution
+of this full tensor from channel samples.
+
+\subsection{Pilots and the Received Signal}
+
+We assign pilots using randomly selected rows and permuted columns of a
+$KN$-point discrete Fourier transform (DFT). With distinct row indices
+$r_q$, column permutation $c_{kn}$, and independent uniform phases
+$\phi_{kn}$, the pilots are
+\begin{equation}
+ P_{qkn}=\sqrt{\frac{E_p}{N}}
+ e^{-j2\pi r_qc_{kn}/(KN)}e^{j\phi_{kn}},
+ \qquad \sum_{n=0}^{N-1}|P_{qkn}|^2=E_p.
+ \label{eq:pilot}
+\end{equation}
+Because the terminal Doppler is common to all of its paths, moving the
+useful window by one frame multiplies its channel by $e^{j\beta_k}$,
+where $\beta_k=\operatorname{wrap}(2\pi\nu_kT_{\rm frame})$. We assume
+that these effective cross-frame phases are available to the receiver and
+absorb them into the pilot coefficients:
+\begin{equation}
+ A_{qkn}=P_{qkn}e^{jq\beta_k},\qquad q=0,\ldots,Q-1.
+ \label{eq:effective-pilot}
+\end{equation}
+The general matrix $\mathbf{A}$ defined below is used in inference,
+including the terminal-dependent phases.
+
+Define the activity-weighted channel $X_k=\alpha_kH_k$. After prefix
+removal and DAFT demodulation, the observation is
+\begin{equation}
+ Y_{qmr}=\sum_{k=1}^{K}\sum_{n=0}^{N-1}A_{qkn}X_{kmrn}+W_{qmr},
+ \qquad W_{qmr}\sim\CN(0,\sigma^2).
+ \label{eq:observation-tensor}
+\end{equation}
+Noise entries are conditionally independent. To expose the shared linear
+operator, set
+\begin{equation}
+ [\mathbf{Y}]_{q,mN+r}=Y_{qmr},\quad
+ [\mathbf{A}]_{q,(k-1)N+n}=A_{qkn},\quad
+ [\mathbf{X}]_{(k-1)N+n,mN+r}=X_{kmrn}.
+ \label{eq:mmv-indexing}
+\end{equation}
+Then
+\begin{equation}
+ \mathbf{Y}=\mathbf{A}\mathbf{X}+\mathbf{W},\quad
+ \mathbf{Y}\in\mathbb{C}^{Q\times MN},\quad
+ \mathbf{A}\in\mathbb{C}^{Q\times KN},\quad
+ \mathbf{X}\in\mathbb{C}^{KN\times MN}.
+ \label{eq:mmv}
+\end{equation}
+This is a multiple measurement vector (MMV) model with $MN$ measurement
+vectors and a shared terminal activity pattern. Equivalently,
+$\mathbf{y}=\mathcal{A}\mathbf{x}+\mathbf{w}$, with
+$\mathcal{A}=\I_{MN}\otimes\mathbf{A}$ and
+$\mathbf{x}=\vect(\mathbf{X})$. Grouping the coordinates of each terminal
+uses the fixed permutation specified by \eqref{eq:mmv-indexing}.
+
+The receiver is supplied with $(\mathbf{Y},\mathbf{A},\sigma^2,\rho)$.
+In the simulation model, the received signal-to-noise ratio (SNR) is set
+through the clean superposition $\mathbf{Y}_0=\mathbf{A}\mathbf{X}$:
+\begin{equation}
+ \sigma^2=\frac{\norm{\mathbf{Y}_0}_F^2}{QMN}
+                     10^{-\mathrm{SNR}_{\rm dB}/10}.
+ \label{eq:snr}
+\end{equation}
+The supplied noise variance is the parameter of the complex Gaussian
+noise law. The inference variables are expressed in fixed training units:
+$\mathbf{Y}\leftarrow\mathbf{Y}/s$,
+$H_k\leftarrow H_k/s$, $X_k\leftarrow X_k/s$,
+$\mathbf{W}\leftarrow\mathbf{W}/s$, and $\sigma^2\leftarrow\sigma^2/s^2$, with a
+common scale $s$. We retain the same symbols for the normalized variables.
+
+\subsection{Bayesian Formulation}
+
+Let $D=MN^2$ be the number of complex coordinates per terminal, and let
+$q_{\rm tr}$ denote the normalized candidate-channel distribution used
+for training. It is obtained by drawing terminals from the full geometry
+model before applying their activity masks. The receiver uses the
+factorized prior
+\begin{equation}
+ q(\{dH_k\},\bm\alpha)=
+ \prod_{k=1}^{K}q_{\rm tr}(dH_k)
+       \rho^{\alpha_k}(1-\rho)^{1-\alpha_k},
+ \label{eq:working-prior}
+\end{equation}
+and forms the working posterior
+\begin{equation}
+ \begin{aligned}
+ q(d\mathbf{X},\{dH_k\},\bm\alpha\mid\mathbf{Y},\mathbf{A},\sigma^2)
+ &\propto e^{-\norm{\mathbf{Y}-\mathbf{A}\mathbf{X}}_F^2/\sigma^2}\\
+ &\quad\times\prod_{k=1}^{K}\delta_{\alpha_kH_k}(dX_k)
+       q_{\rm tr}(dH_k)\rho^{\alpha_k}(1-\rho)^{1-\alpha_k}.
+ \end{aligned}
+ \label{eq:working-posterior}
+\end{equation}
+Here $\delta_{\alpha_kH_k}$ enforces $X_k=\alpha_kH_k$. The strict
+physical prior conditioned on the supplied quantities is
+$\Pi_{\rm phys}(\{dH_k\},\bm\alpha\mid\mathbf A,\sigma^2)$:
+the operator shares geometric variables with the channels, and
+\eqref{eq:snr} makes the noise variance depend on the clean received
+power. It also contains the nonempty access constraint.
+Equation~\eqref{eq:working-prior} replaces this conditional joint law by
+the candidate-channel marginal and independent activity marginals.
+This is a working-model approximation; the common Gaussian likelihood
+does not establish equality of the two posteriors.
+
+The desired outputs are the effective channel estimate and activity
+probability for each terminal. Under the working posterior, their Bayesian
+targets are
+\begin{equation}
+ \widehat X_k=\E_q[X_k\mid\mathbf{Y},\mathbf{A},\sigma^2],\qquad
+ p_k=q(\alpha_k=1\mid\mathbf{Y},\mathbf{A},\sigma^2),\qquad
+ \widehat\alpha_k=\mathbf{1}\{p_k\geq\tfrac12\}.
+ \label{eq:targets}
+\end{equation}
+The following receiver approximates these quantities by exchanging
+Gaussian messages between a linear estimator and a learned channel
+denoiser, with a classifier providing the activity density ratio.
+
+\section{Receiver Algorithm}
+\label{sec:algorithm}
+
+The receiver follows the linear-estimation and nonlinear-denoising
+decomposition of score-based turbo message passing
+\cite[Secs.~III--V]{cai2026}. The linear module incorporates
+$\mathbf{A}$ and $\sigma^2$. The nonlinear module processes the complete
+terminal channel tensor and returns its channel and activity moments.
+A first network provides the channel mean, a second network learns its
+conditional error, and an activity classifier estimates the ratio between
+active-channel and zero-signal query densities. Gaussian message division
+and moment projection connect the modules
+\cite[Secs.~II--III]{minka2001}.
+
+\subsection{Linear Estimation and Extrinsic Queries}
+
+Suppose the incoming message has mean
+$\mathbf{X}^{\rm pri}\in\mathbb{C}^{KN\times MN}$ and common covariance
+$\gamma\I_{KN}$ for each measurement vector, with $\gamma>0$,
+$\sigma^2>0$, and $\mathbf A\ne\mathbf0$. Gaussian conditioning gives
+\begin{align}
+ \mathbf{X}_{\rm L}
+ &=\mathbf{X}^{\rm pri}+\gamma\mathbf{A}^{\mathsf H}
+   (\sigma^2\I_Q+\gamma\mathbf{A}\mathbf{A}^{\mathsf H})^{-1}
+   (\mathbf{Y}-\mathbf{A}\mathbf{X}^{\rm pri}),
+ \label{eq:linear-mean}\\
+ \bm\Sigma_{\rm L}
+ &=(\gamma^{-1}\I_{KN}+\sigma^{-2}\mathbf{A}^{\mathsf H}\mathbf{A})^{-1},
+ \qquad t_{\rm L}=\frac{\tr\bm\Sigma_{\rm L}}{KN}.
+ \label{eq:linear-variance}
+\end{align}
+The covariance eigenvalues imply $0<t_{\rm L}<\gamma$. Projecting the
+covariance onto $t_{\rm L}\I_{KN}$ and dividing out the incoming
+Gaussian message therefore yields positive, finite extrinsic variance:
+\begin{equation}
+ v_{\rm L}=(t_{\rm L}^{-1}-\gamma^{-1})^{-1},\qquad
+ \mathbf{R}_{\rm L}=v_{\rm L}
+     \left(\frac{\mathbf{X}_{\rm L}}{t_{\rm L}}
+                         -\frac{\mathbf{X}^{\rm pri}}{\gamma}\right).
+ \label{eq:linear-extrinsic}
+\end{equation}
+The rows of $\mathbf{R}_{\rm L}$ are reorganized into terminal tensors
+$R_k\in\mathbb{C}^{M\times N\times N}$ using
+\eqref{eq:mmv-indexing}. Damping of these parameters is specified in
+Section~\ref{sec:schedule}.
+
+Efficient evaluation uses a thin singular value decomposition (SVD)
+$\mathbf{A}=\mathbf{U}\diag(s_i)\mathbf{V}^{\mathsf H}$. Let
+\begin{equation}
+ f_{\rm L}=\frac{1}{KN}\sum_i
+       \frac{\gamma s_i^2}{\sigma^2+\gamma s_i^2}.
+ \label{eq:linear-fraction}
+\end{equation}
+Then $t_{\rm L}=\gamma(1-f_{\rm L})$,
+$v_{\rm L}=t_{\rm L}/f_{\rm L}$, and
+$\mathbf{R}_{\rm L}=\mathbf{X}^{\rm pri}
++(\mathbf{X}_{\rm L}-\mathbf{X}^{\rm pri})/f_{\rm L}$.
+The decomposition is computed once per observation operator.
+
+\subsection{Learning the Channel Mean and Conditional Error}
+
+The learned denoiser is trained on the pseudo additive white Gaussian
+noise (AWGN) model
+\begin{equation}
+ R=H+W,\qquad H\sim q_{\rm tr},\qquad
+ \vect(W)\sim\CN(\mathbf{0},v\I_D).
+ \label{eq:pseudo-awgn}
+\end{equation}
+Equation~\eqref{eq:pseudo-awgn} is exact for the generated training
+queries and a surrogate for the finite-dimensional AFDM receiver queries.
+To see the distinction, define
+$\mathbf L=\gamma\mathbf A^{\mathsf H}
+(\sigma^2\I+\gamma\mathbf A\mathbf A^{\mathsf H})^{-1}/f_{\rm L}$.
+The undamped linear query obeys the identity
+\begin{equation*}
+ \mathbf R_{\rm L}-\mathbf X
+ =(\mathbf L\mathbf A-\I)(\mathbf X-\mathbf X^{\rm pri})
+ +\mathbf L\mathbf W.
+ \tag{25a}\label{eq:linear-query-error}
+\end{equation*}
+This identity does not establish that the actual error is independent,
+white, or Gaussian. The scalar AWGN interpretation and damping are used
+with this approximation explicit, as discussed for finite systems in
+\cite[Sec.~V-B1]{cai2026}.
+
+Write
+$\mathbf{u}=(\relu\vect(R),\imag\vect(R))\in\mathbb{R}^{2D}$,
+define $\mathbf{h}_{\mathbb R}$ similarly, and let $\nu=v/2$.
+We assume the moments needed by the losses are finite; finite fourth
+moments and the corresponding network integrability suffice for the
+conditional squared-error calculations below. Positive-variance Gaussian
+convolution has a smooth positive density even for a channel prior
+supported on a lower-dimensional set. If $q_v^{\mathbb R}$ is this
+active query density in real coordinates, Tweedie's identities
+\cite{efron2011,cai2026} give
+\begin{align}
+ \mathbf{m}_{\mathbb R}(\mathbf{u},v)
+ &=\mathbf{u}+\nu\nabla_{\mathbf{u}}\log q_v^{\mathbb R}(\mathbf{u}),
+ \label{eq:tweedie-mean}\\
+ \mathbf{C}_{\mathbb R}(\mathbf{u},v)
+ &=\nu\I_{2D}+\nu^2\nabla_{\mathbf{u}}^2\log q_v^{\mathbb R}(\mathbf{u}).
+ \label{eq:tweedie-covariance}
+\end{align}
+We train $S_\theta(\mathbf{u},v)\in\mathbb{R}^{2D}$ using denoising
+score matching \cite{vincent2011,cai2026}. For
+$\bm\epsilon=(\mathbf{u}-\mathbf{h}_{\mathbb R})/\sqrt\nu$, its objective is
+\begin{equation}
+ \mathcal{L}_1(\theta)=\E\left[
+ \frac{1}{2D}\norm{\sqrt\nu S_\theta(\mathbf{u},v)+\bm\epsilon}^2\right].
+ \label{eq:first-loss}
+\end{equation}
+The resulting full channel mean is
+\begin{equation}
+ F_\theta(R,v)=R+\frac v2
+       \left(S_{\theta,\Re}(R,v)+jS_{\theta,\Im}(R,v)\right).
+ \label{eq:learned-mean}
+\end{equation}
+All $M N^2$ complex coordinates are retained in this mapping.
+
+The second network $T_\psi(\mathbf{u},v)\in\mathbb{R}^{2D}$ is trained
+after freezing $S_\theta$. Define the scalar readout
+\begin{equation}
+ a_\psi(R,v)=1+\nu\frac{1}{2D}\sum_{i=1}^{2D}T_{\psi,i}(\mathbf{u},v),
+ \qquad \widehat\tau_\psi(R,v)=v a_\psi(R,v).
+ \label{eq:second-readout}
+\end{equation}
+With $\mathbf{b}=\sqrt\nu S_\theta+\bm\epsilon$, the global-average
+second-order training objective is
+\begin{align}
+ \mathcal{L}_2(\psi)
+ &=\E\left[\left\{
+ \frac{1}{2D}\sum_{i=1}^{2D}(\nu T_{\psi,i}-b_i^2+1)
+                            \right\}^2\right]\notag\\
+ &=\E\left[\left\{
+ a_\psi(R,v)-\frac{\norm{F_\theta(R,v)-H}_F^2}{Dv}
+                            \right\}^2\right].
+ \label{eq:second-loss}
+\end{align}
+The second equality follows from
+$F_{\theta,\mathbb R}-\mathbf{h}_{\mathbb R}=\sqrt\nu\mathbf{b}$ and
+$2D\nu=Dv$. It identifies the statistic learned by the network: at the
+function-space optimum, the scalar variance readout is
+\begin{equation}
+ \tau_\theta(R,v)=\frac{1}{D}\E[
+ \norm{F_\theta(R,v)-H}_F^2\mid R,v,\alpha=1].
+ \label{eq:conditional-risk}
+\end{equation}
+Writing $m(R,v)=\E[H\mid R,v,\alpha=1]$ and
+$\tau_{\rm C}=D^{-1}\E[\norm{H-m}_F^2\mid R,v,\alpha=1]$, conditional
+orthogonality gives
+\begin{equation}
+ \tau_\theta(R,v)=\tau_{\rm C}(R,v)
+             +\frac{\norm{F_\theta(R,v)-m(R,v)}_F^2}{D}.
+ \label{eq:risk-decomposition}
+\end{equation}
+Thus the learned error includes the approximation error of the deployed
+mean. When $F_\theta=m$, it reduces to the posterior covariance trace
+per complex coordinate. For $U=\norm{F_\theta-H}_F^2/(Dv)$, the loss
+decomposes as
+$\E[(a_\psi-\E[U\mid R,v,\alpha=1])^2]
++\E[\operatorname{Var}(U\mid R,v,\alpha=1)]$.
+Only the complete trace is supervised: any perturbation of $T_\psi$
+whose coordinates sum to zero leaves \eqref{eq:second-loss} unchanged.
+Accordingly, individual Hessian diagonal entries or per-antenna
+subtraces are not separately identified by this objective.
+
+For a receiver query $(\{R_k\},v)$, we compute
+$F_k=F_\theta(R_k,v)$ and $\widehat\tau_k=\widehat\tau_\psi(R_k,v)$,
+and use the common scalar
+\begin{equation}
+ \tau_{\rm raw}=\frac1K\sum_{k=1}^{K}\widehat\tau_k,\qquad
+ \tau=\max\{\tau_{\rm raw},\tau_{\min}\}.
+ \label{eq:pooled-variance}
+\end{equation}
+This averaging fits a common isotropic Gaussian around the fixed means
+$F_k$, giving equal weight to each terminal's active-conditional
+distribution. The conditional expected negative log density, up to a
+constant, is $KD\log\tau+(D/\tau)\sum_k\tau_\theta(R_k,v)$.
+Its derivative is $KD(\tau-K^{-1}\sum_k\tau_\theta)/\tau^2$; hence the
+positive-risk minimizer is the average conditional error. With the
+constraint $\tau\geq\tau_{\min}>0$, the minimizer is its maximum with
+the floor, also covering zero risk. Equation~\eqref{eq:pooled-variance}
+substitutes finite network readouts for these conditional risks.
+
+\subsection{Activity Detection by Density Ratio Estimation}
+
+The activity classifier compares queries generated by an active channel
+with queries containing only noise. Their densities under
+\eqref{eq:pseudo-awgn} are
+\begin{equation}
+ \begin{aligned}
+ q_{1,v}(R)&=\int\CN(\vect(R);\vect(H),v\I_D)q_{\rm tr}(dH),\\
+ q_{0,v}(R)&=\CN(\vect(R);\mathbf{0},v\I_D).
+ \end{aligned}
+ \label{eq:query-densities}
+\end{equation}
+Both classes use the same training distribution of $v$. With activity
+label $a\in\{0,1\}$ and training class prior $\pi_{\rm tr}=1/2$, the
+classifier logit $z_\phi(R,v,F_\theta(R,v))$ minimizes binary cross
+entropy (BCE):
+\begin{equation}
+ \mathcal{L}_{\rm act}(\phi)=\E[
+ \log(1+e^{z_\phi})-a z_\phi].
+ \label{eq:classifier-loss}
+\end{equation}
+The local posterior underlying these targets is proportional to
+$\rho^a(1-\rho)^{1-a}\CN(R;aH,v\I_D)q_{\rm tr}(dH)$, with normalizer
+$(1-\rho)q_{0,v}(R)+\rho q_{1,v}(R)$. This connects channel denoising
+and activity inference within the same surrogate query model.
+
+The channel mean network is frozen when its output is used as a feature.
+Writing $\eta_{\rm tr}=\Pr_{\rm tr}(a=1\mid R,v)$, the conditional BCE
+derivative is $\sigmoid(z)-\eta_{\rm tr}$ and its second derivative is
+positive. The common variance-sampling density cancels in the posterior
+odds. Thus, at the function-space optimum,
+\begin{equation}
+ z^*(R,v)=\logit\pi_{\rm tr}
+                       +\log\frac{q_{1,v}(R)}{q_{0,v}(R)}.
+ \label{eq:ideal-logit}
+\end{equation}
+This is the standard relationship between class-probability estimation
+and density ratio estimation \cite[Secs.~III--IV]{menon2016}.
+Keeping the complete $R$ in the input preserves the query information,
+while $F_\theta(R,v)$ provides a deterministic feature for the finite
+classifier. The BCE excess risk is the expected Kullback--Leibler (KL) divergence between
+the true and estimated training conditional Bernoulli laws. This
+population statement does not establish calibration of the finite
+classifier on actual iterative queries.
+
+The receiver corrects for the training class prior and incorporates the
+terminal access marginal once:
+\begin{equation}
+ \ell_k=z_\phi(R_k,v,F_k)-\logit\pi_{\rm tr},\qquad
+ p_k=\sigmoid(\logit\rho+\ell_k),
+ \label{eq:activity-probability}
+\end{equation}
+where $\logit a=\log[a/(1-a)]$ and
+$\sigmoid b=(1+e^{-b})^{-1}$. Under unchanged class-conditional query
+laws, changes in $\rho$ are handled by this explicit prior-odds correction.
+
+For implementation, the classifier receives the real and imaginary maps
+of $R$ and $F_\theta$, scaled by $\sqrt{2/(1+v)}$, together with
+\begin{equation}
+ \begin{aligned}
+ \Big(&\log v/5,\ \log(1+e_R),\ \log(1+e_F),\\
+      &\operatorname{sgn}(c_{RF})\log(1+|c_{RF}|),\
+       \log(1+e_{\rm res})\Big),
+ \end{aligned}
+ \label{eq:classifier-features}
+\end{equation}
+where $e_R=\norm{R}_F^2/(Dv)$,
+$e_F=\norm{F_\theta}_F^2/(Dv)$,
+$c_{RF}=\relu\langle R,F_\theta\rangle_F/(Dv)$, and
+$e_{\rm res}=\norm{R-F_\theta}_F^2/(Dv)$. The feature maps have $4M$
+channels. Three convolutional blocks with widths $64$, $128$, and $128$
+are conditioned on $\log v/5$; a scalar readout produces $z_\phi$.
+
+\subsection{Conditional Gaussian Messages and Joint Moments}
+
+For each terminal we retain a Gaussian site with mean $E_k$ and scalar
+variance $c_k$. When the query variance is within the trained range and
+$0<\tau<v$, Gaussian division gives the updated site
+\begin{equation}
+ c_k=(\tau^{-1}-v^{-1})^{-1},\qquad
+ E_k=c_k\left(\frac{F_k}{\tau}-\frac{R_k}{v}\right).
+ \label{eq:site-update}
+\end{equation}
+The inequality makes the site precision positive; it is an acceptance
+condition, not a general pointwise bound on the exact posterior variance.
+For finite valid queries, an unsupported variance or $\tau\geq v$
+retains the previous site. Invalid covariance or nonfinite network output
+is reported as a failed run. Combining the available site with the
+current query produces active-channel moments
+\begin{equation}
+ t_k=\frac{c_kv}{c_k+v},\qquad
+ \mu_k=\frac{c_kR_k+vE_k}{c_k+v}.
+ \label{eq:conditional-moments}
+\end{equation}
+An accepted update satisfies $\mu_k=F_k$ and $t_k=\tau$.
+Within the trained range, activity detection in
+\eqref{eq:activity-probability} uses the current $R_k,v,F_k$ whether
+the site is updated or retained.
+
+Outside that range, activity is computed from the normalized Gaussian
+site densities:
+\begin{align}
+ \ell_k^{\rm G}
+ &=\frac{\norm{R_k}_F^2}{v}
+   -\frac{\norm{R_k-E_k}_F^2}{c_k+v}
+   -D\log\!\left(1+\frac{c_k}{v}\right),
+ \label{eq:gaussian-evidence}\\
+ p_k&=\sigmoid(\logit\rho+\ell_k^{\rm G}).\notag
+\end{align}
+This follows by integrating the product
+$\CN(R;H,v\I_D)\CN(H;E_k,c_k\I_D)$, which yields
+$\CN(R;E_k,(v+c_k)\I_D)$, and dividing by the inactive density.
+It is also the analytical activity rule used in the Gaussian-evidence
+ablation \cite[Sec.~III-B2]{cai2026}. Since the site parameters depend
+on the queries, this exact Gaussian integral is not an exact evidence
+identity for the original physical prior.
+
+The activity probability and conditional Gaussian moments define the
+terminal approximation
+\begin{equation}
+ \widetilde q_k(dX_k)=(1-p_k)\delta_0(dX_k)
+             +p_k\CN(\vect(X_k);\vect(\mu_k),t_k\I_D)\,dX_k.
+ \label{eq:mixture}
+\end{equation}
+Consequently, the joint mean is $\widehat X_k=p_k\mu_k$. Let
+$\mathbf{U}_k\in\mathbb{C}^{M\times N^2}$ be the spatial unfolding of
+$\mu_k$. The spatial covariance averaged over the $N^2$ channel columns
+is
+\begin{equation}
+ \mathbf{C}_{X,k}=p_kt_k\I_M
+              +\frac{p_k(1-p_k)}{N^2}\mathbf{U}_k\mathbf{U}_k^{\mathsf H}.
+ \label{eq:joint-spatial-covariance}
+\end{equation}
+These moments follow from total expectation and total covariance under
+\eqref{eq:mixture}. The first term describes active-channel uncertainty,
+and the second accounts for uncertainty in terminal activity. The finite
+classifier and channel networks define the selected approximation; they
+are not asserted to be the exact posterior moments of one fixed
+generative prior. The common variance sent to the linear module is the
+average trace
+\begin{equation}
+ \overline t_X=\frac{1}{KM}\sum_{k=1}^{K}\tr\mathbf{C}_{X,k}
+ =\frac1K\sum_{k=1}^{K}\left[
+ p_kt_k+p_k(1-p_k)\frac{\norm{\mu_k}_F^2}{D}\right].
+ \label{eq:joint-average-variance}
+\end{equation}
+Define $b=\clip(\overline t_X/v,\varepsilon,1-\varepsilon)$. The outgoing
+Gaussian message is
+\begin{equation}
+ \gamma_{\rm out}=\frac{vb}{1-b},\qquad
+ X_{k,\rm out}=\frac{\widehat X_k-bR_k}{1-b}.
+ \label{eq:nonlinear-extrinsic}
+\end{equation}
+The clipping keeps the outgoing precision positive and finite.
+Equation~\eqref{eq:nonlinear-extrinsic} divides the adjusted Gaussian
+with mean $\widehat X$ and variance $bv$ by the incoming Gaussian;
+when clipping is active, $bv$ differs from the raw mixture variance.
+
+\subsection{Iteration Schedule and Implementation}
+\label{sec:schedule}
+
+Initialize the linear prior mean at zero and set
+$\gamma^{(0)}=\rho\widehat P_H$, where
+$\widehat P_H$ is the training average of $\norm{H}_F^2/D$.
+Initialize $E_k=0$, $c_k=1$, and an activity history $w_k=\rho$.
+At iteration $i$, the linear module first computes
+$(R_{{\rm L},k}^{(i)},v_{\rm L}^{(i)})$. From the second iteration onward,
+the nonlinear query is damped as
+\begin{equation}
+ R_k^{(i)}=(1-\eta)R_k^{(i-1)}+\eta R_{{\rm L},k}^{(i)},\qquad
+ v^{(i)}=(1-\eta)v^{(i-1)}+\eta v_{\rm L}^{(i)}.
+ \label{eq:input-damping}
+\end{equation}
+After nonlinear estimation, the outgoing parameters are damped similarly:
+\begin{equation}
+ X_k^{{\rm pri},(i)}=(1-\eta)X_k^{{\rm pri},(i-1)}+\eta X_{k,\rm out}^{(i)},
+ \qquad
+ \gamma^{(i)}=(1-\eta)\gamma^{(i-1)}+\eta\gamma_{\rm out}^{(i)}.
+ \label{eq:output-damping}
+\end{equation}
+Both first updates are used directly. This is arithmetic damping of the
+message means and variances \cite[Sec.~V-B1]{cai2026}.
+
+The stopping rule checks
+$\norm{\widehat X^{(i)}-\widehat X^{(i-1)}}_F/
+\max(\norm{\widehat X^{(i)}}_F,\norm{\widehat X^{(i-1)}}_F,10^{-12})$,
+$\max_k|p_k^{(i)}-p_k^{(i-1)}|$, and
+$|v^{(i)}-v^{(i-1)}|/\max(v^{(i)},v^{(i-1)})$.
+Each must remain below a tolerance for a fixed number of iterations.
+It also checks that the site update is accepted and that its precision
+$\lambda_k=c_k^{-1}$, natural parameter $J_k=E_k/c_k$, and activity
+history have stabilized. Specifically,
+\begin{align}
+ d_{\lambda,k}^{(i)}&=
+ \frac{|\lambda_k^{(i)}-\lambda_k^{(i-1)}|}
+      {\max(\lambda_k^{(i)},\lambda_k^{(i-1)})},\notag\\
+ d_{J,k}^{(i)}&=
+ \frac{\norm{J_k^{(i)}-J_k^{(i-1)}}}
+      {\max(1,\norm{J_k^{(i)}},\norm{J_k^{(i-1)}})},\notag\\
+ \max_k\{d_{\lambda,k}^{(i)},d_{J,k}^{(i)},
+         |p_k^{(i)}-w_k^{(i-1)}|\}&<\epsilon_{\rm stop},
+ \label{eq:site-stopping}
+\end{align}
+with $w_k^{(i)}=0.8w_k^{(i-1)}+0.2p_k^{(i)}$. The activity history is
+used only for this check; the reported probabilities are $p_k^{(i)}$.
+The two consecutive-iteration counters reset separately when their
+respective conditions fail. The primary channel output is the
+activity-weighted $\widehat X_k=p_k\mu_k$; the conditional estimate
+$\mu_k$ is also retained, along with the decision in \eqref{eq:targets}.
+Numerical stopping is not a global convergence guarantee.
+
+\begin{center}
+\begin{minipage}{0.95\linewidth}
+\hrule\vspace{5pt}
+\textbf{Algorithm 1: Channel and activity estimation}\par
+\textbf{Input:} $\mathbf{Y},\mathbf{A},\sigma^2,\rho$ and trained networks
+$S_\theta,T_\psi,z_\phi$.\par
+\begin{enumerate}[leftmargin=1.8em,itemsep=2pt,topsep=4pt]
+ \item Normalize by the fixed scale and initialize the prior and sites.
+ Compute the thin SVD of $\mathbf{A}$.
+ \item Compute the linear Gaussian mean, variance, and extrinsic query
+ using \eqref{eq:linear-mean}--\eqref{eq:linear-extrinsic}; apply
+ \eqref{eq:input-damping}.
+ \item If $v$ is supported, query the mean and second networks once for
+ each terminal, pool the variance by \eqref{eq:pooled-variance}, and
+ update the sites by \eqref{eq:site-update} when $0<\tau<v$.
+ Compute $p_k$ using the current classifier query
+ \eqref{eq:activity-probability}. If $v$ is unsupported, retain the
+ sites and use \eqref{eq:gaussian-evidence}.
+ \item Form conditional moments, joint means, and spatial covariances
+ using \eqref{eq:conditional-moments}--\eqref{eq:joint-spatial-covariance}.
+ Compute and damp the outgoing message using
+ \eqref{eq:joint-average-variance}--\eqref{eq:nonlinear-extrinsic} and
+ \eqref{eq:output-damping}.
+ \item Update the stopping statistics and activity history. Repeat
+ steps 2--5 until the stopping rule or iteration limit is reached.
+ \item Return $\widehat X_k^{\rm phys}=s\widehat X_k$, the conditional
+ channel estimate $s\mu_k$, activity probabilities, decisions, and the
+ stopping status. Rescale covariance outputs by $s^2$.
+\end{enumerate}
+\vspace{3pt}\hrule
+\end{minipage}
+\end{center}
+
+The current implementation uses $M=16$, $N=16$, and $D=4096$.
+The training bank contains 50,000 candidate channels from 12,500 scenes,
+with four candidates per scene; validation uses 5,000 channels from
+1,250 separate scenes. Query variances are sampled uniformly in $\log v$
+over $[10^{-3},100]$. Active and inactive classifier queries share each
+sampled variance and use independent Gaussian noise realizations.
+The two channel networks pack the $M$ real and imaginary antenna maps
+into $2M$ feature channels and use continuous log-variance conditioning.
+Their base channel width is 128. The first network is frozen before
+training the second network and classifier.
+
+The fixed scale is $s=0.2647966453$, and the measured normalized training
+power is $\widehat P_H=1.0004404181$. We use $\tau_{\min}=10^{-4}$,
+$\varepsilon=10^{-6}$, $\eta=0.1$, and
+$\epsilon_{\rm stop}=10^{-4}$. At least 60 iterations are performed;
+both stopping checks must hold for ten consecutive iterations, with a
+maximum of 600 iterations. A run reaching this maximum returns its
+final estimate with an iteration-limit status.
+
+With $Q\leq KN$, the one-time thin SVD costs $O(KNQ^2)$. Including the
+implemented spatial transformations and small-matrix decompositions, one
+supported iteration costs
+$O(QKMN^2+KM^2N^2+M^3+K(C_\theta+C_\psi+C_\phi))$,
+where the three $C$ terms are the per-terminal network forward costs.
+Each network is evaluated once per terminal and iteration; the channel
+mean is reused by the classifier. The Gaussian-evidence ablation omits
+$C_\phi$, and unsupported queries omit all network forwards.
+Excluding network parameters and activation storage, the main memory cost
+is $O(QKN+KMN^2+KM^2)$. The present weights support the fixed
+$M=N=16$ tensor size.
+
+\begin{thebibliography}{8}
+\bibitem{li2023}
+K.-X. Li, X. Gao, and X.-G. Xia,
+``Channel estimation for LEO satellite massive MIMO OFDM communications,''
+\emph{IEEE Transactions on Wireless Communications}, 2023,
+doi: \href{https://doi.org/10.1109/TWC.2023.3252895}{10.1109/TWC.2023.3252895}.
+Author version: \url{https://arxiv.org/abs/2207.11958}.
+
+\bibitem{huang2026}
+Y. Huang, Y. Guo, C. Guo, Y. Wang, and X. Guo,
+``Prior-agnostic AFDM channel estimation for high-mobility LEO satellite
+communications using diffusion models,''
+\emph{IEEE Wireless Communications Letters}, vol.~15,
+pp.~2949--2952, 2026,
+doi: \href{https://doi.org/10.1109/LWC.2026.3689601}{10.1109/LWC.2026.3689601}.
+
+\bibitem{bemani2022}
+A. Bemani, N. Ksairi, and M. Kountouris,
+``Affine frequency division multiplexing for next generation wireless
+communications,'' arXiv:2204.12798v2, 2022.
+\url{https://arxiv.org/abs/2204.12798v2}.
+
+\bibitem{cai2026}
+C. Cai, W. Jiang, X. Yuan, and Y.-J. A. Zhang,
+``Joint activity detection and channel estimation for massive connectivity:
+Where message passing meets score-based generative priors,''
+\emph{IEEE Journal on Selected Areas in Communications}, vol.~44, 2026,
+doi: \href{https://doi.org/10.1109/JSAC.2026.3663274}{10.1109/JSAC.2026.3663274}.
+Author version: \url{https://arxiv.org/abs/2506.00581}.
+
+\bibitem{minka2001}
+T. P. Minka, ``Expectation propagation for approximate Bayesian inference,''
+in \emph{Proceedings of the Seventeenth Conference on Uncertainty in
+Artificial Intelligence}, pp.~362--369, 2001.
+\url{https://tminka.github.io/papers/ep/minka-ep-uai.pdf}.
+
+\bibitem{efron2011}
+B. Efron, ``Tweedie's formula and selection bias,''
+\emph{Journal of the American Statistical Association},
+vol.~106, no.~496, pp.~1602--1614, 2011,
+doi: \href{https://doi.org/10.1198/jasa.2011.tm11181}{10.1198/jasa.2011.tm11181}.
+
+\bibitem{vincent2011}
+P. Vincent, ``A connection between score matching and denoising autoencoders,''
+\emph{Neural Computation}, vol.~23, no.~7, pp.~1661--1674, 2011,
+doi: \href{https://doi.org/10.1162/NECO_a_00142}{10.1162/NECO\_a\_00142}.
+
+\bibitem{menon2016}
+A. Menon and C. S. Ong,
+``Linking losses for density ratio and class-probability estimation,''
+in \emph{Proceedings of the 33rd International Conference on Machine Learning},
+vol.~48, pp.~304--313, 2016.
+\url{https://proceedings.mlr.press/v48/menon16.html}.
+\end{thebibliography}
+\end{document}

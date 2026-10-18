@@ -1,0 +1,93 @@
+{
+  "status": "SELECTED_BEFORE_NEW_SCENES",
+  "selected": "output_rank_one",
+  "results": [
+    {
+      "method": "original",
+      "snr_db": -4,
+      "nmse_db": -3.046591321486098,
+      "mean_seconds": 11.656494333496084
+    },
+    {
+      "method": "original",
+      "snr_db": 0,
+      "nmse_db": -5.581335744316931,
+      "mean_seconds": 11.588092500001949
+    },
+    {
+      "method": "original",
+      "snr_db": 6,
+      "nmse_db": -8.509690707702703,
+      "mean_seconds": 11.647648479498457
+    },
+    {
+      "method": "output_rank_one",
+      "snr_db": -4,
+      "nmse_db": -4.819107842947315,
+      "mean_seconds": 11.660851062493748
+    },
+    {
+      "method": "output_rank_one",
+      "snr_db": 0,
+      "nmse_db": -7.296283403012119,
+      "mean_seconds": 11.5922091665052
+    },
+    {
+      "method": "output_rank_one",
+      "snr_db": 6,
+      "nmse_db": -10.542962573500143,
+      "mean_seconds": 11.652376542006095
+    },
+    {
+      "method": "recurrent_rank_one",
+      "snr_db": -4,
+      "nmse_db": -4.537354077644161,
+      "mean_seconds": 21.94976041699556
+    },
+    {
+      "method": "recurrent_rank_one",
+      "snr_db": 0,
+      "nmse_db": -6.4275161603963795,
+      "mean_seconds": 21.91218033349287
+    },
+    {
+      "method": "recurrent_rank_one",
+      "snr_db": 6,
+      "nmse_db": -10.542089414313526,
+      "mean_seconds": 22.08441741650313
+    },
+    {
+      "method": "recurrent_rank_one_direct2",
+      "snr_db": -4,
+      "nmse_db": -5.012235630705294,
+      "mean_seconds": 55.28102531300101
+    },
+    {
+      "method": "recurrent_rank_one_direct2",
+      "snr_db": 0,
+      "nmse_db": -7.631834971239967,
+      "mean_seconds": 54.85279600000649
+    },
+    {
+      "method": "recurrent_rank_one_direct2",
+      "snr_db": 6,
+      "nmse_db": -11.107316305761328,
+      "mean_seconds": 55.54106039600447
+    }
+  ],
+  "reason": "Estimated-only final TSVD improves full-channel NMSE by 1.71\u20132.03 dB on six reused conditions with negligible added computation. Direct-correction recurrent TSVD improves some cases further but costs about 4.7 times the base runtime; retain it as development evidence, not selected validation receiver.",
+  "activity_rule": "Projected channel energy; one threshold calibrated on eight old scenes, minimum errors/largest threshold on ties. Keep original decision as separate control.",
+  "independent_validation": false,
+  "source_sha256": {
+    "experiments/ldamp_structure_20261015/test_structure.py": "622aa33fdad0aeca7f78a1c96f7e084f37a606c148e0c59361149dcc5c53733a",
+    "experiments/ldamp_structure_20261015/test_receiver.py": "c9b1fa718edc3397e9ee836fa89f3db6d8eea4ffcb41ea70ba37ec7c7554d076",
+    "experiments/ldamp_structure_20261015/audit_seeds.py": "b7f32fe4a80721eb24aa5bdbf08f8ac561cd6cd2e003a8c1b40e6b5925a4d0d9",
+    "experiments/ldamp_structure_20261015/develop_direct.py": "fb6bd991b4305a21e5935c81cc86cb95230c5c2825265550c00bdb20c1b9e2c0",
+    "experiments/ldamp_structure_20261015/structured_receiver.py": "e777671259afd9f5d1ba4982775811a2933954a84a74f5c4a16bd89feed09445",
+    "experiments/ldamp_structure_20261015/structure.py": "40011c7fa6e63221e41b5f890535fbe639ca6296dfea64a2d6f7a50fe7a14097",
+    "experiments/ldamp_structure_20261015/evaluate.py": "05288050cd87982b6e856ac8dc8e24240cc22975675b0fe82104161478cd5277",
+    "experiments/ldamp_structure_20261015/develop.py": "066cde59f23cbf40779ed0aab6f7a0939c7501c8426f6c83519f305c2a32beed",
+    "experiments/ldamp_structure_20261015/report.py": "cfcea2651d45ca33582aa0faf5084732fb5e0761e77c8a2cf833d863cfc6c205"
+  },
+  "development_snapshot_note": "One additional derivative composition test was appended after the development PLAN was written; inference files remained unchanged. All four final tests passed."
+}

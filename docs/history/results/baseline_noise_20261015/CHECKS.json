@@ -1,0 +1,50 @@
+{
+  "status": "PASS_NUMERICAL_AND_INFORMATION_BOUNDARY",
+  "tests": {
+    "passed": 67,
+    "warnings": 69,
+    "log": "tests.log"
+  },
+  "full_entry_outputs": 15,
+  "paired_outputs": 60,
+  "real_cli_outputs": 1,
+  "failure_count": 0,
+  "invariant_outputs_all_five": true,
+  "full_vs_conditional_exact_all_five": true,
+  "cli_exact": true,
+  "ldamp_native_arrays_exact_known_vs_estimated_all_six": true,
+  "verified_output_identities": 75,
+  "assets": {
+    "proposed": "PASS",
+    "somp": "PASS",
+    "gamp": "PASS",
+    "gnn": "PASS",
+    "offgrid_sbl": "PASS",
+    "ldamp": "PASS"
+  },
+  "changed_existing_registered_sources": [
+    "src/afdm_jadcedd/experiment/run.py",
+    "src/afdm_jadcedd/algorithm/unknown_phase_baselines.py"
+  ],
+  "added_registered_sources": [
+    "configs/baseline_noise.json",
+    "src/afdm_jadcedd/algorithm/baseline_noise.py",
+    "src/afdm_jadcedd/algorithm/noise_estimation.py",
+    "src/afdm_jadcedd/algorithm/offgrid_noise.py"
+  ],
+  "original_native_kernel_checkpoint_and_readout_identity_preserved": true,
+  "gamp_noise_quality": "Severe underestimation on this development panel; see GAMP_DIAGNOSTIC.json and SUMMARY.json",
+  "warnings": {
+    "divide by zero encountered in matmul": 43987,
+    "overflow encountered in matmul": 43987,
+    "invalid value encountered in matmul": 43987
+  },
+  "warning_scope": "All warnings saved; existing bounded-input Accelerate diagnosis does not certify every intermediate",
+  "interrupted_cpu_attempt": "CPU_ATTEMPT.json",
+  "startup_logs": [
+    "startup_import_failure.log",
+    "RESUME_STARTUP.log"
+  ],
+  "test_correction": "Historical Proposed test pointed to current damping 0.2 instead of saved figure damping 0.1; now checks historical configuration and separately asserts recorded default selection.",
+  "primary_scope": "Numerical and integration verification on two previously observed physical scenes; not independent performance validation"
+}

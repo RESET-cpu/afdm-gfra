@@ -1,0 +1,66 @@
+{
+  "status": "LAUNCHED",
+  "checked_unix": 1791476933.731773,
+  "receiver_process_id": 24832,
+  "planned": 1200,
+  "snr_db_values": [
+    -4,
+    -2,
+    0,
+    2,
+    4,
+    6
+  ],
+  "trials_per_point": 100,
+  "grid_modes": [
+    "off_grid",
+    "on_grid"
+  ],
+  "tests_passed": 115,
+  "native_equivalence_cases_passed": 4,
+  "observed_completed": 4,
+  "observed_failed": 0,
+  "model_load_count": 1,
+  "observed_cases": [
+    {
+      "case": "off_grid/point00/scene00000",
+      "snr_db": -4,
+      "grid_mode": "off_grid",
+      "seed": 202610090100001,
+      "iterations": 106,
+      "seconds": 15.59776445897296,
+      "misses": 0,
+      "false_alarms": 0
+    },
+    {
+      "case": "off_grid/point01/scene00000",
+      "snr_db": -2,
+      "grid_mode": "off_grid",
+      "seed": 202610090100001,
+      "iterations": 111,
+      "seconds": 15.99895800021477,
+      "misses": 0,
+      "false_alarms": 0
+    },
+    {
+      "case": "on_grid/point00/scene00000",
+      "snr_db": -4,
+      "grid_mode": "on_grid",
+      "seed": 202610090100001,
+      "iterations": 192,
+      "seconds": 27.68596425000578,
+      "misses": 0,
+      "false_alarms": 0
+    },
+    {
+      "case": "on_grid/point01/scene00000",
+      "snr_db": -2,
+      "grid_mode": "on_grid",
+      "seed": 202610090100001,
+      "iterations": 173,
+      "seconds": 24.88303183298558,
+      "misses": 0,
+      "false_alarms": 0
+    }
+  ]
+}

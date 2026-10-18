@@ -1,0 +1,40 @@
+{
+  "date": "2026-09-28",
+  "review_type": "targeted narrative literature review",
+  "scope": "Known cross-frame phase; unknown UPA direction; common AFDM matrix; Cai-style score message passing",
+  "prior_local_reviews": [
+    "references/MULTIANTENNA_SCORE_SOURCES_20260924.md",
+    "references/upa_inference_review_20260926/README.md",
+    "references/direction_stability_20260927/SOURCES.md"
+  ],
+  "retrieval_method": "Web search followed by primary author HTML, publisher method text, and author-linked public source inspection",
+  "exact_final_supplementary_queries": [
+    "\"joint activity\" \"angle\" \"score\" channel estimation",
+    "\"off-grid\" \"VAMP\" \"channel estimation\"",
+    "\"AFDM\" \"angle\" \"message passing\" joint activity detection",
+    "\"LEO\" \"common\" \"channel\" \"angle\" \"iterative\" estimation",
+    "\"Diffusion-Enhanced Multidimensional Variational Line Spectral Estimation\" \"3.3\"",
+    "\"A Generalized VAMP-Based Channel Estimator\" \"ieeexplore\""
+  ],
+  "earlier_retrieval_topics_not_a_verbatim_query_log": [
+    "Cai score TMP paper and official implementation",
+    "off-grid two-dimensional Bayesian channel estimation",
+    "BAd-VAMP likelihood-parameter learning",
+    "MVALSE / MDVALSE / MVALSE-EP",
+    "MNOMP cyclic refinement",
+    "LEO common spatial response and two-stage estimation",
+    "Off-Grid-MS hybrid message passing"
+  ],
+  "inclusion": "Primary method text addresses direction-channel iteration, extrinsic interface, or directly relevant model assumptions; distinguish access depth.",
+  "exclusion": "Secondary summaries as evidence; unrelated beamforming/synchronization; application abstracts without method access as support for detailed formula claims.",
+  "included_papers": 11,
+  "primary_method_html": 10,
+  "publisher_indexed_method_excerpts": 1,
+  "official_code_snapshots": 1,
+  "access_limits": [
+    "R11 publisher direct open unavailable; indexed publisher method excerpts used with partial-access label",
+    "GitHub API rate limit; commit resolved using public git ls-remote, raw source retrieved by commit",
+    "No receiver experiment or literature-performance replication conducted"
+  ],
+  "coverage_limit": "Not exhaustive or systematic; no novelty claim based on absence in these results; supplementary search results are not automatically included."
+}

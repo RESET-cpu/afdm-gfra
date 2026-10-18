@@ -1,0 +1,35 @@
+{
+  "status": "PASS_BOUNDED_VALIDATION",
+  "tests": {
+    "passed": 69,
+    "warnings": 72,
+    "log": "tests.log"
+  },
+  "diagnostic_new_runs": 4,
+  "regression_outputs": 6,
+  "fresh_outputs": 12,
+  "full_entry_outputs": 3,
+  "verified_output_identities": 21,
+  "all_saved_arrays_finite": true,
+  "supplied_noise_field_invariance_exact": true,
+  "full_vs_conditional_exact": true,
+  "prior_bound_satisfied": true,
+  "final_noise_relative_change_range": [
+    4.254403587200528e-07,
+    4.119764683085947e-05
+  ],
+  "source_changes": [
+    "src/afdm_jadcedd/algorithm/baseline_noise.py",
+    "configs/baseline_noise.json"
+  ],
+  "original_kernel_weights_dictionary_thresholds_unchanged": true,
+  "assets": {
+    "proposed": "PASS",
+    "somp": "PASS",
+    "gamp": "PASS",
+    "gnn": "PASS",
+    "offgrid_sbl": "PASS",
+    "ldamp": "PASS"
+  },
+  "scope": "Six old conditions and six conditions from two new physical scenes; not a universal bias or convergence guarantee"
+}

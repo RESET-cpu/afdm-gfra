@@ -1,0 +1,93 @@
+{
+  "status": "PASS",
+  "checkpoint": "/Users/wangbo/Desktop/科研/JADCEDD/runs/joint_amp_20261015/from_scratch_v1/best.pt",
+  "checkpoint_sha256": "2a84809c44b3f4d675199969c1307df5bc5b523edeb8324b617802227a180dff",
+  "step": 63000,
+  "validation_bank_indices": [
+    701,
+    1701,
+    2701
+  ],
+  "complex_variances": [
+    [
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0
+    ],
+    [
+      0.009999999776482582,
+      0.018478497862815857,
+      0.03414548933506012,
+      0.06309573352336884,
+      0.1165914386510849,
+      0.2154434621334076,
+      0.3981071710586548,
+      0.7356422543525696,
+      1.35935640335083,
+      2.5118863582611084,
+      4.6415886878967285,
+      8.576958656311035,
+      15.848932266235352,
+      29.28644561767578,
+      54.11695098876953,
+      100.0
+    ],
+    [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ]
+  ],
+  "checks": {
+    "sample_independence_max_error": 5.7220458984375e-06,
+    "jvp_finite_difference_relative_error": 7.441176028159896e-10,
+    "product_rule_relative_error": 0.0,
+    "probability_chain_term_relative_norm": 5.1348640892078445e-05,
+    "cross_beam_response_relative_norm": 0.47459440707648815,
+    "score_identity_max_error": 2.6400593950565154e-15,
+    "phase_mean_relative_error_descriptive": 0.15706265405197717,
+    "phase_probability_max_error_descriptive": 7.271093212295188e-06,
+    "conditional_mean_logratio_gradient_relative_errors_descriptive": [
+      1.2678969858207176,
+      1.3071937281001584,
+      0.9896255332576355
+    ],
+    "source_hashes_match": {
+      "src/afdm_jadcedd/algorithm/joint_amp/training.py": true,
+      "src/afdm_jadcedd/algorithm/joint_amp/network.py": true,
+      "scripts/train_joint_amp.py": true,
+      "src/afdm_jadcedd/algorithm/ldamp/representation.py": true,
+      "experiments/joint_amp_20261015/training/METHOD.md": true,
+      "experiments/joint_amp_20261015/training/smoke.py": true
+    },
+    "cpu_mps_mean_relative_error": 1.3218226513345144e-06,
+    "cpu_mps_jvp_relative_error": 1.976974772333051e-06
+  },
+  "note": "Phase-equivariance and off-diagonal response are descriptive, not checkpoint selection criteria"
+}

@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "inference_sha256": "bc73719423b7c32e2a5511a4a4642a6500e4b6c4a45e5037060b3b0131a0377d",
+  "configuration": "configs/ldamp_output_tsvd.json",
+  "configuration_sha256": "970bbc731447586c1a3f35adf1978b638e8130a240e7a818ca496e5131344938",
+  "entry": "scripts/run_ldamp_structure.py",
+  "runner_sha256": "bf7cb07cee292504eae38efd63f164c5561a83e1169f813e1e732c81cebe11ca",
+  "default_activity_rule": "original",
+  "replays": [
+    {
+      "mode": "original",
+      "checks": [
+        {
+          "array": "estimate",
+          "bitwise_equal": true
+        },
+        {
+          "array": "channel_energy",
+          "bitwise_equal": true
+        },
+        {
+          "array": "activity_score",
+          "bitwise_equal": true
+        },
+        {
+          "array": "activity_decision",
+          "bitwise_equal": true
+        }
+      ],
+      "output_sha256": "0aaddadea35ffbab0c06fff641660dd5e9f9b1973db96831dd08600b4ad765eb",
+      "reference_sha256": "0aaddadea35ffbab0c06fff641660dd5e9f9b1973db96831dd08600b4ad765eb",
+      "runner_sha256": "bf7cb07cee292504eae38efd63f164c5561a83e1169f813e1e732c81cebe11ca"
+    },
+    {
+      "mode": "calibrated",
+      "checks": [
+        {
+          "array": "estimate",
+          "bitwise_equal": true
+        },
+        {
+          "array": "channel_energy",
+          "bitwise_equal": true
+        },
+        {
+          "array": "activity_score",
+          "bitwise_equal": true
+        },
+        {
+          "array": "activity_decision",
+          "bitwise_equal": true
+        }
+      ],
+      "output_sha256": "40ea67a7156dba66742bbcbdcfba20f579163d7381438a2dc194010bb561fe55",
+      "reference_sha256": "40ea67a7156dba66742bbcbdcfba20f579163d7381438a2dc194010bb561fe55",
+      "runner_sha256": "bf7cb07cee292504eae38efd63f164c5561a83e1169f813e1e732c81cebe11ca"
+    }
+  ],
+  "mainline_status": {
+    "proposed": "PASS",
+    "somp": "PASS",
+    "gamp": "PASS",
+    "gnn": "PASS",
+    "offgrid_sbl": "PASS",
+    "ldamp": "PASS"
+  },
+  "previous_joint_candidate_identity": "bd96af6217fb60c4e490b62a6c044a766b58f18f97c65fb61889c7f0391609b1",
+  "reference_default_unchanged": true
+}

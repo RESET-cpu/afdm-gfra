@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "source_files_verified": 90,
+  "stages": {
+    "first": {
+      "epochs": 360,
+      "selected_epoch": 360,
+      "stopping_reason": "MAXIMUM_TRAINING_BUDGET",
+      "weight_sha256": "ae948f8fbed0ed836db47961e8a883f33aaefe9e067061db3bc83a95b1044055",
+      "validation_loss": 0.30116885600090026
+    },
+    "second": {
+      "epochs": 100,
+      "selected_epoch": 99,
+      "stopping_reason": "MAXIMUM_TRAINING_BUDGET",
+      "weight_sha256": "86fc003a853d25bd5726adae76f31506c03d0ed9a469a624db9191ade572d9c4",
+      "validation_loss": 0.0013254090328235178
+    },
+    "activity": {
+      "epochs": 57,
+      "selected_epoch": 42,
+      "stopping_reason": "VALIDATION_PLATEAU",
+      "weight_sha256": "39ab3f62e70cbcab9052b6ad6496ad7db1de72cef73ee3cebfab2d86236a25d4",
+      "validation_loss": 0.015216424337448973
+    }
+  },
+  "first_total_epochs": 400,
+  "checkpoint_pairing_verified": true,
+  "frozen_full_control_verified": true,
+  "expected_closed_loop_records": 144,
+  "closed_loop_records_recomputed": 144,
+  "failures": [],
+  "awgn_records_verified": 21,
+  "maximum_direction_projection_residual": 7.108895957933346e-16,
+  "scope": "All closed-loop metrics recomputed from predictions; AWGN activity and aggregate metrics cross-checked. Not an independent replication of all AWGN network calls."
+}

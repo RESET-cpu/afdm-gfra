@@ -1,0 +1,139 @@
+{
+  "status": "COMPLETE",
+  "scope": "First ten original scenes, SNR 0 dB; exploratory paired subset, not a fresh independent confirmation",
+  "methods": {
+    "offgrid120": {
+      "scenes": 10,
+      "decisions": 400,
+      "active": 33,
+      "misses": 3,
+      "false_alarms": 0,
+      "aer": 0.0075,
+      "full_error": 1271.0049338734952,
+      "signal_energy": 8293.379625365507,
+      "nmse_db": -8.145843090220493,
+      "active_error": 989.4818435408259,
+      "inactive_error": 281.5230903326692,
+      "mean_iterations": 120.0,
+      "min_iterations": 120,
+      "max_iterations": 120,
+      "stopping_counts": {
+        "MAX_ITERATIONS": 10
+      },
+      "mean_recorded_receiver_seconds": 2.029881708396715
+    },
+    "offgrid600": {
+      "scenes": 10,
+      "decisions": 400,
+      "active": 33,
+      "misses": 3,
+      "false_alarms": 0,
+      "aer": 0.0075,
+      "full_error": 1247.5261071092202,
+      "signal_energy": 8293.379625365507,
+      "nmse_db": -8.226819025366835,
+      "active_error": 976.1173545823531,
+      "inactive_error": 271.4087525268672,
+      "mean_iterations": 409.2,
+      "min_iterations": 256,
+      "max_iterations": 600,
+      "stopping_counts": {
+        "HYPERPARAMETER_CHANGE": 9,
+        "MAX_ITERATIONS": 1
+      },
+      "mean_recorded_receiver_seconds": 2.435095208202256
+    },
+    "proposed": {
+      "scenes": 10,
+      "decisions": 400,
+      "active": 33,
+      "misses": 1,
+      "false_alarms": 0,
+      "aer": 0.0025,
+      "full_error": 476.03993769655324,
+      "signal_energy": 8293.379625365507,
+      "nmse_db": -12.410881557713012,
+      "active_error": 476.02949310019744,
+      "inactive_error": 0.010444596355775385,
+      "mean_iterations": 74.4,
+      "min_iterations": 61,
+      "max_iterations": 103,
+      "stopping_counts": {
+        "CONVERGED": 10
+      },
+      "mean_recorded_receiver_seconds": 14.90829386630212
+    }
+  },
+  "comparison": {
+    "offgrid_improvement_db": 0.08097593514634127,
+    "proposed_advantage_db": 4.184062532346177,
+    "offgrid_improved_scenes": 9,
+    "proposed_better_scenes": 10,
+    "offgrid_activity_decisions_changed": 0
+  },
+  "unique_new_results": 10,
+  "total_supplemental_solver_calls": 11,
+  "extra_call_reason": "One postprocessing failure at scene006; see REPAIR.json",
+  "reused_results": 20,
+  "reused_phase_estimates": 10,
+  "protected_files_unchanged": 205,
+  "reused_source_files_unchanged": 110,
+  "checks": [
+    {
+      "scene": 0,
+      "native_full_output_rescoring_exact": true,
+      "trace_prefix_exact": true
+    },
+    {
+      "scene": 1,
+      "native_full_output_rescoring_exact": true,
+      "trace_prefix_exact": true
+    },
+    {
+      "scene": 2,
+      "native_full_output_rescoring_exact": true,
+      "trace_prefix_exact": true
+    },
+    {
+      "scene": 3,
+      "native_full_output_rescoring_exact": true,
+      "trace_prefix_exact": true
+    },
+    {
+      "scene": 4,
+      "native_full_output_rescoring_exact": true,
+      "trace_prefix_exact": true
+    },
+    {
+      "scene": 5,
+      "native_full_output_rescoring_exact": true,
+      "trace_prefix_exact": true
+    },
+    {
+      "scene": 6,
+      "native_full_output_rescoring_exact": true,
+      "trace_prefix_exact": true
+    },
+    {
+      "scene": 7,
+      "native_full_output_rescoring_exact": true,
+      "trace_prefix_exact": true
+    },
+    {
+      "scene": 8,
+      "native_full_output_rescoring_exact": true,
+      "trace_prefix_exact": true
+    },
+    {
+      "scene": 9,
+      "native_full_output_rescoring_exact": true,
+      "trace_prefix_exact": true
+    }
+  ],
+  "caveats": [
+    "Original activity thresholds reused without recalibration",
+    "Historical and new runtimes not directly comparable",
+    "10 scenes only; not all SNR conditions",
+    "1 of 10 Off-grid 600 runs still hit its maximum budget"
+  ]
+}

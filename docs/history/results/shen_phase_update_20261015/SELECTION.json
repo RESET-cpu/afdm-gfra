@@ -1,0 +1,13 @@
+{
+  "status": "FROZEN_FOR_PAIRED_EVALUATION",
+  "created_unix": 1792035705.6625001,
+  "configuration": "configs/proposed_iterative_phase.json",
+  "configuration_sha256": "ec7043ac172deec760cb007a0177c3ef94fac24000695043efd823c098f74049",
+  "development_status_sha256": "fc6a7c32931b2fa3a637e513ed8b31bb637729f82300169f44989f6c68ff1a5e",
+  "development_rows_sha256": "dbf512051f95b1c821cc144cbe167705e792f2b9facf15e87db6612777c0c12e",
+  "development_summary_sha256": "ff871f2768ff77471bc79e1a3718100b51c0bad69847365a04ec0d42616f0fb1",
+  "decision": "Retain the predefined two outer updates to evaluate this adaptation fully. No parameter or checkpoint changes based on development metrics.",
+  "development_observation": "Four of four NMSE values worsened by 0.009–0.224 dB; all activity errors remained zero.",
+  "formal_scope": "Same previously observed ten physical scenes and six SNRs; paired regression evaluation, not a new untouched test set",
+  "mainline_replacement": false
+}

@@ -1,0 +1,53 @@
+{
+  "scope": "Two random-seed checks of the public receiver on six reused development cases.\n\nBoth full-channel errors and activity scores are saved. These cases have been\nused in denoiser development and are not independent validation.\n",
+  "configuration": {
+    "schema": "afdm-ldamp-joint-v1",
+    "validation_status": "DEVELOPMENT_NOT_INDEPENDENTLY_VALIDATED",
+    "bundle_path": "models/ldamp_joint/v1/BUNDLE.json",
+    "bundle_sha256": "fe6236f47dee78476399e6e2d72b250ae6799ec145f2ada857c656bf055b4a12",
+    "solver": {
+      "iterations": 10,
+      "row_probes": 4,
+      "measurement_batch": 4,
+      "seed": 202610150201
+    },
+    "readout": null,
+    "activity_statistic": "channel_frobenius_energy",
+    "reference": "docs/TERMINOLOGY.md; experiments/ldamp_complete_20261015/PROJECTED_TRACE_DERIVATION.md",
+    "adaptation": "Noise-conditioned joint-channel denoising and direct computation of the matrix AMP correction Z B"
+  },
+  "seeds": [
+    202610150201,
+    202610150202
+  ],
+  "cases": [
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      -4
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      1,
+      -4
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      6
+    ]
+  ],
+  "inference_sha256": "b140610a3d9576ce4889f71062b5232a7189fa074af5060f4ab1043d66c70dc7",
+  "script_sha256": "189eb5e9ec4f1d8b66250c2a99741364f83395b0da14992b4321d8ff62e18a51",
+  "independent_validation": false,
+  "selection": "Four row probes, ten iterations; retain both seeds and all failures"
+}

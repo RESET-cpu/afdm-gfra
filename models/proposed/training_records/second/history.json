@@ -1,0 +1,3519 @@
+[
+  {
+    "epoch": 0,
+    "optimizer_steps": 0,
+    "validation": {
+      "loss": 0.00045346641856012864,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.12319007968517162,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 8.818730139394534e-05,
+      "raw_maximum": 1.6141153340959151,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.80373530588348,
+          "error_to_reported": 0.7302791475020317,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.22714773748013603,
+          "error_to_reported": 0.7735515716777313,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.09077132569576181,
+          "error_to_reported": 0.698695288940755,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.03875773323647621,
+          "error_to_reported": 0.6653260441241978,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.016554718009672214,
+          "error_to_reported": 0.6569810457042515,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.007132442791088677,
+          "error_to_reported": 0.6532530421537037,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.002945918679330349,
+          "error_to_reported": 0.6829246695327034,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0012103687550465729,
+          "error_to_reported": 0.6997015468248902,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00048468712295586205,
+          "error_to_reported": 0.7333659265975839,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00021431109292578782,
+          "error_to_reported": 0.6920055008375233,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    }
+  },
+  {
+    "epoch": 1,
+    "optimizer_steps": 782,
+    "train_loss": 0.00010916990865691333,
+    "learning_rate": 0.0001,
+    "validation": {
+      "loss": 6.575009549269452e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.11094779789597796,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 8.065957027111188e-05,
+      "raw_maximum": 1.5598397295608988,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.739831525096954,
+          "error_to_reported": 0.7933578309209698,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.20493365156855453,
+          "error_to_reported": 0.8574018370624755,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.07366435381898616,
+          "error_to_reported": 0.8609523378210848,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.029478687678359223,
+          "error_to_reported": 0.8747516041012899,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.01268184585685065,
+          "error_to_reported": 0.8576145832476145,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.005522168117575016,
+          "error_to_reported": 0.8437428654946483,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0023068351466858502,
+          "error_to_reported": 0.8721215052762821,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0009562864119100426,
+          "error_to_reported": 0.8856100845802573,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003868979041813394,
+          "error_to_reported": 0.9187256307024131,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00016437832121443243,
+          "error_to_reported": 0.9022141977084851,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 632.4707148075104
+  },
+  {
+    "epoch": 2,
+    "optimizer_steps": 1564,
+    "train_loss": 9.298957535022055e-05,
+    "learning_rate": 9.996086516275144e-05,
+    "validation": {
+      "loss": 3.89095717080636e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08785390276807231,
+      "raw_nonpositive_traces": 1,
+      "raw_minimum": -0.0024651243399016077,
+      "raw_maximum": 1.0409216079726435,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.6376535709669218,
+          "error_to_reported": 0.9204859201334583,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.15350421991999372,
+          "error_to_reported": 1.1446622732741816,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.024733191179293745,
+          "error_to_reported": 2.564226232465757,
+          "raw_nonpositive_traces": 1
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.012867457916964118,
+          "error_to_reported": 2.004011165208427,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.00805171944405987,
+          "error_to_reported": 1.3507842672483197,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.003972874102374766,
+          "error_to_reported": 1.172775635774832,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018775349109731833,
+          "error_to_reported": 1.0715329599432581,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0008524912618807346,
+          "error_to_reported": 0.9934376198369601,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.000355325823074812,
+          "error_to_reported": 1.000357975563189,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001495439120194705,
+          "error_to_reported": 0.9917117533734018,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 530.0891177654266
+  },
+  {
+    "epoch": 3,
+    "optimizer_steps": 2346,
+    "train_loss": 7.911231090256479e-05,
+    "learning_rate": 9.984352253122745e-05,
+    "validation": {
+      "loss": 2.930519600631669e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09956772116772743,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.522389670899832e-05,
+      "raw_maximum": 1.1914250569350655,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.7012970456567196,
+          "error_to_reported": 0.8369508151117769,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1768789963407725,
+          "error_to_reported": 0.9933937492062577,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.04709183032789527,
+          "error_to_reported": 1.3467622131681596,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.01756610159617601,
+          "error_to_reported": 1.4679710914947213,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.008349467478209846,
+          "error_to_reported": 1.302614325730069,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.003954945347347824,
+          "error_to_reported": 1.17809212063839,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.00184481464770582,
+          "error_to_reported": 1.0905380348393197,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0008158538705423644,
+          "error_to_reported": 1.038049730120913,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003437599443846331,
+          "error_to_reported": 1.0340152389561896,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001445388803152908,
+          "error_to_reported": 1.0260523318822032,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 521.712972164154
+  },
+  {
+    "epoch": 4,
+    "optimizer_steps": 3128,
+    "train_loss": 8.198521862650523e-05,
+    "learning_rate": 9.964815764824768e-05,
+    "validation": {
+      "loss": 2.6516366710711735e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.11555335729155582,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.315223887655289e-05,
+      "raw_maximum": 1.461378497230875,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.8189760128064413,
+          "error_to_reported": 0.7166890419495032,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.19808135888629808,
+          "error_to_reported": 0.8870622168523218,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.05705180853685177,
+          "error_to_reported": 1.1116474527458584,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.021381348764942815,
+          "error_to_reported": 1.2060291245857067,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.00947938611138749,
+          "error_to_reported": 1.14734602236194,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004186106223877087,
+          "error_to_reported": 1.1130367224534001,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018631219940542355,
+          "error_to_reported": 1.0798222268709539,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0008043831340549526,
+          "error_to_reported": 1.05285261995156,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033929316007814015,
+          "error_to_reported": 1.0476280186567304,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014245012477375464,
+          "error_to_reported": 1.0410974046578778,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 528.6206407546997
+  },
+  {
+    "epoch": 5,
+    "optimizer_steps": 3910,
+    "train_loss": 5.9061401959552316e-05,
+    "learning_rate": 9.937507942584851e-05,
+    "validation": {
+      "loss": 2.6208858071186113e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.11214336332936764,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.199546259502375e-05,
+      "raw_maximum": 1.4750143838444423,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.7905525101112113,
+          "error_to_reported": 0.7424568595896341,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.19174231407109918,
+          "error_to_reported": 0.9163886968926714,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.05809626421154572,
+          "error_to_reported": 1.0916622350036005,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.022335429259765595,
+          "error_to_reported": 1.154512368378645,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.009700853889224327,
+          "error_to_reported": 1.1211524339537398,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004195210880202307,
+          "error_to_reported": 1.1106211545297207,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.001849328769611314,
+          "error_to_reported": 1.0878760843453155,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007996875807349073,
+          "error_to_reported": 1.0590346912181772,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033668491455007165,
+          "error_to_reported": 1.0557438295429775,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001415648459594656,
+          "error_to_reported": 1.0476079297088416,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 522.9372231960297
+  },
+  {
+    "epoch": 6,
+    "optimizer_steps": 4692,
+    "train_loss": 7.026619599469996e-05,
+    "learning_rate": 9.90247196568295e-05,
+    "validation": {
+      "loss": 2.6874736112949903e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.1028428615450111,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.17133782227839e-05,
+      "raw_maximum": 1.3034992779374963,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.7264174125974227,
+          "error_to_reported": 0.8080080733460586,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17814849555116735,
+          "error_to_reported": 0.9863147526852553,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.049265954653908386,
+          "error_to_reported": 1.2873291115552208,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.01950717531435054,
+          "error_to_reported": 1.3218997070516758,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.009291389258710751,
+          "error_to_reported": 1.1705607898341999,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.0041273047719777725,
+          "error_to_reported": 1.1288940867415604,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018441589840411986,
+          "error_to_reported": 1.0909257596344806,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.000799891307375024,
+          "error_to_reported": 1.0587649625970261,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033597745634014194,
+          "error_to_reported": 1.0579668794104564,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014120075491635137,
+          "error_to_reported": 1.050309223084563,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 526.599351644516
+  },
+  {
+    "epoch": 7,
+    "optimizer_steps": 5474,
+    "train_loss": 3.9655280116276114e-05,
+    "learning_rate": 9.85976323320003e-05,
+    "validation": {
+      "loss": 2.4640244086913297e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09505018163146933,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.127759422268347e-05,
+      "raw_maximum": 1.1622146060812617,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.660057383311575,
+          "error_to_reported": 0.889242585323535,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1692944281390431,
+          "error_to_reported": 1.037898832597652,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.047641275693808764,
+          "error_to_reported": 1.3312300460245157,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02088574386599903,
+          "error_to_reported": 1.234647398670098,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.009787382725292032,
+          "error_to_reported": 1.1112404873294601,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004278726825613197,
+          "error_to_reported": 1.0889430760979222,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018668977995180986,
+          "error_to_reported": 1.077638283719233,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007993052155823168,
+          "error_to_reported": 1.0595413036528418,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003352150832411619,
+          "error_to_reported": 1.0603729927651295,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014101869932062552,
+          "error_to_reported": 1.0516651756796884,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 521.7505700588226
+  },
+  {
+    "epoch": 8,
+    "optimizer_steps": 6256,
+    "train_loss": 6.456805048663227e-05,
+    "learning_rate": 9.809449276420731e-05,
+    "validation": {
+      "loss": 2.326867052106536e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.10912482153463125,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.192124109480591e-05,
+      "raw_maximum": 1.358046421617706,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.7650310727394775,
+          "error_to_reported": 0.7672252211875216,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1863066561546477,
+          "error_to_reported": 0.9431251301346303,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.05834357510823526,
+          "error_to_reported": 1.0870348194617863,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02329064526660964,
+          "error_to_reported": 1.1071625125996065,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010334666493660228,
+          "error_to_reported": 1.0523935103281166,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004431417636436876,
+          "error_to_reported": 1.0514219903254884,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018958321429937144,
+          "error_to_reported": 1.0611912810883104,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007998531512664333,
+          "error_to_reported": 1.058815469806782,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003351636601080036,
+          "error_to_reported": 1.0605356825435703,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014085804199103952,
+          "error_to_reported": 1.0528646650120337,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 528.2805559635162
+  },
+  {
+    "epoch": 9,
+    "optimizer_steps": 7038,
+    "train_loss": 8.330884239614533e-05,
+    "learning_rate": 9.751609652052525e-05,
+    "validation": {
+      "loss": 2.8253139129083138e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.14646287027652913,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.169714757037556e-05,
+      "raw_maximum": 2.0252138043834718,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 1.079789290439969,
+          "error_to_reported": 0.5435793253318102,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.21823405157402698,
+          "error_to_reported": 0.8051469881234246,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.0666241663006638,
+          "error_to_reported": 0.9519293246886572,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025678847674485573,
+          "error_to_reported": 1.0041933991869534,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.01107724523587508,
+          "error_to_reported": 0.9818448285418199,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004642090275406861,
+          "error_to_reported": 1.003705157555895,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019424915578112535,
+          "error_to_reported": 1.0357010471740653,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0008056882453617896,
+          "error_to_reported": 1.0511471341552334,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.000336068725434985,
+          "error_to_reported": 1.0576795581807503,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014099435955917166,
+          "error_to_reported": 1.051846723931586,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 520.6360158920288
+  },
+  {
+    "epoch": 10,
+    "optimizer_steps": 7820,
+    "train_loss": 3.698024669967708e-05,
+    "learning_rate": 9.686335816430203e-05,
+    "validation": {
+      "loss": 2.3980559485789855e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.12809966041312018,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.109322082410047e-05,
+      "raw_maximum": 1.8025176990706853,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.9166143592959116,
+          "error_to_reported": 0.6403468678460735,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.2069170361839181,
+          "error_to_reported": 0.8491832889710432,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06554036664625122,
+          "error_to_reported": 0.9676707787865766,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025518800571261296,
+          "error_to_reported": 1.0104914320497445,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010922314590950914,
+          "error_to_reported": 0.9957720828096532,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004576161482437813,
+          "error_to_reported": 1.0181655453259562,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019273142222784913,
+          "error_to_reported": 1.0438570510694811,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0008032989557436498,
+          "error_to_reported": 1.0542736101911065,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003357260860375978,
+          "error_to_reported": 1.0587590176017356,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014117909074563498,
+          "error_to_reported": 1.0504703948146947,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 527.4028029441833
+  },
+  {
+    "epoch": 11,
+    "optimizer_steps": 8602,
+    "train_loss": 8.914167716939119e-05,
+    "learning_rate": 9.613730980904623e-05,
+    "validation": {
+      "loss": 2.8937219301587904e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.11492426970459123,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.071344338033687e-05,
+      "raw_maximum": 1.5039597298244616,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.8479822679573856,
+          "error_to_reported": 0.6921738297803287,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1792827357952775,
+          "error_to_reported": 0.9800747883022227,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.04338757984445942,
+          "error_to_reported": 1.4617431500419258,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.0182433297431632,
+          "error_to_reported": 1.4134771281601881,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.009011478020096934,
+          "error_to_reported": 1.206920321514191,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004018208828069433,
+          "error_to_reported": 1.159544003466965,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.001806455550613453,
+          "error_to_reported": 1.1136950144545195,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007951258259804824,
+          "error_to_reported": 1.065110530261398,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003351890025530298,
+          "error_to_reported": 1.0604554992230304,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014097247948728953,
+          "error_to_reported": 1.0520099790719672,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 522.8527669906616
+  },
+  {
+    "epoch": 12,
+    "optimizer_steps": 9384,
+    "train_loss": 3.127849454715033e-05,
+    "learning_rate": 9.53390994864434e-05,
+    "validation": {
+      "loss": 2.7351479827484582e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.10231673504514435,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.046737028052877e-05,
+      "raw_maximum": 1.2607790967953616,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.7295337373844286,
+          "error_to_reported": 0.8045565323712752,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17079350665381537,
+          "error_to_reported": 1.0287890492637455,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.0497788234454225,
+          "error_to_reported": 1.274065822469087,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.01895261144232884,
+          "error_to_reported": 1.3605792221252382,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.008799440065427511,
+          "error_to_reported": 1.2360031852555216,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.0039803434775383915,
+          "error_to_reported": 1.1705748455023859,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0017903578549589587,
+          "error_to_reported": 1.1237086122081525,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007895661387786297,
+          "error_to_reported": 1.0726104483718846,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003349071326853332,
+          "error_to_reported": 1.0613480166467932,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001413080392321815,
+          "error_to_reported": 1.0495118041477425,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 526.4749219417572
+  },
+  {
+    "epoch": 13,
+    "optimizer_steps": 10166,
+    "train_loss": 7.226169854853651e-05,
+    "learning_rate": 9.446998933108203e-05,
+    "validation": {
+      "loss": 2.2581119689857586e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09872284640017193,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.142524700741095e-05,
+      "raw_maximum": 1.2088797004203033,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.6749363019290329,
+          "error_to_reported": 0.8696393012500729,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1792961119222225,
+          "error_to_reported": 0.9800016712410474,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.05747738350407187,
+          "error_to_reported": 1.1034165748001163,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02222980755571339,
+          "error_to_reported": 1.1599978663251245,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.009858639636211227,
+          "error_to_reported": 1.103208591719381,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.0042823230361613935,
+          "error_to_reported": 1.0880286031486417,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018559320691365847,
+          "error_to_reported": 1.084005483825625,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.000794486579138629,
+          "error_to_reported": 1.0659675221358642,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003355299933830039,
+          "error_to_reported": 1.059377784538913,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001410667259918454,
+          "error_to_reported": 1.0513071325106091,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 527.2482948303223
+  },
+  {
+    "epoch": 14,
+    "optimizer_steps": 10948,
+    "train_loss": 5.3449648668247394e-05,
+    "learning_rate": 9.353135358475934e-05,
+    "validation": {
+      "loss": 2.1488357429916504e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.10045627818117968,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.181732775760658e-05,
+      "raw_maximum": 1.2979290117513902,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.6860266144119584,
+          "error_to_reported": 0.8555807044031222,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.18092668792496502,
+          "error_to_reported": 0.9711695457757542,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06002020733725748,
+          "error_to_reported": 1.0566690860990555,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02334474175345329,
+          "error_to_reported": 1.1045968983414078,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010217826819139261,
+          "error_to_reported": 1.0644275090825674,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004370679140037814,
+          "error_to_reported": 1.0660334016707573,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018766520696928525,
+          "error_to_reported": 1.072037045674199,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007967811180718734,
+          "error_to_reported": 1.0628977907809927,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003359698833416058,
+          "error_to_reported": 1.057990726731381,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014149724162581037,
+          "error_to_reported": 1.0481084542081613,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 530.6054649353027
+  },
+  {
+    "epoch": 15,
+    "optimizer_steps": 11730,
+    "train_loss": 3.642633122362895e-05,
+    "learning_rate": 9.252467642352252e-05,
+    "validation": {
+      "loss": 2.1252863557310776e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09538389136248365,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.079427174663747e-05,
+      "raw_maximum": 1.1874339192560586,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.6458229287522461,
+          "error_to_reported": 0.9088422040572078,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17405594428147572,
+          "error_to_reported": 1.009505823292358,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.058410391684887514,
+          "error_to_reported": 1.0857913430315977,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02338539598403947,
+          "error_to_reported": 1.1026766171094542,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010139331639336245,
+          "error_to_reported": 1.0726679367246188,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004358050256002331,
+          "error_to_reported": 1.0691225840841796,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018729013198663922,
+          "error_to_reported": 1.074183951504405,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007975587064633264,
+          "error_to_reported": 1.0618615072112512,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003352200564291672,
+          "error_to_reported": 1.0603572615039842,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014148573583972415,
+          "error_to_reported": 1.0481936876177183,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 531.7647430896759
+  },
+  {
+    "epoch": 16,
+    "optimizer_steps": 12512,
+    "train_loss": 4.0738490801595615e-05,
+    "learning_rate": 9.145154961088134e-05,
+    "validation": {
+      "loss": 2.122101924251183e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09204359913188294,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.085850719146384e-05,
+      "raw_maximum": 1.1068877527778336,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.6184559975523751,
+          "error_to_reported": 0.949058843831756,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17089044105192555,
+          "error_to_reported": 1.0282054879676377,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.057231213657136716,
+          "error_to_reported": 1.1081627241820171,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.023027796135141183,
+          "error_to_reported": 1.1198001398880963,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010135500779131968,
+          "error_to_reported": 1.0730733672011932,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004345558351721508,
+          "error_to_reported": 1.072195923780459,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018656863280954146,
+          "error_to_reported": 1.0783380412106485,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.000797460071235551,
+          "error_to_reported": 1.0619928453878038,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003356885790670524,
+          "error_to_reported": 1.0588773142783705,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014143180389225736,
+          "error_to_reported": 1.0485933935207743,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 539.1392602920532
+  },
+  {
+    "epoch": 17,
+    "optimizer_steps": 13294,
+    "train_loss": 5.0399686867167476e-05,
+    "learning_rate": 9.031366998090287e-05,
+    "validation": {
+      "loss": 2.1810976036795182e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.0879980423068623,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.177447178208799e-05,
+      "raw_maximum": 0.9864304367921582,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5883440547624927,
+          "error_to_reported": 0.9976324724396467,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.16568031020254892,
+          "error_to_reported": 1.0605393550747753,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.054281344101707825,
+          "error_to_reported": 1.1683848048364796,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.022481005838633966,
+          "error_to_reported": 1.1470362811405486,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.009982314379397238,
+          "error_to_reported": 1.089540514951222,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004284333243388814,
+          "error_to_reported": 1.087518100618274,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018652390395385238,
+          "error_to_reported": 1.0785966291214037,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007977281988130754,
+          "error_to_reported": 1.0616358947755455,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033612508553475435,
+          "error_to_reported": 1.0575022107348486,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014113572202972921,
+          "error_to_reported": 1.0507931873116256,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 542.2199227809906
+  },
+  {
+    "epoch": 18,
+    "optimizer_steps": 14076,
+    "train_loss": 5.6491332949808564e-05,
+    "learning_rate": 8.911283675516801e-05,
+    "validation": {
+      "loss": 2.148387187917251e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08186056548431608,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.182735114698722e-05,
+      "raw_maximum": 0.8565343589037235,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5303475194290462,
+          "error_to_reported": 1.106729290691816,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1643688559656399,
+          "error_to_reported": 1.0690011091123668,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.054633781217247074,
+          "error_to_reported": 1.1608476700952644,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.022520343241913234,
+          "error_to_reported": 1.1450326958362536,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.01011910027680564,
+          "error_to_reported": 1.0748125477383643,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004310552930580236,
+          "error_to_reported": 1.0809030828067696,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0018831852567530248,
+          "error_to_reported": 1.0683179115477457,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.000798439229623514,
+          "error_to_reported": 1.0606904805190231,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003361740150864096,
+          "error_to_reported": 1.0573482931007556,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001413256873836123,
+          "error_to_reported": 1.0493807455723987,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 537.8370711803436
+  },
+  {
+    "epoch": 19,
+    "optimizer_steps": 14858,
+    "train_loss": 4.684906819267781e-05,
+    "learning_rate": 8.785094869783239e-05,
+    "validation": {
+      "loss": 2.0580627570598152e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08357250333978421,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.268528072450567e-05,
+      "raw_maximum": 0.8649372786235426,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.539356130552349,
+          "error_to_reported": 1.088244113211028,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.16863706185060573,
+          "error_to_reported": 1.041944679316463,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.056996661152374714,
+          "error_to_reported": 1.1127230324068427,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.023221359159889217,
+          "error_to_reported": 1.1104659790107085,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010288144420629738,
+          "error_to_reported": 1.0571523400784189,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004399869558498919,
+          "error_to_reported": 1.0589609281179504,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.001903379497579706,
+          "error_to_reported": 1.0569834040505885,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.000798678288695342,
+          "error_to_reported": 1.0603729963888562,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003361026724954849,
+          "error_to_reported": 1.0575727303721987,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014141453019975644,
+          "error_to_reported": 1.0487214785189185,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 545.9257171154022
+  },
+  {
+    "epoch": 20,
+    "optimizer_steps": 15640,
+    "train_loss": 2.7579650087354822e-05,
+    "learning_rate": 8.653000111328996e-05,
+    "validation": {
+      "loss": 2.0382938413968076e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08660788217986777,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.234889628528421e-05,
+      "raw_maximum": 0.9755737356237972,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5637364770676939,
+          "error_to_reported": 1.0411799801405983,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17042743587799122,
+          "error_to_reported": 1.030998843734238,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.059136416085994646,
+          "error_to_reported": 1.0724609611497218,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02401620147429859,
+          "error_to_reported": 1.073713899387529,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.01041371414772495,
+          "error_to_reported": 1.0444050792108146,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.0044391319180199056,
+          "error_to_reported": 1.0495948391063425,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019045390154947448,
+          "error_to_reported": 1.0563398933727162,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.000797750015088552,
+          "error_to_reported": 1.0616068619448364,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003353093892235711,
+          "error_to_reported": 1.0600747621756597,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014129971286052422,
+          "error_to_reported": 1.0495736487556553,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 567.2986948490143
+  },
+  {
+    "epoch": 21,
+    "optimizer_steps": 16422,
+    "train_loss": 3.971665820878116e-05,
+    "learning_rate": 8.515208269118655e-05,
+    "validation": {
+      "loss": 2.0123186895943946e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08943347165887006,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.263557286494191e-05,
+      "raw_maximum": 1.081660747482115,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5858117440471265,
+          "error_to_reported": 1.0019449762868773,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.173484589642657,
+          "error_to_reported": 1.0128305326296,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06066060597231531,
+          "error_to_reported": 1.0455137501178344,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.024411734001185723,
+          "error_to_reported": 1.0563169880596421,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010536286834472722,
+          "error_to_reported": 1.0322551122800503,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004467834848735203,
+          "error_to_reported": 1.042851875463778,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019090583753883501,
+          "error_to_reported": 1.053839194489083,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007973104389484245,
+          "error_to_reported": 1.0621921509664152,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003353759839058168,
+          "error_to_reported": 1.0598642660598627,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001414500836793417,
+          "error_to_reported": 1.0484578823674897,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 543.270693063736
+  },
+  {
+    "epoch": 22,
+    "optimizer_steps": 17204,
+    "train_loss": 4.210680303433037e-05,
+    "learning_rate": 8.371937220377234e-05,
+    "validation": {
+      "loss": 1.9956088064645884e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08773325383283107,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.257933334486224e-05,
+      "raw_maximum": 1.008006181755453,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5686701247281328,
+          "error_to_reported": 1.032146948599558,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17350917173002414,
+          "error_to_reported": 1.0126870388396585,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06134360393607416,
+          "error_to_reported": 1.0338730293809748,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.024614371466858742,
+          "error_to_reported": 1.0476208733651857,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010537605558895664,
+          "error_to_reported": 1.0321259311278748,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.0044718576743395895,
+          "error_to_reported": 1.0419137393396631,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019106869653671237,
+          "error_to_reported": 1.0529409458578356,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007984580679504873,
+          "error_to_reported": 1.0606654552423158,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033617385174956687,
+          "error_to_reported": 1.0573488068347388,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014143614243710496,
+          "error_to_reported": 1.048561227983831,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 534.4524719715118
+  },
+  {
+    "epoch": 23,
+    "optimizer_steps": 17986,
+    "train_loss": 4.550773101473169e-05,
+    "learning_rate": 8.223413506081491e-05,
+    "validation": {
+      "loss": 1.944426015688805e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09075109136116231,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.228408066012607e-05,
+      "raw_maximum": 1.0179518512462307,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.580384529033144,
+          "error_to_reported": 1.0113142315762065,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1846186754343127,
+          "error_to_reported": 0.9517481853742239,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06541317658562781,
+          "error_to_reported": 0.9695523279092711,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.026240682446279865,
+          "error_to_reported": 0.9826927857625675,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.011127011626707765,
+          "error_to_reported": 0.97745345418961,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004614750612120183,
+          "error_to_reported": 1.0096515159516468,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.001932328278990922,
+          "error_to_reported": 1.0411484230839372,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0008007863354341922,
+          "error_to_reported": 1.0575815953145729,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033595852084441065,
+          "error_to_reported": 1.0580265091745076,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001416810074836647,
+          "error_to_reported": 1.0467490161816202,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 541.412177324295
+  },
+  {
+    "epoch": 24,
+    "optimizer_steps": 18768,
+    "train_loss": 3.383384308312088e-05,
+    "learning_rate": 8.069871972752097e-05,
+    "validation": {
+      "loss": 1.9504238058289046e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09045052651569192,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.20575643687143e-05,
+      "raw_maximum": 1.0467346122183445,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5842860856087247,
+          "error_to_reported": 1.0045612046132695,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.18004413184745435,
+          "error_to_reported": 0.9759301096226443,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06398587014796946,
+          "error_to_reported": 0.9911797321482283,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02567914954372391,
+          "error_to_reported": 1.0041815944698214,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010865774604810287,
+          "error_to_reported": 1.0009535762428372,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004541905027812668,
+          "error_to_reported": 1.025844865256858,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019187079365777,
+          "error_to_reported": 1.0485392290294648,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007976555532925195,
+          "error_to_reported": 1.0617325819883388,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003358935926837086,
+          "error_to_reported": 1.0582310254758334,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014157746743453925,
+          "error_to_reported": 1.0475145366173322,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 554.9004130363464
+  },
+  {
+    "epoch": 25,
+    "optimizer_steps": 19550,
+    "train_loss": 3.376850682467193e-05,
+    "learning_rate": 7.911555401113e-05,
+    "validation": {
+      "loss": 1.953039052132226e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08988638955269274,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.151892801251288e-05,
+      "raw_maximum": 1.0135656947424991,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5825073818030795,
+          "error_to_reported": 1.0076286624575261,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17808496417506686,
+          "error_to_reported": 0.9866666180647755,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06291378733233019,
+          "error_to_reported": 1.0080699370318245,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02515556518768872,
+          "error_to_reported": 1.0250824873561473,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010732092624042502,
+          "error_to_reported": 1.0134217370588345,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004511209449693968,
+          "error_to_reported": 1.0328250113906834,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019186815430035156,
+          "error_to_reported": 1.0485536528394126,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007979514279237596,
+          "error_to_reported": 1.0613388992086878,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033587014010827524,
+          "error_to_reported": 1.0583049178526398,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001414182388397481,
+          "error_to_reported": 1.0486939761935659,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 559.635302066803
+  },
+  {
+    "epoch": 26,
+    "optimizer_steps": 20332,
+    "train_loss": 3.4782703233795476e-05,
+    "learning_rate": 7.748714122205205e-05,
+    "validation": {
+      "loss": 1.9708040944169626e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09072503143696353,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.153533543974281e-05,
+      "raw_maximum": 1.0110083052975198,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5919461307222659,
+          "error_to_reported": 0.9915617376900517,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1771968150823489,
+          "error_to_reported": 0.9916120063960616,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06248574684508595,
+          "error_to_reported": 1.0149754277846696,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025088167424044086,
+          "error_to_reported": 1.027836306159703,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.01067783290816461,
+          "error_to_reported": 1.0185714688433847,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004507602947077291,
+          "error_to_reported": 1.0336513676935528,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019129549883711739,
+          "error_to_reported": 1.0516925660989656,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007965988363498742,
+          "error_to_reported": 1.0631410083589905,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003354914164727379,
+          "error_to_reported": 1.059499598450463,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014118505896996,
+          "error_to_reported": 1.0504259889617755,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 596.3408513069153
+  },
+  {
+    "epoch": 27,
+    "optimizer_steps": 21114,
+    "train_loss": 3.108729794483225e-05,
+    "learning_rate": 7.581605621561939e-05,
+    "validation": {
+      "loss": 1.9524046155129328e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08986768993888827,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.214608541031947e-05,
+      "raw_maximum": 0.9945817427090441,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5846652444901987,
+          "error_to_reported": 1.0039097407092616,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1765528330389477,
+          "error_to_reported": 0.9952289425570309,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06232617693020679,
+          "error_to_reported": 1.0175740075563344,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02499342573906855,
+          "error_to_reported": 1.0317324884814558,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010642594656641052,
+          "error_to_reported": 1.0219440183740036,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004501664535908479,
+          "error_to_reported": 1.0350149181708501,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019068340026857232,
+          "error_to_reported": 1.0550685260060784,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007969586049821823,
+          "error_to_reported": 1.0626610778028276,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033594995122247394,
+          "error_to_reported": 1.0580534979778984,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001413792920677116,
+          "error_to_reported": 1.0489828674776394,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 746.5976610183716
+  },
+  {
+    "epoch": 28,
+    "optimizer_steps": 21896,
+    "train_loss": 3.610174508918135e-05,
+    "learning_rate": 7.410494132071106e-05,
+    "validation": {
+      "loss": 1.924818375191535e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.090963504667165,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.193599761845384e-05,
+      "raw_maximum": 1.0227931212725951,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5921535009182924,
+          "error_to_reported": 0.9912144960515266,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17862413067273286,
+          "error_to_reported": 0.9836884225498559,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.0629950043118439,
+          "error_to_reported": 1.006770272140637,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025208843655099598,
+          "error_to_reported": 1.0229159927464266,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010731170665846187,
+          "error_to_reported": 1.0135088042117015,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004519648145196993,
+          "error_to_reported": 1.030896609997691,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019131523208317026,
+          "error_to_reported": 1.0515840890689203,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007973382079586447,
+          "error_to_reported": 1.0621551578505684,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003362828353995798,
+          "error_to_reported": 1.0570061377473654,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014150931097850364,
+          "error_to_reported": 1.0480190608636022,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 832.5361590385437
+  },
+  {
+    "epoch": 29,
+    "optimizer_steps": 22678,
+    "train_loss": 2.939386498357635e-05,
+    "learning_rate": 7.235650216168765e-05,
+    "validation": {
+      "loss": 1.916302694080514e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09084997320216548,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.241158991328049e-05,
+      "raw_maximum": 1.0254575661649725,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5918109447413287,
+          "error_to_reported": 0.991788237803577,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17869009262856303,
+          "error_to_reported": 0.9833253021813767,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.062288647484593014,
+          "error_to_reported": 1.0181871046441149,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02512525153774278,
+          "error_to_reported": 1.0263192507629035,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010644384981432707,
+          "error_to_reported": 1.0217721332237606,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004510604740079755,
+          "error_to_reported": 1.0329634760201905,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019089644666553615,
+          "error_to_reported": 1.0538910365769045,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007980156921482187,
+          "error_to_reported": 1.0612534295595104,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033622902035302987,
+          "error_to_reported": 1.057175316584001,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001416087275974726,
+          "error_to_reported": 1.047283297514734,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 673.4112679958344
+  },
+  {
+    "epoch": 30,
+    "optimizer_steps": 23460,
+    "train_loss": 3.1028904676131786e-05,
+    "learning_rate": 7.05735033802432e-05,
+    "validation": {
+      "loss": 1.920384740733425e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09029774801674088,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.20813783612243e-05,
+      "raw_maximum": 1.0562780030908148,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5876723191918817,
+          "error_to_reported": 0.9987728106795962,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1775269700502541,
+          "error_to_reported": 0.9897678605175316,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06234114818127437,
+          "error_to_reported": 1.0173296367612592,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025101475218361584,
+          "error_to_reported": 1.0272913886185846,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010647257728219771,
+          "error_to_reported": 1.0214964479076203,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.0045027813323501205,
+          "error_to_reported": 1.0347582099515646,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019096406808558803,
+          "error_to_reported": 1.0535178480017569,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007964652682571397,
+          "error_to_reported": 1.0633192982637154,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003362902652048369,
+          "error_to_reported": 1.0569827848568072,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014147779085855813,
+          "error_to_reported": 1.0482525511259475,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 665.6955811977386
+  },
+  {
+    "epoch": 31,
+    "optimizer_steps": 24242,
+    "train_loss": 2.841009550989838e-05,
+    "learning_rate": 6.875876426393841e-05,
+    "validation": {
+      "loss": 1.924934438720811e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08989686596636011,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.217315293607989e-05,
+      "raw_maximum": 1.0795924651193383,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5855418713457099,
+          "error_to_reported": 1.002406766656881,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17604318110807377,
+          "error_to_reported": 0.9981101694755811,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06211160091237643,
+          "error_to_reported": 1.0210894052466493,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02508645383072762,
+          "error_to_reported": 1.027906515103404,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010646521474544476,
+          "error_to_reported": 1.0215670888691657,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004502188675021933,
+          "error_to_reported": 1.0348944230426402,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.001911719072478827,
+          "error_to_reported": 1.052372479573187,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007971563429617786,
+          "error_to_reported": 1.0623974802584115,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033611960182628874,
+          "error_to_reported": 1.0575194636227907,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001413153434768688,
+          "error_to_reported": 1.0494575574479073,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 833.6704068183899
+  },
+  {
+    "epoch": 32,
+    "optimizer_steps": 25024,
+    "train_loss": 2.9878141896551825e-05,
+    "learning_rate": 6.691515428832737e-05,
+    "validation": {
+      "loss": 1.9283698503932102e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09065991198126881,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.208589500580795e-05,
+      "raw_maximum": 1.0912492904051183,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5899021650137025,
+          "error_to_reported": 0.9949974229781621,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17745971384959625,
+          "error_to_reported": 0.9901429767869521,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06342945764997526,
+          "error_to_reported": 0.9998745060144845,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025346584281497136,
+          "error_to_reported": 1.0173571731426425,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010713281832081478,
+          "error_to_reported": 1.0152011418913953,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004517764742227516,
+          "error_to_reported": 1.0313263786658877,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.001911290592271077,
+          "error_to_reported": 1.0526084043354924,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007972585852978436,
+          "error_to_reported": 1.0622612358802206,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003358498107572382,
+          "error_to_reported": 1.0583689781899994,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001415343574589916,
+          "error_to_reported": 1.0478335992595778,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 759.7836842536926
+  },
+  {
+    "epoch": 33,
+    "optimizer_steps": 25806,
+    "train_loss": 3.6127870920645363e-05,
+    "learning_rate": 6.504558857972708e-05,
+    "validation": {
+      "loss": 1.885252459105686e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09240208635485776,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.177387534298307e-05,
+      "raw_maximum": 1.1152618938573715,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.6066980489599106,
+          "error_to_reported": 0.9674518238588516,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17722773790488364,
+          "error_to_reported": 0.991438989223583,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06330407703806297,
+          "error_to_reported": 1.0018548662576994,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02543758641079968,
+          "error_to_reported": 1.0137176112942003,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010847338764226283,
+          "error_to_reported": 1.0026547695921644,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004537336611512664,
+          "error_to_reported": 1.026877736918137,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019092472411995878,
+          "error_to_reported": 1.053734947019145,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007983922783569819,
+          "error_to_reported": 1.0607528568255191,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003363195495578651,
+          "error_to_reported": 1.056890750191986,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014172035686138158,
+          "error_to_reported": 1.04645838099466,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 1126.8437004089355
+  },
+  {
+    "epoch": 34,
+    "optimizer_steps": 26588,
+    "train_loss": 2.852138463051233e-05,
+    "learning_rate": 6.31530233058035e-05,
+    "validation": {
+      "loss": 1.8727351377674494e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09238623766364194,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.209542269458764e-05,
+      "raw_maximum": 1.0985585816987187,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.6074764144200507,
+          "error_to_reported": 0.9662122183924235,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1771246006191345,
+          "error_to_reported": 0.9920162908856728,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06266440609100934,
+          "error_to_reported": 1.0120816838577675,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025293762705800207,
+          "error_to_reported": 1.0194817447042965,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010763447884174713,
+          "error_to_reported": 1.0104695137070738,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.00451467810509145,
+          "error_to_reported": 1.0320314854809682,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019029821607123671,
+          "error_to_reported": 1.0572040989594873,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007985002508831123,
+          "error_to_reported": 1.060609422724622,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033652800921220706,
+          "error_to_reported": 1.0562360674481097,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001417157993443597,
+          "error_to_reported": 1.04649203463036,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 1061.9085721969604
+  },
+  {
+    "epoch": 35,
+    "optimizer_steps": 27370,
+    "train_loss": 2.3731244033442637e-05,
+    "learning_rate": 6.124045100126275e-05,
+    "validation": {
+      "loss": 1.8588197684584884e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09021005590963983,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.245416978686002e-05,
+      "raw_maximum": 1.0486431156570677,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5888382352577474,
+          "error_to_reported": 0.9967952127649304,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17541615070984035,
+          "error_to_reported": 1.00167794481733,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06230797536570306,
+          "error_to_reported": 1.0178712638678604,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025191754786065453,
+          "error_to_reported": 1.0236098895226309,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010697044063593186,
+          "error_to_reported": 1.0167421845395404,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004503603695702428,
+          "error_to_reported": 1.0345692618806728,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019100892320821244,
+          "error_to_reported": 1.0532704476632522,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007971426956816167,
+          "error_to_reported": 1.0624156687661088,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033650972255442994,
+          "error_to_reported": 1.0562934655742342,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014176172870277435,
+          "error_to_reported": 1.0461529818537294,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 603.8017771244049
+  },
+  {
+    "epoch": 36,
+    "optimizer_steps": 28152,
+    "train_loss": 2.7878970293531892e-05,
+    "learning_rate": 5.931089583603874e-05,
+    "validation": {
+      "loss": 1.875258134678006e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08951071659970886,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.190247884653175e-05,
+      "raw_maximum": 1.0410611775474572,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.583157442659592,
+          "error_to_reported": 1.006505432428297,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17470551208534454,
+          "error_to_reported": 1.0057524071991755,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06196897724725389,
+          "error_to_reported": 1.0234394765220391,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025206748189233585,
+          "error_to_reported": 1.023001028925251,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010673383132923682,
+          "error_to_reported": 1.0189961152789833,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004505611774064238,
+          "error_to_reported": 1.034108171078191,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019131427958595322,
+          "error_to_reported": 1.0515893245950947,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007973405642869136,
+          "error_to_reported": 1.0621520189331013,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003365392768466821,
+          "error_to_reported": 1.0562007037246275,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014170758155146763,
+          "error_to_reported": 1.046552721960633,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 559.1698589324951
+  },
+  {
+    "epoch": 37,
+    "optimizer_steps": 28934,
+    "train_loss": 2.9807110968977213e-05,
+    "learning_rate": 5.736740883345889e-05,
+    "validation": {
+      "loss": 1.9103688704490196e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09058170179097821,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.247114694422646e-05,
+      "raw_maximum": 1.0342137767667534,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5915995740417892,
+          "error_to_reported": 0.9921425906172333,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.1767734300663182,
+          "error_to_reported": 0.9939869881173912,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.0619139968296862,
+          "error_to_reported": 1.0243483038091747,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.02499486902736172,
+          "error_to_reported": 1.031672912757307,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.01067764841051536,
+          "error_to_reported": 1.0185890686026549,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004516784353213366,
+          "error_to_reported": 1.031550232844564,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019127706854871228,
+          "error_to_reported": 1.0517939007620998,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007957057708732964,
+          "error_to_reported": 1.0643342314900197,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.00033597244310659534,
+          "error_to_reported": 1.057982665928547,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.00014129405778543722,
+          "error_to_reported": 1.0496156563098729,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 559.7844033241272
+  },
+  {
+    "epoch": 38,
+    "optimizer_steps": 29716,
+    "train_loss": 2.139891007773258e-05,
+    "learning_rate": 5.541306304594905e-05,
+    "validation": {
+      "loss": 1.881151927555038e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.08928993985024487,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.253372035345587e-05,
+      "raw_maximum": 1.0167535347206276,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5797426575551539,
+          "error_to_reported": 1.0124339245159528,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17593014040735006,
+          "error_to_reported": 0.9987514869479354,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06212416258616261,
+          "error_to_reported": 1.0208829382057867,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025129934071813607,
+          "error_to_reported": 1.0261280136969604,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010683095123393053,
+          "error_to_reported": 1.0180697469891191,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.00450986476711699,
+          "error_to_reported": 1.0331329633736366,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.001913635160368208,
+          "error_to_reported": 1.0513187582552532,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007967909173779424,
+          "error_to_reported": 1.062884718768568,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.000336255344427666,
+          "error_to_reported": 1.0570925545925607,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001414017503387743,
+          "error_to_reported": 1.0488162617494818,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 591.6756730079651
+  },
+  {
+    "epoch": 39,
+    "optimizer_steps": 30498,
+    "train_loss": 4.840623384639912e-05,
+    "learning_rate": 5.345094869590608e-05,
+    "validation": {
+      "loss": 1.8349166667394458e-05,
+      "samples": 5000,
+      "mean_risk": 0.09026275154982177,
+      "mean_raw_readout": 0.09034959477075079,
+      "raw_nonpositive_traces": 0,
+      "raw_minimum": 7.187833752741093e-05,
+      "raw_maximum": 1.0317779982501931,
+      "bands": {
+        "snr_-20_to_-15_db": {
+          "samples": 522,
+          "mean_risk": 0.5869511339978725,
+          "mean_raw_readout": 0.5889420589780918,
+          "error_to_reported": 0.9966194892182196,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-15_to_-10_db": {
+          "samples": 524,
+          "mean_risk": 0.1757104893307999,
+          "mean_raw_readout": 0.17483503137666875,
+          "error_to_reported": 1.0050073371865909,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-10_to_-5_db": {
+          "samples": 467,
+          "mean_risk": 0.06342149763453568,
+          "mean_raw_readout": 0.06353333936302258,
+          "error_to_reported": 0.9982396371793424,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_-5_to_0_db": {
+          "samples": 546,
+          "mean_risk": 0.025786529333445662,
+          "mean_raw_readout": 0.025695157359296367,
+          "error_to_reported": 1.0035559997890513,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_0_to_5_db": {
+          "samples": 482,
+          "mean_risk": 0.010876135949333458,
+          "mean_raw_readout": 0.010823704708864287,
+          "error_to_reported": 1.0048441122406295,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_5_to_10_db": {
+          "samples": 478,
+          "mean_risk": 0.004659289951265932,
+          "mean_raw_readout": 0.004564466484060928,
+          "error_to_reported": 1.0207742717656327,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_10_to_15_db": {
+          "samples": 502,
+          "mean_risk": 0.0020118405405518966,
+          "mean_raw_readout": 0.0019287715712335612,
+          "error_to_reported": 1.0430683293746432,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_15_to_20_db": {
+          "samples": 502,
+          "mean_risk": 0.0008468968901346036,
+          "mean_raw_readout": 0.0007996583354765053,
+          "error_to_reported": 1.0590734224385339,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_20_to_25_db": {
+          "samples": 513,
+          "mean_risk": 0.0003554530210364428,
+          "mean_raw_readout": 0.0003368905821412277,
+          "error_to_reported": 1.0550993108125344,
+          "raw_nonpositive_traces": 0
+        },
+        "snr_25_to_30_db": {
+          "samples": 464,
+          "mean_risk": 0.0001483044551951468,
+          "mean_raw_readout": 0.0001415945996716024,
+          "error_to_reported": 1.0473877926072495,
+          "raw_nonpositive_traces": 0
+        }
+      }
+    },
+    "elapsed_epoch_seconds": 621.1256968975067
+  }
+]

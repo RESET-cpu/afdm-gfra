@@ -1,0 +1,2544 @@
+IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 44, 2026
+
+3575
+
+Joint Activity Detection and Channel Estimation for
+Massive Connectivity: Where Message Passing
+Meets Score-Based Generative Priors
+Chang Cai , Member, IEEE, Wenjun Jiang , Member, IEEE, Xiaojun Yuan , Fellow, IEEE,
+and Ying-Jun Angela Zhang , Fellow, IEEE
+Abstract—Massive connectivity supports the sporadic access
+of a vast number of devices without requiring prior permission from the base station (BS). In such scenarios, the BS
+must perform joint activity detection and channel estimation
+(JADCE) prior to data reception. Message-passing algorithms
+have emerged as a prominent solution for JADCE under a
+Bayesian inference framework. The existing message-passing
+algorithms, however, typically rely on some hand-crafted and
+overly simplistic priors of the wireless channel, leading to significant channel estimation errors and reduced activity detection
+accuracy. In this paper, we focus on the problem of JADCE in
+a multiple-input multiple-output orthogonal frequency division
+multiplexing (MIMO-OFDM) grant-free random access network.
+We propose to incorporate a more accurate channel prior learned
+by score-based generative models (a.k.a. diffusion models) into
+message passing, so as to push towards the performance limit of
+JADCE. Specifically, we develop a novel turbo message passing
+(TMP) framework that models the entire channel matrix as
+a super node, rather than factorizing it element-wise. This
+design enables the seamless integration of score-based generative
+models as a minimum mean-squared error (MMSE) denoiser.
+The variance of the denoiser, which is essential in message
+passing, can also be learned through score-based generative
+models. Our approach, termed score-based TMP for JADCE
+(STMP-JADCE), takes full advantages of the powerful generative
+prior and, meanwhile, benefits from the fast convergence speed
+of message passing. Numerical simulations show that STMPJADCE drastically enhances the activity detection and channel
+estimation performance compared to the state-of-the-art baseline
+algorithms.
+
+Received 31 May 2025; revised 10 January 2026; accepted 31 January 2026.
+Date of publication 10 February 2026; date of current version 26 February
+2026. This work was supported in part by China Postdoctoral Science
+Foundation under Grant GZC20252291 and Grant 2025M783500; in part by
+the National Natural Science Foundation of China under Grant 62571087;
+in part by the General Research Fund from the Research Grants Council
+(RGC) of Hong Kong under Project 14214122, Project 14202723, and Project
+14207624; in part by the Area of Excellence Scheme Grant from the RGC of
+Hong Kong under Project AoE/E-601/22-R; and in part by the NSFC/RGC
+Collaborative Research Scheme from the RGC of Hong Kong under Project
+CRS HKUST603/22 and Project CRS HKU702/24. (Corresponding author:
+Xiaojun Yuan.)
+Chang Cai was with the Department of Information Engineering, The
+Chinese University of Hong Kong, Hong Kong. He is now with the Department of Electrical and Electronic Engineering, The University of Hong Kong,
+Hong Kong (e-mail: changcai@hku.hk).
+Wenjun Jiang and Xiaojun Yuan are with the National Key Laboratory
+of Wireless Communications, University of Electronic Science and Technology of China, Chengdu 611731, China (e-mail: wjjiang@std.uestc.edu.cn;
+xjyuan@uestc.edu.cn).
+Ying-Jun Angela Zhang is with the Department of Information Engineering, The Chinese University of Hong Kong, Hong Kong (e-mail:
+yjzhang@ie.cuhk.edu.hk).
+Digital Object Identifier 10.1109/JSAC.2026.3663274
+
+Index Terms—Massive connectivity, diffusion models, scorebased generative models, plug-and-play priors, message passing,
+joint activity detection and channel estimation (JADCE).
+
+I. I NTRODUCTION
+
+E
+
+VOLVED from massive machine-type communication
+(mMTC) in fifth-generation (5G), massive communication (a.k.a. massive connectivity) has been identified as one of
+the six key usage scenarios in sixth-generation (6G) wireless
+networks [1]. A unique feature of massive communication
+is the sporadic transmission of short packets by massive
+machine-type devices, e.g., Internet-of-Things (IoT) devices,
+where only a small fraction of devices are active in packet
+transmission at any given time instant [2]. To support massive
+connectivity of machine-type devices, conventional grantbased random access schemes require each device to obtain
+a grant from the base station (BS) before transmission. The
+uplink grant request involves a complex handshaking process,
+which may result in significant signaling overhead and access
+latency [3], [4], especially in scenarios with massive connected
+devices.
+In contrast, grant-free random access [2], [3], [4], [5], [6]
+enables active devices to access the uplink channel without
+waiting for BSs’ permission, making it a more appealing
+solution for massive connectivity. Specifically, each active
+device first sends a unique pilot sequence to the BS, and then
+transmits payload data directly. Since the device activity is
+unknown at the BS beforehand, the BS must first detect the
+active devices and estimate their channels prior to payload data
+reception. However, due to the large number of devices and the
+limited resources for pilot transmission, it is impractical for
+the pilot sequences to be mutually orthogonal. As a result, the
+received pilots suffer from significant co-channel interference,
+which necessitates the development of advanced algorithms
+for accurate activity detection and channel estimation.
+Due to the sporadic traffic of massive devices, activity
+detection and channel estimation can be formulated jointly
+as a compressive sensing (CS) problem. Message-passing
+algorithms stand out as a powerful tool for efficient problem
+solving within a Bayesian framework. The performance of
+message passing relies heavily on the accuracy of the chosen
+priors, especially the prior of the wireless channel. Existing
+works on massive connectivity either assume a statistical
+channel model, such as Rayleigh fading [5], [6], [7], [8],
+[9] and Rician fading [10], or exploit channel sparsity in
+
+1558-0008 © 2026 IEEE. All rights reserved, including rights for text and data mining, and training of artificial intelligence and
+similar technologies. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+3576
+
+IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 44, 2026
+
+certain discrete transform domains, such as the discrete Fourier
+transform (DFT) angular basis [11], [12]. The former approach
+may be overly simplistic to model the multipath component,
+while the latter suffers from significant energy leakage caused
+by basis mismatch with the predefined codebook. The oversimplification or misspecification of the channel prior can
+result in substantial errors in channel estimation, which consequently degrades the accuracy of activity detection. Moreover,
+although not specifically tailored to massive connectivity, the
+authors in [13] and [14] introduced advanced off-grid and gridfree line spectral estimation techniques for super-resolution
+channel estimation. Nevertheless, these methods continue to
+face challenges in resolving sub-paths within clustered multipath components and often entail prohibitive computational
+complexity.
+In light of the limitations of model-based approaches in
+accurately capturing the real wireless propagation environments, deep learning offers a powerful alternative by learning
+the channel distribution directly from data. Recently, scorebased generative models [15], [16] (a.k.a. diffusion models
+[17]) have made remarkable breakthroughs in generating
+high-quality samples from learned prior distributions, revolutionizing fields such as image synthesis, video generation,
+and molecular conformation. These developments highlight
+their strong ability to model the intricate structures of
+high-dimensional data distributions. In particular, score-based
+generative models learn the prior by matching the gradient of
+the log density of the data distribution, referred to as the score
+function. Apart from generative tasks, such learned priors can
+also be leveraged to solve CS problems by sampling from the
+posterior distribution, known as diffusion posterior sampling
+(DPS) [18], [19], [20], [21], [22], [23]. This approach makes
+use of the posterior score, which can be obtained by combining
+the learned prior score with the likelihood term from the
+measurement model using Bayes’ theorem. Yet, DPS typically
+requires traversing hundreds or even thousands of reverse diffusion steps, leading to prohibitively high computational cost.
+To speed up convergence, the authors in [24] and [25]
+proposed the integration of score-based generative models
+into message-passing algorithms for solving inverse problems.
+Specifically, a score-based turbo message passing (STMP)
+framework was developed for compressive image recovery, in
+which the score network is integrated into Turbo-CS [26] as
+a plug-and-play denoiser. This framework inherits the rapid
+convergence of message passing, typically achieved within
+10 iterations, with each iteration requiring only a single-step
+denoising operation. Compared to DPS [18], [19], [20], [21],
+[22], [23], STMP eliminates the need for reverse diffusion
+sampling, and thus reduces the computational complexity by
+orders of magnitude. This motivates us to explore the feasibility of solving joint activity detection and channel estimation
+(JADCE) by integrating an accurate channel prior learned by
+score-based generative networks into message passing.
+
+of devices sporadically access the uplink channel. We aim
+to develop an efficient message-passing algorithm that incorporates a plug-and-play score-based generative channel prior
+to approach the performance limit of JADCE. The extension
+of STMP [24], [25] for solving the JADCE problem is
+highly non-trivial, as the sporadic access of devices introduces
+additional activity-induced sparsity, which is not captured by
+the channel prior score network. To address this challenge,
+we propose a novel turbo message passing (TMP) framework
+that decouples the denoising of the channel and the device
+activity. This stands in contrast to prior works [5], [6], [11],
+[27], which treat the channel and its activity indicator as
+a whole. Moreover, unlike the separable denoisers in [5],
+[6], [11], and [27] that operate element-wise for channel
+denoising, our TMP framework models the spatial-frequency
+channel matrix as a super node in the factor graph, enabling
+the incorporation of score-based generative models as nonseparable denoisers for more effective exploitation of channel
+correlations. The score network enables single-step minimum
+mean-squared error (MMSE) denoising at each messagepassing iteration, supported by the well-established Tweedie’s
+formula [28], [29]. Additionally, we employ a second-order
+score network that outputs the Hessian diagonals of the log
+density to compute the variance of the denoiser. The plug-in
+implementation of the first- and second-order score networks
+yields the STMP algorithm tailored for JADCE, hence the
+name STMP-JADCE. The two score networks can be trained
+based on the denoising score matching technique [15], [30],
+[31]. The main contributions of this paper are summarized as
+follows.
+• We devise a novel TMP framework for JADCE that iterates between a linear estimation module and a denoising
+module. The key innovation lies in the denoising module, which features non-separable channel denoisers and
+decoupled treatment of channel and activity estimates.
+• We develop the STMP-JADCE algorithm that seamlessly integrates score-based generative channel priors
+into the TMP framework. As a model-based deep learning
+solution, STMP-JADCE generalizes well across different
+device activity levels, pilot patterns, and signal-to-noise
+ratios (SNRs) without requiring retraining the score networks.
+• Experimental results show that our method significantly
+outperforms the existing message-passing algorithms with
+a comparable or even faster convergence speed. Remarkably, our method consistently delivers over a 5 dB
+normalized mean-squared error (NMSE) gain in channel
+estimation on the clustered delay line (CDL) channel
+models specified by the 3GPP standards [32].
+Beyond the algorithmic advances, this work underscores
+a conceptual shift in Bayesian inference for massive connectivity: from traditional model-based methods relying on
+hand-crafted statistical priors (e.g., Rayleigh or Rician fading), to data-driven approaches that directly learn channel
+distributions from data via score-based generative modeling.
+This philosophical transition is central to our contribution, as
+it enables Bayesian inference to harness expressive learned
+priors without sacrificing the efficiency of message passing.
+
+A. Contributions
+In this paper, we consider a multiple-input multiple-output
+orthogonal frequency division multiplexing (MIMO-OFDM)
+grant-free random access network, where a massive number
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+CAI et al.: JOINT ACTIVITY DETECTION AND CHANNEL ESTIMATION FOR MASSIVE CONNECTIVITY
+
+B. Related Works
+1) Message-Passing Algorithms for JADCE: It was shown
+in [5] that JADCE with single- and multi-antenna BSs corresponds to CS in single measurement vector (SMV) and
+multiple measurement vector (MMV) setups, respectively. The
+authors in [5] employed the approximate message passing
+(AMP) to solve both problems, in which the Rayleigh channel
+assumption is adopted to derive the MMSE denoiser in closed
+form. Interestingly, a follow-up work [6] revealed that the
+activity detection error by AMP is asymptotically zero as the
+number of BS antennas approaches infinity. Apart from [5] and
+[6], the same Rayleigh channel model was also employed in
+[7], [8], and [9] to facilitate message calculation and analysis.
+Considering that the line-of-sight (LoS) component in wave
+propagation is non-negligible in low Earth orbit (LEO) satellite
+networks, the authors in [10] proposed a Bernoulli-Rician
+message-passing algorithm tailored for LEO satellite-enabled
+IoT applications with Rician channel modeling. The authors
+in [33] proposed a JADCE scheme exploiting the sparsity of
+the time-domain channel impulse response (CIR). However,
+an energy leakage problem arises from the inverse discrete
+Fourier transform (IDFT) to obtain the time-domain channel,
+which undermines its sparsity level. Considering frequencydomain channel estimation, the work in [11] developed a
+turbo-type algorithm that exploits the common angular sparsity
+over OFDM subcarriers. To reduce the pilot overhead, the
+authors in [27] constructed a block-wise linear model in
+the frequency domain, requiring the estimation of only the
+mean and slope in each sub-block. In the above work, the
+channel modeling and assigned prior distribution may fail
+to accurately capture the intricacies of the high-dimensional
+channel, leading to sub-optimal performance.
+2) Model-Based and Model-Free Deep Learning for
+JADCE: It is well-known that message-passing algorithms
+can be unfolded into a layer-wise structure analogous to
+a neural network (NN) [34]. By incorporating additional
+learnable parameters, the unfolded message passing networks
+can be trained using pairs of the channel samples, device
+activity realizations, and observations. It is shown that the
+deep unfolding technique can mitigate the potential message
+correlation issue on dense graphs and speed up convergence
+[8], [9], [12]. Nevertheless, deep unfolding, as a model-based
+deep learning approach, still requires prior knowledge of
+the wireless channel distribution. For example, the on-grid
+millimeter-wave parametric channel is adopted in [12], and
+the Rayleigh fading is adopted in [8], [9]. In contrast, pure
+data-driven approaches [35], [36] learn to fit certain inputoutput relationships without the need of explicit mathematical
+modeling. In [35], the authors proposed the use of two long
+short-term memory (LSTM) networks to learn the mappings
+from the received signals to the indices of active devices
+and to the channel coefficients. However, the existing deep
+learning-based solutions, whether model-based or model-free,
+are trained in a supervised manner using predefined active
+probabilities, specific pilot patterns, and fixed SNRs, which
+may not generalize effectively to diverse scenarios.
+3) Score-Based Generative Models for Channel Estimation:
+Recent studies [37], [38], [39], [40], [41], [42], [43] have
+
+3577
+
+applied DPS [18], [19], [20], [21], [22], [23] to solve channel
+estimation problems by sampling from the posterior channel
+distribution conditioned on the received pilots. Since the pilots
+(measurement matrix) are solely tied to the likelihood, different pilot designs can be implemented without necessitating
+retraining of the prior score network. As mentioned before,
+these approaches require hundreds or even thousands of iterations, resulting in unaffordable computational cost. Although
+some initial attempts have explored higher-order annealed
+Langevin diffusion [40] and variational inference [44] to
+accelerate convergence, the required steps are only reduced by
+a small margin. Moreover, the authors in [45] investigated the
+integration of score networks into orthogonal AMP (OAMP)
+[46] for channel estimation in near-field holographic MIMO
+systems.
+C. Organization and Notations
+The remainder of this paper is organized as follows. Section II presents the system model, formulates the JADCE
+problem, and outlines the inherent limitations of traditional
+message-passing algorithms for problem-solving. Section III
+develops a TMP framework that supports the integration of
+score-based generative priors. Section IV reveals the relationship between the score function and MMSE denoising, and
+then specifies the training objectives for the score networks.
+In Section V, we present the STMP-JADCE algorithm and
+related engineering tricks. In Section VI, we provide extensive
+simulation results to validate the efficiency and effectiveness
+of the proposed method. Finally, we conclude this paper in
+Section VII.
+Notations: Lower-case letters are used to denote scalars.
+Vectors and matrices are denoted by lower-case and uppercase boldface letters, respectively. We use AT , AH , and A−1
+to denote the transpose, conjugate transpose, and inverse of
+matrix A, respectively. We use the symbol ∝ to indicate equality up to a constant multiplicative factor. We use diag{·}, tr(·),
+E[·], Var[·], and Cov[·] to represent the diagonal operator, the
+trace of a square matrix, the expectation, the variance, and
+the covariance matrix, respectively. The probability density
+function (pdf) of a circularly-symmetric complex Gaussian
+(CSCG) random variable x with mean m and variance v
+is denoted by CN (x; m, v). The pdf of a CSCG random
+vector x with mean m and covariance matrix V is denoted
+by CN (x; m, V).
+II. S YSTEM M ODEL AND P ROBLEM S TATEMENT
+A. System Model
+Consider the uplink transmission of massive devices in an
+IoT network, as illustrated in Fig. 1. The system operates under
+a grant-free random access scheme to support the sporadic
+connectivity of K  1 devices. The BS is equipped with
+M antennas, while each IoT device is equipped with a single
+antenna. A total of N adjacent OFDM subcarriers are shared
+among the devices for pilot transmission. We adopt a blockfading model, i.e., all the channels remain quasi-static within
+a transmission block. Moreover, we assume that the IoT
+devices are synchronized, and each device determines whether
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+3578
+
+IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 44, 2026
+
+the BS can be expressed in a matrix form as
+
+
+hk11
+hk12
+. . . hk1M
+ hk21
+hk22
+. . . hk2M 
+
+
+N ×M
+Hk =  .
+.
+.
+..  ∈ C
+..
+..
+ ..
+.
+. 
+hkN 1 hkN 2 . . . hkN M
+
+Fig. 1. System model of the MIMO-OFDM grant-free random access network.
+
+TABLE I
+
+(2)
+
+Assume that a total of T OFDM symbols are allocated for pilot
+transmission. Let qktn ∈ C be the pilot symbol transmitted by
+the k-th device during the t-th OFDM symbol on the n-th
+subcarrier. We construct a diagonal pilot matrix as Qkt ,
+diag {qkt1 , . . ., qktN } ∈ CN ×N , ∀k, t. Assume that the cyclic
+prefix (CP) length exceeds the maximum channel delay spread.
+After removing the CP and applying the DFT, the received
+signal Yt ∈ CN ×M during the t-th OFDM symbol is given
+by
+K
+X
+Yt =
+αk Qkt Hk + Nt ,
+(3)
+k=1
+
+S UMMARY OF N OTATIONS
+
+N ×M
+
+where Nt ∈ C
+is an AWGN matrix with the elements
+i.i.d. drawn from CN (0, δ02 ). Let Xk , αk Hk . Define
+H
+H
+
+
+, . . ., QH
+∈
+Y , Y1H , . . ., YTH ∈ CN T ×M , Qk , QH
+k1
+kT
+
+ H
+N T ×M
+N T ×N
+H H
+∈C
+. We express
+C
+, and N , N1 , . . ., NT
+the received signal Y over the T OFDM symbols in a more
+compact form as
+Y=
+
+K
+X
+
+Qk Xk + N = QX + N,
+
+(4)
+
+k=1
+
+where Q , [Q1 , . . ., QK ] ∈ CN T ×N K , and X ,
+ H
+H
+X1 , . . ., XH
+∈ CN K×M . For simplicity, we impose the
+K
+condition that Q is partial orthogonal, specifically requiring
+that QQH = KP IN T , where each device has the same
+transmit power budget P . The design of partial orthogonal Q
+is deferred to Section V-C. Due to the sporadic access of the
+devices, matrix X exhibits a block-sparsity structure. Specifically, if the k-th device is inactive, we have Xk = αk Hk = 0.
+Frequently used notations in this paper are summarized in
+Table I.
+B. Problem Statement
+
+to access the channel in an independent and identically distributed (i.i.d.) manner. As a result, only a (small) subset of
+the devices is active in any given transmission block. We use
+an indicator function αk to model the device activity as
+(
+αk =
+
+1, if the k-th device is active,
+0, otherwise.
+
+(1)
+
+Let λ represent the probability of a device being active, i.e.,
+p(αk = 1) = λ, where λ  1.
+Denote by hknm ∈ C the channel frequency response on the
+n-th subcarrier from the k-th device to the m-th BS antenna.
+Then, the channel frequency response from the k-th device to
+
+In this paper, we aim to simultaneously detect the active
+devices and estimate the corresponding channels based on
+the observation Y under a Bayesian inference framework.
+Exact Bayesian estimators, e.g., the MMSE estimator, are
+generally intractable due to the high-dimensional integrals
+in the marginalization of the joint posterior distribution
+K
+p X, {Hk }K
+k=1 , {αk }k=1 |Y .
+Alternatively, message-passing algorithms [5], [6], [27],
+[47] provide a low-complexity iterative approach for approximately calculating the MMSE estimator. In message passing,
+we factorize the joint posterior distribution according to Baye’s
+theorem and the conditional independence relationships among
+the variables, expressed as
+
+K
+p X, {Hk }K
+k=1 , {αk }k=1 |Y
+∝
+
+M
+Y
+m=1
+
+p(ym |xm )
+
+K
+Y
+
+p(Xk |Hk , αk )p(Hk )p(αk ),
+
+(5)
+
+k=1
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+CAI et al.: JOINT ACTIVITY DETECTION AND CHANNEL ESTIMATION FOR MASSIVE CONNECTIVITY
+
+3579
+
+TABLE II
+FACTOR N ODES AND T HEIR A BBREVIATIONS
+
+This insight enables the integration of score-based generative
+networks for provable MMSE denoising, eliminating the need
+to compute high-dimensional integrals.
+
+Fig. 2.
+Factor graph representation of the joint posterior distribuK
+tion p(X, {Hk }K
+k=1 , {αk }k=1 |Y). The variables are represented by the
+“variable nodes” that appear as circles, while the distributions are represented
+by the “factor nodes” that appear as black filled squares. We use different
+colors to differentiate xm and Xk in vector-matrix reorganization.
+
+where xm ∈ CN K and ym ∈ CN T denote the m-th column
+of X = [x1 , . . ., xM ] and Y = [y1 , . . ., yM ], respectively. A
+factor graph is then utilized to represent the joint distribution
+in (5), as illustrated in Fig. 2. The distributions of each factor
+node and their abbreviations are summarized in Table II. The
+main difficulty in implementing message passing on the factor
+graph lies in the message calculation associated with the factor
+node p(Hk ), detailed as follows.
+• Lack of exact characterization of channel distribution:
+It is extremely challenging, if not impossible, to obtain
+an accurate characterization of the channel distribution
+p(Hk ). Existing literature resorts to various assumptions,
+e.g., Rayleigh fading [5], [6], Rician fading [10], angularfrequency structured sparsity [11], or frequency-domain
+block-wise linearity [27], to model the wireless channel.
+These assumptions, however, may be mismatched with
+the ground-truth prior distribution, leading to significant performance degradation and potentially causing the
+algorithm to diverge.
+• Intractable high-dimensional integrals: The messages
+associated with the factor node p(Hk ) can only be derived
+under specific, simple, and easily computable priors.
+For example, the work in [11] adopted a simple i.i.d.
+Bernoulli-Gaussian distribution to account for the inherent sparsity in the angular domain. Generally speaking,
+even if the ground-truth channel distribution becomes
+analytically available, calculating the messages for the
+factor node p(Hk ) remains highly challenging due to the
+complicated and high-dimensional integrals (as will be
+discussed in Section III-B).
+To summarize, the message-passing framework faces a
+dilemma: the adopted channel prior is either too imprecise to
+ensure good performance, or too complex to facilitate efficient
+message calculation. This paper seeks to address the aforementioned challenges by plugging in deep generative priors
+for efficient message calculation. We begin by developing
+a TMP framework for JADCE. Then, we present a unique
+interpretation of the belief calculation at the factor node p(Hk )
+as an MMSE denoising problem under AWGN observations.
+
+III. T URBO M ESSAGE PASSING F RAMEWORK
+In this section, we develop a novel TMP framework based
+on the combined use of the sum-product rule [48] and the
+EP algorithm [49]. TMP interprets the message updates on
+the factor graph in Fig. 2 as iterations between two modules,
+namely, module A and module B. Module A is a linear
+estimator that separately estimates each column of X (i.e., xm )
+exploiting the likelihood p(ym |xm ) and the messages from
+module B. Module B is a denoiser of Xk exploiting the priors
+p(Hk ) and p(αk ), along with the messages from module A.
+These estimates iterate between the two modules like turbo
+decoding, hence the name TMP. We describe the message
+calculations in module A and module B in the following
+subsections.
+A. Module A: Linear Estimator
+Following Turbo-CS [26], we start by initializing the message from the variable node xm to the factor node p(ym |xm )
+pri
+as Mxm →fym (xm ) = CN (xm ; xpri
+m,A , vm,A IN K ). The belief
+of xm on the factor node p(ym |xm ) is expressed as
+Mfym (xm ) ∝ p(ym |xm )Mxm →fym (xm ).
+
+(6)
+
+In (6), the belief Mfym (xm ) is proportional to the product of
+two Gaussian pdfs, which is also a Gaussian pdf. The mean
+and covariance can be obtained by completing the square in
+the exponent of the Gaussian product with respect to xm .
+We further approximate the covariance matrix using a shared
+scalar variance [26], [50], resulting in the belief of the form
+post
+Mfym (xm ) ≈ CN (xm ; xpost
+m,A , vm,A IN K ), where
+pri
+
+pri
+xpost
+m,A = xm,A +
+
+vm,A
+
+Q
+pri
+KP vm,A
++ δ02
+pri 2
+T P (vm,A
+)
+post
+pri
+vm,A
+= vm,A
+−
+.
+pri
+KP vm,A + δ02
+
+H
+
+
+
+
+ym − Qxpri
+m,A ,
+
+(7)
+(8)
+
+Eqns. (7) and (8) are respectively the posterior mean and
+variance from the linear MMSE (LMMSE) estimator of xm ,
+pri
+given the prior mean xpri
+m,A and variance vm,A .
+The message from the factor node p(ym |xm ) to the variable
+node xm , also known as the extrinsic message, is calculated
+based on the EP algorithm [49] as
+Mfym →xm (xm ) ∝
+
+Mfym (xm )
+.
+Mxm →fym (xm )
+
+(9)
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+3580
+
+IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 44, 2026
+
+From (9), the extrinsic message is proportional to the ratio of
+two Gaussian pdfs, which is another Gaussian pdf, denoted as
+ext
+Mfym →xm (xm ) = CN (xm ; xext
+m,A , vm,A IN K ). The variance
+ext
+ext
+vm,A and mean xm,A are respectively given by
+ext
+vm,A
+=
+
+1
+post
+vm,A
+
+ext
+xext
+m,A = vm,A
+
+−
+
+1
+pri
+
+vm,A
+
+,
+
+(10)
+.
+
+(11)
+
+B. Module B: Channel and Device Activity Denoisers
+As shown in Fig. 2, the denoiser of Xk = αk Hk can be
+further divided into two sub-modules: the denoiser of Hk
+and the denoiser of αk . The outputs from these two submodules are then combined at the factor node p(Xk |Hk , αk )
+to produce the denoised Xk . In this subsection, we formally
+establish the equivalence between belief calculation at the
+factor node p(Hk ) and MMSE denoising of Hk under AWGN
+observations. This equivalence plays a crucial role in the
+integration of score-based generative priors for efficient belief
+calculation.
+Firstly, we derive the message from the variable node Xk to
+the factor node p(Xk |Hk , αk ), denoted as MXk →fXk (Xk ),
+by examining the relationships in vector-matrix reorganization. We marginalize  the message Mfym →xm (xm ) =
+pri
+pri
+CN xm ; xm,B , vm,B IN K from module A to obtain
+
+pri
+(12)
+Mfym →xkm (xkm ) = CN xkm ; xpri
+km,B , vm,B IN ,
+pri
+
+where xkm , [xk1m , . . ., xkN m ] ∈ CN and xkm,B ,
+ pri
+T
+xk1m,B , . . ., xpri
+∈ CN represent the k-th blocks in
+kN m,B
+H
+
+pri
+H
+xm and xm,B , respectively, i.e., xm = xH
+1m , . . ., xKm
+ pri H
+
+pri
+H H
+and xpri
+. After vector-matrix
+m,B = (x1m,B ) , . . ., (xKm,B )
+reorganization, the message from the variable node Xk to the
+factor node p(Xk |Hk , αk ) manifests as
+Y
+MXk →fXk (Xk ) =
+Mfym →xkm (xkm )
+(13)
+m
+Y
+
+
+pri
+pri
+CN xkm ; xkm,B , vm,B IN ,
+
+(14)
+
+m
+
+where (13) arises from the fact that the messages
+Mfym →xkm (xkm ) are independent for different values of m.
+1) Denoiser of Hk : The message from the factor node
+p(Xk |Hk , αk ) to the variable node Hk is computed following
+the sum-product rule [48]:
+MfXk →Hk (Hk )
+Z
+∝
+δ(Xk − αk Hk )MXk →fXk (Xk )p(αk )
+Xk ,αk
+Z
+Y
+
+pri
+∝ (1 − λ)
+δ(Xk )
+CN xkm ; xpri
+km,B , vm,B IN
+Xk
+
+m
+
+∝ (1 − λ)
+
+Y
+
+CN
+
+Y
+
+pri
+CN xkm ; xpri
+km,B , vm,B IN
+
+
+
+m
+
+pri
+pri
+0; xkm,B , vm,B
+IN
+
+m
+
+Y
+
+
+pri
+CN hkm ; xpri
+km,B , vm,B IN ,
+
+(15)
+
+m
+T
+
+!
+
+The message Mfym →xm (xm ) flows rightward through the
+factor graph unchanged, serving as the input to module B:
+pri
+pri
+ext
+xm,B = xext
+m,A , vm,B = vm,A .
+
+=
+
+δ(Xk − Hk )
+Xk
+
++λ
+
+!−1
+
+post
+xpri
+xm,A
+m,A
+−
+post
+pri
+vm,A
+vm,A
+
+T
+
+Z
++λ
+
+where hkm , [hk1m , . . ., hkN m ] ∈ CN represents the
+m-th column of Hk , i.e., Hk = [hk1 , . . ., hkM ]. The first
+term in (15) corresponds to the case that the k-th device is
+inactive and is a constant with respect to Hk . As a result,
+MfXk →Hk (Hk ) cannot be properly normalized to a valid
+pdf when this term is retained. To obtain a tractable message
+for channel denoising, we approximate MfXk →Hk (Hk ) by
+conditioning on the active case and forwarding only the second
+term to the channel denoiser. The activity uncertainty will be
+handled separately through the Bernoulli update in (30). The
+approximated Gaussian message reads
+Y
+
+pri
+MfXk →Hk (Hk ) ≈
+(16)
+CN hkm ; hpri
+km , τm IN ,
+m
+pri
+pri
+pri
+where hpri
+km = xkm,B and τm = vm,B .
+
+Based on the update rules of EP [49], the belief of Hk on
+the factor node p(Hk ) is expressed as
+h
+i
+MfHk (Hk ) = proj p(Hk )MfXk →Hk (Hk )
+Y
+
+post
+≈
+CN hkm ; hpost
+(17)
+km , τm IN ,
+m
+
+where proj[·] represents the projection of a probability distribution to a Gaussian density with matched first- and
+second-order moments, and (17) approximates the variance by
+post
+post
+a set of scalars. The posterior mean hkm and variance τm
+can be calculated as
+Z
+Y
+
+1
+pri
+pri
+hpost
+=
+hkm p(Hk )
+CN hkm ; hkm , τm
+IN ,
+km
+Zk Hk
+m
+(18)
+Z
+1 X 1
+post
+2
+τm
+=
+|hknm − hpri
+knm | p(Hk )
+KN
+Zk Hk
+k,n
+Y
+
+pri
+×
+CN hkm ; hpri
+km , τm IN ,
+
+(19)
+
+m
+
+
+R
+Q
+pri
+where Zk , Hk p(Hk ) m CN hkm ; hpri
+is the
+km , τm IN
+normalization constant.
+State evolution (SE) analysis [51] has shown that the error
+pri
+vector hkm − hkm is i.i.d. Gaussian in the large system limit.
+In other words, module A decouples the linear mixing model
+(3) into a series of independent AWGN observations of the
+ground truth, i.e.,
+
+pri
+hpri
+(20)
+km = hkm + wkm , wkm ∼ CN 0, τm IN .
+Eqn. (20) implies the Gaussian transition probability
+pri
+pri
+p(hpri
+km |hkm ) = CN hkm ; hkm , τm IN , and therefore,
+Y
+
+pri
+p(Hpri
+CN hpri
+(21)
+k |Hk ) =
+km ; hkm , τm IN ,
+m
+
+Hpri
+k
+
+
+
+where we denote
+, hpri
+hpri
+k1 , . . ., 
+kM for brevity. By
+Q
+pri
+noting that m CN hkm ; hpri
+km , τm IN in (18) and (19) takes
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+CAI et al.: JOINT ACTIVITY DETECTION AND CHANNEL ESTIMATION FOR MASSIVE CONNECTIVITY
+
+the same form as p(Hpri
+k |Hk ), the belief calculation of Hk
+can be interpreted as an MMSE denoising problem given the
+AWGN model (20):
+
+
+,
+(22)
+Hpost
+= E Hk |Hpri
+k
+k
+X
+
+
+1
+post
+τm
+=
+Var hknm |Hpri
+,
+(23)
+k
+KN
+
+3) Denoiser of Xk : Based on the update rules of EP [49],
+the belief of Xk on the factor node p(Xk |Hk , αk ) is expressed
+as
+MfXk (Xk )
+Z
+∝ proj
+
+δ(Xk − αk Hk )MXk →fXk (Xk )
+
+× MHk →fXk (Hk )p(αk )
+h
+post
+∝ proj (1 − λk )δ(Xk )
+Y
+i
+post
+,
+(32)
++ λpost
+CN xkm ; x̃post
+k
+km,B , ṽm,B IN
+Hk ,αk
+
+k,n
+
+
+post 
+where Hpost
+, hpost
+k
+k1 , . . ., hkM . To summarize, the belief
+calculation amounts to combining the Gaussian pseudolikelihood p(Hpri
+k |Hk ) with the true prior p(Hk ). This
+operation is mathematically equivalent to MMSE denoising
+under AWGN observations: the pseudo-observation from Module A provides a noisy estimate of the channel, and the prior
+serves as the denoiser to refine this estimate. The posterior
+mean and variance in (22) and (23) are, however, by no means
+easy to calculate due to the complicated and high-dimensional
+integrals. We will detail the method for obtaining the posterior
+message in Sections IV and V.
+The extrinsic message from the variable node Hk to the
+factor node p(Xk |Hk , αk ) is calculated as
+MfHk (Hk )
+
+MHk →fXk (Hk ) ∝
+
+MfX →Hk (Hk )
+Y k
+ext
+∝
+CN (hkm ; hext
+km , τm IN ),
+
+(24)
+(25)
+
+m
+
+where the extrinsic variance and mean are respectively given
+by
+
+−1
+1
+1
+ext
+τm
+=
+−
+,
+(26)
+post
+pri
+τm
+τm
+!
+hpri
+hpost
+ext
+km
+km
+hext
+.
+(27)
+km = τm
+post − pri
+τm
+τm
+2) Denoiser of αk : The belief of αk on the factor node
+p(Xk |Hk , αk ) is expressed as
+
+3581
+
+m
+
+where
+post
+ṽm,B
+=
+
+1
+pri
+
+vm,B
+
+post
+post
+x̃km,B = ṽm,B
+
++
+
+!−1
+
+1
+
+,
+
+ext
+τm
+
+xpri
+km,B
+
+hext
+km
++
+pri
+ext
+τm
+vm,B
+
+(33)
+!
+.
+
+(34)
+
+In (32), the expression inside the Gaussian projection operator
+is a Bernoulli-Gaussian pdf. By taking the Gaussian projection,
+the mean of xkm with respect to the belief MfXk (Xk ) is given
+by
+post post
+xpost
+x̃km,B .
+(35)
+km,B = λk
+The variance of the (n, m)-th element of Xk with respect to
+the belief MfXk (Xk ) is
+
+
+post
+post
+post
+post
+post
+(36)
+|x̃knm,B |2 + ṽm,B − |xknm,B |2 .
+vknm,B = λk
+Based on the above, the projected Gaussian belief is expressed
+as
+Y
+
+post
+MfXk (Xk ) ≈
+CN xkm ; xpost
+(37)
+km,B , vm,B IN ,
+m
+
+where we approximate the variance of each column of Xk by
+1 X post
+post
+vm,B =
+(38)
+vknm,B .
+KN
+k,n
+
+MfXk (αk )
+Z
+∝
+δ(Xk −αk Hk )MXk →fXk(Xk )MHk →fXk(Hk )p(αk )
+Hk ,Xk
+
+(28)
+post
+post
+∝ (1 − λk )δ(αk ) + λk δ(1 − αk ),
+
+(29)
+
+where
+λpost
+k
+
+
+Q
+
+
+pri
+0; xpri
+km,B , vm,B IN
+
+−1
+
+(1−λ) m CN
+
+= 1+ Q
+ 
+pri
+pri
+ext I
+λ m CN 0; xkm,B − hext
+,
+v
++
+τ
+N
+m
+km
+m,B
+(30)
+
+is the posterior probability of activity for the k-th device. We
+set a threshold λthr to facilitate the binary decision of device
+activity, i.e.,
+(
+1, λpost
+≥ λthr ,
+k
+α̂k =
+(31)
+post
+0, λk < λthr .
+
+While per-element or full covariance estimation could, in
+principle, capture heterogeneous confidence across users and
+subcarriers, such estimates are highly unreliable with limited
+pilot observations. Scalar averaging, as adopted in (38), is a
+standard design choice to stabilize message-passing updates
+[26], [50].
+Finally, we calculate the message from the factor node
+p(Xk |Hk , αk ) to the variable node Xk as
+MfXk (Xk )
+
+MfXk →Xk (Xk ) =
+
+,
+MXk →fXk (Xk )
+Y
+
+ext
+=
+CN xkm ; xext
+km,B , vm,B ,
+
+(39)
+(40)
+
+m
+
+where
+ext
+=
+vm,B
+
+!−1
+
+1
+
+1
+
+vm,B
+
+pri
+vm,B
+
+post −
+
+post
+
+ext
+xext
+km,B = vm,B
+
+xkm,B
+post
+
+vm,B
+
+,
+pri
+
+−
+
+xkm,B
+pri
+vm,B
+
+(41)
+!
+.
+
+(42)
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+3582
+
+IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 44, 2026
+
+Algorithm 1 TMP Framework
+pri M
+M
+Input: Q, Y, δ02 , {xpri
+m,A }m=1 , {vm,A }m=1
+post
+2: Output: {α̂k }K
+}K
+k=1 , {Hk
+k=1
+3: repeat
+4:
+% Linear estimator
+post
+5:
+Update xpost
+m,A , vm,A by (7) and (8), ∀m;
+ext
+6:
+Update xext
+m,A , vm,A by (11) and (10), ∀m;
+pri
+pri
+ext
+ext
+, ∀k, m;
+= vm,A
+7:
+xkm,B = xkm,A , vm,B
+8:
+% Channel and device activity denoisers
+pri
+pri
+pri
+9:
+hpri
+km = xkm,B , τm = vm,B , ∀k, m;
+post
+post
+10:
+Update Hk , τm by (22) and (23), ∀k, m;
+ext
+11:
+Update hext
+km , τm by (27) and (26), ∀k, m;
+post
+12:
+Update λk by (30), ∀k;
+post
+post
+13:
+Update xkm,B , vm,B by (35) and (38), ∀k, m;
+ext
+ext
+by (42) and (41), ∀k, m;
+14:
+Update xkm,B , vm,B
+pri
+pri
+ext
+ext
+15:
+xkm,A = xkm,B , vm,A = vm,B
+, ∀k, m;
+16: until the stopping criterion is met
+17: Decide the indices of active devices by (31), ∀k.
+
+1:
+
+The extrinsic message in (40) flows leftward through the
+vector-matrix reorganization module unchanged, serving as
+the prior message of module A in the next iteration, i.e.,
+pri
+pri
+ext
+xkm,A = xext
+km,B , vm,A = vm,B . We summarize the pseudocode of the TMP framework in Algorithm 1.
+IV. L EARNING S CORE -BASED G ENERATIVE P RIORS FOR
+MMSE D ENOISING
+In this section, we introduce score-based representations of
+(22) and (23) to circumvent the intractable high-dimensional
+integrals involved in posterior message calculation. Then, we
+elaborate the denoising score matching technique [15], [30],
+[31], a data-driven approach for empirically estimating score
+functions.
+
+“denoised result = noisy data - predicted noise” from a denoising perspective, in which the predicted noise corresponds to
+pri
+−τ pri ∇Hpri log p(Hk ).
+k
+Likewise, the posterior covariance matrix can be obtained
+through the second-order Tweedie’s formula [29] as
+
+
+Cov Hk |Hpri
+= τ pri IN M + (τ pri )2 ∇2Hpri log p(Hpri
+(45)
+k
+k ),
+k
+
+pri
+
+where ∇2Hpri log p(Hk ) ∈ CN M ×N M is the Hessian of the
+k
+log-density function, referred to as the second-order score
+function. The first- and second-order Tweedie’s formulas are
+well-known results that can be proven using simple integration
+tricks [52, Appendix B] or by applying the properties of
+exponential families [53, Appendix A].
+Once the score functions are known, we can apply (44) and
+(45) to efficiently implement the MMSE denoiser described
+in (22) and (23). For massive connectivity, learning the score
+functions individually for each device is impractical due to
+the vast number of devices involved. Instead, we train only
+two networks, namely the first- and the second-order score
+networks, in which all the training samples from different
+devices are combined into a single training set.
+B. First-Order Score Matching
+With a slight abuse of notation, let p(H) : CN ×M → R
+be the mixture distribution of the channels for the total K
+devices. We perturb it with a pre-specified noise distribution
+p(H̃|H) = CN (0, τ IN M ). Consequently,
+R the perturbed channel distribution is expressed as p(H̃) = H p(H̃|H)p(H). For
+a specific value of τ , our goal is to learn a first-order score
+network S1 (·, τ ; θ) : CN ×M → CN ×M parameterized by θ
+with the following score matching objective:
+
+
+2
+min Ep(H̃) S1 (H̃, τ ; θ) − ∇H̃ log p(H̃)
+.
+(46)
+θ
+
+A. Bridging Score Function and MMSE Denoising
+For simplicity, we approximate that in (20), different
+pri
+columns ofP
+Hpri
+k (i.e., hkm ) share a common variance given by
+pri
+1
+τ pri = M
+m τm . Then, we rewrite the AWGN observation
+model as
+
+pri
+Hpri
+IN M .
+(43)
+k = Hk + Wk , Wk ∼ CN 0, τ
+For the model in (43), Tweedie’s formula [28], [29] offers
+an empirical Bayes approach to calculate the posterior mean,
+applicable regardless of the specific form of the prior distribution p(Hk ). The formula reads
+
+
+pri
+E Hk |Hpri
+= Hpri
+∇Hpri log p(Hpri
+(44)
+k
+k +τ
+k ),
+k
+
+∇Hpri log p(Hpri
+k )
+k
+
+N ×M
+
+is the gradient of the
+where
+∈ C
+log-density function, commonly known as the (first-order)
+score function. Tweedie’s formula bridges MMSE denoising
+and the score of the perturbed data distribution through a
+simple equation, eliminating the need for calculating highdimensional integrals. Specifically, the posterior mean can be
+viewed as the sum of the maximum likelihood estimator and
+a Bayes correction term. The formula can also be framed as
+
+F
+
+Eqn. (46) cannot be directly used as the loss function since
+∇H̃ log p(H̃) does not have an analytical form. The above formulation is shown equivalent to the denoising score matching
+objective [15], [30], given by
+
+
+2
+min Ep(H)p(H̃|H) S1 (H̃, τ ; θ) − ∇H̃ log p(H̃|H)
+.
+θ
+
+F
+
+(47)
+The equivalence is in the sense that (46) and (47) share the
+same optimal solution S1 (H̃, τ ; θ ? ) = ∇H̃ log p(H̃), supposing that the network has sufficient representation capability.
+into (47) yields
+Substituting ∇H̃ log p(H̃|H) = − H̃−H
+τ
+
+
+2
+H̃ − H 
+min `1 (τ ; θ) , Ep(H)p(H̃|H)  S1 (H̃, τ ; θ) +
+.
+θ
+τ
+F
+
+(48)
+Eqn. (48) implies that the first-order score matching is essentially to learn a noise predictor that outputs the noise scaled
+by a negative factor.
+In practice, the score-based MMSE denoiser is required to
+operate effectively across a range of noise levels. We therefore
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+CAI et al.: JOINT ACTIVITY DETECTION AND CHANNEL ESTIMATION FOR MASSIVE CONNECTIVITY
+
+combine (48) for all possible values of τ ∈ {τi }Ii=1 to establish
+a unified objective for training the first-order score network:
+min
+θ
+
+I
+X
+
+λ1 (τi )`1 (τi ; θ).
+
+(49)
+
+i=1
+
+A common choice for the weighting factor is λ1 (τi ) = τi [15],
+which empirically balances the loss term `1 (τi ; θ) for different
+values of τi .
+
+For a given τ , we seek to learn a second-order score model
+S2 (·, τ ; φ) : CN ×M → CN M ×N M parameterized by φ with
+the second-order score matching objective:
+
+
+2
+.
+(50)
+min Ep(H̃) S2 (H̃, τ ; φ) − ∇2H̃ log p(H̃)
+F
+
+The second-order score matching objective can also be
+expressed in an equivalent denoising score matching formulation as
+
+min Ep(H)p(H̃|H) S2 (H̃, τ ; φ)
+φ
+
+IN M 2
+,
+(51)
+− b(H, H̃, τ )b(H, H̃, τ )H +
+τ
+F
+
+
+. Please
+where b(H, H̃, τ ) , vec ∇H̃ log p(H̃) + H̃−H
+τ
+refer to [31, Appendix F] for the detailed derivation. The
+objective in (51) relies on the ground truth of the first-order
+score function, which is in general unavailable. To address this,
+we replace ∇H̃ log p(H̃) with the learned model S1 (H̃, τ ; θ)
+for efficient computation. Consequently, the objective in (51)
+modifies to
+
+min Ep(H)p(H̃|H) S2 (H̃, τ ; φ)
+φ
+
+IN M 2
+H
+,
+(52)
+− b̂(H, H̃, τ )b̂(H, H̃, τ ) +
+τ
+F
+
+
+where b̂(H, H̃, τ ) , vec S1 (H̃, τ ; θ) + H̃−H
+. It has been
+τ
+established in [31] that this replacement allows the secondorder score network to maintain an error-bounded property,
+provided that the first-order score matching error remains
+bounded.
+As demonstrated in (23), only the trace of the posterior
+covariance matrix is required, rather than the full matrix itself.
+By noting in (45) the simple relation between the posterior
+covariance matrix and the second-order score function, it
+suffices to match only the trace of the second-order score
+function for posterior variance evaluation. This leads to a
+simplified objective expressed as
+
+
+min `2 (τ ; φ) , Ep(H)p(H̃|H) tr S2 (H̃, τ ; φ)
+φ
+2
+2
+NM
+.
+(53)
+− b̂(H, H̃, τ ) +
+τ
+2
+We combine (53) for all τ ∈ {τi }Ii=1 to formulate a unified
+objective for training the second-order score network:
+min
+φ
+
+I
+X
+i=1
+
+λ2 (τi )`2 (τi ; φ),
+
+where λ2 (τi ) is the weighting factor depending on τi . Following [31], we choose λ2 (τi ) = τi2 .
+In practice, one can first train a first-order score network,
+and then freeze it during the second-order score learning
+phase. Alternatively, both networks can be trained simultaneously by disabling gradient backpropagation from the
+second-order training objective (54) to the first-order score
+network.
+V. STMP-JADCE A LGORITHM
+
+C. Second-Order Score Matching
+
+φ
+
+3583
+
+(54)
+
+A. Overall Algorithm
+With the two score networks available, we are able to obtain
+post
+post
+the posterior mean Hk
+and variance τm based on (44)
+and (45) as
+
+post
+pri
+pri
+Hk = Hk + τ pri S1 Hk , τ pri ; θ ,
+(55)
+pri 2 X
+
+(τ )
+pri
+post
+s2,nm Hpri
+;φ ,
+(56)
+τm
+= τ pri +
+k ,τ
+KN
+k,n
+
+pri
+where s2,nm (Hpri
+; φ) denotes the
+k ,τ
+ ((n − 1)M + m)-th
+pri pri
+diagonal elements of S2 Hk , τ ; φ .
+
+Fig. 3 demonstrates the integration of the two score
+networks into the TMP framework, resulting in the
+STMP-JADCE algorithm. STMP-JADCE features a hybrid
+structure in which the channel denoiser is realized by score
+networks, while the device activity denoiser and the linear
+estimator are derived analytically. In this way, our method
+can be easily applied across different device activity levels,
+pilot patterns, and SNRs without the need to retain the
+score networks. Moreover, the potential mismatch between the
+chosen prior of the device activity and the ground truth can be
+rectified by incorporating the expectation-maximization (EM)
+update [54]. Essentially, the development of STMP-JADCE
+highlights a broader philosophical shift: whereas conventional
+Bayesian inference in wireless communications has long relied
+on manually specified and typically oversimplified priors for
+tractability, our framework embraces a data-driven paradigm
+in which the channel prior is learned directly from data. This
+data-driven Bayesian inference not only resolves the mismatch
+between hand-crafted priors and real channel statistics, but
+also opens the door to more principled integration of modern
+generative models into inference algorithms. We discuss the
+engineering tricks used in STMP-JADCE in the following.
+B. Engineering Tricks
+1) Damping: The pseudo AWGN observation model in (20)
+is justified only in the large system limit with right-rotationally
+invariant random Q [51]. In practice, the equivalent noise may
+not be strictly Gaussian due to the particular choice of Q and
+the finite dimensions of M , N , K, and T . This discrepancy
+can lead to some unexpected numerical issues and diverges.
+In this work, we employ the damping technique to improve
+the numerical stability of STMP-JADCE. Specifically, in each
+iteration, we smoothen the updates of the means and variances
+by using a linear combination of the current and previous
+updates. For example, we replace the input to module A (Line
+15 of Algorithm 1) at the i-th iteration by
+pri
+
+ext
+xkm,A (i) = γxext
+km,B (i) + (1 − γ)xkm,B (i − 1),
+
+(57)
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+3584
+
+IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 44, 2026
+
+Fig. 3. Diagram of the STMP-JADCE algorithm. The real and imaginary parts of the wireless channel matrix are concatenated as two feature channels
+(analogous to the RGB channels in images) when fed into the score networks. For the k-the device, the input tensor is constructed by stacking the real and
+imaginary parts of Hk into a tensor of size (N, M, 2). Across multiple devices, these tensors are further batched along the user dimension. In this figure, the
+pri
+first and the second devices are active, whereas the K-th device is inactive. Therefore, the input to the score networks takes the form of Hk = Hk + Wk
+pri
+for k = 1, 2, while HK is a random noise. Note that, for brevity, we omitted the skip connections (dependences) from the prior messages to both the
+posterior and extrinsic messages. Please refer to eqns. (55), (56), (26), and (27) for the rigorous relationships.
+
+pri
+ext
+ext
+vm,A
+(i) = γvm,B
+(i) + (1 − γ)vm,B
+(i − 1),
+
+(58)
+
+where γ ∈ (0, 1] is the damping factor. The input to module
+B is damped in a similar manner.
+2) Channel Power Normalization: Following the training
+recipe of score-based generative models [15], we normalize the
+power of each channel sample during
+training, ensuring that
+√
+the normalized channel H̄k = N M Hk / kHk kF . During
+inference, the ground-truth channel power is unknown due to
+channel fading. The input should be properly scaled since the
+networks are trained on a specific channel power and may not
+generalize well to arbitrary power levels. According to (43),
+we have
+2
+2
+−N M τ pri .
+(59)
+Hk F = Hpri
+k
+F
+2
+
+By comparing (59) with the training normalization H̄k F =
+pri
+N M , we compute the scaled input of Hk as follows:
+s
+NM
+H̄pri
+Hpri
+(60)
+k =
+k .
+pri 2
+pri
+Hk F − N M τ
+Similarly, the scaled input of τ pri is given by
+τ̄ pri = P
+
+k
+
+post
+
+KN M
+
+τ
+2
+− KN M τ pri
+Hpri
+k
+F
+
+pri
+
+.
+
+(61)
+
+Algorithm 2 STMP-JADCE Algorithm
+pri M
+M
+Input: Q, Y, δ02 , {xpri
+m,A }m=1 , {vm,A }m=1
+post K
+K
+2: Output: {α̂k }k=1 , {Hk }k=1
+3: repeat
+4:
+% Linear estimator
+post
+post
+5:
+Update xm,A (i), vm,A (i) by (7) and (8), ∀m;
+ext
+ext
+6:
+Update xm,A (i), vm,A (i) by (11) and (10), ∀m;
+ext
+ext
+7:
+xpri
+km,B (i) = γxkm,A (i) + (1 − γ)xkm,A (i − 1),
+pri
+ext
+ext
+vm,B (i) = γvm,A (i) + (1 − γ)vm,A (i − 1), ∀k, m;
+8:
+% Channel and device activity denoisers
+pri
+pri
+pri
+pri
+9:
+hkm (i) = xkm,B (i), τm (i) = vm,B (i), ∀k, m;
+pri
+10:
+Update H̄k (i), τ̄ pri (i) by (60) and (61), ∀k;
+post
+11:
+Update H̄post
+(i), τ̄m
+(i) by (62) and (63), ∀k, m;
+k
+post
+post
+12:
+Update Hk (i) and τm
+(i) by (64) and (65), ∀k,m;
+ext
+13:
+Update hext
+km (i), τm (i) by (27) and (26), ∀k, m;
+14:
+Update λpost
+(i) by (30), ∀k;
+k
+post
+post
+15:
+Update xkm,B (i), vm,B (i) by (35) and (38), ∀k, m;
+ext
+16:
+Update xext
+km,B (i), vm,B (i) by (42) and (41), ∀k, m;
+pri
+ext
+17:
+xkm,A (i) = γxkm,B (i) + (1 − γ)xext
+km,B (i − 1),
+pri
+ext
+ext
+vm,A (i) = γvm,B
+(i) + (1 − γ)vm,B
+(i − 1), ∀k, m;
+18: until the stopping criterion is met
+19: Decide the indices of active devices by (31), ∀k.
+
+1:
+
+post
+
+Let H̄k and τ̄m be the scaled posterior mean and variance
+obtained from the score networks:
+
+post
+pri
+pri
+H̄k = H̄k + τ̄ pri S1 H̄k , τ̄ pri ; θ ,
+(62)
+pri 2 X
+
+(τ̄ )
+post
+pri
+s2,nm H̄pri
+; φ . (63)
+τ̄m
+= τ̄ pri +
+k , τ̄
+KN
+k,n
+
+post
+Finally, we rescale H̄post
+and τ̄m
+as
+k
+s
+2
+Hpri
+− N M τ pri post
+post
+k
+F
+Hk =
+H̄k ,
+NM
+P
+2
+Hpri
+− KN M τ pri post
+k
+post
+F
+τm
+= k
+τ̄m .
+KN M
+
+(64)
+(65)
+
+Algorithm 2 provides the pseudo-code of STMP-JADCE
+with all the engineering tricks implemented.
+C. Pilot Design and Complexity Analysis
+Recall that we assume partial orthogonal Q to simplify the
+LMMSE estimator in module A. To fulfill this requirement,
+the pilot symbols {qktn }K
+k=1 of all devices transmitted on the
+n-th subcarrier during the t-th OFDM symbol should satisfy
+√
+(66)
+[q1tn , q2tn , . . ., qKtn ] = KP ui ,
+where ui ∈ C1×K is a row vector randomly selected from a
+unitary matrix U ∈ CK×K . Therefore, a total of N T rows
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+CAI et al.: JOINT ACTIVITY DETECTION AND CHANNEL ESTIMATION FOR MASSIVE CONNECTIVITY
+
+should be selected from a K-by-K matrix. For a particular
+n, the selected T rows must be distinct for each t. For a
+particular t, the selected N rows do not need to be unique
+across different values of n. It can now be readily verified
+that QQH = KP IN T . Moreover, if U is a DFT matrix, the
+matrix multiplications in module A can be simplified through
+the fast Fourier transform (FFT).
+The computational complexity of STMP-JADCE is evaluated in terms of the number of complex multiplications.
+The main contributors are the matrix-vector multiplications in
+module A and the forward passes through the score networks
+in module B. In particular, each matrix-vector multiplication in
+(7) can be implemented by N length-K FFT/IFFT operations,
+resulting in a total of 2M N K log2 K complex multiplications
+across all M antennas. Other element-wise operations are of
+lower order and therefore neglected. The complexity of the
+score networks is denoted by C = max{C1 , C2 }, where C1
+and C2 represent the computational costs of a forward pass
+through the first- and second-order score networks, respectively. Consequently, the overall per-iteration complexity of
+STMP-JADCE is O (M N K log2 K + C).
+VI. S IMULATION R ESULTS
+A. Simulation Settings
+1) Channel Dataset: We adopt the CDL family of channel
+models generated from the QuaDRiGa toolbox [55] for training and evaluation. The training and evaluation sets consist
+of 50, 000 and 5, 000 channel samples, respectively. The
+evaluation samples are directly generated from the CDL-C
+model specified in [32, Table 7.7.1-3]. In the training set,
+we randomly generate the angles, delays, and complex gains
+of each path in CDL-C to cover a diverse range of channel
+realizations. The CDL-C channel model comprises 24 clusters,
+each contributing 20 sub-paths, resulting in a total of L = 480
+propagation paths.
+In simulation, the BS is equipped with a uniform linear
+array (ULA) consisting of M = 32 antennas, arranged
+with half-wavelength spacing. A total of N = 48 OFDM
+subcarriers is considered, operating in a central frequency
+of 2.6 GHz. The subcarrier spacing is ∆f = 30 kHz.
+The delay spread is randomly chosen in the range of
+[100,
+ns. The channel model can be expressed as H =
+PL 363]
+√
+H
+ρ
+β
+l aN (τl )bM (ϕl ), where βl , ρl , τl , and ϕl denote
+l=1 l
+the complex coefficient, the path power, the path delay,
+and the angle of arrival (AoA) of the l-th path, respectively; the temporal and spatial steering vectors are defined
+
+T
+as aN (τl ) , √1N 1, e−j2π∆f τl , . . ., e−j2π(N −1)∆f τl
+and
+ −jπ sin ϕ
+T
+1
+−jπ(M
+−1)
+sin
+ϕ
+l
+l
+bM (ϕl ) , √M 1, e
+, . . ., e
+. The
+distance between the devices and the BS ranges from 35 to
+200 m. The path-loss component is modeled as −128.1 −
+36.7 log10 dk in dB scale, where dk is the distance (in km)
+between the k-th device and the BS.
+2) Network Architectures and Hyperparameters: We adopt
+the NCSNv2 [56] and NCSN [15] architectures for the
+first- and second-order score networks, respectively. Both networks adopt multi-scale convolutional architectures based on a
+U-Net or RefineNet backbone, composed of stacked residual
+
+3585
+
+TABLE III
+N ETWORK A RCHITECTURES
+
+and refinement blocks. Each block consists of two 3 × 3
+convolutions followed by instance normalization and nonlinear activation, with skip connections between corresponding
+encoder and decoder stages to preserve fine-grained spatial
+information. The networks progressively downsample feature
+maps from 128 to 256 channels through residual blocks,
+then upsample them symmetrically using refinement blocks
+with dilated convolutions to enlarge the receptive field. The
+noise level is embedded through a conditioning mechanism
+implemented by a small multilayer perceptron followed by
+feature-wise linear modulation, which injects noise-dependent
+scale and shift parameters into every block. The output of
+the NCSN model corresponds to the diagonal entries of
+the second-order score (Hessian) function, sharing the same
+dimension as the first-order score. The detailed layer configurations of both architectures are summarized in Table III.
+The models are trained on every integer SNR in the range
+of [−10, 30] dB, yielding I = 41 distinct noise levels {τi }Ii=1 .
+Both networks are optimized using Adam with a learning
+rate of 10−4 , batch size 400, and 400 training epochs. An
+exponential moving average (EMA) of the model parameters
+with rate 0.999 is applied to stabilize training [56]. The
+training is conducted on a Linux server with 4 NVIDIA A800
+GPUs and an Intel Xeon Platinum 8358P CPU @ 2.60 GHz.
+Under this configuration, the training of the first- and secondorder score networks each takes approximately one day.
+3) Evaluation Settings: During evaluation, the channel of
+each device is randomly sampled from the evaluation set.
+The following settings are adopted unless specified otherwise:
+λ = 0.05, K = 800, and the SNR is 10 dB. For the
+figures showing the NMSE1 performance and detection error
+probability, each data point is averaged over 500 and 5000
+Monte Carlo trials, respectively. The evaluation utilizes a
+single NVIDIA A800 GPU, which is performed on the same
+machine used for training.
+B. Score-Based MMSE Denoising Performance
+Before digging into the evaluation of the STMP-JADCE
+algorithm, we separately assess the performance of the
+1 The NMSE of channel estimation is defined as
+
+post
+kHk −Hk k2
+kP
+F
+2
+k kHk kF
+
+P
+
+.
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+3586
+
+IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 44, 2026
+
+Fig. 4. Comparison of the denoising performance under AWGN by different
+denoisers.
+
+Fig. 5. NMSE in channel estimation versus the iteration number, where
+λ = 0.05, T = 30, and the SNR is 10 dB. Left: K = 800 and we set
+the damping factor γ = 0.8 for all schemes; right: K = 1600 and we set
+γ = 0.6 for all schemes.
+
+score-based MMSE denoiser specified in (44). We consider
+the task of recovering H ∈ CN ×M from its AWGN-corrupted
+observation Y = H + N. We assume for simplicity that the
+path-loss are perfectly compensated. The following baselines
+are considered:
+• Least square (LS): The LS estimator is ĤLS = Y.
+• Orthogonal matching pursuit (OMP): [57] A greedy
+algorithm to sequentially identify the top L̄ = 100 delayL̄
+angle pairs {τl , ϕl }l=1 that best match the observation,
+based on a delay–angular domain dictionary constructed
+via uniform sampling over aN (·) ⊗ bM (·). Then, the
+√
+coefficients {βl ρl }L̄
+l=1 are estimated by LS.
+• Element-wise MMSE: [26] This method adopts an i.i.d.
+Bernoulli-Gaussian prior for the channel coefficients in
+the same transform domain used by OMP, based on which
+an element-wise MMSE denoiser is implemented. The
+prior sparsity level is set to 0.15.
+• Variational line spectral estimation (VALSE): [58] A
+super-resolution algorithm that computes the approximate
+posterior pdfs of the delays, angles, and path coefficients.
+• Genie-aided lower bound: This baseline assumes perfect knowledge of the path powers, delays, and angles
+L
+{ρl , τl , ϕl }l=1 , and employs the MMSE estimator to
+L
+recover the complex coefficients {βl }l=1 .
+Fig. 4 compares the denoising performance of the scorebased MMSE denoiser against these baselines. Remarkably,
+the score-based MMSE denoiser outperforms VALSE [58], the
+state-of-the-art line spectral estimation algorithm, and closely
+approaches the unattainable genie-aided low bound. Our scorebased MMSE denoiser requires only a forward propagation
+through the first-order score network. In contrast, the VALSE
+algorithm suffers from prohibitively high computational complexity due to the iterative evaluation of continuous pdfs,
+making it less suitable for real-time channel estimation.
+C. JADCE Performance
+We compare the proposed STMP-JADCE algorithm against
+the following baselines:
+• Bernoulli-Gaussian TMP (BG-TMP): This method
+adopts the same TMP framework in Algorithm III-B3,
+
+but incorporates an i.i.d. Gaussian prior for channel
+denoising.
+• Generalized MMV-AMP (GMMV-AMP): [11] This
+algorithm exploits the structured sparsity of the channel
+matrix observed at multiple receive antennas and multiple subcarriers. The structured sparsity arises from the
+sporadic access of devices.
+• TMP-EM: [27] This algorithm performs JADCE based
+on a block-wise linear model in the frequency domain.
+The EM algorithm [54] is applied to learn the prior variance of the parameters of the block-wise linear model. In
+TMP-EM, the number of sub-blocks is a hyperparameter
+that balances model accuracy with the number of free
+variables.
+Fig. 5 shows the convergence behaviors of STMP-JADCE
+compared to various baselines. For all plots in the left subfigure (K = 800), we use a damping factor of γ = 0.8, while
+in the right subfigure (K = 1600), we apply a damping factor
+of γ = 0.6. Under this setting, GMMV-AMP frequently fails
+to converge and is therefore omitted from the results. When
+K = 800, STMP-JADCE converges within 10 iterations,
+outperforming TMP-EM and BG-TMP both in convergence
+speed and NMSE performance. As K increases to 1600, all
+the schemes experience a slight decrease in convergence speed.
+Nevertheless, our method still converges in approximately 20
+iterations. In contrast, TMP-EM shows substantial fluctuations
+when configured with either 4 or 6 linear sub-blocks. We also
+note that the second iteration in STMP-JADCE leads to an
+increase in NMSE. We conjecture that this is due to substantial
+estimation errors in the large-scale fading component during
+the initial iterations. This causes a power mismatch in the
+input to the score networks, ultimately degrading the denoising
+performance.
+Fig. 6 shows the NMSE in channel estimation versus
+the SNR. Our method demonstrates a significant improvement over the baselines across all SNRs. The performance
+gap between our method and BG-TMP highlights the critical importance of an accurate channel prior in message
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+CAI et al.: JOINT ACTIVITY DETECTION AND CHANNEL ESTIMATION FOR MASSIVE CONNECTIVITY
+
+3587
+
+Fig. 6. NMSE in channel estimation against SNR, where λ = 0.05,
+K = 800, and T = 20.
+
+Fig. 8. NMSE in channel estimation against the number of devices K, where
+λ = 0.05, T = 40, and the SNR is 10 dB.
+
+Fig. 7. Detection error probability against SNR, where λ = 0.05, K = 800,
+and T = 20.
+
+Fig. 9. NMSE in channel estimation against the device active probability λ,
+where K = 800, T = 40, and the SNR is 10 dB.
+
+passing. Moreover, the TMP-EM algorithm favors a smaller
+number of sub-blocks at low SNR, while preferring a
+larger number of sub-blocks at high SNR. The sensitivity
+to the number of sub-blocks can pose challenges in hyperparameter tuning. In contrast, STMP-JADCE learns the channel
+prior directly from data, eliminating the need for hand-crafted
+modeling and achieving superior adaptability with consistent
+performance gains over model-based baselines.
+In Fig. 7, we present the detection error probability, which
+sums up missed detections and false alarms, plotted against
+different SNRs. The BG-TMP algorithm often fails to converge and is not included. Interestingly, although all schemes
+utilize the same Bernoulli prior for device activity, our
+method achieves the lowest detection error probability. This
+improvement can also be attributed to the plug-in of the scorebased generative channel prior. The reason is the following.
+As shown in Fig. 6, the accurate channel prior brings a
+remarkable gain in channel estimation. Through messagepassing iterations, the device activity is detected using this
+more accurate channel estimate, hence resulting in enhanced
+detection performance.
+In Fig. 8, we plot the achieved NMSE in channel estimation
+for various numbers of total devices. Targeted at a channel
+
+estimation NMSE of −25 dB, our method can support 3000
+connected devices, while the best baseline (TMP-EM with 12
+sub-blocks) can accommodate only 750 devices, leading to a
+4× increase in access capacity. Moreover, for NMSE values
+below −5 dB, STMP-JADCE shows the flattest slope in the
+performance curve. This suggests that, given an equivalent
+tolerance in NMSE degradation (in dB), our approach can
+support the largest increase in the number of connected
+devices. These observations highlight the superiority of the
+proposed algorithm for achieving massive connectivity.
+Fig. 9 shows the NMSE performance by varying the device
+active probability from 0.01 to 0.15. It is observed that
+STMP-JADCE consistently outperforms all other schemes by
+a large margin. In addition, the NMSE of STMP-JADCE
+deteriorates more gracefully than that of the other schemes
+as the active probability increases. Fig. 10 investigates the
+influence of pilot sequence length on the NMSE in channel
+estimation. The proposed algorithm has a roughly 5 dB gain
+in NMSE when T = 80, and the gain is increased to 10 dB
+when T = 10. This demonstrates the distinct advantage of the
+proposed method in the low pilot overhead regime.
+To examine the robustness of STMP-JADCE under channel
+model mismatch, we conduct a cross-CDL evaluation in which
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+3588
+
+IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 44, 2026
+
+Fig. 10. NMSE in channel estimation against the pilot sequence length T ,
+where λ = 0.05, K = 800, and the SNR is 10 dB.
+
+Fig. 12. Convergence behaviors of STMP-JADCE under different measurement matrices, where λ = 0.05, K = 1024, T = 30, and γ = 0.8.
+
+Fig. 11. NMSE in channel estimation versus SNR for cross-CDL evaluation,
+where λ = 0.05, K = 800, and T = 20. The score networks are trained on
+the CDL-C dataset, while the STMP-JADCE algorithm is evaluated on the
+distinct CDL-B channel model.
+
+Fig. 13. NMSE in channel estimation versus the number of training samples,
+where λ = 0.05, K = 800, T = 30 and the SNR is 3 dB.
+
+the score networks are trained on the CDL-C dataset, while the
+STMP-JADCE algorithm is evaluated on the distinct CDL-B
+channel model. As shown in Fig. 11, STMP-JADCE maintains
+strong performance and continues to outperform all baselines
+across the entire SNR range. This cross-model consistency
+can be attributed to the randomized generation of angles,
+delays, and complex path gains in the CDL-C training set,
+which exposes the score prior to a broad variety of channel
+realizations, as well as to the inherent generalization capability
+of the generative score networks.
+We further evaluate STMP-JADCE under different measurement matrices without retraining the generative prior. In
+addition to the DFT-based design, we consider a Hadamard
+pilot matrix whose entries are binary {±1} and mutually orthogonal across rows, providing a real-valued and
+multiplication-free alternative to complex-valued DFT pilots.
+As shown in Fig. 12, the algorithm exhibits consistent convergence behavior and comparable NMSE performance across
+DFT and Hadamard pilots. This consistency arises naturally
+from the plug-and-play formulation of STMP-JADCE, in
+which the unconditional score prior operates independently
+
+of the pilot structure, allowing seamless adaptation to various
+pilot designs drawn from suitably random matrix ensembles.
+Finally, to assess the data efficiency of the proposed
+STMP-JADCE, we evaluate its performance under different
+training set sizes in Fig. 13. The performance rapidly improves
+as the dataset size increases from 8 × 102 to 4 × 103 , and then
+quickly saturates beyond 1×104 samples. This result indicates
+that STMP-JADCE requires only a moderate amount of data to
+achieve near-optimal performance, demonstrating strong data
+efficiency and robustness even when large-scale datasets are
+unavailable.
+VII. C ONCLUSION AND D ISCUSSION
+In this paper, we introduced STMP-JADCE for massive
+connectivity, a model-based deep learning solution that combines message passing with score-based generative models. In
+each message-passing iteration, our approach maintains both
+a first-order and a second-order score network to calculate
+the posterior mean and variance of the channel, respectively.
+We show by simulation results that STMP-JADCE drastically
+outperforms all competing algorithms, while achieving a comparable or even faster convergence speed.
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+CAI et al.: JOINT ACTIVITY DETECTION AND CHANNEL ESTIMATION FOR MASSIVE CONNECTIVITY
+
+From a more general perspective, this work evidences that
+with carefully specified message update rules and approximations, message passing allows for the integration of
+unconditional score-based generative models to solve Bayesian
+inference problems without requiring task-specific training.
+This opens up new opportunities for the STMP framework to
+tackle a variety of inverse problems arising in communication,
+sensing, and other application domains.
+R EFERENCES
+[1]
+
+Framework and Overall Objectives of the Future Development of IMT
+for 2030 and Beyond, document M.2160, ITU-R, 2023.
+[2] C. Bockelmann et al., “Massive machine-type communications in 5g:
+Physical and MAC-layer solutions,” IEEE Commun. Mag., vol. 54,
+no. 9, pp. 59–65, Sep. 2016.
+[3] P. Schulz et al., “Latency critical IoT applications in 5G: Perspective on
+the design of radio interface and network architecture,” IEEE Commun.
+Mag., vol. 55, no. 2, pp. 70–78, Feb. 2017.
+[4] X. Chen, D. W. K. Ng, W. Yu, E. G. Larsson, N. Al-Dhahir, and
+R. Schober, “Massive access for 5G and beyond,” IEEE J. Sel. Areas
+Commun., vol. 39, no. 3, pp. 615–637, Mar. 2021.
+[5] Z. Chen, F. Sohrabi, and W. Yu, “Sparse activity detection for
+massive connectivity,” IEEE Trans. Signal Process., vol. 66, no. 7,
+pp. 1890–1904, Apr. 2018.
+[6] L. Liu and W. Yu, “Massive connectivity with massive MIMO—Part I:
+Device activity detection and channel estimation,” IEEE Trans. Signal
+Process., vol. 66, no. 11, pp. 2933–2946, Jun. 2018.
+[7] J. Ahn, B. Shim, and K. B. Lee, “EP-based joint active user detection and
+channel estimation for massive machine-type communications,” IEEE
+Trans. Commun., vol. 67, no. 7, pp. 5178–5189, Jul. 2019.
+[8] Z. Zhang, Y. Li, C. Huang, Q. Guo, C. Yuen, and Y. L. Guan, “DNNaided block sparse Bayesian learning for user activity detection and
+channel estimation in grant-free non-orthogonal random access,” IEEE
+Trans. Veh. Technol., vol. 68, no. 12, pp. 12000–12012, Dec. 2019.
+[9] Y. Qiang, X. Shao, and X. Chen, “A model-driven deep learning
+algorithm for joint activity detection and channel estimation,” IEEE
+Commun. Lett., vol. 24, no. 11, pp. 2508–2512, Nov. 2020.
+[10] Z. Zhang et al., “User activity detection and channel estimation for grantfree random access in LEO satellite-enabled Internet of Things,” IEEE
+Internet Things J., vol. 7, no. 9, pp. 8811–8825, Sep. 2020.
+[11] M. Ke, Z. Gao, Y. Wu, X. Gao, and R. Schober, “Compressive sensingbased adaptive active user detection and channel estimation: Massive
+access meets massive MIMO,” IEEE Trans. Signal Process., vol. 68,
+pp. 764–779, 2020.
+[12] J. Johnston and X. Wang, “Model-based deep learning for joint activity
+detection and channel estimation in massive and sporadic connectivity,”
+IEEE Trans. Wireless Commun., vol. 21, no. 11, pp. 9806–9817, Nov.
+2022.
+[13] Y. Tsai, L. Zheng, and X. Wang, “Millimeter-wave beamformed
+full-dimensional MIMO channel estimation based on atomic norm
+minimization,” IEEE Trans. Commun., vol. 66, no. 12, pp. 6150–6163,
+Dec. 2018.
+[14] H. Liu, X. Yuan, and Y. J. Zhang, “Super-resolution blind channeland-signal estimation for massive MIMO with one-dimensional antenna
+array,” IEEE Trans. Signal Process., vol. 67, no. 17, pp. 4433–4448,
+Sep. 2019.
+[15] Y. Song and S. Ermon, “Generative modeling by estimating gradients
+of the data distribution,” in Proc. Adv. Neural Inf. Process. Syst., 2019,
+pp. 11895–11907.
+[16] Y. Song, J. Sohl-Dickstein, D. P. Kingma, A. Kumar, S. Ermon, and
+B. Poole, “Score-based generative modeling through stochastic differential equations,” in Proc. Int. Conf. Learn. Represent., 2021, pp. 1–11.
+[17] J. Ho, A. Jain, and P. Abbeel, “Denoising diffusion probabilistic
+models,” in Proc. Adv. Neural Inf. Process. Syst., 2020, pp. 1–8.
+[18] B. Kawar, M. Elad, S. Ermon, and J. Song, “Denoising diffusion
+restoration models,” in Proc. Adv. Neural Inf. Process. Syst., 2022,
+pp. 1–16.
+[19] H. Chung, J. Kim, M. T. McCann, M. L. Klasky, and J. C. Ye, “Diffusion
+posterior sampling for general noisy inverse problems,” in Proc. Int.
+Conf. Learn. Represent., 2023, pp. 1–17.
+[20] J. Song, A. Vahdat, M. Mardani, and J. Kautz, “Pseudoinverse-guided
+diffusion models for inverse problems,” in Proc. Int. Conf. Learn.
+Represent., 2023, pp. 1–7.
+
+3589
+
+[21] Z. Dou and Y. Song, “Diffusion posterior sampling for linear inverse
+problem solving: A filtering perspective,” in Proc. Int. Conf. Learn.
+Represent., 2024, pp. 1–5.
+[22] Z. Xue, P. Cai, X. Yuan, and X. Gao, “Score-based reverse mean
+propagation for solving inverse problems,” IEEE Trans. Signal Process.,
+vol. 73, pp. 3947–3962, 2025.
+[23] Y. Wang, S. Bi, Y.-J.-A. Zhang, and X. Yuan, “Traversing distortionperception tradeoff using a single score-based generative model,” in
+Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR), Jun.
+2025, pp. 2377–2386.
+[24] C. Cai, X. Yuan, and Y.-J.-A. Zhang, “Score-based turbo message
+passing for plug-and-play compressive image recovery,” in Proc. IEEE
+26th Int. Workshop Signal Process. Artif. Intell. Wireless Commun.
+(SPAWC), Jul. 2025, pp. 1–5.
+[25] C. Cai, H. Jiang, X. Yuan, and Y.-J. A. Zhang, “Score-based
+turbo message passing for plug-and-play compressive imaging,” 2025,
+arXiv:2512.14435.
+[26] J. Ma, X. Yuan, and L. Ping, “Turbo compressed sensing with partial DFT sensing matrix,” IEEE Signal Process. Lett., vol. 22, no. 2,
+pp. 158–161, Feb. 2015.
+[27] W. Jiang, M. Yue, X. Yuan, and Y. Zuo, “Massive connectivity over
+MIMO-OFDM: Joint activity detection and channel estimation with
+frequency selectivity compensation,” IEEE Trans. Wireless Commun.,
+vol. 21, no. 9, pp. 6920–6934, Sep. 2022.
+[28] H. E. Robbins, “An empirical Bayes approach to statistics,” in
+Breakthroughs in Statistics: Foundations and Basic Theory. Cham,
+Switzerland: Springer, 1992, pp. 388–394.
+[29] B. Efron, “Tweedie’s formula and selection bias,” J. Amer. Stat. Assoc.,
+vol. 106, no. 496, pp. 1602–1614, Dec. 2011.
+[30] P. Vincent, “A connection between score matching and denoising
+autoencoders,” Neural Comput., vol. 23, no. 7, pp. 1661–1674, Jul.
+2011.
+[31] C. Lu, K. Zheng, F. Bao, J. Chen, C. Li, and J. Zhu, “Maximum
+likelihood training for score-based diffusion ODEs by high order
+denoising score matching,” in Proc. Int. Conf. Mach. Learn., 2022,
+pp. 14429–14460.
+[32] Study on Channel Model for Frequencies From 0.5 to 100 GHz,
+document TR 38.901, 3GPP, 2020.
+[33] S. Park, H. Seo, H. Ji, and B. Shim, “Joint active user detection
+and channel estimation for massive machine-type communications,” in
+Proc. IEEE 18th Int. Workshop Signal Process. Adv. Wireless Commun.
+(SPAWC), Jul. 2017, pp. 1–5.
+[34] H. He, C.-K. Wen, S. Jin, and G. Y. Li, “Deep learning-based channel
+estimation for beamspace mmWave massive MIMO systems,” IEEE
+Wireless Commun. Lett., vol. 7, no. 5, pp. 852–855, Oct. 2018.
+[35] Y. Ahn, W. Kim, and B. Shim, “Active user detection and channel
+estimation for massive machine-type communication: Deep learning
+approach,” IEEE Internet Things J., vol. 9, no. 14, pp. 11904–11917,
+Jul. 2022.
+[36] H. Yu, Z. Fei, Z. Zheng, N. Ye, and Z. Han, “Deep learning-based user
+activity detection and channel estimation in grant-free NOMA,” IEEE
+Trans. Wireless Commun., vol. 22, no. 4, pp. 2202–2214, Apr. 2023.
+[37] M. Arvinte and J. I. Tamir, “MIMO channel estimation using score-based
+generative models,” IEEE Trans. Wireless Commun., vol. 22, no. 6,
+pp. 3698–3713, Jun. 2023.
+[38] A. Aali, M. Arvinte, S. Kumar, and J. I. Tamir, “Solving inverse
+problems with score-based generative priors learned from noisy data,”
+in Proc. 57th Asilomar Conf. Signals, Syst., Comput., Oct. 2023,
+pp. 837–843.
+[39] X. Ma, Y. Xin, Y. Ren, D. Burghal, H. Chen, and J. C. Zhang, “Diffusion
+model based channel estimation,” in Proc. IEEE Int. Conf. Commun.
+Workshops (ICC Workshops), Jun. 2024, pp. 1159–1164.
+[40] N. Zilberstein, A. Sabharwal, and S. Segarra, “Solving linear inverse
+problems using higher-order annealed Langevin diffusion,” IEEE Trans.
+Signal Process., vol. 72, pp. 492–505, 2024.
+[41] N. Zilberstein, A. Swami, and S. Segarra, “Joint channel estimation and
+data detection in massive MIMO systems based on diffusion models,”
+in Proc. IEEE Int. Conf. Acoust., Speech Signal Process. (ICASSP), Apr.
+2024, pp. 13291–13295.
+[42] B. Fesl, M. Baur, F. Strasser, M. Joham, and W. Utschick, “Diffusionbased generative prior for low-complexity MIMO channel estimation,”
+IEEE Wireless Commun. Lett., vol. 13, no. 12, pp. 3493–3497, Dec.
+2024.
+[43] X. Zhou, L. Liang, J. Zhang, P. Jiang, Y. Li, and S. Jin, “Generative
+diffusion models for high dimensional channel estimation,” IEEE Trans.
+Wireless Commun., vol. 24, no. 7, pp. 5840–5854, Jul. 2025.
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+3590
+
+IEEE JOURNAL ON SELECTED AREAS IN COMMUNICATIONS, VOL. 44, 2026
+
+[44] Z. Chen, H. Shin, and A. Nallanathan, “Generative diffusion modelbased variational inference for MIMO channel estimation,” IEEE Trans.
+Commun., vol. 73, no. 10, pp. 9254–9269, Oct. 2025.
+[45] W. Yu et al., “Bayes-optimal unsupervised learning for channel estimation in near-field holographic MIMO,” IEEE J. Sel. Topics Signal
+Process., vol. 18, no. 4, pp. 714–729, May 2024.
+[46] J. Ma and L. Ping, “Orthogonal AMP,” IEEE Access, vol. 5,
+pp. 2020–2033, 2017.
+[47] X. Bian, Y. Mao, and J. Zhang, “Joint activity detection, channel
+estimation, and data decoding for grant-free massive random access,”
+IEEE Internet Things J., vol. 10, no. 16, pp. 14042–14057, Aug. 2023.
+[48] F. R. Kschischang, B. J. Frey, and H.-A. Loeliger, “Factor graphs and
+the sum-product algorithm,” IEEE Trans. Inf. Theory, vol. 47, no. 2,
+pp. 498–519, Feb. 2001.
+[49] T. P. Minka, “Expectation propagation for approximate Bayesian
+inference,” in Proc. 7th Conf. Uncertainty Artif. Intell., Aug. 2001,
+pp. 362–369.
+[50] S. Rangan, P. Schniter, and A. K. Fletcher, “Vector approximate message
+passing,” IEEE Trans. Inf. Theory, vol. 65, no. 10, pp. 6664–6684, Oct.
+2019.
+[51] A. K. Fletcher, P. Pandit, S. Rangan, S. Sarkar, and P. Schniter, “Plugin estimation in high-dimensional linear inverse problems: A rigorous
+analysis,” in Proc. Adv. Neural Inf. Process. Syst., 2018, pp. 7451–7460.
+[52] F. Rozet, G. Andry, F. Lanusse, and G. Louppe, “Learning diffusion
+priors from observations by expectation maximization,” in Proc. Adv.
+Neural Inf. Process. Syst., 2024, pp. 1–11.
+[53] M. A. Finzi, A. Boral, A. G. Wilson, F. Sha, and L. Zepeda-Núñez,
+“User-defined event sampling and uncertainty quantification in diffusion
+models for physical dynamical systems,” in Proc. Int. Conf. Mach.
+Learn., 2023, pp. 10136–10152.
+[54] J. T. Parker, P. Schniter, and V. Cevher, “Bilinear generalized approximate message passing—Part I: Derivation,” IEEE Trans. Signal Process.,
+vol. 62, no. 22, pp. 5839–5853, Nov. 2014.
+[55] S. Jaeckel, L. Raschkowski, K. Börner, L. Thiele, F. Burkhardt, and
+E. Eberlein, “QuaDRiGa-quasi deterministic radio channel generator
+user manual and documentation,” Fraunhofer Heinrich Hertz Inst.,
+Berlin, Germany, Tech. Rep. v2.8.1-0, 2023.
+[56] Y. Song and S. Ermon, “Improved techniques for training score-based
+generative models,” in Proc. Adv. Neural Inf. Process. Syst., 2020,
+pp. 1–8.
+[57] T. T. Cai and L. Wang, “Orthogonal matching pursuit for sparse
+signal recovery with noise,” IEEE Trans. Inf. Theory, vol. 57, no. 7,
+pp. 4680–4688, Jul. 2011.
+[58] M.-A. Badiu, T. L. Hansen, and B. H. Fleury, “Variational Bayesian
+inference of line spectra,” IEEE Trans. Signal Process., vol. 65, no. 9,
+pp. 2247–2261, May 2017.
+
+Wenjun Jiang (Member, IEEE) received the B.S.
+degree in communication engineering and the Ph.D.
+degree in information and communication engineering from the University of Electronic Science and
+Technology of China (UESTC), Chengdu, China,
+in 2019 and 2025, respectively. He is currently
+a Post-Doctoral Researcher with the National Key
+Laboratory of Wireless Communications, UESTC.
+His current research interests include physical-layer
+anti-jamming communications, channel knowledge
+map (CKM), integrated sensing and communications
+(ISAC), and statistical signal processing.
+
+Chang Cai (Member, IEEE) received the B.Eng.
+degree from the Yingcai Honors College, University
+of Electronic Science and Technology of China, in
+2021, and the Ph.D. degree from the Department of
+Information Engineering, The Chinese University of
+Hong Kong, in 2025. He is currently a Research
+Assistant Professor with the Department of Electrical and Electronic Engineering, The University of
+Hong Kong. His research interests include generative
+AI, Bayesian inference, and semantic communications. He has served as the Managing Editor for
+IEEE O PEN J OURNAL OF THE C OMMUNICATIONS S OCIETY from 2022 to
+2023.
+
+Xiaojun Yuan (Fellow, IEEE) received the Ph.D.
+degree in electrical engineering from the City University of Hong Kong in 2009.
+From 2009 to 2011, he was a Research Fellow
+with the Department of Electronic Engineering, the
+City University of Hong Kong. He was also a
+Visiting Scholar with the Department of Electrical
+Engineering, University of Hawaii at Manoa, from
+spring 2009 to summer 2009 and in 2010. From
+2011 to 2014, he was a Research Assistant Professor
+with the Institute of Network Coding, The Chinese
+University of Hong Kong. From 2014 to 2017, he was an Assistant Professor
+with the School of Information Science and Technology, ShanghaiTech
+University. He is currently a Professor with the National Key Laboratory of
+Wireless Communications, University of Electronic Science and Technology
+of China. His research interests cover a broad range of signal processing,
+machine learning, and wireless communications, including but not limited
+to intelligent communications, structured signal reconstruction, Bayesian
+approximate inference, and distributed learning. He has published over 320
+peer-reviewed research papers in the leading international journals and conferences in the related areas. He has served on many technical programs
+for international conferences. He was an Editor of IEEE leading journals,
+including IEEE T RANSACTIONS ON W IRELESS C OMMUNICATIONS and
+IEEE T RANSACTIONS ON C OMMUNICATIONS. He was a co-recipient of the
+IEEE Heinrich Hertz Award in 2022 and the IEEE Jack Neubauer Memorial
+Award in 2025.
+
+Ying-Jun Angela Zhang (Fellow, IEEE) received
+the Ph.D. degree from the Department of Electrical
+and Electronic Engineering, The Hong Kong University of Science and Technology.
+She joined the Department of Information Engineering, The Chinese University of Hong Kong,
+in 2005, where she is currently a Professor. Her
+research interests focus on optimization and learning
+in wireless communication systems.
+Prof. Zhang was a co-recipient of the 2021 and
+2014 IEEE ComSoc Asia–Pacific Outstanding Paper
+Awards, the 2013 IEEE SmartgridComm Best Paper Award, and the 2011
+IEEE Marconi Prize Paper Award on Wireless Communications. As the only
+winner from engineering science, she won the Hong Kong Young Scientist
+Award 2006, conferred by Hong Kong Institute of Science. She is the
+Steering Committee Chair of IEEE W IRELESS C OMMUNICATION L ETTERS,
+a Member-at-Large of IEEE ComSoc Board of Governors, the Director of
+IEEE ComSoc Asia–Pacific Region Board, and a member of the IEEE VTS
+Fellow Evaluation Standing Committee. She has served on the organizing
+committees of many top conferences, such as IEEE GLOBECOM, ICC, VTC,
+and SmartgridComm. She was the Founding Chair of the IEEE ComSoc
+Technical Committee of Smart Grid Communications. Previously, she served
+as the Editor-in-Chief for IEEE O PEN J OURNAL OF THE C OMMUNICATIONS
+S OCIETY, the Chair of the Executive Editor Committee for IEEE T RANS ACTIONS ON W IRELESS C OMMUNICATIONS , and a member of the IEEE
+ComSoc Fellow Evaluation Standing Committee.
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore. Restrictions apply.
+
+

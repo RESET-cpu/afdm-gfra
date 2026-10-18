@@ -1,0 +1,147 @@
+{
+  "status": "PREDECLARED_IMPLEMENTATION_VALIDATION",
+  "configuration": {
+    "schema": "afdm-offgrid-baselines-v1",
+    "validation_status": "DEVELOPMENT",
+    "methods": {
+      "offgrid_sbl": {
+        "paper": "Wei et al., IEEE TWC 2022, DOI 10.1109/TWC.2022.3158616",
+        "solver": {
+          "iterations": 120,
+          "tolerance": 0.0001,
+          "rho": 0.001,
+          "candidates_per_user": 12,
+          "offset_candidates": 48,
+          "offset_sweeps": 5,
+          "warmup": 5,
+          "doppler_step": 0.5
+        }
+      },
+      "mnomp": {
+        "paper": "Zhu et al., Signal Processing 2019, DOI 10.1016/j.sigpro.2019.07.012",
+        "solver": {
+          "max_paths": 32,
+          "newton_steps": 8,
+          "cyclic_rounds": 2,
+          "false_alarm_probability": 0.01,
+          "doppler_step": 0.5
+        }
+      }
+    },
+    "readout": {
+      "path": "configs/offgrid_readout_policy.json",
+      "sha256": "CALIBRATION_PENDING"
+    }
+  },
+  "inference_sha256": {
+    "offgrid_sbl": "33e38738155a094f65a39082a5dc7bd25cf0ed360649af30c83f5facbe01810f",
+    "mnomp": "3b3d2ced5277c07f3ef7e48649e16ba61c8be90f3f2e4515c3b46a513028b9b7"
+  },
+  "source_sha256": {
+    "src/afdm_jadcedd/algorithm/offgrid/__init__.py": "7eac09febf0f70c6d74ffb7223ce2735a2387cc413a28352a02012050adbb471",
+    "src/afdm_jadcedd/algorithm/offgrid/atoms.py": "2b409a83eb742a792073c93abcd61c58be44f7876bcceb8bf510d17357055d1e",
+    "src/afdm_jadcedd/algorithm/offgrid/mnomp.py": "bf75ce317934af32c70697720e2c68c24c3760f4a9183dd36fad2530139814fd",
+    "src/afdm_jadcedd/algorithm/offgrid/receiver.py": "cbbd64afae116aaff7695842baecc8c408376aaf1673b6ec195784efe7231873",
+    "src/afdm_jadcedd/algorithm/offgrid/sbl.py": "8375d9973d2cdbcc5284bd662a9326c0ac87c303592debafd5ac511be3dd6972",
+    "src/afdm_jadcedd/system/__init__.py": "67543659527fca8f1cf2da62f0bf6c99f98435d8ae7c0dd3270d2150a892c58c",
+    "src/afdm_jadcedd/system/afdm/__init__.py": "b78092ea203d34521fbfe6fb7de88163e6460d41ad0a7c3166da691645fcb711",
+    "src/afdm_jadcedd/system/afdm/closedform_periodic.py": "f54d7edbdbb068ad0cbea2be5d801e59f79fb688d95cc4ce9c01ff707e4c1591",
+    "src/afdm_jadcedd/system/afdm/config.py": "4391c5e41163542bffe196cb4ddf8d2930784e3881d5658670881b08365c1953",
+    "src/afdm_jadcedd/system/afdm/continuous.py": "f100b69389127c5d22acdc8607d29e153b89c6293fa232e3b0bb98c5b2678a7a",
+    "src/afdm_jadcedd/system/afdm/path_operator_multicycle_full.py": "9440cc22e515d298efe24321940dd9bdf44294ea44a2657239a84af30fa0ab11",
+    "src/afdm_jadcedd/system/afdm/types.py": "127a2dd55b8dfd557a6cd228c53f1c7597f0712611fb65c8b7872a54e21fc19d",
+    "src/afdm_jadcedd/system/config.py": "4de72aafb5a3671d846c0a7d8e2a0000c4e840e5db820f4ed3afe2816df1ec93",
+    "src/afdm_jadcedd/system/core/__init__.py": "c629c0b154bff566566b7718f4da79056b081e02b42eadc6e4b2620a18b27165",
+    "src/afdm_jadcedd/system/core/config.py": "ea75b60ca4ee653fc2af49da6ff58c1e5e6746cf097c8eec6dd5ec5b5be34fc5",
+    "src/afdm_jadcedd/system/core/conventions.py": "ca4cb78e0e2ba0800c494d595e567a3a06f306151a87f2eb5fe6eed5c019ffb5",
+    "src/afdm_jadcedd/system/core/upa.py": "f6962ada8886118507ed3486eab3b0dbbab1801e301432f39bdb696ff1648934",
+    "src/afdm_jadcedd/system/dictionary.py": "a557aedd407a9bd47ab2fd5c6fd23cf855109ca595a2f92ae794d47ffc328b10",
+    "src/afdm_jadcedd/system/observation.py": "2490775f95b24d59a9467f5f1cf3cfc0852ab136c44882e60f58d75c240954df",
+    "src/afdm_jadcedd/system/phase.py": "3e8cb1ea39a425bbbcce5ec7b49d0f5702daa8d06d941f697a065d5e936231ff",
+    "src/afdm_jadcedd/system/physics.py": "02ee1b2f067d4bb7885f520b9ba163ca99015ba07b7da6f2661315cca1fab87b",
+    "src/afdm_jadcedd/system/pilot.py": "a0df49d254a99beeb8f4ef6c77e1626de4750894682209e9d5e37f6aa2eb56a9",
+    "src/afdm_jadcedd/system/receiver/__init__.py": "5edae5aca9a7d53030745aa3ce9d6aeb521e640c68a2165be815507ee252cae3",
+    "src/afdm_jadcedd/system/receiver/noise.py": "226eb99da16351d9a1fe4c166574094be338877c24fde7239698838fabe28571",
+    "src/afdm_jadcedd/system/scenario/__init__.py": "6188a6b4e73a0c4f18709ac7f88fdeee52e318795d9843d0cb95f6cd23238376",
+    "src/afdm_jadcedd/system/scenario/continuous.py": "1ae9cb7fde2263bf81e51757434b2ce891bda42432f6f024db04f0a9a3686989",
+    "src/afdm_jadcedd/system/scenario/ding2026.py": "09fed5aaa69b9d2a7fb1ec6f9bdc2c5a7682dd929ad6a533af6eb790381c467b",
+    "src/afdm_jadcedd/system/scenario/geometry.py": "9af3db791505264e3c6ff64ea06912d4334093a1326c14e251863671709c485d",
+    "src/afdm_jadcedd/system/scenario/geometry_consistent.py": "401b8eb247365e9a7faa125e425617396acf38b8c129cb4d852682c7745bac2c",
+    "src/afdm_jadcedd/system/scenario/scene_generator.py": "d3c56f32a75140d9c8ed9e460a0a807c930f6c00113ecb8f6d158f7bcce08559",
+    "src/afdm_jadcedd/utils.py": "c8fbc5d2e1be894186a93ff3fcce4616b61627a1a9dd512f074ac8911462e05b",
+    "src/afdm_jadcedd/algorithm/baselines/readout.py": "c54c879c21a6a5c0b97406f5a8e6c90287661906949dda8dda469662d2c4b99a"
+  },
+  "script_sha256": "d0e7b9ac1b03811ad8e73595a46150117d45d389fe676341ed9829f31f32c9c5",
+  "generator_sha256": "9d60e3f74073d59362666249bbc822aa5e768c8f19e9b4b110f01b72a80d648b",
+  "calibration": {
+    "seeds": [
+      418100000,
+      418100001,
+      418100002,
+      418100003,
+      418100004,
+      418100005,
+      418100006,
+      418100007,
+      418100008,
+      418100009,
+      418100010,
+      418100011,
+      418100012,
+      418100013,
+      418100014,
+      418100015
+    ],
+    "snr_db": [
+      -4.0,
+      -2.0,
+      0.0,
+      2.0,
+      4.0,
+      6.0
+    ],
+    "scale": 0.2647966452702405
+  },
+  "evaluation": {
+    "source": "results/proposed_snr_100_20261009/off_grid",
+    "snr_db": [
+      -4.0,
+      -2.0,
+      0.0,
+      2.0,
+      4.0,
+      6.0
+    ],
+    "scene_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ]
+  },
+  "solver_selection": "fixed defaults; no test-panel tuning",
+  "threads": 1,
+  "timing": "new methods sequentially on CPU; historical proposed timing excluded",
+  "supplied_public_fields": [
+    "observation",
+    "operator",
+    "noise_variance",
+    "activity_prior"
+  ]
+}

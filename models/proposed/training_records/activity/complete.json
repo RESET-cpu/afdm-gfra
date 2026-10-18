@@ -1,0 +1,102 @@
+{
+  "schema": "full-geometry-route12-completed-training-v1",
+  "status": "COMPLETED",
+  "stage": "activity",
+  "stopping_reason": "VALIDATION_PLATEAU",
+  "epochs": 84,
+  "optimizer_steps": 131292,
+  "selected_epoch": 82,
+  "validation": {
+    "loss": 0.05096672352785212,
+    "bce": 0.05096672352785212,
+    "pairs": 5000,
+    "examples": 10000,
+    "deployments": {
+      "0.01": {
+        "aer": 0.0007019999999999999,
+        "activity_prior": 0.01
+      },
+      "0.05": {
+        "aer": 0.00259,
+        "activity_prior": 0.05
+      },
+      "0.1": {
+        "aer": 0.0047799999999999995,
+        "activity_prior": 0.1
+      },
+      "0.2": {
+        "aer": 0.008800000000000002,
+        "activity_prior": 0.2
+      },
+      "0.3": {
+        "aer": 0.01274,
+        "activity_prior": 0.3
+      }
+    },
+    "bands": {
+      "snr_-20_to_-15_db": {
+        "pairs": 486,
+        "bce": 0.34696118488903827,
+        "aer_at_rho_0_1": 0.03909465020576132
+      },
+      "snr_-15_to_-10_db": {
+        "pairs": 520,
+        "bce": 0.11744197657489208,
+        "aer_at_rho_0_1": 0.007692307692307693
+      },
+      "snr_-10_to_-5_db": {
+        "pairs": 480,
+        "bce": 0.035000293171436256,
+        "aer_at_rho_0_1": 0.0014583333333333334
+      },
+      "snr_-5_to_0_db": {
+        "pairs": 494,
+        "bce": 0.00875339429084386,
+        "aer_at_rho_0_1": 0.00020242914979757087
+      },
+      "snr_0_to_5_db": {
+        "pairs": 484,
+        "bce": 0.008298215589674675,
+        "aer_at_rho_0_1": 0.0002066115702479339
+      },
+      "snr_5_to_10_db": {
+        "pairs": 527,
+        "bce": 2.217748591049146e-10,
+        "aer_at_rho_0_1": 0.0
+      },
+      "snr_10_to_15_db": {
+        "pairs": 512,
+        "bce": 4.1482380000208295e-22,
+        "aer_at_rho_0_1": 0.0
+      },
+      "snr_15_to_20_db": {
+        "pairs": 507,
+        "bce": 1.66621418994706e-29,
+        "aer_at_rho_0_1": 0.0
+      },
+      "snr_20_to_25_db": {
+        "pairs": 477,
+        "bce": 1.2694599941704268e-36,
+        "aer_at_rho_0_1": 0.0
+      },
+      "snr_25_to_30_db": {
+        "pairs": 513,
+        "bce": 7.69099113626125e-35,
+        "aer_at_rho_0_1": 0.0
+      }
+    },
+    "logit_minimum": -98.59761810302734,
+    "logit_maximum": 6838.4384765625
+  },
+  "validation_plateau": true,
+  "train_samples": 50000,
+  "validation_samples": 5000,
+  "specification_sha256": "9f7c37dda01cf6b4d8543030d28d777bd2853d8ec400f7a722ff4b7dde04a6eb",
+  "prior_definition_sha256": "f20b1e25eae1037daff03db58c816a7acc4ccc382c89520016e47e5385b8bc9d",
+  "weight_sha256": "b2e59a36e9ff07f8a53d18305f4ca029f55c16ca6c55a8faee62510d6562f53c",
+  "first_sha256": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+  "initialization_sha256": "f7765eeee544243a5c5a981bedaa2944ea9cd56cbfc8655c9d72ffef4293573f",
+  "samples_processed": 4200000,
+  "receiver_performance_verified": false,
+  "second_sha256": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5"
+}

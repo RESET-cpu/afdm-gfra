@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "tests": 4,
+  "commands": [
+    ".venv/bin/python -B -m pytest -q experiments/ldamp_structure_20261015/test_structure.py",
+    "PYTHONPATH=src .venv/bin/python -B -m pytest -q experiments/ldamp_structure_20261015/test_receiver.py"
+  ],
+  "scope": [
+    "Independent full SVD output vs Gram-eigen projection",
+    "Complete complex real JVP vs autograd and real/imaginary finite differences",
+    "Conjugate-dependent composition chain",
+    "Zero and repeated-leading-value behavior",
+    "Output-only receiver preserves original estimate and applies declared energy rule"
+  ],
+  "sources": {
+    "experiments/ldamp_structure_20261015/test_structure.py": "622aa33fdad0aeca7f78a1c96f7e084f37a606c148e0c59361149dcc5c53733a",
+    "experiments/ldamp_structure_20261015/test_receiver.py": "c9b1fa718edc3397e9ee836fa89f3db6d8eea4ffcb41ea70ba37ec7c7554d076",
+    "experiments/ldamp_structure_20261015/structure.py": "40011c7fa6e63221e41b5f890535fbe639ca6296dfea64a2d6f7a50fe7a14097",
+    "experiments/ldamp_structure_20261015/structured_receiver.py": "e777671259afd9f5d1ba4982775811a2933954a84a74f5c4a16bd89feed09445"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "afdm-ldamp-beam-v2",
+  "validation_status": "VALIDATED_PAIRED_10_SCENES",
+  "bank_path": "results/ldamp_implementation_20261014/beam_bank_five_intervals/BANK.json",
+  "bank_sha256": "74d7c23db592247f9291fcae57925c52d49792b6ceeffa5bfcc77d7f56faaa2f",
+  "scale": 0.2647966452702405,
+  "batch_size": 128,
+  "solver": {
+    "iterations": 10,
+    "probes": 8,
+    "divergence_seed": 202610146201
+  },
+  "readout": {
+    "path": "results/ldamp_implementation_20261014/energy_readout/READOUT.json",
+    "sha256": "803cbebb18bffbf8b74ea1b4b3b1d9e18185f85026367bbd852c1db0abc9aae4"
+  },
+  "receiver_validation_passed": true,
+  "reference": "He et al. IEEE WCL 2018 Sec.III-A Eqs.(4)-(8); Metzler et al. 2017 Sec.3; matrix adaptation and terminology in docs/TERMINOLOGY.md",
+  "adaptation": "Full complex AFDM channel, fixed unitary array DFT and invertible temporal representation, shared two-real-channel DnCNNs, per-beam complex matrix correction, frozen population scales and noise intervals.",
+  "activity_statistic": "channel_frobenius_energy",
+  "independent_validation": "results/ldamp_implementation_20261014/energy_readout_validation/SUMMARY.json",
+  "paired_comparison": "results/ldamp_implementation_20261014/paired_comparison_10/SUMMARY.json",
+  "validation_scope": "One trained bank, 16 new physical scenes and 10 paired scenes per SNR; empirical AFDM validity, not a state-evolution or convergence proof",
+  "implementation_review_status": "COMPLETED",
+  "implementation_review": "results/ldamp_implementation_20261014/REVIEW_20261014.md",
+  "final_audit": "results/ldamp_implementation_20261014/FINAL_AUDIT.json"
+}

@@ -1,0 +1,94 @@
+{
+  "status": "PASS",
+  "scope": "Truth-based algebra diagnostic; not receiver performance",
+  "limitation": "The alternative full channel is not asserted to satisfy the physical AFDM model or prior",
+  "seed": 202610156701,
+  "active_user": 36,
+  "pilot_rank": 16,
+  "pilot_condition": 58.39938777309112,
+  "frame_duration_s": 0.0007333333333333333,
+  "doppler_phase_alias_period_hz": 1363.6363636363637,
+  "checks": [
+    {
+      "phase_slope_change_rad": 0.001,
+      "relative_observation_change": 1.367140630508576e-15,
+      "relative_channel_change": 0.04432232333732419,
+      "spatial_second_first_singular_ratio": 1.1842317846305143e-15
+    },
+    {
+      "phase_slope_change_rad": 0.1,
+      "relative_observation_change": 1.9674051819109412e-15,
+      "relative_channel_change": 4.044295908698529,
+      "spatial_second_first_singular_ratio": 3.216861384488585e-16
+    },
+    {
+      "phase_slope_change_rad": 0.37,
+      "relative_observation_change": 3.4196844604864526e-15,
+      "relative_channel_change": 8.712576352939037,
+      "spatial_second_first_singular_ratio": 2.344313736650802e-16
+    }
+  ],
+  "source_sha256": "0a7c46c7146d73f7fa1b5f73c6d2ab8d7ea4f29f8f6266f50f65f3d528230cd9",
+  "warnings": [
+    {
+      "message": "divide by zero encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "overflow encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "invalid value encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "divide by zero encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "overflow encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "invalid value encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "divide by zero encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "overflow encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "invalid value encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "divide by zero encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "overflow encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    },
+    {
+      "message": "invalid value encountered in matmul",
+      "filename": "/Users/wangbo/Desktop/\u79d1\u7814/JADCEDD/src/afdm_jadcedd/system/afdm/continuous.py",
+      "line": 28
+    }
+  ]
+}

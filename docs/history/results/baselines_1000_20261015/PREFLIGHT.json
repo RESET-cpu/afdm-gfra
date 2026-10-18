@@ -1,0 +1,425 @@
+{
+  "status": "PASS",
+  "phase_exact": true,
+  "methods": {
+    "somp": {
+      "exact_all_arrays": true,
+      "reference": "/Users/wangbo/Desktop/科研/JADCEDD/results/baseline_noise_20261015/panel/scene000/snr+00/somp_estimated.npz",
+      "inference_sha256": "b09144389bd22ef0649799485c80b2fa0ab07e058e0a4250b3c7b7b569b81433",
+      "seconds": 0.04328291700221598,
+      "warning_counts": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/system/afdm/continuous.py",
+          "line": 28,
+          "count": 80
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/system/afdm/continuous.py",
+          "line": 28,
+          "count": 80
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/system/afdm/continuous.py",
+          "line": 28,
+          "count": 80
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 27,
+          "count": 31
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 27,
+          "count": 31
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 27,
+          "count": 31
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 40,
+          "count": 31
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 40,
+          "count": 31
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 40,
+          "count": 31
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 35,
+          "count": 112
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 35,
+          "count": 112
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 35,
+          "count": 112
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 55,
+          "count": 1
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 55,
+          "count": 1
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/somp.py",
+          "line": 55,
+          "count": 1
+        }
+      ]
+    },
+    "gamp": {
+      "exact_all_arrays": true,
+      "reference": "/Users/wangbo/Desktop/科研/JADCEDD/results/baseline_noise_audit_20261015/regression/scene000/snr+00/gamp_unchanged.npz",
+      "inference_sha256": "1c76634387809780ea561be8212d7b47efd3ec8d9a750151716034daf1163c18",
+      "seconds": 0.6587132079876028,
+      "warning_counts": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 55,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 55,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 55,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 56,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 56,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 56,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 62,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 62,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 62,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 63,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 63,
+          "count": 298
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/baselines/gamp_sbl_mmv.py",
+          "line": 63,
+          "count": 298
+        }
+      ]
+    },
+    "gnn": {
+      "exact_all_arrays": true,
+      "reference": "/Users/wangbo/Desktop/科研/JADCEDD/results/baseline_noise_20261015/panel/scene000/snr+00/gnn_estimated.npz",
+      "inference_sha256": "91d5a3cb39bc54253dbcc51c03150d94ddef40a71ebf639920531ea9afadc288",
+      "seconds": 0.11036370799411088,
+      "warning_counts": []
+    },
+    "offgrid_sbl": {
+      "exact_all_arrays": true,
+      "reference": "/Users/wangbo/Desktop/科研/JADCEDD/results/baseline_noise_audit_20261015/regression/scene000/snr+00/estimated.npz",
+      "inference_sha256": "a2d101a43653c7b7434dde0ef0cec0f3db89a6b5a59b34a312dc58e3c21d7c4f",
+      "seconds": 0.9233007080038078,
+      "warning_counts": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid_noise.py",
+          "line": 23,
+          "count": 1
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid_noise.py",
+          "line": 23,
+          "count": 1
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid_noise.py",
+          "line": 23,
+          "count": 1
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 35,
+          "count": 121
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 35,
+          "count": 121
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 35,
+          "count": 121
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 38,
+          "count": 121
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 38,
+          "count": 121
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 38,
+          "count": 121
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid_noise.py",
+          "line": 11,
+          "count": 120
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid_noise.py",
+          "line": 11,
+          "count": 120
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid_noise.py",
+          "line": 11,
+          "count": 120
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 58,
+          "count": 115
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 58,
+          "count": 115
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 58,
+          "count": 115
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 60,
+          "count": 115
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 60,
+          "count": 115
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 60,
+          "count": 115
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 62,
+          "count": 230
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 62,
+          "count": 230
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 62,
+          "count": 230
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 66,
+          "count": 115
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 66,
+          "count": 115
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid/sbl.py",
+          "line": 66,
+          "count": 115
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid_noise.py",
+          "line": 87,
+          "count": 1
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid_noise.py",
+          "line": 87,
+          "count": 1
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul",
+          "filename": "/Users/wangbo/Desktop/科研/JADCEDD/results/baselines_1000_20261015/runtime/src/afdm_jadcedd/algorithm/offgrid_noise.py",
+          "line": 87,
+          "count": 1
+        }
+      ]
+    }
+  },
+  "truth_paired_across_snr": true,
+  "atomic_json_and_gzip_roundtrip": true,
+  "environment": {
+    "python": "3.12.7",
+    "numpy": "2.2.1",
+    "torch": "2.7.1",
+    "device": "cpu"
+  },
+  "phase_seconds": 5.882869084001868,
+  "phase_warnings": []
+}

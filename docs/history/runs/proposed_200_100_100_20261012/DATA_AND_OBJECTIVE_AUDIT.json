@@ -1,0 +1,262 @@
+{
+  "status": "PASS",
+  "scope": "Bank integrity, sample reconstruction, split independence, loss algebra, noise conventions and checkpoint identity; not proof that AWGN matches actual receiver queries.",
+  "assets": {
+    "status": "PASS",
+    "samples": {
+      "train": 50000,
+      "validation": 5000
+    },
+    "initialization_sha256": {
+      "first": "47422682e8a136b32d30f72fc76ad91d44dd78702cafc8fa35580f5c633624be",
+      "second": "ef6308ffa2587615f80e53e665b9444539378c12cad9bf6963541cf9b8b80935",
+      "activity": "f7765eeee544243a5c5a981bedaa2944ea9cd56cbfc8655c9d72ffef4293573f"
+    },
+    "selected_teacher_sha256": {
+      "first": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+      "second": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5"
+    }
+  },
+  "banks": {
+    "train": {
+      "samples": 50000,
+      "physical_scenes": 12500,
+      "finite_nonzero": true,
+      "unique_channels": 50000,
+      "identity_selection_verified": true,
+      "normalized_mean_element_power": 1.0004404181394886,
+      "stored_moments_verified": true,
+      "reconstructed": [
+        {
+          "index": 0,
+          "seed": 2026100601000000,
+          "user": 12,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.295448711317923e-16
+        },
+        {
+          "index": 1,
+          "seed": 2026100601000000,
+          "user": 17,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 1.9740885840506541e-16
+        },
+        {
+          "index": 19658,
+          "seed": 2026100601004914,
+          "user": 36,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.4035918615914248e-16
+        },
+        {
+          "index": 20624,
+          "seed": 2026100601005156,
+          "user": 7,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.5770721039799123e-16
+        },
+        {
+          "index": 23906,
+          "seed": 2026100601005976,
+          "user": 13,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 1.927636470812353e-16
+        },
+        {
+          "index": 25000,
+          "seed": 2026100601006250,
+          "user": 7,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 4.0014130885224174e-16
+        },
+        {
+          "index": 30525,
+          "seed": 2026100601007631,
+          "user": 20,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.7277301753992957e-16
+        },
+        {
+          "index": 32604,
+          "seed": 2026100601008151,
+          "user": 6,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.35900969927382e-16
+        },
+        {
+          "index": 42324,
+          "seed": 2026100601010581,
+          "user": 15,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.0649432640804738e-16
+        },
+        {
+          "index": 44594,
+          "seed": 2026100601011148,
+          "user": 30,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 1.9415834269268064e-16
+        },
+        {
+          "index": 45136,
+          "seed": 2026100601011284,
+          "user": 24,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 3.0211540308729556e-16
+        },
+        {
+          "index": 49999,
+          "seed": 2026100601012499,
+          "user": 37,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.0428773228363227e-16
+        }
+      ],
+      "sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+    },
+    "validation": {
+      "samples": 5000,
+      "physical_scenes": 1250,
+      "finite_nonzero": true,
+      "unique_channels": 5000,
+      "identity_selection_verified": true,
+      "normalized_mean_element_power": 0.9970125690845855,
+      "stored_moments_verified": true,
+      "reconstructed": [
+        {
+          "index": 0,
+          "seed": 2026100602000000,
+          "user": 2,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.0727842162453375e-16
+        },
+        {
+          "index": 1,
+          "seed": 2026100602000000,
+          "user": 24,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.2172459054097928e-16
+        },
+        {
+          "index": 1964,
+          "seed": 2026100602000491,
+          "user": 32,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.1447426433800403e-16
+        },
+        {
+          "index": 2060,
+          "seed": 2026100602000515,
+          "user": 24,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.0224504568131383e-16
+        },
+        {
+          "index": 2387,
+          "seed": 2026100602000596,
+          "user": 1,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.1499188990822809e-16
+        },
+        {
+          "index": 2500,
+          "seed": 2026100602000625,
+          "user": 12,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.316914376309956e-16
+        },
+        {
+          "index": 3049,
+          "seed": 2026100602000762,
+          "user": 29,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.228605358803904e-16
+        },
+        {
+          "index": 3260,
+          "seed": 2026100602000815,
+          "user": 35,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.1908263447341086e-16
+        },
+        {
+          "index": 4228,
+          "seed": 2026100602001057,
+          "user": 7,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 1.927086844104773e-16
+        },
+        {
+          "index": 4457,
+          "seed": 2026100602001114,
+          "user": 18,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 2.1632099048732844e-16
+        },
+        {
+          "index": 4512,
+          "seed": 2026100602001128,
+          "user": 18,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 1.9145736814679262e-16
+        },
+        {
+          "index": 4999,
+          "seed": 2026100602001249,
+          "user": 15,
+          "exact_float32_match": true,
+          "explicit_sum_relative_error": 3.2727616515760915e-16
+        }
+      ],
+      "sha256": "2b3cd347df5a869948bbd40c74d119764880a998bb82a39ffae8301a7f9f8b0a"
+    }
+  },
+  "train_validation_test_seeds_disjoint": true,
+  "cross_split_duplicate_channels": 0,
+  "batch_and_loss_checks": {
+    "first": {
+      "standardized_noise_mean": -0.00036593759432435036,
+      "standardized_noise_variance": 1.0015393495559692
+    },
+    "negative_standardized_variance": 1.0010061264038086,
+    "auxiliary": {
+      "standardized_noise_mean": -0.0003659373032860458,
+      "standardized_noise_variance": 1.0015394687652588
+    },
+    "independent_losses": "Both objectives match the independently formed complete-mean error and trace risk; complex variance uses v/2 per real coordinate."
+  },
+  "continuation": {
+    "path": "/Users/wangbo/JADCEDD-training/20261006/shared_first/last.pt",
+    "sha256": "5b60beb4f66616a5056ffcabbf88b9ea14227d4b740f199d51000e4fd3ba3762",
+    "completed_epochs": 81,
+    "next_epoch": 82,
+    "samples_consumed_in_epoch": 20928,
+    "optimizer_steps": 63669,
+    "optimizer_parameter_states": 248,
+    "learning_rate": 8.857950124856526e-06,
+    "preserves": [
+      "raw model",
+      "EMA",
+      "Adam",
+      "numpy RNG",
+      "torch RNG",
+      "MPS RNG",
+      "shuffled indices",
+      "partial epoch counters",
+      "validation history"
+    ]
+  },
+  "remaining_limitation": "Network training uses independent AWGN and an unconditional active-channel marginal; previous diagnostics show that actual iterative queries need not follow that model.",
+  "warnings": {
+    "count": 288,
+    "messages": [
+      "divide by zero encountered in matmul",
+      "invalid value encountered in matmul",
+      "overflow encountered in matmul"
+    ],
+    "locations": [
+      "src/afdm_jadcedd/system/afdm/continuous.py:28"
+    ],
+    "investigation": "Matrix-product outputs were finite and independently checked against explicit element summation for all reconstructed channels; stored float32 channels match exactly. These warnings do not indicate nonfinite stored data."
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "case": "scene003/snr-02",
+  "all_arrays_bitwise_exact": false,
+  "all_primary_arrays_bitwise_exact": true,
+  "readout_float_rtol": 1e-12,
+  "readout_float_atol": 1e-14,
+  "readout_max_relative_norm_error": {
+    "activity_energy_over_noise": 5.144690135633943e-16,
+    "activity_score": 1.689730816417328e-19
+  },
+  "exact": {
+    "estimate": true,
+    "conditional_matrix": true,
+    "probabilities": true,
+    "activity_decision": true,
+    "spatial_covariance": true,
+    "phase_slopes": true,
+    "classifier_activity_decision": true,
+    "activity_energy_over_noise": false,
+    "activity_score": false
+  },
+  "iterations": 96,
+  "first_calls": 96,
+  "classifier_calls": 96,
+  "phase_once": true,
+  "stopping_reason": "CONVERGED",
+  "source_changes": [],
+  "unified_activity_probability": false,
+  "complete_estimate_masked": false
+}

@@ -1,0 +1,83 @@
+{
+  "status": "COMPLETE",
+  "scope": "Post-hoc diagnostic, one difficult scene, final estimated operator fixed",
+  "points": [
+    {
+      "rule": "original",
+      "activity_tolerance": 0.0001,
+      "weight_tolerance": 0.0001,
+      "iteration": 600,
+      "criteria_met": false,
+      "metrics": {
+        "iteration": 600,
+        "nmse_db": -4.8656732570233965,
+        "full_error": 790.7778050282205,
+        "signal_energy": 2424.4978149885706,
+        "misses": 2,
+        "false_alarms": 0,
+        "aer": 0.05,
+        "estimate_change": 0.00011349516573194578,
+        "activity_change": 4.773676004499183e-05,
+        "activity_weight_residual": 0.0003374232506315744,
+        "raw_site_residual": 0.0009577639716935435,
+        "decision_stable_iterations": 57
+      },
+      "nmse_change_vs_600_db": 0.0
+    },
+    {
+      "rule": "weight_1e-3",
+      "activity_tolerance": 0.0001,
+      "weight_tolerance": 0.001,
+      "iteration": 286,
+      "criteria_met": true,
+      "metrics": {
+        "iteration": 286,
+        "nmse_db": -5.901664432016545,
+        "full_error": 622.9531035927366,
+        "signal_energy": 2424.4978149885706,
+        "misses": 1,
+        "false_alarms": 0,
+        "aer": 0.025,
+        "estimate_change": 0.0001261574029197233,
+        "activity_change": 9.888266000643298e-05,
+        "activity_weight_residual": 0.00047470165395552266,
+        "raw_site_residual": 0.0005044865014414368,
+        "decision_stable_iterations": 237
+      },
+      "nmse_change_vs_600_db": -1.035991174993148
+    },
+    {
+      "rule": "both_1e-3",
+      "activity_tolerance": 0.001,
+      "weight_tolerance": 0.001,
+      "iteration": 170,
+      "criteria_met": true,
+      "metrics": {
+        "iteration": 170,
+        "nmse_db": -5.955336517083851,
+        "full_error": 615.3017430101943,
+        "signal_energy": 2424.4978149885706,
+        "misses": 1,
+        "false_alarms": 0,
+        "aer": 0.025,
+        "estimate_change": 0.0002338236248058245,
+        "activity_change": 0.00017850705029764935,
+        "activity_weight_residual": 0.000948634569450324,
+        "raw_site_residual": 0.0008373178755679673,
+        "decision_stable_iterations": 121
+      },
+      "nmse_change_vs_600_db": -1.0896632600604548
+    }
+  ],
+  "final_arrays_exact": {
+    "estimate": true,
+    "conditional_matrix": true,
+    "probabilities": true,
+    "activity_decision": true,
+    "spatial_covariance": true
+  },
+  "full_outer_loop_with_relaxed_stopping": false,
+  "original_stopping_reason": "MAX_ITERATIONS",
+  "original_iterations": 600,
+  "source_unchanged": true
+}

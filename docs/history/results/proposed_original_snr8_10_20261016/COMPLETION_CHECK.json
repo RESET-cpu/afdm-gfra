@@ -1,0 +1,25 @@
+{
+  "status": "COMPLETE",
+  "expected": 400,
+  "unique_rows": 400,
+  "successes": 400,
+  "failures": 0,
+  "fully_paired_scenes": 10,
+  "conditions": 80,
+  "source_and_input_verification": "PASS",
+  "output_verification": "PASS",
+  "supplementary_replay": "high_snr_verification/REPLAY.json",
+  "figure_verification": "FIGURE_VERIFICATION.json",
+  "per_method": {
+    "proposed": 80,
+    "somp": 80,
+    "gamp": 80,
+    "gnn": 80,
+    "offgrid_sbl": 80
+  },
+  "rows_not_replaced_or_dropped": true,
+  "completed_utc": "2026-10-16T14:59:51.762206+00:00",
+  "summary_sha256": "a991cd860e8c21e478b8a84a29bb3d8408462b439eb2ec8ab5aa45b43f57c087",
+  "findings_sha256": "ff694b35e04f3d9404791945579fbcad78cfafc7e2c194a0bddc05381d348268",
+  "presentation_source_sha256": "ba8aa6a291b04b45a79b0e8865f1cb6f412b7a2bfe8ca7bf1c29a6fbb7e38a6c"
+}

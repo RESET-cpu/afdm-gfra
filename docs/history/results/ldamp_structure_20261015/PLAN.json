@@ -1,0 +1,54 @@
+{
+  "objective": "Improve L-DAMP channel recovery and computational utility using estimated channel structure, then independently validate the selected candidate.",
+  "status": "COMPLETE",
+  "starting_evidence": "results/ldamp_complete_20261015/ADOPTION_DECISION.json",
+  "allowed_development_seeds": [
+    2026101452100000,
+    2026101452100001,
+    2026101452100002,
+    2026101452100003,
+    2026101452100004,
+    2026101452100005,
+    2026101452100006,
+    2026101452100007
+  ],
+  "previous_test_seeds_excluded_from_selection": [
+    2026101503100000,
+    2026101503100001,
+    2026101503100002,
+    2026101503100003,
+    2026101503100004,
+    2026101503100005,
+    2026101503100006,
+    2026101503100007,
+    2026101503100008,
+    2026101503100009
+  ],
+  "reserved_new_test_seeds": [
+    2026101504100000,
+    2026101504100001,
+    2026101504100002,
+    2026101504100003,
+    2026101504100004,
+    2026101504100005,
+    2026101504100006,
+    2026101504100007,
+    2026101504100008,
+    2026101504100009
+  ],
+  "stages": [
+    "Check complex projection and complete derivative against independent SVD/autograd and finite differences",
+    "Compare original, final-only projection and recurrent projection on six old conditions",
+    "Calibrate selected frozen receiver on eight old development scenes; retain failed alternatives",
+    "Freeze selected implementation and threshold before generating ten new scenes at six SNRs",
+    "Evaluate full/active/inactive errors, misses, false alarms, runtime and paired scene uncertainty; review exact results before adoption"
+  ],
+  "selection_rule": "Select only on development evidence; prioritize a clear full-channel gain without material runtime growth, preserve all regressions; new test results never select weights, threshold, recurrence or iteration budget.",
+  "limits": [
+    "Zero intra-user path direction spread; rank-one physical channel does not imply rank-one posterior mean",
+    "Training and inference mismatch of the frozen neural denoiser is not claimed solved by structural projection",
+    "No state-evolution or convergence claim for AFDM"
+  ],
+  "implementation_boundary": "Existing src and default models/configuration unchanged; experimental wrappers use frozen public receiver.",
+  "completion_note": "All planned stages executed. Output TSVD improves the channel estimate; recalibrated activity rule fails to improve new-scene detection. Both rules and all development alternatives retained; public default uses the prespecified original-decision control. No test-driven parameter retuning."
+}

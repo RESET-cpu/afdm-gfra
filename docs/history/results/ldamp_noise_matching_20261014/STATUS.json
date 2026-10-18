@@ -1,0 +1,70 @@
+{
+  "status": "COMPLETE_DIAGNOSTIC_CANDIDATE_REJECTED",
+  "question": "Does unequal per-beam effective-error variance contradict the physical white-noise model?",
+  "physical_model": "Y=A X+W; W has one common proper-complex variance. Unchanged.",
+  "exact_first_query_error": "R0-X=(A^H A-I)X+A^H W",
+  "answer": "No contradiction for effective-error modeling; it is not an alternative physical observation-noise model.",
+  "surrogate_limitations": [
+    "Diagonal Gaussian training errors do not reproduce cross-beam or within-beam correlations.",
+    "Only first-query public variance profiles from 24 already observed development cases were used.",
+    "Good variance estimates do not by themselves imply accurate Gaussian shape or AMP convergence."
+  ],
+  "first_query_decomposition_relative_error": 2.270801257048948e-16,
+  "training_status": "FAILED_DENOISING_UTILITY",
+  "mainline_modified": false,
+  "public_profiles": "PUBLIC_VARIANCE_PROFILES.json",
+  "first_query_audit": "EFFECTIVE_NOISE_AUDIT.json",
+  "training": "joint_bank/PLAN.json",
+  "development": "development/PLAN.json",
+  "development_status": "FAILED_RECEIVER_UTILITY",
+  "results": [
+    {
+      "snr_db": -4,
+      "nmse_db": 0.03635505123043504,
+      "first_query_nmse_db": -0.09209328286490215,
+      "baseline_nmse_db": -2.6232516528842433,
+      "aer": 0.115625,
+      "misses": 37,
+      "false_alarms": 0,
+      "users": 320
+    },
+    {
+      "snr_db": 0,
+      "nmse_db": 49.48934870969354,
+      "first_query_nmse_db": -0.4401469480412467,
+      "baseline_nmse_db": -4.249174190041405,
+      "aer": 0.115625,
+      "misses": 37,
+      "false_alarms": 0,
+      "users": 320
+    },
+    {
+      "snr_db": 6,
+      "nmse_db": 64.11862865472611,
+      "first_query_nmse_db": -0.18525640092148005,
+      "baseline_nmse_db": -6.371067817782129,
+      "aer": 0.115625,
+      "misses": 37,
+      "false_alarms": 0,
+      "users": 320
+    }
+  ],
+  "inference_signature_of_unchanged_mainline": "a22e78ec9fe3f1985d12c929e3c30c8d9afefe783f7e070f193498bfde4fbabb",
+  "candidate_promoted": false,
+  "new_independent_validation_runs": 0,
+  "active_experiments": [],
+  "conclusion": "Unequal effective-error variance is compatible with the unchanged physical white-noise model. Matching diagonal variances improves surrogate denoising but does not fix the joint receiver.",
+  "validation_scope": "24 previously observed development cases; not independent validation. All cases and the failed highest-noise interval retained.",
+  "verification": {
+    "first_query_exact_decomposition": "PASS",
+    "scripts_compile": "PASS",
+    "training_sources_unchanged": true,
+    "development_source_unchanged": true,
+    "unchanged_mainline_identity": "PASS"
+  },
+  "source_sha256": {
+    "experiments/ldamp_repair_20261014/audit_effective_noise.py": "86a14b0b52b7175cb70b514984cf00dedf59d3e2eb3664fe0a6f5ddd622eef1c",
+    "experiments/ldamp_repair_20261014/train_joint_variances.py": "633923156cb3cee642dd1d7061f30b14863855002f05d98877db77fae4630f91",
+    "experiments/ldamp_repair_20261014/evaluate_noise_matching.py": "e46e936bec1736fe3591d80cb9a74501357a910981cc2799cb093688d141ff5b"
+  }
+}

@@ -1,0 +1,342 @@
+{
+  "trace": [
+    {
+      "iteration": 1,
+      "variance_mean": 4.780744342373328,
+      "correction_term_norm": 61.595647304001474,
+      "residual_energy": 8436.808202336782
+    },
+    {
+      "iteration": 2,
+      "variance_mean": 2.5233723899352842,
+      "correction_term_norm": 58.329945054858115,
+      "residual_energy": 7331.143893649516
+    },
+    {
+      "iteration": 3,
+      "variance_mean": 1.9260384956518166,
+      "correction_term_norm": 96.948832629187,
+      "residual_energy": 9692.75706152488
+    },
+    {
+      "iteration": 4,
+      "variance_mean": 1.7264342623017377,
+      "correction_term_norm": 66.39832902636306,
+      "residual_energy": 6878.102032819351
+    },
+    {
+      "iteration": 5,
+      "variance_mean": 1.6060467243924543,
+      "correction_term_norm": 53.561875408917544,
+      "residual_energy": 5989.302827671623
+    },
+    {
+      "iteration": 6,
+      "variance_mean": 1.5457168299946504,
+      "correction_term_norm": 50.641915891312465,
+      "residual_energy": 5797.5406759083835
+    },
+    {
+      "iteration": 7,
+      "variance_mean": 1.5406654805881055,
+      "correction_term_norm": 57.58589034378337,
+      "residual_energy": 5202.160241478257
+    },
+    {
+      "iteration": 8,
+      "variance_mean": 1.5405904307553606,
+      "correction_term_norm": 48.52277555189306,
+      "residual_energy": 5552.93657137234
+    },
+    {
+      "iteration": 9,
+      "variance_mean": 1.572973816000606,
+      "correction_term_norm": 50.931616581300936,
+      "residual_energy": 5434.715044480159
+    },
+    {
+      "iteration": 10,
+      "variance_mean": 1.5373962616651933,
+      "correction_term_norm": 57.626374106522455,
+      "residual_energy": 5320.930084773114
+    }
+  ],
+  "iterations": 10,
+  "row_probes": 4,
+  "measurement_batch": 4,
+  "seed": 202610150201,
+  "seconds": 98.04351066699746,
+  "stopping_reason": "FIXED_ITERATION_BUDGET",
+  "truth_used_in_inference": false,
+  "partial_trace": "Direct Z B product; orthogonal phases within user rows; complete row basis if row_probes=N",
+  "method": "ldamp",
+  "status": "COMPLETE",
+  "configuration": {
+    "schema": "afdm-ldamp-joint-v1",
+    "validation_status": "DEVELOPMENT_NOT_INDEPENDENTLY_VALIDATED",
+    "bundle_path": "models/ldamp_joint/v1/BUNDLE.json",
+    "bundle_sha256": "fe6236f47dee78476399e6e2d72b250ae6799ec145f2ada857c656bf055b4a12",
+    "solver": {
+      "iterations": 10,
+      "row_probes": 4,
+      "measurement_batch": 4,
+      "seed": 202610150201
+    },
+    "readout": null,
+    "activity_statistic": "channel_frobenius_energy",
+    "reference": "docs/TERMINOLOGY.md; experiments/ldamp_complete_20261015/PROJECTED_TRACE_DERIVATION.md",
+    "adaptation": "Noise-conditioned joint-channel denoising and direct computation of the matrix AMP correction Z B"
+  },
+  "inference_sha256": "bd96af6217fb60c4e490b62a6c044a766b58f18f97c65fb61889c7f0391609b1",
+  "device": "mps",
+  "validation_status": "DEVELOPMENT_NOT_INDEPENDENTLY_VALIDATED",
+  "input_fields": [
+    "observation",
+    "operator",
+    "noise_variance",
+    "activity_prior"
+  ],
+  "activity_prior_used": false,
+  "training_activity_probability": 0.1,
+  "public_activity_prior": 0.10150026351351807,
+  "activity_statistic": "channel_frobenius_energy",
+  "activity_decision_available": false,
+  "denoiser_calls": 10,
+  "selected_intervals": [
+    {
+      "variance": [
+        22.955308726947642,
+        1.6416625343856786,
+        1.4338593735638439,
+        1.4582754698009364,
+        3.7503136155410948,
+        0.9800627833375768,
+        0.8659232695890815,
+        1.065931959136204,
+        4.2798768246916055,
+        0.9348585999331296,
+        1.017933196126148,
+        1.0342733117964948,
+        30.69778536235338,
+        1.362705948048705,
+        1.2706270733321945,
+        1.7425114293895156
+      ],
+      "mean_variance": 4.7807443423733265,
+      "high_beams": 0,
+      "outside_training_mean_range": false
+    },
+    {
+      "variance": [
+        8.59334561756938,
+        1.1711372320565432,
+        1.283600485985327,
+        1.2297821110254548,
+        2.3941047868967393,
+        1.2265896826687417,
+        0.8790059629811623,
+        1.0994731792215962,
+        2.4106989363289015,
+        1.0401462686459484,
+        1.0103284697480863,
+        1.0190685412274578,
+        13.112360457070569,
+        1.2549154533062636,
+        1.214043999643578,
+        1.4353570545887933
+      ],
+      "mean_variance": 2.5233723899352842,
+      "high_beams": 0,
+      "outside_training_mean_range": false
+    },
+    {
+      "variance": [
+        5.02770182948816,
+        1.2158535460056559,
+        1.1763937903928428,
+        1.203917008803764,
+        1.8065817657322552,
+        1.0009901136181427,
+        0.9058785290834117,
+        1.0643230489382138,
+        1.7381850672135708,
+        0.9945231713759286,
+        1.1201533609932393,
+        0.9399138046190152,
+        8.694998164900298,
+        1.3292147670085375,
+        1.2921327546263481,
+        1.305855207629679
+      ],
+      "mean_variance": 1.9260384956518162,
+      "high_beams": 0,
+      "outside_training_mean_range": false
+    },
+    {
+      "variance": [
+        4.185930558957864,
+        1.2317484144735136,
+        1.2225796972942966,
+        1.1318014255301265,
+        1.647154075977292,
+        1.0526687749267478,
+        0.8760816597182401,
+        1.0728833097908697,
+        1.7783434479405629,
+        1.138139876989043,
+        1.1008125915082856,
+        1.167924529040211,
+        6.272747689887096,
+        1.292065844408469,
+        1.2540947038235675,
+        1.1979715965616191
+      ],
+      "mean_variance": 1.726434262301738,
+      "high_beams": 0,
+      "outside_training_mean_range": false
+    },
+    {
+      "variance": [
+        3.6557397759961616,
+        1.2145902154020174,
+        1.2539956521890467,
+        1.1121784853998369,
+        1.7557844857148424,
+        1.062718602007788,
+        0.9240022272091897,
+        1.0650046895998864,
+        1.8214032439488677,
+        1.0489419877317714,
+        1.107533068924371,
+        1.052604656986452,
+        4.878671114067052,
+        1.3085118751789089,
+        1.2037748388400957,
+        1.2312926710829828
+      ],
+      "mean_variance": 1.6060467243924543,
+      "high_beams": 0,
+      "outside_training_mean_range": false
+    },
+    {
+      "variance": [
+        3.5105737642823307,
+        1.183142219553336,
+        1.2592100352907432,
+        1.129175206885852,
+        1.7732748269751568,
+        1.0689672434208024,
+        0.9522234231789601,
+        1.0546955364679578,
+        1.7638856773897182,
+        1.0156517316886853,
+        1.161977455064968,
+        1.0103061488620992,
+        4.033652700639202,
+        1.3827880487062059,
+        1.2134775248291034,
+        1.2184677366792886
+      ],
+      "mean_variance": 1.5457168299946504,
+      "high_beams": 0,
+      "outside_training_mean_range": false
+    },
+    {
+      "variance": [
+        3.663248828499384,
+        1.214154726128736,
+        1.222403501882402,
+        1.1471113769109964,
+        1.8339650857466898,
+        1.0565276848727259,
+        0.9629416138293225,
+        1.066128687227704,
+        1.8541869955000798,
+        0.9965716171867425,
+        1.1685775022804858,
+        0.9324866051014256,
+        3.732054632709754,
+        1.4103245426790019,
+        1.1927226163354372,
+        1.1972416725187967
+      ],
+      "mean_variance": 1.5406654805881055,
+      "high_beams": 0,
+      "outside_training_mean_range": false
+    },
+    {
+      "variance": [
+        3.4630855207831637,
+        1.1997690740551374,
+        1.2022333460020316,
+        1.173799683321553,
+        1.8699506233231997,
+        1.0686722246225764,
+        0.9719755343850025,
+        1.006037811455756,
+        1.837998132036438,
+        1.1814879935820448,
+        1.145285942004245,
+        1.202618430998752,
+        3.5351215365223463,
+        1.3304212427918938,
+        1.2097066484663368,
+        1.2512831477352941
+      ],
+      "mean_variance": 1.5405904307553608,
+      "high_beams": 0,
+      "outside_training_mean_range": false
+    },
+    {
+      "variance": [
+        3.5671052100675436,
+        1.2156613317390625,
+        1.2208689997499136,
+        1.132344226726348,
+        1.9868743512254652,
+        1.0921454992957935,
+        0.9470570949387203,
+        1.0825951665565334,
+        1.8095430496934481,
+        1.0854662451605308,
+        1.1515096974736452,
+        1.0866872381869523,
+        3.95935662081886,
+        1.3860325030310259,
+        1.2413262610655624,
+        1.2030075602802952
+      ],
+      "mean_variance": 1.5729738160006062,
+      "high_beams": 0,
+      "outside_training_mean_range": false
+    },
+    {
+      "variance": [
+        3.3273156228426237,
+        1.215366751294699,
+        1.2258285525540216,
+        1.1474893148259575,
+        1.915639362846629,
+        1.1224787905812863,
+        0.9313896884381856,
+        1.1080072079887868,
+        1.8616406787103765,
+        0.9906806782189718,
+        1.155443373861748,
+        1.0152538253430472,
+        3.7603217604951213,
+        1.340081689736373,
+        1.2556115234401766,
+        1.225791365465089
+      ],
+      "mean_variance": 1.5373962616651933,
+      "high_beams": 0,
+      "outside_training_mean_range": false
+    }
+  ],
+  "outside_noise_support_calls": 0,
+  "directional_derivative_evaluations": 1280,
+  "effective_covariance_used_by_denoiser": "Mean diagonal within each beam; correlated-error mismatch remains empirical",
+  "input_sha256": "0aa81b548d55c07279bfac204272184103a679eb1d308998848aad6ed5fdac7f",
+  "output_sha256": "8c24a4e3867210ce9b4cb5c2337575a6e3528148a9e157b2a37554b79d0bb3e3"
+}

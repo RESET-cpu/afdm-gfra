@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "observed_cli_exit_code": 2,
+  "algorithm_status": "FAILED",
+  "iterations": 7,
+  "interpretation": "Expected nonzero exit on recorded UnsupportedVariance; every saved output equals frozen experiment.",
+  "arrays": [
+    {
+      "array": "estimate",
+      "bitwise_equal": true
+    },
+    {
+      "array": "denoised_estimate",
+      "bitwise_equal": true
+    },
+    {
+      "array": "probabilities",
+      "bitwise_equal": true
+    },
+    {
+      "array": "conditional_matrix",
+      "bitwise_equal": true
+    },
+    {
+      "array": "activity_decision",
+      "bitwise_equal": true
+    }
+  ],
+  "input_sha256": "ce06de3b340f86d4921cfca7d496da5e3e69512265166382456cbe1076d14f8f",
+  "inference_sha256": "33ee659c10a5497ff3d4de66e41fd932227552fe87181deed152eca48040a8ff",
+  "cli_prediction_sha256": "325bb253bafd47b96c5e871ce63cebb73334322df0acac29e63aeb1b8a5318ec",
+  "main_prediction_sha256": "325bb253bafd47b96c5e871ce63cebb73334322df0acac29e63aeb1b8a5318ec"
+}

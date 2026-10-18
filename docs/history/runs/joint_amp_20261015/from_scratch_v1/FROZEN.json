@@ -1,0 +1,24 @@
+{
+  "schema": "joint-score-freeze-v1",
+  "status": "FROZEN",
+  "frozen_utc": "2026-10-15T06:26:43.020644+00:00",
+  "checkpoint": "/Users/wangbo/Desktop/科研/JADCEDD/models/joint_amp/score.pt",
+  "checkpoint_sha256": "2a84809c44b3f4d675199969c1307df5bc5b523edeb8324b617802227a180dff",
+  "best_step": 63000,
+  "completed_steps": 63342,
+  "selection": "Minimum predeclared fixed AWGN validation weighted mixture risk",
+  "selection_risk": 0.021887562463234585,
+  "stop_reason": "Maximum 63342 updates; plateau criterion not met",
+  "verification_path": "/Users/wangbo/Desktop/科研/JADCEDD/runs/joint_amp_20261015/from_scratch_v1/VERIFICATION.json",
+  "verification_sha256": "63667d7d043a23a7e762fd83529365c3541ea8776d1f7900047bf1cd0b84673a",
+  "source_sha256": {
+    "src/afdm_jadcedd/algorithm/joint_amp/training.py": "b76ba984249e0e56e73be8f9944dae08704640eec43a4ee31509ad3b3b3dc6c1",
+    "src/afdm_jadcedd/algorithm/joint_amp/network.py": "ec2d88d2cb74bcbb97319ceb0e6ae6a9e7900ceacbb08cbfea68404c8dc61491",
+    "scripts/train_joint_amp.py": "0e696c23d2f9d4153164c96c70993ae2f9aea3bb899caa4545d12e5dec582ddf",
+    "src/afdm_jadcedd/algorithm/ldamp/representation.py": "c2cbe2265b114a9a52c02b1577e544fd87d65289d51da063661e6d01d529cd2b",
+    "experiments/joint_amp_20261015/training/METHOD.md": "ea11f961cce22a73257dbaa40bd9f9e7a9a0c73e92994f6d0c6314ac8bf9dc2f",
+    "experiments/joint_amp_20261015/training/smoke.py": "61e161ab1e11edd1c9a364e53924900a056d4914dfe4a9fe65360b3250aa15d0"
+  },
+  "this_task_mps_released_utc": "2026-10-15T06:26:43.020644+00:00",
+  "release_scope": "This task only; no claim that the machine is idle"
+}

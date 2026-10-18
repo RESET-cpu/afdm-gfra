@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "passed": 25,
+  "failed": 0,
+  "duration_seconds": 6.36,
+  "warnings": 21,
+  "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 .venv/bin/python -B -m pytest -q tests/test_proposed_training.py tests/test_cai_derivation_audit.py",
+  "files": {
+    "tests/test_proposed_training.py": "70a3f1a8b252e3cdbb5f5515828d45276d509960ea396560000a5c407c986f92",
+    "tests/test_cai_derivation_audit.py": "65763fb1adee46b167b8a8a4ef9831f8a59193829e1a845640c018470853a69d"
+  },
+  "scope": "Real narrow networks on synthetic full-shape channels: three-stage train/bind, partial-epoch resumes, teacher identity, imported trajectory exact equality and loss derivation checks.",
+  "warning_investigation": "AFDM matrix-product warnings were subsequently checked independently; see DATA_AND_OBJECTIVE_AUDIT.json."
+}

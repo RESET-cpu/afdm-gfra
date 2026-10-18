@@ -1,0 +1,25 @@
+{
+  "schema": "afdm-offgrid-baselines-v1",
+  "validation_status": "IMPLEMENTATION_VALIDATED",
+  "methods": {
+    "offgrid_sbl": {
+      "paper": "Wei et al., IEEE TWC 2022, DOI 10.1109/TWC.2022.3158616",
+      "solver": {
+        "iterations": 120,
+        "tolerance": 0.0001,
+        "rho": 0.001,
+        "candidates_per_user": 12,
+        "offset_candidates": 48,
+        "offset_sweeps": 5,
+        "warmup": 5,
+        "doppler_step": 0.5
+      },
+      "validation_note": "120 iterations; all initial evaluation cases reached this budget; first-order approximation error is reported"
+    }
+  },
+  "readout": {
+    "path": "configs/offgrid_readout_policy.json",
+    "sha256": "9ae47538b2d159d1fb0095e82c69d374f733081c0adc27ea36c1c0ff99b19e37"
+  },
+  "validation_reference": "results/offgrid_baselines_20261012"
+}

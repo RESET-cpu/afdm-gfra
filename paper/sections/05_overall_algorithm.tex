@@ -1,0 +1,234 @@
+\section{Overall Algorithm}
+\label{sec:overall}
+
+The receiver combines the estimators and message updates in
+Section~\ref{sec:algorithm} with the trained networks in
+Section~\ref{sec:learning}. The phase
+increments and noise variance are estimated once per access block,
+followed by MP iterations between linear estimation and channel and
+activity denoising.
+
+\subsection{Message Scheduling}
+\label{sec:schedule}
+
+From the original received pilots, estimate $\widehat\sigma^2$ by
+\eqref{eq:noise-mdl}, fit the inter-frame phase increments using
+\eqref{eq:phase-variable-projection}, and form
+$\widehat{\mathbf A}$. Normalize the observation and estimated noise variance
+by $s$ and $s^2$, respectively. Initialize
+$\mathbf X^{{\rm pri},(0)}=\mathbf0$ and
+$\gamma^{(0)}=\rho\widehat P_H$, where $\widehat P_H$ is the training
+average of $\norm{H}_F^2/D$ in normalized units.
+The initial sites are $E_k^{(0)}=0$ and $c_k^{(0)}=1$ in these units.
+An activity history $w_k^{(0)}=\rho$ is maintained for the stopping
+check in Section~\ref{sec:damping}.
+
+At each iteration, the linear estimator produces a Gaussian extrinsic message
+using \eqref{eq:linear-mean}--\eqref{eq:linear-fraction}.
+For $v\in[v_{\min},v_{\max}]$, each trained network is evaluated once
+per terminal. The channel error estimates are averaged according to
+\eqref{eq:pooled-variance}, and the sites are replaced using
+\eqref{eq:site-update} if $\tau<v$; otherwise, the previous sites
+are retained. The classifier uses the current $(R_k,v,F_k)$ in
+either case.
+
+For $v$ outside the training range, the sites are retained and the
+activity probability is obtained from their Gaussian densities:
+\begin{equation}
+ \begin{aligned}
+ \ell_k^{\rm G}&=
+ \frac{\norm{R_k}_F^2}{v}
+ -\frac{\norm{R_k-E_k}_F^2}{c_k+v}
+ -D\log\left(1+\frac{c_k}{v}\right),\\
+ p_k&=\sigmoid(\logit\rho+\ell_k^{\rm G}).
+ \end{aligned}
+ \label{eq:gaussian-evidence}
+\end{equation}
+The active density is $\CN(\vect(R_k);\vect(E_k),(c_k+v)\I_D)$,
+obtained by integrating the Gaussian site against the Gaussian likelihood.
+Its ratio to $q_{0,v}$ gives the approximate activity evidence in
+\eqref{eq:gaussian-evidence}.
+
+The joint estimate and feedback message are then calculated from the
+conditional moments and activity probabilities. The complete procedure
+is summarized in Algorithm~1.
+
+\begin{center}
+\begin{minipage}{0.96\linewidth}
+\hrule\vspace{5pt}
+\textbf{Algorithm 1: Joint activity detection and channel estimation}\par
+\textbf{Input:} received pilots $\mathbf Y$, original pilot tensor $P$,
+and activity marginal $\rho$;
+trained $S_\theta,T_\psi,z_\phi$ and fixed receiver settings.\par
+\textbf{Output:} channel estimates, activity probabilities and decisions.\par
+\begin{enumerate}[leftmargin=1.8em,itemsep=2pt,topsep=4pt]
+ \item Estimate $\widehat\sigma^2$ using \eqref{eq:noise-mdl}.
+ Fit $\widehat{\bm\beta}$ by the coordinate sweeps and joint gain
+ refits in Section~\ref{sec:frontend}; construct $\widehat{\mathbf A}$.
+ \item Normalize $\mathbf Y$ and $\widehat\sigma^2$ by $s$ and $s^2$.
+ Initialize the prior, sites, activity history, and stability counters.
+ Compute the thin SVD of $\widehat{\mathbf A}$ and hold both estimated
+ observation parameters fixed.
+ \item For $i=1,\ldots,I_{\max}$, compute the linear extrinsic message using
+ \eqref{eq:linear-mean}--\eqref{eq:linear-fraction} and damp it by
+ \eqref{eq:input-damping}.
+ \item If $v$ is within the training range, evaluate $F_k$, $\widehat\tau_k$, and
+ $z_\phi(R_k,v,F_k)$; average the conditional mean-squared error
+ estimates over terminals and apply the lower bound in
+ \eqref{eq:pooled-variance}. Accept the site update
+ \eqref{eq:site-update} when $\tau<v$ and otherwise retain the sites.
+ Compute $p_k$ by \eqref{eq:activity-probability}.
+ \item If $v$ is outside the training range, retain the sites and compute $p_k$
+ by \eqref{eq:gaussian-evidence}.
+ \item Compute $\mu_k,t_k$ by \eqref{eq:conditional-moments} and
+ $\widehat X_k,\mathbf C_{X,k}$ by
+ \eqref{eq:mixture}--\eqref{eq:joint-spatial-covariance}.
+ \item Form the outgoing message using
+ \eqref{eq:joint-average-variance}--\eqref{eq:nonlinear-extrinsic}
+ and apply \eqref{eq:output-damping}.
+ \item Update the stability counters and activity history.
+ Stop when the criterion in Section~\ref{sec:damping} is satisfied.
+ \item[]\textbf{end for}
+ \item Return $s\widehat X_k$, $s\mu_k$, $p_k$,
+ $\widehat\alpha_k=\mathbf1\{p_k\geq1/2\}$, and the stopping status.
+ Rescale covariance outputs by $s^2$.
+\end{enumerate}
+\vspace{3pt}\hrule
+\end{minipage}
+\end{center}
+
+\subsection{Damping and Stopping Criteria}
+\label{sec:damping}
+
+We apply damping to the means and variances of both the denoiser input
+and the feedback message.
+With new-message weight $0<\eta\leq1$, the input update for $i\geq2$ is
+\begin{equation}
+ \begin{aligned}
+ R_k^{(i)}&=(1-\eta)R_k^{(i-1)}+\eta R_{{\rm L},k}^{(i)},\\
+ v^{(i)}&=(1-\eta)v^{(i-1)}+\eta v_{\rm L}^{(i)}.
+ \end{aligned}
+ \label{eq:input-damping}
+\end{equation}
+Similarly, the feedback parameters are updated as
+\begin{equation}
+ \begin{aligned}
+ X_k^{{\rm pri},(i)}
+ &=(1-\eta)X_k^{{\rm pri},(i-1)}+\eta X_{k,\rm out}^{(i)},\\
+ \gamma^{(i)}
+ &=(1-\eta)\gamma^{(i-1)}+\eta\gamma_{\rm out}^{(i)}.
+ \end{aligned}
+ \label{eq:output-damping}
+\end{equation}
+The first updates are used without damping.
+
+The stopping rule tracks the estimate, activity probabilities, and
+input variance. For $i\geq2$, define
+\begin{equation}
+ \begin{aligned}
+ d_X^{(i)}
+ &=\frac{\norm{\widehat X^{(i)}-\widehat X^{(i-1)}}_F}
+ {\max\{\norm{\widehat X^{(i)}}_F,
+         \norm{\widehat X^{(i-1)}}_F,\epsilon_{\rm num}\}},\\
+ d_p^{(i)}&=\max_k|p_k^{(i)}-p_k^{(i-1)}|,\\
+ d_v^{(i)}&=\frac{|v^{(i)}-v^{(i-1)}|}
+ {\max\{v^{(i)},v^{(i-1)}\}},
+ \end{aligned}
+ \label{eq:iterate-stopping}
+\end{equation}
+where $\epsilon_{\rm num}>0$ prevents division by zero.
+The estimate-stability counter increases when
+$d_X^{(i)}<\epsilon_{\rm est}$,
+$d_v^{(i)}<\epsilon_{\rm est}$, and
+$d_p^{(i)}<\epsilon_p$, and resets otherwise.
+
+We also check the accepted, undamped site parameters.
+Let $\lambda_k=c_k^{-1}$ and $J_k=E_k/c_k$, and define
+\begin{equation}
+ \begin{aligned}
+ d_{\lambda,k}^{(i)}
+ &=\frac{|\lambda_k^{(i)}-\lambda_k^{(i-1)}|}
+ {\max\{\lambda_k^{(i)},\lambda_k^{(i-1)}\}},\\
+ d_{J,k}^{(i)}
+ &=\frac{\norm{J_k^{(i)}-J_k^{(i-1)}}_F}
+ {\max\{1,\norm{J_k^{(i)}}_F,\norm{J_k^{(i-1)}}_F\}},\\
+ d_{\rm site}^{(i)}
+ &=\max_k\{d_{\lambda,k}^{(i)},d_{J,k}^{(i)}\},\qquad
+ d_w^{(i)}=\max_k|p_k^{(i)}-w_k^{(i-1)}|.
+ \end{aligned}
+ \label{eq:site-stopping}
+\end{equation}
+The site-stability counter increases only if the current site update is
+accepted, $d_{\rm site}^{(i)}<\epsilon_{\rm site}$, and
+$d_w^{(i)}<\epsilon_w$; it resets otherwise.
+After this check, update
+\begin{equation}
+ w_k^{(i)}=(1-\zeta)w_k^{(i-1)}+\zeta p_k^{(i)},
+ \qquad 0<\zeta\leq1.
+ \label{eq:activity-history}
+\end{equation}
+This history is used only for stopping; the receiver reports $p_k^{(i)}$
+and retains the fixed prior $\rho$ in \eqref{eq:activity-probability}.
+
+Iteration stops after at least $I_{\min}$ iterations when both stability
+counters reach $L_s$ and the hard activity vector has remained unchanged
+for $L_d$ consecutive iterates. The two stability counters reset
+independently. If the iteration limit $I_{\max}$ is reached first, the
+final iterate is returned with that status. The damping weights,
+tolerances, and window lengths are given in the simulation setup.
+
+\subsection{Computational Complexity Analysis}
+
+We analyze the costs of phase estimation, noise estimation, and the
+subsequent MP iterations. Let $G_{\rm c}$ be the number of path matrices on the coarse
+delay--Doppler grid, $B\geq Q$ the number of phase bins, and $S$ the
+number of coordinate sweeps. With dense path-matrix evaluation,
+precomputing these path matrices and their pilot responses costs
+$O(G_{\rm c}N^3+KG_{\rm c}QN^2)$. Each user search forms correlations
+at cost $O(G_{\rm c}QNM)$ and evaluates phase bins by fast Fourier
+transforms (FFTs) at cost $O(G_{\rm c}MB\log B)$. An initial search
+orders the users, followed by $S$ sweeps.
+
+Let $E_\phi$ count all path-matrix evaluations for alias ranking and
+local refinement across the block, including derivative evaluations
+up to a constant factor. Evaluating a path matrix, computing its pilot response,
+and fitting the gain cost $O(N^3+QN^2+QNM)$. For $K\leq QN$, each joint
+gain refit costs $O(QNK^2+QNKM)$. The resulting complexity of phase estimation is
+\begin{equation}
+ \begin{aligned}
+ C_{\rm phase}=O\big(&G_{\rm c}N^3+KG_{\rm c}QN^2\\
+ &+(S+1)KG_{\rm c}M(QN+B\log B)\\
+ &+E_\phi(N^3+QN^2+QNM)+S(QNK^2+QNKM)\big).
+ \end{aligned}
+ \label{eq:phase-complexity}
+\end{equation}
+The local iteration budget bounds optimizer iterations; the actual
+number of objective evaluations also depends on line searches.
+Noise estimation costs $O(QNM^2+M^3)$, and the thin SVD of
+$\widehat{\mathbf A}$ costs $O(KNQ^2)$ for $Q\leq KN$.
+
+In each MP iteration, the dense linear transforms on $MN$
+measurement vectors cost $O(QKMN^2)$. The factors in
+\eqref{eq:linear-fraction} reuse the initial SVD.
+
+Let $C_\theta$, $C_\psi$, and $C_\phi$ denote the costs of one
+terminal-wise forward pass through the mean, error, and activity
+networks. Within the training variance range, each iteration evaluates the
+networks once per terminal and reuses $F_\theta$ in the classifier.
+Taking into account the spatial covariance products and small-matrix
+operations, the computational complexity per iteration is given by
+\begin{equation}
+ C_{\rm iter}=O\!\left(QKMN^2+KM^2N^2+M^3+
+ K(C_\theta+C_\psi+C_\phi)\right).
+ \label{eq:iteration-complexity}
+\end{equation}
+The networks are not evaluated outside the training variance range.
+For $I$ MP iterations, the complete online cost is
+\begin{equation}
+ O\!\left(C_{\rm phase}+QNM^2+M^3+KNQ^2+I C_{\rm iter}\right).
+ \label{eq:total-complexity}
+\end{equation}
+Excluding trained parameters and network activations, MP
+requires storage of $O(QKN+KMN^2+KM^2)$ entries. The phase estimator additionally
+caches $O(G_{\rm c}N^2+KG_{\rm c}QN)$ entries for the coarse path matrices and
+pilot responses, with $O(G_{\rm c}BM)$ temporary FFT storage.

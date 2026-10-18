@@ -1,0 +1,251 @@
+{
+  "status": "FAILED_EXISTING_BASELINE",
+  "checkpoint_sha256": "06619e9c5c812a2745c9d69d63455bde51b04c9636474e4ca9d0d8da12787b43",
+  "denoiser_validation": {
+    "status": "FAILED",
+    "bands": [
+      {
+        "band": 0,
+        "mse_real": 0.0017024924483815145,
+        "zero_estimator_mse": 0.05088342115251598,
+        "passed": true
+      },
+      {
+        "band": 1,
+        "mse_real": 0.016287389437495133,
+        "zero_estimator_mse": 0.04947964647021654,
+        "passed": true
+      },
+      {
+        "band": 2,
+        "mse_real": 0.12766929456898393,
+        "zero_estimator_mse": 0.03878076934211876,
+        "passed": false
+      },
+      {
+        "band": 3,
+        "mse_real": 0.4208393901379146,
+        "zero_estimator_mse": 0.012263555951244176,
+        "passed": false
+      },
+      {
+        "band": 4,
+        "mse_real": 0.4743560170815419,
+        "zero_estimator_mse": 0.0015646837708088227,
+        "passed": false
+      }
+    ],
+    "relative_numerical_margin": 0.0001,
+    "criterion": "Each selected denoiser must beat zero on its held-out training validation; numerical margin is not a statistical significance claim"
+  },
+  "receiver_quality": {
+    "calibration": {
+      "status": "FAILED",
+      "full_error": 9.664203801766895e+21,
+      "zero_estimator_error": 56197.0955430703,
+      "activity_errors": 168,
+      "best_constant_activity_errors": 168,
+      "criterion": "Beat the zero channel estimate and the best constant activity decision"
+    },
+    "evaluation": {
+      "status": "FAILED",
+      "full_error": 2.036513129533609e+21,
+      "zero_estimator_error": 68027.64885647541,
+      "activity_errors": 216,
+      "best_constant_activity_errors": 216,
+      "criterion": "Beat the zero channel estimate and the best constant activity decision"
+    }
+  },
+  "comparison": [
+    {
+      "method": "ldamp",
+      "label": "L-DAMP",
+      "snr_db": -4,
+      "scenes": 100,
+      "user_decisions": 4000,
+      "active_user_decisions": 426,
+      "misses": 426,
+      "false_alarms": 0,
+      "aer": 0.1065,
+      "aer_percent": 10.65,
+      "channel_nmse_db": 168.44535101394786,
+      "sum_full_channel_error": 9.245423330388314e+21,
+      "sum_signal_energy": 132248.7878361002
+    },
+    {
+      "method": "ldamp",
+      "label": "L-DAMP",
+      "snr_db": -2,
+      "scenes": 100,
+      "user_decisions": 4000,
+      "active_user_decisions": 426,
+      "misses": 426,
+      "false_alarms": 0,
+      "aer": 0.1065,
+      "aer_percent": 10.65,
+      "channel_nmse_db": 167.3374138103855,
+      "sum_full_channel_error": 7.163628920869249e+21,
+      "sum_signal_energy": 132248.7878361002
+    },
+    {
+      "method": "ldamp",
+      "label": "L-DAMP",
+      "snr_db": 0,
+      "scenes": 100,
+      "user_decisions": 4000,
+      "active_user_decisions": 426,
+      "misses": 426,
+      "false_alarms": 0,
+      "aer": 0.1065,
+      "aer_percent": 10.65,
+      "channel_nmse_db": 166.66172784900897,
+      "sum_full_channel_error": 6.131468267478393e+21,
+      "sum_signal_energy": 132248.7878361002
+    },
+    {
+      "method": "ldamp",
+      "label": "L-DAMP",
+      "snr_db": 2,
+      "scenes": 100,
+      "user_decisions": 4000,
+      "active_user_decisions": 426,
+      "misses": 426,
+      "false_alarms": 0,
+      "aer": 0.1065,
+      "aer_percent": 10.65,
+      "channel_nmse_db": 166.11948560745498,
+      "sum_full_channel_error": 5.41178158881065e+21,
+      "sum_signal_energy": 132248.7878361002
+    },
+    {
+      "method": "ldamp",
+      "label": "L-DAMP",
+      "snr_db": 4,
+      "scenes": 100,
+      "user_decisions": 4000,
+      "active_user_decisions": 426,
+      "misses": 426,
+      "false_alarms": 0,
+      "aer": 0.1065,
+      "aer_percent": 10.65,
+      "channel_nmse_db": 165.7152361441781,
+      "sum_full_channel_error": 4.930776466161563e+21,
+      "sum_signal_energy": 132248.7878361002
+    },
+    {
+      "method": "ldamp",
+      "label": "L-DAMP",
+      "snr_db": 6,
+      "scenes": 100,
+      "user_decisions": 4000,
+      "active_user_decisions": 426,
+      "misses": 426,
+      "false_alarms": 0,
+      "aer": 0.1065,
+      "aer_percent": 10.65,
+      "channel_nmse_db": 165.42801942644192,
+      "sum_full_channel_error": 4.615233121692069e+21,
+      "sum_signal_energy": 132248.7878361002
+    }
+  ],
+  "comparison_cases": 600,
+  "cases_outside_denoiser_support": 600,
+  "outside_support_calls_range": [
+    16,
+    18
+  ],
+  "calibrated_threshold": 1.0000000000000002,
+  "representative_trace": [
+    {
+      "iteration": 1,
+      "effective_complex_variance": 5.799042322940162,
+      "divergence_real": 294124.7060476382,
+      "onsager_coefficient": 35.903894781205835,
+      "epsilon": 0.008109174360520263,
+      "residual_energy": 32484366.76813028,
+      "relative_update": 1.0
+    },
+    {
+      "iteration": 2,
+      "effective_complex_variance": 382.8051296719095,
+      "divergence_real": 296766.37154245266,
+      "onsager_coefficient": 36.2263637136783,
+      "epsilon": 0.08598046959167639,
+      "residual_energy": 2277622046.071228,
+      "relative_update": 1.0221854406134996
+    },
+    {
+      "iteration": 3,
+      "effective_complex_variance": 20024.24676669194,
+      "divergence_real": 327835.01693074906,
+      "onsager_coefficient": 40.01892296517933,
+      "epsilon": 0.8043537988558299,
+      "residual_energy": 147323190999.89072,
+      "relative_update": 1.0360562267837843
+    },
+    {
+      "iteration": 4,
+      "effective_complex_variance": 893096.6635014622,
+      "divergence_real": 327280.37084265164,
+      "onsager_coefficient": 39.951217143878374,
+      "epsilon": 5.624539390233919,
+      "residual_energy": 6558101490527.38,
+      "relative_update": 1.0538660983250332
+    },
+    {
+      "iteration": 5,
+      "effective_complex_variance": 28778039.73324973,
+      "divergence_real": 326198.7623329775,
+      "onsager_coefficient": 39.81918485509979,
+      "epsilon": 32.348861339750506,
+      "residual_energy": 205992456944368.94,
+      "relative_update": 1.0721211620517725
+    },
+    {
+      "iteration": 6,
+      "effective_complex_variance": 875333641.8448364,
+      "divergence_real": 327010.36050555325,
+      "onsager_coefficient": 39.918256897650544,
+      "epsilon": 161.90924508605573,
+      "residual_energy": 6160925157965268.0,
+      "relative_update": 1.0624529846333213
+    },
+    {
+      "iteration": 7,
+      "effective_complex_variance": 34925574206.878555,
+      "divergence_real": 328149.5555769137,
+      "onsager_coefficient": 40.05731879600997,
+      "epsilon": 826.9039276862934,
+      "residual_energy": 2.429688476998749e+17,
+      "relative_update": 1.0390435116293362
+    },
+    {
+      "iteration": 8,
+      "effective_complex_variance": 1628710650628.7017,
+      "divergence_real": 326302.4473242943,
+      "onsager_coefficient": 39.831841714391395,
+      "epsilon": 5466.559759807733,
+      "residual_energy": 1.1452423352826974e+19,
+      "relative_update": 1.0265176054888443
+    },
+    {
+      "iteration": 9,
+      "effective_complex_variance": 70543240361862.25,
+      "divergence_real": 328080.07669148396,
+      "onsager_coefficient": 40.04883748675341,
+      "epsilon": 42791.11737841368,
+      "residual_energy": 4.9888464079282595e+20,
+      "relative_update": 1.0376819112131466
+    },
+    {
+      "iteration": 10,
+      "effective_complex_variance": 2646336866425138.5,
+      "divergence_real": 327311.40954045515,
+      "onsager_coefficient": 39.95500604741884,
+      "epsilon": 288703.83753087494,
+      "residual_energy": 1.8826149337261872e+22,
+      "relative_update": 1.0391253322819962
+    }
+  ],
+  "historical_outputs_modified": false
+}

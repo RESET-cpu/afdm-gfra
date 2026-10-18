@@ -1,0 +1,49 @@
+{
+  "proposed": {
+    "status": "PASS",
+    "method": "full_score",
+    "activity_evidence": "classifier",
+    "checkpoint_sha256": {
+      "first_checkpoint": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+      "second_checkpoint": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5",
+      "evidence_checkpoint": "b2e59a36e9ff07f8a53d18305f4ca029f55c16ca6c55a8faee62510d6562f53c"
+    },
+    "network_queries": 0
+  },
+  "somp": {
+    "status": "PASS",
+    "network_queries": 0,
+    "inference_sha256": "9f1ffa7fd8200eed1945c44fe58e705ab41bc543704b87c1056ad56689bf65bc",
+    "validation_status": "SELECTED"
+  },
+  "gamp": {
+    "status": "PASS",
+    "network_queries": 0,
+    "inference_sha256": "7b5c88a7e22c7a53904a47d17d99d8a1b436e1915ef7e39b834261fb555e88e3",
+    "validation_status": "SELECTED"
+  },
+  "gnn": {
+    "status": "PASS",
+    "network_queries": 0,
+    "inference_sha256": "17a4ccdf38cf15530bf6a609254bd460572ada32f2b07704e1d2523394ea17aa",
+    "validation_status": "SELECTED"
+  },
+  "em": {
+    "status": "PASS",
+    "network_queries": 0,
+    "inference_sha256": "b033d947e6ad2f5ba37e881ae410cf2d082ca414643b21b62a60ea28b2836f40",
+    "validation_status": "PENDING_VALIDATION"
+  },
+  "offgrid_sbl": {
+    "status": "PASS",
+    "network_queries": 0,
+    "inference_sha256": "33e38738155a094f65a39082a5dc7bd25cf0ed360649af30c83f5facbe01810f",
+    "validation_status": "IMPLEMENTATION_VALIDATED"
+  },
+  "mnomp": {
+    "status": "PASS",
+    "network_queries": 0,
+    "inference_sha256": "3b3d2ced5277c07f3ef7e48649e16ba61c8be90f3f2e4515c3b46a513028b9b7",
+    "validation_status": "IMPLEMENTATION_VALIDATED"
+  }
+}

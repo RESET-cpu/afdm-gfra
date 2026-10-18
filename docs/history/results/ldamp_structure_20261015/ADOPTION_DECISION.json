@@ -1,0 +1,52 @@
+{
+  "decision": "PUBLISH_OUTPUT_REFINEMENT_WITH_ORIGINAL_ACTIVITY_DECISIONS",
+  "public_config": "configs/ldamp_output_tsvd.json",
+  "public_entry": "scripts/run_ldamp_structure.py",
+  "default_activity_rule": "original",
+  "candidate_channel_estimator_unchanged_since_freeze": true,
+  "new_threshold_retuned": false,
+  "original_mainline_replaced": false,
+  "evidence": "independent_validation/REPORT.md",
+  "channel_nmse_gain_db_range": [
+    0.8496328898551515,
+    1.0885155554828545
+  ],
+  "added_mean_seconds": 0.004280154116713675,
+  "full_and_active_error_improved_conditions": 60,
+  "total_conditions": 60,
+  "independent_physical_scenes": 10,
+  "recalibrated_activity_failure": {
+    "original_misses": [
+      7,
+      5,
+      4,
+      4,
+      2,
+      2
+    ],
+    "recalibrated_misses": [
+      11,
+      10,
+      6,
+      5,
+      4,
+      3
+    ],
+    "snr_db": [
+      -4,
+      -2,
+      0,
+      2,
+      4,
+      6
+    ],
+    "false_alarms_all_methods": 0
+  },
+  "interpretation": "The original-decision mode was a prespecified saved control, and its exact AER equality to baseline holds by construction. Both modes have identical channel estimates, so selecting this deployment default does not select a different channel estimator. The recommendation is made after the frozen comparison; it is not an additional blind post-adoption test. All recalibrated-rule failures remain reported.",
+  "limits": [
+    "Zero intra-user path direction spread only",
+    "Underlying DnCNN training/error-law mismatch remains",
+    "Ten scenes and one frozen weight/probe seed",
+    "Output refinement, not a new trained denoiser or changed L-DAMP recurrence"
+  ]
+}

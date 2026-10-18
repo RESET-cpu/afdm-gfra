@@ -1,0 +1,127 @@
+{
+  "schema": "first-phase-training-pilot-v1",
+  "device": "mps",
+  "scale": 0.2647966452702405,
+  "noise_support": [
+    0.001,
+    100.0
+  ],
+  "receiver": {
+    "scale": 0.2647966452702405,
+    "batch_size": 40,
+    "conditional_variance_floor_checkpoint_normalized": 0.0001,
+    "decision_threshold": 0.5,
+    "site_damping": 1.0,
+    "ep": {
+      "iterations": 600,
+      "damping": 0.1,
+      "min_iterations": 60,
+      "convergence_tolerance": 0.003,
+      "convergence_patience": 5,
+      "variance_fraction_floor": 1e-06,
+      "variance_fraction_ceiling": 0.999999,
+      "covariance_mode": "isotropic",
+      "activity_convergence_tolerance": 0.0001,
+      "raw_site_residual_tolerance": 0.01,
+      "activity_weight_residual_tolerance": 0.0001,
+      "decision_stability_window": 10,
+      "activity_stopping_reference": "smoothed"
+    },
+    "initialization": {
+      "kind": "activity_prior_times_training_power",
+      "normalized_training_second_moment": 1.0004404181394917,
+      "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+    },
+    "prior_definition": "/Users/wangbo/Desktop/科研/JADCEDD/runs/proposed_phase_training_20261012/assets/prior_definition.json",
+    "prior_definition_sha256": "f20b1e25eae1037daff03db58c816a7acc4ccc382c89520016e47e5385b8bc9d",
+    "first_checkpoint": "/Users/wangbo/Desktop/科研/JADCEDD/runs/proposed_phase_training_20261012/assets/first.pt",
+    "first_checkpoint_sha256": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+    "second_checkpoint": "/Users/wangbo/Desktop/科研/JADCEDD/runs/proposed_phase_training_20261012/assets/second.pt",
+    "second_checkpoint_sha256": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5",
+    "schema": "full-channel-score-message-passing-v1",
+    "implementation": "full_score",
+    "activity_evidence": "classifier",
+    "evidence_checkpoint": "/Users/wangbo/Desktop/科研/JADCEDD/runs/proposed_phase_training_20261012/assets/activity.pt",
+    "evidence_checkpoint_sha256": "b2e59a36e9ff07f8a53d18305f4ca029f55c16ca6c55a8faee62510d6562f53c"
+  },
+  "first_checkpoint": "/Users/wangbo/Desktop/科研/JADCEDD/runs/proposed_phase_training_20261012/assets/first.pt",
+  "first_checkpoint_sha256": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+  "train_bank": "/Users/wangbo/Desktop/科研/JADCEDD/runs/proposed_200_100_100_20261012/preserved/data/train_channel.npy",
+  "train_bank_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f",
+  "validation_bank": "/Users/wangbo/Desktop/科研/JADCEDD/runs/proposed_200_100_100_20261012/preserved/data/validation_channel.npy",
+  "validation_bank_sha256": "2b3cd347df5a869948bbd40c74d119764880a998bb82a39ffae8301a7f9f8b0a",
+  "validation_seed": 202610061000002,
+  "phase_validation_seed": 202610122730003,
+  "validation_microbatch": 16,
+  "training": {
+    "steps": 1000,
+    "batch_size": 64,
+    "microbatch_size": 8,
+    "learning_rate": 1e-05,
+    "ema_decay": 0.999,
+    "gradient_clip": 1.0,
+    "phase_weight": 0.1,
+    "checkpoint_seconds": 120,
+    "seed": 202610122730001,
+    "phase_seed": 202610122730002,
+    "validation_every": 500
+  },
+  "panel": [
+    {
+      "seed": 2026101227000000,
+      "snr_db": -4
+    },
+    {
+      "seed": 2026101227000000,
+      "snr_db": 0
+    },
+    {
+      "seed": 2026101227000000,
+      "snr_db": 4
+    },
+    {
+      "seed": 2026101227000001,
+      "snr_db": -4
+    },
+    {
+      "seed": 2026101227000001,
+      "snr_db": 0
+    },
+    {
+      "seed": 2026101227000001,
+      "snr_db": 4
+    },
+    {
+      "seed": 2026101227000002,
+      "snr_db": -4
+    },
+    {
+      "seed": 2026101227000002,
+      "snr_db": 0
+    },
+    {
+      "seed": 2026101227000002,
+      "snr_db": 4
+    },
+    {
+      "seed": 2026101227000003,
+      "snr_db": -4
+    },
+    {
+      "seed": 2026101227000003,
+      "snr_db": 0
+    },
+    {
+      "seed": 2026101227000003,
+      "snr_db": 4
+    }
+  ],
+  "variants": [
+    "dsm",
+    "augmentation",
+    "consistency"
+  ],
+  "hard_timeout_seconds": 86400,
+  "existing_training_run": "/Users/wangbo/Desktop/科研/JADCEDD/runs/proposed_200_100_100_20261012",
+  "endpoint_selection": "Fixed 1000-step EMA; no post-hoc checkpoint selection"
+}

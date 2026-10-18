@@ -1,0 +1,41 @@
+{
+  "candidate": "projected_gaussian_with_energy_readout",
+  "frozen_unix": 1792048677.773123,
+  "source_sha256": {
+    "src/afdm_jadcedd/algorithm/proposed_projected_energy.py": "0c404a7fcdff8fb49a57b002e4b077818ad97e92cf29ba2945d82bcde28544fd",
+    "configs/proposed_unknown_phase_projected_energy.json": "36f07013c8022e7b915a29e99d70020d77ba51f5ca488470557f41f995638e2e",
+    "src/afdm_jadcedd/algorithm/registry.py": "212efd0a742e5f669425c49a0287161055abcf694875b6b46b71b5994e87d112",
+    "experiments/proposed_low_snr_20261015/calibrate_energy_readout.py": "87e203daacd6d0003aa0aab113ec799265d2fc6c72f56a2b58cee35141568a01",
+    "results/proposed_low_snr_20261015/energy_readout_calibration/PLAN.json": "502255b08ca3e1063861eadcf46e11733f5536a3509aa8d93719dc728069b376",
+    "results/proposed_low_snr_20261015/energy_readout_calibration/ROWS.json": "99331844cfba78a1844fb9bceb59a5c132dbd6d9742a240e9588a5e3ae54d384",
+    "results/proposed_low_snr_20261015/energy_readout_calibration/CALIBRATION.json": "ffb513b013ed3216a11c0d3ce4cb6648442639e1875f63f0f40a9780630c58c3"
+  },
+  "base_selection_sha256": "3416ecbd54a2bf5ca94c632474fdabe98ea63edb5490f1cc385f3c77ae473619",
+  "base_candidate_sources": {
+    "src/afdm_jadcedd/algorithm/proposed_projected.py": "3f1cc36fca5a2324ca65a47f8599037e1af380d06dc7d6c843cfa1e4a009403f",
+    "configs/proposed_unknown_phase_projected.json": "bd60bf614aef3a25dacb58ecb9393f48ed2ffb66cf484f26837f72ceeca854a2"
+  },
+  "criterion": "Fewer total errors at -4/-2 dB combined than native, no aggregate NMSE degradation >0.25 dB at either low SNR; report per-SNR/per-scene regressions and zero-error sample limits.",
+  "calibration": "Eighteen already inspected physical scenes, two SNRs each. One threshold across SNR; all are development.",
+  "confirmation": "Twenty new physical scene seeds 2026101517300000..019 already being generated; no confirmation ROWS, outputs, labels or log metrics inspected before this freeze.",
+  "confirmation_status_at_freeze": {
+    "status": "RUNNING",
+    "scene": 3,
+    "snr_db": 6,
+    "variant": "native",
+    "iteration": 1,
+    "completed": 30,
+    "expected": 100,
+    "pid": 55012
+  },
+  "comparison_variants": [
+    "native",
+    "projected_gaussian",
+    "projected_gaussian_with_energy_readout"
+  ],
+  "statistics": "Physical-scene paired bootstrap; 20 scenes reused across SNR; extras 0/+6 on first five are exploratory.",
+  "channel_output": "Full unmasked projected estimate, unchanged by readout",
+  "additional_network_calls": 0,
+  "previous_selection_sha256": "1835cbab7faee1f9e70e0b0a7c89ac783eb2f9e976886e6a8b74e14a0b182a04",
+  "revision": "Only set inherited unified_activity_probability metadata to false for the final two-condition decision. No numeric operation, configuration, threshold, or selection change."
+}

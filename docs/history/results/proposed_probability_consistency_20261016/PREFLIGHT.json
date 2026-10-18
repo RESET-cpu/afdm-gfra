@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "float64_checks": [
+    {
+      "query": "scene000/snr+00/terminal.npz",
+      "user": 0,
+      "forward_difference": 0.0,
+      "derivative": 0.003550827654053892,
+      "curvature": 0.004473658607959955,
+      "differences": [
+        {
+          "step": 1e-05,
+          "derivative_relative_error": 4.37948766517076e-08,
+          "curvature_relative_error": 8.309035971691557e-08
+        },
+        {
+          "step": 1e-06,
+          "derivative_relative_error": 9.74894703898065e-06,
+          "curvature_relative_error": 1.9945827457028175e-06
+        }
+      ]
+    },
+    {
+      "query": "scene003/snr-04/terminal.npz",
+      "user": 7,
+      "forward_difference": 0.0,
+      "derivative": -0.10382607959394483,
+      "curvature": -0.008457888003744949,
+      "differences": [
+        {
+          "step": 1e-05,
+          "derivative_relative_error": 5.017832330192063e-07,
+          "curvature_relative_error": 2.1753672446038612e-08
+        },
+        {
+          "step": 1e-06,
+          "derivative_relative_error": 4.3571630389463115e-06,
+          "curvature_relative_error": 1.1618229197683538e-07
+        }
+      ]
+    }
+  ],
+  "device": "mps",
+  "backend_error": null,
+  "backend_comparisons": [
+    {
+      "mean": 2.540823697927408e-05,
+      "evidence_mean": 4.9123922508442774e-05,
+      "tau_from_mean_probes": 6.674572154759979e-06,
+      "tau_from_evidence_probes": 5.4557526091355436e-05
+    },
+    {
+      "mean": 3.395927024030243e-06,
+      "evidence_mean": 3.474814548098948e-06,
+      "tau_from_mean_probes": 2.83215693382696e-06,
+      "tau_from_evidence_probes": 4.7707570557186896e-06
+    }
+  ],
+  "production_batch_seconds": 6.135895999992499,
+  "maximum_forward_difference": 0.0
+}

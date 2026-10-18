@@ -1,0 +1,75 @@
+{
+  "configuration": {
+    "schema": "two-route-full-geometry-training-v1",
+    "generator": "known_phase_geometry_v3",
+    "scale": 0.2647966452702405,
+    "normalization": "fixed_population_coordinate_scale",
+    "shape": [
+      16,
+      16,
+      16
+    ],
+    "noise_support": [
+      0.001,
+      100.0
+    ],
+    "data_directory": "outputs/two_route_training_20261006/data",
+    "prior_definition": "results/two_route_development_20261006/prior_definition.json",
+    "bank": {
+      "users": 40,
+      "candidates_per_scene": 4,
+      "train_samples": 50000,
+      "validation_samples": 5000,
+      "train_seed_base": 2026100601000000,
+      "validation_seed_base": 2026100602000000,
+      "spread_range_s": [
+        3e-08,
+        5e-08
+      ],
+      "selection": "Uniform candidate indices before activity masking; no direction, energy or receiver-output selection",
+      "minimum_free_bytes": 2147483648
+    },
+    "first": {
+      "initial_checkpoint": "models/mainline/cai_first100.pt",
+      "initial_checkpoint_sha256": "47422682e8a136b32d30f72fc76ad91d44dd78702cafc8fa35580f5c633624be",
+      "output": "outputs/two_route_training_20261006/shared_first",
+      "objective": "direct_cai_dsm",
+      "seed": 202610061000001,
+      "validation_seed": 202610061000002,
+      "batch_size": 64,
+      "microbatch_size": 16,
+      "learning_rate": 0.0001,
+      "minimum_learning_rate": 1e-06,
+      "ema_decay": 0.999,
+      "gradient_clip": 1.0,
+      "checkpoint_seconds": 120,
+      "maximum_epochs": 100,
+      "minimum_epochs": 20,
+      "validation_patience": 15,
+      "meaningful_relative_improvement": 0.001,
+      "selection": "Minimum full fixed-noise validation DSM loss including the warm-start baseline",
+      "stopping": "Validation plateau after minimum_epochs, or declared maximum training budget; maximum budget alone is not proof of convergence"
+    },
+    "runtime": {
+      "device": "mps",
+      "threads": 1
+    },
+    "protocol": "experiments/two_route_development_20261006/PROTOCOL.md"
+  },
+  "configuration_sha256": "6ff81cec62b0df6398758c0684a6d5e5f6ee93ed298de667fa666c5da6fead70",
+  "prior_definition_sha256": "f20b1e25eae1037daff03db58c816a7acc4ccc382c89520016e47e5385b8bc9d",
+  "source_sha256": {
+    "scripts/train_route_shared_first.py": "51cc0247a5a107fc0fa4ef79c9d5d625a6e3451fd65f4c08d77cb536c7617390",
+    "src/afdm_jadcedd/algorithm/mainline/cai_models/__init__.py": "a1ce7f50e3aa8a680f7e041c195392ad91a47cca596378eb5322ef7ee160e4d8",
+    "src/afdm_jadcedd/algorithm/mainline/cai_models/layers.py": "68edd5b567fe84aefb5339a0288129416f91c33838bd9b58d2be2f628d9d5e67",
+    "src/afdm_jadcedd/algorithm/mainline/cai_models/ncsn_channel_diffusion.py": "2e7ef4d18192ec6eb3de20f601064f9d89518175fbd23970808f2a90eb804dc0",
+    "src/afdm_jadcedd/algorithm/mainline/cai_models/normalization.py": "43aae40133ede3c88289692c9364cc0bb7b865b2fc1b435c279526a3e6d6a349",
+    "src/afdm_jadcedd/algorithm/mainline/network.py": "36dc34553e509d4a3fb4efced61274ecf72036f7b4040d6baa096345bfc06485",
+    "src/afdm_jadcedd/experiment/original_training/__init__.py": "666379e3323052566f94b9a2fa427fb76346ec9e5a7cbc2e3d33fac42b4adbcf",
+    "src/afdm_jadcedd/experiment/original_training/checkpoints.py": "761c2515e7e47dbd796149fe5f3eefd53a19628b71888477723debc999cf7b12",
+    "src/afdm_jadcedd/experiment/original_training/direct_objectives.py": "d00efe5e5f44e59cc4830f6f224b5bbdfbf76bed81a1ef985e59893cc21c6f5e",
+    "src/afdm_jadcedd/experiment/original_training/score_matching.py": "4c765466866adb7c50f90d2a14fc694c7b18625dc77357311fc9951a1799bc65",
+    "src/afdm_jadcedd/experiment/original_training/trainer.py": "aeb726fea3f0d635ba976e4e2fa0644216a61d60c8e061a6a95be86fa009e091"
+  },
+  "device": "mps"
+}

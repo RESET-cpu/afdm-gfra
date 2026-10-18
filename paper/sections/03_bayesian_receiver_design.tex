@@ -1,0 +1,322 @@
+\section{Bayesian Receiver Design}
+\label{sec:algorithm}
+
+We first estimate the phase increments and noise variance from the
+received pilots. With these estimates fixed, the receiver uses message
+passing (MP) between a linear estimator and a nonlinear denoiser.
+The two modules iteratively exchange extrinsic messages \cite{ma2015}. These messages are obtained
+by Gaussian projection and message division \cite{minka2001}. The nonlinear denoiser uses the
+learned channel moments and the density ratio for activity detection. The corresponding
+learning objectives are presented in Section~\ref{sec:learning}.
+
+\subsection{Parameter Estimation}
+\label{sec:frontend}
+
+\subsubsection{Inter-frame phase estimation}
+Stack the received samples as
+$[\mathbf Y_{\rm s}]_{qN+r,m}=Y_{qmr}$, so that
+$\mathbf Y_{\rm s}\in\mathbb C^{QN\times M}$.
+To estimate the phase increments, we approximate the contribution of each
+candidate terminal by one dominant path with an unconstrained complex
+gain at each antenna.
+Absorbing the common scalar phase into the gain, we define the path matrix as
+\begin{equation}
+ \mathbf G_0(d,\nu)=e^{-j2\pi c_1d^2}\mathbf G(d,\nu;0),\qquad
+ [\mathbf h_k(d,\nu)]_{qN+r}
+ =e^{j2\pi\nu qT_{\rm frame}}
+ \sum_{n=0}^{N-1}[\mathbf G_0(d,\nu)]_{rn}P_{qkn}.
+ \label{eq:phase-atom}
+\end{equation}
+The delay search is restricted to $d\in[0,N)$ and the Doppler search to $|\nu|\leq\nu_{\max}$. Under $2Nc_1\in\mathbb N_+$, shifting
+the delay by an integer multiple of $N$ changes the path operator by
+a scalar phase, which the fitted gains absorb. With
+$\mathbf h_k=\mathbf h_k(d_k,\nu_k)$ and gain vector
+$\mathbf b_k\in\mathbb C^M$, the fitting objective is
+\begin{equation}
+ \min_{\{d_k,\nu_k,\mathbf b_k\}}
+ \left\|\mathbf Y_{\rm s}-\sum_{k=1}^K
+ \mathbf h_k\mathbf b_k^{\mathsf T}\right\|_F^2.
+ \label{eq:phase-fit}
+\end{equation}
+When updating terminal $k$, we fix the other contributions and define
+$\mathbf Z_k=\mathbf Y_{\rm s}-\sum_{j\ne k}
+\mathbf h_j\mathbf b_j^{\mathsf T}$. For a given $(d,\nu)$, the
+least-squares gain and the resulting objective are given by
+\begin{equation}
+ \begin{aligned}
+ \mathbf b_k^{\mathsf T}(d,\nu)
+ &=\frac{\mathbf h_k(d,\nu)^{\mathsf H}\mathbf Z_k}
+ {\|\mathbf h_k(d,\nu)\|^2},\\
+ J_k(d,\nu)&=\|\mathbf Z_k\|_F^2-
+ \frac{\|\mathbf h_k(d,\nu)^{\mathsf H}\mathbf Z_k\|^2}
+ {\|\mathbf h_k(d,\nu)\|^2}.
+ \end{aligned}
+ \label{eq:phase-variable-projection}
+\end{equation}
+The gains are eliminated from the separable nonlinear least-squares
+problem by variable projection \cite[Secs.~1 and 2]{oleary2013}. Coarse correlations over
+delay, within-frame Doppler, and frame phase provide initial candidates.
+A phase candidate $\beta$ corresponds to Doppler aliases
+\begin{equation}
+ \nu_j=\frac{\beta+2\pi j}{2\pi T_{\rm frame}},\qquad
+ j\in\mathbb Z,\quad |\nu_j|\leq\nu_{\max}.
+ \label{eq:phase-aliases}
+\end{equation}
+Candidates are ranked using the pilot response vector in
+\eqref{eq:phase-atom}, which enforces the same Doppler within and across
+frames. The selected candidates undergo bounded local refinement by
+L-BFGS-B \cite{zhu1997}, with delay restricted to one differentiable
+branch of the wrapped waveform. Each coordinate update is accepted
+when it does not increase the residual energy, up to numerical tolerance.
+After each sweep, all antenna gains are refitted jointly by least squares.
+
+The receiver uses a fixed number of complete sweeps, retaining the previous
+position as an additional refinement starting point after the first sweep.
+It sets $\widehat\beta_k=\operatorname{wrap}
+(2\pi\widehat\nu_kT_{\rm frame})$ and constructs
+$\widehat{\mathbf A}$ by \eqref{eq:effective-pilot}.
+This local fit provides phase estimates for all candidate terminals.
+The nonlinear denoiser then estimates the full channel tensor in
+\eqref{eq:channel}.
+
+\subsubsection{Noise variance estimation}
+Let $L=QN>M\geq2$ and form the spatial sample covariance
+\begin{equation}
+ \widehat{\mathbf R}_y=\frac1L\sum_{q=0}^{Q-1}\sum_{r=0}^{N-1}
+ \mathbf y_{qr}\mathbf y_{qr}^{\mathsf H},\qquad
+ \mathbf y_{qr}=(Y_{q0r},\ldots,Y_{q,M-1,r})^{\mathsf T}.
+ \label{eq:spatial-noise-covariance}
+\end{equation}
+Write its eigenvalues in descending order as
+$\lambda_1\geq\cdots\geq\lambda_M$; values below
+$\epsilon_{\rm mach}\lambda_1$ are floored at that level before
+taking logarithms. For a candidate spatial signal rank $j$, define
+\begin{equation}
+ \bar\lambda_j=\frac1{M-j}\sum_{i=j+1}^M\lambda_i,\qquad
+ \log g_j=\frac1{M-j}\sum_{i=j+1}^M\log\lambda_i.
+ \label{eq:noise-tail-statistics}
+\end{equation}
+The Wax--Kailath minimum description length (MDL) criterion, as reviewed
+in \cite[Sec.~II-A, eqs.~(5)--(7)]{nadakuditi2008}, gives
+\begin{equation}
+ \begin{aligned}
+ \widehat r_{\rm s}
+ &=\arg\min_{0\leq j<M}\left\{
+ L(M-j)(\log\bar\lambda_j-\log g_j)
+ +\frac{j(2M-j)}2\log L\right\},\\
+ \widehat\sigma^2&=\bar\lambda_{\widehat r_{\rm s}}.
+ \end{aligned}
+ \label{eq:noise-mdl}
+\end{equation}
+Under a lower-rank spatial signal plus white-noise model, the criterion
+selects the spatial signal rank and estimates the noise variance from
+the remaining eigenvalues. Both $\widehat\sigma^2$ and
+$\widehat{\mathbf A}$ remain fixed throughout the MP iterations.
+
+\subsection{Linear Estimation}
+
+Let the incoming Gaussian message have mean
+$\mathbf X^{\rm pri}\in\mathbb C^{KN\times MN}$ and covariance
+$\gamma\I_{KN}$ per measurement vector, where $\gamma>0$.
+For $\widehat\sigma^2>0$, the posterior mean and covariance under
+the estimated operator in \eqref{eq:working-posterior} are given by
+\begin{align}
+ \mathbf X_{\rm L}
+ &=\mathbf X^{\rm pri}
+ +\gamma\widehat{\mathbf A}^{\mathsf H}
+ (\widehat\sigma^2\I_Q+\gamma\widehat{\mathbf A}\widehat{\mathbf A}^{\mathsf H})^{-1}
+ (\mathbf Y-\widehat{\mathbf A}\mathbf X^{\rm pri}),
+ \label{eq:linear-mean}\\
+ \bm\Sigma_{\rm L}
+ &=(\gamma^{-1}\I_{KN}+\widehat\sigma^{-2}\widehat{\mathbf A}^{\mathsf H}\widehat{\mathbf A})^{-1},
+ \qquad t_{\rm L}=\frac{\tr\bm\Sigma_{\rm L}}{KN}.
+ \label{eq:linear-variance}
+\end{align}
+We approximate $\bm\Sigma_{\rm L}$ by $t_{\rm L}\I_{KN}$, where
+$t_{\rm L}$ is its normalized trace. Dividing the resulting Gaussian
+approximation by the incoming Gaussian message gives
+\begin{equation}
+ v_{\rm L}=(t_{\rm L}^{-1}-\gamma^{-1})^{-1},\qquad
+ \mathbf R_{\rm L}=v_{\rm L}
+ \left(\frac{\mathbf X_{\rm L}}{t_{\rm L}}
+       -\frac{\mathbf X^{\rm pri}}{\gamma}\right).
+ \label{eq:linear-extrinsic}
+\end{equation}
+For $\widehat{\mathbf A}\ne\mathbf0$, the eigenvalues in
+\eqref{eq:linear-variance} give $0<t_{\rm L}<\gamma$, so
+$v_{\rm L}$ is positive.
+
+A thin singular value decomposition (SVD)
+$\widehat{\mathbf A}=\mathbf U\diag(s_i)\mathbf V^{\mathsf H}$ gives
+\begin{equation}
+ f_{\rm L}=\frac{1}{KN}\sum_i
+ \frac{\gamma s_i^2}{\widehat\sigma^2+\gamma s_i^2},\qquad
+ t_{\rm L}=\gamma(1-f_{\rm L}),\qquad
+ v_{\rm L}=\frac{t_{\rm L}}{f_{\rm L}}.
+ \label{eq:linear-fraction}
+\end{equation}
+Then $\mathbf R_{\rm L}=\mathbf X^{\rm pri}
++(\mathbf X_{\rm L}-\mathbf X^{\rm pri})/f_{\rm L}$.
+The SVD is reused throughout the block. After reshaping by
+\eqref{eq:mmv-indexing} and applying the damping in
+Section~\ref{sec:damping}, the nonlinear estimator receives
+$(R_k,v)$ for each terminal.
+
+\subsection{Channel and Activity Denoising}
+
+For channel and activity denoising, we use the following additive white
+Gaussian noise (AWGN) observation model
+\cite[Secs.~III-B and V-B1]{cai2026}:
+\begin{equation}
+ R_k=\alpha_kH_k+W_k,\qquad
+ H_k\sim q_{\rm tr},\qquad
+ \vect(W_k)\sim\CN(\mathbf0,v\I_D).
+ \label{eq:pseudo-awgn}
+\end{equation}
+This model generates the training samples and approximates the
+iterative receiver inputs. Before damping, the linear extrinsic mean
+satisfies
+\begin{equation}
+ \begin{aligned}
+ \mathbf R_{\rm L}-\mathbf X
+ &=(\mathbf L\widehat{\mathbf A}-\I)(\mathbf X-\mathbf X^{\rm pri})\\
+ &\quad+\mathbf L(\mathbf A-\widehat{\mathbf A})\mathbf X
+  +\mathbf L\mathbf W,\\
+ \mathbf L&=\frac{\gamma}{f_{\rm L}}\widehat{\mathbf A}^{\mathsf H}
+ (\widehat\sigma^2\I_Q+\gamma\widehat{\mathbf A}\widehat{\mathbf A}^{\mathsf H})^{-1}.
+ \end{aligned}
+ \label{eq:linear-query-error}
+\end{equation}
+The three terms represent feedback error, error in the observation
+matrix due to phase estimation, and filtered thermal noise. Equation~\eqref{eq:pseudo-awgn} approximates their
+sum by isotropic Gaussian noise independent of the channel.
+
+The input densities for active and inactive terminals are given by
+\begin{equation}
+ \begin{aligned}
+ q_{1,v}(R)&=\int\CN(\vect(R);\vect(H),v\I_D)q_{\rm tr}(dH),\\
+ q_{0,v}(R)&=\CN(\vect(R);\mathbf0,v\I_D).
+ \end{aligned}
+ \label{eq:query-densities}
+\end{equation}
+Bayes' rule gives the local joint posterior
+\begin{equation}
+ q(dH,a\mid R,v)=
+ \frac{\rho^a(1-\rho)^{1-a}
+ \CN(\vect(R);a\vect(H),v\I_D)q_{\rm tr}(dH)}
+ {(1-\rho)q_{0,v}(R)+\rho q_{1,v}(R)}.
+ \label{eq:local-posterior}
+\end{equation}
+Hence the local activity probability is
+\begin{equation}
+ p^\star(R,v)=
+ \frac{\rho q_{1,v}(R)}
+ {(1-\rho)q_{0,v}(R)+\rho q_{1,v}(R)}.
+ \label{eq:local-activity}
+\end{equation}
+Let $m(R,v)=\E[H\mid R,v,\alpha=1]$ and
+$\bm\Sigma_H(R,v)=\operatorname{Cov}(\vect(H)\mid R,v,\alpha=1)$.
+Using the laws of total expectation and covariance, we have
+\begin{equation}
+ \begin{aligned}
+ \E[X\mid R,v]&=p^\star m,\\
+ \operatorname{Cov}(\vect(X)\mid R,v)
+ &=p^\star\bm\Sigma_H+
+ p^\star(1-p^\star)\vect(m)\vect(m)^{\mathsf H}.
+ \end{aligned}
+ \label{eq:exact-local-moments}
+\end{equation}
+This activity-weighted conditional mean is the standard Bayesian
+denoising construction \cite[Sec.~III-C]{liu2018}.
+Its evaluation requires channel moments and the density ratio
+$q_{1,v}/q_{0,v}$, supplied by the channel and activity estimators,
+respectively.
+
+We approximate these quantities using a channel mean
+$F_k=F_\theta(R_k,v)$, a scalar conditional mean-squared error
+$\widehat\tau_k=\widehat\tau_\psi(R_k,v)$, and an activity logit
+$z_\phi(R_k,v,F_k)$. We average the conditional mean-squared error
+estimates over the $K$ terminals and apply a positive lower bound:
+\begin{equation}
+ \tau_{\rm raw}=\frac1K\sum_{k=1}^K\widehat\tau_k,\qquad
+ \tau=\max\{\tau_{\rm raw},\tau_{\min}\},
+ \label{eq:pooled-variance}
+\end{equation}
+where $\tau_{\min}>0$. The resulting scalar $\tau$ is used as the
+variance per coordinate in the Gaussian approximation for each terminal.
+The training targets
+are specified in Section~\ref{sec:learning}; Appendix~\ref{app:second-order-training}
+derives this averaging operation by fitting the Gaussian approximations.
+
+For each terminal, retain a Gaussian approximation to the channel-prior
+factor, called a site \cite[Sec.~2.1]{vehtari2020}, of the form
+$\CN(\vect(H_k);\vect(E_k),c_k\I_D)$.
+For an input variance within the training range and $0<\tau<v$, dividing the Gaussian approximation to the conditional posterior
+by the input likelihood gives
+\begin{equation}
+ c_k=(\tau^{-1}-v^{-1})^{-1},\qquad
+ E_k=c_k\left(\frac{F_k}{\tau}-\frac{R_k}{v}\right).
+ \label{eq:site-update}
+\end{equation}
+This condition ensures positive site precision; otherwise, the previous
+site is retained as described in Section~\ref{sec:schedule}.
+Combining the Gaussian site with the current input, the conditional
+variance and mean are respectively given by
+\begin{equation}
+ t_k=\frac{c_kv}{c_k+v},\qquad
+ \mu_k=\frac{c_kR_k+vE_k}{c_k+v}.
+ \label{eq:conditional-moments}
+\end{equation}
+For an accepted update, $\mu_k=F_k$ and $t_k=\tau$.
+If the update is rejected, these quantities instead combine the retained
+site with the current input.
+
+Within the training variance range, the activity probability is
+\begin{equation}
+ \ell_k=z_\phi(R_k,v,F_k)-\logit\pi_{\rm tr},\qquad
+ p_k=\sigmoid(\logit\rho+\ell_k),
+ \label{eq:activity-probability}
+\end{equation}
+where $\pi_{\rm tr}$ is the training class prior,
+$\logit a=\log[a/(1-a)]$, and $\sigmoid b=(1+e^{-b})^{-1}$.
+Section~\ref{sec:density-ratio} derives this prior correction.
+The resulting local posterior approximation can be expressed as
+\begin{equation}
+ \begin{aligned}
+ \widetilde q_k(dX_k)&=(1-p_k)\delta_0(dX_k)
+ +p_k\CN(\vect(X_k);\vect(\mu_k),t_k\I_D)\,dX_k,\\
+ \widehat X_k&=p_k\mu_k.
+ \end{aligned}
+ \label{eq:mixture}
+\end{equation}
+Let $\mathbf U_k\in\mathbb C^{M\times N^2}$ be obtained by reshaping
+$\mu_k$ with one row per antenna. Averaging the covariance across its $N^2$ columns gives
+\begin{equation}
+ \mathbf C_{X,k}=p_kt_k\I_M+
+ \frac{p_k(1-p_k)}{N^2}\mathbf U_k\mathbf U_k^{\mathsf H}.
+ \label{eq:joint-spatial-covariance}
+\end{equation}
+The first term represents conditional channel uncertainty; the second
+accounts for uncertainty in terminal activity.
+
+\subsection{Extrinsic Message Update}
+
+Averaging the traces of $\mathbf C_{X,k}$ over terminals and dividing
+by the number of antennas gives the scalar variance used for feedback:
+\begin{equation}
+ \overline t_X=\frac{1}{KM}\sum_k\tr\mathbf C_{X,k}
+ =\frac1K\sum_k\left[
+ p_kt_k+p_k(1-p_k)\frac{\norm{\mu_k}_F^2}{D}\right].
+ \label{eq:joint-average-variance}
+\end{equation}
+Let $b=\clip(\overline t_X/v,\varepsilon,1-\varepsilon)$,
+with $0<\varepsilon<1/2$. Dividing the Gaussian with mean
+$\widehat X_k$ and variance $bv$ by the incoming Gaussian message gives
+\begin{equation}
+ \gamma_{\rm out}=\frac{vb}{1-b},\qquad
+ X_{k,\rm out}=\frac{\widehat X_k-bR_k}{1-b}.
+ \label{eq:nonlinear-extrinsic}
+\end{equation}
+Clipping bounds the variance ratio and keeps the outgoing precision
+positive. When clipping is inactive, $bv=\overline t_X$.
+The damped outgoing parameters become the next linear prior.

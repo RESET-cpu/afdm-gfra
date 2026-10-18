@@ -1,0 +1,98 @@
+{
+  "schema": "afdm-selected-baselines-v1",
+  "dictionary": {
+    "delay_step": 1.0,
+    "doppler_points": null,
+    "doppler_step_hz": 30000.0
+  },
+  "channel_output": "dictionary_reconstruction",
+  "methods": {
+    "somp": {
+      "solver": {
+        "max_atoms": 64,
+        "noise_multiplier": 1.0,
+        "stopping_rule": "noise_discrepancy"
+      },
+      "readout_inference_sha256": "9f1ffa7fd8200eed1945c44fe58e705ab41bc543704b87c1056ad56689bf65bc"
+    },
+    "gamp_sbl_mmv": {
+      "solver": {
+        "iterations": 1000,
+        "tolerance": 1e-06,
+        "stopping_rule": "paper_absolute_mean",
+        "alpha_shape": 1.0,
+        "alpha_rate": 1e-12,
+        "initial_noise_fraction": 0.1,
+        "variance_floor": 1e-12
+      },
+      "noise_hyperparameters": "public_noise_Gamma_MAP",
+      "readout_inference_sha256": "7b5c88a7e22c7a53904a47d17d99d8a1b436e1915ef7e39b834261fb555e88e3"
+    },
+    "gnn_aspl_ding2026": {
+      "checkpoint_path": "models/gnn/checkpoint.pt",
+      "checkpoint_sha256": "a09f07dd6af6c8390a68d10b892f64fec316b4e7cd031350817e7ad679fa3f4e",
+      "training_recipe_sha256": "f05607c6f89ecfdcb00fc32fafe1ba91da668e912dd9e363710b20de7ed43830",
+      "allow_smoke_checkpoint": false,
+      "allow_preliminary_checkpoint": false,
+      "noise_mode": "supplied",
+      "device": "cpu",
+      "readout_inference_sha256": "17a4ccdf38cf15530bf6a609254bd460572ada32f2b07704e1d2523394ea17aa"
+    },
+    "em_gamp_zhao2025": {
+      "status": "PENDING_VALIDATION",
+      "paper": "Joint Activity Detection and Channel Estimation in Mixed-Fronthaul Cell-Free Massive MIMO",
+      "authors": "T. Zhao, S. Chen, H.-H. Chen, Q. Guo",
+      "doi": "10.1109/TVT.2024.3483968",
+      "reference": "Ding reference [10]; IEEE TVT 74(3), pp.4117-4131, 2025",
+      "detector_formula_verified": true,
+      "substitute_Vila_2013": false,
+      "source_pdf": "references/zhao2025_mixed_fronthaul_jadce.pdf",
+      "source_pdf_sha256": "d92d9dfac44ba6fd17cc6963fcab4c664a976a73a75117f39412b8fe95621fb6",
+      "source_locators": "p.4120 Eqs.(3),(6); pp.4123-4124 Eqs.(20)-(40),(49); p.4125 Eqs.(51)-(57); p.4126 Algorithm 1",
+      "prior_parameter_learning_equations_verified": true,
+      "noise_mode": "learned_per_column",
+      "slab_mean": 0,
+      "damping": 1,
+      "solver": {
+        "iterations": 1000,
+        "initial_noise_fraction": 0.1,
+        "variance_floor": 1e-12,
+        "probability_floor": 1e-12,
+        "beta_update": "eq38_stationary"
+      },
+      "activity_statistic": "zhao_eq51_gaussian_block_llr",
+      "activity_comparator": ">",
+      "activity_threshold": 0,
+      "effective_variance": "gamp_pseudo_variance",
+      "detector_input": "posterior_mean",
+      "threshold_status": "analytic_equal_likelihood_zero_no_calibration",
+      "source_formula_resolution": {
+        "beta": "Eq.(38) stationary EM condition with derivative Eq.(39); conditional second moment. Printed Eq.(40) incorrectly includes posterior support probability; separately audited.",
+        "detector": "Exact log-density ratio of Eq.(51),(55); log determinant ratio. Printed gamma=log(det Sigma_1-det Sigma_0) following Eq.(56) is inconsistent.",
+        "complex": "Modulus squared and conjugate transpose required by the explicitly proper-complex model; several intermediate printed real scalar expressions omit these."
+      },
+      "adaptation": {
+        "quantization": "native full-resolution special case alpha_m=1, Eq.(6), noise Eq.(49)",
+        "mmv": "antenna columns replace AP columns; dictionary columns replace flat-fading pilot columns",
+        "user_detector": "Eq.(51) Gaussian log likelihoods summed over each user delay-Doppler block under diagonal covariance; no Ding energy threshold and no prior-odds addition",
+        "effective_covariance": "GAMP pseudo variance nu^r estimates Eq.(52) effective diagonal covariance; no true-channel MSE or oracle path support",
+        "initialization": "public activity_prior initializes global lambda; per-column observation energy initializes beta and noise; paper does not publish numeric q initialization",
+        "iterations": "fixed Tmax=1000 is an explicit project budget; no numerical Tmax or early-stop tolerance is published in Zhao Algorithm 1",
+        "zero_mean": "native Eq.(3), not a project simplification",
+        "posterior_support": "scalar probabilities averaged across rows/columns by Eq.(36); no shared-row BG posterior replacement"
+      },
+      "source_formula_choice": {
+        "path": "results/zhao2025_20261010/SOURCE_FORMULA_DECISION.json",
+        "sha256": "9c3d2a1008c1ada4266bf336c1347bd7a6cae4280982eb839fa9ead368fc1fff",
+        "selected_by": "user",
+        "selected_beta_update": "eq38_stationary"
+      }
+    }
+  },
+  "readout": {
+    "path": "configs/readout_policy.json",
+    "sha256": "72161f14688e7ebcc31c8deea2416baeaf5a5d17cf495cb102f197607d148a7d"
+  },
+  "reference_results": "results/baselines_40_1000_20261011/PLAN.json",
+  "migration_verification": "results/code_consolidation_20261011/VERIFICATION.json"
+}

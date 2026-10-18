@@ -1,0 +1,92 @@
+{
+  "status": "PASS",
+  "relevant_tests": 75,
+  "test_warnings": 84,
+  "test_log": "TESTS.log",
+  "finite_prediction_arrays": true,
+  "recomputed_metric_rows": 30,
+  "metrics_match": true,
+  "validation": {
+    "status": "COMPLETE",
+    "inference_count": 37,
+    "all_saved_arrays_finite": true,
+    "all_prior_bounds_satisfied": true,
+    "identities": {
+      "gamp_unchanged": true,
+      "ldamp_known_vs_estimated_scene0_snr0": true,
+      "ldamp_known_vs_estimated_scene1_snr-4": true,
+      "offgrid_legacy_omitted_nan": true,
+      "offgrid_full_vs_conditional": true,
+      "somp_nan_full_vs_conditional": true,
+      "gnn_nan_full_vs_conditional": true,
+      "ldamp_nan_full_vs_conditional": true
+    },
+    "conditional_inference_sha256": {
+      "somp": "b09144389bd22ef0649799485c80b2fa0ab07e058e0a4250b3c7b7b569b81433",
+      "gnn": "91d5a3cb39bc54253dbcc51c03150d94ddef40a71ebf639920531ea9afadc288",
+      "offgrid_sbl": "a2d101a43653c7b7434dde0ef0cec0f3db89a6b5a59b34a312dc58e3c21d7c4f",
+      "ldamp": "2f980c64cef621970d71e02d6eddd3bed5aa68ec76a01c37aab29c11ec6771ee"
+    },
+    "script_sha256": "36ec715e7c3c1e712bab903555b8da296d062a91960710e866f1c0df25ee395a"
+  },
+  "assets_verification": {
+    "proposed": {
+      "status": "PASS",
+      "method": "full_score",
+      "activity_evidence": "classifier",
+      "checkpoint_sha256": {
+        "first_checkpoint": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+        "second_checkpoint": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5",
+        "evidence_checkpoint": "b2e59a36e9ff07f8a53d18305f4ca029f55c16ca6c55a8faee62510d6562f53c"
+      },
+      "network_queries": 0
+    },
+    "somp": {
+      "status": "PASS",
+      "network_queries": 0,
+      "inference_sha256": "9f1ffa7fd8200eed1945c44fe58e705ab41bc543704b87c1056ad56689bf65bc",
+      "validation_status": "SELECTED"
+    },
+    "gamp": {
+      "status": "PASS",
+      "network_queries": 0,
+      "inference_sha256": "7b5c88a7e22c7a53904a47d17d99d8a1b436e1915ef7e39b834261fb555e88e3",
+      "validation_status": "SELECTED"
+    },
+    "gnn": {
+      "status": "PASS",
+      "network_queries": 0,
+      "inference_sha256": "17a4ccdf38cf15530bf6a609254bd460572ada32f2b07704e1d2523394ea17aa",
+      "validation_status": "SELECTED"
+    },
+    "offgrid_sbl": {
+      "status": "PASS",
+      "network_queries": 0,
+      "inference_sha256": "70048d633bbf7f20b11e7fd9a3cd2902957adbd3fb05d5d2ade0c3f657273fad",
+      "validation_status": "IMPLEMENTATION_VALIDATED"
+    },
+    "ldamp": {
+      "status": "PASS",
+      "validation_status": "VALIDATED_PAIRED_10_SCENES",
+      "inference_sha256": "a22e78ec9fe3f1985d12c929e3c30c8d9afefe783f7e070f193498bfde4fbabb",
+      "bank_sha256": "74d7c23db592247f9291fcae57925c52d49792b6ceeffa5bfcc77d7f56faaa2f"
+    }
+  },
+  "changed_registered_assets": [
+    "src/afdm_jadcedd/algorithm/baseline_noise.py",
+    "configs/baseline_noise.json"
+  ],
+  "all_other_registered_assets_unchanged": true,
+  "runtime_warnings": {
+    "divide by zero encountered in matmul": 31408,
+    "overflow encountered in matmul": 31408,
+    "invalid value encountered in matmul": 31408
+  },
+  "warning_scope": "Warnings retained. Prior Accelerate comparison is supporting evidence, not a proof of every intermediate.",
+  "limitations": [
+    "Two new physical scenes; SNR conditions are paired, not independent scene replicates.",
+    "Gamma scale and likelihood use the same observation; the scale is not independent data.",
+    "Current off-grid SBL retains the 120-iteration budget, and budget stops are not convergence.",
+    "Spatial white noise and low-rank signal assumptions remain; unchanged thresholds are not newly calibrated."
+  ]
+}

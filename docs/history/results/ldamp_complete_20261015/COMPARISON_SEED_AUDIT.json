@@ -1,0 +1,157 @@
+{
+  "status": "PASS_SEED_SEPARATION",
+  "evaluation_seeds": [
+    2026101503100000,
+    2026101503100001,
+    2026101503100002,
+    2026101503100003,
+    2026101503100004,
+    2026101503100005,
+    2026101503100006,
+    2026101503100007,
+    2026101503100008,
+    2026101503100009
+  ],
+  "checks": [
+    {
+      "source": "Shared Proposed and L-DAMP channel bank: train",
+      "unique_scenes": 12500,
+      "minimum": 2026100601000000,
+      "maximum": 2026100601012499,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "Shared Proposed and L-DAMP channel bank: validation",
+      "unique_scenes": 1250,
+      "minimum": 2026100602000000,
+      "maximum": 2026100602001249,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "GNN mixed-condition train",
+      "unique_scenes": 10001,
+      "minimum": 301000000,
+      "maximum": 301010000,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "GNN mixed-condition validation",
+      "unique_scenes": 256,
+      "minimum": 311000000,
+      "maximum": 311000255,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "Shared SOMP/GAMP/GNN readout source: results/baseline_scenario_audit_20261011/frozen_three_hundred/PLAN.json / seeds",
+      "unique_scenes": 100,
+      "minimum": 202610116000001,
+      "maximum": 202610116000100,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "Shared SOMP/GAMP/GNN readout source: results/baseline_scenario_audit_20261011/extended_noise_readout/PLAN.json / seeds",
+      "unique_scenes": 20,
+      "minimum": 202610115100001,
+      "maximum": 202610115100020,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "Shared SOMP/GAMP/GNN readout source: results/baseline_scenario_audit_20261011/gamp_mmv_validation/PLAN.json / calibration_seeds",
+      "unique_scenes": 20,
+      "minimum": 202610115100001,
+      "maximum": 202610115100020,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "Shared SOMP/GAMP/GNN readout source: results/baseline_scenario_audit_20261011/gamp_mmv_validation/PLAN.json / validation_seeds",
+      "unique_scenes": 20,
+      "minimum": 202610115500001,
+      "maximum": 202610115500020,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "Seed identities embedded in frozen readout certificate: results/baseline_scenario_audit_20261011/extended_noise_readout/THRESHOLDS.json",
+      "unique_scenes": 20,
+      "minimum": 202610115100001,
+      "maximum": 202610115100020,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "Off-grid SBL activity calibration",
+      "unique_scenes": 16,
+      "minimum": 418100000,
+      "maximum": 418100015,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "Original L-DAMP energy-readout development: calibration",
+      "unique_scenes": 8,
+      "minimum": 2026101468100000,
+      "maximum": 2026101468100007,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "Original L-DAMP energy-readout development: evaluation",
+      "unique_scenes": 16,
+      "minimum": 2026101468200000,
+      "maximum": 2026101468200015,
+      "overlap": [],
+      "passed": true
+    },
+    {
+      "source": "Joint L-DAMP reused development/calibration",
+      "unique_scenes": 8,
+      "minimum": 2026101452100000,
+      "maximum": 2026101452100007,
+      "overlap": [],
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "results/ldamp_complete_20261015/independent_validation/PLAN.json": "4b578a4455274c78627a040a4296c42c426d0b049455bd1daa89533250c1ead2",
+    "data/proposed/prior_definition.json": "f20b1e25eae1037daff03db58c816a7acc4ccc382c89520016e47e5385b8bc9d",
+    "outputs/two_route_training_20261006/data/train_identities.npy": "445f4ade5fb30dc5e07fe23a2b276e7c8abc115eeeac236a2e20944eb5b7c96b",
+    "outputs/two_route_training_20261006/data/validation_identities.npy": "a7c065dc608db8914cdaa430e3172db015e2020514e9f998e23cce91773e9434",
+    "models/proposed/first.pt": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+    "models/proposed/second.pt": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5",
+    "models/proposed/activity.pt": "b2e59a36e9ff07f8a53d18305f4ca029f55c16ca6c55a8faee62510d6562f53c",
+    "models/gnn/checkpoint.pt": "a09f07dd6af6c8390a68d10b892f64fec316b4e7cd031350817e7ad679fa3f4e",
+    "configs/readout_policy.json": "72161f14688e7ebcc31c8deea2416baeaf5a5d17cf495cb102f197607d148a7d",
+    "results/baseline_scenario_audit_20261011/frozen_three_hundred/PLAN.json": "3ce1be25e751b2f2958c42795276ce5c2c0cb004760491519931fdde17d6e021",
+    "results/baseline_scenario_audit_20261011/extended_noise_readout/THRESHOLDS.json": "c6e1f6df04d7a28b9da6b9e3a5cdc2c8256637b4abe6a64b16d829d1d88a548f",
+    "results/baseline_scenario_audit_20261011/extended_noise_readout/PLAN.json": "0b63e0fae85099aff4b7cc435e56edceafa700e98196d5c67c76cf0c98c2d5a5",
+    "results/baseline_scenario_audit_20261011/gamp_mmv_validation/THRESHOLDS.json": "b9d5a3ee508374144ece26c8f70f3f008a42f494ab4e1cb61ff8dbad66412be1",
+    "results/baseline_scenario_audit_20261011/gamp_mmv_validation/PLAN.json": "24d5dc6ae80a11283a4926862afbbddaad2ad4e0a09f2b11bad21a7d4994585c",
+    "configs/offgrid_readout_policy.json": "9ae47538b2d159d1fb0095e82c69d374f733081c0adc27ea36c1c0ff99b19e37",
+    "results/offgrid_baselines_20261012/calibration.jsonl": "9c415786699e4f0aabb6cae804bea5e889171b90e7a200742eccba3c3022a49b",
+    "results/ldamp_implementation_20261014/energy_readout/READOUT.json": "803cbebb18bffbf8b74ea1b4b3b1d9e18185f85026367bbd852c1db0abc9aae4",
+    "results/ldamp_implementation_20261014/independent_validation/ROWS.json": "e1ffc8c326de5d57632b4d6067cf1ce074802d546b396c55acd85453fe9ba0ab",
+    "results/ldamp_implementation_20261014/independent_validation/PLAN.json": "8e71171c848b47ac85bd008435c4604a6209864adf77d3c6679e3d69637425e4",
+    "results/ldamp_complete_20261015/CALIBRATION_INPUT_AUDIT.json": "5cd97e52e116a0a014bab5955ef0cfffc332cb7d5f1b48211e636038ef012a4f",
+    "experiments/ldamp_complete_20261015/audit_comparison_seeds.py": "1886b375091e5460bf3b6b0dc3de1df7657db4d948d2904270b93a4111d0b53b"
+  },
+  "script_sha256": "1886b375091e5460bf3b6b0dc3de1df7657db4d948d2904270b93a4111d0b53b",
+  "missing_historical_configuration_references": [
+    {
+      "path": "configs/baselines_load80_public_conditioned_20261011.json",
+      "expected_sha256": "d9f0379740a19e4ff3261167f2843aee629e480e0453c1e02861a888156a4365"
+    },
+    {
+      "path": "configs/baselines_load80_thresholds_20261011.json",
+      "expected_sha256": "3c942e0315554b7a7c5c759193a39fb2307d9fbd64d2cb91104209dd03b1e777"
+    }
+  ],
+  "historical_configuration_reference_audit": "INCOMPLETE",
+  "scope": "Reserved independent-panel seeds versus the recorded channel-bank, GNN training/validation, shared readout plans and certificates, off-grid readout and both L-DAMP readout/development identities. Seed-bearing plans/certificates are present and hash-bound. Missing historical config references are explicitly not verified; current frozen evaluation configurations remain available. This is a data-separation audit, not a full historical reproduction or receiver performance result."
+}

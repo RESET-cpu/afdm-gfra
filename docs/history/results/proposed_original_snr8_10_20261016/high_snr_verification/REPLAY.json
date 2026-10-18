@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "case": "paired10_snr8/scene004/snr+10",
+  "full_public_receiver": true,
+  "truth_used_in_replay": false,
+  "saved_array_exact_checks": {
+    "estimate": true,
+    "conditional_matrix": true,
+    "probabilities": true,
+    "activity_decision": true,
+    "spatial_covariance": true
+  },
+  "phase_array_exact_checks": {
+    "phase_slopes": true,
+    "doppler_hz": true,
+    "folded_delay_samples": true,
+    "path_gains": true,
+    "fitted_observation": true
+  },
+  "user32_probability": 1.6171360593069167e-06,
+  "stopping_reason": "CONVERGED",
+  "iterations": 199,
+  "source_public_input": "results/proposed_original_snr8_10_20261016/inputs/scene004/snr+10/input.npz",
+  "input_sha256": "a4296fa81188c0abde9b6ad9b0e1110bc566c3e17467190dc10047fe150913ce",
+  "replay_output_sha256": "320acc172ea63ae4859543114e1624ce58bc8555bc7eb5a5833f556ccf64a1be"
+}
