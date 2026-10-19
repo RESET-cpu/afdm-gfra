@@ -1,0 +1,126 @@
+{
+  "status": "PASS",
+  "device": "cpu",
+  "time": 1792403222.459035,
+  "actual_cuda_test": false,
+  "immutable_files_verified_before": 192,
+  "runtime": {
+    "action": "check",
+    "device": "cpu",
+    "configured_device": "cpu",
+    "time": 1792403223.61083,
+    "pid": 50689,
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 08:22:19) [Clang 14.0.6 ]",
+    "torch_version": "2.7.1",
+    "cuda_build": null,
+    "cuda_available": false,
+    "tf32": false,
+    "precision": "float32",
+    "package_root": "/Users/wangbo/Desktop/科研/JADCEDD/handoff/lstmp_windows_reviewed_20261019/AFDM_LSTMP",
+    "config_sha256": "cc3e5b313106bb9be758bff85ae380e5fc88d5031352511393ca72e366418be7",
+    "cuda_requested": false,
+    "dependencies": {
+      "numpy": "2.2.1",
+      "scipy": "1.15.1",
+      "threadpoolctl": "3.5.0",
+      "PyYAML": "6.0.1",
+      "matplotlib": "3.10.0",
+      "psutil": "5.9.0"
+    }
+  },
+  "resume_position": {
+    "epoch": 1,
+    "steps": 366,
+    "cursor": 11712
+  },
+  "dsm": {
+    "loss": 0.6486488580703735,
+    "gradient_norm": 0.4316914975643158,
+    "optimizer_parameter_max_update": 0.0004378370940685272,
+    "ema_finite": true,
+    "optimizer_step_saved": false
+  },
+  "physical_receiver": {
+    "depth": 5,
+    "debug_seed": 202610277000001,
+    "optimizer_step_saved": false,
+    "adam_state_parameters": 1495,
+    "peak_cuda_allocated_bytes": null,
+    "loss": 1.4920449256896973,
+    "gradient_norms": {
+      "layer_1_score": 9.448277473449707,
+      "layer_1_activity": 23.24224090576172,
+      "layer_2_score": 2.0920519828796387,
+      "layer_2_activity": 0.3142302930355072,
+      "layer_3_score": 0.8151398301124573,
+      "layer_3_activity": 1.8469793796539307,
+      "layer_4_score": 0.7153148055076599,
+      "layer_4_activity": 1.0955597162246704,
+      "layer_5_score": 0.2523536682128906,
+      "layer_5_activity": 1.0522555112838745
+    },
+    "diagnostics": [
+      {
+        "query_variance": 7.670889854431152,
+        "raw_residual_variance": 0.43438640236854553,
+        "feedback_variance": 0.4426265060901642,
+        "negative_raw_variance": false,
+        "out_of_pretraining_support": false,
+        "ratio_near_ceiling": false
+      },
+      {
+        "query_variance": 22.0579776763916,
+        "raw_residual_variance": -0.037532396614551544,
+        "feedback_variance": 0.287404328584671,
+        "negative_raw_variance": true,
+        "out_of_pretraining_support": false,
+        "ratio_near_ceiling": false
+      },
+      {
+        "query_variance": 15.088743209838867,
+        "raw_residual_variance": 0.08646611869335175,
+        "feedback_variance": 0.2554677128791809,
+        "negative_raw_variance": false,
+        "out_of_pretraining_support": false,
+        "ratio_near_ceiling": false
+      },
+      {
+        "query_variance": 13.864912986755371,
+        "raw_residual_variance": 0.8096923828125,
+        "feedback_variance": 0.8231863975524902,
+        "negative_raw_variance": false,
+        "out_of_pretraining_support": false,
+        "ratio_near_ceiling": false
+      },
+      {
+        "query_variance": 37.87509536743164,
+        "raw_residual_variance": 1.2896267175674438,
+        "feedback_variance": 1.4157058000564575,
+        "negative_raw_variance": false,
+        "out_of_pretraining_support": false,
+        "ratio_near_ceiling": false
+      }
+    ],
+    "independent_layers": true,
+    "seconds": 4.346835500036832,
+    "scope": "One diagnostic scene outside every training/validation/test interval; no scene file saved"
+  },
+  "original_receiver_assets": {
+    "status": "PASS",
+    "method": "full_score",
+    "activity_evidence": "classifier",
+    "checkpoint_sha256": {
+      "first_checkpoint": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+      "second_checkpoint": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5",
+      "evidence_checkpoint": "b2e59a36e9ff07f8a53d18305f4ca029f55c16ca6c55a8faee62510d6562f53c"
+    },
+    "network_queries": 0
+  },
+  "immutable_files_verified_after": 192,
+  "checkpoints_unchanged": {
+    "checkpoints/pretrain/best.pt": "bc648d2555fba547d9ac6be5bf1e934e50657bf20aa4d413d350e3b302e3fb75",
+    "checkpoints/pretrain/initial_random.pt": "22bfa8cee7d530f793ed2e2328a7685ddbf2e326acf8c9a2c8d095be21a8d5ca",
+    "checkpoints/pretrain/last.pt": "088c72aef33e2bc9a06469083ae3f3476cd2c38f69fa0e9d13f698fed968bf7c"
+  }
+}

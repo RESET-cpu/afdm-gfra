@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "packing_max_float32_error": 1.1919793241332854e-07,
+  "linear_mean_relative_error": 5.564376116477744e-08,
+  "linear_variance_relative_error": 1.1867425058396388e-08,
+  "residual_variance_relative_error": 3.823098479460718e-08,
+  "independent_layer_parameters": true,
+  "gradient_norms": {
+    "layer1_score": 5243.634765625,
+    "layer1_activity": 6946.0361328125,
+    "layer2_score": 2106.690673828125,
+    "layer2_activity": 5693.345703125,
+    "layer3_score": 345.3072814941406,
+    "layer3_activity": 1129.6639404296875,
+    "layer4_score": 28.56264305114746,
+    "layer4_activity": 67.3981704711914,
+    "layer5_score": 145.3689422607422,
+    "layer5_activity": 525.14453125
+  },
+  "optimizer_resume_max_error": 0.0,
+  "batch32_microbatch8_forward_backward_seconds": {
+    "cpu": 0.47451737499795854,
+    "mps": 0.7535002920194529
+  },
+  "physical_diagnostics": [
+    {
+      "query_variance": 4.128204822540283,
+      "raw_residual_variance": 0.07305063307285309,
+      "feedback_variance": 0.1015613004565239,
+      "negative_raw_variance": false,
+      "out_of_pretraining_support": false,
+      "ratio_near_ceiling": false
+    },
+    {
+      "query_variance": 4.230480194091797,
+      "raw_residual_variance": 0.7284685373306274,
+      "feedback_variance": 0.7206100225448608,
+      "negative_raw_variance": false,
+      "out_of_pretraining_support": false,
+      "ratio_near_ceiling": false
+    },
+    {
+      "query_variance": 34.04352569580078,
+      "raw_residual_variance": 4.829363822937012,
+      "feedback_variance": 4.794340133666992,
+      "negative_raw_variance": false,
+      "out_of_pretraining_support": false,
+      "ratio_near_ceiling": false
+    },
+    {
+      "query_variance": 217.7972869873047,
+      "raw_residual_variance": 12.143712997436523,
+      "feedback_variance": 12.389070510864258,
+      "negative_raw_variance": false,
+      "out_of_pretraining_support": true,
+      "ratio_near_ceiling": false
+    },
+    {
+      "query_variance": 512.4869995117188,
+      "raw_residual_variance": 42.778072357177734,
+      "feedback_variance": 42.82373046875,
+      "negative_raw_variance": false,
+      "out_of_pretraining_support": true,
+      "ratio_near_ceiling": false
+    }
+  ],
+  "five_layer_physical_forward_backward_seconds": 4.45001220802078,
+  "selected_device": "cpu",
+  "finite_physical_loss": 151.37445068359375,
+  "old_checkpoints_loaded": false,
+  "source_scope": "debug seed only; no training/validation/test cases consumed"
+}

@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-19",
+  "source": {
+    "title": "Learned Score-Based Turbo Message Passing for Channel Recovery From Spatially Compressed Measurements",
+    "authors": ["Yiming Wei", "Xiaojun Yuan"],
+    "version": "arXiv:2610.17785v1",
+    "submitted": "2026-10-13",
+    "status": "preprint; no journal acceptance established by this reading",
+    "pdf_url": "https://arxiv.org/pdf/2610.17785v1",
+    "html_url": "https://arxiv.org/html/2610.17785v1",
+    "local_pdf": "wei_yuan_2026_lstmp_v1.pdf",
+    "pdf_sha256": "dee35d773df47f984b2022c2b7be07a01e3d942cde8fae84830ac3a0bfd2f7dd",
+    "pages": 5,
+    "structural_preflight": "pdf_integrity.json: PASS, structure only",
+    "agent_read_scope": "全文 pp.1–5；式(1)–(18)、参考文献与 Table I；PDF p.3 图1及 p.4 图2、图3另外渲染目视核对。未将图线读数冒充作者原始数据。",
+    "user_read_attestation": "none"
+  },
+  "answer_to_current_request": {
+    "judgment": "可以建立完全不加载现有三个权重的新训练路线。推荐从随机初始化的新 score 预训练开始，再进行每层独立网络的渐进展开训练。该选择比继续小幅微调旧的共享三网络更贴近原文，但尚无 AFDM 性能验证。",
+    "distinction": "论文自身使用预训练后联合微调；用户要求不用旧权重并不排斥新训练流程内部的两阶段训练。全网络随机初始化后直接只用重建损失训练，是额外消融，不是论文报告的训练方式。",
+    "scope_this_turn": "下载与细读；没有启动新的正式训练，也没有修改冻结接收机。"
+  },
+  "verified_paper_design": [
+    {"locator": "p.2 §II-A 式(1)–(3)", "finding": "单用户空间压缩观测 Y=BH+N；没有未知用户活动变量或相位估计前端。"},
+    {"locator": "p.2 §III-B 式(6)–(10)", "finding": "均值用行正交条件 BB^H=I 下的 LMMSE；gamma 乘在线性后验方差上，然后重新计算外信息均值和方差。"},
+    {"locator": "p.3 Fig.1、§III-C 式(11)", "finding": "每层一阶 score 产生 Tweedie 形式的均值修正，alpha 调整修正强度。"},
+    {"locator": "p.3 §III-C 式(12)", "finding": "用 beta 乘以减去噪声能量的观测残差来估计后验方差，替代二阶 score 的方差传播。"},
+    {"locator": "p.3 §III-D", "finding": "先预训练 NCSN++ 学习信道分布的 score，再联合训练网络权重和逐层 gamma、alpha、beta。逐层增加深度，每加入一层时与已有层共同训练。"},
+    {"locator": "p.4 §V-A", "finding": "各层拥有独立 NCSN++ 权重，使用 variance-exploding SDE；主要实验为5层，前四层损失权重0.2、第五层1.0。"},
+    {"locator": "p.4 §V-A", "finding": "3GPP UMa NLoS，256接收天线、48子载波，测量数64或32。信道按样本能量归一化，SNR按1/噪声方差定义；不同于本项目接收信号功率定义，不应直接比较同名SNR下的数值。"},
+    {"locator": "p.4 Fig.2–3", "finding": "图2另展示2层、3层曲线，深度确实影响结果；随机DFT的部分高SNR点，5层与STMP曲线接近。PMI辅助下L-STMP有更明显收益。这里只作图形定性核对。"},
+    {"locator": "p.5 Table I", "finding": "5层L-STMP调用5次score；100次STMP迭代调用200次score；表中40倍来自这些计算次数，不是AFDM墙钟实测加速比。"},
+    {"locator": "p.5 reference [16]", "finding": "直接引用的Cai论文为2503.22140压缩图像恢复论文，不是2506.00581 JADCE论文；不能将多用户活动处理视为已被L-STMP原文覆盖。"}
+  ],
+  "comparison_with_previous_pilot": [
+    {"dimension": "初始化", "paper": "score预训练后联合适配", "pilot": "加载本机现有三个权重", "new_candidate": "新AFDM数据上从随机初始化预训练新score，不加载旧权重"},
+    {"dimension": "层间参数", "paper": "每层独立NCSN++", "pilot": "五层共享三个网络", "new_candidate": "每层独立权重；可复制同一新预训练权重作为初始化，之后不绑定参数，此复制方式是实现选择"},
+    {"dimension": "训练顺序", "paper": "逐层增加深度，新旧层联合优化", "pilot": "五层同时训练，校准和联合阶段各两轮", "new_candidate": "1层到2层再逐步增加；每阶段按验证集收敛和固定预算决定终止"},
+    {"dimension": "方差", "paper": "残差方差加beta", "pilot": "保留旧二阶score并校准输出", "new_candidate": "先实现原文残差方式作为明确的适配基准，记录正性处理；不能称其为精确后验方差"},
+    {"dimension": "活动", "paper": "不含未知活动检测", "pilot": "原分类器与高斯site规则", "new_candidate": "在真实AFDM展开消息上另训活动分支，使用活动标签监督；这是项目扩展"},
+    {"dimension": "结论范围", "paper": "单用户HBF实验", "pilot": "8/4/8场景、单SNR的小规模验证", "new_candidate": "上一轮结果不足以评价按原文完整流程重新训练的有效性"}
+  ],
+  "derived_mathematical_checks_not_paper_claims": [
+    {"topic": "一般AFDM算子", "detail": "应使用 m_post=m+v A^H(v AA^H+sigma2 I)^(-1)(Y-Am)，以及迹平均后验方差；原文式(6)的简式要求行正交。网络训练不改变这个代数条件。"},
+    {"topic": "外信息正性", "detail": "式(9)要求0<v_post<v_prior才能得到正外信息方差。gamma>0本身不足以满足上界；原文未明确其约束实现。"},
+    {"topic": "残差方差正性", "detail": "式(12)的残差能量减噪声能量可以为负，beta>0不能消除负值。实现需记录正性处理与触发频率。"},
+    {"topic": "残差与全信道误差", "detail": "令E=X-Xhat，||Y-A Xhat||²=||AE||²+||N||²+2 Re<AE,N>；估计误差依赖Y，交叉项不必为零。A的零空间误差也不可由残差识别。学习beta可以补偿分布内偏差，但不提供无偏MSE恒等式。"},
+    {"topic": "AWGN意义", "detail": "原文用重建监督训练整个计算图来补偿失配，没有证明训练后消息独立、白化或高斯，也没有任意AFDM算子的收敛定理。"},
+    {"topic": "score意义", "detail": "仅用展开重建损失优化后，网络输出未被约束为某一概率密度的精确梯度；应将其描述为经重建任务训练的score网络修正。"},
+    {"topic": "AFDM表示和归一化", "detail": "不能机械照搬每样本单位能量归一化到未知活动用户：非活跃信道为零，且用户功率差与检测有关。应使用仅由训练集确定的尺度，并保留非活跃零信道和功率分布。"}
+  ],
+  "reproducibility_gaps_in_v1": [
+    "训练、验证、测试样本数及拆分方式未披露",
+    "优化器、学习率、批量大小、每层训练轮数和停止条件未披露",
+    "NCSN++详细宽度、模块配置、预训练噪声范围和噪声采样方案未披露",
+    "各层预训练权重的具体复制或初始化方式未披露",
+    "gamma/alpha/beta初始化与正参数实现未披露",
+    "负残差方差、非正外信息精度的处理未披露",
+    "是否跨SNR及跨压缩矩阵共享同一训练模型未充分交代",
+    "正文及本次检索没有确认作者实现仓库；这不等于证明不存在公开代码"
+  ],
+  "proposed_training_sequence_not_yet_executed": [
+    "独立候选目录和新权重；按物理场景拆分训练、验证、测试，在噪声增强前完成拆分。",
+    "用AFDM信道数据重新预训练一阶score；预训练噪声是人工Gaussian扰动，用于初始化，不能视为实际LE消息已满足AWGN。",
+    "构建一般A的可微分线性模块、一阶score均值更新、残差方差及外信息模块；数值处理记录为项目适配。",
+    "各层拥有独立网络参数，按1、2、3、4、5层渐进训练；每阶段共同更新已有层。五层是首个文献基准，不是必须达到的最佳深度。",
+    "活动分支使用实际展开消息训练并加入活动监督；整体有效信道损失避免对非活跃用户的零能量单独归一化。",
+    "先用已知相位、已知噪声隔离展开结构，再在估计相位和噪声条件下训练与评估；报告漏检、误报、NMSE、层数、网络调用和耗时。",
+    "对照保留原接收机充分迭代、新预训练score冻结的迭代方案，以及完整新展开训练；测试结果不用于选择超参数。"
+  ]
+}

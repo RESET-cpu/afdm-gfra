@@ -1,0 +1,262 @@
+"""Fresh-score pretraining followed automatically by progressive receiver training.
+
+Resume only this run's checkpoints. Training never opens previous model weights.
+The original frozen receiver is loaded only for the final held-out comparison.
+"""
+import argparse, copy, json, math, os, time, traceback, warnings
+from pathlib import Path
+import numpy as np
+import torch
+from torch import nn
+from threadpoolctl import threadpool_limits
+from common import ROOT, OUT, CONFIG, save_json, save_torch, cpu_state, status, log_event, check_budget, sha, real_tensor
+from backbone import FreshScore, score_config_dict
+from data import build_prior, build_cases, Cases
+from receiver import Receiver, loss, evaluate
+
+
+def score_batch(bank, indices, scale, device, seed, fixed=False):
+    generator = torch.Generator().manual_seed(seed)
+    h = real_tensor(np.asarray(bank[indices])/scale,'cpu')
+    lo,hi=CONFIG['complex_variance_support']
+    if fixed:
+        v=torch.tensor([.001,.01,.1,1.,10.,100.])[torch.as_tensor(indices)%6]
+    else:
+        v=torch.exp(math.log(lo)+(math.log(hi)-math.log(lo))*torch.rand(len(indices),generator=generator))
+    epsilon=torch.randn(h.shape,generator=generator)
+    noisy=h+torch.sqrt(v/2)[:,None,None,None,None]*epsilon
+    return noisy.to(device),v.to(device),epsilon.to(device),h.to(device)
+
+
+def validate_score(model, bank, scale, device):
+    sums=np.zeros(4); count=0
+    model.eval()
+    with torch.no_grad():
+        for begin in range(0,len(bank),CONFIG['pretraining']['microbatch']):
+            indices=np.arange(begin,min(begin+CONFIG['pretraining']['microbatch'],len(bank)))
+            r,v,epsilon,h=score_batch(bank,indices,scale,device,CONFIG['seed']+90000+begin,True)
+            score=model(r,v); sigma=torch.sqrt(v/2)[:,None,None,None,None]
+            value=(sigma*score+epsilon).square().flatten(1).mean(1)
+            mean=r+v[:,None,None,None,None]/2*score
+            sums+=np.array([float(value.sum()),float((mean-h).square().sum()),float(h.square().sum()),float((r-h).square().sum())])
+            count+=len(indices)
+    return dict(loss=sums[0]/count,nmse_db=10*np.log10(sums[1]/sums[2]),
+                noisy_nmse_db=10*np.log10(sums[3]/sums[2]),samples=count)
+
+
+def pretrain(scale, device, started):
+    folder=OUT/'checkpoints'/'pretrain'; folder.mkdir(parents=True,exist_ok=True)
+    if (folder/'COMPLETE.json').exists(): return folder/'best.pt'
+    s=CONFIG['pretraining']
+    train=np.load(OUT/'data/prior_train.npy',mmap_mode='r')
+    validation=np.load(OUT/'data/prior_validation.npy',mmap_mode='r')
+    torch.manual_seed(CONFIG['seed'])
+    model=FreshScore(width=CONFIG['width']).to(device)
+    ema=copy.deepcopy(model).eval().requires_grad_(False)
+    optimizer=torch.optim.Adam(model.parameters(),lr=s['learning_rate'])
+    epoch,cursor,steps,best,stale=1,0,0,math.inf,0
+    history=[]; loss_sum=0.; samples=0; selected_epoch=0
+    resume=folder/'last.pt'
+    if resume.exists():
+        state=torch.load(resume,map_location='cpu',weights_only=False)
+        model.load_state_dict(state['model']);ema.load_state_dict(state['ema']);optimizer.load_state_dict(state['optimizer'])
+        epoch,cursor,steps,best,stale,history,loss_sum,samples,selected_epoch=(state[k] for k in
+            ('epoch','cursor','steps','best','stale','history','loss_sum','samples','selected_epoch'))
+    else:
+        baseline=validate_score(model,validation,scale,device)
+        best=baseline['loss'];history=[dict(epoch=0,validation=baseline,selected=True)]
+        save_torch(folder/'initial_random.pt',dict(state=cpu_state(model),scale=scale,architecture=score_config_dict(CONFIG['width']),initialization='random'))
+        save_torch(folder/'best.pt',dict(state=cpu_state(ema),scale=scale,epoch=0,validation=baseline))
+        log_event(dict(stage='PRETRAIN_BASELINE',**baseline))
+
+    def checkpoint():
+        save_torch(resume,dict(model=cpu_state(model),ema=cpu_state(ema),optimizer=optimizer.state_dict(),
+             epoch=epoch,cursor=cursor,steps=steps,best=best,stale=stale,history=history,
+             loss_sum=loss_sum,samples=samples,selected_epoch=selected_epoch))
+    try:
+        while epoch<=s['epochs']:
+            if epoch-1>=s['minimum_epochs'] and stale>=s['patience']:break
+            order=np.random.default_rng(CONFIG['seed']+epoch).permutation(len(train))
+            lr=s['minimum_learning_rate']+.5*(s['learning_rate']-s['minimum_learning_rate'])*(1+math.cos(math.pi*(epoch-1)/max(1,s['epochs']-1)))
+            for group in optimizer.param_groups:group['lr']=lr
+            model.train()
+            while cursor<len(order):
+                check_budget(started); optimizer.zero_grad(set_to_none=True)
+                batch=order[cursor:cursor+s['batch_size']]; total=0.
+                for offset in range(0,len(batch),s['microbatch']):
+                    ids=batch[offset:offset+s['microbatch']]
+                    r,v,epsilon,h=score_batch(train,ids,scale,device,CONFIG['seed']+steps*100+offset)
+                    value=(torch.sqrt(v/2)[:,None,None,None,None]*model(r,v)+epsilon).square().mean()
+                    if not bool(torch.isfinite(value)):raise FloatingPointError('Nonfinite pretraining loss')
+                    (value*len(ids)/len(batch)).backward();total+=float(value.detach())*len(ids)/len(batch)
+                norm=nn.utils.clip_grad_norm_(model.parameters(),s['gradient_clip'],error_if_nonfinite=True)
+                optimizer.step()
+                with torch.no_grad():
+                    for target,source in zip(ema.parameters(),model.parameters()):
+                        if source.requires_grad:target.lerp_(source,1-s['ema_decay'])
+                    for target,source in zip(ema.buffers(),model.buffers()):target.copy_(source)
+                steps+=1;cursor+=len(batch);samples+=len(batch);loss_sum+=total*len(batch)
+                if steps%s['checkpoint_steps']==0:checkpoint()
+                if steps%10==0 or steps==1:
+                    status('SCORE_PRETRAINING',epoch=epoch,max_epochs=s['epochs'],samples=cursor,total=len(train),steps=steps,
+                           loss=total,gradient_norm=float(norm),learning_rate=lr,elapsed_seconds=time.time()-started)
+            result=validate_score(ema,validation,scale,device)
+            selected=result['loss']<best
+            significant=result['loss']<best*(1-s['relative_improvement'])
+            if selected:
+                best=result['loss'];selected_epoch=epoch
+                save_torch(folder/'best.pt',dict(state=cpu_state(ema),scale=scale,epoch=epoch,validation=result))
+            stale=0 if significant else stale+1
+            row=dict(epoch=epoch,train_loss=loss_sum/samples,validation=result,selected=selected)
+            history.append(row);save_json(folder/'history.json',history);log_event(dict(stage='PRETRAIN_VALIDATION',**row))
+            epoch+=1;cursor=0;loss_sum=0.;samples=0;checkpoint()
+            if epoch-1>=s['minimum_epochs'] and stale>=s['patience']:break
+        save_json(folder/'COMPLETE.json',dict(status='COMPLETE',selected_epoch=selected_epoch,steps=steps,
+            reason='VALIDATION_PLATEAU' if epoch-1<s['epochs'] else 'MAXIMUM_BUDGET',best_validation_loss=best,
+            checkpoint_sha256=sha(folder/'best.pt')))
+    except BaseException:
+        checkpoint();raise
+    return folder/'best.pt'
+
+
+def train_receiver(pretrained, scale, device, started):
+    s=CONFIG['receiver']
+    build_cases('train',scale,started);build_cases('validation',scale,started)
+    training,validation=Cases('train',scale,device),Cases('validation',scale,device)
+    initial=torch.load(pretrained,map_location='cpu',weights_only=False)['state']
+    model=Receiver()
+    for depth in range(1,s['maximum_depth']+1):
+        torch.manual_seed(CONFIG['seed']+depth)
+        model.add_layer(initial);model.to(device)
+        folder=OUT/'checkpoints'/f'depth_{depth}';folder.mkdir(parents=True,exist_ok=True)
+        if (folder/'COMPLETE.json').exists():
+            model.load_state_dict(torch.load(folder/'best.pt',map_location=device,weights_only=False)['state']);continue
+        calibration=[layer.calibration for layer in model.layers]
+        networks=[p for name,p in model.named_parameters() if not name.endswith('calibration') and p.requires_grad]
+        optimizer=torch.optim.Adam([dict(params=networks,lr=s['learning_rate']),dict(params=calibration,lr=s['calibration_learning_rate'])])
+        epoch,cursor,steps,best,stale=1,0,0,math.inf,0
+        history=[];loss_sum=0.;samples=0;selected_epoch=0
+        resume=folder/'last.pt'
+        if resume.exists():
+            state=torch.load(resume,map_location='cpu',weights_only=False)
+            model.load_state_dict(state['state']);optimizer.load_state_dict(state['optimizer'])
+            epoch,cursor,steps,best,stale,history,loss_sum,samples,selected_epoch=(state[k] for k in
+                ('epoch','cursor','steps','best','stale','history','loss_sum','samples','selected_epoch'))
+        else:
+            result=evaluate(model,validation);best=result['summary']['loss']
+            save_json(folder/'initial_validation.json',result)
+            save_torch(folder/'best.pt',dict(state=cpu_state(model),depth=depth,scale=scale,epoch=0))
+            history=[dict(epoch=0,validation=result['summary'],selected=True)]
+
+        def checkpoint():
+            save_torch(resume,dict(state=cpu_state(model),optimizer=optimizer.state_dict(),depth=depth,
+                epoch=epoch,cursor=cursor,steps=steps,best=best,stale=stale,history=history,
+                loss_sum=loss_sum,samples=samples,selected_epoch=selected_epoch))
+        try:
+            while epoch<=s['epochs_per_depth']:
+                if epoch-1>=s['minimum_epochs'] and stale>=s['patience']:break
+                order=np.random.default_rng(CONFIG['seed']+depth*100+epoch).permutation(len(training))
+                model.train()
+                while cursor<len(order):
+                    check_budget(started);optimizer.zero_grad(set_to_none=True)
+                    public,labels,info=training[int(order[cursor])]
+                    outputs,diag=model(public);value=loss(outputs,labels)
+                    if not bool(torch.isfinite(value)):raise FloatingPointError(f'Nonfinite receiver loss {info}')
+                    value.backward();norm=nn.utils.clip_grad_norm_(model.parameters(),1.,error_if_nonfinite=True)
+                    optimizer.step();steps+=1;cursor+=1;samples+=1;loss_sum+=float(value.detach())
+                    if steps%s['checkpoint_steps']==0:checkpoint()
+                    if steps%8==0 or steps==1:
+                        status('PROGRESSIVE_RECEIVER_TRAINING',depth=depth,epoch=epoch,scene=cursor,total=len(order),steps=steps,
+                               loss=float(value.detach()),gradient_norm=float(norm),diagnostics=diag,elapsed_seconds=time.time()-started)
+                result=evaluate(model,validation);score=result['summary']['loss'];selected=score<best
+                significant=score<best*.999
+                if selected:
+                    best=score;selected_epoch=epoch
+                    save_torch(folder/'best.pt',dict(state=cpu_state(model),depth=depth,scale=scale,epoch=epoch))
+                    save_json(folder/'best_validation.json',result)
+                stale=0 if significant else stale+1
+                row=dict(epoch=epoch,train_loss=loss_sum/samples,validation=result['summary'],selected=selected)
+                history.append(row);save_json(folder/'history.json',history);log_event(dict(stage='RECEIVER_VALIDATION',depth=depth,**row))
+                epoch+=1;cursor=0;loss_sum=0.;samples=0;checkpoint()
+                if epoch-1>=s['minimum_epochs'] and stale>=s['patience']:break
+            save_json(folder/'COMPLETE.json',dict(status='COMPLETE',selected_epoch=selected_epoch,steps=steps,
+                reason='VALIDATION_PLATEAU' if epoch-1<s['epochs_per_depth'] else 'MAXIMUM_BUDGET',best_validation_loss=best,
+                checkpoint_sha256=sha(folder/'best.pt')))
+        except BaseException:
+            checkpoint();raise
+        model.load_state_dict(torch.load(folder/'best.pt',map_location=device,weights_only=False)['state'])
+    return model
+
+
+def final_test(scale,device,started):
+    # Test generation starts only after training and selection at every depth.
+    build_cases('test',scale,started)
+    cases=Cases('test',scale,device);model=Receiver()
+    for depth in range(1,CONFIG['receiver']['maximum_depth']+1):
+        model.add_layer(None);model.to(device)
+        state=torch.load(OUT/'checkpoints'/f'depth_{depth}'/'best.pt',map_location=device,weights_only=False)
+        model.load_state_dict(state['state'])
+        result=evaluate(model,cases);save_json(OUT/'results'/f'test_depth_{depth}.json',result)
+        status('FINAL_TEST',depth=depth,**result['summary'])
+    del model
+    # Loading original weights is isolated to this held-out benchmark, never training.
+    from afdm_jadcedd.algorithm.proposed.receiver import Receiver as OriginalReceiver
+    from afdm_jadcedd.system.observation import ReceiverInput
+    from data import case_path
+    cfg=json.loads((ROOT/'configs/proposed.json').read_text())
+    original=OriginalReceiver(cfg,device=device);rows=[]
+    for index in range(len(cases)):
+        check_budget(started)
+        with np.load(case_path('test',index)) as z:values=dict(z)
+        result,record=original.infer(ReceiverInput(values['y'],values['a'],float(values['noise']),float(values['rho'])))
+        active=values['active'].astype(bool);decision=result['probabilities']>=.5
+        row=dict(seed=int(values['seed']),snr=float(values['snr']),nmse=float(np.sum(abs(result['estimate']-values['x'])**2)/np.sum(abs(values['x'])**2)),
+                 misses=int(np.sum(active&~decision)),false_alarms=int(np.sum(~active&decision)),iterations=record['iterations'],
+                 stopping_reason=record['stopping_reason'])
+        rows.append(row);save_json(OUT/'results'/'original_test.json',rows)
+        status('ORIGINAL_RECEIVER_TEST',scene=index+1,total=len(cases),**row)
+
+
+def main():
+    parser=argparse.ArgumentParser();parser.add_argument('--resume',action='store_true');args=parser.parse_args()
+    OUT.mkdir(parents=True,exist_ok=True)
+    lock=OUT/'RUNNING.lock'
+    try:
+        descriptor=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
+    except FileExistsError:
+        pid=int(lock.read_text())
+        try:os.kill(pid,0)
+        except ProcessLookupError:
+            if not args.resume:raise RuntimeError('Stale lock; explicit --resume required')
+            lock.unlink();descriptor=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
+        else:raise RuntimeError(f'Run is already active as PID {pid}')
+    os.write(descriptor,str(os.getpid()).encode());os.close(descriptor)
+    started=time.time()
+    try:
+        torch.set_num_threads(1);threadpool_limits(1)
+        manifest=json.loads((OUT/'MANIFEST.json').read_text())
+        for path,value in manifest['snapshot_hashes'].items():
+            if sha(OUT/path)!=value:raise ValueError(f'Immutable run source changed: {path}')
+        if not args.resume and (OUT/'checkpoints').exists():raise RuntimeError('Existing checkpoints require --resume')
+        device=CONFIG['device']
+        status('STARTING',device=device,initialization=CONFIG['initialization'])
+        scale=build_prior(started)
+        pretrained=pretrain(scale,device,started)
+        if torch.load(pretrained,map_location='cpu',weights_only=False)['epoch']==0:
+            raise RuntimeError('Score pretraining did not improve validation over random initialization; receiver training not started')
+        train_receiver(pretrained,scale,device,started)
+        final_test(scale,device,started)
+        manifest=json.loads((OUT/'MANIFEST.json').read_text())
+        preserved={path:sha(ROOT/path)==value for path,value in manifest['protected_assets'].items()}
+        save_json(OUT/'COMPLETE.json',dict(status='COMPLETE',seconds=time.time()-started,protected_assets_preserved=preserved))
+        status('COMPLETE',elapsed_seconds=time.time()-started)
+    except (InterruptedError,TimeoutError) as error:
+        status('PAUSED' if isinstance(error,InterruptedError) else 'TIME_BUDGET_REACHED',reason=str(error));raise
+    except BaseException as error:
+        save_json(OUT/'FAILURE.json',dict(error=repr(error),traceback=traceback.format_exc(),time=time.time()))
+        status('FAILED',error=repr(error));raise
+    finally:
+        lock.unlink(missing_ok=True)
+
+
+if __name__=='__main__':main()

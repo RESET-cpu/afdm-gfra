@@ -1,0 +1,295 @@
+{
+  "schema": "afdm-lstmp-handoff-audit-v1",
+  "date": "2026-10-19",
+  "handoff_status": "READY_FOR_TARGET_MACHINE_CHECK",
+  "unresolved_implementation_blockers": [],
+  "mathematical_data_review": "NO_BLOCKING_FINDINGS",
+  "numerical_checks": {
+    "status": "PASS",
+    "scope": "Synthetic numerical and in-memory optimizer checks; no formal training/test scenes",
+    "linear_checks": [
+      {
+        "prior_variance": 0.0001,
+        "noise_variance": 0.01,
+        "mean_relative_error": 3.5810493301463575e-08,
+        "variance_relative_error": 2.4543718520464868e-08,
+        "residual_scaled_error": 7.702307558298286e-08
+      },
+      {
+        "prior_variance": 0.2,
+        "noise_variance": 0.7,
+        "mean_relative_error": 5.22260310443378e-08,
+        "variance_relative_error": 1.767498796684972e-08,
+        "residual_scaled_error": 2.1844610897936434e-08
+      },
+      {
+        "prior_variance": 10.0,
+        "noise_variance": 0.0001,
+        "mean_relative_error": 1.1323971907909614e-07,
+        "variance_relative_error": 6.195370790425265e-08,
+        "residual_scaled_error": 3.594610428812959e-12
+      }
+    ],
+    "complex_to_real_tweedie_max_error": 3.3306690738754696e-16,
+    "ncsnpp_adam_resume_max_parameter_error": 0.0,
+    "formal_training_resumed": false
+  },
+  "lifecycle_checks": {
+    "scope": "Synthetic lifecycle tests only: mocked receivers and temporary cases; no formal training or held-out experiment",
+    "tests_run": 6,
+    "failures": 0,
+    "errors": 0,
+    "passed": true
+  },
+  "portable_cpu_check": {
+    "status": "PASS",
+    "fixed_files": 192,
+    "real_checkpoint": {
+      "epoch": 1,
+      "steps": 366,
+      "cursor": 11712
+    },
+    "five_layer_backward_and_adam": true,
+    "checkpoints_unchanged": true,
+    "working_directory": "/tmp"
+  },
+  "fixes": [
+    "Validation pause/time-budget boundaries",
+    "Incremental final evaluation resume with completed-scene preservation",
+    "Model/data/runtime identity for saved evaluations",
+    "Scene receipt and completed-checkpoint verification",
+    "Consistent preparation/inference/total timing",
+    "Five-layer Adam memory compatibility check"
+  ],
+  "model_equations_changed": false,
+  "training_configuration_changed": false,
+  "original_mac_source_and_protected_assets_preserved": true,
+  "original_training": "PAUSED; process exited",
+  "local_git_reenabled": false,
+  "windows_cuda_execution": "NOT_TESTED",
+  "formal_training_completed": false,
+  "remaining_research_limits": [
+    "Known phase and known noise diagnostic only",
+    "Scalar Gaussian messages and residual variance remain approximations",
+    "Last-layer beta has no loss gradient and does not affect final output",
+    "No completed receiver-performance or generalization result",
+    "Fixed five-layer final depth; smaller depths are ablations, not test-set selection"
+  ],
+  "baseline_packaging_check": {
+    "status": "PASS",
+    "scope": "Frozen baseline load and two-iteration packaging smoke check only; not performance evaluation",
+    "debug_seed": 202610279000001,
+    "iterations": 2,
+    "first_score_calls": 2,
+    "second_score_calls": 2,
+    "classifier_calls": 2,
+    "finite_outputs": true,
+    "configuration_file_unchanged": true,
+    "formal_training_resumed": false
+  },
+  "complex_matmul_warning_check": {
+    "status": "PASS",
+    "scope": "Independent contraction comparison for two observed warning locations; no source changes or training",
+    "max_relative_error": 7.863255011280695e-15,
+    "tolerance": 3e-12,
+    "numpy_version": "2.2.1",
+    "warnings_observed": [
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "continuous.py",
+        "line": 28,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 33,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 33,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 33,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 33,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 33,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 33,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 33,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 33,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 33,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "invalid value encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "divide by zero encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "overflow encountered in matmul"
+      },
+      {
+        "file": "gaussian.py",
+        "line": 23,
+        "message": "invalid value encountered in matmul"
+      }
+    ],
+    "interpretation": "Outputs finite and match independent contractions in these checks; warning cause not asserted"
+  }
+}

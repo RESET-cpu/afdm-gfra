@@ -1,0 +1,395 @@
+                                         PREPRINT                                                                                                                                    1
+
+
+
+
+                                          Learned Score-Based Turbo Message Passing for Channel Recovery
+                                                                      From Spatially Compressed Measurements
+                                                                      Yiming Wei, Student Member, IEEE and Xiaojun Yuan, Fellow, IEEE
+
+
+
+                                            Abstract—Hybrid beamforming (HBF) reduces the hardware                    Bayesian learning (SBL)-based Bayesian recovery [9]. How-
+                                         cost of massive MIMO base stations, but its channel acquisition              ever, under extreme spatial compression where only a small
+                                         requires recovering the full spatial-domain channel from highly              subset of beams is retained, these methods degrade severely:
+                                         compressed beam-domain observations. This paper proposes a
+                                         learned score-based turbo message passing (L-STMP) framework                 grid-based sparse models suffer from power leakage and
+                                         for uplink HBF channel recovery under extreme spatial compres-               beam shift [4], [10], dominant-path supports may be missed
+                                         sion. By deeply unfolding the turbo message-passing loop and                 by aggressive beam-domain subsampling [3], [11], and even
+
+
+
+
+arXiv:2610.17785v1 [cs.IT] 13 Oct 2026
+                                         introducing trainable calibration parameters and learnable score             learned priors remain tied to channel sparsity assumptions that
+                                         priors in each layer, L-STMP liberates STMP from the idealized               inadequately capture real-world channel distributions [10]–
+                                         compression-matrix requirements of right-rotational invariance,
+                                         and reduces inference complexity to only several unfolded layers.            [12]. Score-based generative models provide a more expres-
+                                         In addition, to preserve dominant channel components that                    sive prior for high-dimensional channel recovery by learning
+                                         random discrete Fourier transform (DFT) selection may miss,                  the gradient of the log channel distribution [13]. However,
+                                         we introduce precoding matrix indicator (PMI)-assisted beam                  diffusion-style posterior sampling typically requires hundreds
+                                         selection as a low-overhead directional prior. Simulation results            of reverse-time iterations [14]. Score-based turbo message
+                                         demonstrate that L-STMP consistently outperforms existing
+                                         baselines and obtains substantial reconstruction gains under                 passing (STMP) offers a low-latency alternative [15], [16], but
+                                         PMI-assisted compression in channel reconstruction.                          its denoising module requires the input to follow an additive
+                                                                                                                      white Gaussian noise (AWGN) model, which holds only
+                                            Index Terms—Hybrid beamforming, massive MIMO, channel
+                                         recovery, PMI, learned score-based turbo message passing.                    when the compression matrix is right-rotationally invariant
+                                                                                                                      and the system dimension goes to infinity. In practical HBF
+                                                                                                                      systems, however, the finite-dimensional compression matrices
+                                                                  I. I NTRODUCTION                                    — especially structured beam-selection designs — can hardly
+
+                                         M       ASSIVE multiple-antenna technology is a key enabler
+                                                 for improving spectral efficiency, coverage, and spatial
+                                         multiplexing gains in 5G-Advanced and future 6G systems
+                                                                                                                      meet these conditions, causing the recovery performance to
+                                                                                                                      degrade severely.
+
+                                         [1]. However, as the number of base-station antennas in-
+                                         creases, fully digital architectures that assign an independent
+                                         radio-frequency (RF) chain, analog-to-digital/digital-to-analog
+                                         converter (ADC/DAC), and mixer to each antenna become                           The above limitation motivates the learned STMP (L-
+                                         prohibitive in hardware cost, power consumption, and cir-                    STMP) receiver proposed in this paper. Firstly, we deeply un-
+                                         cuit complexity [1], [2]. Hybrid analog-digital beamforming                  fold the turbo message-passing loop into a multi-layer network
+                                         (HBF) alleviates this burden by using far fewer RF chains                    and introduce trainable calibration parameters and learnable
+                                         than antennas, especially in millimeter-wave, terahertz, and                 score priors in each layer. This design liberates STMP from the
+                                         extremely large-scale array systems [2], [3]. This hardware-                 idealized requirements of infinite system dimension and right-
+                                         efficient design, however, forces the base station to observe                rotationally invariant compression matrix, thereby leaving
+                                         uplink pilots through a low-dimensional analog or beam-                      room for flexible analog beamforming design. We show that L-
+                                         domain projection. Recovering the full spatial-domain channel                STMP reduces the inference complexity from upto hundreds of
+                                         from such compressed observations is therefore a highly                      iterations of STMP to only several unfolded layers. Secondly,
+                                         underdetermined inverse problem, whose accuracy directly                     although random discrete Fourier transform (DFT) beam selec-
+                                         affects digital precoding, scheduling, interference suppression,             tion approximately satisfies right-rotational invariance, it may
+                                         and link adaptation.                                                         miss dominant paths under extreme compression [3], [17]. To
+                                            Existing HBF channel recovery methods mainly exploit                      mitigate this loss, we introduce precoding matrix indicator
+                                         angular or beam-domain sparsity and formulate the problem                    (PMI)-assisted beam selection as a low-overhead directional
+                                         as compressed sensing [2]–[4]. Representative approaches                     prior, where the PMI indicates the preferred codebook-based
+                                         include orthogonal matching pursuit/distributed compressive                  precoding direction in the channel state information (CSI)
+                                         sensing (OMP/DCS)-based support detection [5], [6], approx-                  feedback mechanism of the 3rd Generation Partnership Project
+                                         imate message passing/learned approximate message passing                    (3GPP) 5G New Radio (NR) standard [17]. Simulation results
+                                         (AMP/LAMP)-based message passing [7], [8], and sparse                        show that L-STMP obtains concrete reconstruction gains under
+                                                                                                                      this PMI-assisted analog beamforming design, even though the
+                                           Yiming Wei and Xiaojun Yuan are with the National Key Laboratory of
+                                         Science and Technology on Communications, University of Electronic Science   resulting compression matrix clearly violates the property of
+                                         and Technology of China, Chengdu, China.                                     right-rotational invariance.
+PREPRINT                                                                                                                                                    2
+
+
+
+    II. S YSTEM M ODEL AND P ROBLEM F ORMULATION                  goes to infinity. To relax these requirements, we unfold STMP
+A. Uplink Channel and Compressed Observation                      into a finite-depth trainable network, whose calibration factors
+                                                                  and score networks are learned. As shown in Fig. 1, each
+   We consider a single-user uplink HBF system where a
+                                                                  layer follows the two-module structure of STMP: Module
+single-antenna user equipment transmits uplink pilots over Nsc
+                                                                  A enforces consistency with the compressed observation Y
+subcarriers, and a base station equipped with an Nv × Nh
+                                                                  and the known matrix B, while Module B exploits learned
+uniform planar array of Nr receive antenna elements estimates
+                                                                  score-based channel priors. The compression matrix B is fixed
+the full spatial-domain channel from compressed analog obser-
+                                                                  by the receiver architecture and is not trained. The trainable
+vations obtained through a limited number of RF chains. The
+                                                                  components are the unfolded-layer calibration parameters and
+uplink channel from the user to the base station is denoted by
+                                                                  the score-prior networks.
+             H = [h1 , h2 , . . . , hNsc ] ∈ CNr ×Nsc ,     (1)      The unfolded network contains L layers and operates di-
+                                                                  rectly on the complex-domain observation    model. At the ℓ-th
+where hk ∈ CNr is the receive-array channel vector on the
+                                                                                                                                
+                                                                                                                    (ℓ)    (ℓ)
+                                                                  layer, the input to Module A is denoted by HA,pri , vA,pri ,
+k-th subcarrier.
+                                                                           (ℓ)                                                                     (ℓ)
+   Due to the limited number of RF chains in the HBF receiver,    where HA,pri is the prior channel estimate and vA,pri is
+the base station observes the uplink pilot through a low-         the associated variance. For compactness, variance variables
+dimensional spatial projection. Let M denote the number           are written as scalars; they can also represent channel-
+of compressed spatial measurements per subcarrier, where          wise variance parameters that are broadcast to the chan-
+M ≪ Nr , and let B ∈ CM ×Nr denote a known analog spatial          matrix dimensions.
+                                                                  nel                     The first-layer prior is initialized as
+                                                                      (1)     (1)
+compression matrix. The matrix B represents the effective RF-       HA,pri , vA,pri = (H0 , v0 ).
+domain combining or sampling operation at the receiver. The
+received signal is
+                       Y
+                       e = BHX + e
+                                 N,                         (2)   B. Module A: Observation-Consistency Module
+                                                                                        (ℓ)
+where X = diag (x1 , . . . , xNsc ) collects the uplink pilot       Given Y and HA,pri , Module A first computes the residual
+symbols transmitted on the Nsc subcarriers and N     e is an
+                                                                                                                    (ℓ)
+AWGN matrix with the power of each element being σ 2 . The                               R(ℓ) = Y − BHA,pri .                                             (5)
+pilot symbols are known at the receiver and have constant
+modulus with unit power, i.e., |xk | = 1, ∀k. Normalizing the     Module A then updates the posterior mean by back-projecting
+received signal by right-multiplying XH removes the pilot         the residual through the adjoint of B. When the compression
+term and yields                                                   matrix satisfies the row-orthogonality condition BBH = IM ,
+                                                                                                   (ℓ)
+                      Y = BH + N,                         (3)     the linear MMSE estimate of HA,post is given by
+
+where Y ∈ CM ×Nsc , and N = NXe H remains i.i.d. complex                                                        (ℓ)
+                                                                                                              vA,pri
+                                                                             (ℓ)       (ℓ)
+Gaussian noise with the same variance σ 2 as N,
+                                             e by noting                    HA,post = HA,pri +            (ℓ)
+                                                                                                                                 BH R(ℓ) ,                (6)
+that X is unitary.                                                                                      vA,pri + σ 2
+
+                                                                  and the analytical posterior variance is given by
+B. Problem Formulation
+                                                                                                                                  2
+   Given the pilot-normalized compressed observation Y and                                                                 (ℓ)
+                                                                                                                          vA,pri
+the known compression matrix B, the objective is to recover                       (ℓ)             (ℓ)
+                                                                                 vA,post,ana = vA,pri − ρ (ℓ)         .                                   (7)
+the full complex spatial-domain channel matrix H. The pro-                                               vA,pri + σ 2
+posed estimator is written as
+                                                                  Consistent with the γ (ℓ) block in Fig. 1, a positive trainable
+                        H
+                        b = fΘ (Y, B) ,                     (4)   calibration factor is introduced to compensate for variance
+where fΘ (·) denotes the learned network with trainable pa-       mismatch under extreme spatial compression:
+rameters Θ. The spatial observation ratio is ρ = M/Nr . Since                            (ℓ)                  (ℓ)
+M ≪ Nr and ρ ≪ 1 in the extreme compression regime of                                   vA,post = γ (ℓ) vA,post,ana .                                     (8)
+interest, this inverse problem is severely underdetermined and
+requires both measurement consistency and effective channel       The green “ext” block after Module A removes the incoming
+priors.                                                           prior information and generates the prior of Module B:
+                                                                                                                             !−1
+III. L EARNED S CORE -BASED T URBO M ESSAGE PASSING                                (ℓ)             1                  1
+                                                                                  vB,pri =       (ℓ)
+                                                                                                           −         (ℓ)
+                                                                                                                                       ,                  (9)
+A. Network Overview                                                                             vA,post             vA,pri
+  STMP [16] alternates measurement-consistency and score-
+                                                                  and
+denoising updates, but its score-based denoiser relies on an                                            (ℓ)                      (ℓ)
+                                                                                                                                           !
+AWGN assumption that holds only when the compression                          (ℓ)      (ℓ)             HA,post              HA,pri
+                                                                             HB,pri = vB,pri            (ℓ)
+                                                                                                                      −          (ℓ)
+                                                                                                                                               .         (10)
+matrix is right-rotationally invariant and the system dimension                                        vA,post              vA,pri
+PREPRINT                                                                                                                                3
+
+
+
+
+Fig. 1. Learned score-based turbo message passing network.
+
+
+
+C. Module B: Score-Prior Module                                          the score networks, which are instantiated as NCSN++ [18],
+                                 (ℓ)
+  The score-prior module treats HB,pri      as a noisy pseudo-           pretrained to learn the score of the channel distribution,
+observation of the channel and performs score-based denois-              and then fine-tuned jointly with the calibration factors. The
+ing. Let sθℓ (·, ·) denote the score network in the ℓ-th layer,          compression matrix B, its adjoint, ρ, and the noise variance are
+where θℓ denotes the trainable network parameters. Following             fixed by the measurement model. This objective matches the
+the learned STMP formulation in [16], the score network takes            channel-recovery goal in (4), while the trainable parameters
+                                                 (ℓ)
+the pseudo-observation and the prior variance vB,pri as input.           compensate for the deviation of practical HBF compression
+As illustrated by Module B in Fig. 1, the score network refines          matrices from the AWGN extrinsic input and right-rotational
+the channel mean through a Tweedie-form correction:                      invariance conditions assumed in the STMP derivation.
+                                                     
+     (ℓ)           (ℓ)         (ℓ)        (ℓ)    (ℓ)
+   HB,post = HB,pri + α(ℓ) vB,pri sθℓ HB,pri , vB,pri , (11)                       IV. C OMPRESSION M ATRIX S ELECTION
+                                                                           We now consider the design of the compression matrix B,
+where α(ℓ) is a positive trainable scalar that controls the
+                                                                         Following [17], we employ the 2D-DFT for the choices of
+strength of the score update. Instead of propagating the vari-
+                                                                         beams. Thus B can be expressed as:
+ance through the score network as in STMP [16], the posterior
+variance is estimated empirically from the residual between the                                    B = SΩ F,                        (14)
+compressed observation and the updated channel estimate:
+                                                                         where F = Fv ⊗Fh ∈ CNr ×Nr is the unitary two-dimensional
+                                            2
+                        Y − BHB,post
+                                    (ℓ)
+                                                − M Nsc σ 2              (2D) DFT matrix, with Fv ∈ CNv ×Nv and Fh ∈ CNh ×Nh the
+       (ℓ)
+      vB,post = β (ℓ)                       F
+                                                              ,   (12)   normalized DFT matrices along the vertical and horizontal
+                                                2
+                                   Nsc ∥B∥F                              array dimensions, respectively, and SΩ ∈ {0, 1}M ×Nr selects
+                                                                         the rows indexed by Ω with |Ω| = M . Since SΩ SHΩ = IM , B
+where β (ℓ) is a positive trainable scalar that calibrates the
+                                                                         in (14) satisfies BBH = IM .
+residual-based variance estimate.
+   The extrinsic block after Module B computes the extrinsic
+information of Module B, using the message-combining for-                A. Random DFT Beam Selection
+mulassimilar to (9) and (10) in Module A, to generate the               The random selector samples Ω uniformly without replace-
+          (ℓ+1) (ℓ+1)                                                    ment:
+prior HA,pri , vA,pri of the next layer. After L layers, the
+final reconstruction of the channel H
+                                    b is given by                                 Ω ∼ Unif ({Ω ⊆ {1, . . . , Nr } : |Ω| = M }) .    (15)
+                           b = H(L) ,
+                           H                                      (13)   Uniform beam selection makes B approximately right-
+                                B,post
+                                                                         rotationally invariant, which is favorable for STMP. However,
+                                                                         random selection may miss dominant beam-domain compo-
+D. Training Objective
+                                                                         nents when M is small. To mitigate this loss, we exploit the
+  The unfolded STMP network is trained progressively layer               PMI from standard CSI feedback as a low-overhead directional
+by layer, with each new layer trained jointly with the pre-              prior, yielding the PMI-assisted selection described next.
+ceding layers. The training loss is the weighted normalized
+mean-square  error over the outputs of all
+                                           available layers,
+                                2                                        B. PMI-Assisted DFT Beam Selection
+      P             (ℓ)                 2
+L =      ℓ λℓ E   HB,post − H / ∥H∥F , where λℓ ≥ 0                         The PMI-assisted selector uses the PMI as a directional
+                                      F
+weights the ℓ-th layer, with the newest layer as the primary             prior. Assuming uplink-downlink channel reciprocity as in
+term and the earlier layers providing auxiliary supervision.             time-division duplex (TDD) operation, the precoding direction
+The optimized parameters include the layer-wise calibration              reported by the PMI also indicates the dominant direction
+factors {γ (ℓ) , α(ℓ) , β (ℓ) } in each layer and the weights θℓ of      of the uplink channel. Following the Type I single-panel
+PREPRINT                                                                                                                                           4
+
+
+
+codebook [17], the reported PMI q indicates a preferred 2D-
+DFT beam of the receive array, represented by the antenna-
+domain direction vector cq ∈ CNr . The importance score of
+the n-th DFT beam is the energy of the n-th entry of the
+DFT-domain projection Fcq :
+                               2
+               en = [Fcq ]n ,          n = 1, . . . , Nr .      (16)
+
+The PMI-assisted selector then chooses the M beams with the
+largest scores:
+                                       
+                                    Nr
+                  Ω = TopM {en }n=1       .            (17)
+                                                                        Fig. 2. NMSE performance comparison under random DFT beam selection:
+   Compared with random selection, PMI-assisted Top-M                   (a) four-fold spatial compression (M = 64); (b) eight-fold spatial compres-
+                                                                        sion (M = 32).
+selection uses the same measurement budget but biases the
+retained beams toward the dominant spatial direction indicated
+by the PMI. However, because Ω in [17] is deterministically
+determined by the PMI rather than drawn uniformly at random,
+B no longer satisfies right-rotational invariance, and STMP is
+expected to degrade under this design.
+
+
+                   V. N UMERICAL R ESULTS
+
+A. Simulation Setup
+   We evaluate the proposed learned STMP (L-STMP) receiver
+on an uplink channel dataset generated under a 3GPP urban
+macro (UMa) non-line-of-sight (NLoS) scenario. The channel              Fig. 3. NMSE performance comparison under PMI-assisted DFT beam
+contains Nsc = 48 subcarriers and Nr = 256 receive antennas             selection: (a) four-fold spatial compression (M = 64); (b) eight-fold spatial
+of a dual-polarized planar array with Nv × Nh = 16 × 8                  compression (M = 32).
+antennas per polarization. In the reported simulations, the
+general compression matrix B is primarily instantiated as the
+                                                                        B. Result Analysis
+random DFT beam selection matrix described in Section IV-A,
+while the PMI-assisted DFT selection matrix (Section IV-B)                 Fig. 2 reports the NMSE performance of the proposed L-
+is also evaluated for comparison. We consider M = 64 and                STMP receiver and several baselines under random DFT beam
+M = 32 spatial measurements per subcarrier, corresponding               selection with four-fold (M = 64) and eight-fold (M = 32)
+to four-fold and eight-fold spatial compression, respectively.          spatial compression. The oracle lower bound is obtained by
+   The L-STMP network contains L unfolded layers, each                  assuming perfect knowledge of the power angle and delay
+with an independent NCSN++ score network [18] configured                profile of the channel, providing a theoretical performance
+under the variance-exploding SDE, with L = 5 in the re-                 lower bound [4]. The LMMSE estimator [19] recovers the
+ported experiments. In addition to the layer-wise calibration           channel by a direct linear projection of the compressed ob-
+factors {γ (ℓ) , α(ℓ) , β (ℓ) } described in Section III, the network   servation. The CNN-based estimator [20] learns a residual
+is trained layer-by-layer. The layer-wise loss weights are              convolutional mapping from the adjoint back-projection BH Y
+λ1 = λ2 = λ3 = λ4 = 0.2 with λ5 = 1.0.                                  to the full channel, representing purely data-driven priors.
+   The transmitter-side SNR is SNR = 10 log10 (1/σ 2 ) dB,              DPS [14] performs diffusion posterior sampling with the
+where σ 2 is the noise variance in (3). The channel is nor-             same pretrained score prior but requires thousands of reverse
+                                               2
+malized in simulation, i.e., Nr1Nsc ∥H∥F = 1, and the pilot             steps, and STMP [16] runs the classical iterative turbo loop
+symbols have unit power, so that the average transmit power             until convergence. Across all evaluated SNR levels, L-STMP
+per spatial measurement is unity.                                       consistently achieves the lowest NMSE among practical meth-
+   The reconstruction accuracy is measured by the normalized            ods, approaching the oracle lower bound. The performance
+mean-square error (NMSE)                                                gap between L-STMP and the STMP baseline widens under
+                                                                        eight-fold compression, indicating that the trainable layer-wise
+                                                  2                   calibration factors and learned score priors effectively compen-
+                                       b −H
+                                       H
+                                                   F                   sate for the mismatch between ideal STMP assumptions and
+           NMSE = 10 log10                          dB.       (18)
+                           
+                                               2                        practical highly compressed observations. LMMSE and CNN
+                                         ∥H∥F
+                                                                        suffer severe degradation as the compression ratio increases,
+                                                                        confirming that model-agnostic or purely data-driven priors
+PREPRINT                                                                                                                                          5
+
+
+
+                             TABLE I                                                               R EFERENCES
+P ER - SAMPLE INFERENCE COMPLEXITY AT Nsc = 48, Nr = 256, M = 64.
+                                                                     [1] R. W. Heath, Jr., N. Gonz’alez-Prelcic, S. Rangan, W. Roh, and
+      Method                       Score forwards     FLOPs              A. M. Sayeed, “An overview of signal processing techniques for
+                                                                         millimeter wave MIMO systems,” arXiv preprint arXiv:1512.03007,
+      LMMSE [19]                          –         6.3 × 106
+                                                                         2015. [Online]. Available: https://arxiv.org/abs/1512.03007
+      CNN [20]                            –         1.5 × 1010
+                                                                     [2] A. Alkhateeb, O. El Ayach, G. Leus, and R. W. Heath, Jr.,
+      DPS [14] (2000 steps)             2000        3.3 × 1014           “Channel estimation and hybrid precoding for millimeter wave cellular
+      STMP [16] (100 iterations)         200        3.3 × 1013           systems,” arXiv preprint arXiv:1401.7426, 2014. [Online]. Available:
+      L-STMP (L = 5)                      5         8.2 × 1011           https://arxiv.org/abs/1401.7426
+                                                                     [3] L. Dai, X. Gao, S. Han, C.-L. I, and X. Wang, “Beamspace
+                                                                         channel estimation for millimeter-wave massive MIMO systems with
+                                                                         lens antenna array,” arXiv preprint arXiv:1607.05130, 2016. [Online].
+are insufficient under extreme spatial compression. DPS ex-              Available: https://arxiv.org/abs/1607.05130
+hibits moderate performance but requires substantially more          [4] Z. Gao, L. Dai, C. Hu, and Z. Wang, “Channel estimation for
+inference iterations than the unfolded L-STMP network.                   millimeter-wave massive MIMO with hybrid precoding over frequency-
+                                                                         selective fading channels,” arXiv preprint arXiv:1604.03049, 2016.
+    Fig. 3 examines the performance under PMI-assisted DFT               [Online]. Available: https://arxiv.org/abs/1604.03049
+selection with four-fold and eight-fold compression. Although        [5] J. A. Tropp and A. C. Gilbert, “Signal recovery from random mea-
+PMI-assisted selection preserves dominant-path information               surements via orthogonal matching pursuit,” IEEE Transactions on
+                                                                         Information Theory, vol. 53, no. 12, pp. 4655–4666, 2007.
+that random DFT may miss, it deterministically biases the            [6] D. Baron, M. F. Duarte, M. B. Wakin, S. Sarvotham, and R. G. Baraniuk,
+retained beams toward the PMI direction and therefore breaks             “Distributed compressive sensing,” arXiv preprint arXiv:0901.3403,
+the right-rotational invariance of the compression matrix as-            2009.
+                                                                     [7] D. L. Donoho, A. Maleki, and A. Montanari, “Message-passing algo-
+sumed in STMP [16]. As a result, the STMP baseline gains                 rithms for compressed sensing,” Proceedings of the National Academy
+little from the PMI prior — its performance is even slightly             of Sciences, vol. 106, no. 45, pp. 18 914–18 919, 2009.
+degraded at four-fold compression compared with the random-          [8] M. Borgerding, P. Schniter, and S. Rangan, “AMP-inspired deep net-
+                                                                         works for sparse linear inverse problems,” IEEE Transactions on Signal
+DFT case. L-STMP, in contrast, obtains concrete NMSE gains               Processing, vol. 65, no. 16, pp. 4293–4308, 2017.
+under PMI-assisted compression at both ratios. This is because       [9] D. P. Wipf and B. D. Rao, “Sparse bayesian learning for basis selection,”
+L-STMP does not rely on the idealized AWGN extrinsic as-                 IEEE Transactions on Signal Processing, vol. 52, no. 8, pp. 2153–2164,
+                                                                         2004.
+sumption: it uses the actual B in the measurement-consistency       [10] H. He, R. Wang, W. Jin, S. Jin, C.-K. Wen, and G. Y. Li,
+module and learns the calibration factors {γ (ℓ) , α(ℓ) , β (ℓ) }        “Beamspace channel estimation for wideband millimeter-wave MIMO:
+from the data, so the information gain brought by PMI-guided             A model-driven unsupervised learning approach,” arXiv preprint
+                                                                         arXiv:2006.16628, 2020. [Online]. Available: https://arxiv.org/abs/2006.
+beam selection is efficiently exploited instead of being offset          16628
+by assumption violations.                                           [11] H. He, C.-K. Wen, S. Jin, and G. Y. Li, “Deep learning-
+    Table I compares per-sample inference complexity at the              based channel estimation for beamspace mmwave massive MIMO
+                                                                         systems,” arXiv preprint arXiv:1802.01290, 2018. [Online]. Available:
+reference configuration (Nsc = 48, Nr = 256, M = 64).                    https://arxiv.org/abs/1802.01290
+The dominant cost is the NCSN++ score-network forward               [12] X. Wei, C. Hu, and L. Dai, “Deep learning for beamspace
+pass (∼1.6×1011 FLOPs), while the measurement-consistency                channel estimation in millimeter-wave massive MIMO systems,”
+                                                                         arXiv preprint arXiv:1910.12455, 2019. [Online]. Available: https:
+B/BH overhead is negligible (∼8.6 × 105 FLOPs). L-STMP                   //arxiv.org/abs/1910.12455
+requires only L = 5 score forwards, compared with 200 for           [13] M. Arvinte and J. I. Tamir, “MIMO channel estimation using score-
+STMP and 2000 for DPS — approximately 40× and 400×                       based generative models,” arXiv preprint arXiv:2204.07122, 2022.
+                                                                         [Online]. Available: https://arxiv.org/abs/2204.07122
+reductions — yet achieves much superior estimation accuracy.        [14] J. Kim, S. Lee, J. Seon, S. H. Kim, Y. G. Sun, H. Seo, D. I. Kim, and J. Y.
+LMMSE and CNN do not involve score networks and require                  Kim, “Novel channel estimation based on enhanced diffusion posterior
+lower FLOPs, but their NMSE degrades severely, as seen from              sampling for mmwave MIMO systems,” IEEE Wireless Communications
+                                                                         Letters, vol. 15, pp. 2959–2963, 2026.
+Fig. 2.                                                             [15] J. Ma, X. Yuan, and L. Ping, “Turbo compressed sensing with partial
+                                                                         DFT sensing matrix,” IEEE Signal Processing Letters, vol. 22, no. 2,
+                                                                         pp. 158–161, 2015.
+                        VI. C ONCLUSION                             [16] C. Cai, X. Yuan, and Y.-J. A. Zhang, “Score-based turbo message
+                                                                         passing for plug-and-play compressive image recovery,” arXiv preprint
+   This paper proposed a learned score-based STMP (L-                    arXiv:2503.22140, 2025. [Online]. Available: https://arxiv.org/abs/2503.
+STMP) framework for uplink HBF channel recovery under                    22140
+spatial compression. By unfolding turbo iterations into a           [17] 3GPP, “NR; physical layer procedures for data,” 3rd Generation
+                                                                         Partnership Project, Technical Specification TS 38.214. [Online].
+trainable network, L-STMP replaces the ideal right-rotational            Available: https://www.3gpp.org/dynareport/38214.htm
+invariance assumption of STMP with learned calibration fac-         [18] Y. Song, J. Sohl-Dickstein, D. P. Kingma, A. Kumar, S. Ermon, and
+tors that adapt to the actual compression structure. Simulation          B. Poole, “Score-based generative modeling through stochastic differen-
+                                                                         tial equations,” in International Conference on Learning Representations
+results showed that L-STMP outperforms linear MMSE, CNN,                 (ICLR), 2021.
+DPS, and STMP baselines while requiring only L = 5                  [19] O. Edfors, M. Sandell, J.-J. van de Beek, S. K. Wilson, and P. O.
+unfolded layers — a 40× inference complexity reduction as                Börjesson, “OFDM channel estimation by singular value decomposi-
+                                                                         tion,” in Proceedings of the IEEE Vehicular Technology Conference,
+compared to the original STMP. Moreover, L-STMP remains                  vol. 2, 1996, pp. 923–927.
+robust under both random DFT and PMI-assisted DFT beam              [20] P. Dong, H. Zhang, G. Y. Li, I. S. Gaspar, and N. NaderiAlizadeh, “Deep
+selection, whereas STMP degrades under the latter due to vio-            CNN-based channel estimation for mmWave massive MIMO systems,”
+                                                                         IEEE Journal of Selected Topics in Signal Processing, vol. 13, no. 5,
+lated right-rotational invariance, confirming that the proposed          pp. 989–1000, 2019.
+approach imposes substantially relaxed requirements on the
+compression matrix.
+

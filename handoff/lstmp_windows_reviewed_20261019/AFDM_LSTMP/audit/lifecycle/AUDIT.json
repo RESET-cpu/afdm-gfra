@@ -1,0 +1,21 @@
+{
+  "scope": "Lifecycle code only; no mathematical/model/config changes; no formal training or held-out testing",
+  "source_hashes": {
+    "train.py": "048155c7acd28ebc5f9fb7081bc6e023a44c827c12974681ed6f1c1f222b6681",
+    "data.py": "effb1b08428def7c1d956eb12e301bbb7434ac8e43238c27c552d11278181b0e",
+    "receiver.py": "600249430f8cd6bb939a3d4d697fd978d4ae89e199a85af9db67eee483cc2e05"
+  },
+  "tests": {
+    "scope": "Synthetic lifecycle tests only: mocked receivers and temporary cases; no formal training or held-out experiment",
+    "tests_run": 6,
+    "failures": 0,
+    "errors": 0,
+    "passed": true
+  },
+  "remaining_limits": [
+    "Pause is observed at receiver scene boundaries; an in-progress original inference finishes before the next boundary.",
+    "Completed validation batches may be recomputed after interruption; training cursor/optimizer is checkpointed so completed optimizer steps are not repeated.",
+    "An orphan scene without receipt is accepted only after exact deterministic regeneration; a changed recorded scene is rejected.",
+    "Timing resumes require the same device type, GPU model (CUDA), platform/processor and PyTorch version; result files are not silently mixed across runtimes."
+  ]
+}

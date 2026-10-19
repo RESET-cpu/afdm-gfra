@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "scope": "Synthetic numerical and in-memory optimizer checks; no formal training/test scenes",
+  "linear_checks": [
+    {
+      "prior_variance": 0.0001,
+      "noise_variance": 0.01,
+      "mean_relative_error": 3.5810493301463575e-08,
+      "variance_relative_error": 2.4543718520464868e-08,
+      "residual_scaled_error": 7.702307558298286e-08
+    },
+    {
+      "prior_variance": 0.2,
+      "noise_variance": 0.7,
+      "mean_relative_error": 5.22260310443378e-08,
+      "variance_relative_error": 1.767498796684972e-08,
+      "residual_scaled_error": 2.1844610897936434e-08
+    },
+    {
+      "prior_variance": 10.0,
+      "noise_variance": 0.0001,
+      "mean_relative_error": 1.1323971907909614e-07,
+      "variance_relative_error": 6.195370790425265e-08,
+      "residual_scaled_error": 3.594610428812959e-12
+    }
+  ],
+  "complex_to_real_tweedie_max_error": 3.3306690738754696e-16,
+  "ncsnpp_adam_resume_max_parameter_error": 0.0,
+  "formal_training_resumed": false
+}
