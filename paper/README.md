@@ -1,5 +1,14 @@
 # AFDM 卫星 JADCE 论文
 
+## 2026-10-21：DCN / TWC 两个独立版本
+
+- **[DCN：旧算法](DCN/main.tex)**：原三网络稿件及阅读版 PDF，复制说明与校验清单见 [DCN/README.md](DCN/README.md)。
+- **[TWC：新算法](TWC/main.tex)**：从旧稿复制后独立修订的展开接收机稿件，当前状态见 [TWC/README.md](TWC/README.md)。
+- 两者各自维护正文、参考文献和插图；`literature/` 与 `writing_profile/` 仍为共享研究资料。
+- 本目录原 `main.tex`、`sections/`、`references.bib`、`main.pdf` 保留为复制来源，不自动同步修改。
+
+以下内容为版本分离前的历史记录；后续新算法写作以 TWC 目录为入口。
+
 论文标题：**Generative-Model-Aided Grant-Free Random Access for GNSS-Independent MIMO-AFDM Satellite IoT Systems**
 
 当前论文入口是 [main.tex](main.tex)。正文按章保存在 `sections/`，参考文献统一维护于 [references.bib](references.bib)。

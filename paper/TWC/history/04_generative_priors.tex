@@ -1,0 +1,170 @@
+\section{Learning Channel and Activity Denoisers with Score-Based Generative Priors}
+\label{sec:learning}
+
+The channel prior is learned through the scores of its
+Gaussian-perturbed distributions \cite{song2019,arvinte2023}.
+Following \cite[Sec.~IV]{cai2026}, we train two score networks to
+estimate the conditional channel moments. We also train a classifier
+to estimate the density ratio for activity detection in \eqref{eq:local-activity}.
+The training samples are generated according to the Gaussian
+observation model in \eqref{eq:pseudo-awgn}.
+
+\subsection{First-Order Denoising Score Matching}
+
+For an active terminal, let
+$\mathbf u=(\Re\vect(R),\Im\vect(R))\in\mathbb R^{2D}$ and define
+$\mathbf h_{\mathbb R}$ similarly. The real noise variance is
+$v_{\mathbb R}=v/2$, so that
+$\mathbf u=\mathbf h_{\mathbb R}+\sqrt{v_{\mathbb R}}\bm\epsilon$,
+with $\bm\epsilon\sim\mathcal N(\mathbf0,\I_{2D})$.
+Let $q_v^{\mathbb R}$ denote the smooth positive density obtained
+by Gaussian perturbation.
+Assuming finite moments, the conditional mean is given by Tweedie's formula
+\cite{efron2011}
+\begin{equation}
+ \mathbf m_{\mathbb R}(\mathbf u,v)
+ =\mathbf u+v_{\mathbb R}\nabla_{\mathbf u}\log q_v^{\mathbb R}(\mathbf u).
+ \label{eq:tweedie-mean}
+\end{equation}
+
+We parameterize the score by $S_\theta(\mathbf u,v)\in\mathbb R^{2D}$
+and minimize the denoising score matching objective
+\cite{song2019,vincent2011}
+\begin{equation}
+ \mathcal L_1(\theta)=
+ \E\left[\frac{1}{2D}
+ \norm{\sqrt{v_{\mathbb R}}S_\theta(\mathbf u,v)+\bm\epsilon}^2\right].
+ \label{eq:first-loss}
+\end{equation}
+At each positive noise level, its unrestricted population minimizer is
+$\nabla_{\mathbf u}\log q_v^{\mathbb R}(\mathbf u)$.
+The corresponding complex channel estimate is given by
+\begin{equation}
+ F_\theta(R,v)=R+\frac v2
+ \big(S_{\theta,\Re}(R,v)+jS_{\theta,\Im}(R,v)\big),
+ \label{eq:learned-mean}
+\end{equation}
+where the two score components are reshaped to $M\times N\times N$.
+The channel mean estimate in \eqref{eq:site-update} is thus obtained by a single network evaluation.
+
+\subsection{Second-Order Denoising Score Matching}
+\label{sec:conditional-error}
+
+Using the second-order form of Tweedie's formula, the conditional covariance
+can be expressed as
+\begin{equation}
+ \mathbf C_{\mathbb R}(\mathbf u,v)
+ =v_{\mathbb R}\I_{2D}
+ +v_{\mathbb R}^{\,2}\nabla_{\mathbf u}^2\log q_v^{\mathbb R}(\mathbf u).
+ \label{eq:tweedie-covariance}
+\end{equation}
+To estimate the scalar error required by the receiver, we adopt the
+trace objective for second-order denoising score matching
+\cite[Corollary~4.2]{lu2022}.
+For a network $T_\psi(\mathbf u,v)\in\mathbb R^{2D}$, define
+\begin{equation}
+ a_\psi(R,v)=1+\frac{v_{\mathbb R}}{2D}
+ \sum_{i=1}^{2D}T_{\psi,i}(\mathbf u,v),\qquad
+ \widehat\tau_\psi(R,v)=v\,a_\psi(R,v).
+ \label{eq:second-readout}
+\end{equation}
+
+Fix $S_\theta$ and let
+$\mathbf b=\sqrt{v_{\mathbb R}}S_\theta+\bm\epsilon$.
+We train the second network by minimizing
+\begin{align}
+ \mathcal L_2(\psi)
+ &=\E\left[\left\{
+ \frac1{2D}\sum_{i=1}^{2D}
+ (v_{\mathbb R}T_{\psi,i}-b_i^2+1)\right\}^{\!2}\right]\notag\\*
+ &=\E\left[\left\{
+ a_\psi(R,v)-\frac{\norm{F_\theta(R,v)-H}_F^2}{Dv}
+ \right\}^{\!2}\right].
+ \label{eq:second-loss}
+\end{align}
+The average over coordinates is taken before squaring. The scalar
+output in \eqref{eq:second-readout} estimates the conditional mean-squared
+error of the channel estimator. Averaging these estimates over
+terminals and applying the lower bound in \eqref{eq:pooled-variance}
+gives $\tau$, the variance per coordinate used in the Gaussian
+approximation for each terminal in \eqref{eq:site-update}.
+Appendix~\ref{app:second-order-training} derives the learning target
+and the Gaussian fitting objective that yields this average.
+
+\subsection{Density Ratio Estimation}
+\label{sec:density-ratio}
+
+The activity posterior in \eqref{eq:local-activity} depends on
+$q_{1,v}/q_{0,v}$. We learn this ratio from active-channel and noise-only
+samples using the relationship between density ratios and class
+probabilities \cite[Secs.~3 and 4.2]{menon2016}.
+Both classes use the same sampling law for $v$, and the training class
+prior is $\pi_{\rm tr}=1/2$.
+For label $a\in\{0,1\}$, we minimize the binary cross-entropy (BCE) loss
+\begin{equation}
+ \mathcal L_{\rm act}(\phi)=
+ \E[\log(1+e^{z_\phi})-a z_\phi],
+ \qquad z_\phi=z_\phi(R,v,F_\theta(R,v)).
+ \label{eq:classifier-loss}
+\end{equation}
+The mean network remains fixed during this training.
+
+Let $\eta_{\rm tr}(R,v)=\Pr_{\rm tr}(a=1\mid R,v)$.
+The derivative of the conditional BCE risk with respect to the logit is
+$\sigmoid(z)-\eta_{\rm tr}$, with strictly positive second derivative.
+Applying Bayes' rule, the optimal logit is given by
+\begin{equation}
+ z^\star(R,v)=\logit\pi_{\rm tr}
+ +\log\frac{q_{1,v}(R)}{q_{0,v}(R)}.
+ \label{eq:ideal-logit}
+\end{equation}
+The sampling density of $v$ is identical for both classes and cancels
+in these odds.
+Since the classifier observes $R$, the deterministic feature
+$F_\theta(R,v)$ does not change the optimal logit.
+Subtracting $\logit\pi_{\rm tr}$ and adding $\logit\rho$ yields the receiver
+probability in \eqref{eq:activity-probability}. For fixed class-conditional
+input distributions, the same classifier thus accommodates a different
+access marginal through the prior-odds correction.
+
+\subsection{Offline Training}
+
+Training channels are drawn before activity masking, and training and
+validation sets use disjoint physical scenes.
+For the channel networks, draw $H\sim q_{\rm tr}$, sample $\log v$
+uniformly over $[\log v_{\min},\log v_{\max}]$, and generate
+$R=H+W$ with $\vect(W)\sim\CN(\mathbf0,v\I_D)$.
+The real and imaginary antenna maps form $2M$ input channels over
+the $N\times N$ DAFT coordinates; the networks are conditioned on
+the input noise variance. The output of $S_\theta$ has the same shape,
+while $T_\psi$ is reduced to the scalar in \eqref{eq:second-readout}.
+
+For classifier training, active and inactive samples at a sampled
+variance are $R_1=H+W_1$ and $R_0=W_0$, with independent Gaussian
+noises. The classifier receives the real and imaginary maps of
+$R$ and $F_\theta$, scaled by $\sqrt{2/(1+v)}$, together with
+\begin{equation}
+ \begin{aligned}
+ \Big(&\log v/c_v,\ \log(1+e_R),\ \log(1+e_F),\\
+ &\operatorname{sgn}(c_{RF})\log(1+|c_{RF}|),\
+ \log(1+e_{\rm res})\Big),
+ \end{aligned}
+ \label{eq:classifier-features}
+\end{equation}
+where $c_v>0$ is a fixed conditioning scale,
+$e_R=\norm{R}_F^2/(Dv)$, $e_F=\norm{F_\theta}_F^2/(Dv)$,
+$c_{RF}=\Re\langle R,F_\theta\rangle_F/(Dv)$, and
+$e_{\rm res}=\norm{R-F_\theta}_F^2/(Dv)$.
+The feature maps have $4M$ channels, and the classifier returns one
+logit per terminal.
+
+We first train $S_\theta$ using \eqref{eq:first-loss}.
+We then freeze it and train $T_\psi$ and $z_\phi$ using
+\eqref{eq:second-loss} and \eqref{eq:classifier-loss}, respectively.
+All networks remain fixed during online inference. They are conditioned
+on the denoiser input variance $v$, while the linear module uses the
+physical noise estimate $\widehat\sigma^2$. Each network operates on a terminal's channel
+input at fixed dimensions $M$ and $N$, allowing the same networks to
+be evaluated for different $K$ and $Q$.
+Dataset sizes, network dimensions, and optimization settings are
+specified in the simulation setup.

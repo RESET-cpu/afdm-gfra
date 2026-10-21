@@ -1,0 +1,97 @@
+\section{Overall Algorithm}
+\label{sec:overall}
+
+\subsection{Message Scheduling}
+
+The conditional receiver takes normalized $\mathbf Y$,
+$\mathbf A_{\rm c}$, $\sigma_{\rm c}^2$, and $\rho$.
+With pretraining second moment $P_H=\E_{q_{\rm tr}}\|h\|^2/D$, initialize
+\begin{equation}
+ \mathbf M_1=\mathbf0,\qquad w_1=w_{\rm ref}=\rho P_H.
+ \label{eq:twc-initialization}
+\end{equation}
+A single singular value decomposition of $\mathbf A_{\rm c}$ is
+reused. Write $\mathbf A_{\rm c}=\mathbf U\mathbf S\mathbf V^{\mathsf H}$
+using its nonzero singular values. Then
+\begin{equation}
+ \bm\Delta_\ell=\mathbf V
+ \diag\left\{\frac{w_\ell s_i}{\sigma_{\rm c}^2+w_\ell s_i^2}\right\}
+ \mathbf U^{\mathsf H}(\mathbf Y-\mathbf A_{\rm c}\mathbf M_\ell).
+ \label{eq:twc-svd-correction}
+\end{equation}
+
+\begin{table}[t]
+\centering
+\caption{Inference of the unfolded conditional receiver}
+\label{tab:twc-algorithm}
+\begin{tabular}{p{0.93\linewidth}}
+\toprule
+\textbf{Input:} $\mathbf Y,\mathbf A_{\rm c},\sigma_{\rm c}^2,\rho$,
+trained parameters for $L$ layers, and $P_H$.\\
+\textbf{Initialize:} Factorize $\mathbf A_{\rm c}$ and apply
+\eqref{eq:twc-initialization}.\\
+\textbf{For} $\ell=1,\ldots,L$:\\
+1. Compute the correction and trace fractions by
+\eqref{eq:twc-svd-correction} and \eqref{eq:twc-linear-fractions}.\\
+2. Form $(\mathbf R_\ell,v_\ell)$ by \eqref{eq:twc-query-calibrated}.\\
+3. Compute conditional means, probabilities, and effective channels
+by \eqref{eq:twc-conditional-mean}--\eqref{eq:twc-estimate}.\\
+4. If $\ell<L$, compute the residual by \eqref{eq:twc-residual-scale},
+the feedback proposal by \eqref{eq:twc-positive-scale}--\eqref{eq:twc-feedback-proposal},
+and damping by \eqref{eq:twc-damping-weight}--\eqref{eq:twc-damping-mean}.\\
+\textbf{Return:} $\widehat{\mathbf X}_L$, $p_{kL}$,
+and $\widehat\alpha_k=\mathbf1\{p_{kL}\geq1/2\}$.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:twc-algorithm} gives the inference dependencies.
+The implementation additionally records final-layer feedback diagnostics,
+which do not affect the estimates. Depth is fixed across test conditions.
+Probabilities remain soft within the receiver, and the final hard
+decision does not mask the reported effective channel.
+Physical channel estimates are restored by the scale $s$.
+
+\subsection{Numerical Parameters and Information Conditions}
+
+The positive map and damping keep Gaussian message precisions positive.
+Their constants are fixed across conditions. Queries outside the
+pretraining variance range are recorded rather than silently clipped;
+receiver fine-tuning may encounter a different query distribution.
+These choices specify a finite computation without claiming convergence
+to the working posterior.
+
+For unknown phase and noise, the satellite first uses
+Appendix~\ref{app:frontend} to estimate
+$\widehat{\bm\beta}$ and $\widehat\sigma^2$, which remain fixed in
+subsequent layers. Controlled training supplies the physical operator
+and noise variance. All methods must receive the same information
+within each comparison. Supplied-parameter results do not establish
+performance with estimated parameters.
+
+\subsection{Computational Complexity Analysis}
+
+Let $r=\min(Q,J)$, and let $F_s$ and $F_a$ be the costs of one
+user's score network and activity head. A dense thin SVD costs
+$O(QJr)$ once per operator. The residual multiplication costs
+$O(QJC)$, and applying singular vectors costs $O((Q+J)rC)$.
+Trace calculations cost $O(r)$ and elementwise messages $O(JC)$.
+Feedback adds another $O(QJC)$ residual multiplication. Thus
+conditional inference costs
+\begin{equation}
+ O\left(QJr+
+ L\left[QJC+(Q+J)rC+K(F_s+F_a)\right]\right).
+ \label{eq:twc-complexity}
+\end{equation}
+For $Q\leq J$, linear algebra per layer is bounded by $O(QJC)$.
+There is one logical score evaluation and one activity-head evaluation
+per user per layer. Batching changes execution time and memory, not
+these counts. If the networks contain $P_s$ and $P_a$ parameters,
+the independent layers store $L(P_s+P_a+3)$ parameter scalars,
+including the unused final feedback scalar.
+
+Equation~\eqref{eq:twc-complexity} excludes offline training and
+phase/noise estimation. For the complete receiver, the front-end cost
+must be added and measured under the same implementation and hardware
+as the baselines. Removing a second-order network alone does not
+establish a reduction in total computation or parameter storage.

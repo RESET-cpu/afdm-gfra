@@ -1,0 +1,33 @@
+\section{Conditional-Risk Decomposition}
+\label{app:risk}
+
+Fix $z$ and abbreviate $\pi=P(\alpha=1\mid z)$ and
+$m=\E[h_R\mid z,\alpha=1]$. Expanding
+$\mu-h_R=(\mu-m)+(m-h_R)$, with zero conditional mean of
+$m-h_R$ under $\alpha=1$, gives
+\begin{equation}
+ \E[\alpha\|\mu-h_R\|^2\mid z]
+ =\pi\|\mu-m\|^2+
+   \pi\,\E[\|h_R-m\|^2\mid z,\alpha=1].
+ \label{eq:twc-risk-channel-proof}
+\end{equation}
+The Bernoulli negative log likelihood satisfies
+\begin{equation}
+ \E[{\rm BCE}(\alpha,p)\mid z]
+ =H_{\rm b}(\pi)+{\rm KL}({\rm Bern}(\pi)\,\|\,{\rm Bern}(p)),
+ \label{eq:twc-risk-bce-proof}
+\end{equation}
+where $H_{\rm b}(\pi)=-\pi\log\pi-(1-\pi)\log(1-\pi)$.
+Dividing the first identity by $\kappa$ and adding the second proves
+\eqref{eq:twc-risk-decomposition}, with
+\begin{equation}
+ C(z)=\frac{\pi}{\kappa}\E[\|h_R-m\|^2\mid z,\alpha=1]+H_{\rm b}(\pi).
+ \label{eq:twc-risk-constant}
+\end{equation}
+For $0<\pi<1$, both output-dependent terms vanish at
+$(p,\mu)=(\pi,m)$. The product equals $\E[\alpha h_R\mid z]$.
+At $\pi=0$, $\mu$ is undetermined by the channel loss and the BCE
+infimum is approached as $p\to0$; the endpoint $\pi=1$ is analogous
+for the activity probability. This proof assumes fixed information
+and freely chosen output functions, and does not prove that finite
+networks with jointly optimized receiver queries attain these minimizers.

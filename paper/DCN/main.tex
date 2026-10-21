@@ -1,0 +1,55 @@
+% Compile this file from the paper/ directory.
+% Single-column IEEEtran working draft; remove onecolumn for the journal layout.
+\documentclass[10pt,journal,onecolumn]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,bm,booktabs,array}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{figures/}}
+\allowdisplaybreaks
+
+\newcommand{\CN}{\mathcal{CN}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\vect}{\operatorname{vec}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\logit}{\operatorname{logit}}
+\newcommand{\sigmoid}{\operatorname{sigmoid}}
+\newcommand{\clip}{\operatorname{clip}}
+\newcommand{\relu}{\operatorname{Re}}
+\newcommand{\imag}{\operatorname{Im}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\title{Generative-Model-Aided Grant-Free Random Access for GNSS-Independent MIMO-AFDM Satellite IoT Systems}
+% TODO: Add the author list and affiliations.
+\author{}
+
+\begin{document}
+\maketitle
+% TODO: Add the abstract and index terms after the manuscript is complete.
+
+\input{sections/01_introduction}
+
+\noindent\textit{Notation:} $\CN(\bm\mu,\bm\Sigma)$ denotes a proper complex Gaussian law.
+$\|\cdot\|_F$ denotes the Euclidean norm of all matrix or tensor entries;
+$(\cdot)^{\mathsf H}$ and $\tr(\cdot)$ denote conjugate transpose and trace.
+
+\input{sections/02_system_model}
+\input{sections/03_bayesian_receiver_design}
+\input{sections/04_generative_priors}
+\input{sections/05_overall_algorithm}
+% \input{sections/06_simulation_results}
+% \input{sections/07_conclusion}
+
+\appendices
+\numberwithin{equation}{section}
+\input{sections/appendix_second_order_training}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}

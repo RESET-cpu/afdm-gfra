@@ -1,0 +1,154 @@
+\section{Learning Channel and Activity Denoisers}
+\label{sec:learning}
+
+Training first learns an AWGN channel score and then adapts independent
+layer instances using queries produced by the unfolded receiver.
+
+\subsection{First-Order Score Matching}
+
+Let $h_R\in\mathbb R^{2D}$ be a normalized channel before activity
+masking. For $c=v/2$, generate $u=h_R+\sqrt c\,\varepsilon$ with
+$\varepsilon\sim\mathcal N(0,\I_{2D})$. If $q_{1,R}(u;v)$ is its
+density, the score is $s^\star(u,v)=\nabla_u\log q_{1,R}(u;v)$.
+Differentiating the Gaussian convolution gives
+\begin{equation}
+ \nabla_u q_{1,R}(u;v)
+ =q_{1,R}(u;v)\frac{\E[h_R\mid u]-u}{c},\qquad
+ \E[h_R\mid u]=u+c\,s^\star(u,v).
+ \label{eq:twc-tweedie}
+\end{equation}
+This is the real-coordinate form of Tweedie's formula
+\cite{efron2011,cai2026}. Denoising score matching
+\cite{vincent2011,song2019} trains the network by
+\begin{equation}
+ \mathcal L_{\rm DSM}(\theta)=\E_{h_R,v,\varepsilon}
+ \left[\frac{\|\sqrt{v/2}\,s_\theta(h_R+\sqrt{v/2}\varepsilon,v)
+                      +\varepsilon\|^2}{2D}\right].
+ \label{eq:twc-dsm}
+\end{equation}
+The distribution of $v$ is fixed before training. The conditional
+mean of the regression target is the score, so this objective recovers
+$s^\star$ in the unrestricted function class on its training support.
+Only active-channel samples enter prior training; inactive zeros are
+represented by the separate activity model.
+
+Equation~\eqref{eq:twc-tweedie} explains the initialization of
+\eqref{eq:twc-conditional-mean} at $a_\ell=1$. After receiver
+fine-tuning, the network is a task-adapted denoiser in this
+parameterization and need not remain the exact score of the AWGN prior.
+
+\subsection{Conditional Channel and Activity Supervision}
+
+The receiver training set has $B$ scenes and $K_i$ users in scene $i$.
+Define fixed training statistics
+\begin{equation}
+ T_{\rm tr}=\sum_iK_i,\qquad
+ E_{\rm tr}=\sum_{i,k}\alpha_{ik}\|h_{ik,R}\|^2,\qquad
+ \bar K=T_{\rm tr}/B,\quad \bar E=E_{\rm tr}/B.
+ \label{eq:twc-training-statistics}
+\end{equation}
+Here $E_{\rm tr}>0$, and the real-coordinate squared norm equals
+complex channel energy. For each layer use
+\begin{align}
+ R_H^{(\ell)}&=\frac{1}{E_{\rm tr}}\sum_{i,k}
+     \alpha_{ik}\|\mu_{ik\ell}-h_{ik,R}\|^2,
+ \label{eq:twc-channel-loss}\\
+ R_a^{(\ell)}&=\frac{1}{T_{\rm tr}}\sum_{i,k}
+     {\rm BCE}(\alpha_{ik},p_{ik\ell}),
+ \label{eq:twc-activity-loss}\\
+ {\rm BCE}(\alpha,p)&=-\alpha\log p-(1-\alpha)\log(1-p).
+ \label{eq:twc-bce}
+\end{align}
+True activity selects conditional channel supervision only during
+training. All users enter unweighted BCE; inference forms
+$\widehat x=p\mu$ using the predicted probability.
+Effective channel error is evaluated separately.
+
+Fix the information $z$ available to a user estimator and let
+$\pi(z)=P(\alpha=1\mid z)$,
+$m_H(z)=\E[h_R\mid z,\alpha=1]$, and
+$\kappa=E_{\rm tr}/T_{\rm tr}>0$.
+For finite conditional second moments, $0<\pi(z)<1$, and arbitrary
+outputs $\mu$ and $p\in(0,1)$,
+\begin{equation}
+ \begin{split}
+ &\E\left[\frac{\alpha}{\kappa}\|\mu-h_R\|^2+
+                       {\rm BCE}(\alpha,p)\mid z\right]\\
+ &\quad=C(z)+\frac{\pi(z)}{\kappa}\|\mu-m_H(z)\|^2+
+ {\rm KL}({\rm Bern}(\pi(z))\,\|\,{\rm Bern}(p)).
+ \end{split}
+ \label{eq:twc-risk-decomposition}
+\end{equation}
+Here $C(z)$ is independent of the outputs and $\operatorname{KL}$ is
+Kullback--Leibler divergence. Appendix~\ref{app:risk} gives the
+expansion. The unrestricted minimizers are
+\begin{equation}
+ p^\star(z)=\pi(z),\qquad \mu^\star(z)=m_H(z),\qquad
+ p^\star(z)\mu^\star(z)=\E[\alpha h_R\mid z].
+ \label{eq:twc-risk-minimizers}
+\end{equation}
+This explains the effective channel target without adding a third
+loss. It does not establish optimization or generalization of finite
+networks, where outputs share dependencies and queries change with
+earlier layers. Fixed $E_{\rm tr}$ is essential: division by a
+sample-dependent true channel energy generally changes the target.
+
+For uniform scene sampling, implement
+\begin{equation}
+ \ell_{H,i}^{(\ell)}
+ =\frac{\sum_k\alpha_{ik}\|\mu_{ik\ell}-h_{ik,R}\|^2}{\bar E},\qquad
+ \ell_{a,i}^{(\ell)}
+ =\frac{\sum_k{\rm BCE}(\alpha_{ik},p_{ik\ell})}{\bar K}.
+ \label{eq:twc-scene-loss}
+\end{equation}
+Their scene averages recover
+\eqref{eq:twc-channel-loss}--\eqref{eq:twc-activity-loss}, including
+when $K_i$ varies. Validation uses the same training constants.
+
+\subsection{Layer Training and Gradient Propagation}
+
+At depth $m$, minimize
+\begin{equation}
+ J_m=\frac{\sum_{\ell=1}^{m}\omega_\ell
+                     (R_H^{(\ell)}+R_a^{(\ell)})}
+                 {\sum_{\ell=1}^{m}\omega_\ell}.
+ \label{eq:twc-layer-objective}
+\end{equation}
+Equal coefficients after normalization specify a task weighting,
+not a uniquely optimal choice. Layer weights are fixed before training.
+Each new layer independently loads the same pretrained score weights.
+Earlier layers retain the weights selected at the preceding depth.
+Classifier output corrections and log calibrations are initialized
+to zero, giving $p_{k\ell}=\rho$. Each depth first adapts the new
+layer and then jointly fine-tunes all layers at a lower learning rate.
+The progressive training principle follows \cite[Sec.~III-D]{wei2026};
+conditional channel supervision, activity BCE, and the stage schedule
+are specified for the present JADCE receiver.
+
+Let $\Theta_m$ contain all score, activity-head, and calibration
+parameters that influence the depth-$m$ outputs. Training uses
+\begin{equation}
+ \nabla_{\Theta_m}J_m
+ =\nabla_{\Theta_m}J_{H,m}+\nabla_{\Theta_m}J_{a,m},
+ \label{eq:twc-joint-gradient}
+\end{equation}
+where $J_{H,m}$ and $J_{a,m}$ are the two weighted loss terms.
+BCE gradients can reach same-layer and earlier score parameters.
+Conditional channel loss does not depend on the same-layer activity
+head, but later channel losses can update earlier heads through the
+messages. Freezing parameters during adaptation does not detach
+their input derivatives.
+
+The final layer's $c_{\beta,m}$ affects only feedback after its output,
+so it is not optimized until another layer is appended.
+New-layer adaptation also enables the preceding final layer's feedback
+calibration. At each depth select the checkpoint minimizing
+\begin{equation}
+ V_m=\frac{1}{B_{\rm val}}\sum_{i\in{\rm val}}
+     (\ell_{H,i}^{(m)}+\ell_{a,i}^{(m)}),
+ \label{eq:twc-selection}
+\end{equation}
+The earlier checkpoint is chosen in a tie and initializes the next depth.
+All primary final-depth metrics come from the same selected checkpoint;
+the rule does not imply simultaneous optimality of detection and
+estimation metrics.
