@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "figure": "denoising.png",
+  "vector_figure": "denoising.pdf",
+  "methods": {
+    "LS": "noisy",
+    "Gaussian": "gaussian",
+    "SOMP": "somp",
+    "GAMP-SBL": "gamp",
+    "GNN-ASPL": "gnn",
+    "Off-grid SBL": "offgrid_sbl",
+    "Proposed 5k": "proposed_small",
+    "Proposed 50k": "proposed",
+    "Genie MMSE": "genie_bound"
+  },
+  "snr_points": 6,
+  "verified_nmse_values": 54,
+  "physical_scenes_per_condition": 500,
+  "channels_per_scene": 4,
+  "source_statistics_unchanged": true,
+  "data_sha256": {
+    "SUMMARY.json": "60bb7c801d03b0e442133a012d24037b1b4139dc1502377a33769604f0a385a2",
+    "STATISTICS.csv": "98187508c7208dc625208bd3fe1223b491e31c21e46bce598668c0e81bc3c6c2",
+    "SNR_NMSE.csv": "c404f0ff63fcfa37c3380a6d284b3c836f36bf3531e3639eec16cc27478afd0d"
+  },
+  "figure_sha256": {
+    "denoising.png": "81767ff350def1bbc55fc500697263af71c0306a3d554ea1e04c41d9e209db28",
+    "denoising.pdf": "e52f2a6a582e474c93c790f444884858a621a096fae6cb386202583868b230ea"
+  },
+  "renderer": "scripts/render_experiment_figures.py",
+  "layout": {
+    "width_inches": 3.5,
+    "height_inches": 3.25,
+    "pdf_page_points": [
+      252,
+      234
+    ],
+    "legend_locations": [
+      "upper right",
+      "lower left"
+    ],
+    "legend_curve_intersections": 0,
+    "intended_placement": "single column"
+  },
+  "selected_figure_record": "results/denoising_four_baselines_20261018/FIGURE_SELECTION.json"
+}

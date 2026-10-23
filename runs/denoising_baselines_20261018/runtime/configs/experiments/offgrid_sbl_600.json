@@ -1,0 +1,25 @@
+{
+  "schema": "afdm-offgrid-baselines-v1",
+  "validation_status": "EXPERIMENT_BUDGET_EXTENSION",
+  "methods": {
+    "offgrid_sbl": {
+      "paper": "Wei et al., IEEE TWC 2022, DOI 10.1109/TWC.2022.3158616",
+      "solver": {
+        "iterations": 600,
+        "tolerance": 0.0001,
+        "rho": 0.001,
+        "candidates_per_user": 12,
+        "offset_candidates": 48,
+        "offset_sweeps": 5,
+        "warmup": 5,
+        "doppler_step": 0.5
+      },
+      "validation_note": "Maximum 600 iterations; original tolerance and native stopping retained. Existing activity thresholds reused without refitting; no 600-iteration calibration claimed."
+    }
+  },
+  "readout": {
+    "path": "configs/experiments/offgrid_readout_600.json",
+    "sha256": "cd9dfbe1c7df3ce05fe8d154ac8c58ba6e17f2b62cc3ffda26b35deb9334f08f"
+  },
+  "validation_reference": "results/experiment_revision_20261018"
+}

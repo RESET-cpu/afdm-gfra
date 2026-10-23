@@ -1,0 +1,127 @@
+{
+  "status": "PASS_WITH_DOCUMENTED_CROSS_PLATFORM_INPUT_DIFFERENCES",
+  "archives_verified": {
+    "denoising-results.zip": {
+      "bytes": 28597447,
+      "sha256": "80db911dcb5a773c8cfe9518a26b8cf3e3376a5fd2fa8b2f7dbcf4941466601a"
+    },
+    "denoising-provenance.zip": {
+      "bytes": 2516064,
+      "sha256": "06e8cf3dcfcc95124eb5befd99c43bdd69941a4f4e9d2ae15a77b7a29598b961"
+    },
+    "denoising-weights.zip": {
+      "bytes": 241986392,
+      "sha256": "b3ece85bc72e33a75ba5a7eeff23465cdd80bfd51f8e4c4ec6966ceee23410c8"
+    }
+  },
+  "exported_files_verified": 33285,
+  "compact_records_verified": 24000,
+  "input_conditions": 3000,
+  "input_hash_matches": {
+    "truth_sha256": 0,
+    "query_sha256": 0,
+    "standard_noise_sha256": 3000
+  },
+  "first_scene_array_checks": [
+    {
+      "scene": 0,
+      "condition": 0,
+      "array": "truth",
+      "maximum_absolute_difference": 2.2913504828358204e-09,
+      "relative_l2_difference": 2.8358215639593093e-10
+    },
+    {
+      "scene": 0,
+      "condition": 0,
+      "array": "query",
+      "maximum_absolute_difference": 2.2913504828358204e-09,
+      "relative_l2_difference": 2.833908833847254e-10
+    },
+    {
+      "scene": 0,
+      "condition": 1,
+      "array": "truth",
+      "maximum_absolute_difference": 2.2913504828358204e-09,
+      "relative_l2_difference": 2.8358215639593093e-10
+    },
+    {
+      "scene": 0,
+      "condition": 1,
+      "array": "query",
+      "maximum_absolute_difference": 2.2913504828358204e-09,
+      "relative_l2_difference": 2.8212092453341057e-10
+    },
+    {
+      "scene": 0,
+      "condition": 2,
+      "array": "truth",
+      "maximum_absolute_difference": 2.2913504828358204e-09,
+      "relative_l2_difference": 2.8358215639593093e-10
+    },
+    {
+      "scene": 0,
+      "condition": 2,
+      "array": "query",
+      "maximum_absolute_difference": 2.2913506901306618e-09,
+      "relative_l2_difference": 2.711256292110683e-10
+    },
+    {
+      "scene": 0,
+      "condition": 3,
+      "array": "truth",
+      "maximum_absolute_difference": 2.2913504828358204e-09,
+      "relative_l2_difference": 2.8358215639593093e-10
+    },
+    {
+      "scene": 0,
+      "condition": 3,
+      "array": "query",
+      "maximum_absolute_difference": 2.2913506901306618e-09,
+      "relative_l2_difference": 2.0525699173835956e-10
+    },
+    {
+      "scene": 0,
+      "condition": 4,
+      "array": "truth",
+      "maximum_absolute_difference": 2.2913504828358204e-09,
+      "relative_l2_difference": 2.8358215639593093e-10
+    },
+    {
+      "scene": 0,
+      "condition": 4,
+      "array": "query",
+      "maximum_absolute_difference": 2.2913505938531048e-09,
+      "relative_l2_difference": 8.972378515417044e-11
+    },
+    {
+      "scene": 0,
+      "condition": 5,
+      "array": "truth",
+      "maximum_absolute_difference": 2.2913504828358204e-09,
+      "relative_l2_difference": 2.8358215639593093e-10
+    },
+    {
+      "scene": 0,
+      "condition": 5,
+      "array": "query",
+      "maximum_absolute_difference": 2.2913503718188967e-09,
+      "relative_l2_difference": 2.979583829896987e-11
+    }
+  ],
+  "input_relative_l2_tolerance": 1e-08,
+  "baseline_relative_tolerance": 1e-09,
+  "all_scene_baseline_max_relative_differences": {
+    "noisy.error": 4.3693475215257916e-16,
+    "noisy.energy": 1.2139413135552045e-11,
+    "gaussian.error": 1.3721174161184383e-11,
+    "gaussian.energy": 1.2139413135552045e-11,
+    "genie_bound.error": 6.3815927241552475e-12,
+    "genie_bound.energy": 1.2139413135552045e-11,
+    "genie_bound.realized_error": 7.342776597632909e-10
+  },
+  "limitation": "Cloud full query arrays are available only for scene000. Other scenes have matching metadata/noise hashes and numerically agreeing baseline errors and energies, but full-array numerical equality cannot be checked.",
+  "inference": "Observed first-scene differences and all-scene baseline agreement are consistent with cross-platform floating-point differences; exact cause is not established.",
+  "local_plan_sha256": "41bc5b6b4ca7e0087d6b3e87d21afdeb4dbe81f8f0e062f3cbe198d3c04c14f4",
+  "cloud_plan_sha256": "b8fc0fd73a932e00525b72a0271cf8ea2dc35cd7dc168dfc9d5eed6246374533",
+  "frozen_mainline_sha256": "2ad0bb19de70a3c4fa64ad70efdf8b10c1152971257fc12f035589bea86aaf0c"
+}

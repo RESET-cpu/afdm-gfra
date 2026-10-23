@@ -1,0 +1,83 @@
+"""Write the completed 500-scene baseline comparison report."""
+import math
+from run import OUT, RUN, ROOT, read, save, write_csv, sha
+
+
+def main():
+    summary = read(OUT / 'SUMMARY.json')
+    assert summary['status'] == 'COMPLETE'
+    assert read(OUT / 'VERIFICATION.json')['status'] == 'PASS'
+    assert read(OUT / 'ADAPTER_VERIFICATION.json')['status'] == 'PASS'
+    plan = read(OUT / 'PLAN.json')
+    labels = {'noisy': 'LS', 'gaussian': 'Gaussian', 'somp': 'SOMP', 'gamp': 'GAMP-SBL',
+        'gnn': 'GNN-ASPL', 'offgrid_sbl': 'Off-grid SBL', 'proposed_small': 'Proposed 5k',
+        'proposed': 'Proposed 50k', 'genie_bound': 'Genie MMSE'}
+    wide, comparisons = [], []
+    for snr in [-20., -10., 0., 10., 20., 30.]:
+        group = {r['method']: r for r in summary['rows'] if r['snr_db'] == snr}
+        assert len(group) == 9
+        row = dict(snr_db=snr)
+        row.update({label:group[method]['nmse_db'] for method, label in labels.items()})
+        wide.append(row)
+        best = min(['somp', 'gamp', 'gnn', 'offgrid_sbl'], key=lambda m:group[m]['nmse_db'])
+        comparisons.append(dict(snr_db=snr, best_existing_baseline=best,
+            best_existing_baseline_nmse_db=group[best]['nmse_db'],
+            proposed_5000_nmse_db=group['proposed_small']['nmse_db'],
+            proposed_50000_nmse_db=group['proposed']['nmse_db'],
+            proposed_50000_gain_db=group[best]['nmse_db']-group['proposed']['nmse_db']))
+    write_csv(OUT / 'SNR_NMSE.csv', wide)
+    save(OUT / 'COMPARISON.json', comparisons)
+    checks = read(OUT / 'ADAPTER_VERIFICATION.json')['checks']
+    lines = ['现有四个 baseline 的独立信道去噪实验', '',
+        '状态：500 个物理场景完成，每场景 4 个候选信道，6 档 SNR，4 个 baseline。',
+        '新增 48,000 次单信道推断，对应 12,000 条场景/条件/方法结果；每条曲线每点 2,000 个信道。',
+        '合并图包括 SOMP、GAMP-SBL、GNN-ASPL、Off-grid SBL、Proposed 5k/50k，以及 LS、Gaussian 和 Genie 参考。', '',
+        '输入与算法',
+        '直接读取本地既有 channel_denoising 的 query/truth/users/standard_noise；逐文件及数组核验 3,000 个条件。',
+        '每个候选信道独立运行，恒等观测算子保留完整信道的全部输入/输出坐标和 16 根天线。',
+        '送入已有求解器前乘原坐标尺度，噪声方差乘尺度平方，输出除以尺度后评分。',
+        '复用运行前冻结的原生算法源码、配置和 GNN 权重。SOMP、GAMP、GNN 使用原整数时延–多普勒字典。',
+        'SOMP 上限 64 原子，GAMP 上限 1,000 轮，Off-grid SBL 上限 120 轮；配置细节保存在 runtime/configs。',
+        '全部方法获得同一已知 AWGN 方差；GAMP 保留原生 Gamma-MAP 内部噪声更新。',
+        '活动判决与相位前端不参与直接去噪评分。真值只用于误差计算。',
+        'GNN 使用原接收机训练权重，本次结果评价其迁移到直接去噪任务的表现，没有重新训练。', '',
+        '配对与统计',
+        '横轴为固定训练坐标中单位参考功率定义的 SNR(dB)=-10log10(v)。',
+        'NMSE=10log10(总平方误差/总信道能量)，采用点估计。500 个物理场景内的 4 个信道具有相关性。',
+        '5k/50k Proposed 复用已下载的云端结果；本地参考结果仅计一次。',
+        '云端与本地场景定义、候选用户及标准噪声一致，但 truth/query 存在已记录的跨平台数值差异。',
+        '完整云端配对证据见 ../denoising_merged_20261018/VERIFICATION.json；仅首场景有云端完整查询数组。',
+        'Genie 曲线为解析条件 MMSE，使用真实几何、路径功率、多普勒和 LOS 复增益。', '',
+        '核验',
+        '首场景的 96 次推断通过；输入恒等映射精确核对。',
+        f'12 项原生接收机入口对照通过，最大相对输出差异 {max(r["relative_l2_difference"] for r in checks):.3e}；停止状态和迭代次数一致。',
+        '500 份逐场景紧凑数组与 48,000 条记录对应，结果有限；汇总能量与既有本地参考一致。',
+        '全部冻结源码/配置/权重哈希通过；MAINLINE.json 未改动。',
+        f'包含数值警告的单信道推断：{summary["warning_inferences"]}；原始警告按记录保留。',
+        '完成运行不代表所有算法均达到收敛判据；达到预算的结果全部保留。', '',
+        '原生停止状态计数']
+    lines += [f'{k}: {v}' for k, v in summary['stopping_reasons'].items()]
+    lines += ['', 'NMSE（dB，越低越好）', '\t'.join(['SNR(dB)']+list(labels.values()))]
+    lines += ['\t'.join([f'{r["snr_db"]:g}']+[f'{r[label]:.3f}' for label in labels.values()]) for r in wide]
+    lines += ['', '观测结果与解释边界',
+        'SNR=-20 dB 时，Off-grid SBL 的 NMSE 为 -1.808 dB，优于 Proposed 50k 的 -0.268 dB 和 Proposed 5k 的 2.126 dB。',
+        '其余五档中，Proposed 50k 优于本次四个复用 baseline。',
+        '四个复用 baseline 在高 SNR 出现约 -11 dB 的误差平台，在 20/30 dB 时均差于 LS 和 Gaussian 参考。',
+        '这些是原配置直接用于新观测任务的结果；原生入口一致性检查已通过。字典近似、候选数限制及迭代预算对平台的具体贡献尚未单独验证，不能把平台原因当作已证实结论。']
+    lines += ['', '输出', 'denoising.png/pdf：合并图；STATISTICS.csv：长表；SNR_NMSE.csv：按 SNR 排列的宽表。',
+        'scenes/：逐场景紧凑误差、能量、输入身份、迭代状态及警告；ALL_SCENES.npz：汇总前的全部紧凑数组。',
+        'scene000_predictions.npz：首场景六档、四方法、四信道的完整预测。',
+        'PLAN.json / PREFLIGHT.json / ADAPTER_VERIFICATION.json / VERIFICATION.json：实验定义和核验。',
+        '模型权重仍保存于 ../denoising_merged_20261018/cloud/denoising-first-20261018/weights/。',
+        '', '复现',
+        '.venv/bin/python runs/denoising_baselines_20261018/run.py aggregate',
+        '.venv/bin/python runs/denoising_baselines_20261018/plot.py',
+        '.venv/bin/python runs/denoising_baselines_20261018/report.py']
+    (OUT / 'REPORT.txt').write_text('\n'.join(lines)+'\n')
+    save(OUT / 'DELIVERY.json', dict(status='COMPLETE', rendering_source_sha256=sha(RUN/'plot.py'), outputs={name:sha(OUT/name) for name in
+        ['SUMMARY.json', 'STATISTICS.csv', 'SNR_NMSE.csv', 'REPORT.txt', 'denoising.png', 'denoising.pdf', 'VERIFICATION.json', 'ADAPTER_VERIFICATION.json']}))
+    print('Completed report and SNR table; output hashes saved.')
+
+
+if __name__ == '__main__':
+    main()

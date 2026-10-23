@@ -1,0 +1,51 @@
+论文独立信道去噪实验：代码与数据
+
+仓库：https://github.com/RESET-cpu/afdm-gfra
+本次数据：https://github.com/RESET-cpu/afdm-gfra/releases/tag/denoising-paper-20261023
+Proposed 原始结果与权重：https://github.com/RESET-cpu/afdm-gfra/releases/tag/denoising-first-20261018
+
+内容
+1. denoising-code-results.zip：四基线运行脚本、191 文件固定运行快照及 GNN 权重；
+   500 场景逐场景结果、原始统计、合并记录、配对核验、诊断报告和定稿绘图代码。
+   同时保留输入生成时的源码、配置、pyproject.toml 和 MAINLINE.json。
+2. denoising-inputs-01.zip 至 denoising-inputs-03.zip：500 个物理场景、每场景六档
+   噪声的全部已保存观测、真值和参考方法记录。每条件四个候选信道，共 3,000 个 query.npz。
+3. ASSETS.json：下载包的大小和 SHA-256；FILES.json：包内每个文件的原路径与 SHA-256。
+4. 既有 denoising-first-20261018 Release：Proposed 5k/50k 权重、源码和训练记录、
+   原始逐场景结果。保留原 Release，不重复上传相同资产。
+
+下载与解压
+本仓库为私有仓库，先登录有访问权限的 GitHub 账号。推荐 GitHub CLI：
+  gh release download denoising-paper-20261023 --repo RESET-cpu/afdm-gfra --dir downloads
+先按 ASSETS.json 核对 ZIP 的 SHA-256，然后将本次四个 ZIP 解压至同一个新建空目录。
+ZIP 内路径相对于独立复现目录根；请在独立目录使用其历史 MAINLINE.json。
+
+需要查看 Proposed 原始文件或重跑合并核验时，在上述独立目录根执行：
+  gh release download denoising-first-20261018 --repo RESET-cpu/afdm-gfra --dir results/denoising_merged_20261018/downloads
+将其中三个 ZIP 解压到 results/denoising_merged_20261018/cloud/。
+其共同顶层目录为 denoising-first-20261018。
+原始 Windows 路径与导出位置的对应关系见该目录 PATH_MAP.json 和 README_MAC.txt。
+
+运行入口
+使用 Python 3.11 或更高版本创建虚拟环境，并在独立复现目录安装：
+  python -m pip install -e .
+绘制论文定稿图：
+  python results/denoising_presentation_20261019/render.py
+四基线运行与核验入口：
+  python runs/denoising_baselines_20261018/run.py preflight
+  python runs/denoising_baselines_20261018/verify_adapter.py
+  python runs/denoising_baselines_20261018/run.py run --workers 6
+完整结果已包含在包中，run 会复用已有场景。重新计算请另建独立目录保留输入、代码、
+合并结果和历史 MAINLINE.json，并使用空的 results/denoising_four_baselines_20261018/。
+运行中的脚本和配置由 PLAN.json 绑定哈希；本次上传保留原字节。
+
+数据含义与范围
+去噪曲线共九条、六档 SNR、54 个汇总点。每档为 500 个场景、2,000 个信道；
+NMSE 按汇总误差能量除以汇总信道能量计算。
+包内有全部本地观测与真值、逐场景紧凑结果及首场景完整预测；Proposed 云端导出保留
+逐场景误差和输入身份，完整预测的保存范围以原 README_MAC.txt 为准。
+训练权重与训练记录在既有 Release 中；本次输入包是去噪评价数据集。
+跨平台输入配对差异、Genie 使用真值侧信息、四基线迁移限制均保留于原始报告。
+
+本次上传核验覆盖源文件哈希、固定运行快照、ZIP CRC 与远端资产哈希。
+本次不重新执行训练或 500 场景推断；历史运行证据随数据提供。

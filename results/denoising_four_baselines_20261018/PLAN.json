@@ -1,0 +1,49 @@
+{
+  "schema": "direct-awgn-existing-baselines-v1",
+  "scenes": 500,
+  "candidates": 4,
+  "methods": [
+    "somp",
+    "gamp",
+    "gnn",
+    "offgrid_sbl"
+  ],
+  "variances": [
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0
+  ],
+  "snr_db": [
+    30.0,
+    20.0,
+    10.0,
+    -0.0,
+    -10.0,
+    -20.0
+  ],
+  "input_root": "results/local_baselines_20261018/formal/channel_denoising",
+  "input_plan_sha256": "41bc5b6b4ca7e0087d6b3e87d21afdeb4dbe81f8f0e062f3cbe198d3c04c14f4",
+  "cloud_comparison": "results/denoising_merged_20261018",
+  "cloud_summary_sha256": "3e46806cb4b6ea4e287a181007e0f6f825a786a134293508c15623d1e642f00c",
+  "runtime_snapshot_sha256": "5496267248dc12dfb1e1be5b90bb5182b310686540713f875be8cec0496e1e1f",
+  "source_sha256": {
+    "adapter.py": "42f3a890ec24b1acbe1607694153297f59b1a6492f3a89388a24db0a507d0ecc",
+    "run.py": "b43ee2ddd6caebd94399e636be8d27493c4ea06cf3f3b28e15a3944eb3793631"
+  },
+  "frozen_mainline_sha256": "2ad0bb19de70a3c4fa64ad70efdf8b10c1152971257fc12f035589bea86aaf0c",
+  "scale": 0.2647966452702405,
+  "observation": "One candidate channel per call; identity input operator; all 16 antenna outputs retained.",
+  "normalization": "Multiply saved normalized query by scale and variance by scale**2; divide estimate by scale for scoring.",
+  "noise": "Known direct-AWGN variance supplied. GAMP retains its native Gamma-MAP internal noise update.",
+  "algorithms": "Original known-noise conditional kernels, original configuration, budgets and GNN weights; activity and phase frontends not used.",
+  "inputs_to_inference": [
+    "query",
+    "noise_variance",
+    "identity_operator"
+  ],
+  "statistics": "Pooled error/energy; 500 independent scenes, 4 dependent candidate channels per scene.",
+  "cloud_pairing": "Same scene definitions, user identities and standard-noise hashes; cross-platform truth/query hashes differ. See VERIFICATION.json."
+}

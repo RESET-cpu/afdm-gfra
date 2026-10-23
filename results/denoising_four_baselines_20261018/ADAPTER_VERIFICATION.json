@@ -1,0 +1,120 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "method": "somp",
+      "condition": 0,
+      "variance": 0.001,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "gamp",
+      "condition": 0,
+      "variance": 0.001,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "gnn",
+      "condition": 0,
+      "variance": 0.001,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "offgrid_sbl",
+      "condition": 0,
+      "variance": 0.001,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "somp",
+      "condition": 3,
+      "variance": 1.0,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "gamp",
+      "condition": 3,
+      "variance": 1.0,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "gnn",
+      "condition": 3,
+      "variance": 1.0,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "offgrid_sbl",
+      "condition": 3,
+      "variance": 1.0,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "somp",
+      "condition": 5,
+      "variance": 100.0,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "gamp",
+      "condition": 5,
+      "variance": 100.0,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "gnn",
+      "condition": 5,
+      "variance": 100.0,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    },
+    {
+      "method": "offgrid_sbl",
+      "condition": 5,
+      "variance": 100.0,
+      "maximum_absolute_difference": 0.0,
+      "relative_l2_difference": 0.0,
+      "iterations_equal": true,
+      "stopping_reason_equal": true
+    }
+  ],
+  "script_sha256": "251a9fdaa06dce6035bfb5b787da673fc8bdc0f384d09a114abb7931836f730f",
+  "source": "Frozen native BaselineReceiver and OffGridReceiver entry points.",
+  "warnings": [
+    "divide by zero encountered in matmul",
+    "invalid value encountered in matmul",
+    "overflow encountered in matmul"
+  ]
+}

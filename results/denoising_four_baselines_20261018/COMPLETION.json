@@ -1,0 +1,26 @@
+{
+  "status": "COMPLETE",
+  "completed_date": "2026-10-19",
+  "experiment": "Independent first-order channel denoising",
+  "scope": "Known-AWGN conditional-mean denoising with Proposed 5k/50k, four existing baselines and three reference curves.",
+  "physical_scenes": 500,
+  "channels_per_scene": 4,
+  "snr_db": [
+    -20,
+    -10,
+    0,
+    10,
+    20,
+    30
+  ],
+  "curves": 9,
+  "verified_points": 54,
+  "inference_verification": "VERIFICATION.json",
+  "data_and_figure_verification": "PRESENTATION.json",
+  "accepted_figure": "FIGURE_SELECTION.json",
+  "paper_figure": "denoising.pdf",
+  "plot_data": "SNR_NMSE.csv",
+  "caption": "CAPTION.txt",
+  "baseline_adaptation_diagnosis": "../denoising_baseline_diagnosis_20261019/REPORT.md",
+  "interpretation": "Completion refers to the documented experiment and accepted figure; baseline transfer limitations and cross-platform pairing qualifications remain in the accompanying reports."
+}
