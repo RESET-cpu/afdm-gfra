@@ -1,4 +1,146 @@
 \section{Simulation Results}
 \label{sec:simulations}
 
-% TODO: Write this section before enabling its input in main.tex.
+\subsection{Simulation Settings}
+\label{sec:simulation-settings}
+
+We consider the satellite uplink in Section~\ref{sec:system} with the
+parameters in Table~\ref{tab:simulation-parameters}. Terminal locations
+are sampled uniformly over the beam footprint. The propagation delays,
+Doppler shifts, and array responses are determined by the same satellite
+and terminal geometry. Large-scale propagation effects are compensated.
+The channel follows the NTN-TDL-D power delay profile \cite{shen2025}, with the delay
+spread drawn uniformly from $[30,50]$~ns. The line-of-sight component has
+a uniformly distributed phase and fixed amplitude, while the diffuse
+path gains are proper complex Gaussian. Channels remain fixed over each
+access block. Unless otherwise stated, the access configuration uses
+$K=40$, $Q=16$, and $p=0.1$.
+
+\begin{table}[!t]
+\caption{Simulation Parameters}
+\label{tab:simulation-parameters}
+\centering
+\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Parameter & Value \\
+\midrule
+Carrier frequency $f_c$ & $2$~GHz \\
+Satellite altitude & $600$~km \\
+Beam radius & $128$~km \\
+Minimum elevation angle & $30^\circ$ \\
+UPA dimensions $M_y\times M_z$ & $4\times4$ \\
+Array element spacing $d_y,d_z$ & $\lambda/2$ \\
+AFDM block length $N$ & $16$ \\
+Subcarrier spacing $\Delta f$ & $30$~kHz \\
+Chirp parameters $(c_1,c_2)$ & $(7/32,1/320)$ \\
+CPP length $N_{\rm CPP}$ & $336$ \\
+Residual-delay support & $[0,699]~\mu$s \\
+Doppler support & $[-41,41]$~kHz \\
+Power delay profile & NTN-TDL-D \\
+Delay spread & $[30,50]$~ns \\
+Rician factor & $11.707$~dB \\
+Default $(K,Q,p)$ & $(40,16,0.1)$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Channel Samples and Training}
+The first-order score network is trained with either
+$N_{\rm train}=5{,}000$ or $50{,}000$ clean channel tensors of size
+$16\times16\times16$. Four candidate channels are sampled from each
+physical scene before activity masking. The smaller training set is a
+fixed subset of complete scenes from the larger set. Both models use
+the same architecture and a separate validation set of $5{,}000$
+channels; training, validation, and test scenes are disjoint.
+All channels are expressed in the same fixed training coordinates,
+obtained by dividing the physical channel by the fixed reference
+scale $0.2647966453$.
+
+We train the first-order network from random initialization using
+\eqref{eq:first-loss}. The noise variance is sampled uniformly on a
+logarithmic scale over $[10^{-3},10^2]$. Both models use Adam with a
+batch size of $64$, an initial learning rate of $10^{-4}$, and an
+exponential moving average with decay $0.999$. Training lasts $200$
+epochs, and the checkpoint is selected by the minimum fixed-noise
+validation loss. The $5{,}000$- and $50{,}000$-sample runs perform
+$15{,}800$ and $156{,}400$ optimizer updates, respectively. Thus, the
+comparison uses a common epoch budget and different training costs.
+
+\subsubsection{Evaluation Metric}
+For channel estimation, we report the normalized mean-squared error
+(NMSE), computed by pooling error and channel energies over the test set:
+\begin{equation}
+ \mathrm{NMSE}_{\rm dB}
+ =10\log_{10}\frac{\sum_{i\in\mathcal T}
+ \norm{\widehat H_i-H_i}_F^2}
+ {\sum_{i\in\mathcal T}\norm{H_i}_F^2},
+ \label{eq:simulation-nmse}
+\end{equation}
+where $\mathcal T$ indexes the evaluated channel samples.
+The denoising experiment uses $500$ independent physical scenes with
+four channels per scene, giving $2{,}000$ channels at each noise level.
+The channels within a scene share its geometry. The curves report
+point estimates from this test set.
+
+\subsection{Channel Denoising Performance}
+\label{sec:denoising-performance}
+
+We first evaluate the conditional-mean estimator
+\eqref{eq:learned-mean} under the direct AWGN model
+$R=H+W$, with $\vect(W)\sim\CN(\mathbf0,v\I_D)$ and known $v$.
+The nominal denoising SNR is $-10\log_{10}v$ in the fixed training
+coordinates, using unit reference channel power. We evaluate
+$\{-20,-10,0,10,20,30\}$~dB using the same scene definitions,
+candidate channels, and standardized noise draws across methods.
+This experiment evaluates the first-order channel mean independently
+of activity detection and the receiver iterations.
+
+The reference estimators are least squares (LS), which returns $R$;
+the Gaussian-prior estimate $P_{\rm tr}R/(P_{\rm tr}+v)$, where
+$P_{\rm tr}$ is the mean element power of the normalized training
+channels; and a genie-aided conditional MMSE reference
+\cite{cai2026}. The genie is given the true path geometry, path powers,
+and line-of-sight complex gain. Its curve uses the analytic conditional
+MSE for the remaining Gaussian path gains, normalized by the same
+empirical channel energy.
+We also evaluate simultaneous orthogonal matching pursuit (SOMP)
+\cite{TroppGilbertStrauss2006SOMP}, GAMP-SBL
+\cite{ZhangFanHaoQuan2023GAMPSBL}, GNN-ASPL \cite{ding2026}, and
+off-grid SBL \cite{WeiEtAl2022OffgridSBL} by applying their
+channel-estimation kernels to an identity
+observation operator. Their receiver configurations and the GNN weights
+are retained, and all methods are supplied with the AWGN variance;
+GAMP-SBL retains its internal noise update. These curves therefore
+characterize transfer of the existing implementations to direct denoising.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{denoising.pdf}
+\caption{Independent channel denoising with known AWGN variance:
+$500$ physical scenes and four channels per scene. The proposed curves
+use $N_{\rm train}=5{,}000$ and $50{,}000$; the four sparse-recovery
+baselines retain their receiver configurations. The genie curve uses
+true geometry, path powers, and line-of-sight gain.}
+\label{fig:denoising-performance}
+\end{figure}
+
+Figure~\ref{fig:denoising-performance} shows that the model trained on
+$50{,}000$ channels attains lower NMSE than the model trained on
+$5{,}000$ channels at all six SNR values, with reductions ranging from
+$2.39$ to $7.35$~dB. At $0$~dB, the two NMSE values are $-17.92$
+and $-10.57$~dB, respectively. At $30$~dB, the larger model achieves
+$-40.22$~dB, compared with $-29.93$~dB for LS. The low-SNR case remains
+more challenging: at $-20$~dB, off-grid SBL achieves $-1.81$~dB,
+whereas the larger proposed model gives $-0.27$~dB.
+
+The four transferred baselines exhibit an error floor near $-11$~dB.
+For SOMP, GAMP-SBL, and GNN-ASPL, the integer delay--Doppler dictionary
+limits the channel representation. For off-grid SBL, the retained
+implementation estimates coefficients with a first-order atom
+approximation and reconstructs the channel with exact atoms, introducing
+an additional model discrepancy. Accordingly, the high-SNR gaps in
+Fig.~\ref{fig:denoising-performance} include these implementation and
+representation effects; they do not establish the performance of
+fully adapted versions of the four methods. The proposed estimator
+also remains above the genie reference throughout the evaluated range.
