@@ -1,0 +1,77 @@
+{
+  "name": "convergence_original_first100",
+  "source": "results/local_baselines_20261018/formal/convergence/SUMMARY.json",
+  "description": "",
+  "files": {
+    "results/figure_style_20261019/convergence_original_first100.png": "549682248a38bb2f1f5b5a66fdd69b2e134292a152bb1c1c85a0306239d27add",
+    "results/local_baselines_20261018/formal/convergence/convergence_first100.png": "549682248a38bb2f1f5b5a66fdd69b2e134292a152bb1c1c85a0306239d27add",
+    "results/figure_style_20261019/convergence_original_first100.pdf": "249a64050752bc718bef75bb2b0d24d4fe9aea5eb02d9d6e0fa1a251c14f2c2f",
+    "results/local_baselines_20261018/formal/convergence/convergence_first100.pdf": "249a64050752bc718bef75bb2b0d24d4fe9aea5eb02d9d6e0fa1a251c14f2c2f"
+  },
+  "renderer_sha256": "bf42f683fda8baa397f4bb1b4e150e8fa05ec13707cdbf0528e8852ee6bf811d",
+  "sources": {
+    "results/local_baselines_20261018/formal/convergence/SUMMARY.json": "893dac51f68802e33de662dcc9ab40c242367d0a050dbfdbdf002f7dfbb46ef0"
+  },
+  "styles": {
+    "proposed": {
+      "label": "Proposed",
+      "color": "#BF3052",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "proposed_small": {
+      "label": "Proposed",
+      "color": "#DE7288",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "offgrid_sbl": {
+      "label": "Off-grid SBL",
+      "color": "#168682",
+      "linestyle": "--",
+      "marker": "s"
+    },
+    "gnn": {
+      "label": "GNN-ASPL",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "gamp": {
+      "label": "GAMP-SBL",
+      "color": "#BE7A10",
+      "linestyle": ":",
+      "marker": "D"
+    },
+    "somp": {
+      "label": "SOMP",
+      "color": "#687B96",
+      "linestyle": "--",
+      "marker": "x"
+    },
+    "bg_tmp": {
+      "label": "BG-TMP",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "noisy": {
+      "label": "LS",
+      "color": "#7C8795",
+      "linestyle": ":",
+      "marker": "+"
+    },
+    "gaussian": {
+      "label": "Gaussian prior",
+      "color": "#A88B32",
+      "linestyle": "--",
+      "marker": "v"
+    },
+    "genie_bound": {
+      "label": "Genie conditional MMSE (oracle)",
+      "color": "#438363",
+      "linestyle": "-.",
+      "marker": "x"
+    }
+  }
+}

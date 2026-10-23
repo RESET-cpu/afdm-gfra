@@ -1,0 +1,77 @@
+{
+  "name": "activity_probability",
+  "source": "results/local_baselines_20261018/formal/activity_probability/SUMMARY.json",
+  "description": "",
+  "files": {
+    "results/figure_style_20261019/activity_probability.png": "8c99cd23d9402cf29271eb77915967d645f582b287382391077b4289816e79d9",
+    "results/local_baselines_20261018/formal/activity_probability/comparison.png": "8c99cd23d9402cf29271eb77915967d645f582b287382391077b4289816e79d9",
+    "results/figure_style_20261019/activity_probability.pdf": "0639c9407b7399448b55b16d4ad7b4d6b220d4912961690bb02b27448e66641a",
+    "results/local_baselines_20261018/formal/activity_probability/comparison.pdf": "0639c9407b7399448b55b16d4ad7b4d6b220d4912961690bb02b27448e66641a"
+  },
+  "renderer_sha256": "bf42f683fda8baa397f4bb1b4e150e8fa05ec13707cdbf0528e8852ee6bf811d",
+  "sources": {
+    "results/local_baselines_20261018/formal/activity_probability/SUMMARY.json": "2ac64d84666d1dd430a7efc5c1874177625c80306e12c213982a54c9141bac59"
+  },
+  "styles": {
+    "proposed": {
+      "label": "Proposed",
+      "color": "#BF3052",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "proposed_small": {
+      "label": "Proposed",
+      "color": "#DE7288",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "offgrid_sbl": {
+      "label": "Off-grid SBL",
+      "color": "#168682",
+      "linestyle": "--",
+      "marker": "s"
+    },
+    "gnn": {
+      "label": "GNN-ASPL",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "gamp": {
+      "label": "GAMP-SBL",
+      "color": "#BE7A10",
+      "linestyle": ":",
+      "marker": "D"
+    },
+    "somp": {
+      "label": "SOMP",
+      "color": "#687B96",
+      "linestyle": "--",
+      "marker": "x"
+    },
+    "bg_tmp": {
+      "label": "BG-TMP",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "noisy": {
+      "label": "LS",
+      "color": "#7C8795",
+      "linestyle": ":",
+      "marker": "+"
+    },
+    "gaussian": {
+      "label": "Gaussian prior",
+      "color": "#A88B32",
+      "linestyle": "--",
+      "marker": "v"
+    },
+    "genie_bound": {
+      "label": "Genie conditional MMSE (oracle)",
+      "color": "#438363",
+      "linestyle": "-.",
+      "marker": "x"
+    }
+  }
+}

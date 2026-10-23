@@ -1,0 +1,89 @@
+\definecolor{fgLE}{RGB}{132,112,158}%
+\definecolor{fgCAD}{RGB}{73,132,117}%
+\begin{tikzpicture}[x=1cm,y=.86cm,every node/.style={figtext},line width=.5pt,
+ fgvariable/.style={circle,draw,fill=white,minimum size=3.2mm,inner sep=0pt},
+ fgfactor/.style={rectangle,draw,fill=black,minimum size=2.3mm,inner sep=0pt}]
+\path (0,0) rectangle (8.8,6.25);
+% Module boundaries follow the column likelihood and terminal prior factors.
+\draw[dashed,fgLE,line width=.45pt] (.04,.42) rectangle (1.86,5.97);
+\draw[dashed,fgCAD,line width=.45pt] (5.02,.42) rectangle (8.72,5.97);
+\node[align=center,anchor=north,inner sep=1pt] at (.95,.28) {Linear\\estimation};
+\node[align=center,anchor=north,inner sep=1pt] at (6.87,.28) {Channel and activity\\denoising};
+% Matrix entries and overlapping column/user groupings, as in Cai Fig. 2.
+\fill[white] (1.95,.65) rectangle (4.95,5.65);
+\foreach \y in {1.30,3.15,5.00} {
+ \fill[figlight] (1.95,\y-.65) rectangle (4.95,\y+.65);
+}
+\foreach \x/\w in {2.40/.84,3.40/.84,4.40/.98} {
+ \fill[black,opacity=.09] (\x-\w/2,.58) rectangle (\x+\w/2,5.72);
+}
+\draw[black!65,line width=.45pt] (1.95,.65) rectangle (4.95,5.65);
+\foreach \idx/\y in {1/5.00,k/3.15,K/1.30} {
+ \draw[figblue,line width=.4pt] (1.95,\y-.65)--(4.95,\y-.65)
+                               (1.95,\y+.65)--(4.95,\y+.65);
+ \foreach \j/\x in {0/2.40,j/3.40,{MN-1}/4.40} {
+  \node[font=\fontsize{5.5}{6.5}\selectfont,inner sep=0pt] at (\x,\y+.43)
+   {$x_{\idx,0}^{(\j)}$};
+  \node[font=\fontsize{5.5}{6.5}\selectfont,inner sep=0pt] at (\x,\y-.43)
+   {$x_{\idx,N-1}^{(\j)}$};
+  \foreach \dy in {-.08,0,.08} {\fill[black!60] (\x,\y+\dy) circle (.010);}
+ }
+ \foreach \yy in {-.43,.43} {
+  \foreach \xx in {2.90,3.80} {\node[font=\fontsize{4}{5}\selectfont,inner sep=0pt] at (\xx,\y+\yy) {$\cdots$};}
+ }
+}
+\foreach \cy in {4.075,2.225} {
+ \foreach \x in {2.40,3.40,4.40} {
+  \foreach \dy in {-.065,0,.065} {\fill[black!60] (\x,\cy+\dy) circle (.010);}
+ }
+}
+\node[inner sep=1pt] at (3.45,6.00) {$\mathbf X$};
+% Column index j=mN+r is zero-based, consistently with Eq. (mmv-indexing).
+\begin{scope}[local bounding box=leftContent,xshift=-1.76963pt,yshift=-0.24343pt]
+\foreach \idx/\y/\cx [count=\i] in {0/5.00/2.40,j/3.15/3.40,{MN-1}/1.30/4.40} {
+ \node[fgfactor] (fy\i) at (.60,\y) {};
+ \node[above=3pt] at (.95,\y+.115) {$f_{Y,\idx}$};
+ \node[fgvariable,fill=black!12] (xcol\i) at (1.20,\y) {};
+ \node[below=2pt] at (1.20,\y-.16) {$\mathbf x_{\idx}$};
+ \draw (fy\i)--(xcol\i);
+
+
+}
+\foreach \y in {4.075,2.225} {
+ \foreach \x in {.60,1.20} {
+  \foreach \dy in {-.08,0,.08} {\fill (\x,\y+\dy) circle (.012);}
+ }
+}
+\end{scope}
+\coordinate (matrixLeft) at (1.95,0);
+\foreach \y [count=\i] in {5.00,3.15,1.30}
+ {\draw[black!55] (xcol\i.east)--(matrixLeft |- xcol\i.east);}
+% Channel variables and activity variables form two groups, linked by each user's constraint.
+\begin{scope}[local bounding box=rightContent,xshift=-1.33599pt,yshift=1.09441pt]
+\foreach \idx/\y/\hy/\ay in {1/5.00/5.40/2.50,k/3.15/4.65/1.75,K/1.30/3.70/.80} {
+ \node[fgvariable,fill=figlight,draw=figblue] (xu\idx) at (5.45,\y) {};
+ \node[above=2pt] at (5.45,\y+.16) {$X_{\idx}$};
+ \node[fgfactor] (d\idx) at (6.05,\y) {};
+ \node[anchor=north east,inner sep=1pt] at (6.05,\y-.20) {$f_{\delta,\idx}$};
+ \node[fgvariable,minimum size=5.5mm] (h\idx) at (7.00,\hy) {$H_{\idx}$};
+ \node[fgvariable,minimum size=5.5mm] (a\idx) at (7.00,\ay) {$\alpha_{\idx}$};
+ \node[fgfactor,label=right:{$f_{H,\idx}$}] (fh\idx) at (7.65,\hy) {};
+ \node[fgfactor,label=right:{$f_{\alpha,\idx}$}] (fa\idx) at (7.65,\ay) {};
+ \draw (xu\idx)--(d\idx) (d\idx)--(h\idx) (d\idx)--(a\idx)
+       (h\idx)--(fh\idx) (a\idx)--(fa\idx);
+}
+\foreach \y in {4.175,1.275} {
+ \foreach \dy in {-.045,0,.045} {\fill (7.00,\y+\dy) circle (.009);}
+}
+\end{scope}
+\coordinate (matrixRight) at (4.95,0);
+\foreach \idx/\y in {1/5.00,k/3.15,K/1.30}
+ {\draw[figblue] (matrixRight |- xu\idx.west)--(xu\idx.west);}
+\foreach \group in {leftContent,rightContent} {
+ \foreach \edge in {west,east,south,north} {
+  \pgfextractx{\dimen0}{\pgfpointanchor{\group}{\edge}}
+  \pgfextracty{\dimen2}{\pgfpointanchor{\group}{\edge}}
+  \typeout{FG-BOUNDS-\group-\edge=\the\dimen0,\the\dimen2}
+ }
+}
+\end{tikzpicture}

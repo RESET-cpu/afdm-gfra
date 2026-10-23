@@ -1,0 +1,483 @@
+{
+  "status": "PASS",
+  "renderer": "scripts/render_experiment_figures.py",
+  "renderer_sha256": "a1d1ea39546ec982a7a8e7eb785d07519b3c3c754a9c0c744c768b720bcf1d1a",
+  "reference": "runs/convergence_300_20261018/figure_reference.png",
+  "styles": {
+    "proposed": {
+      "label": "Proposed",
+      "color": "#BF3052",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "proposed_small": {
+      "label": "Proposed",
+      "color": "#DE7288",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "offgrid_sbl": {
+      "label": "Off-grid SBL",
+      "color": "#168682",
+      "linestyle": "--",
+      "marker": "s"
+    },
+    "gnn": {
+      "label": "GNN-ASPL",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "gamp": {
+      "label": "GAMP-SBL",
+      "color": "#BE7A10",
+      "linestyle": ":",
+      "marker": "D"
+    },
+    "somp": {
+      "label": "SOMP",
+      "color": "#687B96",
+      "linestyle": "--",
+      "marker": "x"
+    },
+    "bg_tmp": {
+      "label": "BG-TMP",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "noisy": {
+      "label": "LS",
+      "color": "#7C8795",
+      "linestyle": ":",
+      "marker": "+"
+    },
+    "gaussian": {
+      "label": "Gaussian prior",
+      "color": "#A88B32",
+      "linestyle": "--",
+      "marker": "v"
+    },
+    "genie_bound": {
+      "label": "Genie conditional MMSE (oracle)",
+      "color": "#438363",
+      "linestyle": "-.",
+      "marker": "x"
+    },
+    "offgrid_6": {
+      "label": "Off-grid SBL (6 candidates/user)",
+      "color": "#687B96",
+      "marker": "x",
+      "linestyle": "-."
+    },
+    "offgrid_12": {
+      "label": "Off-grid SBL (12 candidates/user)",
+      "color": "#168682",
+      "marker": "s",
+      "linestyle": "--"
+    },
+    "offgrid_24": {
+      "label": "Off-grid SBL (24 candidates/user)",
+      "color": "#7158AC",
+      "marker": "^",
+      "linestyle": ":"
+    }
+  },
+  "source_statistics_unchanged": true,
+  "sources": {
+    "results/baseline_comparison_500_20261018/SUMMARY.json": "ffee173d5c89c76af13c094d58ee653602085136e7c2f1ca26af111eca959088",
+    "results/local_baselines_20261018/formal/snr_comparison/SUMMARY.json": "b606864382125163fd8af534a344b12ee16372c36e6083ab3fa263d7a9cbe635",
+    "results/local_baselines_20261018/formal/pilot_frames/SUMMARY.json": "813479d102a490f7573a82414f2759090bbc61241b0c2261f1b83f32a75c4a67",
+    "results/local_baselines_20261018/formal/activity_probability/SUMMARY.json": "2ac64d84666d1dd430a7efc5c1874177625c80306e12c213982a54c9141bac59",
+    "results/cpu_9900x_returned_20261019/user_count/SUMMARY.json": "9aea8faca93a0bfffc64ea1d7b99ee012b18e239eed7c6e76c6676f409fb8e93",
+    "results/cpu_9900x_returned_20261019/cross_channel/SUMMARY.json": "ff14912397b8d773b606d308a0a799952954bf87587ab22352557a0eba5626fb",
+    "results/denoising_four_baselines_20261018/SUMMARY.json": "60bb7c801d03b0e442133a012d24037b1b4139dc1502377a33769604f0a385a2",
+    "results/denoising_merged_20261018/SUMMARY.json": "3e46806cb4b6ea4e287a181007e0f6f825a786a134293508c15623d1e642f00c",
+    "results/local_baselines_20261018/formal/channel_denoising/SUMMARY.json": "f8f7725da82e695542c4d88ba41efc18781349a43c6405d9107ae21070fcf369",
+    "results/local_baselines_20261018/formal/convergence/SUMMARY.json": "893dac51f68802e33de662dcc9ab40c242367d0a050dbfdbdf002f7dfbb46ef0",
+    "results/convergence_300_20261018/SUMMARY.json": "3ca701666c5cf54d2ac6c1c521a5e1d7255a2f61be46e2a666f8fae547ec9d5f",
+    "results/bg_tmp_convergence_300_20261019/baselines/SUMMARY.json": "365def098d5d054db4c5078488d183f9fde63fa8700fdb8456b305545f81e13e",
+    "results/offgrid_candidates_20261019/SUMMARY.json": "576e1ab8dd5391ada54a0d37a24349cd62b665f3b3c4a8a01dec5f206653a573",
+    "results/denoising_baseline_diagnosis_20261019/ALGEBRA_AND_DICTIONARY.json": "cda702a22a681ca26b2201e7518b6657a513c1929e560a96ecafaa284fd835ae",
+    "results/denoising_baseline_diagnosis_20261019/OFFGRID_DECOMPOSITION.json": "c5b95edae7886be6e4fe09ee243783a56e57e31dcea82f2cc2ee0e8bb9a36136",
+    "results/convergence_merged_20261019/SUMMARY.json": "c9c507b954cca7938902eeabb4c728a933b4abaeac8f84497b2862d57ccdf9e7"
+  },
+  "figures": [
+    {
+      "name": "snr_comparison",
+      "source": "results/baseline_comparison_500_20261018/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/snr_comparison.png": "65d04f937a2366654df293d56158c5520ad64f3628d984c861d012f12ba6ec59",
+        "results/baseline_comparison_500_20261018/comparison.png": "65d04f937a2366654df293d56158c5520ad64f3628d984c861d012f12ba6ec59",
+        "results/figure_style_20261019/snr_comparison.pdf": "bc35a3514c8075f0932523e999150a4e5ef3e202c6d0fcf455c5cf905dd397fa",
+        "results/baseline_comparison_500_20261018/comparison.pdf": "bc35a3514c8075f0932523e999150a4e5ef3e202c6d0fcf455c5cf905dd397fa",
+        "results/figure_style_20261019/snr_comparison.svg": "d29594fc7ff4b02b84592180ec975ba98f9108aadb430638b41b59483273a02f",
+        "results/baseline_comparison_500_20261018/comparison.svg": "d29594fc7ff4b02b84592180ec975ba98f9108aadb430638b41b59483273a02f"
+      }
+    },
+    {
+      "name": "snr_baselines",
+      "source": "results/local_baselines_20261018/formal/snr_comparison/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/snr_baselines.png": "371d8d2408addbc1c1490b99c888bc1f73ab00a5484ef0ef4422ba466a3bf9b0",
+        "results/local_baselines_20261018/formal/snr_comparison/comparison.png": "371d8d2408addbc1c1490b99c888bc1f73ab00a5484ef0ef4422ba466a3bf9b0",
+        "results/figure_style_20261019/snr_baselines.pdf": "54978947e6e599f5582c060fb7d00540a1113c306a087a63fa10ce2e8f4ddcb3",
+        "results/local_baselines_20261018/formal/snr_comparison/comparison.pdf": "54978947e6e599f5582c060fb7d00540a1113c306a087a63fa10ce2e8f4ddcb3"
+      }
+    },
+    {
+      "name": "pilot_frames",
+      "source": "results/local_baselines_20261018/formal/pilot_frames/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/pilot_frames.png": "673635641b8506d067abbd5542fbe0af0db23169cfd553ef519fec22668a2087",
+        "results/local_baselines_20261018/formal/pilot_frames/comparison.png": "673635641b8506d067abbd5542fbe0af0db23169cfd553ef519fec22668a2087",
+        "results/figure_style_20261019/pilot_frames.pdf": "b8c008b32775e700ef01cb25f90cd265c990ed1c15a22554be53fb3ce764c48c",
+        "results/local_baselines_20261018/formal/pilot_frames/comparison.pdf": "b8c008b32775e700ef01cb25f90cd265c990ed1c15a22554be53fb3ce764c48c"
+      }
+    },
+    {
+      "name": "activity_probability",
+      "source": "results/local_baselines_20261018/formal/activity_probability/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/activity_probability.png": "8c99cd23d9402cf29271eb77915967d645f582b287382391077b4289816e79d9",
+        "results/local_baselines_20261018/formal/activity_probability/comparison.png": "8c99cd23d9402cf29271eb77915967d645f582b287382391077b4289816e79d9",
+        "results/figure_style_20261019/activity_probability.pdf": "0639c9407b7399448b55b16d4ad7b4d6b220d4912961690bb02b27448e66641a",
+        "results/local_baselines_20261018/formal/activity_probability/comparison.pdf": "0639c9407b7399448b55b16d4ad7b4d6b220d4912961690bb02b27448e66641a"
+      }
+    },
+    {
+      "name": "user_count",
+      "source": "results/cpu_9900x_returned_20261019/user_count/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/user_count.png": "28a05d3ed84872647552b5c60641b1c531cb60b1dfbbef36d40d8c74b8f0e59d",
+        "results/cpu_9900x_returned_20261019/user_count/comparison.png": "28a05d3ed84872647552b5c60641b1c531cb60b1dfbbef36d40d8c74b8f0e59d",
+        "results/figure_style_20261019/user_count.pdf": "ea3afb297b0bb80876d07cf8eada94e96c417dcb3ebb7a57239f15dabf2e7626",
+        "results/cpu_9900x_returned_20261019/user_count/comparison.pdf": "ea3afb297b0bb80876d07cf8eada94e96c417dcb3ebb7a57239f15dabf2e7626"
+      }
+    },
+    {
+      "name": "cross_channel",
+      "source": "results/cpu_9900x_returned_20261019/cross_channel/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/cross_channel.png": "3dd39232902f2e33d445faeb60cbda40acffb84f14ae96995dfa3c03b554435d",
+        "results/cpu_9900x_returned_20261019/cross_channel/comparison.png": "3dd39232902f2e33d445faeb60cbda40acffb84f14ae96995dfa3c03b554435d",
+        "results/figure_style_20261019/cross_channel.pdf": "0db766d76fc7814e3c415ead9ef074ecf3aa3fa9df798c3565a1d09ccfe1c1dd",
+        "results/cpu_9900x_returned_20261019/cross_channel/comparison.pdf": "0db766d76fc7814e3c415ead9ef074ecf3aa3fa9df798c3565a1d09ccfe1c1dd"
+      }
+    },
+    {
+      "name": "convergence_original",
+      "source": "results/local_baselines_20261018/formal/convergence/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/convergence_original.png": "54792b96b27021b6dc0866cff204cd69043d470c8b7aff166533f8d825a74bc7",
+        "results/local_baselines_20261018/formal/convergence/convergence.png": "54792b96b27021b6dc0866cff204cd69043d470c8b7aff166533f8d825a74bc7",
+        "results/figure_style_20261019/convergence_original.pdf": "13445ab6dd079217139d0b1ab187369cd6707d9ac595d53c8b304e5789532c51",
+        "results/local_baselines_20261018/formal/convergence/convergence.pdf": "13445ab6dd079217139d0b1ab187369cd6707d9ac595d53c8b304e5789532c51"
+      }
+    },
+    {
+      "name": "convergence_original_first100",
+      "source": "results/local_baselines_20261018/formal/convergence/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/convergence_original_first100.png": "549682248a38bb2f1f5b5a66fdd69b2e134292a152bb1c1c85a0306239d27add",
+        "results/local_baselines_20261018/formal/convergence/convergence_first100.png": "549682248a38bb2f1f5b5a66fdd69b2e134292a152bb1c1c85a0306239d27add",
+        "results/figure_style_20261019/convergence_original_first100.pdf": "249a64050752bc718bef75bb2b0d24d4fe9aea5eb02d9d6e0fa1a251c14f2c2f",
+        "results/local_baselines_20261018/formal/convergence/convergence_first100.pdf": "249a64050752bc718bef75bb2b0d24d4fe9aea5eb02d9d6e0fa1a251c14f2c2f"
+      }
+    },
+    {
+      "name": "convergence_300",
+      "source": "results/convergence_300_20261018/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/convergence_300.png": "8b3e60bc38e6ebfc42aaf62a2dc648476a0742c3cc2bd634438721ef17b0b9d9",
+        "results/figure_style_20261019/convergence_300.pdf": "1f928925a9d3651260ed3c987ec44604ca9b98e4a4f3397a272561c2130b0983"
+      }
+    },
+    {
+      "name": "convergence_300_first100",
+      "source": "results/convergence_300_20261018/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/convergence_300_first100.png": "629ae0ed8243c82ea22d2a7401a823dbe0d35a086c11ab76c8292a140889dbbd",
+        "results/figure_style_20261019/convergence_300_first100.pdf": "31d9599b614693ad741d75ebceaf8cb7ba4b461c5b557f6c3a34eb974b81a67a"
+      }
+    },
+    {
+      "name": "convergence_bg_tmp",
+      "source": "results/bg_tmp_convergence_300_20261019/baselines/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/convergence_bg_tmp.png": "be7a42acf3d70d11ddc42b49b1268455f059b7aaa354763c5c17c6627b4a22f1",
+        "results/bg_tmp_convergence_300_20261019/baselines/convergence_baselines_300.png": "be7a42acf3d70d11ddc42b49b1268455f059b7aaa354763c5c17c6627b4a22f1",
+        "results/figure_style_20261019/convergence_bg_tmp.pdf": "6fddf7b6c7737db303947c16ce0b5a55679d3153f195158487f45e1ed6215a06",
+        "results/bg_tmp_convergence_300_20261019/baselines/convergence_baselines_300.pdf": "6fddf7b6c7737db303947c16ce0b5a55679d3153f195158487f45e1ed6215a06"
+      }
+    },
+    {
+      "name": "convergence_bg_tmp_first100",
+      "source": "results/bg_tmp_convergence_300_20261019/baselines/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/convergence_bg_tmp_first100.png": "a91468931aaeeff28a31b7bebaa5b7de0b2c74fb616ac01e32d90cb56ffe6f12",
+        "results/bg_tmp_convergence_300_20261019/baselines/convergence_baselines_first100.png": "a91468931aaeeff28a31b7bebaa5b7de0b2c74fb616ac01e32d90cb56ffe6f12",
+        "results/figure_style_20261019/convergence_bg_tmp_first100.pdf": "52f6164972b93099f37a183b154811320b686e02bc0875c36973a38a6f0f4bb3",
+        "results/bg_tmp_convergence_300_20261019/baselines/convergence_baselines_first100.pdf": "52f6164972b93099f37a183b154811320b686e02bc0875c36973a38a6f0f4bb3"
+      }
+    },
+    {
+      "name": "offgrid_candidates",
+      "source": "results/offgrid_candidates_20261019/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/figure_style_20261019/offgrid_candidates.png": "64512be77aa4538c3c11bb5f91ad5db4a6b4e15625e0d18c94c08cd0c18a6ff7",
+        "results/offgrid_candidates_20261019/comparison.png": "64512be77aa4538c3c11bb5f91ad5db4a6b4e15625e0d18c94c08cd0c18a6ff7",
+        "results/figure_style_20261019/offgrid_candidates.pdf": "c31cffcb3736db65b0c8282a18127b5c9dae50b1300a77ac52b83f8ee962746e",
+        "results/offgrid_candidates_20261019/comparison.pdf": "c31cffcb3736db65b0c8282a18127b5c9dae50b1300a77ac52b83f8ee962746e"
+      }
+    },
+    {
+      "name": "channel_denoising",
+      "source": "results/denoising_four_baselines_20261018/SUMMARY.json",
+      "description": "",
+      "files": {
+        "results/denoising_four_baselines_20261018/denoising.png": "81767ff350def1bbc55fc500697263af71c0306a3d554ea1e04c41d9e209db28",
+        "results/denoising_four_baselines_20261018/denoising.pdf": "e52f2a6a582e474c93c790f444884858a621a096fae6cb386202583868b230ea"
+      }
+    },
+    {
+      "name": "convergence_merged",
+      "source": "results/convergence_merged_20261019/SUMMARY.json",
+      "description": "Proposed (50k), Off-grid SBL and BG-TMP at 0 dB with DFT pilots; first 100 iterations; single-column figure",
+      "files": {
+        "results/convergence_merged_20261019/convergence.png": "7565257033903afaefb2dd0c4a77c6be7699ed0282db52c235c51f7480a5344e",
+        "results/convergence_merged_20261019/convergence.pdf": "a199372ad0a0e6174d352bd84a3f4d0e404552d973bc55a2ae55aca6b7e6b600"
+      },
+      "renderer": "results/convergence_merged_20261019/render.py"
+    }
+  ],
+  "removed_derived_figures": [
+    {
+      "path": "results/local_baselines_20261018/preflight/cross_channel/comparison.png",
+      "sha256": "9ba0efb2865d95e6717b94969241eef63ea53675e5be2638fd682cbf95f563bc"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/cross_channel/comparison.pdf",
+      "sha256": "bb5cf345133e92d8a8f780002fbf1d09c681071b25eec9d3915202d566341964"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/activity_probability/comparison.png",
+      "sha256": "0e6458a7a16f114784ab741860b1cd7dc396276bf79b93bafbb9a2528e4f0894"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/activity_probability/comparison.pdf",
+      "sha256": "8809961b8701b0c69c40e16452049d0f122b4880c16b1e3abdafcd4abc2ddff8"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/snr_comparison/comparison.png",
+      "sha256": "5e0faac9dcede33b9f8ad36c16973193982ecb50ab2cb05caef37097206f18c8"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/snr_comparison/comparison.pdf",
+      "sha256": "afc97fe788deab71acd669c77293390c9e7fc9557b436f5252e9b94a31151ef6"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/user_count/comparison.png",
+      "sha256": "4cbd5b77fb7c17076a3d33df7dff2d3942e0550d335e6d12b09ffbf574c9bc98"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/user_count/comparison.pdf",
+      "sha256": "98f6f8b329be308fbabfa8f81f2592d8954088e6e94b3aec8b62587a4e4b099a"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/channel_denoising/denoising.png",
+      "sha256": "15e22248c4bf368627bc0036b0f502272d5d4043041a5797df27ad9b14e7998d"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/channel_denoising/denoising.pdf",
+      "sha256": "748a381fd4c319559efc0287282bd36679019ce54c30959224d766b1a22b64c7"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/pilot_frames/comparison.png",
+      "sha256": "f218f4d6a3767b25cf759cf867e3b731edba0f99f2b7baa2235d70026463e3ac"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/pilot_frames/comparison.pdf",
+      "sha256": "71c0a793f914384545240b9589aebc16cf309276900d773dff3c97100f4382f6"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/convergence/convergence_first100.png",
+      "sha256": "61ec5bbf8bd372ca29a1f444b46d2001cb90bb068e9b12eed867f9f1c55fa341"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/convergence/convergence_first100.pdf",
+      "sha256": "2321529a8d38f8d82434100ac3b1ec69b69249efdf6d473bb02b18630ca8be14"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/convergence/convergence.png",
+      "sha256": "5ce03e5ed9b24630b62c082f9e20fb9780721d60f2f2761852a200f39a4f6234"
+    },
+    {
+      "path": "results/local_baselines_20261018/preflight/convergence/convergence.pdf",
+      "sha256": "47a9f18ce0addc14bccaf009ac343c07f94bfe58daf7487cf2e0950b257f0e89"
+    },
+    {
+      "path": "results/local_baselines_20261018/progress/20261018_215839/baseline_progress.png",
+      "sha256": "9cfe32b3b05ba4d49fd8d89f71897c92f338f3abeee05de84083efff85f699ce"
+    },
+    {
+      "path": "results/local_baselines_20261018/progress/20261018_215839/baseline_progress.pdf",
+      "sha256": "23833bc7c0cc26c5227de96436d58568476f6aa27102c38a2ff7ac138b394291"
+    },
+    {
+      "path": "results/density_ratio_smoke_20261018/comparison.png",
+      "sha256": "52791f69885bfdb47a04df5a37af8cd90c101660143569b1104e2f979c68f45a"
+    },
+    {
+      "path": "results/density_ratio_smoke_20261018/comparison.pdf",
+      "sha256": "7203622937d9360cdc8d2702d78f835243c925635ace78296bb3dda152e40101"
+    },
+    {
+      "path": "results/cpu_9900x_returned_20261019/cpu-9900x-results-20261019/metadata/summaries/cross_channel/comparison.png",
+      "sha256": "7e55593cc3a169a822957ca136388e0cf733f88730d5d628ae1703e7a0ebc8b4"
+    },
+    {
+      "path": "results/cpu_9900x_returned_20261019/cpu-9900x-results-20261019/metadata/summaries/cross_channel/comparison.pdf",
+      "sha256": "07d055b9fef4ea6a73aeb3f1d620f26db9aedf77ed9e9be9acd359a5c350b3cb"
+    },
+    {
+      "path": "results/cpu_9900x_returned_20261019/cpu-9900x-results-20261019/metadata/summaries/user_count/comparison.png",
+      "sha256": "7569c8caf635af3e6d263424b7b267801d8cae9e64919f95be29277c84ee28bc"
+    },
+    {
+      "path": "results/cpu_9900x_returned_20261019/cpu-9900x-results-20261019/metadata/summaries/user_count/comparison.pdf",
+      "sha256": "8b124aaf833c5fd4e249ab470910b7d9392775d6f669bae0f42b68b63a0a5acc"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising.png",
+      "sha256": "55077a7c297385ccf28c8f3d29c895d76625995eb438a590114416ac13a5ee48"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising.pdf",
+      "sha256": "07035d19d36dbccfea5fca38b28a1f3f37ff58c7fb9482a5f46460d120c3f325"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising_main.png",
+      "sha256": "e1cafa3059b94d54b6f3aba1578bfc9653b024a3c70b36a748dc83a56d24d077"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising_main.pdf",
+      "sha256": "fbcec6123c035450e461d15565b419582ad08c29d0cf9fc2d7b2c3a91a32dd9c"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising_training.png",
+      "sha256": "29ef199a6cbcfc0347c817b17017154ed1113df29dbc2755e87d5b2dbb146949"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising_training.pdf",
+      "sha256": "fefab2ac992ff3db09816d70ec1e930fc3aa0326654f7dba9d57b23ba7b5d669"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising_references.png",
+      "sha256": "c5381246a67254ae73337a3b30be2dc840e67163ff7aeb00a535b59bbf47d199"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising_references.pdf",
+      "sha256": "ac021a05562e3589e120bc75a0367005158d8cdd94fb5136e38eddde88f815b4"
+    },
+    {
+      "path": "results/figure_style_20261019/denoising_diagnosis.png",
+      "sha256": "96939e1649df01c529b7394e6894d382c226b1c4ebe909a1c65a85b2a62a1b34"
+    },
+    {
+      "path": "results/figure_style_20261019/denoising_diagnosis.pdf",
+      "sha256": "a85759736cc3062283c76ddf4512a7467a68eb5eb1bbe25ed494ae75571d547f"
+    },
+    {
+      "path": "results/denoising_presentation_20261019/denoising_main.png",
+      "sha256": "e1cafa3059b94d54b6f3aba1578bfc9653b024a3c70b36a748dc83a56d24d077"
+    },
+    {
+      "path": "results/denoising_presentation_20261019/denoising_main.pdf",
+      "sha256": "fbcec6123c035450e461d15565b419582ad08c29d0cf9fc2d7b2c3a91a32dd9c"
+    },
+    {
+      "path": "results/denoising_presentation_20261019/denoising_all_methods.png",
+      "sha256": "55077a7c297385ccf28c8f3d29c895d76625995eb438a590114416ac13a5ee48"
+    },
+    {
+      "path": "results/denoising_presentation_20261019/denoising_all_methods.pdf",
+      "sha256": "07035d19d36dbccfea5fca38b28a1f3f37ff58c7fb9482a5f46460d120c3f325"
+    },
+    {
+      "path": "results/denoising_merged_20261018/denoising.png",
+      "sha256": "29ef199a6cbcfc0347c817b17017154ed1113df29dbc2755e87d5b2dbb146949"
+    },
+    {
+      "path": "results/denoising_merged_20261018/denoising.pdf",
+      "sha256": "fefab2ac992ff3db09816d70ec1e930fc3aa0326654f7dba9d57b23ba7b5d669"
+    },
+    {
+      "path": "results/local_baselines_20261018/formal/channel_denoising/denoising.png",
+      "sha256": "c5381246a67254ae73337a3b30be2dc840e67163ff7aeb00a535b59bbf47d199"
+    },
+    {
+      "path": "results/local_baselines_20261018/formal/channel_denoising/denoising.pdf",
+      "sha256": "ac021a05562e3589e120bc75a0367005158d8cdd94fb5136e38eddde88f815b4"
+    },
+    {
+      "path": "results/denoising_baseline_diagnosis_20261019/diagnosis.png",
+      "sha256": "96939e1649df01c529b7394e6894d382c226b1c4ebe909a1c65a85b2a62a1b34"
+    },
+    {
+      "path": "results/denoising_baseline_diagnosis_20261019/diagnosis.pdf",
+      "sha256": "a85759736cc3062283c76ddf4512a7467a68eb5eb1bbe25ed494ae75571d547f"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising_main.json",
+      "sha256": "fcbc12f6dfe57c9e94ad52d2b9e8fe5893ee7ef438177737403e3593e5b755a3"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising_training.json",
+      "sha256": "e96c2498443e8281832b310404b0f348530249c25ac40f3f2dd94319db3ceddb"
+    },
+    {
+      "path": "results/figure_style_20261019/channel_denoising_references.json",
+      "sha256": "ac6c52a045c7b2051b211bb04b69cc3d7637d0598ab048b863557e2e0007af1f"
+    },
+    {
+      "path": "results/figure_style_20261019/denoising_diagnosis.json",
+      "sha256": "8ef4bd5da59eea04fc5fdd33cfae9f39cfc309b815f1e4c8305602a060788747"
+    },
+    {
+      "path": "results/figure_style_20261019/layout_check_3.jpg",
+      "sha256": "c98f41ac0993b8db1be0e1f3ddd8ebe62d3b4871e5189d491268795d572a78d1"
+    },
+    {
+      "path": "results/figure_style_20261019/layout_check_2.jpg",
+      "sha256": "c815edd0ee6afd65b3819024e79c309c6d480df5ccc7f3b7442f02d4412a21da"
+    },
+    {
+      "path": "results/figure_style_20261019/layout_check_1.jpg",
+      "sha256": "b6719938f698fc819f32e9cc76aa3f13cf712eae946da0eacc79e9df4a2492b5"
+    }
+  ],
+  "visual_review": {
+    "status": "PASS",
+    "reviewed_figure_sets": 14,
+    "checks": [
+      "shared legend fits canvas and stays above data panels",
+      "all rendered PNG layouts inspected",
+      "Proposed circle marker and solid red line confirmed"
+    ],
+    "gallery": "results/figure_style_20261019/index.html"
+  }
+}

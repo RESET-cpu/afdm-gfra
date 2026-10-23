@@ -1,0 +1,77 @@
+{
+  "name": "pilot_frames",
+  "source": "results/local_baselines_20261018/formal/pilot_frames/SUMMARY.json",
+  "description": "",
+  "files": {
+    "results/figure_style_20261019/pilot_frames.png": "673635641b8506d067abbd5542fbe0af0db23169cfd553ef519fec22668a2087",
+    "results/local_baselines_20261018/formal/pilot_frames/comparison.png": "673635641b8506d067abbd5542fbe0af0db23169cfd553ef519fec22668a2087",
+    "results/figure_style_20261019/pilot_frames.pdf": "b8c008b32775e700ef01cb25f90cd265c990ed1c15a22554be53fb3ce764c48c",
+    "results/local_baselines_20261018/formal/pilot_frames/comparison.pdf": "b8c008b32775e700ef01cb25f90cd265c990ed1c15a22554be53fb3ce764c48c"
+  },
+  "renderer_sha256": "bf42f683fda8baa397f4bb1b4e150e8fa05ec13707cdbf0528e8852ee6bf811d",
+  "sources": {
+    "results/local_baselines_20261018/formal/pilot_frames/SUMMARY.json": "813479d102a490f7573a82414f2759090bbc61241b0c2261f1b83f32a75c4a67"
+  },
+  "styles": {
+    "proposed": {
+      "label": "Proposed",
+      "color": "#BF3052",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "proposed_small": {
+      "label": "Proposed",
+      "color": "#DE7288",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "offgrid_sbl": {
+      "label": "Off-grid SBL",
+      "color": "#168682",
+      "linestyle": "--",
+      "marker": "s"
+    },
+    "gnn": {
+      "label": "GNN-ASPL",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "gamp": {
+      "label": "GAMP-SBL",
+      "color": "#BE7A10",
+      "linestyle": ":",
+      "marker": "D"
+    },
+    "somp": {
+      "label": "SOMP",
+      "color": "#687B96",
+      "linestyle": "--",
+      "marker": "x"
+    },
+    "bg_tmp": {
+      "label": "BG-TMP",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "noisy": {
+      "label": "LS",
+      "color": "#7C8795",
+      "linestyle": ":",
+      "marker": "+"
+    },
+    "gaussian": {
+      "label": "Gaussian prior",
+      "color": "#A88B32",
+      "linestyle": "--",
+      "marker": "v"
+    },
+    "genie_bound": {
+      "label": "Genie conditional MMSE (oracle)",
+      "color": "#438363",
+      "linestyle": "-.",
+      "marker": "x"
+    }
+  }
+}

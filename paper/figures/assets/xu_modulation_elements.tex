@@ -1,0 +1,9 @@
+% Vector primitives from Xu et al., Fig. 1, PDF p.3 (printed p.2).
+\providecommand{\xuModBlock}[4]{%
+\begin{scope}[shift={#2},x=#3,y=#4]
+\path[#1] (0.0000000,1.0000000) rectangle (1.0000000,0.0000000);
+\end{scope}}
+\providecommand{\xuTransformBrace}[4]{%
+\begin{scope}[shift={#2},x=#3,y=#4]
+\path[#1] (1.0000000,1.0000000) ..controls (0.9753937,0.7417998) and (0.9398510,0.5640920)..(0.8999868,0.4999699) --(0.4992284,0.4999699) --(0.4992284,0.0000000) --(0.4992284,0.4999699) --(0.0999958,0.4999699) ..controls (0.0601843,0.5640920) and (0.0246416,0.7417998)..(0.0000000,1.0000000);
+\end{scope}}

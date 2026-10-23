@@ -1,0 +1,13 @@
+% Shared vector-figure style; labels are 9 pt at their final printed size.
+\definecolor{figblue}{RGB}{41,82,118}
+\definecolor{figlight}{RGB}{232,240,247}
+\definecolor{figgray}{RGB}{241,242,243}
+\tikzset{
+  figtext/.style={font=\fontsize{9}{10.5}\selectfont},
+  figbox/.style={draw=black!75,line width=.55pt,fill=white,
+    rounded corners=1pt,align=center,inner sep=3pt},
+  figlearn/.style={figbox,draw=figblue,fill=figlight},
+  figarrow/.style={-{Stealth[length=1.6mm,width=1.1mm]},line width=.6pt},
+  figtitle/.style={font=\fontsize{9}{10.5}\selectfont\bfseries,anchor=west},
+  figdim/.style={{Stealth[length=1.2mm]}-{Stealth[length=1.2mm]},line width=.4pt}
+}

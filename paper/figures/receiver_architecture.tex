@@ -1,0 +1,103 @@
+\IfFileExists{figures/receiver_denoising_maps.tex}{\input{figures/receiver_denoising_maps}}{\input{receiver_denoising_maps}}%
+\IfFileExists{figures/receiver_network_symbols.tex}{\input{figures/receiver_network_symbols}}{\input{receiver_network_symbols}}%
+\definecolor{rxpne}{RGB}{207,227,242}%
+\definecolor{rxle}{RGB}{225,215,238}%
+\definecolor{rxcad}{RGB}{205,231,225}%
+\begin{tikzpicture}[x=1cm,y=1cm,every node/.style={figtext},line width=.5pt,
+ smallmsg/.style={font=\fontsize{7.5}{8.5}\selectfont,fill=white,inner sep=1pt}]
+\tikzset{
+ figarrow/.append style={draw=black,line width=.5pt},
+ figbox/.append style={draw=black,line width=.5pt},
+ figlearn/.append style={draw=black,line width=.5pt},
+ overview/.style={figbox,font=\fontsize{9}{10.5}\selectfont,text width=1.65cm,minimum width=1.90cm,minimum height=.85cm}
+}
+\path (0,.63) rectangle (16.30,6.75);
+\begin{scope}[xshift=1.55cm,yshift=-.81cm]
+% Receiver overview: observation parameters and iterative inference.
+\node[overview,fill=rxpne] (front) at (3.40,6.40) {};
+\node[overview,fill=rxle] (lin) at (6.60,6.40) {};
+\node[overview,fill=rxcad] (den) at (9.80,6.40) {};
+\foreach \module/\title in {front/PNE,lin/LE,den/CAD} {
+ \node[font=\fontsize{9}{10.5}\selectfont\bfseries] at ($(\module.center)+(0,.19)$) {\title};
+}
+\node[font=\fontsize{7.5}{8.5}\selectfont] (frontvars) at ($(front.center)+(0,-.17)$) {$\widehat{\mathbf A},\widehat\sigma^2$};
+\node[font=\fontsize{7.5}{8.5}\selectfont] (linvars) at ($(lin.center)+(0,-.17)$) {$R_k,v$};
+\node[font=\fontsize{7.5}{8.5}\selectfont] (denvars) at ($(den.center)+(0,-.17)$) {$\widehat X_k,p_k,\overline t_X$};
+\coordinate (frontin) at (front.west |- frontvars);
+\coordinate (frontout) at (front.east |- frontvars);
+\coordinate (linin) at (lin.west |- linvars);
+\coordinate (linout) at (lin.east |- linvars);
+\coordinate (denin) at (den.west |- denvars);
+\coordinate (denout) at (den.east |- denvars);
+\node[align=center,anchor=east] (obs) at ($(frontin)+(-.90,0)$) {$\mathbf Y,P$};
+\node[align=center,anchor=west] (estimate) at ($(denout)+(.90,0)$)
+ {$s\widehat X_k$\\$p_k,\widehat\alpha_k$};
+\draw[figarrow] (obs.east)--(frontin);
+\draw[figarrow] (frontout)--node[above,smallmsg] {$\mathbf Y$}(linin);
+\draw[figarrow] (linout)--(denin);
+\draw[figarrow] (denout)--(estimate.west);
+\node[figbox,font=\fontsize{8}{9}\selectfont,minimum width=2.00cm,minimum height=.50cm] (feedback) at (8.20,7.55)
+ {Extrinsic update};
+\draw[figarrow] (den.north)--node[right,smallmsg,fill=none] {$\widehat X_k,\overline t_X$}(9.80,7.55)--(feedback.east);
+\draw[figarrow] (feedback.west)--(6.60,7.55)--node[left,smallmsg,fill=none] {$\mathbf X^{\rm pri},\gamma$}(lin.north);
+\draw[figarrow] (8.20,6.23)--node[pos=.75,left,smallmsg,fill=none] {$R_k,v$}(feedback.south);
+\fill (8.20,6.23) circle (.022);
+\end{scope}
+\foreach \obj in {front,lin,den,obs,estimate} {
+ \foreach \edge in {west,east,south,north} {
+  \pgfextractx{\dimen0}{\pgfpointanchor{\obj}{\edge}}
+  \pgfextracty{\dimen2}{\pgfpointanchor{\obj}{\edge}}
+  \typeout{OVERVIEW-\obj-\edge=\the\dimen0,\the\dimen2}
+ }
+}
+% Expanded denoiser, linked to the corresponding receiver block.
+\draw[dashed,black,line width=.5pt] (den.south west)--(.18,4.88)
+ (den.south east)--(16.12,4.88);
+\draw[dashed,black,line width=.5pt] (.18,.82) rectangle (16.12,4.88);
+% Horizontal channel-estimation path, with variance above and activity below.
+\begin{scope}[shift={(.50,2.35)}]\rxmapR\end{scope}
+\begin{scope}[shift={(5.10,2.35)}]\rxmapF\end{scope}
+\begin{scope}[shift={(14.20,2.35)}]\rxmapXhat\end{scope}
+\node at (1.31,4.20) {$R_k$};
+\node at (5.91,2.08) {$F_k$};
+\node at (15.01,4.20) {$\widehat X_k$};
+\node[minimum width=1.9cm,minimum height=.98cm,inner sep=0pt] (score) at (3.60,3.00) {};
+\node[minimum width=1.9cm,minimum height=.98cm,inner sep=0pt] (second) at (3.60,4.05) {};
+\node[minimum width=2.25cm,minimum height=.98cm,inner sep=0pt] (cls) at (8.35,1.70) {};
+\begin{scope}[shift={(3.60,3.00)}]\rxscorenetwork\end{scope}
+\begin{scope}[shift={(3.60,4.05)}]\rxscorenetwork\end{scope}
+\begin{scope}[shift={(8.35,1.70)}]\rxactivitynetwork\end{scope}
+\node at (3.60,2.32) {$S_\theta$};
+\node at (3.60,4.68) {$T_\psi$};
+\node at (8.35,1.05) {$z_\phi$};
+\node[figbox,minimum width=2.25cm,minimum height=.88cm] (site) at (8.35,3.00)
+ {Gaussian site\\update};
+\node[figbox,minimum width=2.10cm,minimum height=.88cm] (mom) at (12.25,3.00)
+ {Posterior\\moments};
+\node[figbox,minimum width=2.10cm,minimum height=.65cm] (prob) at (10.90,1.70)
+ {Prior correction};
+% Shared query; the classifier and analytical updates also use R_k,v.
+\draw[figarrow,black] (2.12,3.00)--(score.west);
+\draw (2.35,3.00)--(2.35,4.05);
+\draw[figarrow] (2.35,4.05)--(second.west);
+\node[smallmsg,fill=none] (variance) at (2.35,4.68) {$v$};
+\draw[figarrow] (variance.south)--(2.35,4.05);
+\fill (2.35,3.00) circle (.022);
+% Main chain: score mean, Gaussian site, conditional moments and mixture.
+\draw[figarrow,black] (score.east)--(5.10,3.00);
+\draw[figarrow,black] (6.72,3.00)--(site.west);
+\draw[figarrow] (site.east)--(mom.west);
+\node[font=\fontsize{7.5}{8.5}\selectfont,anchor=south,inner sep=0pt,yshift=3pt]
+ (siteMessage) at ($(site.east)!.5!(mom.west)$) {$E_k,c_k$};
+\draw[figarrow] (mom.east)--(14.20,3.00);
+% Upper auxiliary path: per-user variance estimates and shared variance.
+\draw[figarrow] (second.east)--node[above,smallmsg,fill=none] {$\tau$}(8.35,4.05)--(site.north);
+% Lower auxiliary path: classifier and prior-corrected activity probability.
+\draw[figarrow] (6.90,3.00)--(6.90,1.70)--(cls.west);
+\fill (6.90,3.00) circle (.022);
+\draw[figarrow] ($(cls.center)+(.945,0)$)--(prob.west);
+\node[smallmsg,fill=none,inner sep=0pt] (rho) at (10.90,2.42) {$\rho,\pi_{\rm tr}$};
+\draw[figarrow] (rho.south)--(prob.north);
+\draw[figarrow] (prob.east)--(12.25,1.70)--node[right,smallmsg,fill=none] {$p_k$}(mom.south);
+\node[font=\fontsize{8}{9}\selectfont] at (15.01,2.00) {$\overline t_X$};
+\end{tikzpicture}

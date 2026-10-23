@@ -1,0 +1,77 @@
+{
+  "name": "user_count",
+  "source": "results/cpu_9900x_returned_20261019/user_count/SUMMARY.json",
+  "description": "",
+  "files": {
+    "results/figure_style_20261019/user_count.png": "28a05d3ed84872647552b5c60641b1c531cb60b1dfbbef36d40d8c74b8f0e59d",
+    "results/cpu_9900x_returned_20261019/user_count/comparison.png": "28a05d3ed84872647552b5c60641b1c531cb60b1dfbbef36d40d8c74b8f0e59d",
+    "results/figure_style_20261019/user_count.pdf": "ea3afb297b0bb80876d07cf8eada94e96c417dcb3ebb7a57239f15dabf2e7626",
+    "results/cpu_9900x_returned_20261019/user_count/comparison.pdf": "ea3afb297b0bb80876d07cf8eada94e96c417dcb3ebb7a57239f15dabf2e7626"
+  },
+  "renderer_sha256": "bf42f683fda8baa397f4bb1b4e150e8fa05ec13707cdbf0528e8852ee6bf811d",
+  "sources": {
+    "results/cpu_9900x_returned_20261019/user_count/SUMMARY.json": "9aea8faca93a0bfffc64ea1d7b99ee012b18e239eed7c6e76c6676f409fb8e93"
+  },
+  "styles": {
+    "proposed": {
+      "label": "Proposed",
+      "color": "#BF3052",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "proposed_small": {
+      "label": "Proposed",
+      "color": "#DE7288",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "offgrid_sbl": {
+      "label": "Off-grid SBL",
+      "color": "#168682",
+      "linestyle": "--",
+      "marker": "s"
+    },
+    "gnn": {
+      "label": "GNN-ASPL",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "gamp": {
+      "label": "GAMP-SBL",
+      "color": "#BE7A10",
+      "linestyle": ":",
+      "marker": "D"
+    },
+    "somp": {
+      "label": "SOMP",
+      "color": "#687B96",
+      "linestyle": "--",
+      "marker": "x"
+    },
+    "bg_tmp": {
+      "label": "BG-TMP",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "noisy": {
+      "label": "LS",
+      "color": "#7C8795",
+      "linestyle": ":",
+      "marker": "+"
+    },
+    "gaussian": {
+      "label": "Gaussian prior",
+      "color": "#A88B32",
+      "linestyle": "--",
+      "marker": "v"
+    },
+    "genie_bound": {
+      "label": "Genie conditional MMSE (oracle)",
+      "color": "#438363",
+      "linestyle": "-.",
+      "marker": "x"
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "name": "offgrid_candidates",
+  "source": "results/offgrid_candidates_20261019/SUMMARY.json",
+  "description": "",
+  "files": {
+    "results/figure_style_20261019/offgrid_candidates.png": "64512be77aa4538c3c11bb5f91ad5db4a6b4e15625e0d18c94c08cd0c18a6ff7",
+    "results/offgrid_candidates_20261019/comparison.png": "64512be77aa4538c3c11bb5f91ad5db4a6b4e15625e0d18c94c08cd0c18a6ff7",
+    "results/figure_style_20261019/offgrid_candidates.pdf": "c31cffcb3736db65b0c8282a18127b5c9dae50b1300a77ac52b83f8ee962746e",
+    "results/offgrid_candidates_20261019/comparison.pdf": "c31cffcb3736db65b0c8282a18127b5c9dae50b1300a77ac52b83f8ee962746e"
+  },
+  "renderer_sha256": "bf42f683fda8baa397f4bb1b4e150e8fa05ec13707cdbf0528e8852ee6bf811d",
+  "sources": {
+    "results/offgrid_candidates_20261019/SUMMARY.json": "576e1ab8dd5391ada54a0d37a24349cd62b665f3b3c4a8a01dec5f206653a573"
+  },
+  "styles": {
+    "proposed": {
+      "label": "Proposed",
+      "color": "#BF3052",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "proposed_small": {
+      "label": "Proposed",
+      "color": "#DE7288",
+      "linestyle": "-",
+      "marker": "o"
+    },
+    "offgrid_sbl": {
+      "label": "Off-grid SBL",
+      "color": "#168682",
+      "linestyle": "--",
+      "marker": "s"
+    },
+    "gnn": {
+      "label": "GNN-ASPL",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "gamp": {
+      "label": "GAMP-SBL",
+      "color": "#BE7A10",
+      "linestyle": ":",
+      "marker": "D"
+    },
+    "somp": {
+      "label": "SOMP",
+      "color": "#687B96",
+      "linestyle": "--",
+      "marker": "x"
+    },
+    "bg_tmp": {
+      "label": "BG-TMP",
+      "color": "#7158AC",
+      "linestyle": "-.",
+      "marker": "^"
+    },
+    "noisy": {
+      "label": "LS",
+      "color": "#7C8795",
+      "linestyle": ":",
+      "marker": "+"
+    },
+    "gaussian": {
+      "label": "Gaussian prior",
+      "color": "#A88B32",
+      "linestyle": "--",
+      "marker": "v"
+    },
+    "genie_bound": {
+      "label": "Genie conditional MMSE (oracle)",
+      "color": "#438363",
+      "linestyle": "-.",
+      "marker": "x"
+    },
+    "offgrid_6": {
+      "label": "Off-grid SBL (6 candidates/user)",
+      "color": "#687B96",
+      "marker": "x",
+      "linestyle": "-."
+    },
+    "offgrid_12": {
+      "label": "Off-grid SBL (12 candidates/user)",
+      "color": "#168682",
+      "marker": "s",
+      "linestyle": "--"
+    },
+    "offgrid_24": {
+      "label": "Off-grid SBL (24 candidates/user)",
+      "color": "#7158AC",
+      "marker": "^",
+      "linestyle": ":"
+    }
+  }
+}
