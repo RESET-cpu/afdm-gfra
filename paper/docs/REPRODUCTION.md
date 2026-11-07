@@ -30,7 +30,7 @@ Both commands read saved data; neither runs a receiver.
 | 4 | `channel_denoising` | `result/channel_denoising/figures/white_mainline_500_20261107/PLOT_DATA.json` | White GP-MP adopted; 500 scenes × 4 channels × 6 noise levels = 12,000 GP-MP queries |
 | 5 | `convergence` | `result/snr_comparison/figures/convergence_first30_300_20261105/PAPER_PLOT_DATA.json` | Adopted 30 paired scenes, 0 dB; three methods, first 150 displayed iterations from 300 saved iterations |
 | 6 | `snr_comparison` | `result/snr_comparison/figures/main_snr_white_20261107/PLOT_DATA.json` | White GP-MP and GP-MP-EP adopted; 1,000 scenes at each of six SNR values |
-| 7 | `pilot_frames` | `result/pilot_frames/figures/full_grid_final_20261026/PLOT_DATA.json` | Historical curve retained; white replacement stopped at 2,906/12,000 result entries and is not adopted |
+| 7 | `pilot_frames` | `result/pilot_frames/figures/full_grid_final_20261026/PLOT_DATA.json` | Historical curve retained; white replacement resumed after validating 2,906 saved entries; not yet adopted |
 | 8 | `user_count` | `result/user_count/figures/redraw_beta01_500_20261028/PLOT_DATA.json` | Historical 500-scene curve retained; agreed white replacement not started |
 | 9 | `activity_probability` | `result/activity_probability/figures/stmp_c_stmp_500_20261026/PLOT_DATA.json` | Historical 500-scene curve retained; agreed white replacement not started |
 | 10 | `cross_channel` | `result/cross_channel/figures/full_500_paper_20261028/PLOT_DATA.json` | Historical 500-scene curve retained; agreed white replacement not started |
@@ -58,11 +58,13 @@ only `run` performs inference. The root reproduction guide gives a separate
 one-scene GP-MP diagnostic configuration.
 
 Current source paths use `receiver.gp_mp` and the organized catalog. The
-already recorded batches continue to use their original `algorithm.GP_MP`,
-`system`, `evaluation` and training modules. Their `PLAN.json` hashes must not
-be rewritten to make a relocated batch appear unchanged. Replaying a frozen
-batch on another machine requires a separately documented path adaptation
-and paired validation; it is not the same operation as making a new plan.
+recorded batches retain their original plans and source bindings. The current
+pilot sweep additionally records its validated execution-source inventory;
+see [the resume record](../../archive/pilot_resume_20261107/README.md).
+Other frozen implementations are isolated in the reproduction archive.
+Their `PLAN.json` hashes must not be rewritten to bypass validation.
+Replaying a saved batch on another machine requires its original inputs and
+a documented path/source adaptation.
 
 For the adopted white experiments, the frozen execution records are:
 
@@ -74,9 +76,10 @@ For the adopted white experiments, the frozen execution records are:
 - Convergence adoption:
   `paper/checks/convergence_30_adopted_20261106/README.md`.
 - Subsequent stage request: `result/white_followup_20261107/REQUEST.json`;
-  pilot-frame failure and partial results remain in their original folder.
+  pilot-frame partial results are preserved; the prior failure is retained in the resume record.
 
-This preparation did not run the outstanding studies, repair their results,
-or certify the incomplete figure replacements. It also did not retrain a
-network. Those limits apply even when the source tests and plotting checks
-pass.
+The pilot-frame replacement is running locally; its completed-stage verification
+and figure adoption remain pending. The subsequent user-count, activity and
+cross-channel replacements have not started. See [the result index](../../result/README.md)
+for status. Successful source checks and saved-aggregate rendering do not establish
+complete numerical reproduction or retraining.

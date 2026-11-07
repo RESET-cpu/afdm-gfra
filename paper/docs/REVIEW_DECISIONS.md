@@ -1,5 +1,7 @@
 # GP-MP 预审问题、讨论决定与剩余事项
 
+> 记录说明（2026-11-07）：下文按日期保留研究依据和作者决定，“当前”“最新”均指记录当时。现行图源与采用状态见 [REPRODUCTION.md](REPRODUCTION.md)，运行进度见[实验索引](../../result/README.md)。本轮整理仅更新导航，不改变原判断；移出的旧说明通过固定版本链接查阅。
+
 **2026-11-06 白噪声表述统一（作者主动要求）：** 作者在确认第六章与完整稿附录仍保留旧训练描述后，要求直接修改。现将这些位置统一为白高斯噪声、复协方差 $vI_D$、实协方差 $(v/2)I_{2D}$、既有方差加权损失与标量预条件；删去随机相关协方差采样、矩阵推广及其专用引用。摘要、引言与第四章已采用的数学链保持。图 5 和表 III 的 GP-MP 使用白噪声网络，图 4、6–10 的相关曲线仍保留历史训练结果，工作稿第六章开头集中说明数据归属及待替换状态，不将这些数值改称白噪声结果。本轮不运行训练、推断或重绘，不切换 FINAL/MAINLINE；已知相位白噪声批次的完成核验 PASS 仅说明保存结果已核验，不代表曲线已替换。两版编译与版面检查见[修订记录](../checks/white_noise_wording_20261106/README.md)。这是作者要求的表述修改，按既定阶段验收，不重开旧预审事项；历史记录保留原文。
 
 **2026-11-06 白噪声估计相位主 SNR 接续与阶段定稿安排（作者最新决定）：** 作者明确要求先完成当前白噪声已知相位主 SNR，再完成“查看进行中的实验”线程安排的四组活动证据消融，随后启动白噪声网络下的主 SNR 估计相位实验。新实验固定同一 1000 场景及六档 SNR，沿用当前边缘似然相位前端、vI 和接收机数值设置，仅采用已训练好的白噪声去噪器及匹配密度比分类器，不重训。新前端绑定与哈希已核对，自动跟进 `snr-2` 已建立，每 30 分钟检查前置核验和进程退出，尚未启动新推断。若消融支持贡献且估计相位结果没有明显变化，可以先固定核心论述与工作稿；后续逐步替换其余白噪声数据，补充导频、用户数、活动概率三类实验的估计相位曲线及 Off-grid SBL 另外两档（13/25）。后续扫描未在本次排队中启动；最终投稿版仍须图表、模型和说明一致，不能将历史有色网络数据标成白噪声结果，也不预先宣称新实验等价。此项按阶段验收，不因此重开已完成或已撤回的审议问题。见[接续安排](../../result/snr_comparison/data/white_phase_frontend_marginal_1000_20261106/README.md)。
@@ -36,14 +38,14 @@
 
 **2026-11-04 第六章最新完成状态：作者已授权按 Cai 的逐节对照直接调整，并追加要求一并精简展开过细的分析。** 已重组 VI-A、增加网络配置表、将基线改为分点及算法名加粗、将 VI-D 改为连续图引导段落，并核对各组主要趋势。主 SNR 段不再拆分漏检与误警；密度比消融中的具体错误计数及类别展开也从正文删除。重复图注参数、负载总结和无重训练说明已压缩；有实际比较作用的 25% 导频减少及单场景 60/85 次迭代保留。原始统计及完整稿评估附录继续保留。此项已完成，不再作为待选建议，也不把细分错误来源作为必须补写任务。两版目前为 **13/15 页**，结论均在第 12 页，43 篇参考文献与 46 个编号公式保持。见[本轮实施、数据核验与版面检查](../checks/ch6_cai_revision_20261104/README.md)。本次授权范围为第六章；其他章节的一般修订仍沿用既有确认方式，C1 及补充实验安排不变。以下各轮的页数和表号为当时快照，当前密度比比较表已因新增网络表顺延为表 III。
 
-**2026-11-04 当前写作安排（作者最新决定）：先恢复主 SNR 六算法、已知相位、每档 1000 场景的图，并据此继续整个第六章的分析。** 旧估计相位曲线已从图 6 撤出，数据及旧评估说明保留存档；正在运行的新相位前端批次和 Off-grid SBL 两档新增搜索预算完成后再补入。此前“等待补充实验而暂缓整章分析”的安排由本条取代。一般语言修改仍按先分析、作者选择后实施执行，见[第六章当前分析](CHAPTER_VI_SIX_METHOD_REVIEW_20261104.md)。本写作会话未启动、停止或干预实验。
+**2026-11-04 当前写作安排（作者最新决定）：先恢复主 SNR 六算法、已知相位、每档 1000 场景的图，并据此继续整个第六章的分析。** 旧估计相位曲线已从图 6 撤出，数据及旧评估说明保留存档；正在运行的新相位前端批次和 Off-grid SBL 两档新增搜索预算完成后再补入。此前“等待补充实验而暂缓整章分析”的安排由本条取代。一般语言修改仍按先分析、作者选择后实施执行，见[第六章当前分析](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_VI_SIX_METHOD_REVIEW_20261104.md)。本写作会话未启动、停止或干预实验。
 
-**2026-11-04 最新状态：摘要、引言及第二章的选定修改已完成；第三至第五章的 11 项修改也已全部获作者授权并实施。** [III–V 实施表](CHAPTERS_III_V_LANGUAGE_REVIEW_20261104.md)记录最终写法：IV02 正面说明相同最优解，V05 正面列明内存统计对象；IV03 同步第六章两处名称。原分析表保留为历史快照，不再等待选择。三章的详细论述与衔接见[逻辑导读](CHAPTERS_III_V_LOGIC_GUIDE_20261104.md)。[第二章分析与实施记录](CHAPTER_II_LANGUAGE_REVIEW_20261104.md)保留原候选表和讨论，顶部记录最终写法：删去重复类型说明，以 rows and columns 保留行列含义，用 Define 引出跨天线定义。[摘要与引言作者决定表](ABSTRACT_INTRO_LANGUAGE_REVIEW_20261104.md)继续适用，不重提已保留的写法。变量、公式呈现、伪代码与六处正文精简已完成；此前[语言润色前复核](POLISH_READINESS_20261104.md)保持为检查记录。当前为 46 个编号公式、13/14 页；下文各轮 61/57/53/51 式记录均是历史快照。继续区分文献原式、必要模型适配和辅助表达，不因不是原文同形公式就删除合理关系，不恢复已撤回的符号表或多余推导。
+**2026-11-04 最新状态：摘要、引言及第二章的选定修改已完成；第三至第五章的 11 项修改也已全部获作者授权并实施。** [III–V 实施表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_III_V_LANGUAGE_REVIEW_20261104.md)记录最终写法：IV02 正面说明相同最优解，V05 正面列明内存统计对象；IV03 同步第六章两处名称。原分析表保留为历史快照，不再等待选择。三章的详细论述与衔接见[逻辑导读](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_III_V_LOGIC_GUIDE_20261104.md)。[第二章分析与实施记录](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_II_LANGUAGE_REVIEW_20261104.md)保留原候选表和讨论，顶部记录最终写法：删去重复类型说明，以 rows and columns 保留行列含义，用 Define 引出跨天线定义。[摘要与引言作者决定表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/ABSTRACT_INTRO_LANGUAGE_REVIEW_20261104.md)继续适用，不重提已保留的写法。变量、公式呈现、伪代码与六处正文精简已完成；此前[语言润色前复核](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/POLISH_READINESS_20261104.md)保持为检查记录。当前为 46 个编号公式、13/14 页；下文各轮 61/57/53/51 式记录均是历史快照。继续区分文献原式、必要模型适配和辅助表达，不因不是原文同形公式就删除合理关系，不恢复已撤回的符号表或多余推导。
 
 **2026-11-04 第六、七章最新状态：作者已授权并完成 VI01–VI07、VII01–VII02 九项调整。** 第六章五处小修、we select、矩阵预条件补引，以及结论的比较对象澄清和长句拆分均已实施。两版仍为 13/14 页，参考文献增至 43 篇；这些项目关闭，不重复列为待选择。见[完成记录](../checks/chapters_vi_vii_language_selected_20261104/README.md)。
 
 0. **2026-11-04 作者明确要求：语言润色先通读分析，列完整修改建议表供审核，不直接修改正文。** 前一轮直接改动引言的操作已撤回，引言及两版 PDF 恢复为该轮之前的版本。paper-polish/Humanizer 仅用于分析；待作者指定修改范围后才执行，不能把询问可行性当作全文修改授权。
-   早期候选清单见[全文语言修改建议表](LANGUAGE_REVIEW_20261104.md)，原有 31 项建议。后续修订已解决或取代 P03/P10/P11/P14/D02 等内容，当前状态以[复核表](POLISH_READINESS_20261104.md)为准；旧摘录、行号和附录号不能直接套用现稿。未列建议的段落不代表漏读，也不要求为增加修改量而改写。
+   早期候选清单见[全文语言修改建议表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/LANGUAGE_REVIEW_20261104.md)，原有 31 项建议。后续修订已解决或取代 P03/P10/P11/P14/D02 等内容，当前状态以[复核表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/POLISH_READINESS_20261104.md)为准；旧摘录、行号和附录号不能直接套用现稿。未列建议的段落不代表漏读，也不要求为增加修改量而改写。
 1. 再次预审、讨论这些问题或安排相应修改前，先读本文件及对应证据。不要因为新会话缺少上下文，就重新要求作者解释已有实验、附录安排或相位进度。
 2. C1、M1–M5 仅保留为原预审的追踪编号，不代表当前严重等级。最初的“1 CRITICAL + 5 MAJOR”和“5/10”已停止使用。当前按“最终图表待核定、依据留档、进行中、已撤回、已完成”跟踪，不再根据这些旧编号给整篇论文作 Critical/Major 计数。M2、M3 明确不列 Major；C1 的已量化影响仍保留，不能因取消等级标签或调整处理时点就视为已经解决。
 3. 区分“稿件未呈现”“已有证据未衔接”和“确实没有实验”。先查保存结果，不能把前两种情况判成第三种。
@@ -91,7 +93,7 @@
 - 上述均为助手建议，**作者尚未选定**。作者的条件性删场景提议没有被执行，也不能记成已同意恢复原结果、采用重试规则或重新开展实验。
 - 尚无与算法性能无关的输入损坏证据。仅因迭代未收敛或结果不利而删除这个合法场景，会造成筛选偏差。
 
-证据：[逐场景敏感性复算](../checks/review_followup_20261103/scene372_sensitivity.json)、[原单场景诊断](../../result/user_count/data/c_stmp_80user_scene0372_beta02_gpu_20261026/REPORT.md)、[当前附录 C](../sections/appendix_evaluation_protocol.tex)。
+证据：逐场景敏感性复算（仅本地历史资料：`paper/checks/review_followup_20261103/scene372_sensitivity.json`）、原单场景诊断（仅本地历史资料：`result/user_count/data/c_stmp_80user_scene0372_beta02_gpu_20261026/REPORT.md`）、[当前附录 C](../sections/appendix_evaluation_protocol.tex)。
 
 ## M1：附录 C 与主稿的信息范围
 
@@ -102,7 +104,7 @@
 - 当前 `main` 不含附录 C、`main_full` 含附录 C 的安排继续保留。不得以这次预审为由擅自把整个附录搬回正文。
 - 对 C1 这类实质改变比较的特殊处理，仍需在处理该问题时同步足够说明；这不是另一个独立的附录完整性阻塞项。
 
-核对来源：[Cai 原文，仿真设置与收敛比较](../../reference/literature/cai2026_stmp_v2.pdf)、[Shen 原文，仿真设置](../../reference/literature/shen2025.pdf)。
+核对来源：Cai 原文，仿真设置与收敛比较（仅本地历史资料：`reference/literature/cai2026_stmp_v2.pdf`）、Shen 原文，仿真设置（仅本地历史资料：`reference/literature/shen2025.pdf`）。
 
 ## M2：有色训练网络的独立实验与最终配置
 
@@ -148,13 +150,13 @@
 
 以上每种条件均有 12/12 个场景的平均评分改善。这是已重复查看的开发诊断，不是独立总体显著性验证；有些阶段的天线剩余相关指标反而增加，不能称为完全白化。
 
-来源：[协方差诊断说明](COLORED_COVARIANCE_RELATIVE_CHECK_20261024.md)、[保存汇总](../../result/snr_comparison/data/colored_covariance_relative_check_20261024/SUMMARY.json)。
+来源：[协方差诊断说明](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/COLORED_COVARIANCE_RELATIVE_CHECK_20261024.md)、[保存汇总](../../result/snr_comparison/data/colored_covariance_relative_check_20261024/SUMMARY.json)。
 
 ### 证据 B：同一实际输入上的去噪比较
 
 在均匀诊断组的两档 SNR × 三个阶段中，新网络使用 vI 均优于旧网络；给新网络输入估计 C，则比同一新网络使用 vI 差约 **0.32–1.94 dB**。输出没有反馈到接收机，因此不能直接据此推断整机收益。
 
-来源：[有色噪声与接收机输入实验报告](../../result/channel_denoising/data/colored_noise_1000_20261025/REPORT.md)、[逐模块诊断](C_STMP_COMPONENT_DIAGNOSTIC_20261025.md)。
+来源：[有色噪声与接收机输入实验报告](../../result/channel_denoising/data/colored_noise_1000_20261025/REPORT.md)、[逐模块诊断](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/C_STMP_COMPONENT_DIAGNOSTIC_20261025.md)。
 
 ### 技术路线依据与表述边界
 
@@ -191,7 +193,7 @@
 
 已更新 VI-C 的表 II、指标说明与结果描述；没有更改其他论文小节或附录 C。`main.pdf` 13 页、`main_full.pdf` 15 页，表 II 均位于第 10 页。编译及版面检查通过，参考文献仍为 42 篇。
 
-证据：[分 SNR CSV](../checks/review_followup_20261103/activity_by_snr.csv)、[完整汇总](../checks/review_followup_20261103/activity_summary.json)、[修改差异](../checks/review_followup_20261103/CHANGES.diff)、[核验记录](../checks/review_followup_20261103/VALIDATION.json)。
+证据：分 SNR CSV（仅本地历史资料：`paper/checks/review_followup_20261103/activity_by_snr.csv`）、[完整汇总](../checks/review_followup_20261103/activity_summary.json)、修改差异（仅本地历史资料：`paper/checks/review_followup_20261103/CHANGES.diff`）、[核验记录](../checks/review_followup_20261103/VALIDATION.json)。
 
 这完成了本轮作者同意的 M5 工作。此前提过的概率校准、置信区间及失效机理研究只是进一步分析建议，没有被确认成新增必做任务；不得以这些未执行建议为理由反复将 M5 标为未完成。现有统计也不宣称已经证明唯一失效原因。
 
@@ -223,11 +225,11 @@
 
 作者认为后续将估计相位结果加入主 SNR 实验后，实验覆盖应已较充分，并询问是否值得为 Off-grid SBL 增大预算、“也做三个”。核查当前第六章和 2026-11-03 修订记录，图 6 已包含每档 500 场景的 GP-MP-CCD-EP 估计相位曲线；如果后续采用新的最终相位版本，应更新已有曲线及对应说明，不把当前状态误记为尚无估计相位实验。
 
-已有 [2026-10-24 预算检查](BASELINE_BUDGET_REVIEW_20261024.md) 在 16 个预选场景、0/10 dB 比较 Off-grid SBL 的 120/600 轮：0 dB NMSE 改善约 0.080 dB，10 dB 变差约 0.261 dB，活动判决不变；该小样本原本没有活动错误，不能据此断言完整 SNR 范围或稀有活动错误均不受预算影响。助手最初把作者所说的预算误解为迭代轮次，曾提出 120/300/600 三档；**作者已明确纠正：预算指网格密度等搜索与表示规模，不是增加迭代轮次。这组三档迭代建议撤回，不作为后续任务。** 原迭代检查不能用于判断加密网格或增加候选数是否有效。
+已有 [2026-10-24 预算检查](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/BASELINE_BUDGET_REVIEW_20261024.md) 在 16 个预选场景、0/10 dB 比较 Off-grid SBL 的 120/600 轮：0 dB NMSE 改善约 0.080 dB，10 dB 变差约 0.261 dB，活动判决不变；该小样本原本没有活动错误，不能据此断言完整 SNR 范围或稀有活动错误均不受预算影响。助手最初把作者所说的预算误解为迭代轮次，曾提出 120/300/600 三档；**作者已明确纠正：预算指网格密度等搜索与表示规模，不是增加迭代轮次。这组三档迭代建议撤回，不作为后续任务。** 原迭代检查不能用于判断加密网格或增加候选数是否有效。
 
 核查当前 `src/system/receiver/atoms.py` 与 `src/algorithm/baseline/offgrid_sbl.py`：初始网格为 112 个时延中心 × 7 个多普勒点，每用户共 784 个原子；每用户仅保留 12 个进入求解，每轮最多选择 48 个原子更新偏移。助手认为三档搜索预算比较有针对性，可先考虑固定 112 个时延中心，多普勒点数 7/13/25、每用户保留原子数 12/24/48、每轮偏移候选数 48/96/192，其他求解控制保持。这是综合预算候选设计，不能将差异全部归因于网格密度；这些数值尚未被作者选定或验证，未启动实验。加密时也须检查相邻候选是否集中到同一路径附近，不能把更多原子直接等同于更多独立路径覆盖。
 
-文献依据：Wei 等 [作者稿 §VI-A–B](https://arxiv.org/html/2101.05629v1#S6.SS2)直接比较不同 virtual sampling resolutions 下的 SNR/NMSE 和计算复杂度；术语及项目适配边界沿用 [TERMINOLOGY.md](TERMINOLOGY.md) 与 [OFFGRID_BASELINES.md](OFFGRID_BASELINES.md)。上述具体三档数值属于项目建议，并非原文参数。
+文献依据：Wei 等 [作者稿 §VI-A–B](https://arxiv.org/html/2101.05629v1#S6.SS2)直接比较不同 virtual sampling resolutions 下的 SNR/NMSE 和计算复杂度；术语及项目适配边界沿用 [TERMINOLOGY.md](TERMINOLOGY.md) 与 [OFFGRID_BASELINES.md](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/OFFGRID_BASELINES.md)。上述具体三档数值属于项目建议，并非原文参数。
 
 作者进一步指出，此实验的动机应对应 Cai 对 TMP-EM 不同设置的比较。已核对 Cai §VI-C，期刊版 PDF pp.12–13（印刷 pp.3586–3587）：原文改变的是频域分块线性模型的 **number of sub-blocks（子块数）**，用于权衡 model accuracy 与 number of free variables；它不是时延–多普勒字典的网格大小。原文报告低 SNR 偏好较少子块、高 SNR 偏好较多子块，并讨论该超参数敏感性与从数据学习信道先验的对照。
 
@@ -235,8 +237,8 @@
 
 ## 更新记录
 
-- 2026-11-04：作者要求优先审查大小写、上下标、公式来源和必要性。完成[当前变量与公式审查](NOTATION_FORMULA_REVIEW_20261104.md)，明确第二章 entries 及四行索引式可以压缩；提供保持观测和 vec 顺序的设备矩阵块候选，另发现当前 c1/c2 与 site 方差 c_k 同形。小尺寸代数核验与源稿哈希检查通过；没有直接修改稿件、编译或启动实验。所有候选仍待作者选定，旧符号审查中已解决事项不重开。
-- 2026-11-04：按作者要求通读当前英文主稿及 full 版附录，形成[完整语言修改建议表](LANGUAGE_REVIEW_20261104.md)。本轮只保存分析文档，未实施候选改写；正文、公式、图表、书目及两版 PDF 均保持撤回后的版本。已有 C/M 决定不重开，第三至第五章段落结构保持。
+- 2026-11-04：作者要求优先审查大小写、上下标、公式来源和必要性。完成[当前变量与公式审查](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/NOTATION_FORMULA_REVIEW_20261104.md)，明确第二章 entries 及四行索引式可以压缩；提供保持观测和 vec 顺序的设备矩阵块候选，另发现当前 c1/c2 与 site 方差 c_k 同形。小尺寸代数核验与源稿哈希检查通过；没有直接修改稿件、编译或启动实验。所有候选仍待作者选定，旧符号审查中已解决事项不重开。
+- 2026-11-04：按作者要求通读当前英文主稿及 full 版附录，形成[完整语言修改建议表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/LANGUAGE_REVIEW_20261104.md)。本轮只保存分析文档，未实施候选改写；正文、公式、图表、书目及两版 PDF 均保持撤回后的版本。已有 C/M 决定不重开，第三至第五章段落结构保持。
 - 2026-11-04：作者提出先开展语言润色，助手直接修改了引言。作者随后纠正，要求先分析并列完整表格。该轮引言和两版 PDF 已撤回，恢复到此前确认的版本；撤回修改仅作历史留档。见[引言润色撤回记录](../checks/intro_language_polish_20261104/REVISION_NOTES.md)。后续遵循“先建议表、后按作者指定范围修改”。
 - 2026-11-03：首次 Supervisor-Skills 预审后，作者逐项纠正过严判断，要求查找旧实验并同意 M5 的分 SNR 报告。
 - 2026-11-03：助手复算 C1，查到 M2/M3 既有证据，撤回 M1 的 MAJOR 定级，将 M4 改为进行中事项；完成 M5 源码、PDF 与数据核验。
@@ -256,13 +258,13 @@
 
 已统一设备矩阵与消息记号，删除第二章重复的分量/entries 展开、独立的全局目标和活动信道后验测度层，区分 c1/c2 与 τ_k^ext，简化均衡训练先验项和 τ_raw，另修复 Y_0 重名及 Algorithm 1 的两处说明歧义。Fig.2/3 同步。31 项语言建议仍暂缓，未开展全文语言润色。
 
-[逐式出处与修改记录](FORMULA_PROVENANCE_20261104.md)覆盖当前 57 个编号公式，区分已有同类关系、本文推导和数值设置。32 项小尺寸代数检查通过；已更新并检查 main/main_full 两版，保持 13/15 页、42 篇参考文献。七幅实验图（含图 9 的 −20～0 dB 与 10⁻⁴～10⁻¹）、实验数值、引言、结论、书目保持。没有训练、批量实验或接收机代码修改。
+[逐式出处与修改记录](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/FORMULA_PROVENANCE_20261104.md)覆盖当前 57 个编号公式，区分已有同类关系、本文推导和数值设置。32 项小尺寸代数检查通过；已更新并检查 main/main_full 两版，保持 13/15 页、42 篇参考文献。七幅实验图（含图 9 的 −20～0 dB 与 10⁻⁴～10⁻¹）、实验数值、引言、结论、书目保持。没有训练、批量实验或接收机代码修改。
 
 长 CPP/分数时延、矩阵预条件、中央差分迹和输入尺度更新包含必要适配，不要求参考论文存在逐字同式；出处已记录，后续不再把这些记号差异反复升级为 C/M 问题。M4 相位算法进度仍沿用既有决定，本次代数核验不等于完成其性能验证。
 
 ## 2026-11-04：内部推导与论文呈现分开，精简已实施
 
-作者指出长 CPP、矩阵预条件、中央差分不必全部展开推导，并在讨论后明确要求“可以，请你开始修改”。本轮据此实施 [推导呈现精简](DERIVATION_PRESENTATION_20261104.md)，不再将“内部需要核对正确性”等同于“正文必须逐步证明”。
+作者指出长 CPP、矩阵预条件、中央差分不必全部展开推导，并在讨论后明确要求“可以，请你开始修改”。本轮据此实施 [推导呈现精简](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/DERIVATION_PRESENTATION_20261104.md)，不再将“内部需要核对正确性”等同于“正文必须逐步证明”。
 
 - 长 CPP 只在正文保留覆盖条件、帧时长和完整的波形/信道定义。原单独 CPP 式及信道附录移至 [内部记录](derivations/afdm_channel_model.tex)，跨帧相位关系保留。
 - 导数方差直接引用已有恒等式，保留 Jacobian 定义及中央差分最终估计式，不逐步展开求导和右乘过程。
@@ -276,13 +278,13 @@ Shen 并非在公式中完全忽略 CP：§II-B 式 (3)、T_sym 定义、Proposi
 
 作者澄清：“我们的公式是不是都能在 cai 中找到一一对应，形式接近的，因为我怕你自己推导很乱套”。这次问题针对来源和改写可靠性，不能继续以“本文 53 式、Cai 66 式”回答。
 
-已完成 [当前 53 式与 Cai 的逐项对照](CAI_FORMULA_CORRESPONDENCE_20261104.md)，按期刊版式号区分直接同类式、条件/维度/实现适配，以及无 Cai 直接对应的内容。消息传递骨干具有明确对应；AFDM 模型、导数迹估计、分类密度比、矩阵预条件、局部方差尺度和相位前端并非全部来自 Cai。尤其一般 LMMSE 不能套用 Cai 的行正交简式，递归已阻尼状态也不能声称与 Cai 相邻原始消息加权完全一致。
+已完成 [当前 53 式与 Cai 的逐项对照](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CAI_FORMULA_CORRESPONDENCE_20261104.md)，按期刊版式号区分直接同类式、条件/维度/实现适配，以及无 Cai 直接对应的内容。消息传递骨干具有明确对应；AFDM 模型、导数迹估计、分类密度比、矩阵预条件、局部方差尺度和相位前端并非全部来自 Cai。尤其一般 LMMSE 不能套用 Cai 的行正交简式，递归已阻尼状态也不能声称与 Cai 相邻原始消息加权完全一致。
 
 本轮针对蔡文关系新增 7 项确定性代数检查并全部通过，最大误差 8.89×10⁻¹⁶；复用此前 32 项核验记录，没有据此声称学习性能或整机收敛已证明。未发现已核对关系中的新代数矛盾，未修改论文、PDF、算法、图表或实验，未恢复已删辅助推导，也未重新打开既有 C/M 等级讨论。后续应引用此表说明具体对应，不能再笼统称“所有公式都是 Cai 的换符号形式”。
 
 ## 2026-11-04：阻尼合理性与非 Cai 原型补查
 
-作者主动追问当前阻尼是否合理、不能归给 Cai 的公式是否有其他论文原型。已完成[专项核查](DAMPING_AND_FORMULA_PROTOTYPES_20261104.md)，确认正文与默认/选定相位版本的递归阻尼实现相符。Rangan 的 GAMP Algorithm 1 和 VAMP §III-C 式 (26)–(27) 有递归阻尼原型；均值、方差和精度的具体阻尼不是完全相同操作，但不因与 Cai 印刷式不同而判为错误。保留现有形式，不声称整机收敛或阻尼参数最优。
+作者主动追问当前阻尼是否合理、不能归给 Cai 的公式是否有其他论文原型。已完成[专项核查](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/DAMPING_AND_FORMULA_PROTOTYPES_20261104.md)，确认正文与默认/选定相位版本的递归阻尼实现相符。Rangan 的 GAMP Algorithm 1 和 VAMP §III-C 式 (26)–(27) 有递归阻尼原型；均值、方差和精度的具体阻尼不是完全相同操作，但不因与 Cai 印刷式不同而判为错误。保留现有形式，不声称整机收敛或阻尼参数最优。
 
 本轮新证据：de Albuquerque–Pearson, NeurIPS 2024, Inflationary Flows，附录 B.1 式 (67)–(68)、(73)、(77)–(78) 给出直接的矩阵预条件原型；取名义信号协方差为 σ_d²I 后，对应本文式 (47)。这补充了此前只找到 Karras 标量基础的记录，不改变既有公式或训练损失。中央差分的随机符号部分另核对 Avron–Toledo §2 Lemma 2.1；分类密度比、导数方差、Gaussian EM 方差目标和 variable projection 均有已定位原型。
 
@@ -290,13 +292,13 @@ Shen 并非在公式中完全忽略 CP：§II-B 式 (3)、T_sym 定义、Proposi
 
 ## 2026-11-04：κ 与训练协方差采样取消独立公式
 
-作者指出这两项没有必要写成公式。已按[呈现修订记录](IMPLEMENTATION_SETTINGS_PROSE_20261104.md)删除 κ 更新及训练协方差采样的两个独立编号式，改为保留全部运算顺序、权重、维度、分布和归一化条件的文字说明；方差目标公式保持。算法框及附录引用已同步。后续不得仅因需要复现就重新要求恢复独立公式，也不把呈现变化理解成取消相应算法设置。
+作者指出这两项没有必要写成公式。已按[呈现修订记录](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/IMPLEMENTATION_SETTINGS_PROSE_20261104.md)删除 κ 更新及训练协方差采样的两个独立编号式，改为保留全部运算顺序、权重、维度、分布和归一化条件的文字说明；方差目标公式保持。算法框及附录引用已同步。后续不得仅因需要复现就重新要求恢复独立公式，也不把呈现变化理解成取消相应算法设置。
 
 正文公式 50→48，连同附录 A 共 53→51；两版仍为 13/14 页，编译与相关页面检查通过。其他保留公式、图表文件及参考文献不变，没有算法、训练或实验修改。此前来源核查表的式号为此次精简前快照，按本轮映射查阅。
 
 ## 2026-11-04：沿参考论文的呈现方式复查全部公式
 
-作者进一步要求：已有论文以正文交代的普通操作与设置，本稿也采用相应方式。已按[51 式逐项检查表](FORMULA_PRESENTATION_AUDIT_20261104.md)完成复查，查看 Cai/ Shen/Rangan 的相关原页并实施五项改写：方差平均与正下限、每轮复杂度、接收 SNR、NMSE、AER。另把 clip 及 min/max 展开改为裁剪区间的文字说明；递归阻尼引文校准为已列入书目的 Rangan VAMP §III-C，运算保持。
+作者进一步要求：已有论文以正文交代的普通操作与设置，本稿也采用相应方式。已按[51 式逐项检查表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/FORMULA_PRESENTATION_AUDIT_20261104.md)完成复查，查看 Cai/ Shen/Rangan 的相关原页并实施五项改写：方差平均与正下限、每轮复杂度、接收 SNR、NMSE、AER。另把 clip 及 min/max 展开改为裁剪区间的文字说明；递归阻尼引文校准为已列入书目的 Rangan VAMP §III-C，运算保持。
 
 必须准确描述本轮依据：NMSE/AER/SNR 都有成熟数学定义，Cai/Shen 将其放在正文或脚注内；不是“没有论文写过这些公式”。本稿将统计操作写清，并保留跨场景分子分母分别累加后取比的 NMSE、所有设备误差、AER 的 K×场景数分母和逐场景 SNR 设置。
 
@@ -305,7 +307,7 @@ Shen 并非在公式中完全忽略 CP：§II-B 式 (3)、T_sym 定义、Proposi
 
 ## 2026-11-04：伪代码形式与范围外兜底的呈现
 
-作者要求认真对照已有论文的算法框。已核对 Cai Algorithm 2（PDF 第 10 页／印刷第 3584 页）、Shen Algorithm 1（PDF 第 10 页）及 Huang Algorithm 1（PDF 第 4 页），将本稿编号长段落改为带行号、缩进、输入输出及公式引用的伪代码，见[修订记录](PSEUDOCODE_STYLE_20261104.md)。
+作者要求认真对照已有论文的算法框。已核对 Cai Algorithm 2（PDF 第 10 页／印刷第 3584 页）、Shen Algorithm 1（PDF 第 10 页）及 Huang Algorithm 1（PDF 第 4 页），将本稿编号长段落改为带行号、缩进、输入输出及公式引用的伪代码，见[修订记录](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/PSEUDOCODE_STYLE_20261104.md)。
 
 作者进一步指出，训练范围外改用 Gaussian evidence 属于实现兜底，没有必要在伪代码中突出。已从算法框移除训练区间判断和相应分支，并将其定位为主迭代概述。不得再因代码存在这一步就反复要求加入算法框或把它包装成方法组成/贡献；本次没有删除代码，也没有修改第 VI-A3 节既有实现说明和式 (43)。
 
@@ -314,26 +316,26 @@ Shen 并非在公式中完全忽略 CP：§II-B 式 (3)、T_sym 定义、Proposi
 
 ## 2026-11-04：正文防御性、辩护性说明检查（仅分析）
 
-作者询问正文是否还有类似训练区间外兜底的说明。已通读摘要、第 I–VII 章及图表说明，并区分两份附录的内容，形成[六处建议表](DEFENSIVE_LANGUAGE_REVIEW_20261104.md)。最明确的是 VI-A3 的范围外兜底；式 (43) 又被 VI-C 用作消融对照定义，后续建议将其移到消融实验，以对照公式引出，而非机械删除公式。另列复杂度中的训练范围前缀、笼统的 fixed adaptations 自证，以及局部模型重复限定、停止检查清单和配对设置重复表述。
+作者询问正文是否还有类似训练区间外兜底的说明。已通读摘要、第 I–VII 章及图表说明，并区分两份附录的内容，形成[六处建议表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/DEFENSIVE_LANGUAGE_REVIEW_20261104.md)。最明确的是 VI-A3 的范围外兜底；式 (43) 又被 VI-C 用作消融对照定义，后续建议将其移到消融实验，以对照公式引出，而非机械删除公式。另列复杂度中的训练范围前缀、笼统的 fixed adaptations 自证，以及局部模型重复限定、停止检查清单和配对设置重复表述。
 
 本轮没有修改稿件或 PDF。已存在的模型条件、真值/估计条件、指标定义和全部输出计入统计的事实继续保留；不重新打开既有 C/M 项，不要求正文复述开发过程。旧语言表的 P10 已被伪代码决定取代；P11/P14 后续优先参考当前精简建议，避免再次扩写训练范围条件或笼统的固定设置保证。
 
 
 ## 2026-11-04：六处正文精简已获授权并完成
 
-作者确认“可以，那就请你调整修改一下”，已授权执行上一轮六处建议。[检查表](DEFENSIVE_LANGUAGE_REVIEW_20261104.md)已更新为完成状态。VI-A3 的训练范围外兜底段已删除，式 (43) 完整移至 VI-C 消融对照定义；复杂度改按 Algorithm 1 的 GPJD 调用次数表述；删除笼统 fixed adaptations 和局部模型重复限定；压缩正文停止条件及消融设置。窗口、接受条件等仍保留于既有 full 版附录 B-G，AER 包含全部运行的口径、配对数和表 II 数据保持。
+作者确认“可以，那就请你调整修改一下”，已授权执行上一轮六处建议。[检查表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/DEFENSIVE_LANGUAGE_REVIEW_20261104.md)已更新为完成状态。VI-A3 的训练范围外兜底段已删除，式 (43) 完整移至 VI-C 消融对照定义；复杂度改按 Algorithm 1 的 GPJD 调用次数表述；删除笼统 fixed adaptations 和局部模型重复限定；压缩正文停止条件及消融设置。窗口、接受条件等仍保留于既有 full 版附录 B-G，AER 包含全部运行的口径、配对数和表 II 数据保持。
 
 本轮仅调整第三、第五、第六章三份源码；可选的 II-C 来源句、full 版评估说明、伪代码和接收机实现未改。两版编译及修改页检查通过，仍为 13/14 页、46 个编号公式与 42 篇参考文献。公式块、编号、图表和实验结果保持。上述六项关闭，后续不要因存在范围外实现就重新加入正文兜底段，也不要恢复已删除的笼统公平性保证。
 
 ## 2026-11-04：语言润色前复核完成
 
-作者询问是否已可进入语言润色并要求再次仔细检查。已通读当前两版的共享正文和编入附录，核对主要结果、引用和 PDF，见 [POLISH_READINESS_20261104.md](POLISH_READINESS_20261104.md)。未发现新增的、需要先改模型、重写算法或补实验才能开展润色的问题。现有相位批次已为 3000/3000 且完成核验，图 6 已使用该曲线；这项事实与作者是否继续改进相位设计分开记录，不再笼统说“缺相位实验”。
+作者询问是否已可进入语言润色并要求再次仔细检查。已通读当前两版的共享正文和编入附录，核对主要结果、引用和 PDF，见 [POLISH_READINESS_20261104.md](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/POLISH_READINESS_20261104.md)。未发现新增的、需要先改模型、重写算法或补实验才能开展润色的问题。现有相位批次已为 3000/3000 且完成核验，图 6 已使用该曲线；这项事实与作者是否继续改进相位设计分开记录，不再笼统说“缺相位实验”。
 
 旧语言表 P03/P10/P11/P14/D02 已被后续修订解决或取代，O07 部分已改；表首增加版本提示。当前仍可处理摘要对照指代、缩写展开、少量重复句、表示名称一致性及矩阵预条件直接来源补引。C1 继续按既有决定待最终图表处理，没有重新定级或要求作者重复选择方案。本轮只写检查记录，稿件、PDF、公式、图表、书目及实验输出均未修改。
 
 ## 2026-11-04：摘要与引言先分析，等待作者选择
 
-作者明确指定先从摘要和引言开始，要求分析问题、列完整表，由作者决定修改。已形成 [11 项候选表](ABSTRACT_INTRO_LANGUAGE_REVIEW_20261104.md)：4 项建议修改、5 项可选优化、2 项内容选择，全部未实施。优先建议 A01/I02/I03/I08；I06 的删句涉及此前保留论述的决定，单列选择，不自动删除；A03 加量化结果属于内容增加，倾向本轮暂不添加。摘要约 193 词，不按固定篇幅或句数模板重写；既有三点贡献、密度比措辞及技术条件保持。作者后续选择应按本表编号执行，不将“开始润色”或本清单误作直接修改全文的授权。
+作者明确指定先从摘要和引言开始，要求分析问题、列完整表，由作者决定修改。已形成 [11 项候选表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/ABSTRACT_INTRO_LANGUAGE_REVIEW_20261104.md)：4 项建议修改、5 项可选优化、2 项内容选择，全部未实施。优先建议 A01/I02/I03/I08；I06 的删句涉及此前保留论述的决定，单列选择，不自动删除；A03 加量化结果属于内容增加，倾向本轮暂不添加。摘要约 193 词，不按固定篇幅或句数模板重写；既有三点贡献、密度比措辞及技术条件保持。作者后续选择应按本表编号执行，不将“开始润色”或本清单误作直接修改全文的授权。
 
 ## 2026-11-04：摘要保持，选定引言修改完成
 
@@ -341,11 +343,11 @@ Shen 并非在公式中完全忽略 CP：§II-B 式 (3)、T_sym 定义、Proposi
 
 I01 按作者新要求删除 indices 罗列，直接写每根天线的有效信道为三维张量，依据 Shen §II-B/式 (9)、PDF p.4；I02 引言写变换全称，第五章首次用缩写时定义 DFT；I03 精简重复强调；I06 删除泛指衔接句；I08 统一为 effective-channel representation。I07 保持同一段，两个动机用不同句子说明。CS 全文仅在引言出现一次，作者本轮询问重复定义问题，没有明确要求删除；保留当前写法，后文无需另行定义。
 
-已核查系统模型、网络输入及结论的同类名称，区分 Shen 的 tensor、本文每根天线的 channel matrix、device matrix 和网络 arrays，不把合理的排列区别当成不一致，也不因作者嫌引言索引罗列生硬就删除必要的数学索引定义。两版已编译并检查，摘要、公式、图表、引用命令和数值保持；13/14 页、46 式、42 篇参考文献。证据见[逐项决定表](ABSTRACT_INTRO_LANGUAGE_REVIEW_20261104.md)及其本轮核验链接。以上保留决定后续直接复用，不重复列为待处理问题。
+已核查系统模型、网络输入及结论的同类名称，区分 Shen 的 tensor、本文每根天线的 channel matrix、device matrix 和网络 arrays，不把合理的排列区别当成不一致，也不因作者嫌引言索引罗列生硬就删除必要的数学索引定义。两版已编译并检查，摘要、公式、图表、引用命令和数值保持；13/14 页、46 式、42 篇参考文献。证据见[逐项决定表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/ABSTRACT_INTRO_LANGUAGE_REVIEW_20261104.md)及其本轮核验链接。以上保留决定后续直接复用，不重复列为待处理问题。
 
 ## 2026-11-04：摘要、引言复查完成，第二章只分析
 
-作者要求再次检查摘要和引言，无新问题则继续分析第二章。已通读当前文本，未发现摘要、引言新的必要语言改动；不重提 A01/A02/A03、I04/I05/I07 等已明确保留或暂缓的选择。已继续检查第二章全部段落，形成[四项候选表](CHAPTER_II_LANGUAGE_REVIEW_20261104.md)：S04 后验引出句建议修改；S01 矩阵形式搭配、S02 AFDM/OTFS 比较句拆分、S03 transmission block 用语统一均为可选。S01/S02/S04 对应旧语言表 O04/O05/P04，不能重复计算为新缺陷；旧 P03 已解决，不再列出。
+作者要求再次检查摘要和引言，无新问题则继续分析第二章。已通读当前文本，未发现摘要、引言新的必要语言改动；不重提 A01/A02/A03、I04/I05/I07 等已明确保留或暂缓的选择。已继续检查第二章全部段落，形成[四项候选表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_II_LANGUAGE_REVIEW_20261104.md)：S04 后验引出句建议修改；S01 矩阵形式搭配、S02 AFDM/OTFS 比较句拆分、S03 transmission block 用语统一均为可选。S01/S02/S04 对应旧语言表 O04/O05/P04，不能重复计算为新缺陷；旧 P03 已解决，不再列出。
 
 本轮只更新研究记录，26 个受保护稿件资产与上轮完成后的哈希一致。第二章正文和两版 PDF 未改，全部候选等待作者选择；没有重开研究判断、增加推导或运行实验。
 
@@ -353,11 +355,11 @@ I01 按作者新要求删除 indices 罗列，直接写每根天线的有效信�
 
 作者明确同意 S02/S03/S04，已落实三处语言修改并更新两版 PDF。S02 比较句拆分但不另起段，所有资源条件保留；S03 统一为 transmission block；S04 修正后验引出句。仅第二章对应三处正文和 PDF 改变，公式、图表、引用命令及其他正文保持。两版仍为 13/14 页、46 个编号公式、42 篇参考文献；第 4 页已目视检查，两版该页渲染一致。见[实施核验](../checks/ch2_language_selected_20261104/VALIDATION.json)。
 
-S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与上下标体现，而非选择原先只删 a 的方案。本轮判断：单纯重复矩阵类型的 `in a matrix form` 可整段删；`row and column indices` 可改成 `rows and columns`，但接收/发送符号对应关系不能由设备/天线下标代替。identity、diagonal、DAFT 等性质/功能说明以及 AFDM/OTFS 表示维度比较仍有信息作用。具体候选见[本轮讨论](CHAPTER_II_LANGUAGE_REVIEW_20261104.md)，未改 S01 或邻近定义，不将该问题误记成作者要求全文禁用 matrix/indices。
+S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与上下标体现，而非选择原先只删 a 的方案。本轮判断：单纯重复矩阵类型的 `in a matrix form` 可整段删；`row and column indices` 可改成 `rows and columns`，但接收/发送符号对应关系不能由设备/天线下标代替。identity、diagonal、DAFT 等性质/功能说明以及 AFDM/OTFS 表示维度比较仍有信息作用。具体候选见[本轮讨论](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_II_LANGUAGE_REVIEW_20261104.md)，未改 S01 或邻近定义，不将该问题误记成作者要求全文禁用 matrix/indices。
 
 ## 2026-11-04：摘要、引言、系统模型再次连读
 
-作者再次要求通读这三部分。已完整重读现稿，检查跨部分的方法对象、术语、条件、符号排列及段落衔接，没有发现新的必要语言修改或模型表述矛盾。摘要与引言维持现状，S02–S04 完成状态不变。上轮 matrix/indices 讨论收拢为 II-B 同一段的四处可选精简：有效信道引式句的 is the matrix、行列 indices、跨天线汇集句的 in the device matrix，以及原 S01 的 in a matrix form。完整候选及检查覆盖见[连读记录](CHAPTER_II_LANGUAGE_REVIEW_20261104.md)。这些不是四个新的研究问题，未改正文，也不据此自动启动进一步修改。
+作者再次要求通读这三部分。已完整重读现稿，检查跨部分的方法对象、术语、条件、符号排列及段落衔接，没有发现新的必要语言修改或模型表述矛盾。摘要与引言维持现状，S02–S04 完成状态不变。上轮 matrix/indices 讨论收拢为 II-B 同一段的四处可选精简：有效信道引式句的 is the matrix、行列 indices、跨天线汇集句的 in the device matrix，以及原 S01 的 in a matrix form。完整候选及检查覆盖见[连读记录](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_II_LANGUAGE_REVIEW_20261104.md)。这些不是四个新的研究问题，未改正文，也不据此自动启动进一步修改。
 
 本轮复核 26 个保护稿件文件与上次完成后哈希一致；仅补充研究记录，PDF 未重新编译。旧的摘要、引言保留决定继续有效。
 
@@ -369,7 +371,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-04：第三至第五章语言分析完成，尚未修改
 
-作者要求继续分析第三至第五章，沿用先分析、列完整表、作者选择后修改的流程。已通读三章、图注和 Algorithm 1，复查既有段落对应和作者决定，并重读 Cai 期刊版 §III、IV-B、V-A/C 的相关原段。[候选表](CHAPTERS_III_V_LANGUAGE_REVIEW_20261104.md)共 11 项：III01–III02、IV01–IV04、V01–V05，其中 7 项建议修改、4 项可选优化，全部未实施。
+作者要求继续分析第三至第五章，沿用先分析、列完整表、作者选择后修改的流程。已通读三章、图注和 Algorithm 1，复查既有段落对应和作者决定，并重读 Cai 期刊版 §III、IV-B、V-A/C 的相关原段。[候选表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_III_V_LANGUAGE_REVIEW_20261104.md)共 11 项：III01–III02、IV01–IV04、V01–V05，其中 7 项建议修改、4 项可选优化，全部未实施。
 
 主要建议为明确因子图、活动密度期望对象、实数观测和损失比较，统一 Kronecker 因子的名称，说明 Gaussian 消息参数，并将“固定近似后验”的引用由仅含均值的式 (19) 改指 III-B3。最后一项是引用对象修正，不是判定方差更新式 (37) 错误。IV03 若选定，需要同步 VI-A2/A3 两处同一排列名称；当前仅定位关联处，不扩张为第六章全文润色。
 
@@ -380,9 +382,9 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 作者先指出损失关系与内存排除条款带有防御性，随后明确要求两项按新建议改写、其余建议也全部实施。已完成 III01–III02、IV01–IV04、V01–V05；IV02 采用固定 C 下与 Σ 加权 score matching objective 具有相同最优解的正面表述，V05 直接列举 pilot matrix、SVD factors、channel messages、spatial covariances 的内存开销。这里仍限定统计对象，没有将该量级扩大为含网络的全部内存。IV03 同步 VI-A1/A2 的两处排列名称，不改变 vec 顺序、维度或 Kronecker 因子。
 
-本轮仅改四个章节源文件中的获批文字及两版 PDF；全部陈列公式、Algorithm 1、引用命令、图表资产和其他章节源文件保持。两版仍为 13/14 页、46 个编号公式、42 篇参考文献；无未定义引用或公式越栏，所有受影响页面已渲染检查。编译仍有已有类别的行宽不足和插入 PDF 版本提示，不影响交付。证据见[实施表](CHAPTERS_III_V_LANGUAGE_REVIEW_20261104.md)与[核验结果](../checks/chapters_iii_v_language_selected_20261104/VALIDATION.json)。
+本轮仅改四个章节源文件中的获批文字及两版 PDF；全部陈列公式、Algorithm 1、引用命令、图表资产和其他章节源文件保持。两版仍为 13/14 页、46 个编号公式、42 篇参考文献；无未定义引用或公式越栏，所有受影响页面已渲染检查。编译仍有已有类别的行宽不足和插入 PDF 版本提示，不影响交付。证据见[实施表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_III_V_LANGUAGE_REVIEW_20261104.md)与[核验结果](../checks/chapters_iii_v_language_selected_20261104/VALIDATION.json)。
 
-按作者要求另存[三章逻辑导读](CHAPTERS_III_V_LOGIC_GUIDE_20261104.md)：III 定义消息传递与所需后验统计量；IV 给出均值、导数方差和密度比学习；V 组织 Gaussian site、迭代调度、参数处理与复杂度。导读解释当前稿件，不新增推导到正文，不将精确 Gaussian 观测恒等式等同于有限网络的精确估计，也不重开已讨论的技术路线选择。
+按作者要求另存[三章逻辑导读](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_III_V_LOGIC_GUIDE_20261104.md)：III 定义消息传递与所需后验统计量；IV 给出均值、导数方差和密度比学习；V 组织 Gaussian site、迭代调度、参数处理与复杂度。导读解释当前稿件，不新增推导到正文，不将精确 Gaussian 观测恒等式等同于有限网络的精确估计，也不重开已讨论的技术路线选择。
 
 
 ## 2026-11-04：模块命名、参数小节及图 2/3 调整
@@ -418,7 +420,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-04：图 3 流程语义核对
 
-作者进一步质疑流程歧义。对照现稿公式、Algorithm 1 和 C_STMP 默认实现后，确认主要数据依赖一致，但发现五处图形表达问题：[流程核对表](FIGURE3_FLOW_AUDIT_20261104.md)。分类器的 F_k 箭头误接隐藏层，式 (22) 的输出与阻尼后反馈名称未区分；方差支路未清楚表达扰动调用及跨设备汇总，联合矩输出漏标 tbar_X，F_k 后的 site/条件矩框角色不清。
+作者进一步质疑流程歧义。对照现稿公式、Algorithm 1 和 C_STMP 默认实现后，确认主要数据依赖一致，但发现五处图形表达问题：[流程核对表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/FIGURE3_FLOW_AUDIT_20261104.md)。分类器的 F_k 箭头误接隐藏层，式 (22) 的输出与阻尼后反馈名称未区分；方差支路未清楚表达扰动调用及跨设备汇总，联合矩输出漏标 tbar_X，F_k 后的 site/条件矩框角色不清。
 
 本轮仅分析并记录，没有重绘或改正文。上述问题属于图形与现有方法的对应关系，不重开已确定的算法设计；上一轮版面核验不等于已做完语义核验。后续调整保留既定平行箭头、颜色、黑色框线及真实保存样本的去噪对照，不通过增加大量分支和说明文字来堆满图面。
 
@@ -442,7 +444,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 作者要求完整通读。已逐段阅读英文摘要、引言、Notation、第二至第五章及图 1–3、Algorithm 1，查看主稿第 1–8 页；未发现需要改模型、重写结构或增加推导的新增问题。旧讨论决定保持，未重新定 C/M 等级，未将相位设计或最终实验图事项移作本轮缺陷。
 
-新增候选只有 R01（建议）：正文首次使用 GP-MP/GP-MP-CCD 时缺少名称含义说明，尤其 CCD；直接复用已有批准名称补一次短定义即可，不改名。R02 为可选：图 3 图注的 saved 及重复训练/调用说明可以精简，也可保留。二者均未实施，等待作者选择；正文、公式、图形、书目及两版 PDF 保持。详见[连续通读记录](ABSTRACT_TO_V_REREAD_20261104.md)。
+新增候选只有 R01（建议）：正文首次使用 GP-MP/GP-MP-CCD 时缺少名称含义说明，尤其 CCD；直接复用已有批准名称补一次短定义即可，不改名。R02 为可选：图 3 图注的 saved 及重复训练/调用说明可以精简，也可保留。二者均未实施，等待作者选择；正文、公式、图形、书目及两版 PDF 保持。详见[连续通读记录](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/ABSTRACT_TO_V_REREAD_20261104.md)。
 
 ## 2026-11-04：作者重新讨论 covariance-conditioned 的措辞
 
@@ -481,7 +483,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-04：pre-submission-reviewer 与 humanizer 联合预审
 
-作者确认 supervisor 指 pre-submission-reviewer。已逐段通读当前英文摘要、Notation、第一至第五章、图 1–3 和 Algorithm 1，并查看主稿第 1–8 页（第 8 页仅评阅第五章），见[本轮预审报告](SUPERVISOR_HUMANIZER_REVIEW_20261104.md)。未发现新增的实质错误、结构断点或必须修改的语言项；不重新使用旧 C/M 计数或整篇评分。R01 已解决，R02 仍属可选，不催促再次选择。
+作者确认 supervisor 指 pre-submission-reviewer。已逐段通读当前英文摘要、Notation、第一至第五章、图 1–3 和 Algorithm 1，并查看主稿第 1–8 页（第 8 页仅评阅第五章），见[本轮预审报告](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/SUPERVISOR_HUMANIZER_REVIEW_20261104.md)。未发现新增的实质错误、结构断点或必须修改的语言项；不重新使用旧 C/M 计数或整篇评分。R01 已解决，R02 仍属可选，不催促再次选择。
 
 重点复核一般 LMMSE、实复方差尺度、分类密度比与先验修正、site 接受/保留后的条件矩，以及递归阻尼的对象。式 (1)–(40) 编号连续，引用与书目键有效；32 个保护稿件资产哈希保持。没有改论文、PDF、图表或实验数据，没有重新编译或运行训练、推断。检查记录见 [CHECKS.json](../checks/supervisor_humanizer_20261104/CHECKS.json)。
 
@@ -494,14 +496,14 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 已恢复原保存的每档 1000 场景六方法数据，共 72 个 NMSE/AER 绘图值；名称、样式和字号沿用当前批准版本。第六章相位条件、样本数、图注和相关结果句同步。完整稿附录 B 移出旧估计相位评估小节并存档，样本范围改为 0–999，GP-MP/GP-MP-C 达到迭代上限的统计分别改为 1/3 次，均在 −4 dB，全部输出保留。附录 A 仅删去指向移出小节的引用；第五章和相位附录的算法描述暂留，后续随最终方案同步。
 
-已通读第六章全部正文并核对图 4–10、表 I–II，形成[分节分析及语言候选](CHAPTER_VI_SIX_METHOD_REVIEW_20261104.md)。现有曲线足以分析已知相位条件下的主要性能；估计相位及提高 SBL 搜索预算的结论须等对应结果。SNR 六点 NMSE 均最低、AER 均低于 GP-MP 的表述有依据，不扩大为 AER 全点最优。图 7 的 C1 保持既有待定状态，不重开处置讨论。一般语言候选未实施。
+已通读第六章全部正文并核对图 4–10、表 I–II，形成[分节分析及语言候选](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_VI_SIX_METHOD_REVIEW_20261104.md)。现有曲线足以分析已知相位条件下的主要性能；估计相位及提高 SBL 搜索预算的结论须等对应结果。SNR 六点 NMSE 均最低、AER 均低于 GP-MP 的表述有依据，不扩大为 AER 全点最优。图 7 的 C1 保持既有待定状态，不重开处置讨论。一般语言候选未实施。
 
 两版 PDF 已更新并目视检查，仍为 13/14 页、42 篇参考文献；公式和其余图不变，无未定义引用或越栏。原数据保持，没有运行或干预任何实验。[实施、备份及核验](../checks/snr_six_methods_20261104/README.md)。后续不得根据更早记录把图 6 误记为七曲线或每点 500 场景。
 
 
 ## 2026-11-04：第六、七章六算法版本复审（仅分析）
 
-作者要求再审第六、七章。已完整阅读两章，复查六算法图 6 和其他现有结果、结论比较对象及版面，形成[复审表](CHAPTERS_VI_VII_REVIEW_20261104.md)。没有发现新增 Critical/Major 级模型、公式或结构问题；图 7 C1 继续按原安排待定，不重新计数或选择处理。
+作者要求再审第六、七章。已完整阅读两章，复查六算法图 6 和其他现有结果、结论比较对象及版面，形成[复审表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_VI_VII_REVIEW_20261104.md)。没有发现新增 Critical/Major 级模型、公式或结构问题；图 7 C1 继续按原安排待定，不重新计数或选择处理。
 
 沿用 VI01–VI07 原候选编号。第六章五处建议小修、两项可选均为已有候选；第七章增加 VII01：结论中的跨信道 gains 没有明确比较对象，建议沿用 VI-E 的 four sparse-recovery baselines，避免承接前半句的白噪声基线。该项为表述精度问题，不判定原句已经明确声称错误结论。VII02 为先验与有色训练动机长句的可选拆分，承接旧 O08。其他结论结构、过去时和末尾意义句可保留；不强加未来工作或逐点交叉讨论。
 
@@ -514,11 +516,11 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 新增文献已核对官方 NeurIPS 页面、官方 BibTeX 及本地原文 Appendix B.1，式 (67)–(68)、(73)、(77)–(78)，对应本文现式 (42)。不把本文 loss weighting、网络或接收机归为该文方法。其他 42 条书目保持，当前共 43 篇。
 
-两版编译通过并完成变动页目视检查，仍为 13/14 页；所有数学表达、公式编号、参数、图表和其他章节源码保持。无未定义引用或越栏，26 项保护资产字节不变。没有训练、推断或实验调整，图 7 C1 和新实验安排保持。见[本轮完整记录](../checks/chapters_vi_vii_language_selected_20261104/README.md)、[源码差异](../checks/chapters_vi_vii_language_selected_20261104/SOURCE_DIFF.txt)和[核验](../checks/chapters_vi_vii_language_selected_20261104/VALIDATION.json)。
+两版编译通过并完成变动页目视检查，仍为 13/14 页；所有数学表达、公式编号、参数、图表和其他章节源码保持。无未定义引用或越栏，26 项保护资产字节不变。没有训练、推断或实验调整，图 7 C1 和新实验安排保持。见[本轮完整记录](../checks/chapters_vi_vii_language_selected_20261104/README.md)、源码差异（仅本地历史资料：`paper/checks/chapters_vi_vii_language_selected_20261104/SOURCE_DIFF.txt`）和[核验](../checks/chapters_vi_vii_language_selected_20261104/VALIDATION.json)。
 
 ## 2026-11-04：按作者要求逐节对照 Cai 的实验呈现方式（仅分析）
 
-作者认为实验分析格式仍不合适，明确要求逐部分与 Cai 比较，特别指出基线应分点并加粗算法名。本轮由此重新检查呈现组织，不重开已完成的九项语言修改。已读取并查看 Cai 期刊版 §VI-A–C／PDF pp.11–14，以及本稿 pp.8–12，形成[十三部分对照与建议](CHAPTER_VI_CAI_PRESENTATION_REVIEW_20261104.md)。
+作者认为实验分析格式仍不合适，明确要求逐部分与 Cai 比较，特别指出基线应分点并加粗算法名。本轮由此重新检查呈现组织，不重开已完成的九项语言修改。已读取并查看 Cai 期刊版 §VI-A–C／PDF pp.11–14，以及本稿 pp.8–12，形成[十三部分对照与建议](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_VI_CAI_PRESENTATION_REVIEW_20261104.md)。
 
 确认 Cai 在去噪及 JADCE 两组基线中均使用圆点列表和加粗算法标签，网络层配置另有表格。本稿现有连续基线段、网络长段落、公共评估条件分散，以及主 SNR 解释过短均有改善空间。当前跨信道图 10 浮动到了结论和附录开始之后，记录为待调整的阅读顺序问题。VI-D 的五个三级标题与 Cai 不同，但是否删除是可选结构取舍，不认定为格式硬错。
 
@@ -547,7 +549,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ### 已有证据与结论边界
 
-- [方差推导及比较记录](C_STMP_DERIVATION_20261024.md) §8.2、§12.5 给出条件误差风险与导数误差的区别；§9–10 保留独立二阶网络的有利与不利结果。早期场景 200、0 dB 下，独立二阶网络比导数版本的 NMSE 好约 0.05 dB，实测耗时更短；8/10 dB 下对阻尼更敏感，增强阻尼后恢复收敛。这些使用旧分类器和历史接收机设置的开发结果，不能代替当前配置的最终性能消融，也不支持“二阶网络普遍更差”。
+- [方差推导及比较记录](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/C_STMP_DERIVATION_20261024.md) §8.2、§12.5 给出条件误差风险与导数误差的区别；§9–10 保留独立二阶网络的有利与不利结果。早期场景 200、0 dB 下，独立二阶网络比导数版本的 NMSE 好约 0.05 dB，实测耗时更短；8/10 dB 下对阻尼更敏感，增强阻尼后恢复收敛。这些使用旧分类器和历史接收机设置的开发结果，不能代替当前配置的最终性能消融，也不支持“二阶网络普遍更差”。
 - [活动消融核验](../checks/review_followup_20261103/activity_summary.json)覆盖 354 个共同物理场景、六档 SNR，每方法 2124 次配对运行；支持当前设置下密度比活动估计的收益。原始未完成记录及不利结果继续保留。
 - 如果后续只主张省去独立二阶训练及参数存储，可直接以实现和训练流程为依据；若要把性能提升主要归因于方差改动，则需固定去噪器、分类器及接收机设置的方差对照。已有独立二阶候选可供评估其复用条件，不据本条自动重训或启动新实验。
 - 有色训练消融无优势，不足以把 STMP 到当前算法的全部提升归于网络结构或方差计算；均值参数化、方差规则、阻尼和查询方差更新等差异仍须区分。省去第二个网络也不自动意味着每轮或整机推理更快。
@@ -562,7 +564,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 作者要求 STMP 改用粉红色，后续估计相位和白高斯噪声版本使用红色。现已将七幅实验图中的 STMP 统一改为 `#d65a9e`，保留原圆圈标记和虚线；GP-MP-C 保持 `#ff0000`、方块和实线。后续 GP-MP 与 GP-MP-C-EP 均采用 `#ff0000`，加入时以不同线型和标记区分，不提前加入未完成实验的曲线或空图例。
 
-统一绘图配置只改变九处 STMP 颜色值（含双面板的内外层设置），547 个绘图点、输入哈希、标签、坐标和其他样式不变。七幅图已重绘，两版论文重新编译并检查，仍为 13/15 页，仅第 10–12 页颜色变化；全文文本、全部 TeX、书目和三幅方法图保持。没有启动训练或推断，也未改变正在执行的相位实验或白噪声训练安排。配色写入[绘图约定](../../src/evaluation/plots/manuscript/README.md)，备份、数据核验与页面预览见[本轮记录](../checks/stmp_pink_palette_20261104/README.md)。
+统一绘图配置只改变九处 STMP 颜色值（含双面板的内外层设置），547 个绘图点、输入哈希、标签、坐标和其他样式不变。七幅图已重绘，两版论文重新编译并检查，仍为 13/15 页，仅第 10–12 页颜色变化；全文文本、全部 TeX、书目和三幅方法图保持。没有启动训练或推断，也未改变正在执行的相位实验或白噪声训练安排。配色写入绘图约定（历史路径，见迁移记录：`src/evaluation/plots/manuscript/README.md`），备份、数据核验与页面预览见[本轮记录](../checks/stmp_pink_palette_20261104/README.md)。
 
 ### 作者纠正：粉红色应由红色稍微调浅
 
@@ -570,7 +572,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ### 作者最终指定：使用 Xu 原图的粉色
 
-作者进一步要求“你看看 xu 的那个粉色，你用那个吧”。已从 Surrey 开放机构库取得 [Xu AFDM-GFRA 接受稿](../../reference/literature/xu2026_afdm_gfra_author.pdf)，查看印刷第 12 页（含封面的 PDF 第 13 页）图 9–11，直接读取其中 EP with sparse prior 曲线的矢量色值 RGB `(1, 0.4, 0.6)`，对应 **`#ff6699`**。此为当前唯一采用的 STMP 粉色，覆盖此前两次凭描述选择的色值。原文来源、文件哈希和取色定位见 [XU_SOURCE.json](../checks/stmp_xu_pink_20261104/XU_SOURCE.json)。
+作者进一步要求“你看看 xu 的那个粉色，你用那个吧”。已从 Surrey 开放机构库取得 Xu AFDM-GFRA 接受稿（仅本地历史资料：`reference/literature/xu2026_afdm_gfra_author.pdf`），查看印刷第 12 页（含封面的 PDF 第 13 页）图 9–11，直接读取其中 EP with sparse prior 曲线的矢量色值 RGB `(1, 0.4, 0.6)`，对应 **`#ff6699`**。此为当前唯一采用的 STMP 粉色，覆盖此前两次凭描述选择的色值。原文来源、文件哈希和取色定位见 [XU_SOURCE.json](../checks/stmp_xu_pink_20261104/XU_SOURCE.json)。
 
 七幅实验图均已按此原色重绘，并逐图验证输出 PDF 含相同矢量色值；两版论文已同步，仍为 13/15 页。547 个绘图点、全文文本、TeX、书目、三幅方法图和其他样式保持。GP-MP-C 及后续白噪声/估计相位版的纯红 `#ff0000` 约定保持。新图及正文第 10–12 页已目视检查，见[本轮记录](../checks/stmp_xu_pink_20261104/README.md)。
 
@@ -585,7 +587,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 当前证据支持120轮对细网格偏紧，预算限制可能贡献其退化；同时7/13点高SNR出现延长迭代后变差，一阶拟合与精确路径重构的差异仍存在，不能把全部差距归因于迭代次数，也不能仅凭120轮排序断言加密网格无效。诊断没有授权自动改写主图、主批次预算或冻结算法。待余下三次完成、进程退出及重评分后，补充三场景完整结论。
 
-证据：[独立计划](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/PLAN.json)、[510场景轨迹汇总](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/SAVED_TRACE_SUMMARY.json)、[两场景阶段汇总](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/INTERIM_SUMMARY.json)、[运行与后续状态](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/FOLLOWUP.json)。既有术语和一阶近似文献依据沿用 BASELINE_BUDGET_REVIEW_20261024.md 与 OFFGRID_BASELINES.md；未新增技术名称。
+证据：[独立计划](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/PLAN.json)、510场景轨迹汇总（仅本地历史资料：`result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/SAVED_TRACE_SUMMARY.json`）、[两场景阶段汇总](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/INTERIM_SUMMARY.json)、[运行与后续状态](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/FOLLOWUP.json)。既有术语和一阶近似文献依据沿用 BASELINE_BUDGET_REVIEW_20261024.md 与 OFFGRID_BASELINES.md；未新增技术名称。
 
 ### 2026-11-05 09:34：27 次诊断完成并重新评分
 
@@ -603,7 +605,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 全部预算下漏检均为 0；7 点无虚警，13 点合计 3 次虚警不变，25 点合计虚警从 4 次降至 3 次。错误事件太少，不能据此解释完整 1000 场景的 AER 趋势。该诊断只提供有限样本的预算敏感性证据，没有选择新的科学超参数；两档主 SBL 队列仍保留原 120 轮预算，论文主图未修改。
 
-完整证据：[核验完成记录](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/COMPLETION.json)、[三场景汇总](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/SUMMARY.json)、[配对明细](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/PAIRED_CASES.csv)、[独立比较图](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/iteration_comparison.pdf)。
+完整证据：[核验完成记录](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/COMPLETION.json)、[三场景汇总](../../result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/SUMMARY.json)、配对明细（仅本地历史资料：`result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/PAIRED_CASES.csv`）、独立比较图（仅本地历史资料：`result/snr_comparison/data/audits/offgrid_iteration_diagnostic_20261105/iteration_comparison.pdf`）。
 
 
 ## 2026-11-05：作者要求重查 vI，统一精度后再比较协方差
@@ -618,7 +620,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-05：白噪声版本作为主方法的候选修订清单
 
-作者要求在完整消融结束前，提前考虑有色训练退出主线后正文哪些位置需要修改、如何修改。已形成[逐章修改清单和候选措辞](WHITE_MAINLINE_REVISION_PLAN_20261105.md)，延续此前“完整配对比较后决定”的条件性方案。该文件是建议，不是已确认采用白噪声主线或已实施正文修订。
+作者要求在完整消融结束前，提前考虑有色训练退出主线后正文哪些位置需要修改、如何修改。已形成[逐章修改清单和候选措辞](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/WHITE_MAINLINE_REVISION_PLAN_20261105.md)，延续此前“完整配对比较后决定”的条件性方案。该文件是建议，不是已确认采用白噪声主线或已实施正文修订。
 
 建议保留多帧 AFDM 建模、标量消息传递、条件均值导数方差和密度比活动估计；动机和贡献不再依赖有色训练改善失配的论断。正文可将训练协方差专门化为 vI，同时保留实际的方差加权损失、差分方向缩放和预条件。四档方差下核对了预条件和训练损失的代数等价关系；这不是新增性能实验。RefineNet 骨干沿用已有结构，避免笼统称为新网络架构；导数方差也不自动保证更快或更准。
 
@@ -626,7 +628,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ### 作者随后收窄范围 仅讨论引言第二项贡献
 
-作者明确摘要及引言第一、第三项贡献不用动，重点是结合 Huang 和 Cai 的论述提出本文做法，说明如何省去一、二阶网络配套训练。已将这一限定放到[建议文档](WHITE_MAINLINE_REVISION_PLAN_20261105.md)前部，覆盖旧逐章清单的本轮范围；没有修改正式稿件。
+作者明确摘要及引言第一、第三项贡献不用动，重点是结合 Huang 和 Cai 的论述提出本文做法，说明如何省去一、二阶网络配套训练。已将这一限定放到[建议文档](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/WHITE_MAINLINE_REVISION_PLAN_20261105.md)前部，覆盖旧逐章清单的本轮范围；没有修改正式稿件。
 
 核对 Huang 印刷 pp.2949、2951 的摘要、贡献 (i) 及 §III-A/B：直接学习 AFDM 有效信道与避免预设稀疏网格的论述保留其出处。核对 Cai v2 §IV-C 式 (52)–(54)：二阶目标使用一阶网络输出，既可顺序训练，也可同时训练并阻断二阶目标向一阶网络的梯度。候选第二项突出通过同一条件均值去噪器及其输入导数形成方差反馈，省去依赖一阶估计的独立二阶训练；不声称消除所有一阶误差、保证后验一致性或必然更快更准。密度比分类器仍为独立活动模块。
 
@@ -639,7 +641,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 正文采用 GP-MP 与标量 v 记号。第六章和第五章示例继续明确 CGP-MP 的实际有色训练归属；保存的十幅图、实验数字、冻结实现与权重保持，不把其他工况、估计相位或跨信道实验直接改称白噪声结果。本次未开启训练或新增批量实验，未修改 FINAL.json。完整白噪声批次完成后再决定最终主图和模型绑定；已有实验的真实归属先保留。这是作者新授权的执行阶段，覆盖此前“本轮只讨论第二项、不改正式稿”的范围限制，不重开其他已撤回事项。
 
-证据：[阶段配对、修改与核验](../checks/white_mainline_revision_20261105/README.md)、[原始汇总](../checks/white_mainline_revision_20261105/PAIRED_SUMMARY.json)、[逐场景指标](../checks/white_mainline_revision_20261105/PAIRED_CASES.csv)、[术语出处](TERMINOLOGY.md)。
+证据：[阶段配对、修改与核验](../checks/white_mainline_revision_20261105/README.md)、[原始汇总](../checks/white_mainline_revision_20261105/PAIRED_SUMMARY.json)、逐场景指标（仅本地历史资料：`paper/checks/white_mainline_revision_20261105/PAIRED_CASES.csv`）、[术语出处](TERMINOLOGY.md)。
 
 
 ## 2026-11-05：按作者要求先统一 GP-MP 图例
@@ -671,7 +673,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-05：第二点进一步按原文的数学衔接讨论
 
-作者进一步明确顺序为学习先验、构造去噪器、通过数学关系计算方差，最后说明一、二阶得分网络的训练依赖与额外开销。重新核对原文后，确定缺失的衔接应由 Cai §IV-A 的 Tweedie 公式承担，再接 Dytso/Manor 的条件均值导数与后验协方差关系。候选段落及原文位置已置于[修订建议顶部](WHITE_MAINLINE_REVISION_PLAN_20261105.md)。
+作者进一步明确顺序为学习先验、构造去噪器、通过数学关系计算方差，最后说明一、二阶得分网络的训练依赖与额外开销。重新核对原文后，确定缺失的衔接应由 Cai §IV-A 的 Tweedie 公式承担，再接 Dytso/Manor 的条件均值导数与后验协方差关系。候选段落及原文位置已置于[修订建议顶部](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/WHITE_MAINLINE_REVISION_PLAN_20261105.md)。
 
 本轮回答的是该组织方式是否更合适，尚未再次替换正式 TeX/PDF。候选收益具体限定为绕开二阶训练目标对一阶得分估计的依赖，省去独立二阶模型对应的训练和参数存储；不据此宣称整体推理更快或消除方差误差。后续沿用该数学链条，不再将“信道估计与不确定性量化”两项功能直接并列作为主要衔接。
 
@@ -721,7 +723,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 所检查的核心公式链未见新的明显矛盾；Humanizer 未发现新的强制改写项，不因 `yielding` 等单个词项或正常技术段落形式而制造问题。现有三项贡献、作者确认的数学衔接、阶段验收安排、模型边界及配色继续保留。不重新打开已撤回的有色贡献与机制实验，不新增全组件消融，不对本轮给出总分。
 
-活动源码引用检查、表 III 48 个单元与保存汇总核对及两版版面检查通过；这些检查不等于重新评分全部原始结果或完成最终投稿验收。详见[复审报告](SUPERVISOR_HUMANIZER_REVIEW_20261106.md)和[核验记录](../checks/supervisor_humanizer_20261106/README.md)。
+活动源码引用检查、表 III 48 个单元与保存汇总核对及两版版面检查通过；这些检查不等于重新评分全部原始结果或完成最终投稿验收。详见[复审报告](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/SUPERVISOR_HUMANIZER_REVIEW_20261106.md)和[核验记录](../checks/supervisor_humanizer_20261106/README.md)。
 
 ## 2026-11-06：作者决定不补入 Ha 等预印本
 
@@ -731,7 +733,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-06：作者要求全文检查防御性评论与冗余表达
 
-作者主动要求检查“纯防御性不推进论证的语言”和“什么都得说得特别详细”的表达。使用 humanizer 与 paper-polish，通读当前摘要、正文及完整稿附录，形成[逐处精简建议](CONCISENESS_REVIEW_20261106.md)。本轮只审阅和提出候选句，尚未修改正式稿。
+作者主动要求检查“纯防御性不推进论证的语言”和“什么都得说得特别详细”的表达。使用 humanizer 与 paper-polish，通读当前摘要、正文及完整稿附录，形成[逐处精简建议](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CONCISENESS_REVIEW_20261106.md)。本轮只审阅和提出候选句，尚未修改正式稿。
 
 主要建议为删除附录中“不识别未收敛内部原因”“没有补齐提前停止曲线”“不构成独立验证”等重复或无对应主张的评论，统一一次交代有限输出纳入规则，压缩保存/复用核验过程；正文压缩白噪声定义、SVD 一次计算、混合分布与密度比含义的重复说明。第六章新增工作稿状态说明可缩为两句，待数据替换后移出论文。
 
@@ -749,13 +751,13 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 逐页检查当前 45 个编号公式，并对照 Shen 本地 arXiv v1 和 Cai 的 IEEE JSAC 期刊版。未发现公式越栏、编号碰撞、符号裁切或明显的断行、标点问题。式 (34)、(42) 中并列关系较长，可以拆成两行，共用原编号；这是本轮可选版面建议，尚未修改正式稿，也不记作作者已采纳。
 
-原文同样存在长式编号另占下一行的情况，不将编号下移本身列为错误。不重新要求所有公式等号对齐、逐式补引用或恢复已删的维度说明。详见[公式排版对照报告](EQUATION_LAYOUT_REVIEW_20261106.md)。
+原文同样存在长式编号另占下一行的情况，不将编号下移本身列为错误。不重新要求所有公式等号对齐、逐式补引用或恢复已删的维度说明。详见[公式排版对照报告](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/EQUATION_LAYOUT_REVIEW_20261106.md)。
 
 ## 2026-11-06：两处公式拆行完成；作者追问全篇编号粒度
 
 按作者“可以，请你修改一下”的授权，式 (34)、(42) 已改为两行并保留原编号。数学内容一致，两版编译和目视检查通过，仍为 13／14 页。见[修改核验](../checks/equation_layout_revision_20261106/README.md)。
 
-作者在修改过程中进一步指出多条公式共用一个编号过多。本轮重新查看 Cai 的主要均值、方差、阻尼更新及 Shen 的相应更新，确认其多采用分别编号。Shen 式 (36) 虽将四个辅助参数共用一号，但不足以支持现稿将核心更新普遍合并。首次审阅对编号粒度的判断不充分，已在[报告](EQUATION_LAYOUT_REVIEW_20261106.md)纠正；建议独立核心更新分别编号、连续推导保留一号、辅助定义按需移至正文。目前全篇重编号尚未执行。此次复核由作者主动提出，不能再以此前不追求公式数量为由关闭该问题。
+作者在修改过程中进一步指出多条公式共用一个编号过多。本轮重新查看 Cai 的主要均值、方差、阻尼更新及 Shen 的相应更新，确认其多采用分别编号。Shen 式 (36) 虽将四个辅助参数共用一号，但不足以支持现稿将核心更新普遍合并。首次审阅对编号粒度的判断不充分，已在[报告](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/EQUATION_LAYOUT_REVIEW_20261106.md)纠正；建议独立核心更新分别编号、连续推导保留一号、辅助定义按需移至正文。目前全篇重编号尚未执行。此次复核由作者主动提出，不能再以此前不追求公式数量为由关闭该问题。
 
 ## 2026-11-06：100 场景活动证据消融核验完成
 
@@ -787,7 +789,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-06：作者要求通读引言，复核故事及贡献必要性
 
-作者在聊天中认可 score 的对数密度梯度与活动似然比之间的衔接后，主动要求完整审阅引言的前后逻辑、学术故事和各贡献动机。已通读全部引言，并对照第二至四章模型／推断、第六章相关结果和 Cai、Shen、Manor–Michaeli、Menon–Ong 原文。形成[引言故事审阅](INTRODUCTION_STORY_REVIEW_20261106.md)，仅提供建议，摘要、引言和 PDF 均未修改。
+作者在聊天中认可 score 的对数密度梯度与活动似然比之间的衔接后，主动要求完整审阅引言的前后逻辑、学术故事和各贡献动机。已通读全部引言，并对照第二至四章模型／推断、第六章相关结果和 Cai、Shen、Manor–Michaeli、Menon–Ong 原文。形成[引言故事审阅](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/INTRODUCTION_STORY_REVIEW_20261106.md)，仅提供建议，摘要、引言和 PDF 均未修改。
 
 本轮建议重点为：说明固定跨帧信道表示如何支撑观测积累及后续学习；先说明消息传递为什么需要方差，再保留已确认的 Tweedie／均值导数数学链；将密度比的动机置于学习先验如何参与活动概率计算，高斯解析近似保留为具体比较。第三项 GPJD 功能与第二项去噪器构造的重复可压缩。此前确认的数学关系、同段组织、三项贡献结构继续保留；重新评估的是作者本轮主动提出的叙述重心，不将旧已确认措辞追记为未经处理的技术错误。
 
@@ -903,7 +905,7 @@ Ding §I/PDF p.1 与 Huang §I/p.2949 提供低复杂度实现的背景依据；
 
 ## 2026-11-06：作者要求重点复查第 II–V 章故事与说明书感
 
-作者确认摘要、引言、结论的故事已基本满意，主动要求通读并重点检查第 2–5 章的逻辑、创新呈现、防御和说明书感。本轮逐行通读四章，核对已确认的三项贡献与既有修订，形成[章节叙事审阅](CHAPTERS_II_V_NARRATIVE_REVIEW_20261106.md)。正文、公式、图形、PDF 和实验保持。
+作者确认摘要、引言、结论的故事已基本满意，主动要求通读并重点检查第 2–5 章的逻辑、创新呈现、防御和说明书感。本轮逐行通读四章，核对已确认的三项贡献与既有修订，形成[章节叙事审阅](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_II_V_NARRATIVE_REVIEW_20261106.md)。正文、公式、图形、PDF 和实验保持。
 
 总顺序成立，第二章共享多帧模型和第四章三个估计对象的推导应保留。新增建议集中在第五章：将 Gaussian site 细节与整体流程区分，按一次性预处理和迭代内更新组织参数实现；另建议 III-B3 更明确呈现已获得的活动概率/信道矩到高斯回传消息的顺序，III-B1 的前向引用先交代第四章学习来源再接第五章实际组合。四项均为尚未采用的局部叙事建议，不是算法缺陷，不改 site 接受/保留规则。
 
@@ -914,7 +916,7 @@ Ding §I/PDF p.1 与 Huang §I/p.2949 提供低复杂度实现的背景依据；
 
 作者指出第三章应聚焦消息传递框架、所需量及各自计算困难，并要求对照 Cai。重新核对 Cai §III-B1 式 (22)–(23) 后的积分困难说明与 §IV 开头，确认这一分工更准确。上一轮“先指向第四章学习来源”的建议修正为：第三章先定义待计算的均值、平均方差、活动概率及消息关系，说明一般信道先验下的高维积分困难；Tweedie、DSM、均值导数与分类密度比的实际计算留第四章，完整接收机组合留第五章。
 
-Cai 的活动更新已有高斯解析式 (30)，本稿 q_1 的积分困难与密度比实现属于本稿组织，不声称 Cai 的所有统计量均不可计算。第三章关于学习去噪器的提前陈述建议替换为困难与简短后续指引；正式正文尚未修改。详见[审阅记录的后续校正](CHAPTERS_II_V_NARRATIVE_REVIEW_20261106.md)。
+Cai 的活动更新已有高斯解析式 (30)，本稿 q_1 的积分困难与密度比实现属于本稿组织，不声称 Cai 的所有统计量均不可计算。第三章关于学习去噪器的提前陈述建议替换为困难与简短后续指引；正式正文尚未修改。详见[审阅记录的后续校正](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_II_V_NARRATIVE_REVIEW_20261106.md)。
 
 
 ## 2026-11-07：作者确认第三章框架与第四章学习分工修复，已完成

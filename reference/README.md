@@ -1,13 +1,13 @@
 # 参考资料
 
+当前论文见 [paper](../paper/README.md)，参考文献表见 [references.bib](../paper/references.bib)，术语与公式定位见 [TERMINOLOGY.md](../paper/docs/TERMINOLOGY.md)。
+
 | 入口 | 内容 |
 |---|---|
-| [论文原文](literature/README.md) | 51 份内容不同的 PDF；按文件列出版本记录与调研来源 |
-| [专题阅读与核查](reviews/README.md) | 阅读笔记、提取文本、页面截图、作者代码及历史核验记录 |
-| [写作资料](writing_profile/README.md) | 语料清单、风格卡、表达参考与章节蓝图 |
+| [文献索引](literature/README.md) | 本地论文 PDF 的版本和来源记录 |
+| [专题阅读](reviews/README.md) | 阅读笔记、作者代码及历史核验 |
+| [写作资料](writing_profile/README.md) | 语料、风格卡和表达参考 |
 
-论文正文和参考文献表分别位于 [STMP](../paper/STMP/README.md)、[C-STMP](../paper/C-STMP/README.md)。术语及公式定位随各稿件维护：[STMP](../paper/STMP/docs/TERMINOLOGY.md)、[C-STMP](../paper/C-STMP/docs/TERMINOLOGY.md)。
+第三方论文 PDF、页面截图及部分中间素材保留在本地，GitHub 主要提供索引和阅读记录；历史索引中的本地文件路径不代表已上传资产。
 
-2026-10-26 整理：9 个分散的调研目录及原章节结构摘录归入 `reviews/`；57 份 PDF 按内容合并为 50 份，保留不同版本。详见[整理记录与旧路径映射](../archive/reference_layout_20261026/README.md)。
-
-新增论文放入 `literature/` 并更新索引；同一文件不按调研任务重复保存。专题笔记及其证据放入 `reviews/<专题>/`，引用论文库中的文件。原下载清单、哈希记录和作者代码保留原文；其中的历史路径通过整理映射定位。
+新增文献按文件内容去重后维护索引。旧路径通过[参考资料映射](../archive/reference_layout_20261026/README.md)查询，原下载清单和来源哈希保留。

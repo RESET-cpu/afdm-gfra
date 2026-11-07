@@ -1,17 +1,10 @@
-# Running the source and reproducing results
+# Running the code and reproducing results
 
-This is a research source snapshot. Its current proposed method is **GP-MP**;
-the receiver with estimated phase is **GP-MP-EP**. The paper remains under
-`paper`. Copyright is retained; see [RIGHTS.md](RIGHTS.md).
+The repository is public. The current proposed receivers are **GP-MP** and **GP-MP-EP** (estimated phase). Run the source through `python run_experiments.py` from the repository root. The paper is in [paper/](paper/README.md); licensing is described in [RIGHTS.md](RIGHTS.md).
 
-Selected GP-MP, STMP and GNN model assets are distributed through Git LFS.
-Training arrays and per-scene predictions are excluded. A small CPU example
-and the default tests work without weights.
-Running the example does not reproduce a GP-MP performance curve.
+## Download and dependencies
 
-## Download the source and prepare dependencies
-
-To obtain both source and weights, install [Git LFS](https://git-lfs.com/), then run:
+Install [Git LFS](https://git-lfs.com/), then download the source and weights:
 
 ```text
 git lfs install
@@ -20,103 +13,46 @@ cd afdm-gfra
 git lfs pull
 ```
 
-The repository remains private, so repository access is required. The eight
-model assets total about 404 MB; their exact paths and hashes are listed in
-[weights.json](src/configs/release/weights.json). They include the classifier
-initialization checked by GP-MP provenance and the STMP phase calibration
-moments. Historical candidate checkpoints and training initialization banks
-are not part of this selection.
+ZIP archives may contain LFS pointers instead of model bytes. The asset checker identifies these as `LFS_POINTER`; the clone procedure above retrieves the actual files.
 
-GitHub ZIP downloads may contain only LFS pointer files, depending on the
-repository archive setting. The asset checker reports these as `LFS_POINTER`;
-use the Git LFS clone above if this occurs. Source-only examples and tests
-also work from a ZIP download.
-
-Use Python 3.11 or newer in a new environment. The measured reference setup
-is Python 3.13.1 on Windows 11; exact dependency and hardware versions are in
-[ENVIRONMENT.json](ENVIRONMENT.json). Other operating systems and Python
-versions have not been validated by this preparation run.
+Use Python 3.11 or newer. The tested environment is Python 3.13.1 on Windows 11; exact versions are recorded in [ENVIRONMENT.json](ENVIRONMENT.json). Other platforms and a fresh dependency installation have not been independently validated. A virtual environment is optional:
 
 ```text
 python -m venv .venv
 ```
 
-Activate it with `.venv\Scripts\Activate.ps1` in PowerShell, or
-`source .venv/bin/activate` in a POSIX shell, then run from the repository root:
+Activate it with `.venv\Scripts\Activate.ps1` in PowerShell or `source .venv/bin/activate` in a POSIX shell. Install dependencies:
 
 ```text
 python -m pip install -r requirements.txt
+```
+
+[requirements-tested.txt](requirements-tested.txt) records tested direct dependency versions and can be supplied with `-c requirements-tested.txt`. For GPU execution, choose a PyTorch build compatible with the GPU; the recorded reference uses PyTorch 2.7.1+cu128 on an RTX 5080.
+
+## Check the setup
+
+```text
 python run_experiments.py list
 python run_experiments.py demo --output result/demo_first
 python -m pytest -q
 ```
 
-`demo_first` must be a new or empty directory. The example saves
-`SUMMARY.json` and `channel.png`. It uses one synthetic two-device, 32-frame,
-four-antenna AFDM scene and known-phase least squares. It loads no weights,
-does not run an activity detector, and is not a manuscript result. The
-default seed is `2026110701`; the measured reference NMSE is about
-`-29.290865 dB`. This is a setup check, not a performance target.
+Use a new output directory. The demo generates a synthetic two-device, 32-frame, four-antenna AFDM scene and runs known-phase least squares. It saves `SUMMARY.json` and `channel.png`, loads no weights, and does not evaluate GP-MP or activity detection. The default tests also need no weights; their scope is described in [src/tests/README.md](src/tests/README.md).
 
-All commands run directly from the extracted repository through
-`python run_experiments.py`. Keep `src/`, the configurations and the root script
-together; paths are resolved relative to the script directory.
+## Run GP-MP with the published weights
 
-The default test set is `src/tests/public`: mathematical identities, channel
-reconstruction, scoring, current configuration contracts, portable asset
-paths, and command behavior. It does not require local research assets.
-[Research tests](src/tests/README.md) cover the current implementation separately. Original historical tests are in the frozen source archive.
+Eight model assets (about 404 MB) are distributed through Git LFS: the GP-MP and STMP networks, GNN checkpoint, classifier initialization and shared STMP phase calibration. Their exact paths and SHA-256 values are in [weights.json](src/configs/release/weights.json). [FINAL.json](FINAL.json) identifies the current GP-MP binding; the [model catalog](src/configs/organized/models.json) identifies STMP.
 
-For comparison with the measured environment, use the version constraints:
+Validate the downloaded assets:
 
 ```text
-python -m pip install -c requirements-tested.txt -r requirements.txt
-```
-
-These constraints cover direct dependencies, not a universal lock file. The
-recorded GPU run used PyTorch `2.7.1+cu128` on an RTX 5080. Select a PyTorch
-build appropriate to the intended device; the CPU example needs no CUDA.
-Neither dependency installation nor a fresh full training run is certified
-across all platforms by this snapshot.
-
-## Check the assets before inference
-
-```text
-python run_experiments.py assets --scope gp-mp
 python run_experiments.py assets --scope models --verify
-python run_experiments.py assets --scope gp-mp --verify --report result/asset_check.json
+python run_experiments.py assets --scope gp-mp --verify
 ```
 
-The first command checks file presence. `--verify` streams SHA-256 checks
-without loading checkpoints. Exit code 1 means missing, pointer-only or changed assets,
-not that an experiment ran. The expected paths, sizes, and hashes are in
-[assets.json](src/configs/release/assets.json). No command downloads assets.
+The second command also verifies the required provenance records and scene registry. Exit code 1 indicates a missing, changed or pointer-only asset. These commands check files; they do not download them.
 
-The two current weights are identified in [FINAL.json](FINAL.json):
-
-- Conditional mean: `result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt`.
-- Activity classifier: `result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/evidence_best.pt`.
-
-The binding also needs its prior definition, training specifications,
-completion/history records and scene registry. The inventory lists these
-alongside the weights. These inference records and selected weights are
-included in the repository; use `git lfs pull` to obtain the actual binary
-files and verify their hashes. Do not substitute arbitrary
-weights and label the output a reproduction of the frozen manuscript.
-`--scope models` checks all eight distributed model assets; `--scope gp-mp`
-also checks the GP-MP provenance and scene registry. Neither check certifies
-complete numerical reproduction or retraining.
-
-The working receiver resolves the known old `D:\afdm-gfra\...` prefix to the
-current checkout. Frozen JSON files are not rewritten. Other external paths
-are not silently redirected. Run the inventory command from the extracted repository root.
-
-## Run a new diagnostic with the downloaded GP-MP assets
-
-The following commands are for the reader to execute after asset validation.
-They were not used to start a formal experiment during release preparation.
-They create a new one-scene, one-condition diagnostic using independent
-smoke-test seeds, not the manuscript's scene panel:
+Run one GP-MP diagnostic with independent diagnostic seeds:
 
 ```text
 python run_experiments.py snr_comparison plan --config src/configs/release/gp_mp_diagnostic.json --smoke --device cpu --output result/gp_mp_diagnostic
@@ -124,37 +60,37 @@ python run_experiments.py snr_comparison inspect --output result/gp_mp_diagnosti
 python run_experiments.py snr_comparison run --output result/gp_mp_diagnostic
 ```
 
-Use a new output directory when changing settings. Planning records the
-configuration and source/asset hashes; the run command checks them before
-execution. Wall time for this full receiver diagnostic has not been measured
-in the publication preparation run. The measured weight-free example and
-test timings are recorded in the validation report.
+This exact workflow was completed in an independently downloaded source tree with the published weights and an existing validated Python environment: one scene, one SNR condition, 60 receiver iterations, saved scores and plots. Receiver inference took about 49 seconds on that CPU setup, excluding warmup. This verifies the workflow, not a manuscript performance curve or a universal runtime target.
 
-## Reproduce figures and understand their status
+For a larger or different experiment, create a new plan and output directory as described in [the experiment guide](src/experiment/README.md). A run verifies its saved configuration and asset hashes before execution.
 
-Figure-by-figure sources, commands, sample budgets and current replacement
-status are listed in [the manuscript reproduction map](paper/docs/REPRODUCTION.md).
-Saved-aggregate plotting is distinct from rerunning receivers and retraining.
-Retraining needs excluded training arrays; historical figure reproduction
-can also require saved arrays or older checkpoints outside this selection.
+## Figures and numerical reproduction
 
 ```text
 python run_experiments.py plot --list
-python run_experiments.py assets --scope figures
 python run_experiments.py plot --figures snr_comparison --output result/snr_figure_preview
 ```
 
-`plot --check` renders into a temporary directory and compares against the
-retained manuscript PDFs; it does not replace them. Exact pixel comparison
-requires the recorded plotting versions and Times New Roman fonts. The first
-three method figures additionally need the source PDFs, compiled labels and
-channel example described in the reproduction map. PyMuPDF is listed in
-`requirements.txt`; no personal cache directory is used by the working plotter.
+The [manuscript reproduction map](paper/docs/REPRODUCTION.md) identifies each figure's source and adopted result. Rendering saved aggregates and recomputing receiver outputs are separate operations. `plot --check` compares temporary renders with retained manuscript figures. Exact pixel matching needs the recorded plotting versions and Times New Roman fonts.
 
-## Training and the submission snapshot
+The first three method figures also require their configured source PDFs, compiled equation labels and channel example. Downloaded third-party papers and the raw channel-example array are not distributed; the finished figures are included.
 
-Current white-only training uses `src/configs/training/gp_mp_first.json` and
-`gp_mp_activity.json`, with separate `_reproduction` output directories:
+## Distributed and local assets
+
+| Included in this repository | Kept in the full local research workspace |
+|---|---|
+| Current source, configurations and tests | Original training/validation channel banks |
+| Paper source, PDFs and finished figures | Per-scene predictions, traces and run logs |
+| Selected plans, aggregate results and provenance | Historical candidate weights and some initialization banks |
+| Eight selected model assets through Git LFS | Third-party paper PDFs and the raw figure-3 example |
+
+[GITHUB_MANIFEST.json](GITHUB_MANIFEST.json) lists published file sizes and hashes, excluding itself. LFS entries describe original binary bytes. Published status records are snapshots; local `STATUS.json` files track active experiments. The manifest describes the current tree, while older Git commits retain historical content.
+
+New inference scenes can be generated by the code. Exact replay of a saved historical batch needs its original inputs and bindings. The explicitly isolated [frozen source archive](archive/frozen_reproduction_20261107/README.md) and [migration validation](archive/code_cleanup_20261107/README.md) explain source identity and path relocation. Do not rewrite a frozen plan to bypass its checks.
+
+## Training
+
+Training entry points and data requirements are documented in [src/training/README.md](src/training/README.md):
 
 ```text
 python run_experiments.py train gp-mp-first --help
@@ -163,22 +99,4 @@ python run_experiments.py train stmp --help
 python run_experiments.py train gnn --help
 ```
 
-These require the original channel banks, initialization and provenance records,
-which are not all distributed with the inference weights. The extraction was
-checked against the original white branch for identical random draws, tensors,
-network outputs, losses and gradients; no full retraining was performed.
-`training.stmp.data.build_bank` can generate new banks, whose source identity
-must be independently validated and recorded in a new recipe.
-
-Original source and recipes are kept in
-[the frozen archive](archive/frozen_reproduction_20261107/README.md), outside the
-normal import path. Its explicit replay helper verifies original source hashes
-and relocates asset reads. Historical data and some historical models remain
-local requirements. Current study execution records actual source identity
-separately from unchanged original plans. See [validation evidence](archive/code_cleanup_20261107/README.md).
-
-The agreed white-network replacements are still in progress. The current
-code snapshot is suitable for review; an immutable submission tag should be
-created after the final figure/model/configuration set is adopted. The
-preparation does not resume the failed pilot-frame sweep or declare the
-remaining sweeps complete.
+Retraining requires channel banks, initialization and provenance records beyond the selected inference assets. New generated banks require a separately recorded recipe. No full retraining or complete manuscript recomputation is claimed by the download check. Current adoption and pending studies are tracked in [the result index](result/README.md).

@@ -1,22 +1,19 @@
 # 检查
 
+在仓库根目录运行无需权重或原始数据的默认检查：
+
 ```text
 python -m pytest -q
-python -m pytest -q src/tests
 ```
 
-第一条只运行 `public/`，无需权重或原始数据。第二条包含当前研究检查，需要已发布权重以及完整本地研究资产、Times New Roman 字体；不启动训练或正式批次。
+默认范围为 `public/`，覆盖数学恒等式、信道重构、评分、配置、路径和命令接口。
 
-- `public/`：数学恒等式、配置、资产、路径、公开命令及模块依赖边界。
-- `test_organized_code.py`：冻结源码身份，以及场景、波形和指标的前后对照。
-- `test_configured_experiments.py`：八类实验的计划、推断调用、评分、汇总和绘图；临时接收机明确是合成接口样例。
-- `test_stmp*`、`test_phase_init_marginal*`、`test_convergence*`：相位、消息更新、固定迭代和评分的数值检查。
-- `test_configurable_plots.py`、`test_paper_plotting.py`：汇总一致性、图例和出图边界。
-- `test_white_followup_receivers*`：后续实验的输入隔离、结果验证、配对、调度和采用条件。
+完整本地研究检查使用 `python -m pytest -q src/tests`。下载版已有推断权重时可运行：
 
-已退役算法专属测试及所有整理前测试原件保存在 `archive/frozen_reproduction_20261107/src/tests`；它们不在当前测试收集范围。重复的流程测试已移入 `delete/`。
-当前测试按已采用的白噪声主线更新路径与协议断言，没有放宽算法误差容差。
-真实预训练接收机前后对照、十图重绘和资产核验见 `archive/code_cleanup_20261107/`。
-这些验证不等同于重新训练和全量 Monte Carlo 复现。
+```text
+python -m pytest -q src/tests -k "not test_independent_entry_and_updated_1000_scene_defaults"
+```
 
-下载版已有推断权重时，可运行 `python -m pytest -q src/tests -k "not test_independent_entry_and_updated_1000_scene_defaults"`。排除的 8 项依赖未上传的旧计划备份；完整本地检查为 273 项全部通过，下载目录为 265 项通过。
+排除的八项依赖未发布的旧计划备份；其余研究检查可能需要已发布权重和 Times New Roman 字体。测试范围包括当前接收机与原实现的数值对照、实验流程、图表来源，以及后续批次的任务派发和结果验证。
+
+已有验证记录见[代码整理检查](../../archive/code_cleanup_20261107/README.md)和[导频任务读取修复](../../archive/pilot_resume_20261107/README.md)。历史测试原件保留在本地冻结归档。测试通过的范围与完整重新训练、论文全部数值复现分开记录。

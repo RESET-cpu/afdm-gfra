@@ -1,6 +1,6 @@
 {
   "snapshot_date": "2026-11-07",
-  "content_source": "Latest local source and flattened current manuscript under paper/; other manuscripts excluded.",
+  "content_source": "Latest local source and flattened current manuscript under paper/; current documentation streamlined. Other manuscripts excluded.",
   "excluded": "DU standalone assets and delete directory; raw datasets, per-scene predictions, logs, caches and bulky historical copies.",
   "lfs_note": "LFS rows record original model file bytes and SHA-256; Git tree contains corresponding pointers.",
   "files": [
@@ -16,8 +16,8 @@
     },
     {
       "path": "AGENTS.md",
-      "bytes": 4716,
-      "sha256": "5cdb9fa8750d1e9af5d1163c820a8a02861af894576859598476759a56e683ea"
+      "bytes": 4636,
+      "sha256": "1dcd70b404ca43e154e9a086c065e980c9693adfdceeb09488c4a50d655d2e39"
     },
     {
       "path": "CITATION.cff",
@@ -35,24 +35,19 @@
       "sha256": "b4bc2cad80b61838be019374facdbe3db94bf66d0aab94efc270c7a4e9ecc16a"
     },
     {
-      "path": "GITHUB_CONTENTS.md",
-      "bytes": 4214,
-      "sha256": "0a301733459c70e469667ba65458921e92f9512a6ae9f6543cee894e047d1264"
-    },
-    {
       "path": "MAINLINE.json",
       "bytes": 22625,
       "sha256": "2ad0bb19de70a3c4fa64ad70efdf8b10c1152971257fc12f035589bea86aaf0c"
     },
     {
       "path": "README.md",
-      "bytes": 8973,
-      "sha256": "67cf1b209f32cd5705a1f26f1fa7deb4ce5cdc9f16604ccdba8549ae270f96d3"
+      "bytes": 1821,
+      "sha256": "debbce3a0d1485b83cb5fec325a7f46ed77098f4547b3c1f35cf93a9b8af4a16"
     },
     {
       "path": "REPRODUCING.md",
-      "bytes": 9190,
-      "sha256": "0c7a3afb880356c4529b5992a1e969a6b239f2b68e7648e8f0728e80dea7dc4d"
+      "bytes": 6510,
+      "sha256": "45d72f74b3ea3e869ff48d6a89d605464ec8ed15004d2ba11c41873e10fbd96b"
     },
     {
       "path": "RIGHTS.md",
@@ -61,8 +56,8 @@
     },
     {
       "path": "archive/README.md",
-      "bytes": 1897,
-      "sha256": "1dd8af3d8962a7638928b1a143c7a3158032201eff295f0b1589ff205142f7d0"
+      "bytes": 1067,
+      "sha256": "9e4614e76cdb9b30c91df729d5327b74307c71fda6858bc8e70144dc29655a4a"
     },
     {
       "path": "archive/code_cleanup_20261107/ASSET_INTEGRITY.json",
@@ -188,6 +183,21 @@
       "path": "archive/convergence_unused_20261106/README.md",
       "bytes": 582,
       "sha256": "eb326bb45102b4052f9a53f642a00185d202ed6c5c9562196d5e6ca982f47dbe"
+    },
+    {
+      "path": "archive/docs_cleanup_20261107/MAPPING.json",
+      "bytes": 37062,
+      "sha256": "3d508c8a4af96503728b19a32c8aa589ed28857638ad3852205b730281472fd4"
+    },
+    {
+      "path": "archive/docs_cleanup_20261107/README.md",
+      "bytes": 1288,
+      "sha256": "3311d6d5ecc2a2d287e7284621532f6c2c93d518a6849303d75f0b82d47edc8e"
+    },
+    {
+      "path": "archive/docs_cleanup_20261107/VALIDATION.json",
+      "bytes": 2583,
+      "sha256": "f9fabb124e3b18d6c929bb011db98c2f601714a3622319b6f66e1d0081d3ed0f"
     },
     {
       "path": "archive/du_removal_20261107/MODEL_LOAD_VALIDATION.json",
@@ -2701,8 +2711,8 @@
     },
     {
       "path": "paper/README.md",
-      "bytes": 29612,
-      "sha256": "859ee331c61e86fda979e9dec8ad0dc32509e4ae6d81e3287e7d83d6c149d702"
+      "bytes": 1195,
+      "sha256": "6520ec7f3c9a9e091934786472731e85c4cfe97e67085f40783ae2dc67140f3b"
     },
     {
       "path": "paper/checks/COPY_MANIFEST.json",
@@ -9005,434 +9015,29 @@
       "sha256": "587b23940f69958e8f1d0532fc4d716e6f5ec58d2b60a4f191e25e426b6b2624"
     },
     {
-      "path": "paper/docs/ABSTRACT_INTRO_LANGUAGE_REVIEW_20261104.md",
-      "bytes": 16008,
-      "sha256": "d62783d93d30b03b6a9a982feee1de0e5120692a5fdfb26cfc08f48b7bda4822"
-    },
-    {
-      "path": "paper/docs/ABSTRACT_TO_V_REREAD_20261104.md",
-      "bytes": 7672,
-      "sha256": "73dbcdefdb01767bd42385ecbc0261203fc3ec57c96e37d7999bbcfae020841e"
-    },
-    {
-      "path": "paper/docs/ACTIVITY_DETECTOR_REVIEW_20261024.md",
-      "bytes": 14298,
-      "sha256": "e0065d85b9d339b510fcaba8bb0782929f2e41ca54a56e9e45d1c670600e478e"
-    },
-    {
-      "path": "paper/docs/ATTRIBUTION.md",
-      "bytes": 1352,
-      "sha256": "33acdadf9a0c272beccb78e3354b06ca3d247f46f79ffd1648c35978584fe8b8"
-    },
-    {
-      "path": "paper/docs/BASELINES.md",
-      "bytes": 6305,
-      "sha256": "b52645e0f63dd87f5ee11988456255b8b2fedbdd2bd0f69cc6a0ef3793c6bc19"
-    },
-    {
-      "path": "paper/docs/BASELINE_ACTIVITY_READOUT.md",
-      "bytes": 19089,
-      "sha256": "da1ad0fec6427328d88be6263651db22a2843015124aed694949956b66e2888f"
-    },
-    {
-      "path": "paper/docs/BASELINE_BUDGET_REVIEW_20261024.md",
-      "bytes": 12456,
-      "sha256": "9ea0cb0fec41522c86e1aa9c565078a445a61830c33609c4e2956fef22587786"
-    },
-    {
-      "path": "paper/docs/BASELINE_GFRA_AUDIT_20261023.md",
-      "bytes": 20840,
-      "sha256": "b1b32556a7e003752a6d5473d9bdb7cb0c776122ff6c42470be0fd804212a637"
-    },
-    {
-      "path": "paper/docs/BASELINE_GRID.md",
-      "bytes": 1300,
-      "sha256": "78a08e658b715e3faf38b4fd52b8545425c4cd22d69adaa32279ea19d0a721ad"
-    },
-    {
-      "path": "paper/docs/BASELINE_NOISE.md",
-      "bytes": 9133,
-      "sha256": "4eecf5bc8bd7c7d416a1e5d11e5eed5c46b1e7086ab1c860e377f4c312dcbb30"
-    },
-    {
-      "path": "paper/docs/BASELINE_PHASE.md",
-      "bytes": 4466,
-      "sha256": "7365049f5edb54ddc9a0c04f69ef57d68585a2512186116f1045d2488787947d"
-    },
-    {
-      "path": "paper/docs/CAI_FORMULA_CORRESPONDENCE_20261104.md",
-      "bytes": 16171,
-      "sha256": "2e6e0b8630c772538f4aea06ad26ba5bf1c2c490352ce1768a0ea4efdb369a64"
-    },
-    {
-      "path": "paper/docs/CHAPTERS_III_V_LANGUAGE_REVIEW_20261104.md",
-      "bytes": 14843,
-      "sha256": "8c0d3e2fb287aec2944e4edc8fdcd27875de9b6a8820b768230a5efa9b40ab7f"
-    },
-    {
-      "path": "paper/docs/CHAPTERS_III_V_LOGIC_GUIDE_20261104.md",
-      "bytes": 13752,
-      "sha256": "5cd10cae9fa69a649b4b242693d30d286edf84b1dd4c9e90565a924603b650f2"
-    },
-    {
-      "path": "paper/docs/CHAPTERS_II_V_NARRATIVE_REVIEW_20261106.md",
-      "bytes": 10225,
-      "sha256": "046195a433f320f8de2e8698e6801e6af028eec43970df78bd86aec0f5464000"
-    },
-    {
-      "path": "paper/docs/CHAPTERS_VI_VII_REVIEW_20261104.md",
-      "bytes": 9280,
-      "sha256": "0f31cdee7930678ca6d8f8cb02af4587add6b854edd590e5249aacb4b1ecf0a8"
-    },
-    {
-      "path": "paper/docs/CHAPTER_II_LANGUAGE_REVIEW_20261104.md",
-      "bytes": 15841,
-      "sha256": "78a898cc94dd857dd99e936eb8ba3b68c3c247324a7a2709dc8925b8105c8d74"
-    },
-    {
-      "path": "paper/docs/CHAPTER_II_NAMES_AUDIT.md",
-      "bytes": 30000,
-      "sha256": "c522b7154ee0b4e5a7e554d555961299bbffbdfc3006c86a9b3ec659a8af4547"
-    },
-    {
-      "path": "paper/docs/CHAPTER_VI_CAI_PRESENTATION_REVIEW_20261104.md",
-      "bytes": 16412,
-      "sha256": "fc26389a930e2af83cfb96d2b2c18b24486b6d27064d208cca947dceb32db6b0"
-    },
-    {
-      "path": "paper/docs/CHAPTER_VI_SIX_METHOD_REVIEW_20261104.md",
-      "bytes": 8274,
-      "sha256": "c679eaf54761e2507417453121c3059dfcc2714b599d9a8e6a80f94b007daa64"
-    },
-    {
-      "path": "paper/docs/CODE_GUIDE.md",
-      "bytes": 2987,
-      "sha256": "78ed4d6faa5146f5f4ba5d90976e56f9ec03b2578da312a2c469f8e3c6bd147b"
-    },
-    {
-      "path": "paper/docs/COLORED_COVARIANCE_RELATIVE_CHECK_20261024.md",
-      "bytes": 6339,
-      "sha256": "c1ff1f8c3dc436b38ef553fcd45f76dee819c293ae3153b9bdc266d8305dbfc0"
-    },
-    {
-      "path": "paper/docs/COLORED_DENOISING_EXPERIMENT_20261025.md",
-      "bytes": 5956,
-      "sha256": "311d322c24c70ec792d11a0f508a471030d6ad8567df55dc07d55f2b464c9ac0"
-    },
-    {
-      "path": "paper/docs/COLORED_PRECONDITIONED_TRAINING_20261024.md",
-      "bytes": 4459,
-      "sha256": "9052e0d14e039249385b44e7113f4c342f0929f2d5cdfddc7024bfe195cb28ad"
-    },
-    {
-      "path": "paper/docs/COLORED_SCORE_ARCHITECTURE_REVIEW_20261024.md",
-      "bytes": 13459,
-      "sha256": "f7ccd6fb3c963d36f8e428fd1dff24abb05457699997fbb838f6901df2178958"
-    },
-    {
-      "path": "paper/docs/COLORED_SCORE_TRAINING_20261024.md",
-      "bytes": 9690,
-      "sha256": "947802ef797dd1ac8ace2a36513c2d744b68d01d20ca4e85e8cbe7e8ea4b1c01"
-    },
-    {
-      "path": "paper/docs/CONCISENESS_REVIEW_20261106.md",
-      "bytes": 10411,
-      "sha256": "b85649b7c914a7b816fc935aec4ab1e4813d1e6dd957194d0638ba45246c5dd7"
-    },
-    {
-      "path": "paper/docs/CURRENT_STAGE.md",
-      "bytes": 35683,
-      "sha256": "87f696dcea0ecbcf1fd6b3e34840357f5b35e24dc1d15a4e07c72e2b2bb16cc5"
-    },
-    {
-      "path": "paper/docs/C_STMP_ANALYTIC_ACTIVITY_20261025.md",
-      "bytes": 4342,
-      "sha256": "4af65742170da3de07030fd4405a2af92f6791e40e2857f1443ddaafb27ac02c"
-    },
-    {
-      "path": "paper/docs/C_STMP_COLUMN_MESSAGES_20261025.md",
-      "bytes": 20198,
-      "sha256": "522c4bdcbf7e5d9a495a2337a6caca304a2c174b7a1cec7041991f826c689369"
-    },
-    {
-      "path": "paper/docs/C_STMP_COMPONENT_DIAGNOSTIC_20261025.md",
-      "bytes": 5124,
-      "sha256": "8f6a0e4c1d3a194bfa59279ad5e4d313fe62f6d38fdb7f39c7043d765018cedc"
-    },
-    {
-      "path": "paper/docs/C_STMP_DERIVATION_20261024.md",
-      "bytes": 54697,
-      "sha256": "000210c036f3ed8717b4e9e4f95cd1ffafa6c71823e80723f17e8e6b0ebfdb35"
-    },
-    {
-      "path": "paper/docs/C_STMP_ITERATIVE_PHASE_PROBE_20261028.md",
-      "bytes": 7805,
-      "sha256": "0e1d3b9599fe62d012b8ae080e85893a9d990474e4baba9ed8a47dac881db11d"
-    },
-    {
-      "path": "paper/docs/C_STMP_PHASE_PROBE_20261027.md",
-      "bytes": 4750,
-      "sha256": "90bc5433f7ee757e30fe6fbb3604921327c078f335abb07202936047ddfd3061"
-    },
-    {
-      "path": "paper/docs/C_STMP_PHASE_SELECTION_20261030.md",
-      "bytes": 19789,
-      "sha256": "bf114c8bed35cfce364a072a5ee3d2788cf840e13ac4253b940ab3a01e5df5e5"
-    },
-    {
-      "path": "paper/docs/C_STMP_QUERY_POWER_REPAIR_20261025.md",
-      "bytes": 6604,
-      "sha256": "0ac38572abbab167c6e09a80025ad94ef523a30d143710111943b8445649dedd"
-    },
-    {
-      "path": "paper/docs/C_STMP_SNR_ABLATION_20261028.md",
-      "bytes": 4884,
-      "sha256": "1d3830447a45e2d25e2d208058f2fb4c9063a6c377c774c15dce6e73716217c3"
-    },
-    {
-      "path": "paper/docs/DAMPING_AND_FORMULA_PROTOTYPES_20261104.md",
-      "bytes": 13846,
-      "sha256": "2b2ae6e9c3f95fea1a74ba3e6a79ef99b8d46d1a26e4117b3ced2ef7c8213342"
-    },
-    {
-      "path": "paper/docs/DEFENSIVE_LANGUAGE_REVIEW_20261104.md",
-      "bytes": 10078,
-      "sha256": "45bbd44f0abfad241f807d9527879334f630a0d638161ee939cd6101dbdf46d2"
-    },
-    {
-      "path": "paper/docs/DERIVATION_PRESENTATION_20261104.md",
-      "bytes": 4749,
-      "sha256": "6d758e2d850dcaf23d5a0dc91baaa1bdea85eef0fa9a5e3fda4ba45191d7b29d"
-    },
-    {
-      "path": "paper/docs/EQUATION_LAYOUT_REVIEW_20261106.md",
-      "bytes": 6177,
-      "sha256": "fd02b25f9cf2a127eaedb2979617e5cd2b968a3ec114c39760a62f2be49c14d2"
-    },
-    {
-      "path": "paper/docs/EXPERIMENT_PROTOCOL.md",
-      "bytes": 6557,
-      "sha256": "f92650565595c98ca0a9288f9b8e78ea43b7341ef7572f966b1f669582fc6f53"
-    },
-    {
-      "path": "paper/docs/FIGURE3_FLOW_AUDIT_20261104.md",
-      "bytes": 6014,
-      "sha256": "960e8a517916baf37db91f050021c23f2b5a7a5d82ee86933f168f54d9ec5104"
-    },
-    {
-      "path": "paper/docs/FORMULA_PRESENTATION_AUDIT_20261104.md",
-      "bytes": 14562,
-      "sha256": "b3fd378b33f3fb5f1434c293066dd3d042cb0ff947dae85724eb595ce1a92616"
-    },
-    {
-      "path": "paper/docs/FORMULA_PROVENANCE_20261104.md",
-      "bytes": 25572,
-      "sha256": "ed204c36c2bd1e8c53834a08b1ae43664b3e8ff1a767b214c01808c0caa3c2d1"
-    },
-    {
-      "path": "paper/docs/FORMULA_PROVENANCE_20261106.md",
-      "bytes": 16847,
-      "sha256": "17a943db8488cc0678e62d55740abdf62607da6fb4b0af1dc4122d3bc3f0344d"
-    },
-    {
-      "path": "paper/docs/IMPLEMENTATION_SETTINGS_PROSE_20261104.md",
-      "bytes": 2273,
-      "sha256": "adc9b91dba20e4b76a83d8b33c820456a60f173a0ffa8df897bbb7674d1550a8"
-    },
-    {
-      "path": "paper/docs/INTRODUCTION_STORY_REVIEW_20261106.md",
-      "bytes": 10942,
-      "sha256": "845f92981b8b1f2fafbfb045321745aa7dc639cad450f17544416802ec824791"
-    },
-    {
-      "path": "paper/docs/LANGUAGE_REVIEW_20261104.md",
-      "bytes": 23373,
-      "sha256": "51107f9ee26b8711992db5a7228ff40119fa343868c8a4f59951a6fe5eb958f4"
-    },
-    {
-      "path": "paper/docs/MESSAGE_AWGN_CONDITIONS_20261022.md",
-      "bytes": 10502,
-      "sha256": "608cd0cbd9581a8a0fd3d3cee4d123ae52a4d5cc57e505e5169a2576c4fdaf7f"
-    },
-    {
-      "path": "paper/docs/NOTATION_AUDIT_20261103.md",
-      "bytes": 30033,
-      "sha256": "f6b0b403c72f5f7cf78338fc91cdf16105d4fb599a574c2c10ab0d2e6fd7ce21"
-    },
-    {
-      "path": "paper/docs/NOTATION_FORMULA_REVIEW_20261104.md",
-      "bytes": 26701,
-      "sha256": "871e7ec34d94584b5fb84ac83ef9ff50a889e36fe0f37bd1a75dae057fa9970d"
-    },
-    {
-      "path": "paper/docs/NTN_GBRA_PREAMBLE_REVIEW_20261105.md",
-      "bytes": 28898,
-      "sha256": "ba554e4d5b286009234aa0e4f6db30183228c33d4701189285ec05fdccd85d56"
-    },
-    {
-      "path": "paper/docs/OFFGRID_BASELINES.md",
-      "bytes": 8665,
-      "sha256": "2a3f1ba682df4294e2dd89fa62b19ff8fe8b88cfd20c36f195b8b3c7b30402c2"
-    },
-    {
-      "path": "paper/docs/PHASE_AFTER_MARGINAL_INIT_20261104.md",
-      "bytes": 6650,
-      "sha256": "86e6302f3ee23fe2760716c9c831e2538f09cec3ca304ffec01675a5514978dc"
-    },
-    {
-      "path": "paper/docs/PHASE_DIRECT_20261103.md",
-      "bytes": 7316,
-      "sha256": "5cd5cb920ccb511276e2d2a682d251ce115dc8d21d60d31e47145d36230b839a"
-    },
-    {
-      "path": "paper/docs/PHASE_EM_20261103.md",
-      "bytes": 11551,
-      "sha256": "945a0c3af188717c7929d8900ca1982fed0e4d5d762ca322bf1df79110435c3f"
-    },
-    {
-      "path": "paper/docs/PHASE_ESTIMATION_PROGRESS_20261022.md",
-      "bytes": 30840,
-      "sha256": "2c433efc7bc9bdfc6f4f00e85820c55671b4ebc2cf28be65ba0d9ccc030bb285"
-    },
-    {
-      "path": "paper/docs/PHASE_ESTIMATION_REVIEW_20261021.md",
-      "bytes": 14818,
-      "sha256": "1324ab6430dfb76626a6960afd0105dfa588c4db68964564dbdb6482f1bab9dc"
-    },
-    {
-      "path": "paper/docs/PHASE_LOCAL_20261103.md",
-      "bytes": 21445,
-      "sha256": "09fc1d27c82e61cddf30e7fa8977d2f631b1092b225238433101fb9082285827"
-    },
-    {
-      "path": "paper/docs/PHASE_MESSAGE_GEM.md",
-      "bytes": 4082,
-      "sha256": "2488e219ff744096fe1538a3d0177ada3330e39eaf3b9d7b7d3be682ab6eaafc"
-    },
-    {
-      "path": "paper/docs/PHASE_SHEN_FRAMES_20261103.md",
-      "bytes": 4642,
-      "sha256": "fdb76bbd480200303a07ee1e787b0cde25842c25b7825556d9c8ab6affd4c987"
-    },
-    {
-      "path": "paper/docs/POLISH_READINESS_20261104.md",
-      "bytes": 7869,
-      "sha256": "352c45a6eaca415ddc5245e5512befde8c37bbfd87ea10429305b81063841cd0"
-    },
-    {
-      "path": "paper/docs/PSEUDOCODE_STYLE_20261104.md",
-      "bytes": 4487,
-      "sha256": "49e0cf873fc03321bbaed9f5d1779f628867b30830be6037e930d6e287d10798"
-    },
-    {
       "path": "paper/docs/README.md",
-      "bytes": 17567,
-      "sha256": "eed61479d914d87b5fd5c1a8c55174430d19f8d4c98dbd3ad3ed496395af73d5"
+      "bytes": 1122,
+      "sha256": "2ff5e521c832e1ef59d6ba46889368dca02ff765b05f03659841ae6e30ab44fa"
     },
     {
       "path": "paper/docs/REPRODUCTION.md",
-      "bytes": 5524,
-      "sha256": "d6e2aae18344e5fef3e9527262b77e4b06dde155c6cdc4635035ef4f5f32b777"
-    },
-    {
-      "path": "paper/docs/RESEARCH.md",
-      "bytes": 1398,
-      "sha256": "5888c4dc32afc294e2fa7dafdc82524c424788c32c85e9815ae76a765d7c9c3e"
+      "bytes": 5800,
+      "sha256": "89f69cee6fa73cf40e0bc2a06409f7ff528c9a3f025a0657b344c1f730e534f0"
     },
     {
       "path": "paper/docs/REVIEW_DECISIONS.md",
-      "bytes": 153107,
-      "sha256": "1e1ecc6310ebd285bf4c1c70ecf5bb085316458b083945aa6989bcfc84285680"
-    },
-    {
-      "path": "paper/docs/SHEN_PHASE_IMPLEMENTATION_20261021.md",
-      "bytes": 7508,
-      "sha256": "a56981ebccc6ff5bd55df53c762b988743562c1b19a0c5dbf6c469df35eae314"
-    },
-    {
-      "path": "paper/docs/STMP_COVARIANCE_GROUPING_20261024.md",
-      "bytes": 10393,
-      "sha256": "3a162c3694749785567e427778cb2ccdd555a7acf72a20e69c5142741fb3587f"
-    },
-    {
-      "path": "paper/docs/STMP_COVARIANCE_REPRESENTATION_20261024.md",
-      "bytes": 17580,
-      "sha256": "3133ae571b811c15c9e434f63ec7c22cb0cdab91cf6db1992746c4212838b7df"
-    },
-    {
-      "path": "paper/docs/STMP_COVARIANCE_VALIDATION_20261024.md",
-      "bytes": 11872,
-      "sha256": "71abf4c08c74b1168a7ee21afd31b99ef7eb3c20c215e74048b0e0ea992dc90a"
-    },
-    {
-      "path": "paper/docs/STMP_LINEAR_COVARIANCE_INTERFACE_20261024.md",
-      "bytes": 8301,
-      "sha256": "9d9b8fdf81f2160f39a168a0c5ca1bcf06fe7599b7e06e1290f3e3924c1b3e3c"
-    },
-    {
-      "path": "paper/docs/STMP_MESSAGE_AWGN_REVIEW_20261024.md",
-      "bytes": 22333,
-      "sha256": "90ea6ee4e5b24068019efd763dd5b8b47e0e648b040b753b74b2b89b3807519f"
-    },
-    {
-      "path": "paper/docs/STMP_PAPER_READING_NOTES_20261024.md",
-      "bytes": 13420,
-      "sha256": "19ed69900db042a7ab6154348aa79af34c0b6f3d719722913cf01ba86eca3d72"
-    },
-    {
-      "path": "paper/docs/STMP_PHASE.md",
-      "bytes": 8707,
-      "sha256": "6423fb6aa8018dd4efe44c9f841d785c6dd0f97acded9a0a8f1e2216e2498e0b"
-    },
-    {
-      "path": "paper/docs/SUPERVISOR_HUMANIZER_REVIEW_20261104.md",
-      "bytes": 11079,
-      "sha256": "ac44d9ab226adfe686ba6bdefb3a7f7d3ac4963e4d13577530af89ebd4bc7808"
-    },
-    {
-      "path": "paper/docs/SUPERVISOR_HUMANIZER_REVIEW_20261106.md",
-      "bytes": 8642,
-      "sha256": "c528955c0231a45e70c8e354244ead1b5330b0c78719f39f55c30918b64fa90c"
-    },
-    {
-      "path": "paper/docs/SYSTEM_MODEL.md",
-      "bytes": 9693,
-      "sha256": "b42ae39220580953bdda127ba91e7e8ef1ebe94b8c5c5f76fc08dae6048ef11d"
+      "bytes": 158508,
+      "sha256": "ffc2433b9f3d7bf0a8d844ee4f3391d606435cafd22a6446cc9e17e5a4bd5563"
     },
     {
       "path": "paper/docs/TERMINOLOGY.md",
-      "bytes": 802380,
-      "sha256": "81d9ccd03f395ce8ce038fdc3fd0177e6c31189219bcd973234826802e157969"
-    },
-    {
-      "path": "paper/docs/THEORY.md",
-      "bytes": 30936,
-      "sha256": "b1844569c089bc420f61b5467b1821f696727e24ed3da34914f13d6d46e88f9f"
-    },
-    {
-      "path": "paper/docs/TRAINING.md",
-      "bytes": 11873,
-      "sha256": "e158a1dcaad40de58481c77197875ead479e40461c692ea2bf7b22d50ca081f0"
-    },
-    {
-      "path": "paper/docs/VARIABLE_NAMES_AUDIT.md",
-      "bytes": 23388,
-      "sha256": "7ef3a45cfb35840ea878362ea56e838cde9399a13af71a5759b5a01aff461af3"
-    },
-    {
-      "path": "paper/docs/WHITE_MAINLINE_REVISION_PLAN_20261105.md",
-      "bytes": 24110,
-      "sha256": "1262da5170392e071194c5c2d2582aa90ee989b3d2ec5aec3ba9bf08d29f45dd"
-    },
-    {
-      "path": "paper/docs/WORKSPACE_INDEX.md",
-      "bytes": 384,
-      "sha256": "d1a1954b67dfb8fb71ab153bf0df2e308b18589628e7199ba5959bb8b66c4ba4"
+      "bytes": 815486,
+      "sha256": "5d3555826257677e0e08e9f9e12a1492e20d333d36b31a2441027c03dc55e470"
     },
     {
       "path": "paper/docs/WRITING_GUIDE.md",
-      "bytes": 21501,
-      "sha256": "5672d30f699372442b27b7ee7518a907d3eea6dc96ebdbb90a95d48a7860fb16"
+      "bytes": 22037,
+      "sha256": "b982e599dad2b9bb5b93b9ecab5b1c409ad36d2d6d2ee9599ab83bb9dbd32489"
     },
     {
       "path": "paper/docs/derivations/afdm_channel_model.tex",
@@ -9441,8 +9046,8 @@
     },
     {
       "path": "paper/docs/derivations/phase_estimation.md",
-      "bytes": 3231,
-      "sha256": "e9f5d67f1cae98959ba77e14c0fa33c66cf389024d2b9065b7874d97261b394b"
+      "bytes": 3250,
+      "sha256": "fb189e848b8c31ac6ca1dba12464754d633425eb08a9d42e64c6dc995b572270"
     },
     {
       "path": "paper/docs/derivations/phase_estimation.tex",
@@ -9456,8 +9061,8 @@
     },
     {
       "path": "paper/figures/README.md",
-      "bytes": 7537,
-      "sha256": "d43a2c6b65d756671182e35ab857474e3e4bc5e0ec906a30318fb8264ff200b3"
+      "bytes": 1037,
+      "sha256": "36519678f87017941ec88eddf98db4009f7be80519e558bc2776f0eff932ef50"
     },
     {
       "path": "paper/figures/activity_probability.pdf",
@@ -9641,8 +9246,8 @@
     },
     {
       "path": "reference/README.md",
-      "bytes": 1172,
-      "sha256": "848e5a44cdc1264a1826dcd27983a22dbd61938655ccf3451b26a632801cd46c"
+      "bytes": 859,
+      "sha256": "2eb9b2e990b8df11c18ada50d150db0edb6dbf4257060c17652751e84c6203bb"
     },
     {
       "path": "reference/literature/CATALOG.json",
@@ -10721,8 +10326,8 @@
     },
     {
       "path": "result/README.md",
-      "bytes": 4476,
-      "sha256": "9eb333e594785e8aaa0d8af73e327032798bc1766cc4f4dbcbaf9ace1c89b48d"
+      "bytes": 2193,
+      "sha256": "0b54f7ab1de0211ddfabb393359cf2869035478e50b3a4f64b6acc8537b51062"
     },
     {
       "path": "result/activity_probability/data/CURRENT.json",
@@ -15669,8 +15274,8 @@
     },
     {
       "path": "src/README.md",
-      "bytes": 3869,
-      "sha256": "71d0f7d44a425d6d7f7aa7e306f4436d55b3181f669be8483fdfa40b33057622"
+      "bytes": 2143,
+      "sha256": "a31c5239235d262ad8edec333d3a5966a093d1ff6ba5a335b77df42e0aa37520"
     },
     {
       "path": "src/channel/README.md",
@@ -15749,8 +15354,8 @@
     },
     {
       "path": "src/configs/README.md",
-      "bytes": 1886,
-      "sha256": "503e10af4c50b7e4bf1a810aec79b615895341965893d653be32cf2af4155acf"
+      "bytes": 1858,
+      "sha256": "8e223487d7a20e2519dbc22f8cd83dbc8f73d7831e6af6606261984725f059b8"
     },
     {
       "path": "src/configs/candidates/C_STMP_variance_em_20261025.json",
@@ -15974,8 +15579,8 @@
     },
     {
       "path": "src/configs/organized/README.md",
-      "bytes": 563,
-      "sha256": "482be084abeeb128b20ef33d151995c7d06e6e933dfd6e84d3c37762521651b2"
+      "bytes": 471,
+      "sha256": "9be965f4953ddf9488924b0472c4d8ed28ce8f985e4e1eadb8b66a2c1e3d80f5"
     },
     {
       "path": "src/configs/organized/algorithms.json",
@@ -15994,8 +15599,8 @@
     },
     {
       "path": "src/configs/plots/README.md",
-      "bytes": 1078,
-      "sha256": "833d7bae13a1219540bb1afc4af9306689fb395c38156a5a22a70bd9cfb84a4f"
+      "bytes": 517,
+      "sha256": "fad4de1cf3f636583863c5af6c26c07ae0da5b9a0df5d0171c0b0255df80bacd"
     },
     {
       "path": "src/configs/plots/activity_probability.json",
@@ -16094,8 +15699,8 @@
     },
     {
       "path": "src/experiment/README.md",
-      "bytes": 1235,
-      "sha256": "c88eefb9cc00bae30974580b6504dcf063d86f8c9b33acaa4bba5ff32ddabc93"
+      "bytes": 1698,
+      "sha256": "535d44b79c059a4fe256c7a6a9e158935c38c7a24634b6155894efaf46d21626"
     },
     {
       "path": "src/experiment/__init__.py",
@@ -16264,8 +15869,8 @@
     },
     {
       "path": "src/networks/README.md",
-      "bytes": 383,
-      "sha256": "bb46c18a436335e31e332626bd939737171aa88fa7bf67bb71b74fda94e7eefd"
+      "bytes": 362,
+      "sha256": "17e2f8a836f3158c66aa932e1fea71ad06af5f3c6d1012cf29e420b01b4ea628"
     },
     {
       "path": "src/networks/__init__.py",
@@ -16314,8 +15919,8 @@
     },
     {
       "path": "src/plotting/README.md",
-      "bytes": 1273,
-      "sha256": "9459924439ea37d35947d4a324663aacf7d7dc23c891af29bf30d73ee1f05342"
+      "bytes": 1030,
+      "sha256": "80fcc094e25fab7c4c13f1a885ec563867e7dcfedb5101abed490c5439d8d35a"
     },
     {
       "path": "src/plotting/__init__.py",
@@ -16874,8 +16479,8 @@
     },
     {
       "path": "src/tests/README.md",
-      "bytes": 1754,
-      "sha256": "969559b1f75bdcadf4d8ad600db065b4404e8e11032009d8c6b18506e115fab6"
+      "bytes": 1012,
+      "sha256": "07c54503f60354838896b9040621a1990cab120a3beda525dc56dec70c5b8bb3"
     },
     {
       "path": "src/tests/conftest.py",

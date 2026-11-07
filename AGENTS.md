@@ -48,7 +48,7 @@
 对应目录，入口见 `src/README.md`。原源码包移入 `archive/frozen_reproduction_20261107`，
 用于已绑定哈希的冻结批次复现，原路径和哈希见其 `MANIFEST.json`。
 日常改动不要自动回写冻结实现。当前入口为 `run_experiments.py`，配置在 `src/configs`，
-检查在 `src/tests`，实验与数据在 `result`，研究文档在各稿件的 `paper/<方法>/docs`，参考资料在 `reference`。
+检查在 `src/tests`，实验与数据在 `result`，研究文档在 `paper/docs`，参考资料在 `reference`。
 当前仅保留原 C-STMP 稿件，文件直接位于 `paper/`，不再保留方法子目录。2026-11-07 作者已要求移除 DU，
 独立 DU 资产不再发布；按作者后续要求移入根目录 `delete/`，由作者手动删除。
 状态见 `archive/du_removal_20261107/REMOVAL.json`，不得将待删副本重新加入当前入口或上传清单。

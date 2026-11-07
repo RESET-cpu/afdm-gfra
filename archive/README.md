@@ -1,24 +1,14 @@
-# 历史与整理记录
+# 历史与验证记录
 
-2026-11-04 新增：[论文旧绘图脚本与重复图归档](figure_cleanup_20261104/README.md)，包含原路径清单、校验值和可恢复文件。
+当前操作入口见[项目首页](../README.md)。本目录保存冻结来源、采用依据及迁移证据；记录中的“当前”按记录日期理解。
 
-日常入口见[项目首页](../README.md)和[实验索引](../result/README.md)。本目录保存原件、旧路径映射和过程证据，不作为默认实验入口。
-
-| 目录 | 内容 |
+| 记录 | 用途 |
 |---|---|
-| [project_cleanup_20261030](project_cleanup_20261030/README.md) | 本轮导航精简、临时预览归档、目录显示属性及核验 |
-| [result_legacy_20261023](result_legacy_20261023/) | 历史实验、候选、冻结记录和早期目录迁移凭据 |
-| [paper_layout_20261026](paper_layout_20261026/README.md) | 三份稿件布局及旧论文路径映射 |
-| [reference_layout_20261026](reference_layout_20261026/README.md) | 参考资料整理及旧路径映射 |
-| [output_previews_20261026](output_previews_20261026/) | 早期论文图片拼版预览 |
+| [冻结源码](frozen_reproduction_20261107/README.md) | 历史计划所需的原始实现与显式回放 |
+| [代码整理验证](code_cleanup_20261107/README.md) | 数值对照、模型和图表核验 |
+| [导频实验恢复](pilot_resume_20261107/README.md) | 任务读取修复及续跑依据 |
+| [文档整理](docs_cleanup_20261107/README.md) | 移出的说明、原始哈希与固定版本链接 |
+| [论文目录迁移](paper_flatten_20261107/README.md) | 当前论文直接放入 paper 的映射 |
+| [参考资料映射](reference_layout_20261026/README.md) | 旧资料路径与去重记录 |
 
-## 保持原路径的辅助记录
-
-以下目录仍在 `result/`，只收起默认显示，不改变文件、链接目标或路径：
-
-- [基准补全](../result/baseline_completion_20261025/)、[三项接收机扫描与调度](../result/receiver_sweeps_500_20261026/)。
-- [五项实验整理](../result/cleanup_five_experiments_20261026/)、[网络与存储清理](../result/storage_cleanup_20261026/)。
-- [图片整理](../result/figure_cleanup_20261026/)、[四图整理](../result/figure_cleanup_four_20261026/)、[六图整理](../result/figure_cleanup_six_20261027/)。
-- [绘图配置检查](../result/plotting_config_validation_20261026/)、[绘图默认值](../result/plotting_defaults_20261026/)、[图形样式检查](../result/plot_style_review_20261026/)。
-
-历史文件中的相对路径按其原位置理解，迁移过的文件通过相应 `MAPPING.json` 定位。冻结记录和失败结果保留原文。
+其他按日期命名的目录属于对应阶段的历史记录。部分大型原件只在本地保存；公开内容以 [GITHUB_MANIFEST.json](../GITHUB_MANIFEST.json) 为准。待手动删除的文件集中在本地 `delete/`。

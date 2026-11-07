@@ -1,7 +1,7 @@
-# 整理后的代码登记
+# 当前代码登记
 
-`algorithms.json` 与原登记保持同一组方法、数值参数、模型和训练依据；工厂和直接源码路径改为 `src/receiver` 等功能目录。
+- [algorithms.json](algorithms.json)：方法名、构造函数、参数、资产与计算后端。
+- [models.json](models.json)：STMP 模型及共享相位配置。
+- [baseline_sources.json](baseline_sources.json)：实际运行的基线源码身份。
 
-总入口的新通用计划使用此登记。已有 `PLAN.json`、原 `src/configs/algorithms.json`、`FINAL.json` 和冻结配置保持原文。白噪声后续实验继续使用自己的原始执行模块和绑定。
-
-新增算法只在明确的新计划中使用；新代码不得自动接管旧计划。对应路径及验证见 `archive/src_flatten_20261107/`。
+新通用实验从这些登记创建计划。原模型身份和历史批次计划保持原文；当前特定批次的执行源码另行记录，见[实验说明](../../experiment/README.md)。

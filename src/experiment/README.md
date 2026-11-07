@@ -1,19 +1,27 @@
 # 实验
 
-`experiments/` 只定义八类实验的条件和入口；`suite.py` 负责创建计划、验证资产、逐项调用与汇总调度。
+`experiments/` 定义八类通用实验，`suite.py` 负责计划、校验、调用与汇总。`metrics.py` 独立评分，`observations.py` 管理观测，`storage.py` 保存数组，`runtime.py` 管理设备与计时，`reporting.py` 生成报告。
 
-- `observations.py`：观测缓存与相位前端结果的保存。
-- `runtime.py`：设备准备、同步、模型切换与参数统计；从原 `evaluation/receivers.py` 归入执行模块。
-- `storage.py`：数组保存和读取。
-- `metrics.py`：预测与真值的评分。
-- `reporting.py`：结果聚合、区间与报告；图形生成已拆到 `plotting/summary.py`。
-
-新通用计划默认使用 `result/organized_default_20261107/`，使用 `src/configs/organized/algorithms.json`。`plan`、`inspect`、`run` 各司其职，`run` 才执行推断。不要让新代码直接续跑冻结批次；白噪声后续队列和收敛协议位于 `studies/`。迁移执行另记实际源码身份，原计划及结果不覆盖；原模块仍可通过冻结归档的显式入口回放。
+## 创建新实验
 
 ```text
 python run_experiments.py list
 python run_experiments.py pilot_frames --help
+python run_experiments.py pilot_frames plan --config src/configs/experiments/pilot_frames.json --device cuda --output result/my_pilot_frames
+python run_experiments.py pilot_frames inspect --output result/my_pilot_frames
+python run_experiments.py pilot_frames run --output result/my_pilot_frames
+```
+
+先核对配置中的方法、场景数和扫描范围，再执行 `run`。`plan` 保存配置及源码/资产校验值，`inspect` 检查计划，`run` 执行并生成评分、汇总和诊断图。需要重新汇总时使用 `summarize --output ...`。
+
+配置修改只在创建计划时生效；改变参数应使用新的输出目录。`--smoke` 使用独立诊断种子。首次运行建议先完成[单场景 GP-MP 示例](../../REPRODUCING.md)，再增加预算。
+
+## 已保存的研究批次
+
+`studies/white_followup` 和 `studies/convergence` 对应既定研究协议。它们与通用新实验的默认配置分开管理；历史图的采用状态见[实验索引](../../result/README.md)。
+
+```text
 python run_experiments.py white_followup inspect
 ```
 
-本次整理未修复或重启导频数阶段的任务文件读取失败。续跑时仍需检查原失败记录、进程和部分结果。
+导频数批次已完成任务读取修复并从原断点恢复，见[恢复记录](../../archive/pilot_resume_20261107/README.md)。它需要完整本地输入和原计划，不能仅凭 GitHub 中的汇总文件续跑。运行进度以本地批次状态为准。

@@ -21,5 +21,5 @@
 | training/STMP.json | STMP 训练配方；不会自动启动训练 |
 
 已退役 DU 的独立配置移入根目录 `delete/`。历史配置及混合绑定保留原文，不参与当前方法选择。
-配置接入没有改变各算法的参数、权重或活动门限。方法接入示例见 [实验说明](../experiment/README.md)。
+配置接入没有改变各算法的参数、权重或活动门限。创建新实验见 [实验说明](../experiment/README.md)。
 `receiver.registry.load_models()` 解析当前 STMP 配置引用。实验计划内保存完整配置，供后续核验与复现。

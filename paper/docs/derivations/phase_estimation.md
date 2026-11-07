@@ -4,7 +4,7 @@
 
 ## 来源与模型
 
-高斯边缘似然沿用 Tipping–Faul (2003)，作者稿 §2.1、PDF p.3 式 (7)–(8)；本项目独立复高斯增益、多天线观测列及连续物理位置的适配，见[原始推导](../../../archive/result_legacy_20261023/candidates/c_stmp_phase_init_marginal_20261104/README.md)。L-BFGS-B 沿用 Zhu et al. (1997), Algorithm 778。术语与适用范围见 [TERMINOLOGY.md](../TERMINOLOGY.md) 的 2026-11-04 相位前端记录。
+高斯边缘似然沿用 Tipping–Faul (2003)，作者稿 §2.1、PDF p.3 式 (7)–(8)；本项目独立复高斯增益、多天线观测列及连续物理位置的适配，见原始推导（仅本地历史资料：`archive/result_legacy_20261023/candidates/c_stmp_phase_init_marginal_20261104/README.md`）。L-BFGS-B 沿用 Zhu et al. (1997), Algorithm 778。术语与适用范围见 [TERMINOLOGY.md](../TERMINOLOGY.md) 的 2026-11-04 相位前端记录。
 
 令 $\mathbf h_k=\mathbf h_k^{\rm p}(d_k,\nu_k)$，模型为
 $\mathbf Y_{\rm s}\approx\sum_k\mathbf h_k\mathbf b_k^{\mathsf T}+\mathbf W_{\rm s}$，
