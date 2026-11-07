@@ -18,3 +18,5 @@ python -m pytest -q src/tests
 当前测试按已采用的白噪声主线更新路径与协议断言，没有放宽算法误差容差。
 真实预训练接收机前后对照、十图重绘和资产核验见 `archive/code_cleanup_20261107/`。
 这些验证不等同于重新训练和全量 Monte Carlo 复现。
+
+下载版已有推断权重时，可运行 `python -m pytest -q src/tests -k "not test_independent_entry_and_updated_1000_scene_defaults"`。排除的 8 项依赖未上传的旧计划备份；完整本地检查为 273 项全部通过，下载目录为 265 项通过。

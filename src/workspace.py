@@ -72,6 +72,11 @@ RELOCATIONS = {
 def repository_path(value):
     """Locate an old or current repository path without changing its contents."""
     name = str(value).replace('\\', '/')
+    explicit = Path(name)
+    if explicit.is_absolute() and explicit.is_relative_to(ROOT):
+        # An explicit path in this checkout is already resolved. In particular,
+        # a checkout nested below the former root must not gain its prefix twice.
+        return explicit
     old_root = 'D:/afdm-gfra'
     if name.casefold().startswith(old_root.casefold() + '/'):
         name = name[len(old_root) + 1:]

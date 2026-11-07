@@ -1,6 +1,6 @@
 {
   "objective": "Consolidate current research code by role, retire DU and colored-only implementations, and preserve reproducibility of retained experiments.",
-  "status": "LOCAL_VALIDATED",
+  "status": "VALIDATED",
   "requirements": [
     "One current implementation for scenario, waveform, channel, receivers, training, experiments and plotting; no duplicate old packages on the normal import path.",
     "Current inference must not depend on training or experiment orchestration; sampling and scoring have separate owners.",
@@ -20,11 +20,11 @@
     "FIGURES.json",
     "MODELS.json",
     "INFERENCE_ASSETS.json",
-    "../retired_code_20261107/NUMERICAL_PARITY.json"
+    "../retired_code_20261107/NUMERICAL_PARITY.json",
+    "DOWNLOAD_CHECK.json"
   ],
-  "pending": [
-    "Synchronize verified local source to GitHub and validate an independent checkout."
-  ],
+  "pending": [],
   "training_started": false,
-  "formal_experiment_started": false
+  "formal_experiment_started": false,
+  "publication_note": "Verified source and documentation synchronized through GitHub commits; final tree hashes checked separately after ref update."
 }

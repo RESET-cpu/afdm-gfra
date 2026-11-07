@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "downloaded_base_commit": "6f88f0f058318c1a1b7c0133f073b880863b01ef",
+  "portability_fix": "Prefer an explicit absolute path in the current checkout before resolving legacy prefixes",
+  "tested_source_manifest_sha256": "450437526d1872a9bf32ab8e2883c0928f2dbb8bfba88edc58c9429df151b34f",
+  "tests_passed": 265,
+  "local_asset_tests_deselected": 8,
+  "deselection": "test_independent_entry_and_updated_1000_scene_defaults requires result/experiment_config_20261021/before/final2000/*/PLAN.json; these backup plans are excluded from release",
+  "model_assets_downloaded_from_lfs": 8,
+  "model_hashes_verified": 8,
+  "inference_assets_verified": 20,
+  "constructed_receivers": [
+    "GP_MP",
+    "GP_MP_EP",
+    "STMP",
+    "gnn"
+  ],
+  "environment": "Independent downloaded source tree; existing validated Python environment reused",
+  "formal_experiment_started": false,
+  "training_started": false
+}

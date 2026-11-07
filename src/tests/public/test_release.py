@@ -40,6 +40,14 @@ def test_other_external_paths_are_not_rebound(tmp_path, monkeypatch):
     assert workspace.repository_path('configs/organized/algorithms.json') == workspace.CONFIGS/'organized/algorithms.json'
 
 
+def test_current_absolute_paths_are_not_reinterpreted_as_legacy_paths(monkeypatch):
+    checkout = workspace.ROOT/'tmp/nested_checkout'
+    monkeypatch.setattr(workspace, 'ROOT', checkout)
+    for relative in ('src/configs/organized/algorithms.json', 'tmp/new_output.json'):
+        target = checkout/relative
+        assert workspace.repository_path(target) == target
+
+
 def test_working_models_keep_stmp_binding_without_retired_du():
     source = workspace.frozen_read_path(workspace.CONFIGS/'final/models.json')
     before = source.read_bytes()
