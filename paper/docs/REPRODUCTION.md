@@ -26,7 +26,7 @@ Both commands read saved data; neither runs a receiver.
 |---|---|---|---|
 | 1 | `system_multiframe` | Shen artwork in `reference/literature/shen2025.pdf`, reconstructed by `src/plotting/manuscript/system.py` | Method illustration; not a numerical experiment |
 | 2 | `factor_graph` | `src/plotting/manuscript/factor.py` | Method illustration; common method-source verification also requires the configured source files |
-| 3 | `learned_receiver` | `result/channel_denoising/figures/white_mainline_500_20261107/scene000_example.npz`, Cai artwork, `main.aux` | Adopted white-network example from one saved scene; not an aggregate performance curve |
+| 3 | `learned_receiver` | `result/channel_denoising/figures/white_mainline_500_20261107/scene000_example.npz`, Cai artwork, `build/main.aux` | Adopted white-network example from one saved scene; not an aggregate performance curve |
 | 4 | `channel_denoising` | `result/channel_denoising/figures/white_mainline_500_20261107/PLOT_DATA.json` | White GP-MP adopted; 500 scenes × 4 channels × 6 noise levels = 12,000 GP-MP queries |
 | 5 | `convergence` | `result/snr_comparison/figures/convergence_first30_300_20261105/PAPER_PLOT_DATA.json` | Adopted 30 paired scenes, 0 dB; three methods, first 150 displayed iterations from 300 saved iterations |
 | 6 | `snr_comparison` | `result/snr_comparison/figures/main_snr_white_20261107/PLOT_DATA.json` | White GP-MP and GP-MP-EP adopted; 1,000 scenes at each of six SNR values |
@@ -43,9 +43,10 @@ of these configurations can be recomputed from a source-only download.
 The method figures require Times New Roman, PyMuPDF and the configured source
 PDFs. Downloaded third-party papers and the raw channel-example array are not
 distributed in the source snapshot. Figure 3 reads equation references from
-`paper/main.aux`: compile `main.tex` first in a LaTeX environment with
+`paper/build/main.aux`: compile `main.tex` first in a LaTeX environment with
 IEEEtran, as described in [the manuscript README](../README.md). For example,
-run `latexmk -pdf main.tex` from `paper`, then return to the repository
+run `latexmk -pdf main.tex` from `paper` (its `.latexmkrc` writes to
+`build/`), then return to the repository
 root for plotting. An updated manuscript may legitimately change label hashes;
 review its figure references before refreshing the asset inventory.
 

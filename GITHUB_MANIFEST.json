@@ -1,7 +1,7 @@
 {
   "snapshot_date": "2026-11-08",
   "content_source": "Current source, manuscript, figures, summaries and eight model assets. Historical paper checks are accessed through pinned Git links; obsolete checks directory removed.",
-  "excluded": "Retired standalone DU/colored implementations and unused STMP candidates; delete/, .runtime/, raw datasets, per-scene predictions, logs and caches. Mutable live pilot STATUS.json is local only; validation records contain dated snapshots. Historical paper/checks/ and local-only per-scene evidence remain excluded.",
+  "excluded": "Retired standalone DU/colored implementations and unused STMP candidates; delete/, .runtime/, raw datasets, per-scene predictions, logs and caches. Mutable live pilot STATUS.json is local only; validation records contain dated snapshots. Historical paper/checks/ and local-only per-scene evidence remain excluded. Manuscript build outputs, duplicate figure exports and the unused second-order appendix are excluded.",
   "lfs_note": "LFS rows record original model file bytes and SHA-256; Git tree contains corresponding pointers.",
   "files": [
     {
@@ -2775,9 +2775,19 @@
       "sha256": "72794e160ef128efbc1fd6f0a175631bae54fbc0e92ae3abcd6d06272447c69b"
     },
     {
+      "path": "paper/.gitignore",
+      "bytes": 47,
+      "sha256": "62542425b15635ee715e43ca2d297cceb410c1e4c65928867b852e0520d73c91"
+    },
+    {
+      "path": "paper/.latexmkrc",
+      "bytes": 97,
+      "sha256": "eff353bd0e2178859aae7c207992e3993c3b52e77ed9d022eac622b2147af60f"
+    },
+    {
       "path": "paper/README.md",
-      "bytes": 1195,
-      "sha256": "6520ec7f3c9a9e091934786472731e85c4cfe97e67085f40783ae2dc67140f3b"
+      "bytes": 1556,
+      "sha256": "11f368a18895c526af73f09ba38f49d15e5680eb9b123b4648c0ef9a5d459c78"
     },
     {
       "path": "paper/docs/README.md",
@@ -2786,8 +2796,8 @@
     },
     {
       "path": "paper/docs/REPRODUCTION.md",
-      "bytes": 6219,
-      "sha256": "8c683dcb52e805ff05e33d3089c5dd8013a0bed92559187790cc858cf8b62195"
+      "bytes": 6269,
+      "sha256": "167e0738e871217669435a3fdda51297cbaaf83347d9dc1f63f02ed7d5f6fd75"
     },
     {
       "path": "paper/docs/REVIEW_DECISIONS.md",
@@ -2826,8 +2836,8 @@
     },
     {
       "path": "paper/figures/README.md",
-      "bytes": 1037,
-      "sha256": "36519678f87017941ec88eddf98db4009f7be80519e558bc2776f0eff932ef50"
+      "bytes": 1181,
+      "sha256": "2914dbb7b75addf0f1b355df9eb6d038db5922470daf9b04fbee01ca33266f55"
     },
     {
       "path": "paper/figures/activity_probability.pdf",
@@ -2835,19 +2845,9 @@
       "sha256": "efdadf1280a852e75526817314c24cd88ac4a0969d1204104b8b43451eb82b7a"
     },
     {
-      "path": "paper/figures/activity_probability.png",
-      "bytes": 173467,
-      "sha256": "cef000b3da1387d538f6a9d41b7ebcade3ef02efd3cafe9e37192e2c4a6d0329"
-    },
-    {
       "path": "paper/figures/channel_denoising.pdf",
       "bytes": 34302,
       "sha256": "bd8de6b54f6b9c65b776f41f307354e22e0a378f6d01183f3e150398145a902e"
-    },
-    {
-      "path": "paper/figures/channel_denoising.png",
-      "bytes": 273454,
-      "sha256": "51d30af0b92961af4e40df7b44c06ae968ced80b5b51884b5a5f9659b3d890f9"
     },
     {
       "path": "paper/figures/convergence.pdf",
@@ -2855,19 +2855,9 @@
       "sha256": "0d241e5e43efdb308de8c406dc77d27419ac589bf20420b56140b7f36441b085"
     },
     {
-      "path": "paper/figures/convergence.png",
-      "bytes": 133097,
-      "sha256": "52ca5b82cca69738e9a805c1ded2a9c51d1268b4c1940bf3c7737d57e4b80fd7"
-    },
-    {
       "path": "paper/figures/cross_channel.pdf",
       "bytes": 35876,
       "sha256": "3970f6d26dc3e666c59ea272ebc293d9e0495f32a991674ec6e6d8785ed63d0d"
-    },
-    {
-      "path": "paper/figures/cross_channel.png",
-      "bytes": 384186,
-      "sha256": "ce04b109ee474e929497fae6e73adf84454d782d908ce241d11af16c069275f2"
     },
     {
       "path": "paper/figures/factor_graph.pdf",
@@ -2880,34 +2870,14 @@
       "sha256": "b0f441d0cfaec2c2205fd761b28f6c56949f4e770936735ffabcd3201728e873"
     },
     {
-      "path": "paper/figures/learned_receiver.png",
-      "bytes": 240679,
-      "sha256": "46288c864f320edca91c8aa460826cbfc4e11bdd72161c452dc631b2016c36ba"
-    },
-    {
       "path": "paper/figures/pilot_frames.pdf",
       "bytes": 38608,
       "sha256": "45994ad078d4864de292894017cdb713b4f342ae5212e7de9a78a91bd651547f"
     },
     {
-      "path": "paper/figures/pilot_frames.png",
-      "bytes": 264536,
-      "sha256": "40569a8021fe25dab02aa0bbe0446fe75eb561dc47064d5181791c74acd99116"
-    },
-    {
       "path": "paper/figures/snr_comparison.pdf",
       "bytes": 34115,
       "sha256": "d10f167c7347643899af38d2aabf5072d9f217afc4b90b824581edf4fd14f087"
-    },
-    {
-      "path": "paper/figures/snr_comparison.png",
-      "bytes": 321221,
-      "sha256": "33d387adfe5910d211df0668fb9815cd2f186f682b58f0b66998f5b39e60d77f"
-    },
-    {
-      "path": "paper/figures/snr_comparison.svg",
-      "bytes": 85813,
-      "sha256": "3c93bb4b3d98b0ab79133c4996b0e0055c9e996a21035778098e22a836d490a8"
     },
     {
       "path": "paper/figures/system_multiframe.pdf",
@@ -2918,11 +2888,6 @@
       "path": "paper/figures/user_count.pdf",
       "bytes": 34770,
       "sha256": "a5812a81c592c775a42112b68b61232d0debe30f0ec59834e8d95d7f3e7c751f"
-    },
-    {
-      "path": "paper/figures/user_count.png",
-      "bytes": 182313,
-      "sha256": "4686ee5bc212fddaf8c95dfcabd32a01607a60ad3a6932622b6a6c690a74409c"
     },
     {
       "path": "paper/main.pdf",
@@ -2943,11 +2908,6 @@
       "path": "paper/main_full.tex",
       "bytes": 138,
       "sha256": "fe7174623f617cb68a3ec5defecefd866c74be9e3008550a7727b61ab28c17c2"
-    },
-    {
-      "path": "paper/output/pdf/chapter_02_system_model.pdf",
-      "bytes": 128892,
-      "sha256": "0b78d3e9230cde06180bc5915afb455299119e3ccc6c86b9f6bc7c7760e89ede"
     },
     {
       "path": "paper/references.bib",
@@ -2998,11 +2958,6 @@
       "path": "paper/sections/appendix_evaluation_protocol.tex",
       "bytes": 7083,
       "sha256": "2985ebdf75d8a75e82ca038a294fe2fec420847481aa36cd9b4056bcd48a6efc"
-    },
-    {
-      "path": "paper/sections/appendix_second_order_training.tex",
-      "bytes": 2041,
-      "sha256": "d09f13fed1a1295c9ef01c47200b67a0dbee0dc8b8e2982afdfdabaa1c1d62bb"
     },
     {
       "path": "pyproject.toml",
@@ -9289,8 +9244,8 @@
     },
     {
       "path": "src/configs/plots/manuscript.json",
-      "bytes": 32302,
-      "sha256": "a97a358c941be5b863c0ef818536567cdea3fe5e2c73c004351508c23dc4f669"
+      "bytes": 32314,
+      "sha256": "dbfa5719875cb7a7ae5c5549d79a43c4a04166e84ad259a3eca4ce9ed5641de2"
     },
     {
       "path": "src/configs/plots/pilot_frames.json",
@@ -9314,8 +9269,8 @@
     },
     {
       "path": "src/configs/release/assets.json",
-      "bytes": 16331,
-      "sha256": "295b7d9e2a00dab784a228c965a1d6f4c7cd2cbca9c9b5c3b6a02f86b95bb9e1"
+      "bytes": 16337,
+      "sha256": "3b5d9ac2b34ce28ad5aaa5bda773b991a4f40897e8bc0a7572cff4585a95bf2d"
     },
     {
       "path": "src/configs/release/gp_mp_diagnostic.json",
@@ -9574,8 +9529,8 @@
     },
     {
       "path": "src/plotting/README.md",
-      "bytes": 1102,
-      "sha256": "c14c30aacf2f7909da702fe00d2c92ffbfedb1e6ae43f24d43d094b4648bfe2c"
+      "bytes": 1328,
+      "sha256": "6d8e54ea5754bff5af4cddd4948b695aacc7300f5f1b88f997fcee616de374ea"
     },
     {
       "path": "src/plotting/__init__.py",
@@ -9624,8 +9579,8 @@
     },
     {
       "path": "src/plotting/manuscript/receiver.py",
-      "bytes": 6157,
-      "sha256": "ca98755a1603cbd85083b508b5aab712c25573918ddf4d2e41fb7c1ca8e815e9"
+      "bytes": 6163,
+      "sha256": "4d10aa3a639b4caa2acb2c7f77bba0f63f6fff9bc68126bf817045e5c4abbda3"
     },
     {
       "path": "src/plotting/manuscript/system.py",
@@ -10024,8 +9979,8 @@
     },
     {
       "path": "src/tests/public/test_audit_fixes.py",
-      "bytes": 6348,
-      "sha256": "3cdbe9f02f864bb113483beeaa57d51b972777f2829ec35086ff228f28e5d8fe"
+      "bytes": 6354,
+      "sha256": "4b8e6fce99701963c8c64c4a6db537408f8657c5a8f52fd280ae76b968eddf6f"
     },
     {
       "path": "src/tests/public/test_module_boundaries.py",

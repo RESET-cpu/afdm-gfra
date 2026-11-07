@@ -44,7 +44,7 @@ def test_factor_graph_only_checks_its_own_dependencies(monkeypatch):
     config = render_paper.read(render_paper.DEFAULT_CONFIG)
     monkeypatch.setattr(render_paper, 'sha', lambda _: pytest.fail('Unrelated source requested'))
     assert render_paper.verify_sources(config, ['factor_graph']) == {}
-    assert 'paper/main.aux' in config['figures']['learned_receiver']['dependencies']
+    assert 'paper/build/main.aux' in config['figures']['learned_receiver']['dependencies']
 
 
 def record(active=2, inactive=0):

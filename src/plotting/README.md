@@ -17,3 +17,5 @@ python run_experiments.py plot --check
 - `summary.py`：通用实验的诊断图。
 
 [manuscript.json](../configs/plots/manuscript.json) 保存当前图源。依赖为 NumPy、Matplotlib、PyMuPDF 和 Times New Roman 字体。系统图和接收机图分别核验各自的文献素材、编译标签或本地信道示例；这些素材并未全部发布。因子图可独立绘制，不依赖上述额外素材。
+
+正式论文图只保留 PDF；需要其他格式时加上 `--formats pdf png svg --output result/figure_preview`。图 3 的公式标签读取 `paper/build/main.aux`，编译步骤见[论文说明](../../paper/README.md)。
