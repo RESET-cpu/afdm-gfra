@@ -1,0 +1,273 @@
+{
+  "scope": "English abstract, Notation, I-VII, figures 1-10, Algorithm 1, full Appendix A; review only",
+  "active_source_files": [
+    "paper/C-STMP/main.tex",
+    "paper/C-STMP/main_full.tex",
+    "paper/C-STMP/sections/01_introduction.tex",
+    "paper/C-STMP/sections/02_system_model.tex",
+    "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "paper/C-STMP/sections/04_generative_priors.tex",
+    "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "paper/C-STMP/sections/06_simulation_results.tex",
+    "paper/C-STMP/sections/07_conclusion.tex",
+    "paper/C-STMP/sections/appendix_evaluation_protocol.tex"
+  ],
+  "excluded_uncompiled_source": "sections/appendix_second_order_training.tex",
+  "word_candidates": [
+    {
+      "file": "paper/C-STMP/sections/06_simulation_results.tex",
+      "line": 158,
+      "term": "yielding",
+      "text": "Table~\\ref{tab:network-architectures}, with SiLU between them, yielding"
+    }
+  ],
+  "unicode_em_dashes": 0,
+  "latex_triple_hyphens": [
+    {
+      "file": "paper/C-STMP/sections/06_simulation_results.tex",
+      "line": 121,
+      "text": "Fully connected layers & $128,1$ & --- \\\\"
+    }
+  ],
+  "undefined_refs": [],
+  "undefined_citations": [],
+  "duplicate_labels": [],
+  "versions": {
+    "main": {
+      "pages": 13,
+      "bibliography_entries": 42,
+      "existing_log_errors": [],
+      "colored_mentions": 0
+    },
+    "main_full": {
+      "pages": 15,
+      "bibliography_entries": 42,
+      "existing_log_errors": [],
+      "colored_mentions": 0
+    }
+  },
+  "table_III_cells_verified_against_saved_summary": 48,
+  "snr_configuration_count": 9,
+  "snr_methods": [
+    "C_STMP",
+    "C_STMP_phase_frontend_marginal_20261104",
+    "STMP",
+    "gamp",
+    "gnn",
+    "offgrid_sbl",
+    "offgrid_sbl_13",
+    "offgrid_sbl_25",
+    "somp"
+  ],
+  "snr_zero_db_values": {
+    "C_STMP": -13.012667746209841,
+    "STMP": -11.431817274484175,
+    "offgrid_sbl": -8.519418299898536,
+    "gnn": -5.508056369483788,
+    "gamp": -4.5978940686865215,
+    "somp": -3.9096723689024304,
+    "C_STMP_phase_frontend_marginal_20261104": -12.669664603031281,
+    "offgrid_sbl_13": -8.333516551839198,
+    "offgrid_sbl_25": -7.764082994295201
+  },
+  "equation_labels": [
+    [
+      "eq:physical-channel",
+      "1"
+    ],
+    [
+      "eq:upa",
+      "2"
+    ],
+    [
+      "eq:afdm-time-signal",
+      "3"
+    ],
+    [
+      "eq:daft",
+      "4"
+    ],
+    [
+      "eq:continuous-waveform",
+      "5"
+    ],
+    [
+      "eq:channel",
+      "6"
+    ],
+    [
+      "eq:path-operator-system",
+      "7"
+    ],
+    [
+      "eq:twc-frame-channel",
+      "8"
+    ],
+    [
+      "eq:effective-pilot",
+      "9"
+    ],
+    [
+      "eq:mmv",
+      "10"
+    ],
+    [
+      "eq:working-posterior",
+      "11"
+    ],
+    [
+      "eq:linear-mean",
+      "12"
+    ],
+    [
+      "eq:linear-variance",
+      "13"
+    ],
+    [
+      "eq:linear-extrinsic",
+      "14"
+    ],
+    [
+      "eq:pseudo-awgn",
+      "15"
+    ],
+    [
+      "eq:conditional-channel-integrals",
+      "16"
+    ],
+    [
+      "eq:query-densities",
+      "17"
+    ],
+    [
+      "eq:local-activity",
+      "18"
+    ],
+    [
+      "eq:mixture",
+      "19"
+    ],
+    [
+      "eq:joint-spatial-covariance",
+      "20"
+    ],
+    [
+      "eq:joint-average-variance",
+      "21"
+    ],
+    [
+      "eq:nonlinear-extrinsic",
+      "22"
+    ],
+    [
+      "eq:training-query",
+      "23"
+    ],
+    [
+      "eq:tweedie-mean",
+      "24"
+    ],
+    [
+      "eq:tweedie-covariance",
+      "25"
+    ],
+    [
+      "eq:denoising-score-objective",
+      "26"
+    ],
+    [
+      "eq:first-loss",
+      "27"
+    ],
+    [
+      "eq:mean-derivative-variance",
+      "28"
+    ],
+    [
+      "eq:derivative-trace",
+      "29"
+    ],
+    [
+      "eq:activity-log-odds",
+      "30"
+    ],
+    [
+      "eq:classifier-loss",
+      "31"
+    ],
+    [
+      "eq:ideal-logit",
+      "32"
+    ],
+    [
+      "eq:activity-probability",
+      "33"
+    ],
+    [
+      "eq:site-update",
+      "34"
+    ],
+    [
+      "eq:conditional-moments",
+      "35"
+    ],
+    [
+      "eq:noise-estimation",
+      "36"
+    ],
+    [
+      "eq:phase-atom",
+      "37"
+    ],
+    [
+      "eq:phase-objective",
+      "38"
+    ],
+    [
+      "eq:query-variance-target",
+      "39"
+    ],
+    [
+      "eq:input-damping",
+      "40"
+    ],
+    [
+      "eq:output-damping",
+      "41"
+    ],
+    [
+      "eq:linear-fraction",
+      "42"
+    ],
+    [
+      "eq:pilot",
+      "43"
+    ],
+    [
+      "eq:mean-preconditioning",
+      "44"
+    ],
+    [
+      "eq:gaussian-evidence",
+      "45"
+    ]
+  ],
+  "protected_file_hash_verification": {
+    "status": "PASS",
+    "files_checked": 28,
+    "changed_files": []
+  },
+  "equation_numbers_contiguous_1_to_45": true,
+  "visual_inspection": {
+    "status": "PASS",
+    "method": "All-page contact sheets for main and main_full, plus enlarged main pages 3, 4, 7, 10, 11, 12 and main_full page 13",
+    "clipping_overlap_or_missing_figures_observed": false
+  },
+  "verification_limits": [
+    "Existing compilation logs inspected; no recompilation in this review.",
+    "Table III matched to saved summary; no raw-array rescoring in this review.",
+    "Targeted primary-literature checks; not an exhaustive audit of all references.",
+    "No training or experiment execution."
+  ],
+  "report": "paper/C-STMP/docs/SUPERVISOR_HUMANIZER_REVIEW_20261106.md"
+}

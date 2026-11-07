@@ -1,0 +1,40 @@
+{
+  "numbered_equations": 15,
+  "numbered_equation_content_and_order_unchanged": true,
+  "unnumbered_displays": 2,
+  "unnumbered_display_content_unchanged": true,
+  "formula_movement": "A definition moved before the unnumbered activity definition; equation numbers and contents unchanged.",
+  "all_labels_unchanged": true,
+  "changed_files_in_baseline": [
+    "main.pdf",
+    "sections/02_system_model.tex",
+    "docs/TERMINOLOGY.md"
+  ],
+  "unexpected_protected_changes": [],
+  "abstract_and_introduction_unchanged": true,
+  "terminology_previous_entries_preserved": true,
+  "new_words_without_verified_corpus_match": [],
+  "pdf_pages": 13,
+  "revised_phrases_present_in_pdf": {
+    "In the proposed scheme, each active device transmits pilot symbols over": true,
+    "AFDM modulation and demodulation are performed independently for each": true,
+    "To account for fractional delays, we define the transmit waveform": true,
+    "frames provide more observations without increasing the number of": true,
+    "We use the distribution of the training channels as the channel prior": true
+  },
+  "compile": "success",
+  "compile_command": "tectonic --only-cached --keep-logs --keep-intermediates main.tex; successful exit recorded by caller",
+  "overfull_boxes": false,
+  "undefined_references_or_citations": false,
+  "source_sha256": "8f1d454a9068027289f9943cacf7a5ea1783f35144e39ffc24f9b0bc46dbe01f",
+  "pdf_sha256": "c981fcc890c961072a09ec02d27d128497c78538dec091bed9b1ff8d455ca5fe",
+  "visual_review": {
+    "pages": [
+      2,
+      3,
+      4
+    ],
+    "result": "pass",
+    "observations": "Rendered final PDF pages inspected: paragraph flow, equations (1)-(15), section boundaries, and adjacent receiver figure/text have no clipping, overlap, or broken references."
+  }
+}

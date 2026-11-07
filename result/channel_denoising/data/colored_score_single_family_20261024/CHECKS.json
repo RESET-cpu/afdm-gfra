@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "revision": "single_family_v2",
+  "unit_command": ".venv/Scripts/python.exe -B -m pytest -q src/tests/test_colored_score_20261024.py",
+  "unit_result": "7 passed in 2.91s",
+  "smoke_record": "SMOKE.json",
+  "smoke_sha256": "c2e9bfe620bedf05a4de2ac1959a8822b7f122e1a9cea1064d1d1a95d5e81048",
+  "scope": "Continuous covariance sampling, algebra, sampler, checkpoint and one-step CPU pipeline checks",
+  "formal_training_started": false,
+  "denoising_comparison_run": false,
+  "receiver_modified": false,
+  "old_snapshot_matches_all_original_source_hashes": true,
+  "source_sha256": {
+    "src/training/colored_score_20261024/__init__.py": "be92fd9ca23538f232f3878c6fbe5bca67a304fa8d9111ad45a05a1633bd31ab",
+    "src/training/colored_score_20261024/model.py": "d4a1b32e3f670bc2ef149b94c216e59110cd57503f6ea72a4b5fbf8cb1f845a1",
+    "src/training/colored_score_20261024/noise.py": "05100bf3928706b9aef4f238d8a63ab561ade82d8fb2c6d4c546fcf75afa9f2d",
+    "src/training/colored_score_20261024/run.py": "0a64992c21660891f7b467dee4f472b7ff9c8e646e6036f59691d1efc5125673",
+    "src/tests/test_colored_score_20261024.py": "efb7817becb108b9d7f99fb8b05bfd7e5ef5d88f030c05f24ea574c213c4d728",
+    "src/configs/training/colored_score_20261024.json": "bcdcf8a012fae9e53095e7d086f644813b5493fc20b7db15ab8ef2deb18681bd",
+    "paper/docs/COLORED_SCORE_TRAINING_20261024.md": "55aa7153f96e48994aa0e84295e2642a69774f39b8e180c10c5555285a1e9fd3"
+  },
+  "limitations": [
+    "No discrete training classes; covariance factors still use unoptimized rank=4 and strength upper bound 0.5.",
+    "Pilot comparison changes noise training, conditioning, and mean formula together.",
+    "Evaluation bank is reused development validation, not untouched test data."
+  ],
+  "documentation_update": {
+    "previous_sha256": "48c69eac1cdd85bfb8bde6ecaa7398fd5e5cfb3c46e47981362eac5808fdf2ee",
+    "reason": "Link new exploratory relative-covariance check; executable sources and prior unit-test identity unchanged."
+  },
+  "relative_covariance_assessment": "result/snr_comparison/data/colored_covariance_relative_check_20261024/VALIDATION.json"
+}

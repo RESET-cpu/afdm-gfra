@@ -1,0 +1,226 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-11-07T04:58:36.901234+08:00",
+  "inputs": 6000,
+  "per_snr": {
+    "-4": 1000,
+    "-2": 1000,
+    "0": 1000,
+    "2": 1000,
+    "4": 1000,
+    "6": 1000
+  },
+  "paired_rows": 18000,
+  "completion_sha256": "3a6e72ac1c40a0d01b563a0c1f21e4c64aaaaa987731de12e0492b6c93f25cf5",
+  "summary_sha256": "3d4685f0627dfbacd7dc1fd930c09ffdb390bb2ee0190bfb8674bc63223fcb6e",
+  "paired_sha256": "462c1ff2b5eaf4b4d46e7d5202411381c23088bee97c58f3addd1d597c8f3fa7",
+  "output_hash_inventory_sha256": "c86e50faabb330d0499028cffdc9fc77a288d138490c2e2170d732b0f9270812",
+  "output_hash_inventory_entries": 78000,
+  "array_rescoring_evidence": "Original report.summarize completed 18000 saved-prediction re-scores and input/output hash checks; this follow-up checks receipt hashes, 6000 result/record/manifest hashes, inventory bindings, unchanged prediction timestamps, CSV aggregates and live process exits.",
+  "coordinator_and_workers_exited": true,
+  "process_identities": [
+    {
+      "pid": 103312,
+      "created_unix": 1793982309.0433996,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_stateio_20261107.run",
+        "coordinate"
+      ],
+      "started_unix": 1793933714.6107712,
+      "resumed_unix": 1793982314.8113508,
+      "session": "1793982314807331900",
+      "execution_module": "evaluation.white_phase_pool_stateio_20261107.run",
+      "plan_sha256": "dd02a7ae8ace3339e23b4e364e32a36304d9ede5c99ac56a35ca8b9b6f3f5140"
+    },
+    {
+      "stage": "EXITED",
+      "updated_unix": 1793991258.3739703,
+      "pid": 138316,
+      "created_unix": 1793982507.0529056,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_stateio_20261107.run",
+        "worker",
+        "--session",
+        "1793982314807331900",
+        "--slot",
+        "0"
+      ]
+    },
+    {
+      "pid": 106600,
+      "created_unix": 1793982507.028927,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_stateio_20261107.run",
+        "worker",
+        "--session",
+        "1793982314807331900",
+        "--slot",
+        "0"
+      ],
+      "started_unix": 1793982507.0320127,
+      "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793982314807331900\\worker0\\STATE.json",
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793982314807331900\\worker0\\stdout.log",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793982314807331900\\worker0\\stderr.log",
+      "slot": 0,
+      "position": null,
+      "closing": false
+    },
+    {
+      "stage": "EXITED",
+      "updated_unix": 1793991248.294389,
+      "pid": 96480,
+      "created_unix": 1793982515.7986295,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_stateio_20261107.run",
+        "worker",
+        "--session",
+        "1793982314807331900",
+        "--slot",
+        "1"
+      ]
+    },
+    {
+      "pid": 141252,
+      "created_unix": 1793982515.7756052,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_stateio_20261107.run",
+        "worker",
+        "--session",
+        "1793982314807331900",
+        "--slot",
+        "1"
+      ],
+      "started_unix": 1793982515.7791822,
+      "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793982314807331900\\worker1\\STATE.json",
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793982314807331900\\worker1\\stdout.log",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793982314807331900\\worker1\\stderr.log",
+      "slot": 1,
+      "position": null,
+      "closing": false
+    },
+    {
+      "stage": "EXITED",
+      "updated_unix": 1793991248.0910015,
+      "pid": 48704,
+      "created_unix": 1793982523.6040232,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_stateio_20261107.run",
+        "worker",
+        "--session",
+        "1793982314807331900",
+        "--slot",
+        "2"
+      ]
+    },
+    {
+      "pid": 100100,
+      "created_unix": 1793982523.575838,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_stateio_20261107.run",
+        "worker",
+        "--session",
+        "1793982314807331900",
+        "--slot",
+        "2"
+      ],
+      "started_unix": 1793982523.5801558,
+      "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793982314807331900\\worker2\\STATE.json",
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793982314807331900\\worker2\\stdout.log",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793982314807331900\\worker2\\stderr.log",
+      "slot": 2,
+      "position": null,
+      "closing": false
+    }
+  ],
+  "live_execution": [],
+  "execution_counts": {
+    "adopted100_original_worker": 2576,
+    "evaluation.white_phase_pool_20261106.run": 1907,
+    "evaluation.white_phase_pool_stateio_20261107.run": 1517
+  },
+  "preserved_results": {
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\PRESERVED_RESULTS.json": {
+      "files": 2576,
+      "sha256": "b2cac445c2edb52068ea4d776f42000892511578bfde1583423d7591758af2c6"
+    },
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\PRESERVED_RESULTS.json": {
+      "files": 4116,
+      "sha256": "d6218a9738df52ef80397a8a23aa4a9e4cc2e3181698ccdc635fa8db0aee37a8"
+    },
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793982314807331900\\PRESERVED_RESULTS.json": {
+      "files": 4483,
+      "sha256": "e607e11e00dbf6d46f7a97747b21ab3a23a3cd6b9239f80cad275563262b69a7"
+    }
+  },
+  "predecessors": {
+    "status": "PASS",
+    "checked_unix": 1793998650.5154169,
+    "reasons": [],
+    "receipts": {
+      "white_known_phase": {
+        "completion_sha256": "9288b71f9447d0176e2ad74edad42e717df53a621174dd704e3b2c68f7f01cb8",
+        "summary_sha256": "5bd9f97c02754e00d29f0cc95633a84031a06dc5907748a0c37e8bd03f8869f9",
+        "paired_sha256": "1fd9a313ec093b5af9aa1922f293261bb0511b4d13d0e5e9a2be3e3e36443b00"
+      },
+      "ablation": {
+        "completion_sha256": "7a9e88158b594530ada2ce541912f5cf0972b31579b6a75c1fc668007eb48600",
+        "summary_sha256": "f5c6fa2195f9812599219232044ae801c1f967911f4f751fa055674ba729ef9d",
+        "paired_sha256": "f43f74efdcfde06262ff9b97c211d1d289f7c540ffb4b4d78a5f1c9c88bd32a9",
+        "source_hashes_sha256": "7d992a0081b1daf51d7b4aa2bafdbe62e0f474c9b206ce3bd88ef35c95b7fed6",
+        "adopted_scenes_per_snr": 100,
+        "new_inferences": 1200,
+        "reused_inferences": 1200
+      }
+    },
+    "live_processes": [],
+    "amendment_sha256": "e2a010cdd156d154c759c2ad3fed63838c451e2c4a69bc1b56dadd40a6e1590d"
+  },
+  "source_bindings": {
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\PLAN.json": "dd02a7ae8ace3339e23b4e364e32a36304d9ede5c99ac56a35ca8b9b6f3f5140",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\AMENDMENT.json": "c03dfd0aa316fd1dc6055b6e42afa043db0accde8fbe0d53967bc3b9fbad6b2c",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\io_recovery_20261106\\AMENDMENT.json": "bd3c0fe5e1139e70c84c2b12eebe5013ab0074d8d6cc209dc95f9d9008dc98cf",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\state_io_recovery_20261107\\AMENDMENT.json": "ad1077c20d66ab15f7a61327413ef1db194fbc198418767ec2308a01c6c02e94"
+  },
+  "transient_state_io_recoveries": {
+    "read": 16,
+    "write": 5
+  },
+  "new_unresolved_failures": 0,
+  "archived_incidents_retained": true,
+  "manuscript_updated": false
+}

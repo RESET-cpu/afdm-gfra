@@ -1,0 +1,745 @@
+=== PDF PAGE 1 ===
+Non-Orthogonal Pilot Designs with Collision
+Detection Capability For Grant-Free Access
+Ayon Quayum,
+Hlaing Minn
+The University of Texas at Dallas
+Richardson, TX, USA
+Y uichi Kakishima,
+Haralabos Papadopoulos
+DOCOMO Innovations Inc.
+Palo Alto, CA, USA
+Abstract—In this paper we consider a densely deployed phan-
+tom cell system providing a low latency network for massive
+connectivity. Non-orthogonal pilot designs serve as a promising
+solution to support a large number of users but fast collision
+detection at the receiver is needed for low latency networks.
+Recently, a nice solution based on an on-off type non-orthogonal
+pilot design with collision detection capability has been proposed.
+It can serve more users than the orthogonal pilot design but at
+the cost of degraded channel estimation performance compared
+to the orthogonal optimum pilot design. We propose a new
+non-orthogonal pilot design with collision detection capability
+and improved channel estimation performance. An optimum
+threshold based detection criteria is developed. We further show
+that a dynamically calculated optimum threshold outperforms
+a ﬁxed threshold based detection. Next, we investigated non-
+orthogonal pilot designs for fractional bandwidth allocation.
+We propose two new non-orthogonal pilot designs for physical
+resource block (PRB) based resource allocation. Both of the
+new designs support fast collision detection at the receiver.
+Performance evaluation results show that the proposed schemes
+provide equivalent or better channel estimation performance and
+support much more users than the orthogonal pilots deﬁned in
+the current 4G standards.
+Index Terms —Small cell, channel estimation, non-orthogonal
+pilot, pilot collision, grant-free access
+I. I NTRODUCTION
+Growth of wireless trafﬁc, densiﬁcation of users and low
+latency requirements have created unique challenges for future
+wireless systems. 5G and other future standards are expected to
+provide support for high throughput, low latency and massive
+connectivity [1]. Different technologies are proposed and are
+being actively evaluated to achieve these goals. For example,
+small cell concept is used in different contexts to achieve high
+throughput. Dense deployment of remote radio head (RRH) is
+discussed in [2]. High density or “Big” phantom cell system
+provides another solution for increasing network capacity by
+splitting control and user (C/U) planes of the radio link [3].
+User-centric ultra-dense network is discussed in [4]. In this
+regard, a user-centric no-cell (UCNC) system in conjunction
+with grant-free non-orthogonal uplink (UL) access is demon-
+strated in [5]. This system supports massive connectivity with
+low latency and overhead. For grant-free uplink access, it is
+essential for base station (BS) to obtain channel state informa-
+tion (CSI) from initial transmission. This could be achieved
+by using carefully designed embedded pilot sequences.
+In existing systems, orthogonal pilot sequences are re-used
+based on spatial separation to minimize pilot contamination
+[6]. This translates to poor efﬁciency in the spatial reuse of
+pilot resources. Another approach is to create a large pool of
+orthogonal pilot sequences and let users choose them randomly
+[5]. However, large overhead is needed for a sufﬁcient number
+of orthogonal pilot sequences to minimize pilot collision
+probabilities.
+One way to reduce inefﬁciency and large overhead is to use
+non-orthogonal pilot sequences with collision detection capa-
+bilities. A nice solution based on on-off type non-orthogonal
+pilot codes has been proposed in [7]. This scheme uses 𝐿non-
+zero pilot dimensions and 𝐿
+′ null pilot dimensions to create
+non-orthogonal pilot sequences from a total of (𝐿+ 𝐿′) pilot
+resources. More than 𝐿 non-zero pilot dimensions indicates
+a collision at the receiver. Further analysis shows that sec-
+torization could increase area multiplexing gain by resolving
+more collision-free users per unit area [8] [9]. A similar non-
+orthogonal pilot design has been used with compressed sensing
+channel estimation in [10].
+The existing non-orthogonal pilot code designs are not
+optimized for channel estimation performance. As a result,
+they suffer from degraded channel estimation performance.
+Another shortcoming is the vastly different channel estimation
+performances for different pilot sequences which makes this
+design inherently unfair to different users. In this paper, by
+incorporating both collision detection capability and channel
+estimation performance in the design, we develop novel non-
+orthogonal pilot designs for both full and fractional bandwidth
+allocations. The proposed designs overcome the shortcomings
+of the existing designs and provide substantially better channel
+estimation performance and fairness to users.
+II. S
+YSTEM MODEL
+We consider a “Big” phantom cell system with dense de-
+ployment of small cells. Such a system will face severe uplink
+pilot contamination with growing trafﬁc. To alleviate this
+problem, we consider grant-free uplink access and fast user
+detection for our system. Time-Division Duplexing (TDD)
+and uplink-downlink (UL-DL) channel reciprocity is assumed.
+This allows non-orthogonal pilot sequences or codes to be
+used for acquisition of CSI at the transmitter. Pilot codes are
+designed with fast collision detection capability. A user can
+select a non-orthogonal pilot code randomly from a set of pilot
+codes. BS should be able to detect a collision when more than
+978-1-5386-3180-5/18/$31.00 ©2018 IEEE
+
+=== PDF PAGE 2 ===
+one non-orthogonal pilot codes from the same pilot codes set
+are received.
+We use an orthogonal frequecy division mltiplexing
+(OFDM) system with discrete Fourier transform (DFT) size
+𝑁. For user 𝑖, let us deﬁne the frequency domain pilot
+vector as 𝒄𝑖 of length 𝑁 and the time domain pilot vector
+as 𝒔𝑖 of length 𝑁. The channel impulse response (CIR)
+vector 𝒉𝑖 consists of 𝐿 sample-spaced channel taps (we
+assume timing errors or different propagation delays are
+already absorbed into the CIR). Cyclic preﬁx length 𝐿
+CP
+(≥ 𝐿) is used. Deﬁne 𝑁-point unitary DFT matrix 𝑭 =
+[𝒇0,𝒇1,...,𝒇𝑁 − 1] and 𝑭 𝐿 =[ 𝒇0,𝒇1,...,𝒇𝐿− 1] where
+𝒇𝑘 =[ 1,𝑒− 𝑗2𝜋𝑘/ 𝑁,...,𝑒− 𝑗2𝜋𝑘(𝑁 − 1)/𝑁 ]𝑇/
+√
+𝑁. The received
+time domain signal vector for a single OFDM symbol from
+𝑀 users is given by [11]
+𝒚 =
+𝑀∑
+𝑖=1
+𝑺𝑖𝒉𝑖 + 𝒏, (1)
+where 𝒚 =[ 𝑦0,𝑦1, ..., 𝑦𝑁 − 1]𝑇 , 𝑺𝒊 =√
+𝑁𝑭 𝐻 𝑪 𝒊𝑭 𝐿, 𝑪 𝒊 =d i a g {𝒄𝒊} and 𝒏 is zero-mean
+complex Gaussian noise vector of length 𝑁 with covariance
+matrix 𝜎2
+𝑛𝑰. Assuming (𝑺𝐻
+𝑖 𝑺𝑖) is full rank, the least-square
+(LS) CIR estimation for user 𝑖is given by [12]
+ˆ𝒉𝑖 =
+(
+𝑺𝐻
+𝑖 𝑺𝑖
+)− 1
+𝑺𝐻
+𝑖 𝒚. (2)
+For orthogonal pilot designs, optimality is achieved when
+𝑺𝐻
+𝑖 𝑺𝑖 = 𝐸av𝑰, ∀𝑖,
+𝑺𝐻
+𝑖 𝑺𝑗 = 0, ∀𝑖∕= 𝑗
+(3)
+where 𝐸av is average OFDM symbol energy [13]. After
+satisfying these conditions, the mean square error (MSE) for
+channel estimation is given by 𝜎2
+𝑛tr
+(
+𝑺𝐻
+𝑖 𝑺𝑖
+)− 1
+= 𝐿𝜎2
+𝑛/𝐸av.
+Several optimum orthogonal pilot designs have been discussed
+in [13]. However, using orthogonal pilot codes is incapable
+of supporting a large number of users. In this paper, we
+will develop non-orthogonal pilot codes based on frequency
+division multiplexing (FDM) type orthogonal pilot sets with
+cyclically equi-spaced pilot tones.
+We observe some shortcomings of the existing non-
+orthogonal pilot design [7] in the literature. First, its average
+channel estimation performance is substantially degraded com-
+pared to the performance achieved by the optimum orthogonal
+pilot design. Second, different pilot codes may have vastly
+unequal channel estimation performances.
+To illustrate these shortcomings, let us consider an example
+system with DFT size 𝑁 = 128 and 𝐿 =8 sample-spaced
+channel taps. Fig. 1 shows channel estimation MSEs for dif-
+ferent non-orthogonal pilot codes of the existing design for 0
+dB SNR. The MSEs for different pilot codes vary substantially,
+which translates into unfair quality of service provisioning
+to different users. This also highlights the need of efﬁcient
+non-orthogonal pilot designs with good channel estimation
+performance and capability to support a large number of users
+with low latency.
+III. P
+ROPOSED NON -ORTHOGONAL PILOT DESIGN
+To overcome limitations of the existing pilot design for
+grant-free access, we propose a novel non-orthogonal pilot
+0 50 100 150 200 250 300 350 400 450
+Non-orthogonal pilot code index
+0
+0.5
+1
+1.5
+2
+2.5
+3
+3.5Mean Square Error (MSE)
+Fig. 1. Channel estimation performance of different non-orthogonal pilot codes
+from the existing design (SNR=0 dB)
+design satisfying the following criteria:
+∙ Channel estimation performance should match closely with
+optimum orthogonal pilot design.
+∙ Different pilot sequences should have similar channel esti-
+mation performances to ensure fairness.
+∙ Receiver should be able to detect collision when more than
+one non-orthogonal pilot codes are present.
+∙ Pilot design should support a large number of non-
+orthogonal users.
+The new pilot design is based on the FDM type orthogonal
+pilot tone index sets described in [13] for estimating 𝐿sample-
+spaced channel taps. In this orthogonal pilot design, each pilot
+set contains 𝐿 cyclically equi-spaced equal energy pilot tones.
+Our non-orthogonal pilot design is described as follows.
+1) For DFT size 𝑁, we deﬁne the total number of orthogonal
+sets 𝐷 = 𝑁/𝐿and their pilot tone index set {𝐽
+𝑘 :𝑘=
+0,1...𝐷− 1} according to the FDM design in [13] where
+𝐽𝑘 = 𝐽𝑘− 1 +1 .T h es e t 𝐽0 which contains indexes 0 and
+𝑁/2 (i.e., the DC tone and the band-edge tone which are
+typically set to be null tones), is treated separately. Deﬁne
+the total number of remaining pilot index sets as 𝐷
+′ =
+𝐷 − 1.
+2) Deﬁne 𝐽𝑘,𝑎 ≜ {𝐽𝑘[𝑖]: 𝑖=1 ,3,5,...},𝑘 =1 ,2...𝐷′
+and 𝐽𝑘,𝑏 ≜ {𝐽𝑘[𝑖]: 𝑖=2 ,4,6,...},𝑘 =1 ,2...𝐷′.
+Also deﬁne ˜𝐷 =
+⌊
+𝐷 ′
+3
+⌋
+. Then, each of the 2 ˜𝐷 pilot groups
+deﬁned by their pilot tone index sets { ˜𝐽𝑘} is constructed
+by combining two contiguous orthogonal pilot tone index
+sets in the following way:
+˜𝐽1 = 𝐽1 ∪ 𝐽2,𝑎, ˜𝐽2 = 𝐽3 ∪ 𝐽2,𝑏
+˜𝐽3 = 𝐽4 ∪ 𝐽5,𝑎, ˜𝐽4 = 𝐽6 ∪ 𝐽5,𝑏
+.........
+˜𝐽2(˜𝐷 − 1)+1 = 𝐽3(˜𝐷 − 1)+1 ∪ 𝐽3(˜𝐷 − 1)+2,𝑎
+˜𝐽2(˜𝐷 − 1)+2 = 𝐽3(˜𝐷 − 1)+3 ∪ 𝐽3(˜𝐷 − 1)+2,𝑏
+3) Each group’s pilot tone index set ˜𝐽𝑘 contains 𝐿/2 pairs of
+pilot tones where the two tones in each pair are adjacent
+and 𝐿/2 unpaired pilot tones. Each pair is composed of one
+non-zero pilot tone and one null pilot tone while unpaired
+
+=== PDF PAGE 3 ===
+ones are non-zero pilots tones. All the 𝐿 non-zero pilot
+tones within ˜𝐽𝑘 have the same amplitude 𝑎. Selecting 𝐿/2
+non-zero pilots from 𝐿/2 pairs yields 2𝐿/2 non-orthogonal
+pilot codes within the pilot group deﬁned by ˜𝐽𝑘.
+4) Non-zero tones from 𝐽0 and
+{
+𝐽𝑘 :𝑘=3 ˜𝐷 +1 ...𝐷′
+}
+can
+be distributed to adjacent ˜𝐽𝑘 sets as evenly as possible.
+For example, deﬁne (𝐿− 2) non-zero tones of 𝐽0 as 𝐽′
+0 ={
+𝐽0∖
+{
+0,𝑁
+2
+}}
+. Then, we can add 𝐽′
+0,𝑎 to ˜𝐽1 and 𝐽′
+0,𝑏 to
+˜𝐽˜𝐷 . In this case, the pilot groups deﬁned by ˜𝐽1 and ˜𝐽˜𝐷
+have 2𝐿− 1 non-orthogonal pilot codes in each group.
+Channel estimation MSE of the proposed pilot code 𝑘from
+the group based on ˜𝐽𝑖, if without collision within the group, is
+given by 𝜎2
+𝑛tr(𝑺𝐻
+𝑘 𝑺𝑘)− 1. Due to the choice of adjacent tones
+for pilot pairs, some pilot codes will maintain 𝑺𝐻
+𝑘 𝑺𝑘 = 𝐸av𝑰
+while the others will have 𝑺𝐻
+𝑘 𝑺𝑘 ≈ 𝐸av𝑰. Note that phases
+of the non-zero pilot sequence do not affect MSE and hence
+they can be designed to yield low peak to average power ratio
+(PAPR) of the time domain signal.
+To illustrate our non-orthogonal pilot design, let us consider
+a system with DFT size of 𝑁 = 128 and 𝐿=8 sample-spaced
+channel taps. Each FDM orthogonal pilot set consists of 𝐿=8
+pilot tones. If we exclude 𝐽0 due to practical setting of null
+tones at index 0 and 𝑁/2, the total number of orthogonal pilot
+sets is 𝐷 =1 5 . The proposed non-orthogonal pilot tone index
+sets are:
+˜𝐽1 = [(1 2) 17 (33 34) 49 (65 66) 81 (97 98) 113]
+˜𝐽2 = [3 (18 19) 35 (50 51) 67 (82 83) 99 (114 115)]
+.........
+˜𝐽10 = [15 (30 31) 47 (62 63) 79 (94 95) 111 (126 127)]
+where the indexes of pilot pairs are shown in the bracket.
+There are 10 orthogonal pilot groups deﬁned by { ˜𝐽1,...,˜𝐽10}
+and each group has 24 =1 6 non-orthogonal pilot codes
+since there are 4 pairs of adjacent pilot tones. Each pi-
+lot code has 4 null pilot tones (one from each pilot
+tone pair) and 8 non-zero pilot tones with amplitude 𝑎
+on the remaining tones. For example, within the group
+˜𝐽
+1, the non-zero pilot tone indexes of the ﬁrst four non-
+orthogonal pilot codes are {1,33,65,97,17,49,81,113},
+{2,33,65,97,17,49,81,113}, {1,34,65,97,17,49,81,113},
+and {2,34,65,97,17,49,81,113}. Fig. 2 shows an example
+of designing non-orthogonal pilot groups from orthogonal pilot
+sets. Table I provides details about the pilot resource amount
+and the number of users supported by different pilot designs.
+In existing orthogonal pilot design, there are several orthog-
+onal pilot sets where each set can support only one pilot code.
+Our new pilot design has smaller number of orthogonal pilot
+sets while each set can support multiple pilot codes. Different
+orthogonal pilot sets could be used for different antennas
+or different user groups. So the new pilot design is easily
+applicable for multiple antenna systems.
+Fig. 3 compares channel estimation performance of the
+proposed non-orthogonal pilot codes with that of orthogonal
+optimum design and the existing non-orthogonal design. The
+proposed design provides an improvement of around 15 dB
+Fig. 2. Design of non-orthogonal pilot codes from orthogonal pilot sets
+0 5 10 15 20 25
+SNR (dB)
+10-4
+10-3
+10-2
+10-1
+100
+Mean Square Error (MSE)
+Minimum MSE for optimum orthogonal pilot design
+Average MSE for current non-orthogonal pilot design
+Average MSE for proposed pilot design
+Fig. 3. Channel estimation performance comparison among different pilot
+designs in a system with 𝑁 = 128 subcarriers and 𝐿 =8 channel taps
+compared to the existing non-orthogonal design and its per-
+formance closely matches that of orthogonal design.
+Fig. 4 shows the channel estimation MSE for different non-
+orthogonal pilot codes within a pilot group of the proposed
+design. By comparing the corresponding results of the existing
+design in Fig. 1, we can observe that the MSE performances
+for different codes are essentially the same for the proposed
+design while they vary substantially for the existing design.
+Thus, the proposed non-orthogonal pilot design offers fairness
+to different users.
+02468 1 0 1 2 1 4 1 6
+Non-orthogonal pilot code index
+0
+0.005
+0.01
+Mean Square Error (MSE)
+Fig. 4. Channel estimation performance of the proposed non-orthogonal pilot
+codes within a pilot group (SNR=0 dB)
+IV . T HRESHOLD -BASED PILOT DETECTION
+At the receiver, the energy of each pilot tone in a pilot index
+set ˜𝐽𝑘 is compared with a predeﬁned detection threshold. The
+receiver detects a non-zero pilot tone if the received energy
+
+=== PDF PAGE 4 ===
+on that tone exceeds the detection threshold. A single user
+is detected if exactly 𝐿 non-zero pilot tones are detected and
+the non-zero tones correspond to a valid pilot index set ˜𝐽𝑘.
+A collision is detected if more than 𝐿 non-zero pilot tones
+are detected. Otherwise, no user is detected. Next, we will
+consider the threshold-based pilot detection performance. We
+will deﬁne two performance metrics: probability of single
+user detection (𝑃
+SUD ) and probability of collision detection
+(𝑃CD ). 𝑃SUD is deﬁned as the probability of detecting the
+pilot correctly when only one user transmits the pilot code
+and 𝑃CD is deﬁned as the probability of detecting a collision
+when more than one user transmit non-orthogonal pilot codes
+within a pilot codes group.
+A. Probability of Single User Detection (𝑃SUD )
+Non-zero pilot tones are detected based on the received
+energy levels of the pilot subcarriers. For the threshold based
+detection, the energy of each of the possible pilot tones in a
+pilot codes set is compared to a predeﬁned threshold value to
+determine an active or null pilot. Let us consider the received
+energies of a pilot code consisting of 𝐿 active pilot tones of
+indexes (𝑞
+1,𝑞2...𝑞𝐿 ) and 𝐿′ null tones of indexes (𝑞′
+1,𝑞′
+2...𝑞′
+𝐿′ ).
+Also deﬁne the ratio (𝐿′/𝐿) as 𝛾, the transmit pilot power on
+each non-zero pilot tone as 𝑎2 and noise power per tone as
+𝑁0. Frequency domain received signal is 𝒀 = 𝑭𝒚 where
+𝒀 =[ 𝑌0 𝑌1 ... 𝑌𝑁 − 1]𝑇 . For a Rayleigh fading channel, the
+average received power on a pilot subcarrier is given by
+𝐸
+[
+∣𝑌𝑘∣2]
+=
+{
+𝑎2 + 𝑁0,𝑘 ∈ 𝑞
+𝑁0,𝑘 ∈ 𝑞′ (4)
+The SNR is deﬁned as SNR = 𝐸 av
+𝑁𝑁 0
+where 𝐸av = 𝐿𝑎2.
+Let the detection threshold be 𝜏. Then, 𝑃SUD is given by
+𝑃SUD = 𝑃
+[(
+∩𝑖∈{ 𝑞𝑙}
+(
+∣𝑌𝑖∣2 >𝜏
+))
+∩
+(
+∩𝑗∈{ 𝑞′
+𝑙}
+(
+∣𝑌𝑗∣2 <𝜏
+)) ]
+Assuming all received pilot tones are independent, we can
+compute the probability of single user detection as
+𝑃SUD =
+[ ∏
+𝑖∈{ 𝑞𝑙}
+𝑃
+(
+∣𝑌𝑖∣2 >𝜏
+)][ ∏
+𝑗∈{ 𝑞′
+𝑙}
+𝑃
+(
+∣𝑌𝑗∣2 <𝜏
+)]
+=
+[
+1 − 𝐹
+( 2𝜏
+𝑎2 + 𝑁0
+)]𝐿 [
+𝐹
+(2𝜏
+𝑁0
+)]𝐿′
+(5)
+where 𝐹(𝑥) is an exponential cumulative distribution function
+given by
+𝐹(𝑥)=1 − 𝑒− 𝑥
+2 . (6)
+Substituting (6) in (5) and using 𝐿′ = 𝛾𝐿, we get
+𝑃SUD =
+[
+𝑒
+− ( 2𝜏
+2(𝑎2+ 𝑁 0))]𝐿 [
+1 − 𝑒− ( 2𝜏
+2𝑁 0 )]𝛾𝐿
+. (7)
+Now, we can ﬁnd the optimum detection threshold by
+maximizing 𝑃SUD as follows. First, we take the ﬁrst derivative
+of 𝑃SUD and equate it to zero as
+𝑑
+𝑑𝜏
+([
+𝑒
+− ( 𝜏
+(𝑎2+ 𝑁 0))]𝐿 [
+1 − 𝑒− ( 𝜏
+𝑁 0 )]𝛾𝐿 )
+=0 . (8)
+By solving (8), we obtain the optimum detection threshold as
+𝜏opt = −𝑁0 ln
+( 𝐿
+𝛾𝑁 SNR + 𝐿(1 + 𝛾)
+)
+. (9)
+Equation (9) shows that the optimum value of the detection
+threshold depends on the SNR value. The threshold can be
+set based on the targeted SNR of the considered application,
+which we call a ﬁxed threshold setting.
+Alternatively, we can calculate 𝜏opt based on the instanta-
+neous SNR estimate and use it as a detection threshold. This
+dynamic threshold setting improves the detection performance
+compared to the ﬁxed threshold setting. To illustrate the
+performance gain from the dynamic detection threshold, we
+consider the previous example with DFT size 128 and 8 non-
+zero pilot tones per pilot group. Fig. 5 shows 𝑃
+SUD using a
+ﬁxed threshold (𝜏=1 ) and a dynamic threshold for different
+SNRs. The ﬁxed threshold is only optimum for a certain
+SNR value. In all other cases, the dynamic threshold provides
+performance gain.
+-5 0 5 10 15 20
+SNR (dB)
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+Probability of Successful Single User Detection
+PSUD with dynamic optimum threshold
+PSUD with fixed threshold (τ = 1)
+Fig. 5. Single user detection performance for the dynamic versus ﬁxed
+detection threshold settings
+B. Probability of Collision Detection (𝑃CD )
+Another important performance metric is the probability
+of collision detection 𝑃CD . We use the previous example to
+illustrate the effect of the detection threshold for 𝑃CD .W e
+use scenarios with two non-orthogonal pilot users within a
+pilot group in Fig. 6(a) and three users within a pilot group in
+Fig. 6(b). In our simulation, all users have the same SNR. We
+plot 𝑃
+SUD against 𝑃CD for 10 dB SNR. In the plot each point
+corresponds to a different detection threshold value. Fig. 6
+shows that the optimum threshold for 𝑃SUD also provides high
+probability of collision detection. So we can conclude that
+the optimum detection threshold for the single user detection
+performance is also a good choice for the collision detection
+performance.
+V. D
+ESIGN FOR FRACTIONAL BANDWIDTH ALLOCA TION
+Now we will develop two different pilot schemes for frac-
+tional bandwidth (BW) allocation, denoted as Scheme A and
+B. Both of them use Physical Resource Block (PRB) similar
+to what is deﬁned in 4G standards for 3GPP Long Term
+Evolution (LTE) downlink reference signal (RS) as a resource
+allocation unit. Each PRB consists of 12 subcarriers and 7
+symbols (1 time slot). A single symbol and one subcarrier
+creates time-frequency resource element (RE). We consider
+
+=== PDF PAGE 5 ===
+TABLE I. Pilot resource amount and the number of supported users for different pilot designs
+BW allocation Design # of pilot REs per
+pilot group
+# of orthogonal pilot
+groups
+# of users supported
+per pilot group
+total # of users
+supported
+Full BW
+allocation
+Orthogonal 8 15 1 15
+Proposed non-orthogonal 12 10 16 160
+Fractional BW
+allocation
+Orthogonal (4G standards) 16 1 1 1
+Proposed non-orthogonal
+Scheme A ( 𝑟 =2 ) 20 1 16 16
+Proposed non-orthogonal
+Scheme B 16 1 128 128
+0.97 0.975 0.98 0.985 0.99 0.995 1
+0
+0.2
+0.4
+0.6
+0.8
+0.9985 0.999 0.9995 1
+Probability of Collision Detection
+0
+0.2
+0.4
+0.6
+0.8
+Probability of Successful Single User Detection
+(b)
+(a)
+Fig. 6. Single user detection performance versus collision detection perfor-
+mance for different detection threshold values. a) 2 users per pilot group, b)
+3 users per pilot group.
+few REs to be dedicated for pilot sequences in each PRB.
+Other REs will be used for data transmission. For both of the
+schemes, we will use the concept of pilot pairs similar to our
+non-orthogonal pilot design in Section III.
+A. Scheme A
+In LTE standards, two pilot tones are used in each of ﬁrst
+and third from the last OFDM symbol of each time slot. The
+two pilot tones in one OFDM symbol is evenly distributed in
+a PRB with 6 subcarriers spacing between them. We propose
+one additional pilot tone in the ﬁrst OFDM symbol of every
+𝑟-th PRB. The additional pilot RE will be placed adjacent to
+one of the existing pilot subcarriers. These two adjacent pilot
+tones will create a pilot pair. To create non-orthogonal pilot
+codes, we will use one non-zero pilot and one null pilot from
+each pilot pair allocated in a pilot set. If the number of PRBs
+allocated with additional pilots is 𝑆, the pilot set can have up
+to 2
+𝑆 non-orthogonal pilot codes.
+B. Scheme B
+Scheme B is suitable when the allocated PRBs are contigu-
+ous in frequency. We use two pilots tones in each of ﬁrst and
+third from the last OFDM symbol of each time slot. We use
+ﬁrst and last subcarrier in each of these OFDM symbols as
+pilot tones. First subcarrier of the ﬁrst allocated PRB and last
+subcarrier of the last allocated PRB are always used as non-
+zero pilots. For the remaining PRBs, last and ﬁrst pilots of
+adjacent PRBs will create a pilot pair which are contiguous
+in frequency. We use one non-zero pilot from each available
+pilot pair to create non-orthogonal pilot codes. A pilot set has
+(𝑇 +1 ) non zero pilots and can support up to 2
+(𝑇 − 1) non-
+orthogonal pilot codes where 𝑇 is the total number of allocated
+PRBs.
+Fig. 7 shows pilot locations for Scheme A and Scheme B
+where adjacent pilot tones are used as pilot pairs.
+Table I summarizes the numbers of users supported and pilot
+resources used by different pilot designs.
+Fig. 7. Proposed pilot Scheme A and Scheme B for the fractional bandwidth
+allocation
+C. Channel Estimation Performance for Fractional Bandwidth
+To evaluate channel estimation performance for these
+schemes, let us assume 𝑅 consecutive tones at indexes
+(𝑟1,𝑟2 ...𝑟𝑅 ) are allocated to each user. We consider the
+channel to be time-invariant for the span of one PRB. Thus,
+we will use just one OFDM symbol for channel estimation.
+Let 𝑿
+𝑷 =d i a g{𝑐𝑞1,𝑐𝑞2 ...𝑐𝑞𝑃 } be a diagonal matrix with
+non-zero pilot tones as its diagonal elements and 𝑯 𝑃 =
+[𝐻𝑞1𝐻𝑞2 ...𝐻𝑞𝑃 ]𝑇 be the channel frequency response (CFR)
+
+=== PDF PAGE 6 ===
+of the pilot subcarriers. Then the received frequency domain
+pilot vector for the considered pilot code is given by
+𝒀 𝑃 = 𝑿 𝑃 𝑯 𝑃 + 𝑵 𝑃 (10)
+where 𝑵 𝑃 is the noise vector on pilot subcarriers with co-
+variance 𝜎2
+𝑛𝑰.F o r𝐿 sample-spaced channel taps, the estimate
+of CFR for allocated bandwidth of 𝑅 tones is given by
+ˆ𝑯 𝑅 = 𝑭 𝑅
+(
+𝑭 𝐻
+𝑃𝐿 𝑭 𝑃𝐿
+)− 1
+𝑭 𝐻
+𝑃𝐿 ˆ𝑯 𝑃 (11)
+where
+ˆ𝑯 𝑅 = Estimate of CFR for 𝑅 tones
+ˆ𝑯 𝑃 = 𝑿 − 1
+𝑃 𝒀 𝑃 ,LS estimate of CFR for 𝑃 pilot tones
+𝑭 𝑅 = First 𝐿 columns and 𝑅 rows corresponding to
+tone indexes (𝑟1,...,𝑟𝑅 ) of DFT matrix 𝑭
+𝑭 𝑃𝐿 = First 𝐿 columns and 𝑃 rows corresponding to
+pilot tone indexes (𝑞1,...,𝑞𝑃 ) of DFT matrix 𝑭
+The corresponding MSE is given by
+𝐸
+[
+∣∣ˆ𝑯 𝑅 − 𝑯 𝑅 ∣∣2]
+= 𝜎2
+𝑛 tr
+(
+𝑨
+(
+𝑿 𝐻
+𝑃 𝑿 𝑃
+)− 1
+𝑨 𝐻 ) (12)
+where 𝑨 = 𝑭 𝑅
+(
+𝑭 𝐻
+𝑃𝐿 𝑭 𝑃𝐿
+)− 1
+𝑭 𝐻
+𝑃𝐿 .
+To compare the performance of different schemes, let us
+consider an example of 8 consecutive PRB allocation per user.
+We will use DFT size of 512 and 8 sample-spaced channel
+taps. Original orthogonal pilot scheme has a total of 16 non-
+zero pilots within the allocated bandwidth. For scheme A we
+will use 𝑟=2 (i.e., add a new pilot RE in every other PRBs).
+This makes a total of 20 pilot REs and 16 non-zero pilot REs
+available to each user. Scheme B uses a total of 16 pilot REs
+and 9 non-zero pilot REs for each pilot set. Scheme A can
+support 16 users and Scheme B can support up to 128 users
+with non-orthogonal pilot codes while the original scheme can
+support only one user. See Table I for comparison. Fig. 8
+shows the channel estimation performance of different pilot
+designs for the fractional bandwidth allocation. Scheme A and
+the orthogonal allocation scheme has comparable performance.
+Scheme B performs better compared to other schemes as its
+use of both band edge subcarriers for non-zero pilots yields
+better channel interpolation.
+VI. C
+ONCLUSIONS
+In this paper, we have developed a novel non-orthogonal
+pilot design that outperforms the existing design in channel
+estimation performance, supports collision detection at the re-
+ceiver and could accommodate a large number of users through
+non-orthogonal pilot codes. Also we have developed an opti-
+mum threshold based pilot detection scheme. Our simulation
+shows that when the detection threshold is dynamically set, it
+could lead to better performance over a broader SNR range.
+We have also presented two non-orthogonal pilot designs for
+systems using a fractional bandwidth allocation. Both of these
+schemes provide similar or better channel estimation perfor-
+mances compared to the existing design while supporting a
+higher number of non-orthogonal users and providing collision
+detection capability.
+0 5 10 15 20 25
+SNR (dB)
+10-7
+10-6
+10-5
+10-4
+Mean Square Error (MSE)
+Orthogonal pilot design (4G standards)
+Non-orthogonal pilot design, Scheme A
+Non-orthogonal pilot design, Scheme B
+Fig. 8. Channel estimation performance for different pilot designs in the
+fractional bandwidth allocation
+REFERENCES
+[1] C. Bockelmann, N. Pratas, H. Nikopour, K. Au, T. Svensson, C. Ste-
+fanovic, P . Popovski, and A. Dekorsy, “Massive machine-type commu-
+nications in 5G: Physical and MAC-layer solutions,” IEEE Commun.
+Mag., vol. 54, no. 9, pp. 59–65, 2016.
+[2] M. Peng, S. Y an, and H. V . Poor, “Ergodic capacity analysis of remote
+radio head associations in cloud radio access networks,” IEEE Wireless
+Commun. Lett. , vol. 3, no. 4, pp. 365–368, 2014.
+[3] H. Ishii, Y . Kishiyama, and H. Takahashi, “A novel architecture for
+LTE-B: C-plane/U-plane split and phantom cell concept,” in Globecom
+Workshops (GC Wkshps), 2012 . IEEE, 2012, pp. 624–630.
+[4] S. Chen, F. Qin, B. Hu, X. Li, and Z. Chen, “User-centric ultra-dense
+networks for 5G: challenges, methodologies, and directions,” IEEE
+Wireless Commun., vol. 23, no. 2, pp. 78–85, 2016.
+[5] J. Zhang, L. Lu, Y . Sun, Y . Chen, J. Liang, J. Liu, H. Y ang, S. Xing,
+Y .W u ,J .M aet al., “PoC of SCMA-based uplink grant-free transmission
+in UCNC for 5G,” IEEE J. Sel. Areas Commun. , vol. 35, no. 6, pp.
+1353–1362, 2017.
+[6] T. L. Marzetta, “Noncooperative cellular wireless with unlimited num-
+bers of base station antennas,” IEEE Trans. Wireless Commun. ,v o l .9 ,
+no. 11, pp. 3590–3600, 2010.
+[7] O. Y . Bursalioglu, C. Wang, H. Papadopoulos, and G. Caire, “RRH
+based massive MIMO with “on the ﬂy” pilot contamination control,” in
+IEEE Intl. Conf. Commun. (ICC) , 2016, pp. 1–7.
+[8] O. Bursalioglu, C. Wang, H. Papadopoulos, and G. Caire, “A novel
+alternative to cloud RAN for throughput densiﬁcation: Coded pilots and
+fast user-packet scheduling at remote radio heads,” in Fiftieth Asilomar
+Conference on Signals, Systems and Computers . IEEE, 2016, pp. 3–10.
+[9] Z. Li, N. Rupasinghe, O. Y . Bursalioglu, C. Wang, H. Papadopoulos, and
+G. Caire, “Directional training and fast sector-based processing schemes
+for mmWave channels,” in IEEE Intl. Conf. Commun. (ICC) , 2017, pp.
+1–7.
+[10] W. C. Ao, C. Wang, O. Y . Bursalioglu, and H. Papadopoulos, “Com-
+pressed sensing-based pilot assignment and reuse for mobile UEs in
+mmWave cellular systems,” in IEEE Intl. Conf. Commun. (ICC) , 2016,
+pp. 1–7.
+[11] Y . Li, H. Minn, N. Al-Dhahir, and A. R. Calderbank, “Pilot designs for
+consistent frequency-offset estimation in OFDM systems,” IEEE Trans.
+Commun., vol. 55, no. 5, pp. 864–877, 2007.
+[12] L. S. Louis, “Statistical signal processing: detection, estimation, and
+time series analysis,” Addision-Wesley Publishing company , 1991.
+[13] H. Minn and N. Al-Dhahir, “Optimal training signals for MIMO OFDM
+channel estimation,” IEEE Trans. Wireless Commun. , vol. 5, no. 5, pp.
+1158–1168, 2006.

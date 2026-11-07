@@ -1,0 +1,1190 @@
+[
+  {
+    "id": 1,
+    "file": "main.tex",
+    "line": 1,
+    "text": "% IEEE journal template, with the 10pt two-column format required by TWC.\n% Compile from paper/C-STMP/; keep the IEEEtran fonts and page dimensions.\n% Select T1 before the class selects Times, including under XeTeX/Tectonic.\n\\RequirePackage[T1]{fontenc}\n\\documentclass[10pt,journal,letterpaper]{IEEEtran}\n\\usepackage{amsmath,amssymb,bm,booktabs,array}\n\\usepackage{graphicx}\n\\usepackage{cite}\n\\usepackage{enumitem}\n\\usepackage[hidelinks]{hyperref}\n\\graphicspath{{figures/}}\n\\interdisplaylinepenalty=2500"
+  },
+  {
+    "id": 2,
+    "file": "main.tex",
+    "line": 14,
+    "text": "\\newcommand{\\CN}{\\mathcal{CN}}\n\\newcommand{\\E}{\\mathbb{E}}\n\\newcommand{\\I}{\\mathbf{I}}\n\\newcommand{\\vect}{\\operatorname{vec}}\n\\newcommand{\\tr}{\\operatorname{tr}}\n\\newcommand{\\diag}{\\operatorname{diag}}\n\\newcommand{\\logit}{\\operatorname{logit}}\n\\newcommand{\\sigmoid}{\\operatorname{sigmoid}}\n\\newcommand{\\clip}{\\operatorname{clip}}\n\\newcommand{\\relu}{\\operatorname{Re}}\n\\newcommand{\\imag}{\\operatorname{Im}}\n\\newcommand{\\norm}[1]{\\left\\lVert#1\\right\\rVert}"
+  },
+  {
+    "id": 3,
+    "file": "main.tex",
+    "line": 27,
+    "text": "\\title{Generative-Model-Aided Grant-Free Random Access for GNSS-Independent MIMO-AFDM Satellite IoT Systems}\n% Author order and IEEE membership grades supplied by the author.\n\\author{Bo~Wang,~\\IEEEmembership{Student~Member,~IEEE,}\nWenpeng~Jing,~\\IEEEmembership{Senior~Member,~IEEE,}\nZhiqun~Hu,~\\IEEEmembership{Senior~Member,~IEEE,}\nShirui~Zuo,~\\IEEEmembership{Student~Member,~IEEE,}\nand~Changhao~Liu,~\\IEEEmembership{Student~Member,~IEEE}%\n\\thanks{All authors are with Beijing University of Posts and\nTelecommunications (e-mails: wangb@bupt.edu.cn;\n[Wenpeng Jing: e-mail to be added]; [Zhiqun Hu: e-mail to be added];\n[Shirui Zuo: e-mail to be added]; [Changhao Liu: e-mail to be added]).}}"
+  },
+  {
+    "id": 4,
+    "file": "main.tex",
+    "line": 39,
+    "text": "\\begin{document}\n\\bstctlcite{IEEEcontrol}\n\\maketitle\n\\begin{abstract}\nThis paper investigates grant-free random access in low Earth orbit\nsatellite Internet-of-Things systems without global navigation satellite\nsystem (GNSS) assistance. To handle large differential delays and\nDoppler shifts across devices, we propose a multi-frame affine\nfrequency division multiplexing (AFDM) transmission scheme and analyze\nits input-output relationship. Based on this model, we learn a\nscore-based generative prior directly from AFDM effective-channel\nsamples, without imposing sparse or grid-aligned channel assumptions.\nThe finite-dimensional, structured multi-frame AFDM observation model\nmay cause a mismatch between denoiser-input errors and white Gaussian\nnoise used for training. We therefore train the channel\ndenoiser using colored Gaussian noise with different covariance matrices.\nThe learned prior is then incorporated into a message-passing (MP)\nreceiver with two modules: multi-frame linear estimation (MFLE), which\nsuppresses inter-user interference; and generative-prior-aided joint\ndenoising (GPJD), which performs minimum mean-squared error (MMSE)\ndenoising.\nTo reduce errors associated with a Gaussian approximation of the channel\nposterior, GPJD employs a learned density-ratio estimator to obtain\nposterior probabilities of activity.\nThe two modules iteratively exchange soft information for joint activity\ndetection and channel estimation (JADCE). Numerical simulations demonstrate\nthat the proposed receiver\noutperforms the baseline receiver in activity detection and channel\nestimation.\n\\end{abstract}\n% GP-MP-CCD algorithm revision; current result figures are included in Section VI.\n\\begin{IEEEkeywords}\nAffine frequency division multiplexing, grant-free\nrandom access, joint activity detection and channel estimation,\nscore-based generative models.\n\\end{IEEEkeywords}"
+  },
+  {
+    "id": 5,
+    "file": "main.tex",
+    "line": 76,
+    "text": "\\input{sections/01_introduction}"
+  },
+  {
+    "id": 6,
+    "file": "main.tex",
+    "line": 78,
+    "text": "\\noindent\\textit{Notation:} $\\CN(\\bm\\mu,\\bm\\Sigma)$ denotes a proper complex Gaussian distribution \\cite{neeser1993}.\n$\\|\\cdot\\|_F$ denotes the Frobenius norm;\n$(\\cdot)^{\\mathsf H}$ and $\\tr(\\cdot)$ denote conjugate transpose and trace."
+  },
+  {
+    "id": 7,
+    "file": "main.tex",
+    "line": 82,
+    "text": "\\input{sections/02_system_model}\n\\input{sections/03_bayesian_receiver_design}\n\\input{sections/04_generative_priors}\n\\input{sections/05_overall_algorithm}\n\\input{sections/06_simulation_results}\n\\input{sections/07_conclusion}"
+  },
+  {
+    "id": 8,
+    "file": "main.tex",
+    "line": 89,
+    "text": "\\appendices\n\\numberwithin{equation}{section}\n\\input{sections/appendix_parameter_estimation}\n\\input{sections/appendix_afdm_channel_model}\n\\ifdefined\\FullManuscript\n\\input{sections/appendix_evaluation_protocol}\n\\fi"
+  },
+  {
+    "id": 9,
+    "file": "main.tex",
+    "line": 97,
+    "text": "\\bibliographystyle{IEEEtran}\n\\bibliography{references}\n\\end{document}"
+  },
+  {
+    "id": 10,
+    "file": "sections/01_introduction.tex",
+    "line": 1,
+    "text": "\\section{Introduction}\n\\label{sec:introduction}"
+  },
+  {
+    "id": 11,
+    "file": "sections/01_introduction.tex",
+    "line": 4,
+    "text": "Sixth-generation (6G) wireless networks are expected to provide ubiquitous\nconnectivity for a massive number of Internet-of-Things (IoT) devices\n\\cite{cai2026,xu2026}. To serve devices in remote areas with limited terrestrial\ncoverage, low Earth orbit (LEO) satellites complement cellular networks for\napplications such as smart agriculture and climate monitoring \\cite{shen2025,kodheli2021}. These\npower-limited devices transmit short packets sporadically, with only a small\nfraction active at a given time \\cite{shen2025,cai2026,mei2022}. In grant-based random\naccess, handshaking before transmission incurs significant\nsignaling overhead, while the long propagation delay of terrestrial-satellite links\nfurther increases access latency \\cite{cai2026,xu2026}. Accordingly, grant-free\nrandom access (GFRA) allows active devices to transmit pilots and data directly\nwithout first obtaining a grant, reducing signaling overhead and access latency in LEO satellite IoT\nsystems \\cite{cai2026,xu2026}."
+  },
+  {
+    "id": 12,
+    "file": "sections/01_introduction.tex",
+    "line": 18,
+    "text": "Supporting GFRA over LEO links requires handling large delays and Doppler shifts\ncaused by long propagation distances and high satellite mobility. The 3rd Generation\nPartnership Project (3GPP) Release 17 framework addresses these effects through\ndevice-side precompensation assisted by the global navigation satellite system\n(GNSS) \\cite{3gpp38300}. With such precompensation, many existing satellite GFRA\nschemes assume perfect compensation or small residual delays and Doppler shifts at\nthe receiver \\cite{shen2025}. Frequent estimation and compensation increase\nenergy consumption and reduce battery lifetime, making these schemes less suitable\nfor power-limited remote IoT devices \\cite{shen2025}. This motivates reducing\ndependence on GNSS, consistent with the GNSS-independent operation considered in the\nRelease 19 study on satellite access \\cite{3gpp22865}. With reduced reliance on\ndevice-side precompensation, the satellite receiver must accommodate\nlarge differential delays and Doppler shifts, which can cause severe inter-symbol\nand inter-carrier interference in conventional orthogonal frequency division\nmultiplexing (OFDM) systems \\cite{shen2025,huang2026}."
+  },
+  {
+    "id": 13,
+    "file": "sections/01_introduction.tex",
+    "line": 34,
+    "text": "Orthogonal time frequency space (OTFS) modulation exploits the quasi-static\nproperties of channels in the delay--Doppler domain to mitigate these effects\n\\cite{shen2025,hadani2017}. In \\cite{shen2025}, multi-frame OTFS transmission\nhandles large differential delays and Doppler shifts at the satellite receiver,\nallowing devices to operate without GNSS assistance or precompensation of these\noffsets. Its effective channel has three indices at each antenna,\ncorresponding to Doppler, path delay, and the position of the received symbol along the delay dimension\n\\cite[Sec.~II-B]{shen2025}. Affine frequency division multiplexing (AFDM)\nprovides an alternative based on one-dimensional chirp modulation. Its\nmodulator consists of an inverse DFT and multiplications by two diagonal chirp matrices\n\\cite[Secs.~II-B and III-A]{bemani2022}. With properly designed chirp\nparameters, AFDM can achieve full diversity over doubly dispersive channels\n\\cite{bemani2022}. For the stationary devices considered here,\nAFDM also permits joint processing of consecutive frames through a single\neffective channel matrix per antenna and a device-specific phase rotation.\nThis compact representation motivates learning the effective-channel prior\ndirectly for GFRA."
+  },
+  {
+    "id": 14,
+    "file": "sections/01_introduction.tex",
+    "line": 52,
+    "text": "To realize the full potential of AFDM-GFRA, accurate joint activity detection and\nchannel estimation (JADCE) is a crucial prerequisite \\cite{ding2026}. Existing\nmethods exploit sporadic device activity to formulate JADCE as a compressed sensing\n(CS) problem and incorporate structured priors to capture channel sparsity\n\\cite{shen2025,ding2026,ke2020}. The scheme in \\cite{ding2026} further uses a graph neural\nnetwork to adaptively learn sparsity patterns, while retaining a predefined\ndelay--Doppler grid for the sparse channel representation. In practical\npropagation environments, significant power leakage caused by fractional Doppler\nshifts and fractional time delays can weaken the sparsity of the effective channel\nmatrix \\cite{huang2026}. This motivates learning effective-channel\npriors from data to capture channel structures beyond the assumed sparse\nrepresentation \\cite{cai2026,huang2026}."
+  },
+  {
+    "id": 15,
+    "file": "sections/01_introduction.tex",
+    "line": 65,
+    "text": "Score-based generative models learn channel priors from samples by estimating the\nscore function of the channel distribution \\cite{song2019,arvinte2023}. In\n\\cite{huang2026}, score-based learning is performed directly on the AFDM effective\nchannel to address fractional delay--Doppler off-grid leakage in channel estimation.\nFor massive random access, \\cite{ying2026} proposes a two-stage algorithm that first\nidentifies active devices through a Transformer-based detector and then uses\ngenerative diffusion models for joint channel estimation and data detection.\nBoth approaches rely on iterative posterior sampling, which requires\nrepeated score function evaluations and incurs substantial computational cost\n\\cite{huang2026,ying2026}."
+  },
+  {
+    "id": 16,
+    "file": "sections/01_introduction.tex",
+    "line": 76,
+    "text": "The score-based turbo message passing (STMP) algorithm in \\cite{cai2026}\nincorporates generative channel priors for JADCE without iterative posterior\nsampling. Through Tweedie's formulas, separate first- and second-order score networks provide\nposterior means and variances for single-step minimum mean-squared error (MMSE)\ndenoising under equivalent additive white Gaussian noise (AWGN) observations.\nHowever, this AWGN model is justified in the large-system\nlimit with right-rotationally invariant random sensing matrices \\cite{cai2026,rangan2019}.\nIn the finite-dimensional, structured multi-frame AFDM system considered here,\ndepartures from these conditions may cause a mismatch between denoiser-input\nerrors and the white Gaussian noise used for training. A similar\nlimitation has been highlighted for structured sensing matrices. This\nmismatch can degrade channel denoising accuracy and, consequently, JADCE\nperformance. Moreover, \\cite{cai2026} computes activity probabilities using\nGaussian extrinsic messages obtained after projecting the channel posterior onto\na Gaussian distribution. In general, matching posterior means and variances does\nnot preserve the marginal likelihood associated with a non-Gaussian channel\nprior. Consequently, the resulting activity probabilities can be inaccurate,\naffecting the channel estimates exchanged with the linear estimation module."
+  },
+  {
+    "id": 17,
+    "file": "sections/01_introduction.tex",
+    "line": 95,
+    "text": "Against this background, we investigate GNSS-independent AFDM-GFRA for\nLEO satellite IoT systems. Our main contributions are summarized as follows:"
+  },
+  {
+    "id": 18,
+    "file": "sections/01_introduction.tex",
+    "line": 98,
+    "text": "\\begin{enumerate}[label=\\arabic*)]\n\\item We propose a multi-frame AFDM transmission scheme that accommodates large\ndifferential delays and Doppler shifts at the satellite receiver. Under the\ncommon per-device Doppler model, a fixed effective channel matrix per antenna\nis shared across frames, with inter-frame phase rotations incorporated into\nthe pilots. We compare this representation with the multi-frame OTFS model\nat matched bandwidth and transmission duration. Additional pilot frames\nprovide more observations without enlarging the channel tensor\nused by the learned prior."
+  },
+  {
+    "id": 19,
+    "file": "sections/01_introduction.tex",
+    "line": 108,
+    "text": "\\item We learn a score-based generative prior directly from multiantenna AFDM\neffective-channel samples with fractional delays and Doppler shifts, without\nimposing sparse or grid-aligned channel assumptions.\nTo address the mismatch between denoiser-input errors and the white Gaussian\nnoise used for training, we train the denoiser using colored Gaussian noise\nwith different covariance matrices."
+  },
+  {
+    "id": 20,
+    "file": "sections/01_introduction.tex",
+    "line": 115,
+    "text": "\\item We develop a message-passing JADCE receiver for the multi-frame AFDM system.\nThe receiver combines multi-frame linear estimation (MFLE), which suppresses\ninter-user interference, with generative-prior-aided joint denoising (GPJD),\nwhich uses the learned effective-channel prior for MMSE denoising.\nTo reduce errors associated with a Gaussian approximation of the channel\nposterior, GPJD employs a learned density-ratio estimator to obtain\nposterior probabilities of activity. The two modules iteratively exchange\nGaussian extrinsic messages to perform JADCE.\nSimulation results demonstrate that the proposed receiver improves activity\ndetection and channel estimation performance compared with the white-noise-trained\nGP-MP reference across the evaluated signal-to-noise ratios and pilot-frame counts.\n\\end{enumerate}"
+  },
+  {
+    "id": 21,
+    "file": "sections/01_introduction.tex",
+    "line": 128,
+    "text": "The remainder of this paper is organized as follows. Section~\\ref{sec:system}\npresents the system model and the multi-frame AFDM input--output relationship.\nSections~\\ref{sec:algorithm}--\\ref{sec:overall} describe the turbo message-passing\nframework, the learned channel denoiser and activity classifier, and the overall algorithm with its computational\ncomplexity analysis, respectively. Section~\\ref{sec:simulations} presents the\nsimulation results. Section~\\ref{sec:conclusion} concludes this paper."
+  },
+  {
+    "id": 22,
+    "file": "sections/02_system_model.tex",
+    "line": 1,
+    "text": "\\section{System Model}\n\\label{sec:system}"
+  },
+  {
+    "id": 23,
+    "file": "sections/02_system_model.tex",
+    "line": 4,
+    "text": "We consider a LEO satellite-enabled grant-free random access system\nas shown in Fig.~\\ref{fig:system-multiframe}, where AFDM is adopted\nto mitigate the doubly dispersive effect inherent\nin terrestrial-satellite links (TSLs) \\cite{shen2025,huang2026}.\nThe system comprises $K$ single-antenna terrestrial devices that\ncommunicate with a LEO satellite equipped with a uniform planar array\n(UPA) consisting of $M=M_yM_z$ antennas.\nDuring each transmission block, active devices share the same resources\nfor pilot transmission to the satellite.\nThese terrestrial devices operate without\nGNSS capabilities and do not pre-compensate for delay and Doppler shifts\n\\cite{shen2025}."
+  },
+  {
+    "id": 24,
+    "file": "sections/02_system_model.tex",
+    "line": 17,
+    "text": "\\begin{figure}[!t]\n\\centering\n\\includegraphics[width=\\linewidth]{system_multiframe.pdf}\n\\caption{LEO satellite grant-free access with multi-frame AFDM pilot\ntransmission. The insets show the frame structure of active device $k$\nand the satellite UPA. Device activity is fixed over the $Q$ frames.\nSatellite, footprint, and array artwork\nis adapted from \\cite[Fig.~1]{shen2025}.}\n\\label{fig:system-multiframe}\n\\end{figure}"
+  },
+  {
+    "id": 25,
+    "file": "sections/02_system_model.tex",
+    "line": 28,
+    "text": "\\subsection{Terrestrial-Satellite Link Model}"
+  },
+  {
+    "id": 26,
+    "file": "sections/02_system_model.tex",
+    "line": 30,
+    "text": "The TSLs experience fast variations due to the high mobility of the\nLEO satellite. Hence, this time variation and multipath propagation\nrequire a doubly dispersive channel model \\cite{shen2025}.\nWe assume that the terrestrial devices are stationary and\nall paths from the $k$th device have a common Doppler shift $\\nu_k$\n\\cite{huang2026}.\nWithin a transmission block, the path gains, delays, Doppler shifts,\nand angles of arrival remain approximately constant.\nWe set $t_{\\rm c}=0$ at the beginning of the transmission block.\nAfter delay compensation for $\\tau_c$ at the satellite receiver, the\nchannel impulse response from the $k$th device to the satellite at\ntime instant $t_{\\rm c}$ can be represented as"
+  },
+  {
+    "id": 27,
+    "file": "sections/02_system_model.tex",
+    "line": 43,
+    "text": "\\begin{equation}\n \\mathbf h_k(t_{\\rm c},\\tau)\n =\\mathbf a_k\\sum_{\\ell=1}^{L_k}g_{k\\ell}\n e^{\\mathrm j2\\pi\\nu_k t_{\\rm c}}\\delta(\\tau-\\tau_{k\\ell}),\n \\label{eq:physical-channel}\n\\end{equation}\nwhere $k=1,\\ldots,K$, $L_k$ is the number of physical paths,\n$g_{k\\ell}$ is the path gain of the $\\ell$th path,\n$\\delta(\\cdot)$ is the Dirac delta function, and $\\mathrm j^2=-1$.\nHere $\\tau_{k\\ell}=\\widetilde\\tau_{k\\ell}-\\tau_c$ represents the\ndifferential delay for the $\\ell$th path from the $k$th device to the\nsatellite, where $\\widetilde\\tau_{k\\ell}$ and $\\tau_c$ denote the\npropagation delay and common delay, respectively.\nThe common delay corresponds to the\npropagation time between the satellite and the closest point on Earth\nwithin the beam coverage \\cite{shen2025}."
+  },
+  {
+    "id": 28,
+    "file": "sections/02_system_model.tex",
+    "line": 60,
+    "text": "The array response vector $\\mathbf a_k$ at the satellite side can\nbe written as \\cite{shen2025,li2023}\n\\begin{equation}\n [\\mathbf a_k]_{n_z+M_zn_y}\n =e^{\\mathrm j2\\pi(d_yn_y\\mu_{y,k}+d_zn_z\\mu_{z,k})/\\lambda},\n \\label{eq:upa}\n\\end{equation}\nwhere $n_z=0,\\ldots,M_z-1$, $n_y=0,\\ldots,M_y-1$,\n$\\lambda$ is the wavelength, and $d_v$ is the spacing between\nadjacent antennas along the $v$-axis with $v\\in\\{y,z\\}$.\nHere $\\mu_{z,k}$ and $\\mu_{y,k}$ are the directional cosines along\nthe z-axis and y-axis, respectively."
+  },
+  {
+    "id": 29,
+    "file": "sections/02_system_model.tex",
+    "line": 73,
+    "text": "\\subsection{Transmission Scheme}\n\\label{sec:transmission-scheme}"
+  },
+  {
+    "id": 30,
+    "file": "sections/02_system_model.tex",
+    "line": 76,
+    "text": "In the proposed scheme, each active device transmits pilot symbols over\n$Q$ consecutive AFDM frames within one transmission block.\nAFDM modulation and demodulation are performed independently for each\nframe, and the received signals are collected for JADCE.\nA total of $N$ chirp subcarriers are shared among the devices for\npilot transmission \\cite{cai2026,huang2026}.\nLet $P_{qkn}\\in\\mathbb C$ be the pilot symbol transmitted by\nthe $k$-th device during the $q$-th AFDM frame on the $n$-th\nchirp subcarrier. We construct a pilot vector as\n$\\mathbf p_{qk}=[P_{qk0},\\ldots,P_{qk,N-1}]^{\\mathsf T}\n\\in\\mathbb C^N$, $k=1,\\ldots,K$, $q=0,\\ldots,Q-1$, where\n$(\\cdot)^{\\mathsf T}$ denotes transpose.\nThe pilot symbols are known at the satellite receiver.\nLet $\\mathbf P\\in\\mathbb C^{Q\\times KN}$ denote the pilot matrix,\nwith entries\n$[\\mathbf P]_{q,(k-1)N+n}=P_{qkn}$."
+  },
+  {
+    "id": 31,
+    "file": "sections/02_system_model.tex",
+    "line": 93,
+    "text": "We impose the condition that\n$\\mathbf P\\mathbf P^{\\mathsf H}=KE_p\\I_Q$, where\n$\\|\\mathbf p_{qk}\\|^2=E_p$ for all $k$ and $q$\n\\cite{cai2026}.\nHere $\\I_Q$ is the $Q\\times Q$ identity matrix.\nThe design of $\\mathbf P$ is deferred to\nSection~\\ref{sec:simulation-settings}."
+  },
+  {
+    "id": 32,
+    "file": "sections/02_system_model.tex",
+    "line": 101,
+    "text": "Applying the inverse discrete affine Fourier transform (IDAFT) to\n$\\mathbf p_{qk}$ gives the time-domain transmitted signal \\cite{ding2026}"
+  },
+  {
+    "id": 33,
+    "file": "sections/02_system_model.tex",
+    "line": 105,
+    "text": "\\begin{equation}\n s_{qk}[t]=\\frac{1}{\\sqrt N}\\sum_{n=0}^{N-1}\n P_{qkn}e^{\\mathrm j2\\pi(c_1t^2+c_2n^2+nt/N)},\n \\label{eq:afdm-time-signal}\n\\end{equation}\nwhere $t=0,\\ldots,N-1$, and $c_1$ and $c_2$ are AFDM modulation\nparameters.\nThe signal in \\eqref{eq:afdm-time-signal} can be represented in matrix\nform as \\cite{ding2026}\n\\[\n \\mathbf s_{qk}=\\mathbf F_{\\rm A}^{\\mathsf H}\\mathbf p_{qk},\n\\]\nwhere\n\\begin{equation}\n \\begin{gathered}\n \\mathbf F_{\\rm A}\n =\\left[\\frac{1}{\\sqrt N}e^{-\\mathrm j2\\pi(c_2r^2+rt/N+c_1t^2)}\n \\right]_{r,t=0}^{N-1}\n \\end{gathered}\n \\label{eq:daft}\n\\end{equation}\ndenotes the discrete affine Fourier transform (DAFT) matrix.\nHere $T_s=1/(N\\Delta f)$ gives the sampling interval, with\n$\\Delta f$ denoting the subcarrier spacing."
+  },
+  {
+    "id": 34,
+    "file": "sections/02_system_model.tex",
+    "line": 130,
+    "text": "Assume that the chirp-periodic prefix (CPP) duration is greater than\nor equal to the maximum differential delay, i.e.,\n$N_{\\rm CPP}T_s\\geq\\max_{k,\\ell}\\tau_{k\\ell}$.\nThe CPP is given by \\cite{bemani2022}\n\\begin{equation}\n \\begin{gathered}\n s_{qk}[t]=e^{\\mathrm j2\\pi c_1(t^2-\\langle t\\rangle_N^2)}\n s_{qk}[\\langle t\\rangle_N],\\\\\n -N_{\\rm CPP}\\leq t<0,\n \\end{gathered}\n \\label{eq:cpp}\n\\end{equation}\nwhere $\\langle x\\rangle_N=x-N\\lfloor x/N\\rfloor$ and\n$2Nc_1\\in\\mathbb N_+$.\nEach AFDM frame spans a duration of $T_{\\rm frame}=(N+N_{\\rm CPP})T_s$."
+  },
+  {
+    "id": 35,
+    "file": "sections/02_system_model.tex",
+    "line": 146,
+    "text": "To account for fractional delays, we define the transmit waveform\nfor the $n$th chirp subcarrier at time $\\xi T_s$ as \\cite{huang2026,bemani2023thesis}\n\\begin{equation}\n \\varphi_n(\\xi)=\\frac{1}{\\sqrt N}\n e^{\\mathrm j2\\pi[c_2n^2+c_1\\xi^2+nw_\\xi/N-\\zeta_n(w_\\xi)w_\\xi]},\n \\label{eq:continuous-waveform}\n\\end{equation}\nwhere $w_\\xi=\\langle\\xi\\rangle_N$ and\n$\\zeta_n(w)=\\lfloor2c_1w+n/N\\rfloor$.\nNote that $\\varphi_n(t)=[\\mathbf F_{\\rm A}^{\\mathsf H}]_{tn}$ for\n$t=0,\\ldots,N-1$, while $\\varphi_n(\\xi)$ satisfies\n\\eqref{eq:cpp} for $\\xi<0$."
+  },
+  {
+    "id": 36,
+    "file": "sections/02_system_model.tex",
+    "line": 159,
+    "text": "Denote by $H_k^{(q)}\\in\\mathbb C^{M\\times N\\times N}$ the effective\nchannel from the $k$th device to the satellite during the $q$th AFDM\nframe, after removing the CPP and applying the DAFT.\nFor $q=0$, the effective channel $H_k=H_k^{(0)}$ can be expressed as\n\\begin{equation}\n H_{kmrn}\n =[\\mathbf a_k]_m\\sum_{\\ell=1}^{L_k}g_{k\\ell}\n [\\mathbf G(\\tau_{k\\ell}/T_s,\\nu_k;N_{\\rm CPP})]_{rn},\n \\label{eq:channel}\n\\end{equation}\nwhere $n$ and $r$ correspond to the transmitted and received\nsymbols, respectively, and $m=0,\\ldots,M-1$.\nFor a path with gain $1$, delay $dT_s$, and Doppler shift $\\nu$,\nthe channel response can be expressed in a matrix form as"
+  },
+  {
+    "id": 37,
+    "file": "sections/02_system_model.tex",
+    "line": 174,
+    "text": "\\begin{equation}\n \\begin{gathered}\n \\mathbf G(d,\\nu;g)=\\mathbf F_{\\rm A}\\mathbf D_{\\nu,g}\\mathbf B_d,\\\\\n \\mathbf D_{\\nu,g}=\\diag\\{e^{\\mathrm j2\\pi\\nu T_s(g+t)}\\}_{t=0}^{N-1},\\\\\n [\\mathbf B_d]_{tn}=\\varphi_n(t-d),\n \\end{gathered}\n \\label{eq:path-operator-system}\n\\end{equation}\nwhere $t_{\\rm c}=(g+t)T_s$ for $t=0,\\ldots,N-1$ after removing\nthe CPP, and $g=N_{\\rm CPP}$ for frame $0$. The operator\n$\\diag\\{\\cdot\\}$ forms a diagonal matrix from its listed entries.\nAppendix~\\ref{app:afdm-model} gives the derivation and the expression for integer $d$."
+  },
+  {
+    "id": 38,
+    "file": "sections/02_system_model.tex",
+    "line": 187,
+    "text": "Based on \\eqref{eq:path-operator-system} with\n$g=g_q=N_{\\rm CPP}+q(N+N_{\\rm CPP})$, we can derive the effective\nchannel in the $q$th AFDM frame as\n\\begin{equation}\n \\begin{gathered}\n H_k^{(q)}=e^{\\mathrm jq\\beta_k}H_k,\\\\\n \\beta_k=2\\pi\\!\\left(\\nu_kT_{\\rm frame}\n -\\left\\lfloor\\nu_kT_{\\rm frame}+\\frac12\\right\\rfloor\\right),\n \\end{gathered}\n \\label{eq:twc-frame-channel}\n\\end{equation}\nwhere $\\beta_k\\in[-\\pi,\\pi)$.\nThe phase rotation $e^{\\mathrm jq\\beta_k}$ accumulates across multiple frames,\nwhile $H_k$ remains approximately constant over $Q$ consecutive frames.\nIncorporating this phase rotation into the pilot matrix gives\n\\begin{equation}\n A_{qkn}=P_{qkn}e^{\\mathrm jq\\beta_k}.\n \\label{eq:effective-pilot}\n\\end{equation}"
+  },
+  {
+    "id": 39,
+    "file": "sections/02_system_model.tex",
+    "line": 207,
+    "text": "In \\eqref{eq:channel}, the effective channel at each antenna is\nrepresented by an $N\\times N$ matrix. The multi-frame OTFS scheme in\n\\cite[eq.~(9)]{shen2025} uses an $L\\times N\\times N$ tensor for $N$\nsubcarriers and $L$ OFDM symbols per frame. The dense AFDM channel representation\ncontains $MN^2$ channel entries per device, compared with\n$MLN^2$ in that OTFS representation. With the same subcarrier spacing\nand prefix length, $L$ AFDM frames span the duration of one OTFS\nframe, with the same number of useful samples and the same energy in the useful symbols when the OTFS frame uses $LE_p$."
+  },
+  {
+    "id": 40,
+    "file": "sections/02_system_model.tex",
+    "line": 217,
+    "text": "\\subsection{Problem Formulation}"
+  },
+  {
+    "id": 41,
+    "file": "sections/02_system_model.tex",
+    "line": 219,
+    "text": "We model device activities as independent and identically distributed\n(i.i.d.) binary variables. For device $k$, define $\\alpha_k$ as\n\\cite{cai2026}\n\\[\n \\alpha_k=\\begin{cases}\n 1,&\\text{if the $k$th device is active},\\\\\n 0,&\\text{otherwise}.\n \\end{cases}\n\\]\nLet $\\rho$ represent the probability of a device being active, i.e.,\n$\\Pr(\\alpha_k=1)=\\rho$, where $\\rho\\ll1$.\nAs a result, only a small subset of the devices is active in any given\ntransmission block. The activity states are\nassumed to remain constant during one block transmission.\nLet $X_k=\\alpha_kH_k$."
+  },
+  {
+    "id": 42,
+    "file": "sections/02_system_model.tex",
+    "line": 236,
+    "text": "After removing the CPP and applying the DAFT, the received signal\n$\\mathbf Y_q\\in\\mathbb C^{M\\times N}$ during the $q$th AFDM\nframe is given by \\cite{cai2026}\n\\begin{equation}\n Y_{qmr}=[\\mathbf Y_q]_{mr}\n =\\sum_{k=1}^K\\sum_{n=0}^{N-1}A_{qkn}X_{kmrn}+W_{qmr},\n \\label{eq:observation-tensor}\n\\end{equation}\nwhere $\\mathbf W_q=[W_{qmr}]_{m,r}\\in\\mathbb C^{M\\times N}$ is an\nAWGN matrix with the elements i.i.d. drawn from $\\CN(0,\\sigma^2)$."
+  },
+  {
+    "id": 43,
+    "file": "sections/02_system_model.tex",
+    "line": 247,
+    "text": "We express the received signal $\\mathbf Y$ over the $Q$ AFDM frames\nin a more compact form as\n\\begin{equation}\n \\mathbf Y=\\mathbf A\\mathbf X+\\mathbf W,\n \\label{eq:mmv}\n\\end{equation}\nwhere $\\mathbf Y,\\mathbf W\\in\\mathbb C^{Q\\times MN}$,\n$\\mathbf A\\in\\mathbb C^{Q\\times KN}$, and\n$\\mathbf X\\in\\mathbb C^{KN\\times MN}$.\nThe matrices $\\mathbf Y$, $\\mathbf W$, $\\mathbf A$, and $\\mathbf X$\nhave the following entries:\n\\begin{equation}\n \\begin{aligned}\n [\\mathbf Y]_{q,mN+r}&=Y_{qmr},\\\\\n [\\mathbf W]_{q,mN+r}&=W_{qmr},\\\\\n [\\mathbf A]_{q,(k-1)N+n}&=A_{qkn},\\\\\n [\\mathbf X]_{(k-1)N+n,mN+r}&=X_{kmrn}.\n \\end{aligned}\n \\label{eq:mmv-indexing}\n\\end{equation}\nSince the $Q$ frames share the same $\\mathbf X$, additional pilot\nframes provide more observations without increasing the number of\nchannel coefficients to be estimated.\nDue to the sporadic access of the devices, $\\mathbf X$ exhibits a\nblock-sparsity structure.\nSpecifically, if the $k$th device is inactive, we have\n$X_k=\\alpha_kH_k=\\mathbf0$ \\cite{cai2026}.\nFor $Q<KN$, the inverse problem in \\eqref{eq:mmv} is underdetermined."
+  },
+  {
+    "id": 44,
+    "file": "sections/02_system_model.tex",
+    "line": 276,
+    "text": "In this paper, we aim to simultaneously detect the active devices and\nestimate the corresponding channels based on the observation $\\mathbf Y$\nunder a Bayesian inference framework \\cite{cai2026}.\nPower leakage arises from fractional delays and Doppler shifts,\nwhich can weaken the sparsity of $H_k$ \\cite{huang2026}.\nWe therefore estimate the full $H_k$ without imposing channel sparsity.\nWe use the distribution of the training channels as the channel prior\n$q_{\\rm tr}(H_k)$, without factorizing this prior element-wise.\nWe assume that $H_k$ and $\\alpha_k$ are independent for different\nvalues of $k$, and that $H_k$ is independent of $\\alpha_k$.\nWith $\\widehat{\\mathbf A}$ and $\\widehat\\sigma^2$ fixed as in\nSection~\\ref{sec:frontend}, we factorize the joint posterior\ndistribution according to Bayes'\ntheorem and the conditional independence relationships among the\nvariables, expressed as \\cite{cai2026}"
+  },
+  {
+    "id": 45,
+    "file": "sections/02_system_model.tex",
+    "line": 292,
+    "text": "\\begin{equation}\n \\begin{aligned}\n &q(\\mathbf X,\\{H_k\\}_{k=1}^{K},\\{\\alpha_k\\}_{k=1}^{K}\\mid\\mathbf Y)\\\\\n &\\quad\\propto\\prod_{j=1}^{MN}p(\\mathbf y_j\\mid\\mathbf x_j)\\\\\n &\\qquad\\times\\prod_{k=1}^{K}\n p(X_k\\mid H_k,\\alpha_k)q_{\\rm tr}(H_k)p(\\alpha_k),\n \\end{aligned}\n \\label{eq:working-posterior}\n\\end{equation}\nwhere $\\mathbf x_j\\in\\mathbb C^{KN}$ and $\\mathbf y_j\\in\\mathbb C^Q$\ndenote the $j$th column of $\\mathbf X$ and $\\mathbf Y$, respectively.\nHere\n$p(\\mathbf y_j\\mid\\mathbf x_j)=\\CN(\\mathbf y_j;\n\\widehat{\\mathbf A}\\mathbf x_j,\\widehat\\sigma^2\\I_Q)$,\n$p(X_k\\mid H_k,\\alpha_k)$ enforces $X_k=\\alpha_kH_k$, and\n$p(\\alpha_k)=\\rho^{\\alpha_k}(1-\\rho)^{1-\\alpha_k}$.\nThe MMSE estimate of $X_k$ and the posterior probability of activity for the\n$k$th device are given by"
+  },
+  {
+    "id": 46,
+    "file": "sections/02_system_model.tex",
+    "line": 311,
+    "text": "\\begin{equation}\n \\begin{aligned}\n X_k^{\\rm MMSE}&=\\E_q[X_k\\mid\\mathbf Y],\\\\\n p_k^{\\rm Bayes}&=q(\\alpha_k=1\\mid\\mathbf Y).\n \\end{aligned}\n \\label{eq:targets}\n\\end{equation}"
+  },
+  {
+    "id": 47,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 1,
+    "text": "\\section{Turbo Message Passing Framework}\n\\label{sec:algorithm}"
+  },
+  {
+    "id": 48,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 4,
+    "text": "\\label{sec:receiver-structure}"
+  },
+  {
+    "id": 49,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 6,
+    "text": "Figure~\\ref{fig:receiver-structure} represents the posterior in\n\\eqref{eq:working-posterior}.\nFollowing the turbo message-passing framework in \\cite{cai2026}, we\nformulate the inference as iterations between linear estimation and joint\ndenoising.\nInformation is exchanged between the two estimators through Gaussian\nextrinsic messages based on expectation propagation \\cite{minka2001}."
+  },
+  {
+    "id": 50,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 14,
+    "text": "\\begin{figure}[!t]\n\\centering\n\\includegraphics[width=\\linewidth]{factor_graph.pdf}\n\\caption{Factor graph of \\eqref{eq:working-posterior} using device blocks\n$X_k$ as variable nodes. Each likelihood factor depends on the corresponding\ncolumn entries from all device blocks. Circles and squares denote\nvariables and factors. The channel and activity prior branches are\nadapted from \\cite[Fig.~2]{cai2026}.}\n\\label{fig:receiver-structure}\n\\end{figure}"
+  },
+  {
+    "id": 51,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 25,
+    "text": "\\subsection{Linear Estimation}\n\\label{sec:linear-estimation}"
+  },
+  {
+    "id": 52,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 28,
+    "text": "The linear estimator receives a Gaussian message from joint denoising.\nThis message has mean matrix $\\mathbf X^{\\rm pri}\\in\\mathbb C^{KN\\times MN}$\nand per-column covariance $\\gamma\\I_{KN}$, with $\\gamma>0$.\nFor each column, the product of this message and the likelihood in\n\\eqref{eq:working-posterior} gives a Gaussian posterior.\nThe posterior mean matrix and per-column covariance are given by\n\\cite[Sec.~III-A]{cai2026}, \\cite[eq.~(15c)]{ma2017}:\n\\begin{align}\n \\mathbf X_{\\rm L}\n &=\\mathbf X^{\\rm pri}\n +\\gamma\\widehat{\\mathbf A}^{\\mathsf H}\n (\\widehat\\sigma^2\\I_Q+\\gamma\\widehat{\\mathbf A}\\widehat{\\mathbf A}^{\\mathsf H})^{-1}\n (\\mathbf Y-\\widehat{\\mathbf A}\\mathbf X^{\\rm pri}),\n \\label{eq:linear-mean}\\\\\n \\bm\\Sigma_{\\rm L}\n &=(\\gamma^{-1}\\I_{KN}+\\widehat\\sigma^{-2}\\widehat{\\mathbf A}^{\\mathsf H}\\widehat{\\mathbf A})^{-1},\n \\qquad t_{\\rm L}=\\frac{\\tr\\bm\\Sigma_{\\rm L}}{KN}.\n \\label{eq:linear-variance}\n\\end{align}"
+  },
+  {
+    "id": 53,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 48,
+    "text": "For message exchange, the posterior covariance is approximated by\n$t_{\\rm L}\\I_{KN}$ \\cite{ma2015,cai2026}.\nDividing this Gaussian approximation by the incoming message removes the\ninformation supplied by joint denoising \\cite{minka2001}.\nThe resulting extrinsic variance and mean are\n\\begin{equation}\n v_{\\rm L}=(t_{\\rm L}^{-1}-\\gamma^{-1})^{-1},\\qquad\n \\mathbf R_{\\rm L}=v_{\\rm L}\n \\left(\\frac{\\mathbf X_{\\rm L}}{t_{\\rm L}}\n       -\\frac{\\mathbf X^{\\rm pri}}{\\gamma}\\right).\n \\label{eq:linear-extrinsic}\n\\end{equation}"
+  },
+  {
+    "id": 54,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 61,
+    "text": "Reorganizing $\\mathbf R_{\\rm L}$ by device gives the tensor inputs to joint\ndenoising, with common variance $v_{\\rm L}$."
+  },
+  {
+    "id": 55,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 64,
+    "text": "\\subsection{Joint Channel Estimation and Activity Detection}\n\\label{sec:joint-denoising}"
+  },
+  {
+    "id": 56,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 67,
+    "text": "Following \\cite[Sec.~III-B]{cai2026}, we first derive the channel estimate\nunder the active hypothesis and the posterior activity probability, and then\ncombine them to estimate $X_k$.\nLet $R_k$ and $v$ denote the input mean and variance.\nFor the channel tensor $H_k$, we define\n$[\\vect(H_k)]_{mN^2+rN+n}=H_{kmrn}$.\nThis Gaussian input message corresponds to the local observation model\n\\begin{equation}\n \\begin{gathered}\n R_k=\\alpha_k H_k+W_k,\\qquad H_k\\sim q_{\\rm tr},\\\\\n \\vect(W_k)\\sim\\CN(\\mathbf0,v\\I_D),\\qquad D=MN^2.\n \\end{gathered}\n \\label{eq:pseudo-awgn}\n\\end{equation}"
+  },
+  {
+    "id": 57,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 82,
+    "text": "\\subsubsection{Channel Estimation}\n\\label{sec:channel-estimation}"
+  },
+  {
+    "id": 58,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 85,
+    "text": "Under the active hypothesis $\\alpha_k=1$, \\eqref{eq:pseudo-awgn} is an AWGN\nobservation of the channel.\nCombining its likelihood with the prior $q_{\\rm tr}$ gives the posterior distribution $\\pi_v(dH\\mid R)$:\n\\begin{equation}\n \\pi_v(dH\\mid R)\n \\propto\\CN(\\vect(R);\\vect(H),v\\I_D)q_{\\rm tr}(dH).\n \\label{eq:active-channel-posterior}\n\\end{equation}\nThe conditional mean and covariance are\n\\begin{equation}\n \\begin{aligned}\n m(R,v)&=\\int H\\,\\pi_v(dH\\mid R),\\\\\n \\bm\\Sigma_H(R,v)&=\\int \\vect(H-m)\\vect(H-m)^{\\mathsf H}\n                       \\pi_v(dH\\mid R).\n \\end{aligned}\n \\label{eq:conditional-channel-integrals}\n\\end{equation}\nWe denote the approximations to $m(R_k,v)$ and $\\tr\\bm\\Sigma_H(R_k,v)/D$ by\n$\\mu_k$ and $t_k$, respectively."
+  },
+  {
+    "id": 59,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 106,
+    "text": "\\subsubsection{Activity Detection}\n\\label{sec:activity-detection}"
+  },
+  {
+    "id": 60,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 109,
+    "text": "Activity detection compares the hypotheses $R_k=W_k$ and $R_k=H_k+W_k$.\nMarginalizing the channel under the active hypothesis yields the likelihood\n$q_{1,v}$, whereas $q_{0,v}$ is the Gaussian noise density under the\ninactive hypothesis:\n\\begin{equation}\n \\begin{aligned}\n q_{1,v}(R)&=\\int\\CN(\\vect(R);\\vect(H),v\\I_D)q_{\\rm tr}(dH),\\\\\n q_{0,v}(R)&=\\CN(\\vect(R);\\mathbf0,v\\I_D).\n \\end{aligned}\n \\label{eq:query-densities}\n\\end{equation}\nWith prior activity probability $\\rho$, Bayes' rule gives\n\\begin{equation}\n p^\\star(R,v)=\\frac{\\rho q_{1,v}(R)}\n {(1-\\rho)q_{0,v}(R)+\\rho q_{1,v}(R)}.\n \\label{eq:local-activity}\n\\end{equation}\nLet $p_k$ denote the approximation to $p^\\star(R_k,v)$ used in the joint\nestimate below."
+  },
+  {
+    "id": 61,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 129,
+    "text": "\\subsubsection{Joint Estimation and Extrinsic Message}\n\\label{sec:joint-extrinsic}"
+  },
+  {
+    "id": 62,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 132,
+    "text": "Under the two activity hypotheses, $X_k$ is either zero or equal to $H_k$.\nApproximating the channel posterior under the active hypothesis by a Gaussian with mean $\\mu_k$\nand covariance $t_k\\I_D$ gives the Bernoulli--Gaussian approximation\n\\cite[Secs.~III-C--III-D]{liu2018}, \\cite[Sec.~III-B]{cai2026}\n\\begin{equation}\n \\begin{aligned}\n \\widetilde q_k(dX_k)&=(1-p_k)\\delta_0(dX_k)\\\\\n &\\quad+p_k\\CN(\\vect(X_k);\\vect(\\mu_k),t_k\\I_D)\\,dX_k,\\\\\n \\widehat X_k&=p_k\\mu_k.\n \\end{aligned}\n \\label{eq:mixture}\n\\end{equation}\nHere $\\delta_0$ denotes the probability measure concentrated at the zero tensor."
+  },
+  {
+    "id": 63,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 146,
+    "text": "To compute the posterior covariance across antennas, we rearrange $\\mu_k$ into\n$\\mathbf U_k\\in\\mathbb C^{M\\times N^2}$, with one row for each antenna.\nAveraging over the $N^2$ channel entries per antenna gives\n\\begin{equation}\n \\mathbf C_{X,k}=p_kt_k\\I_M+\n \\frac{p_k(1-p_k)}{N^2}\\mathbf U_k\\mathbf U_k^{\\mathsf H}.\n \\label{eq:joint-spatial-covariance}\n\\end{equation}"
+  },
+  {
+    "id": 64,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 155,
+    "text": "The scalar posterior variance is then obtained by averaging its trace over\ndevices and antennas:\n\\begin{equation}\n \\begin{aligned}\n \\overline t_X&=\\frac{1}{KM}\\sum_k\\tr\\mathbf C_{X,k}\\\\\n &=\\frac1K\\sum_k\\left[\n p_kt_k+p_k(1-p_k)\\frac{\\norm{\\mu_k}_F^2}{D}\\right].\n \\end{aligned}\n \\label{eq:joint-average-variance}\n\\end{equation}"
+  },
+  {
+    "id": 65,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 166,
+    "text": "To form the extrinsic message, we use a Gaussian approximation with mean\n$\\widehat X_k$ and common variance $\\overline t_X$.\nLet $b=\\overline t_X/v$.\nDividing this approximation by the incoming Gaussian message, as in\n\\eqref{eq:linear-extrinsic}, gives\n\\begin{equation}\n \\gamma_{\\rm out}=\\frac{vb}{1-b},\\qquad\n X_{k,\\rm out}=\\frac{\\widehat X_k-bR_k}{1-b}.\n \\label{eq:nonlinear-extrinsic}\n\\end{equation}"
+  },
+  {
+    "id": 66,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 177,
+    "text": "For $0<b<1$, this message has a finite, positive variance.\nIts means are collected into $\\mathbf X^{\\rm pri}$, and $\\gamma_{\\rm out}$\nsupplies the input variance for the next linear estimation step."
+  },
+  {
+    "id": 67,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 181,
+    "text": "Section~\\ref{sec:learning} describes learned estimators for the channel\nmean, variance, and activity probability."
+  },
+  {
+    "id": 68,
+    "file": "sections/04_generative_priors.tex",
+    "line": 1,
+    "text": "\\section{Learning Channel Denoising and Activity Detection}\n\\label{sec:learning}"
+  },
+  {
+    "id": 69,
+    "file": "sections/04_generative_priors.tex",
+    "line": 4,
+    "text": "We learn a channel denoiser using the score-function representation of\n\\eqref{eq:conditional-channel-integrals} \\cite[Sec.~IV-A]{cai2026}, and\nlearn the density ratio required for \\eqref{eq:local-activity}."
+  },
+  {
+    "id": 70,
+    "file": "sections/04_generative_priors.tex",
+    "line": 8,
+    "text": "\\subsection{Bridging Score Function and MMSE Denoising}\n\\label{sec:score-denoising}"
+  },
+  {
+    "id": 71,
+    "file": "sections/04_generative_priors.tex",
+    "line": 11,
+    "text": "Consider the channel observation under the active hypothesis in\n\\eqref{eq:pseudo-awgn}.\nFor a complex-valued channel sample $H\\sim q_{\\rm tr}$, we stack the\nreal and imaginary parts of $\\vect(H)$ in $\\mathbf h_{\\mathbb\nR}\\in\\mathbb R^{2D}$.\nTo allow for correlated errors, we consider a proper complex Gaussian\nperturbation independent of $H$, with covariance $\\mathbf C\\succ0$.\nThe real observation is\n\\begin{equation}\n \\begin{gathered}\n \\mathbf u=\\mathbf h_{\\mathbb R}+\\bm\\Sigma^{1/2}\\bm\\epsilon,\n \\qquad \\bm\\epsilon\\sim\\mathcal N(\\mathbf0,\\I_{2D}),\\\\\n \\bm\\Sigma=\\frac12\n \\begin{bmatrix}\\Re \\mathbf C&-\\Im \\mathbf C\\\\\\Im \\mathbf C&\\Re \\mathbf C\\end{bmatrix}.\n \\end{gathered}\n \\label{eq:colored-query}\n\\end{equation}"
+  },
+  {
+    "id": 72,
+    "file": "sections/04_generative_priors.tex",
+    "line": 29,
+    "text": "At fixed $\\mathbf C$, let $q_{\\bm\\Sigma}^{\\mathbb R}$ denote the density of\n$\\mathbf u$.\nThe conditional mean is given by Tweedie's formula\n\\cite{efron2011,dytso2023}\n\\begin{equation}\n \\mathbf m_{\\mathbb R}(\\mathbf u,\\mathbf C)\n =\\mathbf u+\\bm\\Sigma\\nabla_{\\mathbf u}\n       \\log q_{\\bm\\Sigma}^{\\mathbb R}(\\mathbf u).\n \\label{eq:tweedie-mean}\n\\end{equation}"
+  },
+  {
+    "id": 73,
+    "file": "sections/04_generative_priors.tex",
+    "line": 40,
+    "text": "The gradient $\\nabla_{\\mathbf u}\\log q_{\\bm\\Sigma}^{\\mathbb R}$ is the\nfirst-order score function \\cite{hyvarinen2005}.\nFor $\\mathbf C=v\\I_D$, \\eqref{eq:tweedie-mean} gives the real representation of\nthe conditional mean in \\eqref{eq:conditional-channel-integrals}."
+  },
+  {
+    "id": 74,
+    "file": "sections/04_generative_priors.tex",
+    "line": 45,
+    "text": "The conditional covariance $\\mathbf P_{\\mathbb\nR}=\\operatorname{Cov}(\\mathbf h_{\\mathbb R} \\mid\\mathbf u,\\mathbf C)$ is\nsimilarly related to the second-order score \\cite{dytso2023},\n\\cite[Sec.~IV-A]{cai2026}:\n\\begin{equation}\n \\mathbf P_{\\mathbb R}\n =\\bm\\Sigma+\\bm\\Sigma\n   \\nabla_{\\mathbf u}^2\\log q_{\\bm\\Sigma}^{\\mathbb R}(\\mathbf u)\n   \\bm\\Sigma.\n \\label{eq:tweedie-covariance}\n\\end{equation}\nHere the second-order score is the Hessian of the log density."
+  },
+  {
+    "id": 75,
+    "file": "sections/04_generative_priors.tex",
+    "line": 58,
+    "text": "\\subsection{First-Order Score Matching}\n\\label{sec:channel-learning}"
+  },
+  {
+    "id": 76,
+    "file": "sections/04_generative_priors.tex",
+    "line": 61,
+    "text": "Let $S_\\theta(\\mathbf u,\\mathbf C)$ approximate the first-order score, with\ntrainable parameters $\\theta$.\nThe score of $q_{\\bm\\Sigma}^{\\mathbb R}$ is unknown, whereas the\nGaussian perturbation in \\eqref{eq:colored-query} has conditional\nscore $-\\bm\\Sigma^{-1}(\\mathbf u-\\mathbf h_{\\mathbb R})$.\nDenoising score matching \\cite{vincent2011} therefore uses\n\\begin{equation}\n \\mathcal L_{\\rm DSM}(\\theta)=\n \\E\\left[\\frac{1}{2D}\n \\norm{\\bm\\Sigma^{1/2}\n (S_\\theta(\\mathbf u,\\mathbf C)\n +\\bm\\Sigma^{-1}(\\mathbf u-\\mathbf h_{\\mathbb R}))}^2\\right].\n \\label{eq:denoising-score-objective}\n\\end{equation}\nFor each fixed $\\mathbf C$, this differs from score matching weighted by $\\bm\\Sigma$ by a term independent of $\\theta$."
+  },
+  {
+    "id": 77,
+    "file": "sections/04_generative_priors.tex",
+    "line": 77,
+    "text": "To obtain the channel estimate directly, we parameterize the score as\n$S_\\theta=\\bm\\Sigma^{-1}(f_\\theta-\\mathbf u)$, where $f_\\theta(\\mathbf\nu,\\mathbf C)$ is a denoiser.\nSubstituting this relation into \\eqref{eq:denoising-score-objective}\ngives the training loss\n\\begin{equation}\n \\mathcal L_{\\rm ch}(\\theta)=\n \\E\\left[\\frac{1}{2D}\n \\norm{\\bm\\Sigma^{-1/2}\n       (f_\\theta(\\mathbf u,\\mathbf C)-\\mathbf h_{\\mathbb R})}^2\\right].\n \\label{eq:first-loss}\n\\end{equation}"
+  },
+  {
+    "id": 78,
+    "file": "sections/04_generative_priors.tex",
+    "line": 90,
+    "text": "The expectation is taken over the clean channels, perturbation\ncovariances, and Gaussian noise.\nFor each fixed $\\mathbf C$, the conditional mean $\\mathbf m_{\\mathbb R}(\\mathbf\nu,\\mathbf C)$ minimizes this loss over all estimators of $\\mathbf h_{\\mathbb R}$ from $\\mathbf u$."
+  },
+  {
+    "id": 79,
+    "file": "sections/04_generative_priors.tex",
+    "line": 95,
+    "text": "During message passing, the denoiser receives observations with\ndifferent noise variances.\nWe therefore train over a range of perturbation variances, as in\n\\cite[Sec.~IV-B]{cai2026}.\nThe input errors in the finite-dimensional multi-frame model can also be\ncorrelated.\nTo account for this correlation, we corrupt clean channel samples with\ncolored Gaussian noise of covariance $\\mathbf C=v(\\mathbf R_{\\rm a}\\otimes\\I_N\\otimes\n\\mathbf R_{\\rm c})$ in antenna--output--input order and condition the network on\n$\\mathbf C$ \\cite[Sec.~III-B]{shastri2022}.\nThe covariance factors and the sampling distribution of $v$ are specified in\nSection~\\ref{sec:training-settings}."
+  },
+  {
+    "id": 80,
+    "file": "sections/04_generative_priors.tex",
+    "line": 108,
+    "text": "Reshaping the real and imaginary outputs of $f_\\theta$ defines the\ncomplex-valued denoiser $F_\\theta(R,\\mathbf C)$.\nFor the input message in \\eqref{eq:pseudo-awgn}, we evaluate\n$F_\\theta$ at $\\mathbf C=v\\I_D$.\nThe network architecture and preconditioning are given in\nSection~\\ref{sec:network-settings}."
+  },
+  {
+    "id": 81,
+    "file": "sections/04_generative_priors.tex",
+    "line": 115,
+    "text": "\\subsection{Variance from Conditional-Mean Derivatives}\n\\label{sec:conditional-error}"
+  },
+  {
+    "id": 82,
+    "file": "sections/04_generative_priors.tex",
+    "line": 118,
+    "text": "Differentiating \\eqref{eq:tweedie-mean} with respect to $\\mathbf u$ at fixed\n$\\mathbf C$ gives the Jacobian $\\mathbf J_m=\\partial\\mathbf\nm_{\\mathbb R}/\\partial\\mathbf u =\\I_{2D}+\\bm\\Sigma\\nabla_{\\mathbf u}^2 \\log\nq_{\\bm\\Sigma}^{\\mathbb R}(\\mathbf u)$.\nRight-multiplying by $\\bm\\Sigma$ and using \\eqref{eq:tweedie-covariance}, we\nobtain \\cite[Prop.~1]{dytso2023}\n\\begin{equation}\n \\mathbf P_{\\mathbb R}=\\mathbf J_m\\bm\\Sigma,\\qquad\n \\tau^\\star=\\frac1D\\tr(\\mathbf J_m\\bm\\Sigma).\n \\label{eq:mean-derivative-variance}\n\\end{equation}"
+  },
+  {
+    "id": 83,
+    "file": "sections/04_generative_priors.tex",
+    "line": 130,
+    "text": "Here $\\tau^\\star$ is the average conditional variance per complex coordinate.\nAt $\\mathbf C=v\\I_D$, this reduces to $\\tau^\\star=v\\operatorname{div}\\mathbf\nm_{\\mathbb R}/(2D)$."
+  },
+  {
+    "id": 84,
+    "file": "sections/04_generative_priors.tex",
+    "line": 134,
+    "text": "We approximate the derivatives by finite differences and estimate the\ntrace by Monte Carlo averaging \\cite{metzler2016}, with $f_\\theta$ in\nplace of the conditional mean.\nLet $\\mathbf z_\\ell$ be independent random sign vectors with $\\E[\\mathbf\nz_\\ell\\mathbf z_\\ell^{\\mathsf T}]=\\I_{2D}$, and define $\\mathbf\nw_\\ell=\\bm\\Sigma^{1/2}\\mathbf z_\\ell$.\nUsing $L_z$ random directions and a finite-difference step\n$\\delta_{\\rm FD}>0$, the resulting estimate is\n\\begin{equation}\n \\begin{aligned}\n \\Delta_\\ell f_\\theta\n &=f_\\theta(\\mathbf u+\\delta_{\\rm FD}\\mathbf w_\\ell,\\mathbf C)\n   -f_\\theta(\\mathbf u-\\delta_{\\rm FD}\\mathbf w_\\ell,\\mathbf C),\\\\\n \\widehat\\tau_\\theta(R,\\mathbf C)\n &=\\frac{1}{2\\delta_{\\rm FD} D L_z}\\sum_{\\ell=1}^{L_z}\n       \\mathbf w_\\ell^{\\mathsf T}\\Delta_\\ell f_\\theta.\n \\end{aligned}\n \\label{eq:derivative-trace}\n\\end{equation}"
+  },
+  {
+    "id": 85,
+    "file": "sections/04_generative_priors.tex",
+    "line": 154,
+    "text": "The finite-difference settings are given in Section~\\ref{sec:receiver-settings}."
+  },
+  {
+    "id": 86,
+    "file": "sections/04_generative_priors.tex",
+    "line": 156,
+    "text": "\\subsection{Activity Detection via Density Ratio Estimation}\n\\label{sec:density-ratio}"
+  },
+  {
+    "id": 87,
+    "file": "sections/04_generative_priors.tex",
+    "line": 159,
+    "text": "Taking the log odds of \\eqref{eq:local-activity} gives\n\\begin{equation}\n \\log\\frac{p^\\star(R,v)}{1-p^\\star(R,v)}\n =\\log\\frac{\\rho}{1-\\rho}\n  +\\log\\frac{q_{1,v}(R)}{q_{0,v}(R)}.\n \\label{eq:activity-log-odds}\n\\end{equation}\nThe inactive likelihood $q_{0,v}$ is known, whereas $q_{1,v}$ involves the\nchannel integral in \\eqref{eq:query-densities}.\nOnly their ratio is needed in \\eqref{eq:activity-log-odds}.\nWe learn this density ratio through binary classification using samples from\nthe full channel prior \\cite{menon2016}."
+  },
+  {
+    "id": 88,
+    "file": "sections/04_generative_priors.tex",
+    "line": 172,
+    "text": "The training data contain two classes with equal prior probability,\n$\\Pr(a=1)=\\pi_{\\rm tr}=1/2$, where $a\\in\\{0,1\\}$.\nFor $a=1$, the observation is $R=H+W$ with $H\\sim q_{\\rm tr}$; for $a=0$, it\nis $R=W$.\nThe noise satisfies $\\vect(W)\\sim\\CN(\\mathbf0,v\\I_D)$ independently of $H$,\nand both classes use the same sampling distribution of $v$.\nThe classifier has trainable parameters $\\phi$. Its logit is learned by\nminimizing the binary cross-entropy loss\n\\begin{equation}\n \\begin{gathered}\n \\mathcal L_{\\rm act}(\\phi)=\n \\E[\\log(1+e^{z_\\phi})-a z_\\phi],\\\\\n z_\\phi=z_\\phi(R,v,F_\\theta(R,v\\I_D)).\n \\end{gathered}\n \\label{eq:classifier-loss}\n\\end{equation}"
+  },
+  {
+    "id": 89,
+    "file": "sections/04_generative_priors.tex",
+    "line": 190,
+    "text": "The minimizer of the expected loss over all functions of $(R,v)$ is\nthe posterior log odds under the training distribution:\n\\begin{equation}\n z^\\star(R,v)=\\logit\\pi_{\\rm tr}\n       +\\log\\frac{q_{1,v}(R)}{q_{0,v}(R)}.\n \\label{eq:ideal-logit}\n\\end{equation}"
+  },
+  {
+    "id": 90,
+    "file": "sections/04_generative_priors.tex",
+    "line": 198,
+    "text": "Subtracting the training prior log odds therefore estimates the log density\nratio \\cite[Sec.~4.2]{menon2016}.\nWith $F_k=F_\\theta(R_k,v\\I_D)$, inserting this estimate into\n\\eqref{eq:activity-log-odds} gives the activity probability\n\\begin{equation}\n \\begin{gathered}\n \\ell_k=z_\\phi(R_k,v,F_k)-\\logit\\pi_{\\rm tr},\\\\\n p_k=\\sigmoid(\\logit\\rho+\\ell_k),\n \\end{gathered}\n \\label{eq:activity-probability}\n\\end{equation}\nwhere $\\logit a=\\log[a/(1-a)]$ and $\\sigmoid b=(1+e^{-b})^{-1}$.\nThe activity prior $\\rho$ enters through Bayes' rule, separately\nfrom the learned density ratio."
+  },
+  {
+    "id": 91,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 1,
+    "text": "\\section{GP-MP-CCD Algorithm}\n\\label{sec:overall}"
+  },
+  {
+    "id": 92,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 4,
+    "text": "\\subsection{Overall Algorithm}\n\\label{sec:schedule}"
+  },
+  {
+    "id": 93,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 7,
+    "text": "GP-MP-CCD combines the multi-frame linear estimation (MFLE) in\nSection~\\ref{sec:linear-estimation} with generative-prior-aided joint\ndenoising (GPJD) using the estimators in Section~\\ref{sec:learning}.\nFig.~\\ref{fig:learned-receiver} shows their message exchange."
+  },
+  {
+    "id": 94,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 12,
+    "text": "\\begin{figure*}[!t]\n\\centering\n\\includegraphics[width=0.92\\textwidth]{learned_receiver.pdf}\n\\caption{Learned updates in GPJD and Gaussian extrinsic message exchange\nwith MFLE. The denoiser uses colored-noise training and is evaluated at\n$\\mathbf C=v\\I_D$.\nThe denoiser illustration is adapted from \\cite[Fig.~3]{cai2026}.}\n\\label{fig:learned-receiver}\n\\end{figure*}"
+  },
+  {
+    "id": 95,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 22,
+    "text": "For a Gaussian input $(R_k,v)$, the denoiser gives\n$F_k=F_\\theta(R_k,v\\I_D)$, and the classifier gives $p_k$ in\n\\eqref{eq:activity-probability}. With\n$\\widehat\\tau_k=\\widehat\\tau_\\theta(R_k,v\\I_D)$ from\n\\eqref{eq:derivative-trace}, we use the common variance estimate\n\\begin{equation}\n \\tau_{\\rm raw}=\\frac1K\\sum_{k=1}^K\\widehat\\tau_k,\\qquad\n \\tau^{\\rm post}=\\max\\{\\tau_{\\rm raw},\\tau_{\\min}\\}.\n \\label{eq:pooled-variance}\n\\end{equation}\nHere $\\tau_{\\min}>0$ is a numerical floor."
+  },
+  {
+    "id": 96,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 34,
+    "text": "We incorporate the estimated channel mean and variance into message passing through\na site approximation to the channel prior \\cite[Sec.~2.1]{vehtari2020},\nof the form $\\CN(\\vect(H_k);\\vect(E_k),c_k\\I_D)$.\nDividing the Gaussian posterior approximation with mean $F_k$ and variance\n$\\tau^{\\rm post}$ by the input likelihood gives\n\\begin{equation}\n c_k=((\\tau^{\\rm post})^{-1}-v^{-1})^{-1},\\qquad\n E_k=c_k\\left(\\frac{F_k}{\\tau^{\\rm post}}-\\frac{R_k}{v}\\right).\n \\label{eq:site-update}\n\\end{equation}"
+  },
+  {
+    "id": 97,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 45,
+    "text": "Multiplying this site by the current Gaussian likelihood gives the\nconditional channel mean and variance\n\\begin{equation}\n t_k=\\frac{c_kv}{c_k+v},\\qquad\n \\mu_k=\\frac{c_kR_k+vE_k}{c_k+v}.\n \\label{eq:conditional-moments}\n\\end{equation}"
+  },
+  {
+    "id": 98,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 53,
+    "text": "Algorithm~1 combines these estimates with $p_k$ and returns Gaussian\nextrinsic messages to MFLE. Estimated phases are refined as in\nAppendix~\\ref{app:phase-refinement}. After normalization,\nwe initialize $\\mathbf X^{{\\rm pri},(0)}=\\mathbf0$,\n$\\gamma^{(0)}=\\rho\\widehat P_H$, $E_k=0$, $c_k=1$, and\n$\\kappa^{(1)}=1$, where $\\widehat P_H$ is the average\nof $\\norm{H}_F^2/D$ over the training channels."
+  },
+  {
+    "id": 99,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 61,
+    "text": "\\begin{figure}[!t]\n\\centering\n\\begin{minipage}{0.96\\linewidth}\n\\hrule\\vspace{5pt}\n\\textbf{Algorithm 1: GP-MP-CCD for JADCE}\\par\n\\textbf{Input:} received pilots, pilot symbols $\\{P_{qkn}\\}$, available phases,\nactivity prior $\\rho$, and trained $f_\\theta,z_\\phi$.\\par\n\\textbf{Output:} channel estimates, activity probabilities, and decisions.\\par\n\\begin{enumerate}[leftmargin=1.8em,itemsep=2pt,topsep=4pt]\n \\item Construct $\\widehat{\\mathbf A}$ and estimate $\\widehat\\sigma^2$; initialize as above\n and normalize as in Section~\\ref{sec:frontend}. Compute the thin SVD and\n draw one random sign vector per device, reused across iterations.\n \\item \\textbf{for} $i=1,\\ldots,I_{\\max}$ \\textbf{do}\n \\item \\textbf{MFLE:} Compute \\eqref{eq:linear-mean}--\\eqref{eq:linear-extrinsic}\n using \\eqref{eq:linear-fraction}; apply \\eqref{eq:input-damping}\n for $i\\geq2$, and set\n $v^{(i)}=\\kappa^{(i)}\\bar v^{(i)}$.\n \\item \\textbf{GPJD:} If $v$ lies in the training interval,\n evaluate $F_k$, \\eqref{eq:derivative-trace}, and\n \\eqref{eq:activity-probability}. Apply \\eqref{eq:pooled-variance}\n and update the sites by \\eqref{eq:site-update} if $\\tau^{\\rm post}<v$;\n otherwise retain them.\n \\item Otherwise, retain the sites and obtain $p_k$ from\n \\eqref{eq:gaussian-evidence}.\n \\item Compute $\\mu_k,t_k$, $\\widehat X_k$, and\n $\\mathbf C_{X,k}$ by \\eqref{eq:conditional-moments},\n \\eqref{eq:mixture}, and \\eqref{eq:joint-spatial-covariance}.\n \\item Update $\\kappa^{(i+1)}$ by \\eqref{eq:query-variance-update}.\n Compute the extrinsic message in \\eqref{eq:nonlinear-extrinsic} using $v^{(i)}$, with clipping\n and output damping as in Section~\\ref{sec:frontend}.\n \\item Check the conditions in Section~\\ref{sec:stopping-criteria}\n and update the stopping history; \\textbf{break} if they hold.\n \\item[]\\textbf{end for}\n \\item Return $s\\widehat X_k$, $s\\mu_k$, $p_k$, and\n $\\widehat\\alpha_k=\\mathbf1\\{p_k\\geq1/2\\}$.\n\\end{enumerate}\n\\vspace{3pt}\\hrule\n\\end{minipage}\n\\end{figure}"
+  },
+  {
+    "id": 100,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 101,
+    "text": "\\subsection{Parameter Estimation and Numerical Implementation}\n\\label{sec:frontend}\n\\label{sec:variance-update}\n\\label{sec:damping}"
+  },
+  {
+    "id": 101,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 106,
+    "text": "The procedure in Appendix~\\ref{app:frontend} estimates the phases used to form\n$\\widehat{\\mathbf A}$, which is fixed between phase refinements.\nFor noise-variance estimation, let\n$\\mathbf y_{qr}=(Y_{q0r},\\ldots,Y_{q,M-1,r})^{\\mathsf T}$ and\n$N_{\\rm s}=QN>M\\geq2$. The spatial sample covariance and noise-variance estimate are\n\\begin{equation}\n \\widehat{\\mathbf R}_y=\\frac1{N_{\\rm s}}\\sum_{q,r}\n \\mathbf y_{qr}\\mathbf y_{qr}^{\\mathsf H},\\qquad\n \\widehat\\sigma^2=\\frac{\\sum_{i=\\widehat r_{\\rm s}+1}^{M}\\lambda_i}\n {M-\\widehat r_{\\rm s}}.\n \\label{eq:noise-estimation}\n\\end{equation}\nHere $\\lambda_1\\geq\\cdots\\geq\\lambda_M$ are the covariance eigenvalues,\nand $\\widehat r_{\\rm s}$ is selected by the Wax--Kailath minimum\ndescription length (MDL) criterion \\cite{wax1985,nadakuditi2008}.\nThis estimator assumes a low-rank signal covariance and spatially white\nnoise. We keep the estimate fixed during MP."
+  },
+  {
+    "id": 102,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 124,
+    "text": "Minimizing the expected Gaussian negative log likelihood over the input\nvariance $v$, with the current approximate posterior \\eqref{eq:mixture}\nheld fixed \\cite[Sec.~III-A]{vila2013}, gives\n\\begin{equation}\n v_{\\rm tar}=\\frac{1}{KD}\\sum_{k=1}^K\n \\norm{R_k-\\widehat X_k}_F^2+\\overline t_X.\n \\label{eq:query-variance-target}\n\\end{equation}"
+  },
+  {
+    "id": 103,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 133,
+    "text": "At iteration $i$, we use $v^{(i)}=\\kappa^{(i)}\\bar v^{(i)}$, where $\\bar\nv^{(i)}$ denotes the damped MFLE variance.\nWith damping factor $\\eta\\in(0,1]$, the updated scaling factor is\n\\begin{equation}\n \\kappa^{(i+1)}=(1-\\eta)\\kappa^{(i)}\n       +\\eta\\frac{v_{\\rm tar}^{(i)}}{\\bar v^{(i)}}.\n \\label{eq:query-variance-update}\n\\end{equation}"
+  },
+  {
+    "id": 104,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 142,
+    "text": "For normalization, we divide $(H_k,X_k,\\mathbf Y,\\mathbf W)$ by the root mean square $s$ of the training-channel entries and the noise variance by $s^2$, retaining their\nsymbols and leaving the pilot matrix unchanged.\nFor $i\\geq2$, the MFLE output is damped as \\cite[Sec.~V-B1]{cai2026}\n\\begin{equation}\n \\begin{aligned}\n R_k^{(i)}&=(1-\\eta)R_k^{(i-1)}+\\eta R_{{\\rm L},k}^{(i)},\\\\\n \\bar v^{(i)}&=(1-\\eta)\\bar v^{(i-1)}+\\eta v_{\\rm L}^{(i)}.\n \\end{aligned}\n \\label{eq:input-damping}\n\\end{equation}"
+  },
+  {
+    "id": 105,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 154,
+    "text": "For numerical evaluation of \\eqref{eq:nonlinear-extrinsic}, we replace\n$b=\\overline t_X/v$ by $b=\\clip(\\overline t_X/v,\\varepsilon,1-\\varepsilon)$,\nwhere $0<\\varepsilon<1/2$.\nHere $\\clip(x,a,b)=\\min\\{b,\\max\\{a,x\\}\\}$.\nThe feedback is then damped with the same damping factor:\n\\begin{equation}\n \\begin{aligned}\n X_k^{{\\rm pri},(i)}\n &=(1-\\eta)X_k^{{\\rm pri},(i-1)}+\\eta X_{k,\\rm out}^{(i)},\\\\\n \\gamma^{(i)}\n &=(1-\\eta)\\gamma^{(i-1)}+\\eta\\gamma_{\\rm out}^{(i)}.\n \\end{aligned}\n \\label{eq:output-damping}\n\\end{equation}"
+  },
+  {
+    "id": 106,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 169,
+    "text": "The first input and feedback messages are used without damping.\nStopping checks and numerical settings are given in\nSection~\\ref{sec:simulation-settings}."
+  },
+  {
+    "id": 107,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 173,
+    "text": "\\subsection{Computational Complexity Analysis}\n\\label{sec:complexity}"
+  },
+  {
+    "id": 108,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 176,
+    "text": "With precomputed chirp factors, $L$ AFDM frames require at most\n$LC_{\\rm FFT}(N)+2LN$ complex multiplications\n\\cite[eq.~(16)]{bemani2022}, where $C_{\\rm FFT}(n)$ is the cost of an\n$n$-point FFT or inverse FFT. For the same $LN$ useful symbols,\nrectangular-pulse OTFS without transmit windowing requires\n$NC_{\\rm FFT}(L)$ after cancelling the consecutive DFT and inverse DFT operations\n\\cite{zou2021otfs}.\nThe relative modulation costs depend on $N$, $L$, and the FFT implementation.\nThe following costs concern JADCE after waveform demodulation."
+  },
+  {
+    "id": 109,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 186,
+    "text": "For fixed phases and $Q\\leq KN$, the thin singular value decomposition\n(SVD), $\\widehat{\\mathbf A}=\\mathbf U\\diag(s_1,\\ldots,s_Q)\\mathbf V^{\\mathsf H}$,\nis reused across iterations, where $s_a$ are the singular values.\nThe scalar updates in\n\\eqref{eq:linear-variance}--\\eqref{eq:linear-extrinsic} can be written as\n\\begin{equation}\n f_{\\rm L}=\\frac{1}{KN}\\sum_{a=1}^{Q}\n \\frac{\\gamma s_a^2}{\\widehat\\sigma^2+\\gamma s_a^2},\\qquad\n t_{\\rm L}=\\gamma(1-f_{\\rm L}),\\qquad\n v_{\\rm L}=\\frac{t_{\\rm L}}{f_{\\rm L}}.\n \\label{eq:linear-fraction}\n\\end{equation}"
+  },
+  {
+    "id": 110,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 199,
+    "text": "Here $\\mathbf R_{\\rm L}=\\mathbf X^{\\rm pri} +(\\mathbf X_{\\rm L}-\\mathbf\nX^{\\rm pri})/f_{\\rm L}$.\nSVD and noise-variance estimation cost $O(KNQ^2)$ and $O(QNM^2+M^3)$\nper block, respectively. Let $C_{\\rm phase}$ denote the phase-search,\nrefinement, and gain-estimation cost in Appendix~\\ref{app:frontend}.\nPer iteration, MFLE transformations cost $O(QKMN^2)$, spatial covariance\noperations cost $O(KM^2N^2)$, and matrix factorizations cost $O(M^3)$.\nLet $C_\\theta,C_\\phi$ denote the per-device denoiser and classifier costs.\nThe $1+2L_z$ denoiser evaluations and one classifier evaluation within the\ntraining interval give the per-iteration complexity\n\\begin{equation}\n \\begin{aligned}\n C_{\\rm iter}=O\\bigl(&QKMN^2+KM^2N^2+M^3\\\\\n &+K[(1+2L_z)C_\\theta+C_\\phi]\\bigr).\n \\end{aligned}\n \\label{eq:iteration-complexity}\n\\end{equation}"
+  },
+  {
+    "id": 111,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 218,
+    "text": "For $I$ iterations, the total online complexity is\n$O(C_{\\rm phase}+QNM^2+M^3+KNQ^2+I C_{\\rm iter})$."
+  },
+  {
+    "id": 112,
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 221,
+    "text": "Here $C_{\\rm phase}=0$ for known phases; each phase refinement also\nrequires a new $O(KNQ^2)$ SVD. With shared network parameters, the memory requirement\nis $O(QKN+KMN^2+KM^2)$ for the pilot matrix and SVD factors, channel messages, and spatial\ncovariances, excluding parameters and network activations."
+  },
+  {
+    "id": 113,
+    "file": "sections/06_simulation_results.tex",
+    "line": 1,
+    "text": "\\section{Simulation Results}\n\\label{sec:simulations}"
+  },
+  {
+    "id": 114,
+    "file": "sections/06_simulation_results.tex",
+    "line": 4,
+    "text": "\\subsection{Simulation Settings}\n\\label{sec:simulation-settings}"
+  },
+  {
+    "id": 115,
+    "file": "sections/06_simulation_results.tex",
+    "line": 7,
+    "text": "Table~\\ref{tab:simulation-parameters} gives the default settings.\nDevices are uniformly distributed over the beam footprint, with delays, Doppler shifts,\nand array responses determined by the geometry. Large-scale effects are\ncompensated. We use the NTN-TDL-D profile \\cite{shen2025}, with a delay\nspread drawn uniformly from $[30,50]$~ns, a line-of-sight gain of fixed\namplitude and uniform phase, and proper complex Gaussian diffuse gains.\nPath parameters remain fixed per block."
+  },
+  {
+    "id": 116,
+    "file": "sections/06_simulation_results.tex",
+    "line": 15,
+    "text": "For $Q\\leq KN$, select distinct DFT rows\n$r_q\\in\\{0,\\ldots,KN-1\\}$, a column permutation\n$\\{c_{kn}\\}_{k,n}$ of the same set, and independent phases\n$\\phi_{kn}\\sim\\mathcal U[0,2\\pi)$. The pilots are\n\\begin{equation}\n \\begin{gathered}\n P_{qkn}=\\sqrt{\\frac{E_p}{N}}\n e^{-\\mathrm j2\\pi r_qc_{kn}/(KN)}e^{\\mathrm j\\phi_{kn}},\\\\\n \\sum_{n=0}^{N-1}|P_{qkn}|^2=E_p.\n \\end{gathered}\n \\label{eq:pilot}\n\\end{equation}\nThe total pilot energy per device is $QE_p$."
+  },
+  {
+    "id": 117,
+    "file": "sections/06_simulation_results.tex",
+    "line": 29,
+    "text": "Independent Bernoulli activity variables with nominal probability $p$ are\nconditioned on at least one active device. The receiver prior uses the\nresulting marginal activity probability $\\rho=p/[1-(1-p)^K]$.\nFor the noiseless received signal $\\mathbf Y_0=\\mathbf A\\mathbf X$, set\n\\begin{equation}\n \\sigma^2=\\frac{\\norm{\\mathbf Y_0}_F^2}{QMN}\n 10^{-\\mathrm{SNR}_{\\rm dB}/10}.\n \\label{eq:snr}\n\\end{equation}"
+  },
+  {
+    "id": 118,
+    "file": "sections/06_simulation_results.tex",
+    "line": 39,
+    "text": "\\begin{table}[!t]\n\\caption{Simulation Parameters}\n\\label{tab:simulation-parameters}\n\\centering\n\\small\n\\begin{tabular}{@{}ll@{}}\n\\toprule\nParameter & Value \\\\\n\\midrule\nCarrier frequency $f_c$ & $2$~GHz \\\\\nSatellite altitude & $600$~km \\\\\nBeam radius & $128$~km \\\\\nMinimum elevation angle & $30^\\circ$ \\\\\nUPA dimensions $M_y\\times M_z$ & $4\\times4$ \\\\\nArray element spacing $d_y,d_z$ & $\\lambda/2$ \\\\\nNumber of chirp subcarriers $N$ & $16$ \\\\\nSubcarrier spacing $\\Delta f$ & $30$~kHz \\\\\nChirp parameters $(c_1,c_2)$ & $(7/32,1/320)$ \\\\\nCPP length $N_{\\rm CPP}$ & $336$ \\\\\nDifferential-delay range & $[0,699]~\\mu$s \\\\\nDoppler-shift range & $[-41,41]$~kHz \\\\\nPower delay profile & NTN-TDL-D \\\\\nDelay spread & $[30,50]$~ns \\\\\nRician factor & $11.707$~dB \\\\\nDefault $(K,Q,p)$ & $(40,16,0.1)$ \\\\\n\\bottomrule\n\\end{tabular}\n\\end{table}"
+  },
+  {
+    "id": 119,
+    "file": "sections/06_simulation_results.tex",
+    "line": 68,
+    "text": "\\subsubsection{Channel Samples and Training}\n\\label{sec:training-settings}\nTraining and validation use $50{,}000$ and $5{,}000$ clean\n$16\\times16\\times16$ channels from disjoint scenes, four per scene before\nmultiplication by $\\alpha_k$.\nThe denoiser uses Adam for $200$ epochs with batch size $64$, initial\nlearning rate $10^{-4}$, and exponential moving average decay $0.999$.\nWe select the model with the lowest validation loss under fixed noise\nrealizations.\nThe white-noise reference uses the same clean channels and number of epochs."
+  },
+  {
+    "id": 120,
+    "file": "sections/06_simulation_results.tex",
+    "line": 78,
+    "text": "We train with proper complex Gaussian noise with covariance\n$\\mathbf C=v(\\mathbf R_{\\rm a}\\otimes\\I_{16}\\otimes \\mathbf R_{\\rm c})$ in\nantenna--output--input order, with $v$ sampled uniformly on a\nlogarithmic scale over $[10^{-3},10^2]$ and independent factors of the form"
+  },
+  {
+    "id": 121,
+    "file": "sections/06_simulation_results.tex",
+    "line": 83,
+    "text": "\\begin{equation}\n \\mathbf R_{\\rm corr}=(1-\\xi_{\\rm corr})\\I_{16}\n   +\\xi_{\\rm corr}\\frac{16\\mathbf Z_{\\rm tr}\\mathbf Z_{\\rm tr}^{\\mathsf H}}{\\tr(\\mathbf Z_{\\rm tr}\\mathbf Z_{\\rm tr}^{\\mathsf H})},\n \\label{eq:simulation-colored-covariance}\n\\end{equation}\nwhere $\\mathbf Z_{\\rm tr}\\in\\mathbb C^{16\\times4}$ has independent $\\CN(0,1)$\nentries and $\\xi_{\\rm corr}$ is uniform on $[0,0.5]$.\nWe then freeze the denoiser and train the classifier from random\ninitialization by \\eqref{eq:classifier-loss}, using batch size $32$,\ninitial learning rate $3\\times10^{-4}$, and $100$ epochs, with model selection based on\nvalidation loss. Classifier training and receiver evaluation use\n$\\mathbf C=v\\I$."
+  },
+  {
+    "id": 122,
+    "file": "sections/06_simulation_results.tex",
+    "line": 97,
+    "text": "\\subsubsection{Network Architectures}\n\\label{sec:network-settings}"
+  },
+  {
+    "id": 123,
+    "file": "sections/06_simulation_results.tex",
+    "line": 100,
+    "text": "The denoiser uses the RefineNet \\cite{lin2017} variant in\n\\cite[Appendix~A]{song2019}, with $2M$ real and imaginary input maps over\n$N\\times N$ DAFT coordinates. Its four stages have $(128,256,256,256)$\nchannels and two residual blocks each, with two $3\\times3$ convolutions,\nconditional instance normalization, and exponential linear unit (ELU)\nactivations per block. Stage~2 halves the resolution; stages~3--4 retain it\nwith dilations $2$ and $4$. Four refinement blocks with\n$(256,256,128,128)$ channels combine the stage outputs and restore the\nresolution; the input and output layers use $3\\times3$ convolutions.\nFor conditioning, $\\log(v)/5$ and flattened real and imaginary entries of\n$\\mathbf R_{\\rm a}-\\I_M$ and $\\mathbf R_{\\rm c}-\\I_N$ pass through two\n$64$-unit fully connected layers with sigmoid-weighted linear unit (SiLU)\nactivations, followed by linear projections to the normalization layers.\nWe extend the scalar preconditioning in \\cite[Sec.~5]{karras2022} to\n\\begin{equation}\n \\begin{aligned}\n f_\\theta(\\mathbf u,\\mathbf C)\n &=\\mathbf K_{\\bm\\Sigma}\\mathbf u\n   +\\mathbf O_{\\bm\\Sigma}g_\\theta\n       (\\mathbf B_{\\bm\\Sigma}\\mathbf u,\\mathbf C),\\\\\n \\mathbf B_{\\bm\\Sigma}\n &=(\\sigma_{\\rm d}^2\\I_{2D}+\\bm\\Sigma)^{-1/2},\\\\\n \\mathbf K_{\\bm\\Sigma}\n &=\\sigma_{\\rm d}^2(\\sigma_{\\rm d}^2\\I_{2D}+\\bm\\Sigma)^{-1},\\\\\n \\mathbf O_{\\bm\\Sigma}\n &=\\sigma_{\\rm d}\\bigl[\n \\bm\\Sigma(\\sigma_{\\rm d}^2\\I_{2D}+\\bm\\Sigma)^{-1}\\bigr]^{1/2}.\n \\end{aligned}\n \\label{eq:mean-preconditioning}\n\\end{equation}"
+  },
+  {
+    "id": 124,
+    "file": "sections/06_simulation_results.tex",
+    "line": 131,
+    "text": "Here $\\sigma_{\\rm d}^2=1/2$ is the nominal variance per real coordinate after\nnormalization, and $g_\\theta$ is the RefineNet described above."
+  },
+  {
+    "id": 125,
+    "file": "sections/06_simulation_results.tex",
+    "line": 134,
+    "text": "The classifier takes $4M$ real and imaginary maps of $R$ and\n$F_\\theta(R,v\\I_D)$, scaled by $\\sqrt{2/(1+v)}$, plus five scalars:\n$\\log(v)/5$, logarithmic transforms of input/output/residual energies\nnormalized by $Dv$, and a sign-preserving logarithmic transform of the\nreal inner product normalized by $Dv$.\nThree stages contain two $3\\times3$ convolutions each, with\n$(64,128,128)$ channels, SiLU, and padding $1$. The first convolution\nof stages~2--3 has stride $2$; all others have stride $1$.\nA $64$-unit fully connected SiLU layer embeds $\\log(v)/5$; its linear\nprojections are added to each stage output. Flattened features and the\nfive scalars pass through fully connected layers of widths $(128,1)$,\nwith SiLU between them, yielding one logit per device."
+  },
+  {
+    "id": 126,
+    "file": "sections/06_simulation_results.tex",
+    "line": 147,
+    "text": "\\subsubsection{Compared Receivers}\n\\label{sec:receiver-settings}\nWe compare GP-MP-CCD with its white-noise-trained baseline GP-MP\nand four sparse-recovery baselines:\nsimultaneous orthogonal matching pursuit (SOMP)\n\\cite{TroppGilbertStrauss2006SOMP}, generalized approximate message\npassing based sparse Bayesian learning (GAMP-SBL)\n\\cite{ZhangFanHaoQuan2023GAMPSBL}, GNN-ASPL \\cite{ding2026}, and off-grid\nSBL \\cite{WeiEtAl2022OffgridSBL}. SOMP, GAMP-SBL, and GNN-ASPL use an\ninteger delay--Doppler dictionary; off-grid SBL additionally estimates\ncontinuous offsets through a first-order linear approximation of the dictionary. With fixed adaptations to multiantenna AFDM, weights, and activity decision rules,\nSOMP selects up to $64$ atoms, GAMP-SBL and off-grid SBL allow\n$1{,}000$ and $120$ iterations, and GNN-ASPL uses $10$ layers."
+  },
+  {
+    "id": 127,
+    "file": "sections/06_simulation_results.tex",
+    "line": 161,
+    "text": "All receivers estimate the noise variance from the observations and use\nknown phases, except GP-MP-CCD-EP (estimated phases), which follows\n\\ifdefined\\FullManuscript\nAppendices~\\ref{app:frontend} and \\ref{app:estimated-phase-protocol}.\n\\else\nAppendix~\\ref{app:frontend}.\n\\fi\nFor known phases, GP-MP and GP-MP-CCD use activity threshold $0.5$\nand the stopping checks in Section~\\ref{sec:stopping-criteria},\nwith $I_{\\min}=60$, $I_{\\max}=600$,\nand relative-change tolerance $5\\times10^{-4}$.\nTheir default damping factors are $0.2$ and $0.4$."
+  },
+  {
+    "id": 128,
+    "file": "sections/06_simulation_results.tex",
+    "line": 174,
+    "text": "GP-MP-CCD uses $L_z=1$, $\\delta_{\\rm FD}=10^{-2}$, and\n$\\tau_{\\min}=10^{-4}$ in \\eqref{eq:derivative-trace}--\\eqref{eq:pooled-variance},\nwith the random sign vectors reused across iterations."
+  },
+  {
+    "id": 129,
+    "file": "sections/06_simulation_results.tex",
+    "line": 179,
+    "text": "Outside the training interval $[v_{\\min},v_{\\max}]=[10^{-3},10^2]$,\nthe retained sites give\n\\begin{equation}\n \\begin{aligned}\n \\ell_k^{\\rm G}&=\\frac{\\norm{R_k}_F^2}{v}\n -\\frac{\\norm{R_k-E_k}_F^2}{c_k+v}\n -D\\log\\left(1+\\frac{c_k}{v}\\right),\\\\\n p_k&=\\sigmoid(\\logit\\rho+\\ell_k^{\\rm G}).\n \\end{aligned}\n \\label{eq:gaussian-evidence}\n\\end{equation}"
+  },
+  {
+    "id": 130,
+    "file": "sections/06_simulation_results.tex",
+    "line": 191,
+    "text": "The SNR, pilot-frame, device-count, activity-probability, and cross-profile\nfigures use $500$ paired scenes per point, including the estimated-phase\nSNR curve. Scenes are reused across conditions.\n\\ifdefined\\FullManuscript\nAppendix~\\ref{app:evaluation-protocol} gives the evaluation protocol.\n\\fi"
+  },
+  {
+    "id": 131,
+    "file": "sections/06_simulation_results.tex",
+    "line": 198,
+    "text": "\\subsubsection{Stopping Criteria}\n\\label{sec:stopping-criteria}"
+  },
+  {
+    "id": 132,
+    "file": "sections/06_simulation_results.tex",
+    "line": 201,
+    "text": "After $I_{\\min}$ iterations, stopping requires stable channel estimates,\ninput variance, and activity probabilities, agreement between the input and target\nvariances, and accepted, stable Gaussian site updates for five\nconsecutive iterations, together with unchanged activity decisions\nfor ten iterations. Otherwise, the last iterate is returned\nat $I_{\\max}$.\n\\ifdefined\\FullManuscript\nThe complete checks and tolerances are given in\nAppendix~\\ref{app:implementation-settings}.\n\\fi"
+  },
+  {
+    "id": 133,
+    "file": "sections/06_simulation_results.tex",
+    "line": 212,
+    "text": "\\subsubsection{Evaluation Metrics}\nFor scene indices $e\\in\\mathcal T$ at a given condition, the\nnormalized mean-squared error (NMSE) is\n\\begin{equation}\n \\mathrm{NMSE}_{\\rm dB}\n =10\\log_{10}\\frac{\\sum_{e\\in\\mathcal T}\\sum_{k=1}^{K}\n \\norm{\\widehat X_{ek}-X_{ek}}_F^2}\n {\\sum_{e\\in\\mathcal T}\\sum_{k=1}^{K}\\norm{X_{ek}}_F^2},\n \\label{eq:simulation-nmse}\n\\end{equation}\nwhere $X_{ek}=\\alpha_{ek}H_{ek}$. Errors on inactive devices are\nincluded. For direct channel denoising, $X$ is replaced by $H$ and\nthe sums run over the individual channel samples. The activity error\nrate (AER) is\n\\begin{equation}\n \\mathrm{AER}=\\frac{N_{\\rm MD}+N_{\\rm FA}}{K|\\mathcal T|},\n \\label{eq:simulation-aer}\n\\end{equation}\nwhere $N_{\\rm MD}$ and $N_{\\rm FA}$ count missed detections and false\nalarms, respectively."
+  },
+  {
+    "id": 134,
+    "file": "sections/06_simulation_results.tex",
+    "line": 233,
+    "text": "\\subsection{Channel Denoising Performance}\n\\label{sec:denoising-performance}"
+  },
+  {
+    "id": 135,
+    "file": "sections/06_simulation_results.tex",
+    "line": 236,
+    "text": "Following \\cite[Sec.~VI-B]{cai2026}, denoising uses $R=H+W$,\n$\\vect(W)\\sim\\CN(\\mathbf0,v\\I)$, with known $v$ and nominal SNR\n$-10\\log_{10}v$. At each of six SNRs from $-20$ to $30$~dB, both\nneural estimators share $2{,}000$ samples from $500$ scenes and the\nsame white-noise realizations."
+  },
+  {
+    "id": 136,
+    "file": "sections/06_simulation_results.tex",
+    "line": 242,
+    "text": "The reference methods are least squares (LS), returning $R$; the Gaussian-prior\nestimate $\\widehat P_H R/(\\widehat P_H+v)$, using the training-channel\npower defined in Section~\\ref{sec:schedule}; and genie-aided conditional MMSE.\nFor the genie-aided reference, we compute the analytic conditional MSE\nof the remaining Gaussian gains given the true path geometry, powers,\nand line-of-sight gain.\nThe four sparse-recovery methods use an identity observation operator\nand known AWGN variance, retaining their receiver settings and GNN\nweights; GAMP-SBL retains its internal noise-variance update."
+  },
+  {
+    "id": 137,
+    "file": "sections/06_simulation_results.tex",
+    "line": 251,
+    "text": "\\begin{figure}[!t]\n\\centering\n\\includegraphics[width=80.01mm]{channel_denoising.pdf}\n\\caption{Channel denoising under AWGN with known variance.\nAWGN and colored refer to the training noise.}\n\\label{fig:cstmp-denoising}\n\\end{figure}"
+  },
+  {
+    "id": 138,
+    "file": "sections/06_simulation_results.tex",
+    "line": 259,
+    "text": "Figure~\\ref{fig:cstmp-denoising} shows that both learned denoisers\nimprove with SNR, whereas the sparse-recovery curves approach an error\nfloor. Colored-noise training further improves denoising at low SNR."
+  },
+  {
+    "id": 139,
+    "file": "sections/06_simulation_results.tex",
+    "line": 263,
+    "text": "\\subsection{Effect of Density Ratio Estimation}\n\\label{sec:activity-evidence}"
+  },
+  {
+    "id": 140,
+    "file": "sections/06_simulation_results.tex",
+    "line": 266,
+    "text": "We replace the learned activity probability in \\eqref{eq:activity-probability}\nby the probability from the Gaussian approximation in \\eqref{eq:gaussian-evidence}, keeping\nall other receiver settings unchanged. Both versions use known phases\nand identical observations. Table~\\ref{tab:activity-evidence} reports AER pooled\nover $354$ paired scenes at each of six SNRs from $-4$ to $6$~dB."
+  },
+  {
+    "id": 141,
+    "file": "sections/06_simulation_results.tex",
+    "line": 272,
+    "text": "\\begin{table}[!t]\n\\caption{AER with Different Activity Probability Estimates}\n\\label{tab:activity-evidence}\n\\centering\n\\small\n\\begin{tabular}{@{}lr@{}}\n\\toprule\nProbability calculation & AER (\\%) \\\\\n\\midrule\nLearned density ratio & $0.134$ \\\\\nAnalytic Gaussian approximation & $36.95$ \\\\\n\\bottomrule\n\\end{tabular}\n\\end{table}"
+  },
+  {
+    "id": 142,
+    "file": "sections/06_simulation_results.tex",
+    "line": 287,
+    "text": "Table~\\ref{tab:activity-evidence} shows substantially lower AER with\nthe learned density ratio, supporting its use for activity detection."
+  },
+  {
+    "id": 143,
+    "file": "sections/06_simulation_results.tex",
+    "line": 290,
+    "text": "\\subsection{JADCE Performance}\n\\label{sec:jadce-performance}"
+  },
+  {
+    "id": 144,
+    "file": "sections/06_simulation_results.tex",
+    "line": 293,
+    "text": "Unless stated otherwise, the receivers use the defaults in\nTable~\\ref{tab:simulation-parameters} and known phases."
+  },
+  {
+    "id": 145,
+    "file": "sections/06_simulation_results.tex",
+    "line": 296,
+    "text": "\\subsubsection{Convergence Behavior}\nFigure~\\ref{fig:cstmp-convergence} compares NMSE versus iteration\nat $0$~dB for one scene with five active devices."
+  },
+  {
+    "id": 146,
+    "file": "sections/06_simulation_results.tex",
+    "line": 300,
+    "text": "\\begin{figure}[!t]\n\\centering\n\\makebox[\\columnwidth][c]{\\includegraphics[width=88.9mm]{convergence.pdf}}\n\\caption{NMSE versus iteration for one paired scene at\n$0$~dB, with $K=40$, $Q=16$, and five active devices.}\n\\label{fig:cstmp-convergence}\n\\end{figure}"
+  },
+  {
+    "id": 147,
+    "file": "sections/06_simulation_results.tex",
+    "line": 308,
+    "text": "In this example, GP-MP-CCD approaches its final NMSE in fewer iterations than\nGP-MP and achieves lower NMSE."
+  },
+  {
+    "id": 148,
+    "file": "sections/06_simulation_results.tex",
+    "line": 311,
+    "text": "\\subsubsection{Effect of SNR}\nFigure~\\ref{fig:cstmp-snr} compares channel NMSE and AER over\n$-4$ to $6$~dB, including GP-MP-CCD-EP with estimated phases."
+  },
+  {
+    "id": 149,
+    "file": "sections/06_simulation_results.tex",
+    "line": 315,
+    "text": "\\begin{figure}[!t]\n\\centering\n\\makebox[\\columnwidth][c]{\\includegraphics[width=88.9mm]{snr_comparison.pdf}}\n\\caption{Channel NMSE and AER versus SNR with $K=40$, $Q=16$, and\n$p=0.1$. GP-MP-CCD-EP uses estimated phases; all other receivers\nuse known phases.}\n\\label{fig:cstmp-snr}\n\\end{figure}"
+  },
+  {
+    "id": 150,
+    "file": "sections/06_simulation_results.tex",
+    "line": 324,
+    "text": "NMSE and AER generally decrease as SNR increases. With known phases,\nGP-MP-CCD achieves the lowest NMSE and achieves lower AER than GP-MP.\nWith estimated phases, GP-MP-CCD-EP retains most of the\nchannel-estimation gain."
+  },
+  {
+    "id": 151,
+    "file": "sections/06_simulation_results.tex",
+    "line": 329,
+    "text": "\\subsubsection{Effect of Candidate Device Count}\nFigure~\\ref{fig:cstmp-users} compares GP-MP-CCD, GP-MP, and the four baselines for\n$K=20$--$100$ at $0$~dB, with $Q=16$ and $p=0.1$."
+  },
+  {
+    "id": 152,
+    "file": "sections/06_simulation_results.tex",
+    "line": 333,
+    "text": "\\begin{figure}[!t]\n\\centering\n\\makebox[\\columnwidth][c]{\\includegraphics[width=88.9mm]{user_count.pdf}}\n\\caption{Channel NMSE versus the number of candidate devices\nat $0$~dB, with $Q=16$ and $p=0.1$.}\n\\label{fig:cstmp-users}\n\\end{figure}"
+  },
+  {
+    "id": 153,
+    "file": "sections/06_simulation_results.tex",
+    "line": 341,
+    "text": "As the number of candidate devices increases, channel estimation becomes less\naccurate for all methods. GP-MP-CCD maintains the lowest NMSE, and its\nadvantage over GP-MP grows with the number of devices."
+  },
+  {
+    "id": 154,
+    "file": "sections/06_simulation_results.tex",
+    "line": 345,
+    "text": "\\subsubsection{Effect of Nominal Activity Probability}\nFigure~\\ref{fig:cstmp-activity} compares GP-MP-CCD, GP-MP, and the four\nbaselines for nominal activity probabilities from $0.05$ to $0.25$,\nwith $K=40$, $Q=16$, and an SNR of $0$~dB."
+  },
+  {
+    "id": 155,
+    "file": "sections/06_simulation_results.tex",
+    "line": 350,
+    "text": "\\begin{figure}[!t]\n\\centering\n\\makebox[\\columnwidth][c]{\\includegraphics[width=88.9mm]{activity_probability.pdf}}\n\\caption{Channel NMSE versus nominal activity probability at\n$0$~dB, with $K=40$ and $Q=16$.}\n\\label{fig:cstmp-activity}\n\\end{figure}"
+  },
+  {
+    "id": 156,
+    "file": "sections/06_simulation_results.tex",
+    "line": 358,
+    "text": "Increasing the activity probability degrades channel estimation for\nall methods. GP-MP-CCD maintains the lowest NMSE, with a\ngrowing advantage over GP-MP as more devices become active."
+  },
+  {
+    "id": 157,
+    "file": "sections/06_simulation_results.tex",
+    "line": 362,
+    "text": "\\subsubsection{Effect of Pilot-Frame Count}\nFigure~\\ref{fig:cstmp-pilots} shows the effect of the number of pilot frames at $0$~dB, with $K=40$ and $p=0.1$."
+  },
+  {
+    "id": 158,
+    "file": "sections/06_simulation_results.tex",
+    "line": 366,
+    "text": "\\begin{figure}[!t]\n\\centering\n\\makebox[\\columnwidth][c]{\\includegraphics[width=88.9mm]{pilot_frames.pdf}}\n\\caption{Channel NMSE and AER versus the number of pilot frames at\n$0$~dB, with $K=40$ and $p=0.1$.}\n\\label{fig:cstmp-pilots}\n\\end{figure}"
+  },
+  {
+    "id": 159,
+    "file": "sections/06_simulation_results.tex",
+    "line": 374,
+    "text": "Increasing the number of pilot frames generally improves channel\nestimation and activity detection at fixed per-frame energy.\nAmong the evaluated pilot-frame counts, GP-MP-CCD needs $25\\%$ fewer frames than GP-MP to\nreach $-14$~dB NMSE."
+  },
+  {
+    "id": 160,
+    "file": "sections/06_simulation_results.tex",
+    "line": 379,
+    "text": "\\subsection{Comparison Across Channel Profiles}\nFigure~\\ref{fig:cstmp-cross} compares the training profile D with\nprofiles A, B, and C without retraining. Only the power delay profiles and\nfading distributions change; geometry, pilots, and receiver settings\nremain fixed, with known phases and $500$ paired scenes per condition."
+  },
+  {
+    "id": 161,
+    "file": "sections/06_simulation_results.tex",
+    "line": 385,
+    "text": "\\begin{figure*}[!t]\n\\centering\n\\includegraphics[width=177.8mm]{cross_channel.pdf}\n\\caption{Channel NMSE for NTN-TDL profiles D, A, B, and C (from left\nto right). Each point uses $500$ paired physical scenes, $K=40$,\n$Q=16$, $p=0.1$, and known phases. The learned receivers are trained\non profile D and evaluated without retraining.}\n\\label{fig:cstmp-cross}\n\\end{figure*}"
+  },
+  {
+    "id": 162,
+    "file": "sections/06_simulation_results.tex",
+    "line": 395,
+    "text": "GP-MP-CCD achieves lower NMSE than the four sparse-recovery baselines on every\nevaluated profile without retraining. These results show that the\nlearned prior remains useful beyond the training profile."
+  },
+  {
+    "id": 163,
+    "file": "sections/07_conclusion.tex",
+    "line": 1,
+    "text": "\\section{Conclusion}\n\\label{sec:conclusion}"
+  },
+  {
+    "id": 164,
+    "file": "sections/07_conclusion.tex",
+    "line": 4,
+    "text": "% Included in both manuscript versions on 2026-11-03 at the author's request.\nIn this paper, we investigated GNSS-independent GFRA for LEO satellite\nIoT. We proposed a multi-frame AFDM transmission scheme to accommodate\nlarge differential delays and Doppler shifts, using a shared\neffective-channel representation to process additional pilot observations\nwithout increasing the channel dimension. Based on this model, we learned\na score-based generative prior from multiantenna AFDM effective channels\nwithout imposing sparse or grid-aligned channel assumptions, with colored\nGaussian noise used to account for correlations in denoiser-input errors.\nWe then developed a JADCE receiver that combines multi-frame linear\nestimation with generative-prior-aided joint denoising, where learned\ndensity ratios provide posterior activity probabilities. Simulation\nresults demonstrated improved channel estimation and activity detection\nover the white-noise-trained baseline, reduced pilot requirements at the\nevaluated accuracy target, and channel-estimation gains across the tested\nNTN-TDL profiles without retraining. These results support the use of\nlearned effective-channel priors for multi-frame AFDM random access in\nLEO satellite systems."
+  },
+  {
+    "id": 165,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "line": 1,
+    "text": "\\section{Phase Estimation}\n\\label{app:frontend}"
+  },
+  {
+    "id": 166,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "line": 4,
+    "text": "\\subsection{Inter-Frame Phase Estimation}\n\\label{app:phase-estimation}"
+  },
+  {
+    "id": 167,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "line": 7,
+    "text": "When inter-frame phases are unavailable, estimate them as follows.\nStack $[\\mathbf Y_{\\rm s}]_{qN+r,m}=Y_{qmr}$ into\n$\\mathbf Y_{\\rm s}\\in\\mathbb C^{QN\\times M}$. Approximate the channel of each\ncandidate device by one dominant path with unconstrained\nper-antenna gains. Absorbing the common scalar phase into the gain gives"
+  },
+  {
+    "id": 168,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "line": 13,
+    "text": "\\begin{equation}\n \\begin{aligned}\n \\mathbf G_0(d,\\nu)&=e^{-\\mathrm j2\\pi c_1d^2}\\mathbf G(d,\\nu;0),\\\\\n [\\mathbf h_k^{\\rm p}(d,\\nu)]_{qN+r}\n &=e^{\\mathrm j2\\pi\\nu qT_{\\rm frame}}\n \\sum_{n=0}^{N-1}[\\mathbf G_0(d,\\nu)]_{rn}P_{qkn}.\n \\end{aligned}\n \\label{frontend:eq:phase-atom}\n\\end{equation}\nHere $\\mathbf h_k^{\\rm p}(d,\\nu)\\in\\mathbb C^{QN}$. Search $d\\in[0,N)$ and\n$|\\nu|\\leq\\nu_{\\max}$, where $\\nu_{\\max}$ is the maximum absolute\nDoppler shift in the channel model. Since\n$2Nc_1\\in\\mathbb N_+$, adding integer multiples of $N$ to $d$ changes\nthe operator only by a scalar phase absorbed by the fitted gains.\nWith $\\mathbf h_k^{\\rm p}=\\mathbf h_k^{\\rm p}(d_k,\\nu_k)$ and\n$\\mathbf b_k\\in\\mathbb C^M$, minimize"
+  },
+  {
+    "id": 169,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "line": 30,
+    "text": "\\begin{equation}\n \\min_{\\{d_k,\\nu_k,\\mathbf b_k\\}}\n \\left\\|\\mathbf Y_{\\rm s}-\\sum_{k=1}^K\n \\mathbf h_k^{\\rm p}\\mathbf b_k^{\\mathsf T}\\right\\|_F^2.\n \\label{frontend:eq:phase-fit}\n\\end{equation}\nWhen updating the parameters of device $k$, we fix the other contributions and define\n$\\mathbf Z_k=\\mathbf Y_{\\rm s}-\\sum_{j\\ne k}\n\\mathbf h_j^{\\rm p}\\mathbf b_j^{\\mathsf T}$. For a given $(d,\\nu)$, the\nleast-squares gain and the resulting objective are given by\n\\begin{equation}\n \\begin{aligned}\n \\mathbf b_k^{\\mathsf T}(d,\\nu)\n &=\\frac{\\mathbf h_k^{\\rm p}(d,\\nu)^{\\mathsf H}\\mathbf Z_k}\n {\\|\\mathbf h_k^{\\rm p}(d,\\nu)\\|^2},\\\\\n J_k(d,\\nu)&=\\|\\mathbf Z_k\\|_F^2-\n \\frac{\\|\\mathbf h_k^{\\rm p}(d,\\nu)^{\\mathsf H}\\mathbf Z_k\\|^2}\n {\\|\\mathbf h_k^{\\rm p}(d,\\nu)\\|^2}.\n \\end{aligned}\n \\label{frontend:eq:phase-variable-projection}\n\\end{equation}\nVariable projection eliminates the gains \\cite{oleary2013}.\nA coarse search based on pilot correlations initializes the candidates. Doppler shifts yielding the same frame phase $\\beta$ are\n$\\nu_j=(\\beta+2\\pi j)/(2\\pi T_{\\rm frame})$, $j\\in\\mathbb Z$,\nwithin the search range. Rank them using \\eqref{frontend:eq:phase-atom}\nand refine by L-BFGS-B \\cite{zhu1997} within an interval where the\nwaveform is differentiable. Accept updates that do not increase the\nobjective beyond numerical tolerance. After each sweep,\njointly re-estimate the gains and retain the previous parameter estimates as a candidate.\nThe estimated Doppler gives $\\widehat\\beta_k$ and $\\widehat{\\mathbf A}$\nthrough \\eqref{eq:twc-frame-channel}--\\eqref{eq:effective-pilot}."
+  },
+  {
+    "id": 170,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "line": 61,
+    "text": "\\subsection{Phase Refinement During Message Passing}\n\\label{app:phase-refinement}"
+  },
+  {
+    "id": 171,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "line": 64,
+    "text": "Following \\cite[Sec.~III-C]{shen2025}, refinement fixes the Gaussian\nfeedback message and computes the conditional channel mean and covariance under\nthe observation model. It minimizes the expected squared observation\nresidual, retaining cross-device conditional covariances and imposing inter-frame\nphase rotations of the form $e^{\\mathrm jq\\beta_k}$. Coordinate updates optimize $\\beta_k$ and a constant phase for each\ndevice, absorbing the constant phase into the feedback means. Each refinement uses two to ten sweeps\nwith relative objective-change tolerance $10^{-7}$."
+  },
+  {
+    "id": 172,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "line": 72,
+    "text": "After a phase update, we update $\\widehat{\\mathbf A}$ and recompute its SVD,\nclear the input-damping history, set $\\kappa=1$, and reset the stopping\nwindows. The channel sites and rotated feedback are retained.\n\\ifdefined\\FullManuscript\nThe schedule and stopping criteria are specified in\nAppendix~\\ref{app:estimated-phase-protocol}.\n\\fi"
+  },
+  {
+    "id": 173,
+    "file": "sections/appendix_afdm_channel_model.tex",
+    "line": 1,
+    "text": "\\section{AFDM Channel Matrix}\n\\label{app:afdm-model}"
+  },
+  {
+    "id": 174,
+    "file": "sections/appendix_afdm_channel_model.tex",
+    "line": 4,
+    "text": "Substituting the basis waveform in \\eqref{eq:continuous-waveform}\ninto \\eqref{eq:path-operator-system} gives\n\\begin{equation}\n \\begin{split}\n G_{rn}\n &=\\frac{e^{\\mathrm j2\\pi[c_1d^2+c_2(n^2-r^2)-nd/N+\\nu T_sg]}}{N}\\\\\n &\\quad\\times\\sum_{t=0}^{N-1}\n e^{\\mathrm j2\\pi[(n-r)/N-2c_1d+\\nu T_s]t}\n e^{\\mathrm j2\\pi\\zeta_{tn}d}.\n \\end{split}\n \\label{eq:path-entry-expansion}\n\\end{equation}\nwhere $\\zeta_{tn}=\\zeta_n(\\langle t-d\\rangle_N)$.\nFactors with phases equal to integer multiples of $2\\pi$ are one because $t,\\zeta_{tn}$ are integers\nand $w_{t-d}-(t-d)$ is an integer multiple of $N$.\nFor integer $d$, the final factor is one, giving"
+  },
+  {
+    "id": 175,
+    "file": "sections/appendix_afdm_channel_model.tex",
+    "line": 21,
+    "text": "\\begin{align}\n \\mathbf G(d,\\nu;g)\n &=\\mathbf F_{\\rm A}\\mathbf D_{\\nu,g}\\bm\\Omega_d\n   \\bm\\Pi_{d\\bmod N}\\mathbf F_{\\rm A}^{\\mathsf H},\n \\label{eq:integer-operator}\\\\\n [\\bm\\Omega_d]_{tt}\n &=e^{\\mathrm j2\\pi c_1[(t-d)^2-\\langle t-d\\rangle_N^2]},\n \\label{eq:integer-prefix-phase}\n\\end{align}\nwhere $[\\bm\\Pi_l\\mathbf s]_t=s[\\langle t-l\\rangle_N]$.\nThe value $d\\bmod N$ determines the cyclic shift, whereas the\nfull delay determines the CPP phase. The same expression therefore\ncovers delays exceeding $N$ samples."
+  },
+  {
+    "id": 176,
+    "file": "sections/appendix_afdm_channel_model.tex",
+    "line": 35,
+    "text": "For the reference frame, the useful part starts at\n$g_0=N_{\\rm CPP}$. Combining the path responses in\n\\eqref{eq:path-operator-system} with the path gains and array response\ngives the effective channel in \\eqref{eq:channel}.\nIn frame $q$, the starting sample is\n$g_q=N_{\\rm CPP}+q(N+N_{\\rm CPP})$, and\n\\[\n \\mathbf D_{\\nu_k,g_q}\n =e^{\\mathrm j2\\pi\\nu_kqT_{\\rm frame}}\\mathbf D_{\\nu_k,N_{\\rm CPP}}.\n\\]\nSince this scalar factor is common to all paths of device $k$,\nthe effective tensor satisfies\n$H_k^{(q)}=e^{\\mathrm jq\\beta_k}H_k$, establishing\n\\eqref{eq:twc-frame-channel}."
+  },
+  {
+    "id": 177,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 1,
+    "text": "\\section{Receiver Configurations and Evaluation Protocol}\n\\label{app:evaluation-protocol}"
+  },
+  {
+    "id": 178,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 4,
+    "text": "\\subsection{Learned Receiver Configurations}\n\\label{app:receiver-configurations}"
+  },
+  {
+    "id": 179,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 7,
+    "text": "GP-MP follows the STMP framework \\cite{cai2026} adapted to the AFDM\nmodel, with learned activity probabilities replacing the analytical activity\nupdate. It uses a white-noise-trained first-order score network, a\nlearned second-order score network, and a classifier for density ratio estimation.\nGP-MP-CCD uses the denoiser conditioned on the noise covariance and preconditioning\nin Section~\\ref{sec:network-settings}, its derivative-based variance\nestimate, the corresponding activity classifier, and the input\nvariance update in \\eqref{eq:query-variance-update}.\nThe two configurations use the same clean training channels and number of\ndenoiser training epochs.\nThus the comparison of the receivers evaluates the two adopted\nconfigurations; it does not isolate the training covariance as their\nonly difference. The activity-probability comparison instead changes\nonly the probability calculation specified in\nSection~\\ref{sec:activity-evidence}."
+  },
+  {
+    "id": 180,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 23,
+    "text": "\\subsection{Paired Scenes and Parameter Selection}"
+  },
+  {
+    "id": 181,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 25,
+    "text": "The comparisons in Section~\\ref{sec:simulations} use saved, paired physical\nscenes. The SNR figure uses scenes $0$--$499$ at each point for all\nreceivers. The known-phase curves are recomputed from saved predictions\nof the original $1{,}000$-scene experiment to match the completed\nestimated-phase batch; the original full-batch results are preserved.\nThe pilot comparison uses the first $500$ of the planned $1{,}000$\nscenes. The device-count, activity-probability, and cross-profile\ncomparisons also use scenes $0$--$499$ at each condition.\nSome evaluation scenes were used during method development and\nselection of baseline activity thresholds; the adopted baseline activity decision rules are\nreused without refitting. The reported SNR range was narrowed after\ninterim inspection; the earlier $8$ and $10$~dB results remain archived.\nAll finite outputs are included in the reported metrics, including those that\nreach the iteration limit."
+  },
+  {
+    "id": 182,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 40,
+    "text": "\\subsection{Activity Probability Comparison}\n\\label{app:activity-evidence-protocol}"
+  },
+  {
+    "id": 183,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 43,
+    "text": "The experiment using the Gaussian approximation for activity detection was stopped after\ninspection of its adverse results, with $2{,}128$ outputs saved. The\ncommon subset in Table~\\ref{tab:activity-evidence} contains every one\nof the $354$ physical scenes with completed outputs at all six SNRs,\ngiving $2{,}124$ receiver runs per method. The same subset is\nused for the receiver with learned density ratios. AER is computed from\nall device decisions across\nthese conditions, including outputs that reach the iteration limit.\nThe four outputs from the partially completed next scene remain\narchived. This is a retrospective comparison over the common completed\nscenes, not the originally planned $1{,}000$-scene sweep; the six SNRs\ndo not constitute independent physical scenes."
+  },
+  {
+    "id": 184,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 55,
+    "text": "Within this paired subset, $724$ of the $2{,}124$ runs using the Gaussian approximation\nreach the iteration limit. The receivers using the learned density ratio and Gaussian approximation\nproduce $(111,3)$ and $(187,31{,}207)$ missed detections and false\nalarms, respectively, over $84{,}960$ device decisions. These counts\ngive the pooled AER values in Table~\\ref{tab:activity-evidence}; the\nlarge error increase is dominated by false alarms. They describe the\nreplacement of the activity-probability calculation and do not by themselves identify the\ncause of failure to meet the stopping criterion."
+  },
+  {
+    "id": 185,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 64,
+    "text": "\\subsection{Estimated-Phase Evaluation}\n\\label{app:estimated-phase-protocol}"
+  },
+  {
+    "id": 186,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 67,
+    "text": "The estimated-phase curve uses the completed batch of $500$ scenes\nat each of six SNRs. The receiver uses the observations, original\npilots, and activity prior; true phases, activity, channels, and noise\nvariance are not supplied to the receiver. The phase configuration was\nselected using $13$ scenes that are included in the displayed batch.\nConsequently, this comparison is retrospective rather than an\nindependent test of the phase-update settings. The other receivers in\nFig.~\\ref{fig:cstmp-snr} use known phases."
+  },
+  {
+    "id": 187,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 76,
+    "text": "Phase refinement is checked every $20$ iterations, starting at\niteration $20$. The conditions for performing a refinement are met when the conditional estimates\nhave met the relative-change and activity-change tolerances for five\niterations, the decisions have remained stable for ten iterations,\nand site updates have been accepted within the training variance\ninterval for five consecutive iterations. After at least one phase\nupdate, stopping compares the channel estimate and received-signal\nprediction at successive checks satisfying these conditions. It requires relative\nchanges below $0.05$, ten iterations with stable decisions and accepted site updates within\nthe training variance interval,\nat least $80$ total iterations, and at least ten iterations since the\nlast phase update. The maximum is $600$ iterations. One of the\n$3{,}000$ outputs reaches this limit and is retained. These settings\ndiffer from the known-phase stopping rule; the SNR figure compares\nestimation and detection accuracy, not equal computational budgets."
+  },
+  {
+    "id": 188,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 90,
+    "text": "\\subsection{Device-Count-Specific Damping}"
+  },
+  {
+    "id": 189,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 92,
+    "text": "GP-MP uses damping factor $0.2$ at $K=20,40$ and $0.1$ at\n$K=60,80,100$. The latter was selected after inspecting the original\n$500$-scene results with damping factor $0.2$ and a diagnostic test with $12$ inputs at\ndamping factor $0.1$. All $12$ diagnostic inputs are included in the reported panels.\nWith the original damping factor, $498$, $479$, and $500$ runs reached the\niteration limit at $K=60,80,100$, respectively; those outputs remain\narchived. Under the adopted settings, all $500$ runs satisfy the stopping criterion at\n$K=20,40,60$, while $3$ and $14$ reach the limit at $K=80$ and $100$.\nThese $17$ outputs are retained in the NMSE."
+  },
+  {
+    "id": 190,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 102,
+    "text": "For GP-MP-CCD, the damping factor was reduced from $0.4$ to $0.2$ for all\n$K=100$ scenes after preliminary inspection. At $K=80$, only scene~372\nwas rerun with damping factor $0.2$ after its original run reached the iteration\nlimit; this selected replacement is used in the reported panel. Other\n$K=80$ scenes retain damping factor $0.4$. Both receivers retain the same\n$60$--$600$ iteration limits and stopping criteria. These damping factors were selected retrospectively and do not\nconstitute independent validation of a fixed rule across all candidate\ndevice counts."
+  },
+  {
+    "id": 191,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 111,
+    "text": "\\subsection{Convergence and Channel-Profile Evaluation}"
+  },
+  {
+    "id": 192,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 113,
+    "text": "In the single-scene example of Fig.~\\ref{fig:cstmp-convergence},\nGP-MP-CCD stops at the imposed minimum of $60$ iterations,\ncompared with $85$ for GP-MP. Each displayed curve ends at\nits actual stopping iteration."
+  },
+  {
+    "id": 193,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 118,
+    "text": "In the $500$-scene subset displayed in Fig.~\\ref{fig:cstmp-snr}, all\n$3{,}000$ known-phase outputs of each learned receiver satisfy the\nstopping criterion.\nAt $Q=8$, GP-MP and GP-MP-CCD reach the iteration limit in\n$462$ and two out of $500$ scenes, respectively;\nall runs at the evaluated $Q\\geq16$ satisfy the stopping criterion.\nFinite outputs from runs reaching the iteration limit are included in\nboth NMSE and AER."
+  },
+  {
+    "id": 194,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 126,
+    "text": "The activity-probability and cross-profile sweeps retain damping factors $0.2$\nfor GP-MP and $0.4$ for GP-MP-CCD. All $2{,}500$ proposed-receiver\nruns in the activity-probability experiment meet the stopping criterion. GP-MP reaches the limit in one\nscene at each of $p=0.20$ and $0.25$; both outputs are retained.\nThe activity sampling and receiver prior are as defined in\nSection~\\ref{sec:simulation-settings}; the horizontal axis denotes\nthe nominal probability $p$."
+  },
+  {
+    "id": 195,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 134,
+    "text": "For the cross-profile comparison, all $12{,}000$ outputs of each learned\nreceiver satisfy the receiver stopping criterion. The profile-D outputs\nare reused from the saved SNR experiment after matching inputs and\nconfigurations. The experiment varies the tabulated power delay profiles and\nfading distributions at fixed geometry, without retraining or changing the\nstopping rules. Path gains remain fixed within each block, so the comparison concerns\nthe evaluated delay and fading profiles."
+  },
+  {
+    "id": 196,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 142,
+    "text": "\\subsection{Additional Implementation Settings}\n\\label{app:implementation-settings}"
+  },
+  {
+    "id": 197,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 145,
+    "text": "The normalization constant is $s=0.2647966453$.\nThe tolerances for changes in activity probabilities and site parameters,\nand for deviations from the moving average of activity probabilities\nare $10^{-3}$, $0.1$, and $10^{-3}$, respectively, with\n$\\zeta_{\\rm hist}=0.2$, $L_s=5$, and $L_d=10$."
+  },
+  {
+    "id": 198,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "line": 150,
+    "text": "The stopping rule monitors relative changes in $\\widehat X$ and $v$,\nthe maximum change in activity probability $\\max_k|p_k^{(i)}-p_k^{(i-1)}|$, and\n$d_{\\rm var}^{(i)}=|v_{\\rm tar}^{(i)}-v^{(i)}|/\n\\max\\{v_{\\rm tar}^{(i)},v^{(i)}\\}$.\nIt also requires accepted site updates with stable precision\n$c_k^{-1}$ and natural parameter $E_k/c_k$, together with a small difference from the previous exponential moving average, $\\max_k|p_k^{(i)}-w_k^{(i-1)}|$.\nAfter this comparison, update\n$w_k^{(i)}=(1-\\zeta_{\\rm hist})w_k^{(i-1)}+\\zeta_{\\rm hist} p_k^{(i)}$, starting from\n$w_k^{(0)}=\\rho$.\nAfter $I_{\\min}$ iterations, all these conditions must hold for $L_s$\nconsecutive iterations and hard activity decisions must remain unchanged\nfor $L_d$ iterations; otherwise, return the last iterate at $I_{\\max}$."
+  }
+]

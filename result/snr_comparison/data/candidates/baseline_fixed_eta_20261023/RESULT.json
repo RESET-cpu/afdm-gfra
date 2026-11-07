@@ -1,0 +1,1623 @@
+{
+  "status": "PASS_SAVED_OUTPUT_REPLAY",
+  "created_utc": "2026-10-23T13:46:06.652995+00:00",
+  "scene_count": 800,
+  "snr_db": [
+    -4,
+    -2,
+    0,
+    2,
+    4,
+    6
+  ],
+  "user_decisions_per_snr": 32000,
+  "independent_sampling_unit": "physical scene, n=800",
+  "original": {
+    "somp": {
+      "misses": [
+        325,
+        263,
+        167,
+        104,
+        149,
+        119
+      ],
+      "false_alarms": [
+        12,
+        2,
+        17,
+        57,
+        23,
+        32
+      ],
+      "errors": [
+        337,
+        265,
+        184,
+        161,
+        172,
+        151
+      ],
+      "aer_percent": [
+        1.053125,
+        0.828125,
+        0.575,
+        0.503125,
+        0.5375,
+        0.471875
+      ],
+      "pmd_percent": [
+        9.905516610789393,
+        8.015848826577262,
+        5.089911612313319,
+        3.1697653154526058,
+        4.5412983846388295,
+        3.6269430051813467
+      ],
+      "pfa_percent": [
+        0.041784184686096314,
+        0.006964030781016052,
+        0.05919426163863644,
+        0.1984748772589575,
+        0.08008635398168461,
+        0.11142449249625683
+      ],
+      "total_errors": 1270,
+      "total_misses": 1127,
+      "total_false_alarms": 143,
+      "pooled_aer_percent": 0.6614583333333334
+    },
+    "gamp": {
+      "misses": [
+        133,
+        115,
+        84,
+        57,
+        48,
+        43
+      ],
+      "false_alarms": [
+        290,
+        50,
+        27,
+        27,
+        33,
+        29
+      ],
+      "errors": [
+        423,
+        165,
+        111,
+        84,
+        81,
+        72
+      ],
+      "aer_percent": [
+        1.321875,
+        0.515625,
+        0.346875,
+        0.2625,
+        0.253125,
+        0.22499999999999998
+      ],
+      "pmd_percent": [
+        4.053642182261505,
+        3.505028954587016,
+        2.560195062480951,
+        1.7372752209692168,
+        1.462968607131972,
+        1.3105760438890584
+      ],
+      "pfa_percent": [
+        1.0097844632473274,
+        0.1741007695254013,
+        0.0940144155437167,
+        0.0940144155437167,
+        0.11490650788676486,
+        0.10097844632473275
+      ],
+      "total_errors": 936,
+      "total_misses": 480,
+      "total_false_alarms": 456,
+      "pooled_aer_percent": 0.4875
+    },
+    "gnn": {
+      "misses": [
+        160,
+        102,
+        67,
+        53,
+        48,
+        33
+      ],
+      "false_alarms": [
+        11,
+        6,
+        7,
+        7,
+        6,
+        17
+      ],
+      "errors": [
+        171,
+        108,
+        74,
+        60,
+        54,
+        50
+      ],
+      "aer_percent": [
+        0.534375,
+        0.3375,
+        0.23124999999999998,
+        0.1875,
+        0.16875,
+        0.15625
+      ],
+      "pmd_percent": [
+        4.87656202377324,
+        3.1088082901554404,
+        2.0420603474550445,
+        1.6153611703748856,
+        1.462968607131972,
+        1.005790917403231
+      ],
+      "pfa_percent": [
+        0.03830216929558829,
+        0.020892092343048157,
+        0.024374107733556184,
+        0.024374107733556184,
+        0.020892092343048157,
+        0.05919426163863644
+      ],
+      "total_errors": 517,
+      "total_misses": 463,
+      "total_false_alarms": 54,
+      "pooled_aer_percent": 0.26927083333333335
+    },
+    "offgrid_sbl": {
+      "misses": [
+        200,
+        183,
+        146,
+        126,
+        94,
+        92
+      ],
+      "false_alarms": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "errors": [
+        202,
+        183,
+        146,
+        126,
+        94,
+        92
+      ],
+      "aer_percent": [
+        0.6312500000000001,
+        0.571875,
+        0.45625,
+        0.39375,
+        0.29375,
+        0.2875
+      ],
+      "pmd_percent": [
+        6.09570252971655,
+        5.577567814690643,
+        4.449862846693081,
+        3.840292593721426,
+        2.8649801889667783,
+        2.804023163669613
+      ],
+      "pfa_percent": [
+        0.006964030781016052,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "total_errors": 843,
+      "total_misses": 841,
+      "total_false_alarms": 2,
+      "pooled_aer_percent": 0.4390625
+    }
+  },
+  "comparisons": [
+    {
+      "variant": "fixed_current_0db",
+      "method": "somp",
+      "threshold": 0.1519942849227756,
+      "metrics": {
+        "misses": [
+          207,
+          183,
+          167,
+          160,
+          162,
+          148
+        ],
+        "false_alarms": [
+          52,
+          14,
+          17,
+          11,
+          17,
+          17
+        ],
+        "errors": [
+          259,
+          197,
+          184,
+          171,
+          179,
+          165
+        ],
+        "aer_percent": [
+          0.8093750000000001,
+          0.615625,
+          0.575,
+          0.534375,
+          0.559375,
+          0.515625
+        ],
+        "pmd_percent": [
+          6.309052118256629,
+          5.577567814690643,
+          5.089911612313319,
+          4.87656202377324,
+          4.9375190490704055,
+          4.510819871990247
+        ],
+        "pfa_percent": [
+          0.18106480030641733,
+          0.04874821546711237,
+          0.05919426163863644,
+          0.03830216929558829,
+          0.05919426163863644,
+          0.05919426163863644
+        ],
+        "total_errors": 1155,
+        "total_misses": 1027,
+        "total_false_alarms": 128,
+        "pooled_aer_percent": 0.6015625
+      },
+      "errors_fixed": [
+        118,
+        80,
+        0,
+        46,
+        6,
+        15
+      ],
+      "errors_introduced": [
+        40,
+        12,
+        0,
+        56,
+        13,
+        29
+      ],
+      "changed_decisions": [
+        158,
+        92,
+        0,
+        102,
+        19,
+        44
+      ],
+      "delta_aer_percentage_points": [
+        -0.24375,
+        -0.2125,
+        0.0,
+        0.03125,
+        0.021875,
+        0.04375
+      ],
+      "delta_pointwise_95ci": [
+        [
+          -0.321875,
+          -0.16875
+        ],
+        [
+          -0.271875,
+          -0.15625
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          -0.0375,
+          0.1
+        ],
+        [
+          -0.003125,
+          0.05
+        ],
+        [
+          0.0,
+          0.0875
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": -0.059895833333333315,
+      "pooled_delta_pointwise_95ci": [
+        -0.08072916666666671,
+        -0.03958333333333331
+      ]
+    },
+    {
+      "variant": "fixed_current_0db",
+      "method": "gamp",
+      "threshold": 0.06270008386427604,
+      "metrics": {
+        "misses": [
+          146,
+          116,
+          95,
+          78,
+          67,
+          63
+        ],
+        "false_alarms": [
+          227,
+          45,
+          17,
+          9,
+          7,
+          8
+        ],
+        "errors": [
+          373,
+          161,
+          112,
+          87,
+          74,
+          71
+        ],
+        "aer_percent": [
+          1.165625,
+          0.503125,
+          0.35000000000000003,
+          0.271875,
+          0.23124999999999998,
+          0.221875
+        ],
+        "pmd_percent": [
+          4.449862846693081,
+          3.535507467235599,
+          2.895458701615361,
+          2.3773239865894547,
+          2.0420603474550445,
+          1.920146296860713
+        ],
+        "pfa_percent": [
+          0.7904174936453219,
+          0.15669069257286117,
+          0.05919426163863644,
+          0.031338138514572234,
+          0.024374107733556184,
+          0.027856123124064207
+        ],
+        "total_errors": 878,
+        "total_misses": 565,
+        "total_false_alarms": 313,
+        "pooled_aer_percent": 0.4572916666666667
+      },
+      "errors_fixed": [
+        64,
+        5,
+        10,
+        18,
+        26,
+        21
+      ],
+      "errors_introduced": [
+        14,
+        1,
+        11,
+        21,
+        19,
+        20
+      ],
+      "changed_decisions": [
+        78,
+        6,
+        21,
+        39,
+        45,
+        41
+      ],
+      "delta_aer_percentage_points": [
+        -0.15625,
+        -0.0125,
+        0.003125,
+        0.009375,
+        -0.021875,
+        -0.003125
+      ],
+      "delta_pointwise_95ci": [
+        [
+          -0.21875,
+          -0.096875
+        ],
+        [
+          -0.028125,
+          7.812499999886313e-05
+        ],
+        [
+          -0.028125,
+          0.03125
+        ],
+        [
+          -0.034375,
+          0.053125
+        ],
+        [
+          -0.065625,
+          0.021875
+        ],
+        [
+          -0.046875,
+          0.0375
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": -0.03020833333333334,
+      "pooled_delta_pointwise_95ci": [
+        -0.05625,
+        -0.005208333333333334
+      ]
+    },
+    {
+      "variant": "fixed_current_0db",
+      "method": "gnn",
+      "threshold": 0.029457032680511475,
+      "metrics": {
+        "misses": [
+          154,
+          99,
+          67,
+          53,
+          44,
+          34
+        ],
+        "false_alarms": [
+          13,
+          9,
+          7,
+          7,
+          10,
+          10
+        ],
+        "errors": [
+          167,
+          108,
+          74,
+          60,
+          54,
+          44
+        ],
+        "aer_percent": [
+          0.521875,
+          0.3375,
+          0.23124999999999998,
+          0.1875,
+          0.16875,
+          0.13749999999999998
+        ],
+        "pmd_percent": [
+          4.693690947881744,
+          3.0173727522096923,
+          2.0420603474550445,
+          1.6153611703748856,
+          1.341054556537641,
+          1.0362694300518136
+        ],
+        "pfa_percent": [
+          0.045266200076604333,
+          0.031338138514572234,
+          0.024374107733556184,
+          0.024374107733556184,
+          0.03482015390508026,
+          0.03482015390508026
+        ],
+        "total_errors": 507,
+        "total_misses": 451,
+        "total_false_alarms": 56,
+        "pooled_aer_percent": 0.26406250000000003
+      },
+      "errors_fixed": [
+        6,
+        3,
+        0,
+        0,
+        4,
+        7
+      ],
+      "errors_introduced": [
+        2,
+        3,
+        0,
+        0,
+        4,
+        1
+      ],
+      "changed_decisions": [
+        8,
+        6,
+        0,
+        0,
+        8,
+        8
+      ],
+      "delta_aer_percentage_points": [
+        -0.0125,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.01875
+      ],
+      "delta_pointwise_95ci": [
+        [
+          -0.03125,
+          0.003125
+        ],
+        [
+          -0.015625,
+          0.015625
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          -0.01875,
+          0.015625
+        ],
+        [
+          -0.0375,
+          -0.003125
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": -0.005208333333333332,
+      "pooled_delta_pointwise_95ci": [
+        -0.010937500000000003,
+        0.0005208333333333332
+      ]
+    },
+    {
+      "variant": "fixed_current_0db",
+      "method": "offgrid_sbl",
+      "threshold": 0.11024835238211503,
+      "metrics": {
+        "misses": [
+          173,
+          161,
+          146,
+          132,
+          124,
+          122
+        ],
+        "false_alarms": [
+          3,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "errors": [
+          176,
+          161,
+          146,
+          132,
+          124,
+          122
+        ],
+        "aer_percent": [
+          0.5499999999999999,
+          0.503125,
+          0.45625,
+          0.41250000000000003,
+          0.3875,
+          0.38125
+        ],
+        "pmd_percent": [
+          5.272782688204815,
+          4.907040536421823,
+          4.449862846693081,
+          4.023163669612924,
+          3.7793355684242607,
+          3.7183785431270953
+        ],
+        "pfa_percent": [
+          0.010446046171524078,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_errors": 861,
+        "total_misses": 858,
+        "total_false_alarms": 3,
+        "pooled_aer_percent": 0.4484375
+      },
+      "errors_fixed": [
+        27,
+        22,
+        0,
+        0,
+        0,
+        0
+      ],
+      "errors_introduced": [
+        1,
+        0,
+        0,
+        6,
+        30,
+        30
+      ],
+      "changed_decisions": [
+        28,
+        22,
+        0,
+        6,
+        30,
+        30
+      ],
+      "delta_aer_percentage_points": [
+        -0.08125,
+        -0.06875,
+        0.0,
+        0.01875,
+        0.09375,
+        0.09375
+      ],
+      "delta_pointwise_95ci": [
+        [
+          -0.115625,
+          -0.05
+        ],
+        [
+          -0.1,
+          -0.040625
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.00625,
+          0.034375
+        ],
+        [
+          0.0625,
+          0.128125
+        ],
+        [
+          0.0625,
+          0.128125
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": 0.009374999999999996,
+      "pooled_delta_pointwise_95ci": [
+        -0.0026041666666666674,
+        0.021367187499999822
+      ]
+    },
+    {
+      "variant": "historical_snr8",
+      "method": "somp",
+      "threshold": 0.26864661318875865,
+      "metrics": {
+        "misses": [
+          507,
+          453,
+          463,
+          454,
+          458,
+          443
+        ],
+        "false_alarms": [
+          3,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        "errors": [
+          510,
+          453,
+          463,
+          454,
+          459,
+          443
+        ],
+        "aer_percent": [
+          1.59375,
+          1.4156250000000001,
+          1.4468750000000001,
+          1.41875,
+          1.434375,
+          1.384375
+        ],
+        "pmd_percent": [
+          15.452605912831455,
+          13.806766229807984,
+          14.111551356293814,
+          13.837244742456567,
+          13.9591587930509,
+          13.501981103322159
+        ],
+        "pfa_percent": [
+          0.010446046171524078,
+          0.0,
+          0.0,
+          0.0,
+          0.003482015390508026,
+          0.0
+        ],
+        "total_errors": 2782,
+        "total_misses": 2778,
+        "total_false_alarms": 4,
+        "pooled_aer_percent": 1.4489583333333333
+      },
+      "errors_fixed": [
+        9,
+        2,
+        17,
+        57,
+        22,
+        32
+      ],
+      "errors_introduced": [
+        182,
+        190,
+        296,
+        350,
+        309,
+        324
+      ],
+      "changed_decisions": [
+        191,
+        192,
+        313,
+        407,
+        331,
+        356
+      ],
+      "delta_aer_percentage_points": [
+        0.540625,
+        0.5875,
+        0.871875,
+        0.915625,
+        0.896875,
+        0.9125
+      ],
+      "delta_pointwise_95ci": [
+        [
+          0.453125,
+          0.63125
+        ],
+        [
+          0.5,
+          0.678125
+        ],
+        [
+          0.7625,
+          0.9875
+        ],
+        [
+          0.784375,
+          1.053125
+        ],
+        [
+          0.78125,
+          1.021875
+        ],
+        [
+          0.7875,
+          1.040625
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": 0.7875000000000003,
+      "pooled_delta_pointwise_95ci": [
+        0.6989583333333332,
+        0.8817708333333332
+      ]
+    },
+    {
+      "variant": "historical_snr8",
+      "method": "gamp",
+      "threshold": 0.27549782016369034,
+      "metrics": {
+        "misses": [
+          806,
+          735,
+          679,
+          643,
+          609,
+          585
+        ],
+        "false_alarms": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "errors": [
+          806,
+          735,
+          679,
+          643,
+          609,
+          585
+        ],
+        "aer_percent": [
+          2.5187500000000003,
+          2.296875,
+          2.121875,
+          2.009375,
+          1.903125,
+          1.828125
+        ],
+        "pmd_percent": [
+          24.565681194757698,
+          22.40170679670832,
+          20.694910088387687,
+          19.597683633038706,
+          18.561414202986896,
+          17.829929899420907
+        ],
+        "pfa_percent": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_errors": 4057,
+        "total_misses": 4057,
+        "total_false_alarms": 0,
+        "pooled_aer_percent": 2.1130208333333336
+      },
+      "errors_fixed": [
+        290,
+        50,
+        27,
+        27,
+        33,
+        29
+      ],
+      "errors_introduced": [
+        673,
+        620,
+        595,
+        586,
+        561,
+        542
+      ],
+      "changed_decisions": [
+        963,
+        670,
+        622,
+        613,
+        594,
+        571
+      ],
+      "delta_aer_percentage_points": [
+        1.196875,
+        1.78125,
+        1.775,
+        1.746875,
+        1.65,
+        1.603125
+      ],
+      "delta_pointwise_95ci": [
+        [
+          0.965625,
+          1.428125
+        ],
+        [
+          1.609375,
+          1.95625
+        ],
+        [
+          1.609375,
+          1.946875
+        ],
+        [
+          1.58125,
+          1.925
+        ],
+        [
+          1.4875,
+          1.821875
+        ],
+        [
+          1.446875,
+          1.76875
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": 1.6255208333333335,
+      "pooled_delta_pointwise_95ci": [
+        1.4677083333333332,
+        1.7895833333333322
+      ]
+    },
+    {
+      "variant": "historical_snr8",
+      "method": "gnn",
+      "threshold": 0.0878782570362091,
+      "metrics": {
+        "misses": [
+          243,
+          180,
+          143,
+          113,
+          96,
+          90
+        ],
+        "false_alarms": [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "errors": [
+          243,
+          181,
+          143,
+          113,
+          96,
+          90
+        ],
+        "aer_percent": [
+          0.759375,
+          0.5656249999999999,
+          0.44687499999999997,
+          0.353125,
+          0.3,
+          0.28125
+        ],
+        "pmd_percent": [
+          7.406278573605609,
+          5.486132276744895,
+          4.358427308747333,
+          3.4440719292898505,
+          2.925937214263944,
+          2.7430661383724475
+        ],
+        "pfa_percent": [
+          0.0,
+          0.003482015390508026,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_errors": 866,
+        "total_misses": 865,
+        "total_false_alarms": 1,
+        "pooled_aer_percent": 0.4510416666666667
+      },
+      "errors_fixed": [
+        11,
+        5,
+        7,
+        7,
+        6,
+        17
+      ],
+      "errors_introduced": [
+        83,
+        78,
+        76,
+        60,
+        48,
+        57
+      ],
+      "changed_decisions": [
+        94,
+        83,
+        83,
+        67,
+        54,
+        74
+      ],
+      "delta_aer_percentage_points": [
+        0.225,
+        0.228125,
+        0.215625,
+        0.165625,
+        0.13125,
+        0.125
+      ],
+      "delta_pointwise_95ci": [
+        [
+          0.16875,
+          0.284375
+        ],
+        [
+          0.175,
+          0.284375
+        ],
+        [
+          0.159375,
+          0.275
+        ],
+        [
+          0.115625,
+          0.21875
+        ],
+        [
+          0.08742187500000007,
+          0.178125
+        ],
+        [
+          0.071875,
+          0.18125
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": 0.18177083333333335,
+      "pooled_delta_pointwise_95ci": [
+        0.1442708333333334,
+        0.22083333333333313
+      ]
+    },
+    {
+      "variant": "fixed_0p1_control",
+      "method": "somp",
+      "threshold": 0.1,
+      "metrics": {
+        "misses": [
+          115,
+          92,
+          84,
+          74,
+          69,
+          75
+        ],
+        "false_alarms": [
+          283,
+          129,
+          123,
+          119,
+          116,
+          112
+        ],
+        "errors": [
+          398,
+          221,
+          207,
+          193,
+          185,
+          187
+        ],
+        "aer_percent": [
+          1.2437500000000001,
+          0.690625,
+          0.646875,
+          0.603125,
+          0.578125,
+          0.584375
+        ],
+        "pmd_percent": [
+          3.505028954587016,
+          2.804023163669613,
+          2.560195062480951,
+          2.2554099359951234,
+          2.10301737275221,
+          2.285888448643706
+        ],
+        "pfa_percent": [
+          0.9854103555137713,
+          0.44917998537553533,
+          0.4282878930324872,
+          0.4143598314704551,
+          0.403913785298931,
+          0.38998572373689894
+        ],
+        "total_errors": 1391,
+        "total_misses": 509,
+        "total_false_alarms": 882,
+        "pooled_aer_percent": 0.7244791666666667
+      },
+      "errors_fixed": [
+        210,
+        171,
+        83,
+        30,
+        80,
+        44
+      ],
+      "errors_introduced": [
+        271,
+        127,
+        106,
+        62,
+        93,
+        80
+      ],
+      "changed_decisions": [
+        481,
+        298,
+        189,
+        92,
+        173,
+        124
+      ],
+      "delta_aer_percentage_points": [
+        0.190625,
+        -0.1375,
+        0.071875,
+        0.1,
+        0.040625,
+        0.1125
+      ],
+      "delta_pointwise_95ci": [
+        [
+          0.028125,
+          0.3563281249999989
+        ],
+        [
+          -0.259375,
+          -0.015625
+        ],
+        [
+          -0.021953124999999928,
+          0.16875
+        ],
+        [
+          0.034375,
+          0.16875
+        ],
+        [
+          -0.053125,
+          0.1375
+        ],
+        [
+          0.0375,
+          0.190625
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": 0.06302083333333332,
+      "pooled_delta_pointwise_95ci": [
+        -0.009374999999999975,
+        0.13697916666666662
+      ]
+    },
+    {
+      "variant": "fixed_0p1_control",
+      "method": "gamp",
+      "threshold": 0.1,
+      "metrics": {
+        "misses": [
+          241,
+          213,
+          186,
+          160,
+          137,
+          131
+        ],
+        "false_alarms": [
+          29,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        "errors": [
+          270,
+          215,
+          186,
+          160,
+          137,
+          131
+        ],
+        "aer_percent": [
+          0.84375,
+          0.671875,
+          0.58125,
+          0.5,
+          0.42812500000000003,
+          0.40937500000000004
+        ],
+        "pmd_percent": [
+          7.345321548308442,
+          6.491923194148126,
+          5.669003352636391,
+          4.87656202377324,
+          4.175556232855836,
+          3.99268515696434
+        ],
+        "pfa_percent": [
+          0.10097844632473275,
+          0.006964030781016052,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_errors": 1099,
+        "total_misses": 1068,
+        "total_false_alarms": 31,
+        "pooled_aer_percent": 0.5723958333333333
+      },
+      "errors_fixed": [
+        261,
+        48,
+        27,
+        27,
+        33,
+        29
+      ],
+      "errors_introduced": [
+        108,
+        98,
+        102,
+        103,
+        89,
+        88
+      ],
+      "changed_decisions": [
+        369,
+        146,
+        129,
+        130,
+        122,
+        117
+      ],
+      "delta_aer_percentage_points": [
+        -0.478125,
+        0.15625,
+        0.234375,
+        0.2375,
+        0.175,
+        0.184375
+      ],
+      "delta_pointwise_95ci": [
+        [
+          -0.65,
+          -0.3125
+        ],
+        [
+          0.06875,
+          0.24375
+        ],
+        [
+          0.159375,
+          0.309375
+        ],
+        [
+          0.165625,
+          0.309375
+        ],
+        [
+          0.10625,
+          0.246875
+        ],
+        [
+          0.1125,
+          0.253125
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": 0.08489583333333339,
+      "pooled_delta_pointwise_95ci": [
+        0.016145833333333325,
+        0.15261718749999983
+      ]
+    },
+    {
+      "variant": "fixed_0p1_control",
+      "method": "gnn",
+      "threshold": 0.1,
+      "metrics": {
+        "misses": [
+          266,
+          197,
+          156,
+          136,
+          122,
+          106
+        ],
+        "false_alarms": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "errors": [
+          266,
+          197,
+          156,
+          136,
+          122,
+          106
+        ],
+        "aer_percent": [
+          0.83125,
+          0.615625,
+          0.4875,
+          0.42500000000000004,
+          0.38125,
+          0.33125
+        ],
+        "pmd_percent": [
+          8.10728436452301,
+          6.004266991770802,
+          4.754647973178909,
+          4.145077720207254,
+          3.7183785431270953,
+          3.230722340749771
+        ],
+        "pfa_percent": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_errors": 983,
+        "total_misses": 983,
+        "total_false_alarms": 0,
+        "pooled_aer_percent": 0.5119791666666667
+      },
+      "errors_fixed": [
+        11,
+        6,
+        7,
+        7,
+        6,
+        17
+      ],
+      "errors_introduced": [
+        106,
+        95,
+        89,
+        83,
+        74,
+        73
+      ],
+      "changed_decisions": [
+        117,
+        101,
+        96,
+        90,
+        80,
+        90
+      ],
+      "delta_aer_percentage_points": [
+        0.296875,
+        0.278125,
+        0.25625,
+        0.2375,
+        0.2125,
+        0.175
+      ],
+      "delta_pointwise_95ci": [
+        [
+          0.23125,
+          0.365625
+        ],
+        [
+          0.21875,
+          0.340625
+        ],
+        [
+          0.196875,
+          0.31875
+        ],
+        [
+          0.178125,
+          0.3
+        ],
+        [
+          0.15625,
+          0.26875
+        ],
+        [
+          0.115625,
+          0.234375
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": 0.24270833333333328,
+      "pooled_delta_pointwise_95ci": [
+        0.1979166666666666,
+        0.2890755208333333
+      ]
+    },
+    {
+      "variant": "fixed_0p1_control",
+      "method": "offgrid_sbl",
+      "threshold": 0.1,
+      "metrics": {
+        "misses": [
+          146,
+          139,
+          125,
+          111,
+          106,
+          103
+        ],
+        "false_alarms": [
+          10,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "errors": [
+          156,
+          139,
+          125,
+          111,
+          106,
+          103
+        ],
+        "aer_percent": [
+          0.4875,
+          0.43437500000000007,
+          0.390625,
+          0.346875,
+          0.33125,
+          0.32187499999999997
+        ],
+        "pmd_percent": [
+          4.449862846693081,
+          4.236513258153002,
+          3.809814081072844,
+          3.383114903992685,
+          3.230722340749771,
+          3.1392868028040235
+        ],
+        "pfa_percent": [
+          0.03482015390508026,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_errors": 740,
+        "total_misses": 730,
+        "total_false_alarms": 10,
+        "pooled_aer_percent": 0.3854166666666667
+      },
+      "errors_fixed": [
+        54,
+        44,
+        21,
+        15,
+        0,
+        0
+      ],
+      "errors_introduced": [
+        8,
+        0,
+        0,
+        0,
+        12,
+        11
+      ],
+      "changed_decisions": [
+        62,
+        44,
+        21,
+        15,
+        12,
+        11
+      ],
+      "delta_aer_percentage_points": [
+        -0.14375,
+        -0.1375,
+        -0.065625,
+        -0.046875,
+        0.0375,
+        0.034375
+      ],
+      "delta_pointwise_95ci": [
+        [
+          -0.196875,
+          -0.09375
+        ],
+        [
+          -0.18125,
+          -0.096875
+        ],
+        [
+          -0.09375,
+          -0.040625
+        ],
+        [
+          -0.075,
+          -0.025
+        ],
+        [
+          0.01875,
+          0.059375
+        ],
+        [
+          0.015625,
+          0.05625
+        ]
+      ],
+      "pooled_delta_aer_percentage_points": -0.05364583333333336,
+      "pooled_delta_pointwise_95ci": [
+        -0.07135416666666669,
+        -0.03697916666666667
+      ]
+    }
+  ],
+  "input_sha256": "49999218cbf301c8acd80d2a37c8485369632d55ba9ea087b0ce66dfff01e9a9",
+  "source_sha256": {
+    "src/configs/final/readout_policy.json": "dc4829965c967db7dbdaf573212e3ed4704d28a2c936c94ececcb4ca6ce19fef",
+    "src/configs/final/offgrid_readout_policy.json": "be7528f92e4ffd761d4481b2522e73e183f6cd6cb3065bac071f9b6144c7e016",
+    "paper/docs/history/results/ding_reproduction_20261009/independent_snr8/VERIFICATION.json": "fadcf6a1dbfc5140cbef30fab806b6a72709ff2eaf55d4dced8d47b04c79a948",
+    "result/snr_comparison/data/audits/baseline_gfra_20261023/READOUT_INPUTS.npz": "49999218cbf301c8acd80d2a37c8485369632d55ba9ea087b0ce66dfff01e9a9",
+    "result/snr_comparison/data/audits/baseline_gfra_20261023/READOUT_REPLAY.json": "d2ed4cfd30a3f98f3f18a9852bed4d3ea25992b4c554e90ee1135445ad4bc664",
+    "result/main2000_known_phase_20261023/snr_comparison_passive/PLAN.json": "254c0f8f72c779dd9253bdbbb787eae2b986c1d6f5fac5bcba83619e401d92a7"
+  },
+  "plan_sha256": "6d0f20de70326683cc21d61b767710045f13bf1e98a639f17ccc22772d549edd",
+  "code_sha256": "0b329983f0e389286c5b6718447985266ffaf3b53962de8f60c6e908a8d14921",
+  "decisions_sha256": "30850e3b35ff77e22abdfe422a632b157321659ac319aa2132f819d3ddf66789",
+  "bootstrap": {
+    "unit": "physical scene; resample all six SNRs and all methods together",
+    "replicates": 10000,
+    "seed": 20261023028,
+    "interval": "percentile 95%, pointwise, no multiple-comparison adjustment"
+  },
+  "previous_controls_exactly_reproduced": true,
+  "comparator_checked_cases": 52800,
+  "inference_performed": false,
+  "calibration_performed": false,
+  "nmse_changed": false,
+  "main_experiment_changed": false,
+  "threshold_adopted": false,
+  "limitations": [
+    "Diagnostic on previously inspected first 800 scenes; not new independent validation.",
+    "Current 0 dB thresholds were not calibrated for pooled six-SNR performance.",
+    "Historical thresholds are project-calibrated at SNR8 with different scenario/model settings.",
+    "0.1 is a numerical control for methods other than SOMP, not a shared paper prescription.",
+    "Intervals are pointwise and exploratory; no multiple-comparison significance claim."
+  ],
+  "statistical_checks": {
+    "coverage": "11/11 reviewed",
+    "simpson": "Per-SNR and equal-weight pooled results retained",
+    "ecological": "No individual-user claims",
+    "selection": "All fixed first 800 scenes; no outcome filtering",
+    "collider": "No filtering by errors",
+    "base_rate": "Misses, false alarms, and conditional rates retained",
+    "regression_to_mean": "No selection of previously failed scenes",
+    "survivorship": "All 4800 paired conditions retained",
+    "look_elsewhere": "All prespecified variants retained; no threshold search",
+    "forking_paths": "Plan written before this replay; earlier diagnostics acknowledged",
+    "causal": "Only deterministic readout changed on identical outputs; no general receiver claim",
+    "reverse_causality": "No eta chosen from evaluation outcomes"
+  }
+}

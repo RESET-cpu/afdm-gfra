@@ -1,0 +1,172 @@
+{
+  "experiment": "user_count",
+  "label": "用户数量",
+  "generated_utc": "2026-10-23T12:19:10.259617+00:00",
+  "entries": [
+    {
+      "entry": "known_phase_1000_baselines_20261025",
+      "status": "COMPLETE",
+      "original_target": "D:\\afdm-gfra\\result\\user_count\\data\\known_phase_1000_baselines_20261025",
+      "resolved_target": "D:\\afdm-gfra\\result\\user_count\\data\\known_phase_1000_baselines_20261025",
+      "summary_available": true,
+      "plan_available": true,
+      "evaluation_scenes": 1000,
+      "methods": [
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "excluded_methods": [
+        "STMP"
+      ],
+      "condition_values": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "total_results": 20000,
+      "reused_results": 4000,
+      "new_inferences": 16000,
+      "status_updated_utc": "2026-10-25T08:10:08.872259+00:00",
+      "plan_sha256": "9e35de9d24bbbe511410586bd6e0785852f242f1d9575b7797168baf35524f0c",
+      "status_history": [
+        {
+          "status": "PREPARED",
+          "recorded_utc": "2026-10-25T00:30:32.881364+00:00",
+          "reason": "Baseline-only continuation authorized by user; preflight PASS"
+        },
+        {
+          "status": "RUNNING",
+          "recorded_utc": "2026-10-25T00:30:32.881364+00:00",
+          "reason": "Preserved completed inference run status before final adopted-readout verification"
+        },
+        {
+          "status": "COMPLETE",
+          "recorded_utc": "2026-10-25T08:10:08.872259+00:00",
+          "reason": "Adopted historical readout completed; all 20000 results, raw hashes, decisions and unchanged NMSE verified"
+        }
+      ],
+      "readout_history": [
+        {
+          "policy": "last1000_all_fixed",
+          "application_sha256": "e65a31db065ce679aa5b738af8bbc484eabec921cdea7c51520012193a4a589c",
+          "superseded_by_user_utc": "2026-10-25T03:33:22.701945+00:00",
+          "assets_preserved": true
+        }
+      ],
+      "readout_status": "COMPLETE",
+      "readout_adoption": "D:\\afdm-gfra\\result\\user_count\\data\\known_phase_1000_baselines_20261025\\READOUT_ADOPTION.json",
+      "readout_application_sha256": "1029d651be33553e3ff9398346f38e2f1dd01081cb757d5451ac04fc58f4a8d9",
+      "final_summary": "known_phase_1000_baselines_20261025/selected_readout_20261025/SUMMARY.json",
+      "final_completion": "known_phase_1000_baselines_20261025/selected_readout_20261025/COMPLETE.json",
+      "new_inferences_completed": 16000,
+      "final_report": "known_phase_1000_baselines_20261025/selected_readout_20261025/REPORT.md",
+      "final_complete_sha256": "5a7a35469424d8f7c71ff5a66967aa182ce4ce4cfd7a2ee99a1f10a875c4a3a9",
+      "final_summary_sha256": "47436f7e1f2d9f53fa4ebbd7c75205befffce170b3be75355a6c5b605a794d7e",
+      "independent_test": false,
+      "readout_policy": "User-adopted historical mixed fixed / receiver-estimated-SNR-binned thresholds",
+      "completion_verification": "known_phase_1000_baselines_20261025/MONITOR_COMPLETION_VERIFICATION.json"
+    },
+    {
+      "entry": "known_phase_1000_20261023",
+      "status": "DEFERRED_BY_USER",
+      "original_target": "D:\\afdm-gfra\\result\\user_count\\data\\known_phase_1000_20261023",
+      "resolved_target": "D:\\afdm-gfra\\result\\user_count\\data\\known_phase_1000_20261023",
+      "summary_available": false,
+      "plan_available": true,
+      "evaluation_scenes": 1000,
+      "reused_results": 5000,
+      "new_inferences": 20000,
+      "status_history": [
+        {
+          "status": "QUEUED_AFTER_PILOT",
+          "recorded_utc": "2026-10-24T07:16:12.703930+00:00",
+          "reason": "Preserved before user request to pause after pilot"
+        }
+      ],
+      "status_updated_utc": "2026-10-24T07:16:12.703930+00:00",
+      "status_reason": "用户要求导频完成后暂停；用户数暂缓。",
+      "stop_file": "known_phase_1000_20261023/STOP.json",
+      "new_inferences_completed": 0
+    },
+    {
+      "entry": "history/final2000",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\final2000\\user_count",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\final2000\\user_count",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/lstmp_v3_formal2000_20261021",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\lstmp_v3_formal2000_20261021\\user_count",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\lstmp_v3_formal2000_20261021\\user_count",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_20261023",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_20261023\\user_count",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_20261023\\user_count",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "planned_2000_ten_layer",
+      "status": "PLANNED_NOT_STARTED",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_initialization_runtime_20261023\\user_count",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_initialization_runtime_20261023\\user_count",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_message_gem_20261022",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_message_gem_20261022\\user_count",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_message_gem_20261022\\user_count",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_runtime_20261023",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_runtime_20261023\\user_count",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_runtime_20261023\\user_count",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/new_models_paired_20261019",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\new_models_paired_20261019\\user_count",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\new_models_paired_20261019\\user_count",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/new_models_paired_20261019_cuda_graph",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\new_models_paired_20261019_cuda_graph\\user_count",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\new_models_paired_20261019_cuda_graph\\user_count",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/new_models_paired_20261019_v2",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\new_models_paired_20261019_v2\\user_count",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\new_models_paired_20261019_v2\\user_count",
+      "summary_available": false,
+      "plan_available": true
+    }
+  ],
+  "note": "Directory entries preserve source protocols; a stored plan or partial output is not a completed experiment.",
+  "current_active_batch": null,
+  "updated_utc": "2026-10-25T08:10:08.872259+00:00",
+  "latest_completed_batch": "D:\\afdm-gfra\\result\\user_count\\data\\known_phase_1000_baselines_20261025"
+}

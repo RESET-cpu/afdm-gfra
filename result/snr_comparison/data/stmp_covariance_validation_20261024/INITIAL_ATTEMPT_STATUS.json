@@ -1,0 +1,8 @@
+{
+  "status": "REJECTED_FOR_INTENDED_NOISE_MODE",
+  "first_step_result": "FIRST.npz",
+  "first_step_summary": "FIRST_SUMMARY.json",
+  "baseline_replay_passed": false,
+  "saved_query_gaussian_reference": "Unaffected; SAVED.npz used no supplied variance in its fitted-covariance analysis.",
+  "reason": "Initial first-step attempt used the legacy supplied noise field, whereas frozen PhaseSTMPReceiver.infer recomputes estimate_spatial_noise(observation). Baseline replay failed; initial FIRST outputs are not accepted evidence for the intended receiver."
+}

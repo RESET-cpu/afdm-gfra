@@ -1,0 +1,513 @@
+=== PDF PAGE 1 ===
+D-OAMP: A DENOISING-BASED SIGNAL RECOVERY ALGORITHM
+FOR COMPRESSED SENSING
+Zhipeng Xue⋆ Junjie Ma† Xiaojun Yuan⋆
+⋆ School of Information Science and Technology, ShanghaiTech University
+†Department of Electronic Engineering, City University of Hong Kong
+ABSTRACT
+Approximate message passing (AMP) is an efﬁcient iterative
+signal recovery algorithm for compressed sensing (CS). For
+sensing matrices with independent and identically distributed
+(i.i.d.) Gaussian entries, the behavior of AMP can be asymp-
+totically described by a scaler recursion called state evolu-
+tion. Orthogonal AMP (OAMP) is a variant of AMP that im-
+poses a divergence-free constraint on the denoiser. In this
+paper, we extend OAMP to incorporate generic denoisers,
+hence the name D-OAMP. Our numerical results show that
+state evolution predicts the performance of D-OAMP well for
+generic denoisers when i.i.d. Gaussian or partial orthogo-
+nal sensing matrices are involved. We compare the perfor-
+mances of denosing-AMP (D-AMP) and D-OAMP for recov-
+ering natural images from CS measurements. Simulation re-
+sults show that D-OAMP outperforms D-AMP in both con-
+vergence speed and recovery accuracy for partial orthogonal
+sensing matrices.
+Index Terms — Compressed sensing, approximate mes-
+sage passing (AMP), denoising, orthogonal AMP, partial or-
+thogonal matrix.
+1. INTRODUCTION
+Compressed sensing (CS) is a new paradigm for signal ac-
+quisition [1]. The CS measurement process can be modeled
+as
+y = Ax0 + w, (1)
+where A∈ RM×N is the sensing (or measurement) matrix,
+x0 the signal and w∼N (0,σ 2I) the measurement noise.
+This paper is concerned with the signal recovery problem,
+namely, estimating x0 from y.
+Approximate message passing (AMP) [2] is a low-cost
+iterative signal recovery algorithm. There are two modules
+involved in AMP: a linear ﬁlter and a component-wise non-
+linear processor. The linear ﬁlter estimates the signal from
+compressed measurements, and the nonlinear processor re-
+ﬁnes the estimate by exploiting structural information of the
+signal (e.g., sparsity). A distinctive feature about AMP is that,
+when A has i.i.d. entries, the linear ﬁlter output can be mod-
+eled as an observation of the signal corrupted by white Gaus-
+sian noise [2, 3]. Furthermore, the variance of the Gaussian
+noise can be tracked through a scalar recursion called state
+evolution (SE) [2, 3]. The SE framework is useful for algo-
+rithm tuning. For instance, [4] develops a parametric AMP
+algorithm where the nonlinear processor is a linear combi-
+nation of multiple elementary nonlinear functions, see also
+[5]. Based on SE analysis, the combination coefﬁcients can
+be adaptively optimized in each iteration [4].
+The original AMP algorithm mainly focuses on sparse
+signal recovery. To exploit more general signal structure,
+[6] proposed a denoising-based AMP (D-AMP) framework
+where generic denoisers are used as the nonlinear processor.
+A large number of popular image denoisers were examined in
+[6]. The numerical results showed that D-AMP with off-the-
+shelf denoisers achieve state-of-the-art recovery performance
+for i.i.d. Gaussian sensing matrices. Due to complexity con-
+siderations, it is also of interest to use sensing matrices con-
+structed from fast implementable operators like discrete co-
+sine transform (DCT). A potential problem for D-AMP with
+such partial orthogonal matrix is that the SE framework might
+be inaccurate and the recovery performance cannot be guar-
+anteed. In [7], the authors adopted the turbo recovery algo-
+rithm in [8] to incorporate image denoisers such as BM3D
+[9]. However, the results in [7] showed that their proposed
+BM3D-turbo is inferior to D-AMP in reconstruction accuracy.
+Orthogonal AMP (OAMP) [10] is an extension of the
+turbo signal recovery algorithm in [8], and can be viewed as a
+special case of AMP where the denoiser is divergence-free. It
+was shown in [8, 10] that OAMP outperforms AMP for par-
+tial orthogonal sensing matrices when the entries of x0 are
+independently drawn from a known distribution. However,
+this random signal model does not hold for image processing
+applications considered in this paper.
+In this paper, we propose a denoising-based OAMP al-
+gorithm (D-OAMP) for recovering natural images from CS
+measurements. D-OAMP generalizes OAMP by integrating
+generic denoisers. We consider both i.i.d. Gaussian sensing
+matrices and partial orthogonal matrices. We develop an SE
+framework for D-OAMP. Our numerical results show that the
+SE for D-OAMP is accurate for both i.i.d. Gaussian and par-
+tial orthogonal sensing matrices. Unlike [7], our proposed D-
+OAMP outperforms D-AMP in both convergence speed and
+recovery accuracy when a partial orthogonal sensing matrix
+is involved and the BM3D denoiser is adopted.
+arXiv:1610.05991v1  [cs.IT]  19 Oct 2016
+
+=== PDF PAGE 2 ===
+2. DENOISING-BASED AMP
+2.1. D-AMP Algorithm
+Algorithm 1 D-AMP algorithm
+1: inputs: AM×N, yM×1, ˆx0 = 0, z0 = y
+2: fort = 0, 1, 2, 3,...,k do
+3: ˆσ2
+t = ∥zt∥2
+M
+4: rt = xt + AT zt
+5: ˆxt+1 =Dt(rt, ˆσt)
+6: zt+1 = y− Aˆxt+1 + ztdiv{Dt(rt)}/M
+7: end for
+8: outputs: ˆxout = ˆxk
+Before presenting D-OAMP, we ﬁrst review the D-AMP
+algorithm in [6]. The details of D-AMP are described in Al-
+gorithm 1.
+In D-AMP, D(rt) represents a denoiser. 1 From [6] the
+divergence ofD(rt) is deﬁned as
+div{D(rt)}≡ 1
+N
+N∑
+i=1
+∂ (D(rt))i
+∂rt
+i
+. (2)
+Many denoisers do not have explicit expressions. In such
+cases, we can use the following Monte Carlo method [6] to
+compute the divergence. Let e∼N (0, I) be an i.i.d. random
+Gaussian vector. The divergence of D(rt) can be estimated
+as [6]
+div
+{
+D(rt)
+}
+≈Ee
+{
+eT
+(D(rt +δe)−D(rt)
+δ
+)}
+, (3)
+where δ is a small constant. The expectation in (3) can be
+approximated by sample average. It is observed in [6] that
+one sample is good enough for high-dimensional problems.
+2.2. State Evolution
+When A has i.i.d. Gaussian entries, it is found empirically
+[6] that the mean square error (MSE) of D-AMP in each it-
+eration can be characterized by the following state evolution
+(SE) recursion
+τ 2
+t = 1
+δv2
+t +σ2, (4a)
+v2
+t+1 = 1
+NE
+{
+∥Dt (x0 +τte)− x0∥2
+}
+, (4b)
+where the expectation is taken over e∼N (0, I). In the ﬁrst
+iteration,v0 =∥x0∥2/N.
+The intuition behind the state evolutions is thatrt is an ef-
+fective observation for x0 with additive white Gaussian noise
+(AWGN) [2]. This is rigorously proved in [3] for AMP when
+1In general, the noise variance ˆσ2
+t is a parameter of the denoiser. How-
+ever, we sometimes writeD(rt) instead ofDt(rt, ˆσt) for notational brevity.
+A is an i.i.d. Gaussian sensing matrix. For D-AMP, the va-
+lidity of this property is examined through extensive simu-
+lations [6]. This “effective AWGN observation” property is
+attributed to the Onsager term [2, 6] ztdiv{Dt(rt)}/m (See
+line 7 in Algorithm 1).
+3. DENOISING-BASED OAMP
+We now present the proposed denoising-based OAMP (D-
+OAMP) algorithm.
+Algorithm 2 D-OAMP algorithm
+1: inputs: AM×N, yM×1,σ 2, ˆx0 = 0, z0 = y
+2: fort = 0, 1, 2, 3...,k do
+3: ˆvt = ∥zt∥2−Mσ 2
+tr(AT A)
+4: rt = ˆxt + Wtzt
+5: ˆσ2
+t = Φ(ˆv2
+t )
+6: ˆxt+1 =Dt(rt, ˆσt)
+7: zt+1 = y− Aˆxt+1
+8: end for
+9: outputs: ˆxout =Dout
+k (ˆrk;θk)
+3.1. D-OAMP Algorithm
+The D-OAMP algorithm is shown in Algorithm 2. In Algo-
+rithm 2, Wt is a linear ﬁlter. Readers are referred to [10, Sec-
+tion III-A] for details. Φ(·) (which depends on A and Wt)
+[10, Eqn. (31)] is used to estimate the noise variance of rt.
+Different from D-AMP, the denoiser D(rt) is required to be
+divergence-free [10], i.e. div{D(rt)} = 0. (We will discuss
+how to construct divgence-free denoisers in Section 3.3.) The
+estimate of D-OAMP is produced by Dout
+t (rt), which is not
+restricted to be divergence-free [10].
+3.2. State Evolution
+Following [10], we use the SE recursion below to characterize
+D-OAMP
+τ 2
+t = Φ(v2
+t ), (5a)
+v2
+t+1 = 1
+NE
+{
+∥Dt (x0 +τte)− x0∥2
+}
+, (5b)
+where the expectation is taken over e∼N (0, I), and v0 =
+∥x0∥2/N. Notice that the ﬁnal estimate of D-OAMP is pro-
+duced byDout
+t (which is not restricted to be divergence-free),
+and the corresponding MSE is predicted as
+1
+NE
+{Dout
+t (x0 +τte)− x0
+2}
+. (6)
+We will show that SE for D-OAMP is accurate for both i.i.d.
+Gaussian sensing matrices and partial orthogonal sensing ma-
+trices (with appropriate randomization). In comparison, the
+SE of D-AMP in Section 4 can be inaccurate for partial or-
+thogonal matrices.
+
+=== PDF PAGE 3 ===
+3.3. Divergence-free Denoisers for OAMP
+3.3.1. Construction of divergence-free denoisers
+The state evolutions in Section 2.2 and Section 3.2 are based
+on the AWGN model r = x0 +τ e, where e∼N (0, I). For
+brevity, we omit the iteration indext for r. Given a denoiser
+ˆD(r), we construct a divergence-free denoiser as follows [10]
+D(r) =C
+(
+ˆD(r)− div
+{
+ˆD(r)
+}
+r
+)
+, (7)
+whereC is an arbitrary constant. From (2), the divergence of
+D(r) in (7) can be expressed as
+div{D(r)} =
+C
+(
+div{ ˆD(r)}− div{ ˆD(r)}− 1
+N
+N∑
+i=1
+∂div{ ˆD(r)}
+∂ri
+ri
+)
+≈ 0,
+(8)
+where we assume that the contribution of each individual ri
+in div{ ˆD(r)} is negligible for a high-dimensional problem,
+and so the third term in (8) is approximately zero.
+To see the rationale behind (8), consider the following
+special case. Let x0 be an i.i.d. vector and ˆD(·) a component-
+wise function of r (i.e., ( ˆD(r))i = ˆD(ri)). In this case,
+div{ ˆD(r)} converges to a constant (independent of each in-
+dividual ri) as N → ∞by the law of large numbers. For
+non-random x0 and generic ˆD, we still expect div{ ˆD(r)} to
+be self-averaging, although this may not be true in a strict
+sense. Nevertheless, our numerical results in Section 4 show
+that the SE framework developed based on this assumption is
+reasonably accurate for real images and practical denoisers.
+3.3.2. Parameter tuning based on SURE
+For the divergence-free denoiser in (7),C is a free-parameter.
+Ideally, we chooseC that minimizes
+MSE = 1
+NE
+{
+∥D(r)− x0∥2}
+, (9)
+where r = x0 +τ e and the expectation in (9) is with respect
+to e. The problem is that we cannot compute the MSE in
+(9) since x0 is unknown. Following [4, 5], we choose C that
+minimizes Stein’s unbiased risk estimate (SURE) [11]
+ˆMSE = 1
+N∥D(r)− r∥2 + 2τ 2
+N div{D(r)}− τ 2 (10a)
+= 1
+N∥D(r)− r∥2−τ 2 (10b)
+= 1
+N∥C
+(
+ˆD(r)− div{ ˆD(r)}r
+)
+− r∥2−τ 2 (10c)
+where the second equality is due to the fact that D(r) is
+divergence-free (c.f., (8)). The optimalC that minimizes (10)
+(which is a quadratic function ofC) is given by
+C⋆ =
+rT
+(
+ˆD(r)− div{ ˆD(r)}r
+)
+∥ ˆD(r)− div{ ˆD(r)}r∥2 . (11)
+3.3.3. The SURE-LET framework
+The SURE-LET framework in [4, 5] can also be integrated
+into the D-OAMP algorithm. In SURE-LET, the denoiser
+D(r) is given by a linear combination of multiple elementary
+denoisers:
+D(r) =
+K∑
+k=1
+Ck
+(
+ˆDk(r)− div{ ˆDk(r)}r
+)
+. (12)
+Here, each elementary denoiser is divergence-free (c.f., (7)),
+and soD(r) is also divergence-free.
+Denote C⋆ ≡ [C⋆
+1,C⋆
+2,...,C ⋆
+K]T where{C⋆
+k} are the
+optimal values of{Ck} that minimize the SURE. Let Gk≡
+ˆDk(r)− div{ ˆDk(r)}r, and deﬁne Mi,j ≡ GT
+i Gj, b ≡
+[GT
+1 r, GT
+2 r,..., GT
+Kr]T . Following similar derivations as
+(11), we obtain the following optimal combining coefﬁcients:
+C⋆ = M−1b. (13)
+4. NUMERICAL RESULTS
+In this section, we provide numerical results of D-AMP and
+D-OAMP in CS image recovery. The recovery accuracy is
+measured by both normalized mean square error (NMSE) and
+peak signal-to-noise ratio (PSNR):
+NMSE =∥ˆx− x0∥2
+∥x0∥2 , (14)
+PNSR = 10 log10
+(MAX2
+MSE
+)
+, (15)
+where MAX denotes the maximum pixel values of the image.
+We consider two denoisers, the piecewise linear kernel in [4]
+and BM3D denoiser [9] to construct denoiser D(r) respec-
+tively. The corresponding algorithms are denoted respectively
+as LET-AMP, LET-OAMP, BM3D-AMP and BM3D-OAMP.
+4.1. Accuracy of State Evolution
+4.1.1. Gaussian sensing matrix
+Consider an i.i.d. Gaussian A with eachAi,j∼N (0, 1/M).
+In this case, we choose Wt to be the linear minimum mean
+square error estimation (LMMSE) matrix [10, Eqn. (38)]. The
+Φ function in (5a) is given by [10, Eqn. (43c)]
+Φ(v2
+t ) = σ2 +cv2
+t +
+√
+(σ2 +cv2
+t )2 + 4σ2v2
+t
+2 , (16)
+wherec = (N−M)/M. The simulated MSEs and SE pre-
+dictions are shown in Fig. 1a. We see that the SE predictions
+match well with simulated MSEs for both D-AMP and D-
+OAMP.
+
+=== PDF PAGE 4 ===
+0 5 10 15 20
+Iteration
+0.015
+0.02
+0.025
+0.03
+0.035
+0.04
+0.045
+0.05
+0.055NMSE
+LET-OAMP
+SE of LET-OAMP
+LET-AMP
+SE of l1 AMP
+(a) Gaussian matrix, measurement rate
+0.3, input noiseless image Fingerprint.
+0 5 10 15 20
+Iteration
+10-3
+10-2
+10-1
+100
+NMSE
+LET-OAMP
+SE of LET-OAMP
+LET-AMP
+SE of LET-AMP
+(b) Orthogonal matrix, measurement rate
+0.3, input noiseless image Fingerprint.
+0 5 10 15 20
+Iteration
+10-3
+10-2
+10-1
+NMSE
+BM3D-OAMP
+SE of BM3D-OAMP
+BM3D-AMP
+SE of BM3D-AMP
+(c) Orthogonal matrix, measurement rate
+0.3, input noiseless image Fingerprint.
+Fig. 1: State evolution of D-AMP and D-OAMP
+Images Lena Boat Barbara Fingerprint
+Measurement rate 30% 50% 70% 30% 50% 70% 30% 50% 70% 30% 50% 70%
+EM-GM-AMP 26.89 29.50 32.38 24.70 27.78 30.95 24.47 27.69 32.14 22.51 26.04 29.58
+LET-AMP 22.53 30.78 33.74 21.51 29.00 32.42 19.69 28.92 32.46 17.48 27.25 31.11
+LET-OAMP 27.72 31.12 34.80 25.70 29.44 33.54 25.49 29.36 33.70 23.60 27.82 32.48
+BM3D-AMP 34.72 38.20 38.98 34.09 34.70 37.92 35.15 38.24 41.39 28.97 33.18 37.00
+BM3D-OAMP 35.50 38.26 42.36 34.59 37.60 41.28 36.51 39.83 43.35 31.01 35.24 39.79
+Table 1: PSNR of reconstructed images under orthogonal matrix
+Images Lena Boat Barbara Fingerprint
+Measurement rate 30% 50% 70% 30% 50% 70% 30% 50% 70% 30% 50% 70%
+LET-AMP 12.68 12.47 12.29 12.48 12.7 12.75 12.49 12.45 12.83 12.74 12.41 13.57
+LET-OAMP 4.60 3.97 2.72 4.39 3.86 3.33 4.32 3.72 3.45 7.95 5.1 4.92
+Table 2: Reconstruction time of images under orthogonal matrix
+4.1.2. Partial orthogonal sensing matrix
+We use the following partial orthogonal matrix:
+A =
+√
+N/MSFTΘ1F Θ2, (17)
+where S is a selective matrix,F is a DCT matrix andΘ1, Θ2
+are diagonal matrices with diagonals being 1 or -1 with equal
+probability. Here, Θ1 and Θ2 are introduced to properly ran-
+domize A. The SE in (5a) now becomes [10, Eqn. (45)]
+Φ(v2
+t ) = N−M
+M v2
+t +σ2. (18)
+Figs. 1b and 1c plot, respectively, the MSE performances
+of LET-AMP/LET-OAMP and BM3D-AMP/BM3D-OAMP.
+In these simulations, we use the “ﬁngerprint” from the Javier
+Portillas dataset [12]. More comprehensive numerical com-
+parisons will be provided in Table 1. We ﬁnd that LET-AMP
+in Algorithm 1 does not work well (diverge under the current
+scenario) for partial orthogonal matrices. To address this, we
+adopt more robust median estimator for ˆσ2 proposed in [13]
+in D-AMP. Even after tuning, the D-AMP algorithm in both
+Figs. 1b and 1c deviate from SE prediction and does not work
+well under low sampling rate (like Fig. 1b). In contrast, the
+SE for D-OAMP well predicts the simulated MSEs.
+4.2. Performance Comparison
+In Table 1, we report the PSNR of noiseless image recovery
+(of size 512×512) under the orthogonal matrix given in (17).
+We see that D-OAMP uniformly outperforms D-AMP and
+EM-GM-AMP [14]. We further compare the reconstruction
+time of LET-AMP and LET-OAMP in Table 2. Both algo-
+rithms are run until convergence is reached. We see that LET-
+OAMP also converges faster than LET-AMP. This is consis-
+tent with the observation in Fig. 1b.
+5. CONCLUSION
+In this paper, we proposed D-OAMP algorithm for com-
+pressed sensing. D-OAMP does not require the knowledge
+of distribution of input signal and therefore can be adopted
+in many applications. Numerical results show that D-OAMP
+outperforms D-AMP in terms of both recovery accuracy and
+convergence speed for partial orthogonal sensing matrices.
+
+=== PDF PAGE 5 ===
+6. REFERENCES
+[1] D. L. Donoho, “Compressed sensing,” IEEE Trans. Inf.
+Theory, vol. 52, no. 4, pp. 1289–1306, Apr. 2006.
+[2] D. L. Donoho, A. Maleki, and A. Montanari, “Message-
+passing algorithms for compressed sensing,” in Proc.
+Nat. Acad. Sci., vol. 106, no. 45, Nov. 2009.
+[3] M. Bayati and A. Montanari, “The dynamics of mes-
+sage passing on dense graphs, with applications to com-
+pressed sensing,”IEEE Trans. Inf. Theory, vol. 57, no. 2,
+pp. 764–785, Feb. 2011.
+[4] C. Guo and M. E. Davies, “Near optimal compressed
+sensing without priors: Parametric SURE approximate
+message passing,” IEEE Trans. Signal Process., vol. 63,
+no. 8, pp. 2130–2141, Mar. 2015.
+[5] T. Blu and F. Luisier, “The SURE-LET approach to im-
+age denoising,” IEEE Trans. Image Process. , vol. 16,
+no. 11, pp. 2778–2786, Nov. 2007.
+[6] C. A. Metzler, A. Maleki, and R. G. Baraniuk, “From
+denoising to compressed sensing,”IEEE Trans. Inf. The-
+ory, vol. 62, no. 9, pp. 5117–5144, Sept. 2016.
+[7] A. Perelli and M. E. Davies, “Compressive computed
+tomography image reconstruction with denoising mes-
+sage passing algorithms,” in Signal Processing Confer-
+ence (EUSIPCO), 2015 23rd European . IEEE, Dec.
+2015, pp. 2806–2810.
+[8] J. Ma, X. Yuan, and L. Ping, “Turbo compressed sensing
+with partial DFT sensing matrix,” IEEE Signal Process.
+Lett., vol. 22, no. 2, pp. 158–161, Feb. 2015.
+[9] K. Dabov, A. Foi, V . Katkovnik, and K. Egiazarian, “Im-
+age denoising with block-matching and 3D ﬁltering,” in
+Electronic Imaging 2006. International Society for Op-
+tics and Photonics, 2006, pp. 606 414–606 414.
+[10] J. Ma and L. Ping, “Orthogonal AMP,” arXiv preprint
+arXiv:1602.06509, 2016.
+[11] C. M. Stein, “Estimation of the mean of a multivariate
+normal distribution,” The annals of Statistics , pp. 1135–
+1151, 1981.
+[12] “CIV Test Images,” http://www.io.csic.es/PagsPers/
+JPortilla/image-processing/bls-gsm/63-test-images, ac-
+cessed 2016-05-19.
+[13] L. Anitori, A. Maleki, M. Otten, R. G. Baraniuk, and
+P. Hoogeboom, “Design and analysis of compressed
+sensing radar detectors,” IEEE Trans. Signal Process. ,
+vol. 61, no. 4, pp. 813–827, Feb. 2013.
+[14] J. P. Vila and P. Schniter, “Expectation-maximization
+Gaussian-mixture approximate message passing,” IEEE
+Trans. Signal Process., vol. 61, no. 19, pp. 4658–4672,
+Oct. 2013.

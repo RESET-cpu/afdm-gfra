@@ -1,0 +1,83 @@
+"""Previously verified NTN-TDL profile generation, unchanged numerically."""
+from dataclasses import replace
+import numpy as np
+from system.scenario.unknown_phase import generate_case
+from system.phase import phase_operator
+from system import config as cfg
+from system.scenario.geometry_consistent import draw_scene
+from system.scenario.continuous import full_h_and_phase
+from system.observation import array_sha256
+
+SOURCE = 'https://atisorg.s3.amazonaws.com/archive/3gpp-documents/Rel15/ATIS.3GPP.38.811.V1530.pdf'
+
+
+PROFILES = {
+    'A': [(0., 0., 'rayleigh'), (1.0811, -4.675, 'rayleigh'), (2.8416, -6.482, 'rayleigh')],
+    'B': [(0., 0., 'rayleigh'), (.7249, -1.973, 'rayleigh'), (.7410, -4.332, 'rayleigh'),
+          (5.7392, -11.914, 'rayleigh')],
+    'C': [(0., -.394, 'los'), (0., -10.618, 'rayleigh'), (14.8124, -23.373, 'rayleigh')],
+    'D': [(0., -.284, 'los'), (0., -11.991, 'rayleigh'), (.5596, -9.887, 'rayleigh'),
+          (7.3340, -16.771, 'rayleigh')],
+}
+
+
+def profile_scene(seed, profile, *, users=40, activity_probability=.1):
+    """Keep geometry; apply tabulated relative tap powers and delay scaling.
+
+    A/B/C use independent fading streams; D is the exact original sampler.
+    Match total expected tap power to D, without per-realization normalization.
+    Common per-user satellite Doppler and direction remain the project model;
+    this does not simulate the full time-varying terrestrial Doppler spectrum.
+    """
+    if profile not in PROFILES:
+        raise ValueError('Expected NTN-TDL-A/B/C/D')
+    scene, geometry = draw_scene(seed, n_users=users, activity_probability=activity_probability)
+    reference_power = float(np.sum(10.**(np.asarray(cfg.NTN_TDL_D_POWER_DB)/10)))
+    rows = PROFILES[profile]
+    factor = reference_power / sum(10.**(db/10) for _, db, _ in rows)
+    if profile == 'D':
+        if rows != list(zip(cfg.NTN_TDL_D_NORMALIZED_DELAYS, cfg.NTN_TDL_D_POWER_DB, cfg.NTN_TDL_D_FADING)):
+            raise ValueError('Mainline D profile differs from the cited table')
+        return scene, factor
+    paths = []
+    for user in range(users):
+        base = scene.paths_of(user)[0]
+        for index, (delay, db, fading) in enumerate(rows):
+            rng = np.random.default_rng(np.random.SeedSequence([seed, 8220, user, index]))
+            unit = np.exp(1j*rng.uniform(0, 2*np.pi)) if fading == 'los' else (
+                rng.normal()+1j*rng.normal())/np.sqrt(2)
+            gain = np.sqrt(factor*10.**(db/10))*unit
+            path = replace(base, path_id=index, normalized_delay=delay,
+                           gain=complex(gain), legacy_gain=complex(gain))
+            if path.delay_s > cfg.TAU_MAX_S:
+                raise ValueError('Profile exceeds declared physical delay support; do not clip or reject-sample')
+            paths.append(path)
+    return replace(scene, paths=tuple(paths)), factor
+
+
+def generate_profile_case(seed, snr_db, scale, *, profile, users=40, frames=16, activity_probability=.1):
+    # Original D path is unchanged, including its activity conditioning and RNG.
+    public, truth, metadata = generate_case(seed, snr_db, scale, users=users, frames=frames,
+                                            activity_probability=activity_probability)
+    scene, factor = profile_scene(seed, profile, users=users, activity_probability=activity_probability)
+    if profile != 'D':
+        scene = replace(scene, activity=truth['activity'].copy())
+        h, _ = full_h_and_phase(scene, frames)
+        operator = phase_operator(public['pilot'], truth['phase_slopes'])
+        clean = np.einsum('qkn,kmrn->qmr', operator, h, optimize=False)
+        power = float(np.mean(abs(clean)**2))
+        variance = power*10.**(-snr_db/10)
+        rng = np.random.default_rng(np.random.SeedSequence([seed, 2096]))
+        shape = (32, h.shape[1], cfg.N)
+        epsilon = ((rng.normal(size=shape)+1j*rng.normal(size=shape))/np.sqrt(2))[:frames]
+        public.update(observation=clean+np.sqrt(variance)*epsilon, noise_variance=variance)
+        truth = dict(truth, channel=h)
+        metadata.update(generator_version='experiment_ntn_tdl_profiles_v1', physical_clean_power=power,
+                        noise_variance=variance, standardized_noise_sha256=array_sha256(epsilon))
+    metadata.update(channel_model='NTN-TDL-'+profile, profile_source=SOURCE,
+                    profile_table='6.9.2-'+str('ABCD'.index(profile)+1),
+                    profile_components=PROFILES[profile], expected_tap_power_scale=factor,
+                    profile_scope='Tabulated power-delay/fading profile in the fixed project geometry; common direction and satellite Doppler',
+                    power_policy='Match total expected tap power to frozen D; never normalize individual channels',
+                    cross_profile_pairing='Same geometry, activity, pilot and standard noise; D retains original fading stream')
+    return public, truth, metadata

@@ -1,0 +1,56 @@
+{
+  "status": "CONTINUATION_VERIFIED",
+  "observed_at_unix": 1792904518.7584352,
+  "current_status": {
+    "status": "EPOCH_COMPLETE",
+    "pid": 86448,
+    "stage": "activity",
+    "updated_unix": 1792904518.2135048,
+    "execution": "prefetch_pinned_same_batch",
+    "epoch": 27,
+    "maximum_epochs": 100,
+    "optimizer_steps": 42201,
+    "validation_bce": 0.04333301121848418,
+    "validation_aer_at_rho_0_1": 0.0038,
+    "selected_epoch": 27,
+    "elapsed_invocation_seconds": 98.16460609436035
+  },
+  "original_seconds_per_epoch_median": 52.94535291194916,
+  "original_epochs": [
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "accelerated_seconds_per_epoch_mean": 44.45665752887726,
+  "accelerated_full_epochs": [
+    26,
+    27
+  ],
+  "epoch_time_reduction_fraction": 0.16032937578467055,
+  "validation_loss_before": 0.04377307195922086,
+  "validation_loss_latest": 0.04333301121848418,
+  "gpu_utilization_observed_percent": [
+    90,
+    91,
+    88,
+    90,
+    88,
+    88,
+    85,
+    88,
+    91,
+    91
+  ],
+  "excluded_timing_epoch25": "Elapsed time covers only the resumed portion; cumulative train loss includes the whole epoch.",
+  "execution_sha256": "a79bf0df1db884cc06e6435619b77b832d4a77e4af421c179a54de6ec591265b",
+  "benchmark_sha256": "cb9590a8980678a903e8aeb4c4d03084c79bb712a3b083e906dbc6dc4c93eec5",
+  "parent_checkpoint_sha256": "ee255cd2ca095ced9557808eaa1369368c56e87e3cc1521b98f6668159d5764a",
+  "snr_status": "STOPPED_BY_USER"
+}

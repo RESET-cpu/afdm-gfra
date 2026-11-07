@@ -1,0 +1,63 @@
+PDF PAGE 7
+                                                                                                                                                         7
+
+
+ˆhk∼CN(0,vdeck  (t)). Therefore,lcek(t) is derived as follows                  Algorithm 1 BR-MP-EM Algorithm
+                                                                               Initialization:
+lcek(t)=lnP(ˆhk =µdeck  (t)|αk = 1,µprik (τ),vprik (τ),vdeck  (t))             τ = 1, ˆhr(τ) =      hr, ˆφδ(τ) = 0,t = 1,vvnk→l(t) = ˆh2r(τ)vrayk  ,
+                      P(ˆhk =µdeck  (t)|αk = 0,vdeck  (t))                     µvnk→l(t) = ˆhr(τ)ejˆφδ(τ)hloskejφlosk ,lvnk→l(t) = ln pa
+                                                                                                                                         1−pa.
+       =lnf(µdeck  (t)|µprik (τ),vprik (τ)+vdeck  (t))                         1:forτ = 1 : 1 :Nout
+                      f(µdeck  (t)|0,vdeck  (t))                               2:     fort = 1 : 1 :Nin
+       =ln   vdeck  (t)                                          k (τ)|2       3:        SN updateµsnl→k(t),vsnl→k(t) by (9).
+             vprik (τ)+vdeck  (t) +|µdeck  (t)|2vdeck  (t)−|µdeck  (t)−µprivprik (τ)+vdeck  (t)4:        SN updatelsnl→k(t) by (12).
+                                                                      (19)     5:        VN updateµvnk→l(t+1),vvnk→l(t+1) by (13).
+wheref(x|µ,σ2) is deﬁned in (11).                                              6:        VN updatelvnk→l(t+1) by (15).
+                                                                               7:     end
+B. Expectation-Maximization Update of Hyper-Parameters                         8: CE outputµdeck  (Nin),µdeck  (Nin−1), andvdeck  (Nin) by (17).
+   If  devicek  is  detected  as  active  after  a  certain  number            9: UAD decisionldeck  (Nin) by (18).
+of  inner  iterations,µdeck  (t)  andvdeck  (t)  are  passed  to  the          10:Relative variation ∆k =|µdeck (Nin)−µdeck (Nin−1)|
+right  sub-graph  of  Fig.  2  to  update  the  hyper-parameters                                                       |µdeck (Nin−1)|        .
+hr  and φδ  with  the  EM  method.  Note  that  the  Rician                    11:EM indexK+ ={ldeck  (Nin)> 0 and ∆k<ηth,∀k}
+messagesµdeck  (t)  andvdeck  (t)  from  the  left  sub-graph  of              12:EM update of ˆhr(τ +1), ˆφδ(τ +1) by (25)
+Fig.  2  characterize  the  posterior  complex  Gaussian  pdf                  13:µvnk→l(1) =µvnk→l(Nin+1),vvnk→l(1) =vvnk→l(Nin+1),
+f(hk|µdeck  (t),vdeck  (t);y,ˆhr(τ), ˆφδ(τ))  ofhk.  For  notational           14:lvnk→l(1) =lvnk→l(Nin+1).
+simplicity, we rewrite this posterior Gaussian pdf asfposτ  (hk),              15:end
+
+    fposτ  (hk) ∆=f(hk|µdeck  (t),vdeck  (t);y,ˆhr(τ), ˆφδ(τ)).      (20)      Final Decision:
+It  is  shown  thatfposτ  (hk)  is  obtained  with  given  hyper-              ˆh={ˆαkµdeck  (Nin),∀k},ˆa={ˆαk,∀k}with ˆαk obtainedby(18).
+parameters  ˆhr(τ)  and   ˆφδ(τ)  after  the τ-th  outer  itera-
+tion.  According  to  (6),  we  deﬁne  the  prior  Gaussian  pdf
+fpri(hk;hr,φδ) conditioned on hyper-parametershr andφδ,
+     fpri(hk;hr,φδ) ∆=f(hk|hrhloskej(φlosk +φδ),h2rvrayk  )       (21)
+Then, the EM update in the (τ + 1)-th outer iteration aims                     whereK+  is the set of devices that are detected as active
+to ﬁnd a pair of hyper-parameters ˆhr(τ +1) and ˆφδ(τ +1)                      and participate in the EM update. To solve the maximization[ ∑            ]
+that maximizes the expectation E[fpri(hk;hr,φδ)] over the                      problem in (23), we differentiateE
+distributionfposτ  (hk), i.e.,                                                                                              k∈K+lnfpri(hk;hr,φδ)
+                                                                               with respect tohr  andφδ  respectively, and set both partial
+      {ˆhr(τ +1), ˆφδ(τ +1)}                                                   derivatives to 0. In this way, we have the following set of
+       = argmax                                                                equations,        (∑                             )∏
+            hr,φδ    E[fpri(hk;hr,φδ)]                                             ∫    ∫ ∏
+       (b)= argmax                                                    (22)           ...       fposτ  (hk)       ∂lnfpri(hk;hr,φδ)            dhk = 0,
+             hr,φδ    E[lnfpri(hk;hr,φδ)]                                                 k∈K+            k∈K+            ∂hr            k∈K+
+                       ∫                                                           ∫    ∫ ∏             (∑                             )∏
+       (c)= argmax                                                                                         ∂lnfpri(hk;hr,φδ)
+                          fposτ  (hk)lnfpri(hk;hr,φδ)dhk                             ...       fposτ  (hk)                                    dhk = 0.
+             hr,φδ                                                                                                        ∂φδ
+                                                                                          k∈K+            k∈K+                           k∈K+
+where equation (b) of (22) is obtained by the fact that ln(x)                                                                                        (24)
+is a monotonic function, and equation (c) of (22) is obtained                  By solving (24), we have the solution to (23). Then, the hyper-
+by the fact that the expectation E[·] is taken overhk  with                    parameters in the (τ + 1)-th outer iteration are updated as
+posterior pdffposτ  (hk).                                                      follows
+   Considering that all the active devices share the same hyper-                        ˆφδ(τ +1) =∠M(τ)
+parameters, we further extend the EM update equation (22)                                                                 |M(τ)|2+4N(τ)              (25)
+from the single-user case to the multi-user case, i.e.,                               ˆhr(τ +1) =−|M(τ)|+√
+{ˆhr(τ +1), ˆφδ(τ +1)}                                                                                                     2
+                   [ ∑                           ]                             where ∠M(τ)  represents  the  angle  of  a  complex  num-⣨( ⟩
+ = argmax                   lnfpri(hk;hr,φδ)                                   berM(τ),M(τ)  =                 µdeck  (t)hloske−jφlosk)/vrayk,N(τ)  =
+       hr,φδ    E                                                              ⟨(vdeck  (t)+|µdeck  (t)|2)/vray⟩.⟨·⟩ represents the averaging op-
+                     k∈K+         (∑                          )∏                                             k
+             ∫    ∫ ∏                                                          eration,  i.e.,⟨xk⟩  =   ∑
+ =argmax       ...       fposτ  (hk)      lnfpri(hk;hr,φδ)           dhk       number of elements in the setK+. The detailed derivationk∈K+xk/∥K+∥  where∥K+∥  is  the
+      hr,φδ         k∈K+            k∈K+                        k∈K+
+                                                                      (23)     of (25) is explained in Appendix A.

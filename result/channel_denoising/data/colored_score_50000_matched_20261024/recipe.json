@@ -1,0 +1,54 @@
+{
+  "schema": "colored-first-score-matched-training-v1",
+  "base_config": "src/configs/final/STMP.json",
+  "original_training": "result/runs/proposed_50000_cuda_graph_20261018/training.json",
+  "original_training_sha256": "bc93359b3c2d5c0bc481d42b3f0f628e6eeaeae2116e419d466fc7b4885b911d",
+  "output": "result/channel_denoising/data/colored_score_50000_matched_20261024",
+  "scale": 0.2647966452702405,
+  "train_samples": 50000,
+  "validation_samples": 5000,
+  "evaluation_scenes": 1000,
+  "first": {
+    "initial_checkpoint": "result/runs/proposed_50000_cuda_20261018/initialization/first.pt",
+    "initial_checkpoint_sha256": "1ff7105ad62ba3bb0d509501fe7fbd317a7361286649c74ade53404e9230fd63",
+    "objective": "Conditional colored Gaussian DSM; original scalar weighting generalized to Sigma",
+    "seed": 202610180720001,
+    "validation_seed": 202610180720002,
+    "batch_size": 64,
+    "microbatch_size": 16,
+    "learning_rate": 0.0001,
+    "minimum_learning_rate": 1e-06,
+    "ema_decay": 0.999,
+    "gradient_clip": 1.0,
+    "checkpoint_seconds": 120,
+    "maximum_epochs": 200,
+    "minimum_epochs": 200,
+    "validation_patience": 201,
+    "meaningful_relative_improvement": 0.001,
+    "selection": "Minimum fixed-noise validation objective, including initial baseline",
+    "stopping": "Exactly 200 complete data epochs; no validation early stop"
+  },
+  "noise": {
+    "snr_db": [
+      -20,
+      30
+    ],
+    "max_strength": 0.5,
+    "rank": 4
+  },
+  "shape_seed": 2026102403,
+  "validation_shape_seed": 2026102404,
+  "runtime": {
+    "device": "cuda",
+    "threads": 1,
+    "execution_batch_size": 64,
+    "cuda_graph": true,
+    "precision": "float32"
+  },
+  "differences": [
+    "Online covariance factors and correlated noise; independent shape RNG leaves original base-noise/shuffle stream unchanged.",
+    "Exact covariance condition added with zero initialized new weights; original backbone initialization is reused.",
+    "Covariance weighted DSM and conditional mean replace scalar formulas."
+  ],
+  "scope": "First-score training only. Same original random initializer and 200 complete epochs; no auxiliary training or receiver binding."
+}

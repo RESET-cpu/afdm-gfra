@@ -1,0 +1,2205 @@
+=== PDF PAGE 1 ===
+1
+Orthogonal AMP for Problems with Multiple Measurement
+Vectors and/or Multiple Transforms
+Yiyao Cheng, Lei Liu, Member, IEEE, Shansuo Liang,
+Jonathan H. Manton, Fellow, IEEE, and Li Ping, Fellow, IEEE
+Abstract—Approximate message passing (AMP) algorithms
+break a (high-dimensional) statistical problem into parts then
+repeatedly solve each part in turn, akin to alternating projections.
+A distinguishing feature is their asymptotic behaviours can be ac-
+curately predicted via their associated state evolution equations.
+Orthogonal AMP (OAMP) was recently developed to avoid the
+need for computing the so-called Onsager term in traditional
+AMP algorithms, providing two clear beneﬁts: the derivation of
+an OAMP algorithm is both straightforward and more broadly
+applicable. OAMP was originally demonstrated for statistical
+problems with a single measurement vector and single transform.
+This paper extends OAMP to statistical problems with multiple
+measurement vectors (MMVs) and multiple transforms (MTs).
+We name the resulting algorithms as OAMP-MMV and OAMP-
+MT respectively, and their combination as augmented OAMP (A-
+OAMP). Whereas the extension of traditional AMP algorithms
+to such problems would be challenging, the orthogonal principle
+underpinning OAMP makes these extensions straightforward.
+The MMV and MT models are widely applicable to signal
+processing and communications. We present an example of
+MIMO relay system with correlated source data and signal
+clipping, which can be modelled as a joint MMV-MT system.
+While existing methods meet with difﬁculties in this example,
+OAMP offers an efﬁcient solution with excellent performance.
+Index Terms—Multiple measurement vectors (MMVs), multi-
+ple transforms (MTs), state evolution, MIMO-relay network.
+I. I NTRODUCTION
+A. Problem Formulation
+Fig. 1(a) illustrates a problem involving two variables Ξ
+andX connected by a transform:
+Ξ =VX , (1)
+where V is an orthogonal matrix. Two constraints Γ and Φ
+are applied to Ξ andX respectively. Our task is to estimate
+X (or equivalently Ξ). For simplicity, we assume that Ξ,V
+andX are all real in this paper unless otherwise stated. The
+results can be extended to the complex case straightforwardly.
+Yiyao Cheng and Li Ping are with the Department of Electrical Engineer-
+ing, CityU, Hong Kong, SAR, China (e-mail: yiycheng2-c@my.cityu.edu.hk,
+eeliping@cityu.edu.hk).
+Lei Liu was with the Department of Electronic Engineering, City University
+of Hong Kong (CityU), Hong Kong, SAR, China, and is currently with the
+School of Information Science, Japan Institute of Science and Technology
+(JAIST), Ishikawa 923-1292, Japan (e-mail: leiliu@jaist.ac.jp).
+Shansuo Liang is with the Theory Lab, Central Research Institute,
+2012 Labs, Huawei Technologies Co. Ltd, Hong Kong, SAR, China (e-
+mail:liang.shansuo@huawei.com).
+Jonathan H. Manton is with the Department of Electrical and Electronic
+Engineering, The University of Melbourne, VIC 3010, Australia (e-mail:
+j.manton@ieee.org).
+
+
+X
+
+ VX
+(a) A linear transform system with two constraints Φ and Γ.
+f
+
+out
+in
+outX
+inX
+ VX
+(b) Generic iterative processing (GIP) for the system in (11)
+Fig. 1. Graphical illustration for an MMV system
+For example, consider a linear model:
+Y =SX +N , (2)
+where the columns of Y are called measurement vectors, S
+a sensing matrix and N a noise matrix. The columns of X
+are vectors to be estimated. Assume that the entries of X
+are sampled from a ﬁnite alphabet. Such an example arises
+in communication systems where the alphabet is given by
+a modulation constellation. For convenience, we will express
+such a constraint as an a priori distribution p(X).
+Let the singular value decomposition (SVD) of S beS =
+UΛV where Λ is diagonal, andU andV are both orthogonal.
+DeﬁneR≡U TY , Υ≡U TN and Ξ≡VX . Then (2) can
+be represented by Fig. 1(a) using the following two constraints:
+Γ : R = ΛΞ + Υ, (3a)
+Φ : X∼ p(X). (3b)
+Clearly, (3) can be represented by Fig. 1(a).
+SMV and MMV Problems: IfX contains only one column,
+we call Fig. 1(a) a single measurement vector (SMV) problem.
+Otherwise, we call it a multiple measurement vector (MMV)
+one since typically multiple measurements are involved, each
+providing information about a particular column ofX. If there
+is a correlation between different columns of X, an MMV
+problem can be substantially more difﬁcult than an SMV one.
+ST and MT Problems: The problem in Fig. 1(a) involves
+a single transform (ST). A more general one may involve
+multiple transforms (MTs), say V1, V2,··· ,VK. Two MT
+examples are shown in Fig. 2(a) and Fig. 3 for K = 2 and
+K = 4 respectively (which will be detailed in Sec. IV). In
+practice, the transforms{Vk} can be related to (but not limited
+to) the transforms to different domains such as time, frequency
+and space.
+MMV and MT problems are found in a wide range of
+applications, e.g., direction of arrival (DOA) estimation [2],
+arXiv:2304.08038v1  [cs.IT]  17 Apr 2023
+
+=== PDF PAGE 2 ===
+2
+[3], magnetic resonance imaging (MRI) [4], [5], multiple-input
+multiple-output (MIMO) systems [6], [7] and cognitive radio
+networks [8]. An example of an MIMO-relay system will be
+given in Sec. V below.
+B. Approximate Message Passing (AMP)
+Optimal estimations in the above problems using all the
+available pieces of statistical information are generally pro-
+hibitively complicated. Approximate message passing (AMP)
+is a low-cost technique for such problems. AMP is an iterative
+process converging to a parameter estimate by cyclically
+applying each piece of statistical information in turn, akin to
+alternating projections. This involves local estimators in each
+domain plus a global combining/exchanging process of the
+outputs of different local processors. Data incest is a main
+problem for such an iterative process. AMP uses an Onsager
+term, an idea borrowed from statistical mechanics, to avoid
+this problem [9].
+AMP was originally devised for the SMV-ST model in (2)
+withS comprising of independently and identically distributed
+Gaussian (IID-Gaussian or IIDG) entries [9]. A distinguish-
+ing feature of AMP is a state evolution (SE) technique for
+predicting the mean-square error (MSE) at each iteration with
+proven asymptotic accuracy [10], which provides a probabilis-
+tic performance assurance for AMP. In principle, one can seek
+to optimize the performance by altering the estimates used at
+each step, guided by SE. It has been widely reported that AMP
+outperforms other alternatives, such as the celebrated turbo
+algorithm [11], in many signal processing and communication
+applications. It has also been observed that AMP may perform
+poorly when S is not IID.
+AMP has been extended to MMV-ST and SMV-MT prob-
+lems separately [12]–[15], but, to the best of our knowledge,
+there are restrictions in the available AMP schemes for MMV
+or MT problems. For example, similar to the standard AMP,
+IIDG sensing matrices are assumed in AMP-based MMV
+algorithms [12], [13]. The method studied in [15] is for a
+speciﬁc cascading MT structure with alternative linear and
+non-linear constraints. The SE for the existing AMP-based
+MMV and MT problems are either proved on a case-by-case
+basis [15] or veriﬁed empirically [12]. Overall, there is still
+a lack of a uniﬁed framework for solving MMV and MT
+problems using AMP.
+C. Orthogonal AMP (OAMP)
+Orthogonal AMP, introduced in [16] and elaborated on [17]–
+[19], was also originaly devised for the SMV-ST model in (2).
+OAMP can work with unitarily-invariant sensing matrices [16],
+[18], [19]. IIDG matrices are unitarily-invariant, so OAMP has
+a broader application range than AMP.
+OAMP [16] comprises two aspects. First, instead of the
+Onsager term, OAMP employs an orthogonal principle to sup-
+press data incest during iterative processing. This is a principle
+rather than an algorithm, because the user is largely free to
+choose the detailed updating functions (i.e., the prototype local
+estimators) at each step.
+The second aspect of OAMP is a constructive method for
+a working algorithm with the required orthogonality. This is
+ﬁrst discussed in [16] using a differential approach and later in
+[19] using an integral approach. The latter employs a Gram-
+schmidt orthogonalization (GSO) technique and is more robust
+than the former.
+The SE analysis of OAMP in [20] provides a probabilistic
+performance assurance for OAMP. The optimality of OAMP
+is studied under the minimum MSE (MMSE) measure in
+[16] and also under the mutual information measure in [21].
+Various applications of OAMP have been reported for signal
+processing and communications problems [18], [22]–[26].
+D. Contributions of This Paper
+In this paper, we investigate OAMP-based solutions for
+systems beyond SMV and ST. We deﬁne error orthogonality
+in MMV and MT environments and derive GSO techniques
+to realize such orthogonality. This leads to two algorithms for
+MMV and MT problems respectively, namely OAMP-MMV
+and OAMP-MT. These two algorithms can be combined to
+handle problems involving both MMVs and MTs. We refer to
+the resulted algorithm as augmented OAMP (A-OAMP). (This
+is a briefer name than a somewhat cumbersome alternative
+“OAMP-MMV-MT”).
+We analyze the error behaviour of OAMP in the MMV and
+MT cases. The problem boils down to tracking error statistics
+when combining multiple messages. Here a message is a
+variable that carriers information about X (or X1,··· ,XK
+in the MT case), such as a noisy observation of X, or an
+estimate of X that may contain errors. Combining multiple
+messages may hopefully generate an improved estimate for
+X, but this is not guaranteed unless we know the statistical
+dependency among the messages to be combined. To overcome
+the difﬁculty of tracking such dependency, we borrow a
+technique from [10]: we assess the performance averaged over
+independently and uniformly sampled{Vk}. For such average
+performance, we show that the orthogonality in A-OAMP
+suppresses the so-called error angles (see Sec. III-D below)
+at the input and output of a local estimator. Consequently, we
+only need to track the dependency of the norms of errors for A-
+OAMP. This is a relatively easy task due to the greatly reduced
+problem dimensions. SE is a basically recursive process for
+such tracking.
+The discussions related to SE in this paper in spirit follow
+[10], [20], [27]–[29]. The related derivations in Sec. IV-D,
+Sec. IV-E and Appendix are more concise than those in [10],
+[20], [27]–[29], even though the MMV and MT problems
+studied in this paper are much more complex. This clearly
+shows the advantage of the orthogonal framework underpin-
+ning OAMP. On the other hand, the discussions in this paper
+are intuitive rather than rigorous. Our main aim is to reveal
+useful insights into the mechanism of A-OAMP in MMV and
+MT problems.
+We demonstrate the application of A-OAMP using an
+MIMO-relay example with multiple correlated source data
+streams. Due to the use of MIMO, the received signal at the
+relay node has a high dynamical range. A clipping technique
+
+=== PDF PAGE 3 ===
+3
+is used at the relay to improve ampliﬁer power efﬁciency. We
+will model such a system as a joint MMV and MT problem.
+To the best of our knowledge, so far, there is no efﬁcient
+treatment for this problem. We will show that A-OAMP can
+signiﬁcantly outperform the crude method of ignoring clip-
+ping. Incidentally, the correlated source model may ﬁnd other
+applications such as efﬁcient large-scale population screening
+techniques for pandemic control [30]. We will brieﬂy discuss
+this possibility.
+Overall, we will show that, under the orthogonal principle,
+it is straightforward to extend the ﬁndings for OAMP from
+the basic SMV-ST model to more complicated MMV and MT
+cases. It opens promising directions for the future research
+into other applications.
+E. Notation
+Boldface lowercase letters represent column vectors and
+boldface uppercase symbols denote matrices. I N×N denotes
+an N× N identity matrix, 0N×M the N× M zero matrix,
+U N×N the set of all N× N unitary matrices, and HN×N the
+N-dimensional Haar distribution. For given matrices A,B∈
+RN×M , Sp(A) denotes the column space of A, Sp(A)⊥
+denotes the null space of Sp(A), and Sp(A)⊥ Sp(B) means
+that Sp(A) and Sp(B) are mutually orthogonal or equivalently
+ATB = 0M×M . Rank(A) denotes the rank of A, Clmn(A)
+the column set ofA and ACF
+R
+{
+A
+}
+≡ 1
+N E
+R
+{
+ATA
+}
+the “auto-
+covariance” function over a set of random variables R.
+If we say that a matrix A is IID, we mean that its entry set
+{Ai,j} is IID. Similar sayings are used for other distributions
+such as IIDG or pair-wise IIDG (PIIDG) that will be discussed
+in Sec. II.
+II. P RELIMINARIES
+A. Notations for Matrix Functions
+LetG andF be two size N× J matrices connected by a
+function
+G = ψ(F ). (4)
+Assume that J = K× M. We use the following notations.
+• G−n denotes the nth row of G.
+• G|j denotes the jth column of G.
+• G||k denotes the kth column-wise block of G, i.e.,
+G||k = [G|(k−1)M+1,G|(k−1)M+2,··· ,G|kM ]. (5)
+Using (5), we can partition G into K blocks as follows.
+G =
+[
+G|1,··· ,G|M
+  
+G||1
+,··· ,G|(k−1)M+1,··· ,G|kM
+  
+G||k
+,
+··· ,G|(K−1)M+1,··· ,G|KM
+  
+G||K
+]
+. (6)
+Similar notations apply to F .
+We introduce a row-wise function
+G−n = ψ−n(F−n). (7)
+The above notation is nominal since, from (4), G−n is a
+function of all rows ofF . In other words, we treat{F−n′, n′ =
+1, 2,··· , N, n′̸= n} as implicit parameters in ψ−n(·) in (7).
+Similarly, we introduce a column block-wise function
+G||k = ψ||k(F||k). (8)
+We call the pair (G||k,F||k) the kth port of ψ(·) and call
+G||k = ψ||k(F||k) the kth port-wise function of ψ(·). Clearly,
+similar to (7),{F||k, k′ =1 , 2,··· , K, k′̸= k} are also implicit
+parameters of ψ||k(·). We say thatG = ψ(F ) is of single-port
+and multi-port respectively when K = 1 and K > 1.
+B. Column-wise IID Matrices
+Deﬁnition 1 (CIID Matrix): A random matrix A∈ RN×M
+is column-wise IID (CIID) if every column of A is IID.
+The following is easy to verify.
+Lemma 2: Let A be CIID. Then all rows of A have the
+same auto-covariance, i.e., E{AT
+−nA−n} = E{AT
+−1A−1} for
+n = 1, 2,··· , N.
+C. Row-wise Separable Functions
+Deﬁnition 3 (Separable and IID-separable Functions): Let
+G = ψ(F ) andG−n = ψ−n(F−n).
+• ψ(·) is (row-wise) separable if ψ−n(·) is not a function
+ofF−n′,∀n′̸= n.
+• ψ(·) is IID-separable if (a) ψ(·) is (row-wise) separable,
+and (b) G is CIID provided that F is.
+We will only consider row-wise separability. Therefore,
+for brevity, “separable” implies “row-wise separable” in this
+paper.
+Example 4: Let ψ(·) be separable with ψ−n(·) IID drawn
+from an ensemble Sψ of functions. Then ψ(·) is IID-separable.
+In particular when ψ−n(·) = ψ∗(·),∀n, i.e., Sψ contains only
+one element ψ∗(·).
+Example 5: Let ψ(·) be given in a row-by-row form as
+G−n = ψ−n(F−n)=F−nP +Q−n, n = 1, 2,··· , N, (9)
+whereP andQ−n are respectively of sizes J× J and 1× J.
+Then ψ(·) is separable. Furthermore, ψ(·) is IID-separable if
+{P} and{Q−n} are both CIID. However, ψ(·) is separable
+but not IID separable if either {P} or{Q−n} is not CIID.
+The CIID property is preserved when a variable passes
+an IID-separable function. This makes it easy in tracking an
+iterative process, as we will see later.
+D. Multi-Port Function and Separability
+Now assume that K > 1 in (4) and so G = ψ(F ) is a
+multi-port function. Let ψ(·) be IID-separable. In this case,
+since{F||k′, k′ ̸= k} are parameters in G||k = ψ||k(F||k)
+(see Sec. II-A), ψ||k(F||k) may not be IID-separable unless
+all{F||k′, k′̸= k} are also CIID.
+Lemma 6: LetG = ψ(F ). The port-wise function G||k =
+ψ||k(F||k) is IID-separable when (i) ψ(·) is IID-separable and
+(ii)F is CIID.
+We emphasise that requirement (ii) in Lemma 6 is that F
+is CIID, not just F||k. This is important for the discussions in
+Sec. IV .
+
+=== PDF PAGE 4 ===
+4
+E. The Haar Distribution and PIIDG Variables
+Let U N×N be the set of all N× N unitary matrices. The
+random matrix V is Haar distributed if its distribution is
+uniform over U N×N , denoted as V ∼ HN×N .
+Lemma 7 (Haar): Let V ∼ HN×N be Haar distributed.
+Then, for any given f ∈ RN with the l2-norm∥f∥ > 0,
+Vf follows a uniformly spherical distribution (USD) on an
+N-dimensional sphere of radius ∥f∥ centred at the origin.
+Consequently, for any Ω ∈ U N×N , ΩV ∼ HN×N and
+V Ω∼ HN×N .
+Proof: See Theorem 3.7 in [31].
+Deﬁnition 8 (PIID and PIIDG Vector): A set{xn} is pair-
+wise IID if any two elements in {xn} are mutually IID.
+Specially,{xn} are PIID Gaussian (PIIDG) if {xn} are PIID
+as well as Gaussian. We say that a vector f or a matrix F is
+PIID or PIIDG if its entries are PIID or PIIDG respectively.
+Lemma 9: Let V ∼ HN×N conditional on f ∈ RN×1.
+When N → ∞, we have (i) Vf converges to PIIDG in
+distribution; and (ii) Vf /∥f∥ is independent of f andz for
+z in a Markov chain z→f→Vf .
+Proof: (i) follows Theorem 2.8 in [32]. From Lemma 7,
+Vf /∥f∥ is USD on a N-dimensional unit sphere of radius
+of 1, which is independent of f andz, so (ii) holds.
+Note that Vf is asymptotically PIIDG but not fully IID
+since∥Vf∥ =∥f∥.
+F . Column-wise PIID (CPIID) and PIID Separable
+We can deﬁne a CPIID matrix and a PIID-separable function
+by changing IID to PIID in Deﬁnitions 1 and 3 respectively.
+Then Lemmas 2 and 6 can be modiﬁed accordingly to
+Lemmas 10 and 11 below. We omit details since they are
+straightforward.
+Lemma 10: LetA be CPIID. Then all rows of A have the
+same auto-covariance, i.e., E{AT
+−nA−n} = E{AT
+−1A−1} for
+n = 1, 2,··· , N.
+Lemma 11: LetG = ψ(F ). The port-wise function G||k =
+ψ||k(F||k) is PIID-separable when (i) ψ(·) is PIID-separable
+and (ii) F is CPIID.
+Incidentally, the following lemma is also straightforward.
+Lemma 12: A is CPIID if all {A||k} are CPIID, where
+{A||k} are the blocks deﬁned in (6).
+G. Orthogonality under the Law of Large Numbers (LLN)
+Deﬁnition 13: Let f = {fn} and g = {gn} be two
+sequences of length N, E{∥f∥2} ̸= 0 , E{∥g∥2} ̸= 0 ,
+E{fngn} = 0 and Var{fngn} ﬁnite. We say that the vectorsf
+andg are LLN-orthogonal (see [17]) denoted as 1
+NfTg
+LLN
+−→0
+if for any ﬁxed δ > 0 and ε > 0, there is a ﬁxed N′ such that
+Pr
+(
+|fTg|√
+E{∥f∥2
+2}E{∥g∥2
+2}
+< ε
+)
+≥1− δ for N > N′. (10)
+LLN-orthogonality is stronger than the common orthogonal-
+ity requirement E{fTg} = 0. The former ensures 1
+NfTg→ 0
+for every experiment in probability when N→∞ , while the
+latter does not.
+Using the law of large numbers, we can show that f and
+g are LLN-orthogonal provided that {fngn} are IID or PIID
+and E{fTg} = 0. Hence the name ”LLN-orthogonality”. We
+omit details due to space limitations. This holds when g is a
+function of f, so we have the following.
+Lemma 14: Assume that g = ψ(f) is PIID-separable and
+f is PIID. Let N→∞ . Then 1
+NfTg
+LLN
+−→0 if E{fTg} = 0.
+We can also deﬁne LLN-orthogonality for matrices F =
+[F|1,··· ,F|J]∈ RN×J and G = [G|1,··· ,G|J]∈ RN×J,
+denoted as 1
+NF TG
+LLN
+−→ 0J×J, if any pair of columns of F
+andG, i.e., F|i andG|j are LLN-orthogonal to each other.
+Lemma 15: Let G = ψ(F ) be PIID-separable and F is
+CPIID. Then 1
+NF TG
+LLN
+−→0J×J provided that E{F TG}=0J×J.
+Lemma 15 will be useful when we discuss port-wise or-
+thogonality later (see Sec. IV-D).
+III. OAMP FOR MULTIPLE MEASUREMENT VECTOR
+PROBLEMS
+A. Generic Iterative Processing
+In this section, we consider the problem in Fig. 1(a), where
+V is N× N Haar, and Ξ and X are both of size N× M.
+The problem can be expressed concisely as:
+Ξ =VX , Ξ∼ Γ, X∼ Φ. (11)
+Similar to [17], our aim is to ﬁnd the a-posteriori mean of
+X for the system in (11), as given below:
+ˆX≡ E{X|Ξ =VX , Γ, Φ}. (12)
+Due to complexity concerns, we focus on the following sub-
+optimal message passing approach.
+Generic Iterative Process (GIP) for an MMV problem:
+Initialisation : t = 1, Ξin,0 =Xin,0 = 0N×M , (13a)
+Local process : Ξout,t= γt(
+Ξin,t−1)
+,Xout,t= φt(
+Xin,t−1)
+,
+(13b)
+Update :Ξin,t =VX out,t, Xin,t =V TΞout,t, (13c)
+Here γt(·) and φt(·) are two local estimators. Their inputs and
+outputs, referred to as messages, are estimates of Ξ and X
+respectively. Each of γt(·) and φt(·) reﬁnes its input using one
+of the two constraints in (11): γt(·) uses Γ and φt(·) uses Φ.
+The designs of γt(·) and φt(·) are usually much easier than
+the design of an overall estimator using Γ and Φ jointly.
+In each iteration, the two local estimators exchange mes-
+sages. Our hope is that the estimates can be reﬁned in this
+way. For this purpose, we need to know the distributions of
+the inputs to γt(·) and φt(·), which is in general a difﬁcult
+task. The orthogonal principle discussed in Sec. III-C resolves
+this difﬁculty.
+B. GS Model in the MMV Case
+Let ˆX be an arbitrary observation of N× M matrix X.
+Denote
+Θ = [E{XTX}]−1E{XT ˆX}, (14)
+
+=== PDF PAGE 5 ===
+5
+andZ = ˆX−XΘ, whereZ and Θ are N× M and M× M
+matrices separately [33], [34]. We write
+ˆX =XΘ +Z. (15)
+We call (15) the Gram-Schmidt (GS) model of ˆX and call
+Z the GS error [35]. It can be veriﬁed that X and Z are
+orthogonal to each other, i.e.,
+E{XTZ}
+a.s.
+→ 0M×M . (16)
+Let Σ = N−1E{ZTZ} be the M× M covariance matrix of
+Z. We will call Θ and Σ the GS parameters of ˆX.
+Let ˆΞ =V ˆX be an estimate of Ξ =VX . It can be veriﬁed
+that the GS model of ˆΞ is ˆΞ = ΞΘ+Z′ whereZ′ =VZ and
+E{{Z′}TZ′} = E{ZTZ}. Hence, we have the following.
+Lemma 16: Let ˆΞ and ˆX be respectively the observations
+of Ξ andX where ˆΞ =V ˆX, Ξ =VX andV is orthogonal.
+Then ˆΞ and ˆX have the same GS parameters, although the
+error terms Z′ andZ generally have different distributions.
+Lemma 16 will be used in Sec. III-E for the evolution
+analysis for OAMP-MMV .
+C. OAMP-MMV Principle
+We express the messages in (13) in their GS models as
+Ξout,t =ΞΘout,t
+Ξ +Zout,t
+Ξ ,Xout,t =XΘout,t
+X +Zout,t
+X , (17a)
+Ξin,t = ΞΘin,t
+Ξ +Zin,t
+Ξ , Xin,t =XΘin,t
+X +Zin,t
+X . (17b)
+Let Σout,t
+Ξ ,Σin,t
+Ξ ,Σout,t
+X and Σin,t
+X be the M × M auto-
+covariance matrices of the GS errors Zout,t
+Ξ ,Zin,t
+Ξ ,Zout,t
+X
+and Zin,t
+X respectively. Then, according to Lemma 16, the
+following relationships hold when V is orthogonal:
+Θt
+γ = Θout,t
+Ξ = Θin,t
+X , Θt
+φ = Θout,t
+X = Θin,t
+Ξ , (18a)
+Σt
+γ = Σout,t
+Ξ = Σin,t
+X , Σt
+φ = Σout,t
+X = Σin,t
+Ξ . (18b)
+We will use (18) to simplify the derivations of SE in Sec. III-E.
+LetZout,0
+Ξ =Zout,0
+X = 0N×M . The matrices deﬁned below
+consist of all the GS errors in (17), i.e., Zin,t′
+Ξ ,Zout,t′
+Ξ ,Zin,t′
+X
+andZout,t′
+X , for t′ = 0, 1,··· , t:
+Zin,{t}
+Ξ ≡[Zin,0
+Ξ ,··· ,Zin,t
+Ξ ],Zout,{t}
+Ξ ≡[Zout,0
+Ξ ,··· ,Zout,t
+Ξ ], (19a)
+Zin,{t}
+X ≡[Zin,0
+X ,··· ,Zin,t
+X ],Zout,{t}
+X ≡[Zout,0
+X ,··· ,Zout,t
+X ]. (19b)
+From (11), (13) and (19), we have the following constraint:
+[Ξ,Zout,{t−1}
+Ξ ,Zin,{t−1}
+Ξ ]=V [X,Zin,{t−1}
+X ,Zout,{t−1}
+X ]. (20)
+Deﬁnition 17 (OAMP-MMV): OAMP-MMV is a spe-
+cial case of GIP-MMV in (13) when the following LLN-
+orthogonality holds for N → ∞, t ≥ 1 and 0 ≤ t′ < t ,
+1
+N (Zin,t′
+Ξ )TZout,t
+Ξ
+LLN
+−→0M×M , 1
+N (Zin,t′
+X )TZout,t
+X
+LLN
+−→0M×M ,
+(21a)
+1
+N ΞTZout,t
+Ξ
+LLN
+−→0M×M , 1
+NXTZout,t
+X
+LLN
+−→0M×M . (21b)
+We will discuss the designs of γt(·) and φt(·) to meet the
+above constraints in Sec. III-C.
+D. Error Behaviour of OAMP-MMV
+We ﬁrst introduce some notations. Return to (20). Deﬁne
+At
+∗ =
+[
+Ξ,Zout,{t−1}
+Ξ
+]
+, Bt
+∗ =
+[
+X,Zin,{t−1}
+X
+]
+, (22a)
+At
+∗∗ =Zin,{t−1}
+Ξ , Bt
+∗∗ =Zout,{t−1}
+X , (22b)
+At = [At
+∗, At
+∗∗], Bt = [Bt
+∗, Bt
+∗∗]. (22c)
+From (20) and (22), we have At
+∗ =VB t
+∗ andAt
+∗∗ =VB t
+∗∗.
+Then
+At =VB t. (23)
+We now analyze OAMP-MMV based on the following as-
+sumptions.
+Assumption 18: (i) At the beginning of each experiment, V
+is independently sampled usingV ∼ HN×N . (ii) During each
+experiment,V remains unchanged for all iterations. (iii) Both
+γt(·) and φt(·) are PIID-separable and independent of V .
+Equivalent forms of Assumption 18 have been used in
+almost all AMP-type algorithms (including OAMP). Note
+that the assumption of Haar matrices is less restrictive of
+IIDG sensing matrices for AMP [9], [10]. In fact, an IIDG
+matrix is a special case of a Haar matrix when the kth
+moment M−1Tr{(DDT)k} converges almostly surely to the
+Marchenko-Pastur Distribution in the large system limit [36].
+From (23), Assumption 18 and the Bolthausen’s condi-
+tioning technique [10], [20], [37], we can see that, at the
+beginning of iteration t of each experiment, V is uniformly
+distributed over the subset of the sample space ofV ∼ HN×N
+constrained byAt =VB t in (23). This constraint means that
+V should be consistent with all the errors up to iteration t−1.
+We denote the distribution of such V as
+V ∼ H(At =VB t). (24)
+For suchV , Lemma 9 is not directly applicable. For example,
+we cannot apply Lemma 9 to obtain the distribution ofZin,t
+Ξ =
+VZ out,t
+X . (For more details, please see Appendix A.)
+We say that a matrix F is CPIIDG and row-wise joint-
+Gaussian (CPIIDG-RJG) if its every column is PIIDG and
+every row is joint Gaussian. Clearly, Lemma 10 is applicable
+to a CPIIDG-RJG matrix. We also deﬁne the angles of F as
+{f /∥f∥,∀f∈ Clmn(F )}.
+Theorem 19: Under Assumption 18, let OAMP-MMV be
+initialized with Ξin,0 =Xin,0 = 0N×M . Then the following
+claims hold for the errors in (19) at any ﬁnitet where N→∞ :
+(i) both Zin,{t−1}
+Ξ andZin,{t−1}
+X converge to CPIIDG-RJG
+in distribution;
+(ii) the angles of Zin,{t−1}
+Ξ andZin,{t−1}
+X are asymptotically
+entry-wise independent of z in the Markov chain below:
+z→[Zout,t
+Ξ ,Zout,t
+X ,At,Bt]→V∼ H(At =VB t). (25)
+Proof: We will ﬁrst explain the conditions. In Assump-
+tion 18, (i) ensures that V is Haar; (ii) ensures that V is
+constrained by (23); and (iii) ensures that there is no additional
+constraint onV other than (23). (Note: Additional constraints
+may result γt(·) and φt(·) involvingV .)
+From (13) and the initialization, we have Ξin,0 =Xin,0 =
+0N×M . Their GS models are respectively Ξin,0 = Ξ·0M×M +
+0N×M and Xin,0 =X· 0M×M + 0N×M , in which the GS
+
+=== PDF PAGE 6 ===
+6
+errors (both 0N×M ) are special cases of CPIIDG-RJG and the
+angles are entry-wise independent of arbitrary z forz in (25).
+Hence (i) and (ii) hold at t = 1.
+We now prove Theorem 19 by induction. Assume that
+Theorem 19 holds for any t > 0 and consider t + 1. Consider
+applying Lemma 34 in Appendix A to At = VB t in (23).
+We ﬁrst verify Assumption 33 in Appendix A.
+(a) From the induction assumption, A∗∗ = Zin,{t−1}
+Ξ con-
+verges to CPIIDG-RJG.
+(b) From (21), we have 1
+N [X,Zin,{t−1}
+X ]TZout,t
+X
+LLN
+−→ 0
+in probability. Combining this with (22) and from
+Lemma 15, we have
+E{(Bt
+∗)TZout,t
+X }=0(t+1)M×M⇒Sp(Zout,t
+X )⊥Sp(B∗). (26)
+(c) Since γt′
+(·),∀t′≤ t is PIID-separable and Ξ is CPIID,
+Zout,t′
+Ξ =γt′
+(Zin,t′−1
+Ξ )−ΞΘout,t′
+Ξ is CPIID and thus At =
+[Ξ,Zout,{t−1}
+Ξ ,Zin,{t−1}
+Ξ ] in (22) is also CPIID.
+The above shows that Assumption 33 holds for
+At = VB t. Then from Lemma 34(i) in Appendix A,
+Zin,{t}
+Ξ = [ At
+∗∗,VZ out,t
+X ] converges to CPIIDG-RJG.
+Following Lemma 34(ii), the angles of Zin,{t}
+Ξ are
+asymptotically entry-wise independent of z. Due to the
+symmetry of the problem, we can prove the two claims for
+Zin,{t}
+X in a similar way. Hence the induction holds for t + 1.
+This proves Theorem 19.
+E. State Evolution
+The implications of Theorem 19 are as follows.
+From (15)-(17), the GS parameters at the output of φt(·)
+can be calculated as
+Θt
+φ =[ E
+X
+{XTX}]−1 E
+X,V
+{XTφt(XΘt−1
+γ +Zin,t−1
+X )}, (27a)
+Σt
+φ =ACF
+X,V
+{φt(XΘt−1
+γ +Zin,t−1
+X )−XΘt
+φ}, (27b)
+where the average is over the joint sample space of X and
+V ∼ H(At =VB t).
+From Theorem 19, Zin,t−1
+X is asymptotically CPIIDG-RJG
+and entry-wise independent of arbitrary z for z in (25).
+Examples of such z include Ξ,X and additive thermal noise
+in the system (i.e., A1 = Ξ andB1 =X). Therefore, we can
+rewrite (27) as
+Θt
+φ=
+[
+E
+X
+{XTX}
+]−1
+E
+X,Zt−1
+γ
+{
+XTφt(XΘt−1
+γ +Z t−1
+γ )
+}
+, (28a)
+Σt
+φ= ACF
+X,Zt−1
+γ
+{
+φt(XΘt−1
+γ +Z t−1
+γ )−XΘt
+φ
+}
+, (28b)
+where each row of Z t−1
+γ is IID drawn from distribution
+N (0, Σt−1
+γ ). Similarly, the GS parameters of γt(·) can be
+calculated as
+Θt
+γ=
+[
+E
+Ξ
+{ΞTΞ}
+]−1
+E
+Ξ,Zt−1
+φ
+{
+ΞTγt(ΞΘt−1
+φ +Z t−1
+φ )
+}
+, (29a)
+Σt
+γ= ACF
+Ξ,Zt−1
+φ
+{
+γt(ΞΘt−1
+φ +Zt−1
+φ )−ΞΘt
+γ
+}
+, (29b)
+with each row of Z t−1
+φ IID drawn from N (0, Σt−1
+φ ).
+The key in (28) and (29) is to replace Zin,t−1
+X andZin,t−1
+Ξ
+by additive Gaussian noise samples Z t−1
+γ and Z t−1
+φ respec-
+tively, which makes the problem trackable. As the result,
+the input and output GS parameters can be expressed as a
+recursion in (30) below, where the functions γt
+SE(·) and φt
+SE(·)
+may or may not have explicit expressions, but they can always
+be numerically evaluated using (28) and (29).
+State evolution for OAMP-MMV: Starting with t = 1 and
+Θ0
+γ = Θ0
+φ = Σ0
+γ = Σ0
+φ = 0M×M ,
+(
+Θt
+γ, Σt
+γ
+)
+= γt
+SE
+(
+Θt−1
+φ , Σt−1
+φ
+)
+, (30a)(
+Θt
+φ, Σt
+φ
+)
+= φt
+SE
+(
+Θt−1
+γ , Σt−1
+γ
+)
+. (30b)
+F . Gram-Schmidt Orthogonalization (GSO) for MMV
+We now discuss the realization of (21) required for OAMP-
+MMV . Start from an arbitrary ˆψ(·). We outline a GSO proce-
+dure to construct ψ(·) with input-output error orthogonality.
+Deﬁnition 20: Let Xout and Xin be two observations of
+X∈ RN×M with their GS models given by: Xout =XΘout+
+Zout andXin =XΘin+Zin. We say that Xout = ψ(Xin) is
+an orthogonal estimator if E{(Zin)TZout}=0M×M .
+Let ˆXout = ˆψ(Xin) be an arbitrary prototype estimator.
+We can construct an orthogonal ψ(Xin) as follows:
+Xout = ψ(Xin) = ˆψ(Xin)−Xin∆. (31)
+The orthogonal requirement can be rewritten as:
+E{(Zin)TZout}=E{(Zin)T(Xout−XΘout)} (32a)
+=E{(Zin)TXout} (32b)
+=E{(Zin)T(ˆψ(Xin)−Xin∆
+)
+} = 0. (32c)
+Notice that
+E{(Zin)TXin}=E{(Zin)T(XΘin+Zin)}=E{(Zin)TZin}.
+(33)
+Combining (32c) and (33), we have
+∆ = [E{(Zin)TZin}]−1E{(Zin)T ˆψ(Xin)}. (34)
+G. OAMP-MMV via GSO
+Using (31)-(34), we can construct local estimators with
+un-correlated input and output errors, which is weaker than
+the LLN-orthogonal requirement in (21). Theorem 21 below
+addresses this issue.
+Theorem 21: The LLN-orthogonality in (21) holds if γt(·)
+and φt(·),∀t are orthogonal and PIID-separable.
+Proof: We prove by induction on t. Using Lemma 15, we
+can show that (21) holds for t = 1 under Assumption 18. Now
+we assume that (21) holds for t (t > 0) and consider t + 1.
+The induction assumption implies that Theorem 19 holds at
+t + 1 (since (21) is the condition for Theorem 19). Then Zin,t
+X
+andZin,t′
+X , t′ = 0, 1,··· , t− 1 are CPIIDG-RJG. Denote
+Z =Zin,t
+X Θ−Zin,t′
+X , (35)
+where
+Θ = [E{(Zin,t
+X )TZin,t
+X }]−1E{(Zin,t
+X )TZin,t′
+X }. (36)
+
+=== PDF PAGE 7 ===
+7
+It can be veriﬁed that E
+{
+(Zin,t
+X )TZ
+}
+= 0M×M . (This can
+be compared to (14) for the GS model (15).) Then Z and
+Zin,t
+X are uncorrelated and so mutually independent due to
+their Gaussianity. (AsZin,t
+X andZin,t′
+X are CPIIDG-RJG,Z is
+also CPIIDG-RJG.) Due to the Markov chain Z→Zin,t
+X →
+Zout,t+1
+X , Z is also independent of Zout,t+1
+X . Besides, Zin,t
+X
+and Zout,t+1
+X are orthogonal since φt+1(·) is orthogonal to
+each other and PIID-separable. Then we can get the following:
+E{ZTZout,t+1
+X } = 0M×M , E{(Zin,t
+X )TZout,t+1
+X } = 0M×M .
+(37)
+SinceZ,Zin,t
+X are CPIID, from Lemma 15, we have
+1
+NZTZout,t+1
+X
+LLN
+−→0M×M , 1
+N (Zin,t
+X )TZout,t+1
+X
+LLN
+−→0M×M .
+(38)
+Then from (35) and (38), we can get
+1
+N (Zin,t′
+X )TZout,t+1
+X = 1
+N (Zin,t
+X Θ−Z)TZout,t+1
+X
+LLN
+−→0M×M .
+(39)
+with t′ = 0 , 1,··· , t − 1. Similarly, with an
+orthogonal and PIID-separable γt+1(·), we can prove
+1
+N (Zin,t′
+Ξ )TZout,t+1
+Ξ
+LLN
+−→ 0M×M for any 0 ≤ t′ ≤ t.
+Therefore (21) holds at iteration t + 1, which completes the
+proof of Theorem 21.
+The discussions in Secs. III-F and III-G provide a construc-
+tion technique for OAMP-MMV in Deﬁnition 17.
+IV. OAMP FOR MULTIPLE TRANSFORM PROBLEMS
+The following discussions do not involve row indexes.
+Therefore, for simplicity and different from the notation in
+Sec. II, we drop “ −”, “|” and “ ||” in the subscripts for the
+indexes of rows, columns or subsets of columns. All subscripts
+are column-block related.
+A. Multiple Transform (MT) Problems
+Fig. 1(a) involves one transform V . We now consider an
+MT system involving multiple transforms (MT). Let{Ξk} and
+{Xk} be two sets of variables connected by Haar transforms:
+Ξk =VkXk, k = 1, 2,··· , K, (40)
+where Vk∼ HN×N , k = 1, 2,··· , K are independent with
+each other. In general, {Ξk} and{Xk} can be vectors or
+matrices, and the matrices sizes can be different for different
+k. For simplicity, in this paper, we assume that all the elements
+in{Ξk} and{Xk} are of size N× M, which can be simply
+deﬁned as an MMV-MT model.
+B. Multi-Port Constraints
+An MT system involves at least one multiple-port constraint
+deﬁned below. Denote byIk a set of integers that include k.
+For any k′∈I k, we write Ik =Ik′. As examples,
+I1 =I2 ={1, 2} andI3 =I4 =I5 ={3, 4, 5}. (41)
+Denote by XIk the set of all Xk with indexes in Ik, i.e.,
+XIk ={Xk′, k′∈I k}. For example,
+XI1 =XI2 ={X1,X2} forI1 =I2 ={1, 2}. (42)
+ V1 V2 2 1Γ Γ 
+1,2
+1
+1X
+2X
+2
+(a) A 2-transform system
+ V1 V2 
+1
+2
+out
+1
+out
+2
+in
+1
+in
+2
+out
+1X
+in
+1X
+out
+2X
+in
+2X
+12 ，
+(b) An iterative process for the system in Fig. 2 (a)
+V1 
+1
+out
+1
+in
+1
+out
+1X
+in
+1X
+1
+(c) Local GIP at Port 1 for the system in Fig. 2 (a)
+Fig. 2. An example of an MT system.
+  
+ 
+1,2
+1
+1V
+1X
+2
+2X
+2V
+2,3,4  
+3
+3V
+3X
+1
+3
+4X
+4V
+4
+4
+Fig. 3. Another example of an MT system.
+We denote ΦIk as a constraint on the elements in Ik. We call
+ΦIk a Lk-port constraint where Lk =|Ik|. We also call it a
+multi-port and single-port constraint for Lk > 1 and Lk = 1
+respectively. For example,
+ΦI1 = ΦI2 = Φ1,2 forI1 =I2 ={1, 2}, (43)
+is a multi-port (more precisely, 2-port) constraint. Similarly,
+letJk be a set of integers that include k. We deﬁne ΞJk and
+ΓJk in a similar way as XIk and ΦIk.
+As an example, Fig. 2(a) illustrates the following system:
+Ξ1 =V1X1, Ξ2 =V2X2, (44a)
+Ξ1∼Γ1, Ξ2∼Γ2, (44b)
+XI1=XI2={X1,X2}∼ Φ1,2. (44c)
+Here Γ1 and Γ2 are single-port constraints while Φ1,2 a multi-
+port one. The latter involves more than one input. As another
+example, Fig. 3 illustrates the following system:
+Ξ1 =V1X1, Ξ2 =V2X2, Ξ3 =V3X3, Ξ4 =V4X4, (45a)
+{Ξ1, Ξ2}∼ Γ1,2, Ξ3∼Γ3, Ξ4∼Γ4, (45b)
+X1∼Φ1,{X2,X3,X4}∼ Φ2,3,4. (45c)
+C. Generic Iterative Process with MT
+Using the above notations, we can express a general MT
+system as follows:
+Ξk =VkXk, ΞJk∼ ΓJk ,XIk∼ ΦIk , k = 1, 2,··· , K. (46)
+
+=== PDF PAGE 8 ===
+8
+From (41)-(43) that Ik = Ik′,∀k′ ∈ Ik, and Jk = Jk′,
+∀k′∈J k. Hence, (46) may contain repeated (and so redun-
+dant) constraints. Clearly, (46) is a generalization of (11).
+Based on (46), we deﬁne a general iterative process as
+follows, which is a generalization of (13).
+Generic Iterative Process for an MT Problem: Starting with
+t = 1 and Ξin,0
+Jk =Xin,0
+Ik = 0N×M for k = 1, 2,··· , K:
+Ξout,t
+Jk = γt
+Jk(Ξin,t−1
+Jk ), Xout,t
+Ik = φt
+Ik(Xin,t−1
+Ik ), (47a)
+Ξin,t
+k =VkXout,t
+k , Xin,t
+k =V T
+k Ξout,t
+k . (47b)
+In (47), φt
+Ik(·) is a local processor based on ΦIk. Its output
+Xout,t
+Ik is hopefully a reﬁned estimate of XIk, relative to its
+input Xin,t−1
+Ik . Similar to (42), we can decompose the input
+and output of a multi-port function as follows
+Xin,t−1
+Ik = [Xin,t−1
+k1
+,Xin,t−1
+k2
+,··· ,Xin,t−1
+k|Ik|
+], (48a)
+Xout,t
+Ik = [Xout,t
+k1
+,Xout,t
+k2
+,··· ,Xout,t
+k|Ik|
+], (48b)
+where k1, k2,··· , k|Ik| are the elements of Ik, and Xin,t−1
+kl
+andXout,t
+kl
+are those at a particular port kl ofIk.
+Similarly, we have γt
+Jk(·). Its input Ξin,t−1
+Jk and output
+Ξout,t
+Jk can be decomposed on a similar way as that in (48).
+A graphic example of GIP with MT is shown in Fig. 2(b)
+for the system in Fig. 2(a). This is a straightforward extension
+of Fig. 1(b). Notice that Fig. 2(b) involves two orthogonal
+transformsV1 andV2, and a multi-port local estimator φ1,2(·).
+As mentioned below (46), there may be repeated constraints
+in (46). This means that there can be repeated operations in
+(47). Nevertheless, (47) is very concise, which make it easier
+for our discussions below. In practice, we can avoid repeated
+operations based on the graphic representation of (46).
+D. Augmented OAMP
+We denote the GS models of the input and output in (47)
+as follows.
+Ξout,t
+k =ΞkΘout,t
+Ξk +Zout,t
+Ξk ,Xout,t
+k =XkΘout,t
+Xk +Zout,t
+Xk , (49a)
+Ξin,t
+k = ΞkΘin,t
+Ξk +Zin,t
+Ξk , Xin,t
+k =XkΘin,t
+Xk +Zin,t
+Xk . (49b)
+where Zout,t
+Ξk , Zin,t
+Ξk , Zout,t
+Xk and Zin,t
+Xk are GS errors at port
+k in iteration t, with the auto-covariance matrices denoted as
+Σout,t
+Ξk ,Σin,t
+Ξk ,Σout,t
+Xk and Σin,t
+Xk respectively.
+Deﬁnition 22 (A-OAMP): Augmented OAMP (A-OAMP)
+is a special case of GIP in (47) when the following port-wise
+LLN-orthogonality holds for k = 1, 2,··· , K, N→∞ , t≥ 1
+and 0≤ t′ < t:
+1
+N (Zin,t′
+Ξk )TZout,t
+Ξk
+LLN
+−→0M×M , 1
+N (Zin,t′
+Xk )TZout,t
+Xk
+LLN
+−→0M×M ,
+(50a)
+1
+N ΞT
+kZout,t
+Ξk
+LLN
+−→0M×M , 1
+NXT
+kZout,t
+Xk
+LLN
+−→0M×M . (50b)
+In (50), the input and output errors at each port are required
+to be orthogonal to each other. There is no orthogonality
+requirement across different ports. It is seen that (21) is a
+special case of (50) when K = 1.
+If all Xk in (50) are of single column, OAMP-MT is a
+proper name for the related algorithm. However, if some of
+Xk in (50) contain multiple columns, OAMP-MMV developed
+in Sec. III are required in the realization of (50). In this case,
+OAMP-MMV-MT can be a more appropriate name, but this
+reads somewhat cumbersome. Hence, the name A-OAMP is
+used instead.
+E. Equivalent ST System and Its Error Behaviour
+We now extend Theorem 19 from ST to MT.
+Recall the discussions related to (8). For γt
+Jk(·) and φt
+Ik(·),
+we deﬁne their port-wise function at port k:
+Ξout,t
+k = γt
+k(Ξin,t−1
+k ), Xout,t
+k = φt
+k(Xin,t−1
+k ). (51)
+Keep in mind that the inputs into γt
+k(·) and φt
+k(·) (i.e., the
+inputs from other ports k′̸= k) that do not appear in (51) are
+all treated as parameters. Using (47) and (51), we can write a
+local GIP at port k as follows.
+Local GIP at Port k: Starting with t = 1 , and Ξin,0
+k =
+Xin,0
+k = 0N×M :
+Ξout,t
+k = γt
+k(Ξin,t−1
+k ), Xout,t
+k = φt
+k(Xin,t−1
+k ), (52a)
+Ξin,t
+k =VkXout,t
+k , Xin,t
+k =V T
+k Ξout,t
+k . (52b)
+For example, Fig. 2(c) illustrates the local GIP related to V1
+in Fig. 2(b), where φ1(·) is the port-wise function of φ1,2(·)
+at port 1. In iteration t, the output of φt
+1(·) is determined
+by its input Xin,t−1
+1 together with its implicit parameters
+{Xin,t−1
+2 ,Xout,t
+2 },V2 and{Ξin,t−1
+2 , Ξout,t
+2 }. This can be seen
+by comparing Fig. 2(b) and Fig. 2(c). This example indicates
+the following.
+Remark 23: In general, γk(·) and φk(·) can be functions of
+V′
+k , k′ = 1, 2,··· , K, k′̸= k.
+Except for the internal structures of γk(·) and φk(·), the
+resemblance between (52) and (13) is apparent. Due to this,
+Theorem 19 can be applied to (52) provided that Assump-
+tion 18 holds for (52). To this end, we introduce the assump-
+tions below for the GIP in (47).
+Assumption 24: (i) At the beginning of each experiment,
+every Vk is independently sampled using Vk∼ HN×N , so
+{V1,V2,··· ,VK} are mutually independent Haar distributed
+matrices. (ii) During each experiment, every Vk remains
+unchanged for all iterations. (iii) Both {φt
+Ik(·)} and{γt
+Jk(·)}
+are PIID-separable and independent of Vk, k = 1, 2,··· , K.
+Notes: Clearly, items (i) and (ii) in Assumption 24 ensure
+items (i) and (ii) in Assumption 18. In the proof of Theorem 25
+below, the key is to prove item (iii) in Assumption 18 holds
+under Assumption 24.
+Theorem 25: Under Assumption 24, let A-OAMP be ini-
+tialized with Ξin,0
+k =Xin,0
+k = 0N×M , k = 1, 2,··· , K. Then
+the following claims hold for any ﬁnite t for N→∞ :
+(i) for any k,Zin,{t−1}
+Ξk andZin,{t−1}
+Xk converge to CPIIDG-
+RJG in distribution;
+(ii) for any k, the angles of Zin,{t−1}
+Ξk and Zin,{t−1}
+Xk are
+asymptotically entry-wise independent of zk in the
+Markov chain below:
+zk→[Zout,t
+Ξk ,Zout,t
+Xk ,At
+k,Bt
+k]→Vk∼ H(At
+k =VkBt
+k).
+Proof: We prove by induction on t. At t = 0 , similar
+to Theorem 19, zero error matrices can be treated as special
+
+=== PDF PAGE 9 ===
+9
+cases of CPIIDG-RJG and asymptotically independent of zk.
+Hence Theorem 25 holds.
+Now assume that Theorem 25 holds for any t > 0 and con-
+sider t+1. As mentioned above, (i) and (ii) in Assumption 24
+ensure (i) and (ii) in Assumption 18. Note that (a) eachZin,t−1
+XIk
+can be decomposed as {Zin,t−1
+Xk1
+,Zin,t−1
+Xk2
+,··· ,Zin,t−1
+Xk|Ik|
+} (see
+(48)), and (b) from induction, Zin,t−1
+Xk , k = 1, 2,··· , K are all
+CPIIDG-RJG. Combining (a) and (b) and Lemma 12, we can
+see that Zin,t−1
+XIk
+, k = 1, 2,··· , K are all CPIIDG-RJG. Then
+from Assumption 24(iii) and Lemma 11, all{φt
+k(·)} are PIID-
+separable. Similarly, we can show that all {γt
+k(·)} are also
+PIID-separable. Assumption 24 ensures that φt
+k(·) and γt
+k(·)
+are independent of Vk, even though φt
+k(·) and γt
+k(·) can be
+functions of V′
+k , k′̸= k. Hence Assumption 18(iii) also holds
+for (52). Then following Theorem 19, Theorem 25 holds for
+t + 1. This completes the induction.
+F . State Evolution of A-OAMP
+Denote by diag{S} a diagonal matrix whose entries are
+the elements in a set of S. The block-diagonal entries in the
+matrices below are the port-wise GS parameters given in (49).
+Θin,t
+ΞJk
+= diag{Θin,t
+Ξk′ , k′∈J k}, (53a)
+Θout,t
+ΞJk
+= diag{Θout,t
+Ξk′ , k′∈J k}, (53b)
+Θin,t
+XIk
+= diag{Θin,t
+Xk′ , k′∈I k}, (53c)
+Θout,t
+XIk
+= diag{Θout,t
+Xk′ , k′∈I k}, (53d)
+and Σin,t
+ΞJk
+, Σout,t
+ΞJk
+, Σin,t
+XIk
+, Σout,t
+XIk
+can be deﬁned similarly. We
+can rewrite (49) in a matrix form as follows:
+Ξin,t
+Jk = ΞJkΘin,t
+ΞJk
++Zin,t
+ΞJk
+, (54a)
+Ξout,t
+Jk = ΞJkΘout,t
+ΞJk
++Zout,t
+ΞJk
+, (54b)
+Xin,t
+Ik =XIkΘin,t
+XIk
++Zin,t
+XIk
+, (54c)
+Xout,t
+Ik =XIkΘout,t
+XIk
++Zout,t
+XIk
+. (54d)
+The difference between (49) and (54) is that the former is for
+a particular port k while the latter for all the ports of each
+multi-port estimator.
+The following SE recursions characterize the GS parameters
+in (53) for A-OAMP.
+State evolution for A-OAMP: Starting with t = 1, Θin,0
+ΞJk
+=
+Θin,0
+XIk
+=0M×M and Σin,0
+ΞJk
+=Σin,0
+XIk
+=0M×M for∀k:
+(Θout,t
+ΞJk
+, Σout,t
+ΞJk
+)= γt
+SE,Jk(Θin,t−1
+ΞJk
+, Σin,t−1
+ΞJk
+), (55a)
+(Θout,t
+XIk
+, Σout,t
+XIk
+)= φt
+SE,Ik(Θin,t−1
+XIk
+, Σin,t−1
+XIk
+), (55b)
+{Θout,t
+ΞJk
+, Σout,t
+ΞJk
+}
+re-group
+−→ {Θin,t
+XIk
+, Σin,t
+XIk
+}, (55c)
+{Θout,t
+XIk
+, Σout,t
+XIk
+}
+re-group
+−→ {Θin,t
+ΞJk
+, Σin,t
+ΞJk
+}. (55d)
+Notes: Under Theorem 25, we can model the input errors of
+γt
+Jk(·) and φt
+Ik(·) with PIIDG variables with the same mean
+and variances. We can then generate γt
+SE,Jk(·) and φt
+SE,Ik(·)
+in (55) either by analysis or simulations.
+G. GSO for a Multi-Port Estimator
+For a multi-port estimator φt
+Ik(·), we can apply GSO in
+(34) to each port as follows:
+Xout,t
+k = φt
+k(Xin,t−1
+k )= ˆφt
+k(Xin,t−1
+k )−Xin,t−1
+k ∆t
+k,∀k (56)
+with
+∆t
+k =[E{(Zin,t−1
+Xk )TZin,t−1
+Xk }]−1E{(Zin,t−1
+Xk )T ˆφt
+k(Xin,t−1
+k )}.
+(57)
+In practice, we can orthogonalize a multi-port function
+φt
+Ik(·) as follows. First, we can replace the GS errors
+in the GS models of the inputs to ˆφt
+Ik(·) using indepen-
+dent additive Gaussian noise samples. Second, we carry out
+Monte Carlo simulations to obtain the port-wise correlation
+E{(Zin,t−1
+Xk )T ˆφt
+k(Xin,t−1
+k )}. Third, we orthognalize each port
+k using GSO in (56).
+Similarly, we can orthogonalize a prototype γt
+Jk(·) in a
+different domain via GSO.
+The proof of the following theorem is omitted since it is
+similar to the proof of Theorem 21.
+Theorem 26: Assume that {γt
+Ik(·)} and {φt
+Jk(·)} con-
+structed using GSO in Sec. IV-G at iterations from0 to t for A-
+OAMP are orthogonal. Then the port-wise LLN-orthogonality
+in (50) holds for iterations from 0 to t.
+The above provides a realization technique for A-OAMP in
+MMV and MT problems.
+V. A PPLICATION : MIMO- RELAY SYSTEM WITH MULTIPLE
+SOURCE DATA STREAMS
+In this section, we consider an MIMO relay system with
+multiple correlated source data [38], [39]. In such an MIMO
+system, the received signal at the relay node can have a high
+peak to average power ratio (PAPR). Clipping is used at the
+relay node to reduce the PAPR and improve ampliﬁer power
+efﬁciency [40]. The overall system can be modelled as a joint
+MMV-MT problem. A-OAMP will be used to treat the non-
+linear effect of clipping.
+Similar techniques may also be used to treat other systems,
+such as orthogonal frequency division multiplexing (OFDM),
+with similar high PAPR problem.
+A. System Overview
+Fig. 4(a) illustrates an MIMO-relay system consisting of
+three nodes [38], where the source, relay and destination nodes
+are equipped with Ns,Nr and Nd antennas respectively. The
+system is modelled as follows.
+• In the ﬁrst phase, the source node transmits modulated
+signalXs to the relay node over an Nr×Ns MIMO chan-
+nel Hsr. In the second phase, the relay node performs
+clipping on the received signal and then transmits it to
+the destination over an Nd×Nr MIMO channel Hrd.
+• There is no direct path between the source node and the
+destination.
+• Memoryless and Quasi-static frequency-ﬂat fading chan-
+nel is assumed.
+
+=== PDF PAGE 10 ===
+10
+Assume that the transmitted signal Xs∈ RNs×M is binary
+phase shift keying (BPSK) modulated. The received signal at
+the relay and destination nodes are respectively given by
+Yr =HsrXs +Nsr, (58a)
+Yd =Hrd· η(Yr) +Nrd, (58b)
+where Hsr∈ CNr×Ns and Hrd∈ CNd×Nr are respectively
+the channel matrices for the source-relay and relay-destination
+links, and Nsr and Nrd are two matrices of IID additive
+noise samples following Gaussian distributionCN (0, vsr) and
+CN (0, vrd) respectively. The details on the clipping function
+η(·) are given below.
+By the central limit theorem, the entries of Yr are approx-
+imately Gaussian distributed and thus have a high PAPR. Di-
+rectly transmitting Yr from the delay would require stringent
+RF ampliﬁer linearity, which is difﬁcult in practice. To reduce
+PAPR [40], we adopt a symbol-by-symbol clipping function
+at the real part as follows:
+clip (Re([Yr]i))=
+
+
+
+Z, Re([Yr]i) > Z,
+Re([Yr]i), −Z≤ Re([Yr]i)≤ Z,
+−Z, Re([Yr]i) <−Z.
+(59)
+where i = 1,··· , Nr. Similarly we can deﬁne clip (Im(Yr)).
+Then
+clip(Yr) = clip (Re(Yr)) +
+√
+−1· clip (Im(Yr)) .
+Given the threshold Z, the clipping ratio (CR) is deﬁned as
+CR=10log 10(Z2/E{|Yr|2}).
+The transmitted signal from the relay node to the destination
+is then given by a normalized clipping function deﬁned as:
+η(Yr) = clip(Yr)/C, (60)
+where C =
+√
+E{|clip(Yr)|2}.
+B. Details
+Let Hsr = UsrΛsrVsr and Hrd = UrdΛrdVrd. The
+system in (58b) can be rewritten as
+Yd =Hrd· η(Yr) +Nrd, (61a)
+=Hrd· η(HsrXs +Nsr) +Nrd, (61b)
+=UrdΛrdVrd· η(UsrΛsrVsrXs +Nsr) +Nrd. (61c)
+Our task is to estimate Xs based on Yd in (61).
+DeﬁneXr = HsrXs, Xη = η(Yr) and Xd = HrdXη.
+Then the above system can be expressed as below, with its
+illustration given in Fig. 4(a):
+Ξs =VsrXs, Ξr =U H
+srXr, Ξη =VrdXη, (62a)
+Ξd =U H
+rdXd, Φs :Xs∼ p(Xs), (62b)
+Γs,r : Ξr = ΛsrΞs, Φr,η :Xη = η(Xr +Nsr), (62c)
+Γη,d : Ξd = ΛrdΞη, Φd :Yd =Xd +Nrd. (62d)
+We can design prototype estimators corresponding to the
+above constraints respectively, and then realize port-wise or-
+thogonality using (56). A graphic example of the iterative
+process for the above system is illustrated in Fig. 4(b), where
+φs, γs,r, φr,η, γη,d and φd are corresponding estimators for
+Φs, Γs,r, Φr,η, Γη,d and Φd respectively.
+• The optimal prototype estimators are usually designed
+based on the MMSE principle. For more details of
+designing local estimators, see [41].
+• To simplify derivation and reduce complexity, if Xs is a
+matrix (i.e., M > 1), we adopt a sub-optimal prototype
+estimator ˆφr,η where ˆφr,η(·) is applied to each column
+pair ([Xin
+r ]|m, [Xin
+η ]|m) separately.
+• Generally speaking, we can use Monte-Carlo simulation
+to calculate the GSO parameters in (57). A special case
+is for the linear estimator where the GSO parameters can
+be explicitly given [(35), [35]].
+The following simulation setups are assumed unless oth-
+erwise stated. To reduce the computational complexity, we
+generate a large random unitary matrix by randomly row-
+wise permuting a discrete Fourier transform (DFT) matrix
+[18], i.e., Usr = ΠUsrF and Vsr = ΠVsrF , where ΠUsr
+and ΠVsr are random permutation matrices, and F is a
+discrete Fourier transform (DFT) matrix. We generate Λsr
+in (61) as λi/λi+1 = κ1/Nr for i = 1 ,··· , Nr− 1 and∑Nr
+i=1 λ2
+i = Ns where κ denotes the condition number of
+Hsr. Λrd is generated similarly. The signal to noise ratios are
+deﬁned as SNRsr = 1/vsr and SNRrd = 1/vrd respectively.
+C. Existing Treatments
+To the best of our knowledge, there is no systematic
+discussion on the relay system in (61) with clipping. Here
+we consider some simple treatments.
+1) Method 1: We can simply ignore the clipping effect and
+pretend
+η(Yr) =Yr. (63)
+s
+srV
+sr
+srU
+
+
+rdV
+rdU
+rd
+Channel  srH
+Channel  rdH
+sX
+
+srN
+rY
+X
+rdN
+dY
+s
+srV
+,sr
+srU
+rdV
+rdU
+,d
+,r 
+d
+in
+sX
+out
+sX
+in
+s
+out
+s
+in
+r
+out
+r
+in
+rX
+out
+rX
+out
+X
+in
+X
+out
+
+in
+
+in
+d
+out
+d
+out
+dX
+in
+dX
+(a)
+(b)
+Source Relay Destination
+s
+r
+rX
+
+d
+dX
+Fig. 4. Graphic illustrations for (a) system model of an MIMO-relay network with clipping, as expressed in (61) and (62), and (b) the iterative process for
+the system illustrated in Fig. 4(a), where φs, γs,r, φr,η, γη,d and φd are corresponding estimators for the constraints in Fig. 4(a).
+
+=== PDF PAGE 11 ===
+11
+In this case, (61) can be simply written as
+Yd =Hrd(HsrXs +Nsr) +Nrd, (64a)
+= (HrdHsr)  
+Combined matrix
+Xs + (HrdNsr +Nrd)  
+Combined noise
+. (64b)
+The auto-correlation of the combined noise in (64) is
+ΣNcombined = vsrHrdHH
+rd + vrdI. Deﬁne
+˜Yd = Σ−1/2
+NcombinedYd = (Σ−1/2
+NcombinedHrdHsr)Xs
++ Σ−1/2
+Ncombined(HrdNsr +Nrd)
+  
+whitenoise Nwhite
+, (65)
+with each entry of Nwhite ∼ CN(0, 1). Then (65) can be
+directly solved by OAMP.
+2) Method 2 : An alternative way is to model the clipped
+signal using an additive error noise Nη as,
+η(Yr) =Yr +Nη. (66)
+We solve the system in (66) by assuming that Nη is IIDG,
+which is not true in practice and so results in performance
+loss.
+3) Method 3 : We can also model the clipping effect by a
+GS model, i.e.,
+η(Yr) =YrΘη +Fη, (67)
+where Θη is a matrix with size M×M andFη is the distortion
+uncorrelated withYr. Again we assume thatFη is IIDG, which
+is also not true in practice. Method 3 outperforms method 2
+slightly due to the orthogonality between Yr andFη in (67).
+D. Numerical Comparisons for SMV-MT
+We ﬁrst examine the simple scenario where there is only
+one data stream in the source node, i.e., M = 1. In this case,
+Xs is a vector with BPSK modulation and the system in (61)
+can be modelled as an SMV-MT model.
+Fig. 5 gives the simulated bit error rate (BER) for GIP-MT
+in (47) (i.e., without using GSO), methods 1-3 in (63)-(67),
+as well as A-OAMP. (When M = 1, A-OAMP can be equiv-
+alently called OAMP-MT.) We can clearly see the superior
+performance advantage of A-OAMP over other alternatives.
+3 5 7 9 11 13 15
+SNRrd dB
+10-3
+10-2
+10-1
+Bit  error rate  (BER)
+GIP-MT
+Method 1: see (63)
+Method 2: see (66)
+Method 3: see (67)
+A-OAMP
+A-OAMP
+From top to bottom:
+Methods 1-3
+GIP-MT
+Fig. 5. Simulated MSEs with SNR rd. The parameters are as follows: Ns =
+8096,Nr/Ns = 0.8 andNd/Nr = 0.8,SNR sr=11dB.,κsr = 5,κrd = 5.
+clipping ratios CR = 0dB.
+5 6 7 8 9 10 11 12
+SNRrd dB
+10-4
+10-3
+10-2
+10-1
+Bit  error rate (BER)
+Simulation
+SE
+CR=
+CR=0dB
+CR=-3dB
+SNRsr =11dB
+SNR sr=15dB
+Fig. 6. Simulated and predicted MSE for different clipping ratios CR =
+[−3, 0, 3,∞]. The other parameters are the same as these in Fig. 5.
+Fig. 6 gives the BERs of A-OAMP for systems with
+different clipping ratios. We can see that SE matches well
+with simulation in all cases. It is interesting to see that clipping
+actually leads to improved performance at SN Rsr = 15dB.
+This counter-intuitive phenomenon was ﬁrst reported in [42].
+This observation can be explained using a matching princi-
+ple originally developed for the optimization of low-density
+parity-check codes. For more details, see [42].
+E. Numerical Comparisons for MMV-MT
+We next consider M = 2, in which case the system in (61)
+can be modelled as MMV-MT. Each data stream in Xs is
+BPSK modulated before being transmitted in two consecutive
+time slots. The symbols in these two streams are IID and are
+indexed as follows:
+x1,s = [x1,1,··· , x1,ns ,··· , x1,Ns], (68a)
+x2,s = [x2,1,··· , x2,ns ,··· , x2,Ns], (68b)
+where xi,ns = −1 or 1, i = 1 , 2, ns = 1 , 2,··· , Ns.
+We assume that the two corresponding symbols in the two
+streams with the same index are correlated with the symmetric
+correlation index deﬁned below:
+Pr
+{
+x2,ns =−1|x1,ns = 1
+}
+= α, (69a)
+Pr
+{
+x2,ns = 1|x1,ns =−1
+}
+= α, (69b)
+with α the transition probability.
+The above system may ﬁnd applications in a system with
+correlated sources. For example, a sensor may generate 2 data
+streams, one for temperature and one for humility.
+Fig. 7 shows the BERs for the above system, in which A-
+OAMP is used to detect the two streams jointly by treating
+them as two columns in an MMV problem. As a comparison,
+we also provide the simulation results obtained by detecting
+each stream individually. We can see that A-OAMP provides
+signiﬁcantly improved performance by exploiting the correla-
+tion at the source. SE and simulation results also match well
+with each other.
+In this paper, we focus on the effectiveness of A-OAMP.
+We paid less attraction to the application details in the sim-
+ulation examples. We believe that A-OAMP can ﬁnd useful
+applications in practice. For example, in medical testing (e.g.,
+Covid-19), there can be multiple indicators, such as PCR level,
+
+=== PDF PAGE 12 ===
+12
+5 6 7 8 9 10 11 12
+SNRrd dB
+10-3
+10-2
+10-1
+Bit  error rate (BER)
+Simulation
+SE
+=0.3
+=0.1
+Detecting each stream individually 
+(for both =0.1 and =0.3).
+Fig. 7. Simulated and predicted MSE for different transmission probability
+α. M = 2. The other parameters are the same as these in Fig. 5.
+antibody and lateral ﬂow (LF) [43], [44]. These indicators can
+be correlated. Recently, compressed-sensing and AMP have
+been considered in massive-scale population screening based
+on such testing [30]. A-OAMP can be applied to increase
+testing accuracy in such problems.
+VI. C ONCLUSION
+We extended OAMP from the basic SMV-ST model to
+more general MMV and MT ones and proved the related SE
+recursions. We presented an application in an MIMO relay
+system. The existing methods have difﬁculties in handling such
+non-ideal effects. The A-OAMP algorithm presented in this
+paper offers an efﬁcient solution with excellent performance.
+MMV and MT problems represent two extremes, the former
+with identical {Vk} and the latter with independent {Vk}.
+More general cases with partially correlated {Vk} are open
+problems for future research.
+APPENDIX A
+CONSTRAINED HAAR TRANSFORM
+For V ∼ HN×N , we call VF the Haar transform of F .
+We will derive the properties of Haar transform under a linear
+constraint. Our derivations are based on a conjecture that we
+are not able to prove yet.
+A. A Basic Property of Haar Transform
+Lemma 27: Let V ∼ HN×N conditional on any ﬁxed
+E∈ RL×N and F ∈ RN×M , with N →∞ and M ﬁnite.
+Then we have (i) EVF converges to both column-wise joint
+Gaussian (CJG) and row-wise joint Gaussian (RJG) in general;
+(ii) EVF converges to CPIIDG-RJG if E is orthogonal
+(i.e.,E∈ U N×N ); and (iii) VF converges to CPIIDG-RJG.
+Proof: We focus onE−1, the ﬁrst row ofE. We construct
+Ω∈ U N×N with Ω−1 =E−1/∥E−1∥. (Note that we do not
+have any requirement on Ω−n for n > 1.) From Lemma 7,
+ΩV ∼ HN×N , and so from Lemma 9, for ∀c ∈ RM ,
+ΩVFc converges to PIIDG in distribution. Since any linear
+combinations of the entries in Ω−1VF is Gaussian, Ω−1VF
+is joint Gaussian, and thus the ﬁrst row of EVF is joint
+Gaussian [Deﬁnition 3.2.5, [45]]. For l > 1, we can prove
+that E−lVF is joint Gaussian in the same way by letting
+Ω−1 =E−l/∥E−l∥, so the matrix EVF converges to RJG.
+Similarly, we can prove (EVF )T is RJG, soEVF converges
+to both CJG and RJG. Hence claim (i) holds. When E is
+orthogonal (i.e., E ∈ U N×N ), EV ∼ HN×N , so each
+column of EVF converges to PIIDG from Lemma 9, and
+thusEVF converges to CPIIDG-RJG from (i). Hence claim
+(ii) holds for orthogonal E. Finally, claim (iii) is a special
+case of (ii) when E =I N .
+Lemma 27 shows that the entries ofEVF converge to joint
+Gaussian. This result is useful below.
+B. Composite Structure
+We now consider a composite matrix structure:
+G = Ω
+[∆
+VF
+]
+= Ω∥∆ + Ω⊥VF , (70)
+where Ω = [ Ω∥, Ω⊥] ∈ U N×N , ∆ ∈ RJ×M , V ∼
+H(N−J)×(N−J) andF∈ R(N−J)×M . We will always assume
+that N → ∞ and J remains ﬁnite below. In this case,
+from Lemma 27, VF converges to CPIIDG-RJG, so VF has
+identical row distribution. We construct ∆ as follows.
+• Each row of ∆ is independently drawn from the row
+distribution of VF , and
+• ∆ is independent of VF .
+We ﬁrst prove a useful result. Let Ω∈ U N×N be a random
+orthogonal matrix (not necessarily Haar) and a be PIIDG
+conditional on Ω with entry-wise distribution N (µ, v).
+Lemma 28: Ωa converges to PIIDG, and each entry of Ωa
+is asymptotically independent of Ω.
+Proof: The entries of Ωa are Gaussian (since a is
+PIIDG). Besides, the covariance of Ωa is,
+Cov(Ωa, Ωa) = ΩCov(a,a)ΩT = (∥a∥2/N)·I N , (71)
+which shows that Ωa is entry-wise uncorrelated. Thus Ωa is
+PIIDG. Its entry-wise distribution isN (µ, v), which is regard-
+less of the selection of Ω (provided that Ω is orthogonal).
+We next derive a few properties of G in (70).
+Lemma 29: In (70),G converges to CPIIDG-RJG and each
+entry of G is asymptotically independent of Ω.
+Proof: From Lemma 27,VF converges to CPIIDG-RJG,
+so
+[∆
+VF
+]
+is also CPIIDG-RJG from the construction of ∆.
+Then, using Lemma 28, we see that G converges to CPIIDG-
+RJG and is asymptotically entry-wise independent of Ω.
+We now add an additional condition that Ω∥ is CPIID in
+(70). As an example, Ω∥ can be a base of a CPIID matrix B.
+Such Ω∥ is CPIID as well as column-orthonormal.
+Lemma 30: Under the same conditions as Lemma 29 plus
+Ω∥ being CPIID, Ω⊥VF converges to CPIIDG-RJG and each
+entry of Ω⊥VF is asymptotically independent of Ω in (70).
+Proof: The mth column of Ω⊥VF is
+Ω⊥VF |m =G|m− Ω∥∆|m. (72)
+From Lemma 29 and since Ω∥ is CPIID, both G|m and
+Ω∥∆|m are PIID. (Note that Ω∥∆|m may not be Gaussian.)
+
+=== PDF PAGE 13 ===
+13
+Therefore, when N→∞ and J remains ﬁnite,
+E{
+⏐⏐[Ω∥∆]n,m
+⏐⏐2
+}
+E{
+⏐⏐[G]n,m
+⏐⏐2
+}
+=∥Ω∥∆|m∥
+2
+∥G|m∥2 = J
+N → 0, (73)
+where the subscript “ n, m” indicates the entry in the nth row
+and mth column. Hence, in (72), Ω∥∆|m is negligible relative
+to G|m, so Ω⊥VF converges to G in distribution. Then
+Lemma 30 follows Lemma 29.
+C. Constrained Haar Distribution
+Start from a special case. Let N > J and denote
+J N×J =
+[ I J×J
+0(N−J)×J
+]
+. (74)
+Deﬁne a distribution, denoted asV #∼ H(J N×J=V #J N×J),
+if V # is uniformly distributed over the sample space of
+HN×N under a linear constraint
+J N×J =V #J N×J . (75)
+We can show that such V # must have the following structure
+V # =
+[ I J×J 0J×(N−J)
+0(N−J)×J ˜V
+]
+, (76)
+where ˜V ∼ H(N−J)×(N−J).
+Now consider a more general case. For ﬁxed A, B ∈
+RN×J, denote V ∼ H(A =VB ) if V is uniformly dis-
+tributed over the subset of the sample space of HN×N under
+a constraint:
+A =VB . (77)
+The above is a special case of Bolthausen’s conditioning
+problem [10], [20], [37]. We will assume that rank(B)= J.
+Deﬁne an orthogonal matrix
+W = [W∥,W⊥], (78)
+where W∥∈ RN×J and W⊥∈ RN×(N−J) form the bases
+of Sp(B) and Sp(B)⊥, respectively. (Note: The sizes of W∥
+and W⊥ should be adjusted if rank(B) < J , but all the
+results below still hold.) Let V S be an arbitrary sample in
+V∼ H(A=VB ) such that
+VB =V SB. (79)
+ThenV above is connected to V # in (76) as follows:
+VB
+(a)
+= V SB
+(b)
+=V SWW TB
+(c)
+= V SWV #W TB, (80)
+where (a) follows (79), (b) holds as W is orthogonal and
+(c) holds since W TB =J N×J(W∥)TB and so, from (75),
+V #W TB =W TB. From (80), for V ∼ H(A =VB ), we
+can write
+V =V SWV #W T. (81)
+Lemma 31: With ˜V deﬁned in (76) and some C∈ RJ×M ,
+we can write
+VF =AC, if Sp(F )⊆ Sp(B), (82a)
+VF =V SW⊥ ˜V (W⊥)
+T
+F , if Sp(F )⊥ Sp(B). (82b)
+Proof: If Sp(F )⊆ Sp(B), we can write F =BC with
+someC, so (82a) holds since A=VB . Combining (76), (78)
+and (81) leads to (82b) since (W∥)TF =0J×M in this case.
+We now consider a Markov chain
+z→ [F ,A,B]→V ∼ H(A =VB ). (83)
+Then, the distribution of V is conditional on F ,A,B and an
+arbitraryz.
+Lemma 32: Let N → ∞, J remain ﬁnite, A be CPIID
+and Sp(F )⊥ Sp(B). Then, in (82b), (i) VF converges to
+CPIIDG-RJG and (ii) Vf /||f|| is asymptotically entry-wise
+independent of z,∀f∈ Clmn(F ).
+Proof: Denote Ω∥ ≡ V SW∥ and Ω⊥ ≡ V SW⊥.
+Clearly, Ω = [ Ω∥, Ω⊥] is orthogonal. Then (82b) can be
+rewritten as
+VF = Ω⊥ ˜V (W⊥)TF . (84)
+Recall that W∥ is a base of Sp(B) and V S is a sample of
+V ∼ H(A =VB ). Hence Ω∥⊆ Sp(A) and so Ω∥ is CPIID.
+Then from Lemma 30, VF in (84) converges to CPIIDG-
+RJG and is entry-wise independent of Ω⊥ asymptotically, so
+(i) holds. For (ii), note that (84) involves F explicitly, andA
+andB implicitly since Ω⊥ andW⊥ are the bases of Sp(A)⊥
+and Sp(B)⊥ respectively. We address this issue as follows.
+• From Lemma 30, VF in (84) is asymptotically entry-
+wise independent of A, since Ω∥⊆ Sp(A) and Ω⊥⊆
+Sp(A)⊥.
+• From (84), we write Vf /∥f∥ = Ω⊥ ˜V (W⊥)Tf/∥f∥,
+in which ˜V (W⊥)Tf/∥f∥ is uniformly distributed on
+a unit sphere from Lemma 7, which is independent of
+(F ,A,B).
+Combing the above, we can see that (ii) holds.
+D. General Constrained Haar Transform
+We now derive an extension of Lemma 32. Consider parti-
+tions: A = [A∗,B∗∗] and B = [B∗,B∗∗] with A∗ =VB∗
+andA∗∗ =VB∗∗.
+Assumption 33: (a) A∗∗ converges to CPIIDG-RJG and
+a/∥a∥,∀a∈ Clmn(A∗∗), is entry-wise independent of z in
+(83); (b) Sp(F )⊥ Sp(B∗) and (c) A = [A∗,A∗∗] is CPIID.
+Then we have the following lemma.
+Lemma 34: Under Assumption 33 and letting N→∞ , J
+ﬁxed, we have (i) [A∗∗,VF ] converges to CPIIDG-RJG in
+distribution, and (ii) Vf /∥f∥,∀f∈ Clmn(F ) is entry-wise
+independent of z in (83).
+Proof: We can always decompose F =F′ +F′′, where
+Sp(F′)⊥ Sp(B∗∗) and Sp(F′′)⊆ Sp(B∗∗). Consider two
+special cases of either F′ orF′′ being empty.
+• First, letF′ be empty. In this case, Sp(F )⊆Sp(B∗∗), so
+Sp(VF )⊆Sp(A∗∗) from (82a). Then claims (i) and (ii)
+hold directly from condition (a) (i.e., Assumption 33(a)).
+• Next, letF′′ be empty. In this case,Sp(F )⊥Sp(B). Then
+claims (i) and (ii) follow Lemma 32 under condition (c).
+Combining these two cases, we can show claims (i) and (ii)
+hold for F =F′+F′′.
+Notes: For convenience, we call{f /∥f∥,∀f∈ Clmn(F )}
+the angles of F . We say a matrix is “desirable” if it is CPIID-
+RJG and its angles are entry-wise independent of any z.A∗
+
+=== PDF PAGE 14 ===
+14
+above is assumed to be CPIID, but it can be non-Gaussian and
+correlated with z, so it is not necessarily “desirable”.
+From Lemma 9, Vf is desirable if V is fully Haar
+distributed. The situation is more complicated for V ∼
+H(A=VB ) when A∗ above, is not necessarily desirable,
+as Sp(VF ) may fall into Sp(A∗) and become “undesirable”.
+Lemma 34 says that such situation can be avoided if we can
+ensure Sp(VF )⊥ Sp(A∗). This orthogonal principle is the
+basis of OAMP-MMV and the related algorithms. Also, note
+that the result is approximate due to (73).
+REFERENCES
+[1] H. A. Loeliger, J. Dauwels, J. Hu, S. Korl, L. Ping, and F. R. Kschischang,
+“The factor graph approach to model-based signal processing,” Proc.
+IEEE, vol. 95, no. 6, pp. 1295-1322, June 2007.
+[2] S. Qin, Y . D. Zhang and M. G. Amin,“Generalized coprime array
+conﬁgurations for direction-of-arrival estimation,” IEEE Transactions on
+Signal Processing, vol. 63, no. 6, pp. 1377-1390, March 2015.
+[3] M. Guo, Y . D. Zhang and T. Chen, “DOA estimation using compressed
+sparse array,” IEEE Transactions on Signal Processing , vol. 66, no. 15,
+pp. 4133-4146, Aug 2018.
+[4] M. Lustig, D. L. Donoho, J. M. Santos and J. M. Pauly, “Compressed
+sensing MRI,” IEEE Signal Processing Magazine , vol. 25, no. 2, pp. 72-
+82, March 2008.
+[5] D. Liang, L. Ying and F. Liang, “Parallel MRI acceleration using M-
+FOCUSS,” 2009 3rd International Conference on Bioinformatics and
+Biomedical Engineering, 2009, pp. 1-4.
+[6] S. Haghighatshoar and G. Caire, “Low-complexity massive MIMO sub-
+space estimation and tracking from low-dimensional projections,” IEEE
+Transactions on Signal Processing , vol. 66, no. 7, pp. 1832-1844, April
+2018.
+[7] Z. Gao, L. Dai, Z. Wang and S. Chen, “Spatially common sparsity based
+adaptive channel estimation and feedback for FDD massive MIMO,”
+IEEE Transactions on Signal Processing, vol. 63, no. 23, pp. 6169-6183,
+Dec 2015.
+[8] J. A. Bazerque and G. B. Giannakis, “Distributed spectrum sensing for
+cognitive radio networks by exploiting sparsity,” IEEE Transactions on
+Signal Processing, vol. 58, no. 3, pp. 1847-1862, March 2010.
+[9] D. L. Donoho, A. Maleki, and A. Montanari, “Message-passing algo-
+rithms for compressed sensing,” in Proc. Nat. Acad. Sci., vol. 106, no. 45,
+Nov. 2009.
+[10] M. Bayati and A. Montanari, “The dynamics of message passing on
+dense graphs, with applications to compressed sensing,” IEEE Trans. Inf.
+Theory, vol. 57, no. 2, pp. 764–785, Feb. 2011.
+[11] X. Wang and H. V . Poor, “Iterative (turbo) soft interference cancellation
+and decoding for coded CDMA,” IEEE Trans. Commun. , vol. 47, no. 7,
+pp. 1046–1061, Jul 1999.
+[12] L. Liu and W. Yu, “Massive connectivity with massive MIMO—part
+I: Device activity detection and channel estimation,” IEEE Trans. Signal
+Process., vol. 66, no. 11, pp. 2933-2946, June 2018.
+[13] J. Kim, W. Chang, B. Jung, D. Baron, J. C. Ye, “Belief propagation for
+joint sparse recovery,” arXiv preprint arXiv:1102.3289 , 2011.
+[14] G. Hannak, A. Perelli, N. Goertz, G. Matz, and M. E. Davies,
+“Performance analysis of approximate message passing for distributed
+compressed sensing,” IEEE J. Select. Topics Signal Process. , vol. 12, no.
+5, pp. 857-870, Oct. 2018.
+[15] A. Manoel, F. Krzakala, M. M ´azard, and L. Zdeborov ´a, “Multi-layer
+generalized linear estimation,” 2017 IEEE International Symposium on
+Information Theory (ISIT) , 2017,pp. 2098-2102.
+[16] J. Ma and L. Ping, “Orthogonal AMP,” IEEE Access, vol. 5, pp. 2020–
+2033, 2017.
+[17] L. Liu, Y . Cheng, S. Liang, J. H. Manton, and L. Ping, “On orthog-
+onal approximate message passing,” arXiv preprint: arXiv:2203.00224 ,
+March2022.
+[18] J. Ma, L. Liu, X. Yuan and L. Ping, “On orthogonal AMP in coded
+linear vector systems,” IEEE Transactions on Wireless Communications ,
+vol. 18, no. 12, pp. 5658-5672, Dec. 2019.
+[19] Y . Cheng, L. Liu and L. Ping, “An integral-based approach to orthogonal
+AMP,” IEEE Signal Processing Letters , vol. 28, pp. 194-198, 2021.
+[20] K. Takeuchi,“Rigorous dynamics of expectation-propagation-based sig-
+nal recovery from unitarily invariant measurements,” IEEE Transactions
+on Information Theory , vol. 66, no. 1, pp. 368-386, Jan. 2020.
+[21] L. Liu, S. Liang and L. Ping, “Capacity Optimality of OAMP in Coded
+Large Unitarily Invariant Systems,” 2022 IEEE International Symposium
+on Information Theory (ISIT) , 2022, pp. 1384-1389.
+[22] J. Zhang, H. He, C. K. Wen, S. Jin and G. Y . Li, “Deep learning based on
+orthogonal approximate message passing for CP-free OFDM,” 2019 IEEE
+International Conference on Acoustics, Speech and Signal Processing
+(ICASSP), 2019, pp. 8414-8418.
+[23] Z. Xue, J. Ma and X. Yuan, “D-OAMP: A denoising-based signal re-
+covery algorithm for compressed sensing,” 2016 IEEE Global Conference
+on Signal and Information Processing (GlobalSIP) , 2016, pp. 267-271.
+[24] H. He, C. K. Wen, S. Jin and G. Y . Li, “Model-Driven Deep Learning
+for MIMO Detection,” IEEE Transactions on Signal Processing , vol. 68,
+pp. 1702-1715, 2020.
+[25] S. Zhang, C. K. Wen, K. Takeuchi and S. Jin, “Orthogonal approx-
+imate message passing for GFDM detection,” IEEE 18th International
+Workshop on Signal Processing Advances in Wireless Communications
+(SPAWC), 2017, pp. 1-5.
+[26] S. Li, W. Yuan, Z. Wei and J. Yuan,“Cross domain iterative detection
+for orthogonal time frequency space modulation,” IEEE Transactions on
+Wireless Communications, vol. 21, no. 4, pp. 2227-2242, April 2022.
+[27] K. Takeuchi, “A uniﬁed framework of state evolution for message-
+passing algorithms,” arXiv preprint: arXiv:1901.03041v2 , Jan 2019.
+[28] S. Rangan, P. Schniter, and A. Fletcher, “Vector approximate message
+passing,” IEEE Transactions on Information Theory , vol. 65, no. 10, pp.
+6664-6684, Oct. 2019.
+[29] Dudeja, R., Lu, Y . M., and Sen, S., “Universality of Approximate
+Message Passing with Semi-Random Matrices, ” arXiv preprint: arXiv:
+220404281v1, Apr 2022.
+[30] Iruzubieta, P., Fern ´andez-Lanas, T., Rasines, L. et al, “Feasibility of
+large-scale population testing for SARS-CoV-2 detection by self-testing
+at home”, Sci Rep 11 , 9819 (2021).
+[31] Pertti Mattila. Geometry of Sets and Measures in Euclidean Spaces:
+Fractals and Rectiﬁability. Cambridge University Press, 1995.
+[32] E. Meckes, Concentration of measure and the compact classical matrix
+groups, 2014.
+[33] E. Schmidt, “ ¨Uber die auﬂ ¨ osung linearer gleichungen mit unendlich
+vielen unbekannten,” Rend. Circ. Mat. Palermo (1884-1940), vol. 25, no.
+1, 53-77, 1908.
+[34] R. Price, “A useful theorem for nonlinear devices having Gaussian
+inputs”, IRE Trans. Inf. Theory , vol. IT-4, pp. 69-72, Jun. 1958.
+[35] Y . Cheng, L. Liu and L. Ping, “Orthogonal AMP for massive access
+in channels with spatial and temporal correlations,” IEEE Journal on
+Selected Areas in Communications , vol. 39, no. 3, pp. 726-740, March
+2021.
+[36] A. M. Tulino and S. Verdu, “Random matrix theory and wireless
+communications”. Now Publishers Inc. , 2004, vol. 1.
+[37] Bolthausen, E., “An Iterative Construction of Solutions of the TAP
+Equations for the Sherrington-Kirkpatrick Model”, Communications in
+Mathematical Physics, vol. 325, no. 1, pp. 333–366, 2014.
+[38] A. S. Behbahani, R. Merched and A. M. Eltawil, “Optimizations of a
+MIMO Relay Network,” IEEE Transactions on Signal Processing , vol.
+56, no. 10, pp. 5062-5073, Oct 2008.
+[39] T. Kong and Y . Hua, “Optimal design of source and relay pilots
+for MIMO relay channel estimation,” IEEE Transactions on Signal
+Processing, vol. 59, no. 9, pp. 4438-4446, Sept 2011.
+[40] S. H. Han and J. H. Lee, “An overview of peak-to-average power
+ratio reduction techniques for multicarrier transmission,” IEEE Wireless
+Commun., vol. 12, no. 2, pp. 56-65, Apr. 2005.
+[41] Y . Cheng and L. Ping, “A posteriori mean of constrained random vari-
+ables,” https://drive.google.com/ﬁle/d/1T-DrFmns5-dYKMXteDZVGrjG-
+Z73UFWo/view, 2022.
+[42] S. Liang, J. Tong, and L. Ping, “On iterative compensation of clipping
+distortion in OFDM systems,” IEEE Wireless Commun. Lett. vol.8, no.2,
+pp. 436-439, April 2019.
+[43] Lee W, Straube S, Sincic R, Noble JA, Montoy JC, Kornblith AE,
+Prakash A, Wang R, Bainton R, Kurien P, “Clinical evaluation of
+a COVID-19 antibody lateral ﬂow assay using point of care sam-
+ples,”medRxiv [Preprint]. p.2020.12.02.20242750. , 2020.
+[44] Alhabbab, R. Y ., Alfaleh, M. A., Alsulaiman, et al, “Amplifying lateral
+ﬂow assay signals for rapid detection of COVID-19 speciﬁc antibodies.,”
+Global Challenges 2022 , 6, 2200008.
+[45] Y . Tong, The Multivariate Normal Distribution. Springer New York,
+1990.

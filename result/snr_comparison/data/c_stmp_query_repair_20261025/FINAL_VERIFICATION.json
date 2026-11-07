@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "tests_passed": 6,
+  "test_command": ".venv/Scripts/python.exe -B -X utf8 -m pytest -q src/tests/test_c_stmp_query_power_20261025.py src/tests/test_c_stmp_20261024.py -k \"calibrated_variance or final_readout or complex_gaussian_variance_factor or correlated_real_gaussian or bernoulli_feedback or identity_denoiser\"",
+  "full_receiver_runs": 260,
+  "training_runs": 0,
+  "full_snr_status": "STOPPED_BY_USER",
+  "full_snr_completed": 487,
+  "full_snr_plan_sha256": "c9e3404ad5bbd904a6461aee60d030cdd3f94707af318a695e244f03b24de95d",
+  "global_binding_changed": false,
+  "unresolved": "Seven development weak-user misses; complete covariance/message-law consistency.",
+  "readout_config_sha256": "03eb20a8008376bda09add3e87ab67d9a69fd250ac0c60f7a985be3ad13a22ef"
+}

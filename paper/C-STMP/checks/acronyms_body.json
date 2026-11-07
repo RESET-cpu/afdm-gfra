@@ -1,0 +1,245 @@
+{
+  "checker": "ars-acronym-check/1.0",
+  "input": "paper\\C-STMP\\checks\\phase4_assembly\\draft.md",
+  "input_sha256": "6b4be4330a7db9e6f33fca6e6d19f48b0894301006153d2cfe9d4292363780b9",
+  "status": "partial",
+  "allowlist": {
+    "default": 29,
+    "user": [
+      "C-STMP",
+      "STMP"
+    ]
+  },
+  "coverage": {
+    "body": "checked",
+    "abstract_en": "not_requested",
+    "abstract_zh": "not_requested"
+  },
+  "scope_lines": {
+    "body": [
+      [
+        2,
+        112
+      ],
+      [
+        114,
+        129
+      ],
+      [
+        131,
+        161
+      ],
+      [
+        163,
+        299
+      ],
+      [
+        301,
+        325
+      ],
+      [
+        327,
+        335
+      ],
+      [
+        337,
+        337
+      ],
+      [
+        339,
+        378
+      ],
+      [
+        380,
+        395
+      ],
+      [
+        397,
+        431
+      ],
+      [
+        433,
+        501
+      ],
+      [
+        503,
+        514
+      ],
+      [
+        516,
+        524
+      ],
+      [
+        526,
+        546
+      ],
+      [
+        548,
+        574
+      ],
+      [
+        576,
+        600
+      ],
+      [
+        602,
+        635
+      ],
+      [
+        637,
+        644
+      ],
+      [
+        646,
+        679
+      ],
+      [
+        712,
+        723
+      ],
+      [
+        725,
+        760
+      ],
+      [
+        762,
+        802
+      ],
+      [
+        804,
+        819
+      ],
+      [
+        821,
+        853
+      ],
+      [
+        855,
+        855
+      ],
+      [
+        857,
+        896
+      ],
+      [
+        898,
+        912
+      ]
+    ]
+  },
+  "unread_sections": [],
+  "coverage_limits": [
+    {
+      "scope": "body",
+      "line": 3,
+      "acronym": "IoT",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 4,
+      "acronym": "GFRA",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 27,
+      "acronym": "OTFS",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 43,
+      "acronym": "MIMO",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 58,
+      "acronym": "MP",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 173,
+      "acronym": "CPP",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 293,
+      "acronym": "SNR",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 316,
+      "acronym": "MMSE",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 583,
+      "acronym": "BCE",
+      "reason": "unconfirmed_definition"
+    }
+  ],
+  "findings": [
+    {
+      "scope": "body",
+      "line": 12,
+      "rule": "undefined",
+      "acronym": "NR",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 12,
+      "rule": "undefined",
+      "acronym": "NTN",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 366,
+      "rule": "undefined",
+      "acronym": "BFGS",
+      "expansion": null,
+      "occurrences": 2
+    },
+    {
+      "scope": "body",
+      "line": 411,
+      "rule": "undefined",
+      "acronym": "KN",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 412,
+      "rule": "undefined",
+      "acronym": "LKN",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 810,
+      "rule": "defined_again",
+      "acronym": "AWGN",
+      "expansion": "additive white Gaussian noise",
+      "occurrences": 3
+    },
+    {
+      "scope": "body",
+      "line": 906,
+      "rule": "defined_again",
+      "acronym": "MDL",
+      "expansion": "minimum description length",
+      "occurrences": 2
+    }
+  ]
+}

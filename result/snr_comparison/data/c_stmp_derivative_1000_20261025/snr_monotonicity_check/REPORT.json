@@ -1,0 +1,188 @@
+{
+  "status": "COMPLETE",
+  "new_inferences": 0,
+  "new_training": 0,
+  "main_plan_unchanged": true,
+  "policy_sha256": "6962b3f99e72532b1962a69dc2a0fabb933da4b59fd280c2e0b900211f89b4bb",
+  "input_audit": {
+    "scenes": 100,
+    "observations": 800,
+    "same_channel": true,
+    "same_activity": true,
+    "same_phase": true,
+    "same_operator": true,
+    "same_rho": true,
+    "input_hashes_valid": true,
+    "max_standardized_noise_relative_difference": 2.385612955148575e-16,
+    "max_variance_relative_error": 0.0,
+    "max_clean_power_relative_error": 0.0,
+    "max_snr_step_error_db": 3.552713678800501e-15,
+    "realized_snr_minus_nominal_db": {
+      "min": -0.23261575298271442,
+      "max": 0.15872567416811467,
+      "mean": -0.004149917356322712,
+      "std": 0.06533855281098377
+    },
+    "status": "PASS"
+  },
+  "first100_baseline_decisions_match_full1000_all_eight_snrs": true,
+  "upward_transitions": [
+    {
+      "scenes": 100,
+      "method": "somp",
+      "from_snr": 0,
+      "to_snr": 2,
+      "before_errors": 12,
+      "after_errors": 13,
+      "newly_wrong": 6,
+      "recovered": 5,
+      "newly_wrong_misses": 4,
+      "newly_wrong_false_alarms": 2,
+      "net_error_change": 1,
+      "changed_scenes": 11,
+      "paired_scene_bootstrap_delta_aer_percentage_points_95_interval": [
+        -0.15,
+        0.2
+      ]
+    },
+    {
+      "scenes": 100,
+      "method": "somp",
+      "from_snr": 8,
+      "to_snr": 10,
+      "before_errors": 10,
+      "after_errors": 13,
+      "newly_wrong": 5,
+      "recovered": 2,
+      "newly_wrong_misses": 2,
+      "newly_wrong_false_alarms": 3,
+      "net_error_change": 3,
+      "changed_scenes": 6,
+      "paired_scene_bootstrap_delta_aer_percentage_points_95_interval": [
+        -0.05,
+        0.22499999999999998
+      ]
+    },
+    {
+      "scenes": 100,
+      "method": "gamp",
+      "from_snr": 8,
+      "to_snr": 10,
+      "before_errors": 5,
+      "after_errors": 6,
+      "newly_wrong": 1,
+      "recovered": 0,
+      "newly_wrong_misses": 0,
+      "newly_wrong_false_alarms": 1,
+      "net_error_change": 1,
+      "changed_scenes": 1,
+      "paired_scene_bootstrap_delta_aer_percentage_points_95_interval": [
+        0.0,
+        0.075
+      ]
+    },
+    {
+      "scenes": 100,
+      "method": "gnn",
+      "from_snr": 4,
+      "to_snr": 6,
+      "before_errors": 2,
+      "after_errors": 3,
+      "newly_wrong": 1,
+      "recovered": 0,
+      "newly_wrong_misses": 0,
+      "newly_wrong_false_alarms": 1,
+      "net_error_change": 1,
+      "changed_scenes": 1,
+      "paired_scene_bootstrap_delta_aer_percentage_points_95_interval": [
+        0.0,
+        0.075
+      ]
+    },
+    {
+      "scenes": 100,
+      "method": "C_STMP",
+      "from_snr": 2,
+      "to_snr": 4,
+      "before_errors": 5,
+      "after_errors": 6,
+      "newly_wrong": 2,
+      "recovered": 1,
+      "newly_wrong_misses": 0,
+      "newly_wrong_false_alarms": 2,
+      "net_error_change": 1,
+      "changed_scenes": 3,
+      "paired_scene_bootstrap_delta_aer_percentage_points_95_interval": [
+        -0.05,
+        0.10062499999994544
+      ]
+    },
+    {
+      "scenes": 1000,
+      "method": "somp",
+      "from_snr": 6,
+      "to_snr": 8,
+      "before_errors": 184,
+      "after_errors": 196,
+      "newly_wrong": 71,
+      "recovered": 59,
+      "newly_wrong_misses": 28,
+      "newly_wrong_false_alarms": 43,
+      "net_error_change": 12,
+      "changed_scenes": 82,
+      "paired_scene_bootstrap_delta_aer_percentage_points_95_interval": [
+        -0.03,
+        0.09
+      ]
+    },
+    {
+      "scenes": 1000,
+      "method": "gamp",
+      "from_snr": 8,
+      "to_snr": 10,
+      "before_errors": 88,
+      "after_errors": 92,
+      "newly_wrong": 11,
+      "recovered": 7,
+      "newly_wrong_misses": 1,
+      "newly_wrong_false_alarms": 10,
+      "net_error_change": 4,
+      "changed_scenes": 17,
+      "paired_scene_bootstrap_delta_aer_percentage_points_95_interval": [
+        -0.01,
+        0.0325
+      ]
+    },
+    {
+      "scenes": 1000,
+      "method": "offgrid_sbl",
+      "from_snr": 6,
+      "to_snr": 8,
+      "before_errors": 33,
+      "after_errors": 34,
+      "newly_wrong": 5,
+      "recovered": 4,
+      "newly_wrong_misses": 3,
+      "newly_wrong_false_alarms": 2,
+      "net_error_change": 1,
+      "changed_scenes": 9,
+      "paired_scene_bootstrap_delta_aer_percentage_points_95_interval": [
+        -0.0125,
+        0.017499999999999998
+      ]
+    }
+  ],
+  "limitations": [
+    "Input algebra audited on fixed scenes 0-99 only; historical decisions checked on all 1000 scenes.",
+    "Paired scene bootstrap describes Monte Carlo variability conditional on the frozen readout; thresholds had overlapping development scenes.",
+    "A saved decision flip localizes the issue but does not establish a unique causal explanation."
+  ],
+  "files": {
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_derivative_1000_20261025\\snr_monotonicity_check\\INPUT_AUDIT.json": "39f45cd9ac0694b0c12059b8ce49f190f2a7136889fe75065c2935f8f22fa610",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_derivative_1000_20261025\\snr_monotonicity_check\\TRANSITIONS.json": "06d0151dc0fca9c69767493dc50055c06a94b6ffd6f256c42498419195be9ab4",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_derivative_1000_20261025\\snr_monotonicity_check\\ERROR_FLIPS.json": "384c3b141036276c076c6110d510eeb0d00b706c69d88e2dd9e7292330296d16"
+  },
+  "historical_summary_sha256": "4734309f599900f1c0dea11cc14e8d72ce645fe073fc801b44ba91a1b2c5b217",
+  "script_sha256": "5a961f8f2a588800837730ef5cb88908826726e58f12c152cfd03c9f337ad107",
+  "created_unix": 1792902258.1908138
+}

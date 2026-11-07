@@ -1,0 +1,81 @@
+{
+  "scientific_status": "ANALYZED",
+  "implementation_checks": "PASS",
+  "observed_complete": {
+    "status": "COMPLETE",
+    "scene_count": 24,
+    "condition_count": 48,
+    "user_stage_records": 5760,
+    "folded_evaluations": 11520,
+    "seconds": 9.706762399990112,
+    "source_sha256": "588c40230e21e882bd13724741219d6b3cdae1fc47537404fa2dfeb91d736feb",
+    "results_sha256": "fcfe34b5db24cbdcda993a72c0b2273954cd9cd9a6a8d02772820017350e17ba",
+    "protected_files_unchanged": true
+  },
+  "all_strata_scene_mean_nll_improvement": true,
+  "protected_files_unchanged": true,
+  "source_and_result_hashes_match": true,
+  "independent_review": "Separate shared-context read-only reviewer reaggregated RESULTS.npz; summary matched. Not a blind review.",
+  "fallacy_coverage": "11/11",
+  "fallacy_scan": [
+    {
+      "name": "Simpson paradox",
+      "assessment": "Checked all 24 strata; all paired scene-mean NLL directions improve, while adverse axis metrics are retained."
+    },
+    {
+      "name": "Ecological fallacy",
+      "assessment": "Scene means are not guarantees for every user. Per-user data remain available."
+    },
+    {
+      "name": "Berkson selection",
+      "assessment": "Twelve uniform and twelve failure-enriched scenes reported separately; enriched set is not population-representative."
+    },
+    {
+      "name": "Collider bias",
+      "assessment": "Main comparison is not conditioned on final miss; activity split reflects the modeled target and all users are retained."
+    },
+    {
+      "name": "Base rate neglect",
+      "assessment": "Active and inactive strata both reported; no detection, PPV or prevalence inference."
+    },
+    {
+      "name": "Regression to mean",
+      "assessment": "Paired same-error comparison; no before-after remeasurement benefit claim."
+    },
+    {
+      "name": "Survivorship",
+      "assessment": "All 48 conditions, 5760 user-stage records and both folds retained; no finite-result filtering."
+    },
+    {
+      "name": "Look elsewhere",
+      "assessment": "All group/SNR/stage/activity strata and all methods retained; no significance tests."
+    },
+    {
+      "name": "Forking paths",
+      "assessment": "Saved PLAN before computation; this remains exploratory reuse of previously examined queries. No post-result tuning of training family."
+    },
+    {
+      "name": "Correlation versus causation",
+      "assessment": "Descriptive covariance score only, not causal detection/NMSE improvement."
+    },
+    {
+      "name": "Reverse causality",
+      "assessment": "No causal direction between structured errors and missed activity inferred."
+    }
+  ],
+  "decision": "Retain current rank4 alpha<=0.5 separable covariance for a preliminary denoising pilot; no exact whiteness requirement or extra parameter search.",
+  "limits": [
+    "Oracle fitting from true errors, not a public covariance estimator.",
+    "Output rows share structure; internal held-row scoring is not an independent-scene holdout.",
+    "Some antenna offdiagonal fractions worsen; no all-axis improvement claim.",
+    "Neither noise-distribution matching nor trained denoising/activity performance is established."
+  ],
+  "artifact_sha256": {
+    "check.py": "588c40230e21e882bd13724741219d6b3cdae1fc47537404fa2dfeb91d736feb",
+    "sanity.py": "90e19a0a44c6907ac61101a86501aa574485db78061d4decac6db71bc2e767db",
+    "RESULTS.npz": "fcfe34b5db24cbdcda993a72c0b2273954cd9cd9a6a8d02772820017350e17ba",
+    "SUMMARY.json": "6dfe7c4db0664a670c62efc9cd8007c17e1f2e78bda483ff553b59e440a222fb",
+    "ALGEBRA.json": "9dee26000ea93117cd8c84f233bcfbcc284b7f55786530ea65d46c3ee689a6c9",
+    "SANITY.json": "3a9d6dd9358a5394a8bfc059293a5a9e77e9c7932e9634cf0a36f03c7970f6fd"
+  }
+}

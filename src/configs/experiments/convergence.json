@@ -1,0 +1,19 @@
+{
+  "schema": "afdm-convergence-fixed-iterations-v1",
+  "scene_count": 50,
+  "first_scene": 0,
+  "snr_db": 0,
+  "iterations": 300,
+  "methods": ["STMP", "GP-MP", "Off-grid SBL (7)", "Off-grid SBL (13)", "Off-grid SBL (25)"],
+  "phase_mode": "known",
+  "noise_mode": "estimated",
+  "early_stopping": false,
+  "white_source": "result/snr_comparison/data/white_preconditioned_matched_fp32_1000_snr_20261105",
+  "sbl_source": "result/snr_comparison/data/offgrid_search_budgets_1000_cpu_20261105",
+  "stmp_source": "result/snr_comparison/data/c_stmp_current_convergence_20261026_scene0200_snr0/PLAN.json",
+  "gp_configuration": "src/configs/candidates/GP_MP_white_preconditioned_matched_20261104.json",
+  "runtime": {"learned_device": "cuda", "workers": 1, "threads": 1, "tf32": false},
+  "output": "result/snr_comparison/data/convergence_50x300_20261105",
+  "metrics": ["pooled_full_channel_nmse_db", "pooled_aer"],
+  "selection": "First 50 scene IDs, without selecting by activity, errors or convergence."
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "afdm-experiment-v1",
+  "experiment": "snr_comparison",
+  "methods": [
+    "STMP",
+    "offgrid_sbl",
+    "gnn",
+    "gamp",
+    "somp"
+  ],
+  "scenes": 1000,
+  "timing_repeats": 1,
+  "reference_method": "STMP",
+  "include_stmp": true,
+  "execution_status": "READY",
+  "values": [
+    -4,
+    -2,
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "phase_mode": "known",
+  "noise_mode": "estimated"
+}

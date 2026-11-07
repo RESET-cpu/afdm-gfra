@@ -1,0 +1,412 @@
+{
+  "status": "PASS_DATA_AND_RENDER",
+  "scenes": 500,
+  "methods": 7,
+  "points": 84,
+  "paired_checks": [
+    {
+      "snr_db": -4,
+      "known_phase_matches_completed_phase_audit": true,
+      "equal_truth_denominators_all_methods": true,
+      "scenes": 500
+    },
+    {
+      "snr_db": -2,
+      "known_phase_matches_completed_phase_audit": true,
+      "equal_truth_denominators_all_methods": true,
+      "scenes": 500
+    },
+    {
+      "snr_db": 0,
+      "known_phase_matches_completed_phase_audit": true,
+      "equal_truth_denominators_all_methods": true,
+      "scenes": 500
+    },
+    {
+      "snr_db": 2,
+      "known_phase_matches_completed_phase_audit": true,
+      "equal_truth_denominators_all_methods": true,
+      "scenes": 500
+    },
+    {
+      "snr_db": 4,
+      "known_phase_matches_completed_phase_audit": true,
+      "equal_truth_denominators_all_methods": true,
+      "scenes": 500
+    },
+    {
+      "snr_db": 6,
+      "known_phase_matches_completed_phase_audit": true,
+      "equal_truth_denominators_all_methods": true,
+      "scenes": 500
+    }
+  ],
+  "curves": [
+    {
+      "method": "C_STMP",
+      "metric": "nmse_db",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        -9.877552508880536,
+        -11.527536943790814,
+        -12.984285314012151,
+        -14.261245324122907,
+        -15.408293007238864,
+        -16.476091840622622
+      ],
+      "label": "Known phase"
+    },
+    {
+      "method": "C_STMP_phase_selected",
+      "metric": "nmse_db",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        -9.571601651904087,
+        -11.262998733025594,
+        -12.726615038657798,
+        -13.993776403734632,
+        -15.107978116644855,
+        -16.22009374700047
+      ],
+      "label": "Estimated phase"
+    },
+    {
+      "method": "STMP",
+      "metric": "nmse_db",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        -8.017048748215455,
+        -9.749348939129197,
+        -11.418249696353044,
+        -13.0042099519526,
+        -14.60284013824889,
+        -16.08295266624002
+      ],
+      "label": "STMP"
+    },
+    {
+      "method": "offgrid_sbl",
+      "metric": "nmse_db",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        -5.791918303128327,
+        -7.354016427026878,
+        -8.512098452409614,
+        -9.381545309758582,
+        -10.002811663809709,
+        -10.497111802421347
+      ],
+      "label": "Off-grid SBL"
+    },
+    {
+      "method": "gnn",
+      "metric": "nmse_db",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        -4.370093614794487,
+        -4.961586181089711,
+        -5.490580163956738,
+        -5.945037473554593,
+        -6.32266247275843,
+        -6.59980951862368
+      ],
+      "label": "GNN-ASPL"
+    },
+    {
+      "method": "gamp",
+      "metric": "nmse_db",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        -3.1264106557087805,
+        -3.92932155472443,
+        -4.5852155451166645,
+        -5.102203382036748,
+        -5.486572078616597,
+        -5.748704595447141
+      ],
+      "label": "GAMP-SBL"
+    },
+    {
+      "method": "somp",
+      "metric": "nmse_db",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        -3.208981677963853,
+        -3.6767874681835817,
+        -3.905473976641183,
+        -3.986844503236438,
+        -3.980896096199401,
+        -3.9203417224777253
+      ],
+      "label": "SOMP"
+    },
+    {
+      "method": "C_STMP",
+      "metric": "aer",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        0.00415,
+        0.00215,
+        0.00105,
+        0.0006,
+        0.00025,
+        0.00015
+      ],
+      "label": "Known phase"
+    },
+    {
+      "method": "C_STMP_phase_selected",
+      "metric": "aer",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        0.0047,
+        0.00245,
+        0.00125,
+        0.00085,
+        0.0008,
+        0.00045
+      ],
+      "label": "Estimated phase"
+    },
+    {
+      "method": "STMP",
+      "metric": "aer",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        0.00625,
+        0.0036,
+        0.00185,
+        0.00115,
+        0.00055,
+        0.0002
+      ],
+      "label": "STMP"
+    },
+    {
+      "method": "offgrid_sbl",
+      "metric": "aer",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        0.0036,
+        0.002,
+        0.00125,
+        0.00105,
+        0.0009,
+        0.0007
+      ],
+      "label": "Off-grid SBL"
+    },
+    {
+      "method": "gnn",
+      "metric": "aer",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        0.0046,
+        0.00325,
+        0.00205,
+        0.0016,
+        0.00135,
+        0.0012
+      ],
+      "label": "GNN-ASPL"
+    },
+    {
+      "method": "gamp",
+      "metric": "aer",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        0.00885,
+        0.0046,
+        0.00345,
+        0.00275,
+        0.0024,
+        0.00205
+      ],
+      "label": "GAMP-SBL"
+    },
+    {
+      "method": "somp",
+      "metric": "aer",
+      "x": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "y": [
+        0.00675,
+        0.00445,
+        0.0043,
+        0.00435,
+        0.00395,
+        0.00395
+      ],
+      "label": "SOMP"
+    }
+  ],
+  "legend_checks": [
+    {
+      "title": "GP-CCD-MP-DRE",
+      "overlapping_curves": []
+    },
+    {
+      "title": "Known phase",
+      "overlapping_curves": []
+    }
+  ],
+  "original_assets_unchanged": {
+    "D:\\afdm-gfra\\paper\\C-STMP\\figures\\snr_comparison.pdf": "33ae5127f1e16be0f4388d485e032fb2ede1c17197f5917f148b242a4815ae2f",
+    "D:\\afdm-gfra\\result\\snr_comparison\\figures\\full_grid_final_20261026\\PLOT_DATA.json": "af17137c35e7635d8c21cdb2b7cb5bd4a23778c0e03ea1b4781b66d3f910ef40",
+    "D:\\afdm-gfra\\result\\snr_comparison\\figures\\full_grid_final_20261026\\CONFIG.json": "5b2f8955811fd7f396f077d90604eff6e0bf3fc770eec4b9bcf09d3941d4b884",
+    "D:\\afdm-gfra\\FINAL.json": "758534b08e7eaae7f63a540f0ca51d8f3bd8d7ac778477d7916676a646a4672a",
+    "D:\\afdm-gfra\\MAINLINE.json": "2ad0bb19de70a3c4fa64ad70efdf8b10c1152971257fc12f035589bea86aaf0c",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\PLAN.json": "f589c026796aed4e7cabb53eba4899fb7bb549e9ed281a2ba225ec62c6e3a872",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\COMPLETION.json": "b6f22f4fcdccef23336d705976d49dc8e2dd1d76aba3f39c4ae4e8fb8d881602"
+  },
+  "source_hashes": {
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\SUMMARY.json": "12faa6ffd525551707c2780b03902ddc603016ed742af672ec06eef54a72e15b",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\PLAN.json": "a2ee188d594d2d7f8adaca86a148eb4e965fd9bbdb9c10bb3b7cb5036094c84d",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\COMPLETE.json": "6e00426a5256d9e55ad533bf1b8671a21d988e0643940b9535e6d68fc9206fe4",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\per_scene.csv": "f43e9601bfb1ae4b5351ffc26a86c5ab5002be5990a034203b80b6625e09bebb",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\BASELINE_AUDIT.json": "1e0e0249372094d756b8168fe9b0152f63ef1edfd9644d9f40c849fe9480d3d9"
+  },
+  "selected_summary_sha256": "5e80d7e1c0a6f6841e8703ebe9cae8cd9ab99a111626f7a7bea8934eb529e29f",
+  "script_sha256": "47d4be59d4901bd31414c19605c3de8acee85cbda8d898420f323c412548e9ec",
+  "engine_hashes": {
+    "activity_probability.py": "da562be652fed8b17d681569044da469169580e81f0ce7937bcebe0e106c66cc",
+    "channel_denoising.py": "754daeb4f28f5049f62e6ee338f02f076b9cef01641b3c1f9a4527258815adf1",
+    "channel_denoising_colored_20261025.py": "66a5f0b6abb77bc61ff26ca9bbf018f15131e10201e37378b9c0fab0bf343f21",
+    "common.py": "631c63a9fec0c9af6401a8f43ceda608f476a1cf2838f0ca4e63c8a6ff00b061",
+    "configurable.py": "b0d4a2f6d484d4f970a4f4c2219c2f66d78e2b8c8beef61ce58f515307f73555",
+    "convergence.py": "9fa10bfe53a3d0d923be938b698a31939fda765aea26d82cd22b78ab1b1beef4",
+    "cross_channel.py": "8d2b7d17d75bab9e5254f4446f9e9cae9235626bdbc4c2a764b37ebe337c38b7",
+    "c_stmp_interim.py": "e1dfcd018270381991240222e3521b3a6d096482d0f77724573a44ff313c9998",
+    "data.py": "b23958629402a44c7019e24ca883da2504f4f82dee87d0d7837e65dafc64c7f7",
+    "density_ratio_ablation.py": "9e0b318bbb26599e9fe82af8098ff664ce2cf5205ca1ab31a871f522dc4ba15a",
+    "gnn_readout_comparison.py": "f7448da7b046400bb8c175ed8b95d1a33c681a0e917527e838cc45bf17bd0246",
+    "legend_layout.py": "afbcb7980b435669a7c52beebc0547ac68b28f0bd7705a49486cdcf9c4e0991d",
+    "pilot_frames.py": "73d01ef8dea659fdc6023bfae81415c354cecb32fa786c4f72966e09ddae754b",
+    "plot_selection.py": "60312b536a486b762c73fe8581422e06bcca0e94e5a9cb418322ef116aa4d196",
+    "runtime_comparison.py": "299e06f83173d0a82398f0a5af3ab45722fa26fe25ae0ca85bf5a74f26318fce",
+    "snr_comparison.py": "1ce0b9a69f4172d462196a09a0f45d3a46294c86232490714707dd7d4305339f",
+    "style.py": "594af1149c3fd3cdb9f80ea9bbbb97a2819199b28f9dd61a161ff72c71619273",
+    "user_count.py": "99fe12e052c90a8333285b8f52604fc0fff091295b1c067b91526be3e6d431df",
+    "__init__.py": "a95770b931157acb4f0163f501e4b818ccf8c07471348ced9c745bc648a42665"
+  },
+  "files": {
+    "snr_comparison.pdf": "7bd09813ed3d6ed0eb5475d0c78a1216ba985ea4817d06c8d9e40f6d53c9c833",
+    "snr_comparison.png": "a6c678e18adc751c580b3d6e74aec3068db3d136ee0681bd70c53523c1f0fe7f",
+    "PLOT_DATA.json": "53b6bdef171803135f8677b04c5df051ecc1594c8531ac86b9380373ad82511b",
+    "CONFIG.json": "ee9bda7e3e3f7b1bffcc2e4b25569b4cefe9438d0bd1255140194648aeb2b898",
+    "SNR.csv": "a2852a9f146b679ac3669a19eb1dc94d868206d7052841eefeffd6a6139ed71e",
+    "caption.txt": "7008803be520ec2072c58c92aa4df7c0ff3109fd3088dfccca0df06021eab8aa"
+  },
+  "receiver_inference_started": false,
+  "training_started": false,
+  "visual_review": {
+    "status": "PASS",
+    "pdf_renderer": "Poppler pdftoppm",
+    "dpi": 300,
+    "preview": "pdf_preview.png",
+    "preview_sha256": "ecad40e5a8e81af5c96e2a79341e33a03a9ad75079ed04a39296e01e5c20b3a1",
+    "checks": [
+      "Both panels and all seven curves visible",
+      "Legend groups do not cover plotted curves",
+      "Axis labels, legend text and ticks readable without clipping",
+      "Estimated and known phase conditions explicitly labeled"
+    ]
+  }
+}

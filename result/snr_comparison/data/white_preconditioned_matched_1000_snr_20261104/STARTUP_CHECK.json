@@ -1,0 +1,158 @@
+{
+  "status": "PASS",
+  "checked_unix": 1793842231.4566288,
+  "phase": "FORMAL_EVALUATION_RUNNING",
+  "coordinator_pid": 91336,
+  "coordinator_created_unix": 1793842094.2033744,
+  "wrapper_pid": 2380,
+  "workers": [
+    {
+      "position": 0,
+      "preflight": false,
+      "pid": 120032,
+      "created_unix": 1793842164.9189923,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_matched_20261105.run",
+        "worker",
+        "--position",
+        "0"
+      ],
+      "started_unix": 1793842164.9224265,
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_1000_snr_20261104\\logs\\scene0000_condition00.out",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_1000_snr_20261104\\logs\\scene0000_condition00.err",
+      "children": [
+        {
+          "pid": 119208,
+          "command": [
+            "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+            "0x4"
+          ],
+          "created_unix": 1793842164.9247153
+        },
+        {
+          "pid": 44728,
+          "command": [
+            "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "evaluation.white_matched_20261105.run",
+            "worker",
+            "--position",
+            "0"
+          ],
+          "created_unix": 1793842164.9429307
+        }
+      ]
+    },
+    {
+      "position": 1,
+      "preflight": false,
+      "pid": 125632,
+      "created_unix": 1793842165.0414157,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_matched_20261105.run",
+        "worker",
+        "--position",
+        "1"
+      ],
+      "started_unix": 1793842165.0452938,
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_1000_snr_20261104\\logs\\scene0000_condition01.out",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_1000_snr_20261104\\logs\\scene0000_condition01.err",
+      "children": [
+        {
+          "pid": 19592,
+          "command": [
+            "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+            "0x4"
+          ],
+          "created_unix": 1793842165.0475078
+        },
+        {
+          "pid": 88108,
+          "command": [
+            "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "evaluation.white_matched_20261105.run",
+            "worker",
+            "--position",
+            "1"
+          ],
+          "created_unix": 1793842165.0656867
+        }
+      ]
+    }
+  ],
+  "current_progress": {
+    "stage": "RUNNING",
+    "pid": 91336,
+    "updated_unix": 1793842230.073516,
+    "completed": 0,
+    "planned": 6000,
+    "active_workers": 2,
+    "workers": [
+      {
+        "position": 0,
+        "preflight": false,
+        "pid": 120032,
+        "created_unix": 1793842164.9189923,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_matched_20261105.run",
+          "worker",
+          "--position",
+          "0"
+        ],
+        "started_unix": 1793842164.9224265,
+        "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_1000_snr_20261104\\logs\\scene0000_condition00.out",
+        "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_1000_snr_20261104\\logs\\scene0000_condition00.err"
+      },
+      {
+        "position": 1,
+        "preflight": false,
+        "pid": 125632,
+        "created_unix": 1793842165.0414157,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_matched_20261105.run",
+          "worker",
+          "--position",
+          "1"
+        ],
+        "started_unix": 1793842165.0452938,
+        "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_1000_snr_20261104\\logs\\scene0000_condition01.out",
+        "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_1000_snr_20261104\\logs\\scene0000_condition01.err"
+      }
+    ],
+    "failed": 0,
+    "dispatched": 2
+  },
+  "plan_sha256": "524ed6abefaa86b2a01f2403896c3404649ab4186c6e24ac946c6f5d45721a37",
+  "finite_preflight_verified": true,
+  "saved_pair_report_functions_checked": true,
+  "all_stderr_empty": true,
+  "preflight_iterations": 600,
+  "preflight_converged": false
+}

@@ -1,0 +1,234 @@
+{
+  "paragraph_id": "P06",
+  "source_lines": [
+    159,
+    178
+  ],
+  "input_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_reaudit_20261029\\P06.input.txt",
+  "scope": "仅当前P06；完整语法句计4句；S04含显示公式及后接where，未拆分重复计数。",
+  "sentences": [
+    {
+      "id": "P06-S01",
+      "category": "TERM_ONLY",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\shen2025.pdf",
+      "source_section": "II.B Transmission Scheme；式(8)–(10)后的 Note that…algorithm design 原段",
+      "source_page": [
+        4
+      ],
+      "source_quote": "Fortunately, $H^{\\rm DDS}_{n_z,n_y,u}[k\\prime,l\\prime,l]$ remains approximately constant over $Q$ consecutive frames, benefited by the quasi-static property of (1) in the delay-Doppler domain.",
+      "changes": {
+        "necessary_technical_substitutions": [
+          "$H^{\\rm DDS}_{n_z,n_y,u}[k\\prime,l\\prime,l]$ → $H_k$（有效信道对象与索引）"
+        ],
+        "other_additions_deletions_rewrites": [],
+        "display_only": [
+          "(1) → \\eqref{eq:physical-channel}；增加 \\cite{shen2025}；提取层断行、连字符及字内空格归一化"
+        ]
+      },
+      "formula_adaptation": [
+        "原文的 OTFS delay-Doppler-space 有效信道张量改为本文 AFDM 有效信道 $H_k$；所指物理信道公式是本文公式，不主张与 Shen 式(1)/(9)等同。"
+      ],
+      "reason": "完整英文句型、连接关系和词序保留；差异仅为技术对象、符号及引用显示。",
+      "minimal_action": "语言层面可保留此句；明确 TERM_ONLY 不替代本文信道数学模型的独立说明。",
+      "draft_tex": "Fortunately, $H_k$ remains approximately constant over $Q$\nconsecutive frames, benefited by the quasi-static property of\n\\eqref{eq:physical-channel} in the delay-Doppler domain\n\\cite{shen2025}.\n",
+      "draft": "Fortunately, $H_k$ remains approximately constant over $Q$ consecutive frames, benefited by the quasi-static property of \\eqref{eq:physical-channel} in the delay-Doppler domain \\cite{shen2025}."
+    },
+    {
+      "id": "P06-S02",
+      "category": "TERM_ONLY",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\shen2025.pdf",
+      "source_section": "II.B Transmission Scheme；式(8)–(10)后的 Note that…algorithm design 原段",
+      "source_page": [
+        4,
+        5
+      ],
+      "source_quote": "This characteristic allows the proposed scheme to gather more observations, thereby facilitating the joint design of channel estimation and symbol detection.",
+      "changes": {
+        "necessary_technical_substitutions": [
+          "symbol detection → activity detection（检测任务对象）"
+        ],
+        "other_additions_deletions_rewrites": [],
+        "display_only": [
+          "原句跨 PDF 第4页末与第5页开头；仅消除换行及提取层字内空格。"
+        ]
+      },
+      "formula_adaptation": [],
+      "reason": "除检测对象替换外，完整主句与 thereby 分句的词语、次序及连接关系均一致。",
+      "minimal_action": "语言层面可保留；不能把检测对象适配解释为 Shen 原文已讨论本文活动检测设计。",
+      "draft_tex": "This characteristic allows the proposed scheme to gather more\nobservations, thereby facilitating the joint design of channel\nestimation and activity detection.\n",
+      "draft": "This characteristic allows the proposed scheme to gather more observations, thereby facilitating the joint design of channel estimation and activity detection."
+    },
+    {
+      "id": "P06-S03",
+      "category": "TERM_ONLY",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\shen2025.pdf",
+      "source_section": "II.B Transmission Scheme；式(8)–(10)后的 Note that…algorithm design 原段",
+      "source_page": [
+        5
+      ],
+      "source_quote": "Furthermore, the phase rotation $\\phi_{u,q}[l\\prime]$ caused by fractional Doppler accumulates across multiple frames and will be addressed carefully in our algorithm design.",
+      "changes": {
+        "necessary_technical_substitutions": [
+          "$\\phi_{u,q}[l\\prime]$ → $e^{j2\\pi\\nu_kqT_{\\rm frame}}$（相位旋转对象）",
+          "fractional Doppler → Doppler shifts（多普勒技术对象）"
+        ],
+        "other_additions_deletions_rewrites": [],
+        "display_only": [
+          "增加 \\cite{shen2025}；提取层断行及字内空格归一化。"
+        ]
+      },
+      "formula_adaptation": [
+        "Shen 式(10)中的按时延索引定义的分段相位因子（有物理路径时为 $e^{j2\\pi\\widetilde k_{i,u}q}$，否则为0），改为本文设备共用多普勒对应的 $e^{j2\\pi\\nu_kqT_{\\rm frame}}$。这属于模型/数学适配，不是源公式相同的证明。"
+      ],
+      "reason": "完整句中的 Furthermore、caused by、accumulates、and will be addressed carefully 等均保留；模型差异单列，不据数学变动误判英文改写。",
+      "minimal_action": "可作为术语适配句保留；相位机制的适用性另由本文模型负责，且需承认原段中间内容已被删去。",
+      "draft_tex": "Furthermore, the phase rotation $e^{j2\\pi\\nu_kqT_{\\rm frame}}$\ncaused by Doppler shifts accumulates across multiple frames and\nwill be addressed carefully in our algorithm design \\cite{shen2025}.\n",
+      "draft": "Furthermore, the phase rotation $e^{j2\\pi\\nu_kqT_{\\rm frame}}$ caused by Doppler shifts accumulates across multiple frames and will be addressed carefully in our algorithm design \\cite{shen2025}."
+    },
+    {
+      "id": "P06-S04",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "source_locator": "本次核查未定位可与 Since…yields [公式], where…maps an angle… 完整对齐的原句。相关概念依据见 Huang PDF 第2页 II. System Model，Doppler shift 小段、式(2)后；并见 Shen PDF 第4页式(10)。",
+      "related_evidence": [
+        {
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\huang2026.pdf",
+          "source_page": [
+            2
+          ],
+          "source_section": "II. System Model，Doppler shift 小段，式(2)后",
+          "source_quote": "The resulting Doppler term $D(\\psi)$ is assumed to be common to all propagation paths within the same satellite-to-ground (S2G) link [15].",
+          "relationship": "只支持共用多普勒假设；没有当前 Since 因果引导、跨帧式或 wrap 定义，不能替代整句来源。"
+        },
+        {
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\shen2025.pdf",
+          "source_page": [
+            4
+          ],
+          "source_section": "II.B，式(10)",
+          "source_locator": "按时延索引给出多帧相位因子；不含当前 Since…yields 的完整解释句或 wrap 角度映射定义。"
+        }
+      ],
+      "changes": {
+        "necessary_technical_substitutions": [],
+        "other_additions_deletions_rewrites": [
+          "没有可逐词对齐的完整来源句，不能建立“仅术语替换”清单。",
+          "若相对 Huang 的相关原句比较，当前改成 Since 因果从句并增加 yields 主句、跨帧公式及 where 映射解释；这些整句组织变动不能当作技术术语替换。"
+        ],
+        "display_only": []
+      },
+      "formula_adaptation": [
+        "$H_k^{(q)}=e^{jq\\beta_k}H_k$ 是本文共用多普勒假设下的跨帧有效信道表达。",
+        "$\\beta_k=\\operatorname{wrap}(2\\pi\\nu_kT_{\\rm frame})$ 是本文相位参数化；本次未在核查文献中定位此定义。",
+        "where $\\operatorname{wrap}(\\cdot)$ maps an angle to $[-\\pi,\\pi)$ 是说明性英文关系，仍须审查，不能因紧随公式而豁免。"
+      ],
+      "reason": "可找到共用多普勒与多帧相位的概念依据，但未定位含 Since 引导、yields 关系、两行公式及完整 where 定义的对应原句。",
+      "minimal_action": "将此完整句标为本文自定义/推导说明；若坚持每句必须仅作术语替换，则此句仍需另行解决，不能以 Huang 概念句或 Shen 式(10)宣布通过。",
+      "search_queries": [
+        "Since … common …",
+        "common to all",
+        "all paths",
+        "same Doppler",
+        "wrap / wrapping",
+        "maps an angle",
+        "(equation|channel|(1)) … yields",
+        "across multiple frames"
+      ],
+      "searched_sources": [
+        {
+          "key": "shen2025",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\shen2025.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\shen2025.clean.pages.txt"
+        },
+        {
+          "key": "cai2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026.clean.pages.txt"
+        },
+        {
+          "key": "cai2026_stmp_v2",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026_stmp_v2.clean.pages.txt"
+        },
+        {
+          "key": "ding2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\ding2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\ding2026.clean.pages.txt"
+        },
+        {
+          "key": "huang2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\huang2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\huang2026.clean.pages.txt"
+        },
+        {
+          "key": "li2023",
+          "pdf": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\li2023.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\li2023.clean.pages.txt"
+        },
+        {
+          "key": "bemani2022",
+          "pdf": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\bemani2022.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\bemani2022.clean.pages.txt"
+        }
+      ],
+      "search_method": "对七份本地全文进行大小写不敏感检索；相关关键模式另在合并行空白、去除行末断词连字符的逐页文本上复查。核心对应处核读 Shen PDF 第4–5页。没有联网拼凑模板句。",
+      "draft_tex": "Since $\\nu_k$ is common to all paths of device $k$,\n\\eqref{eq:physical-channel} yields\n\\begin{equation}\n \\begin{gathered}\n H_k^{(q)}=e^{jq\\beta_k}H_k,\\\\\n \\beta_k=\\operatorname{wrap}(2\\pi\\nu_kT_{\\rm frame}),\n \\end{gathered}\n \\label{eq:twc-frame-channel}\n\\end{equation}\nwhere $\\operatorname{wrap}(\\cdot)$ maps an angle to $[-\\pi,\\pi)$.\n",
+      "draft": "Since $\\nu_k$ is common to all paths of device $k$, \\eqref{eq:physical-channel} yields \\begin{equation} \\begin{gathered} H_k^{(q)}=e^{jq\\beta_k}H_k,\\\\ \\beta_k=\\operatorname{wrap}(2\\pi\\nu_kT_{\\rm frame}), \\end{gathered} \\label{eq:twc-frame-channel} \\end{equation} where $\\operatorname{wrap}(\\cdot)$ maps an angle to $[-\\pi,\\pi)$."
+    }
+  ],
+  "counts": {
+    "EXACT": 0,
+    "TERM_ONLY": 3,
+    "OTHER_CHANGE": 0,
+    "NO_SOURCE": 1,
+    "UNVERIFIED": 0,
+    "total": 4
+  },
+  "formula_adaptation_policy": "行内及显示数学适配与英文来源分类分开；TERM_ONLY不表示源模型或公式相同。",
+  "paragraph_structure": {
+    "same_original_paragraph": null,
+    "known_aligned_sentences_same_original_paragraph": true,
+    "source_sequence": [
+      {
+        "sentence_id": "P06-S01",
+        "source": "Shen，PDF第4页，II.B 同一 Note that… 原段中段"
+      },
+      {
+        "sentence_id": "P06-S02",
+        "source": "Shen，PDF第4–5页，紧接S01原句"
+      },
+      {
+        "sentence_id": "P06-S03",
+        "source": "Shen，PDF第5页，同原段末句，但与S02之间原有7句"
+      },
+      {
+        "sentence_id": "P06-S04",
+        "source": null
+      }
+    ],
+    "structure_changes": [
+      "当前段落以 Fortunately 开始，截去 Shen 原段先前关于单帧关系、三维张量及过扩展条件的3句。",
+      "S02与S03之间删去原段7句：从 In practice 开始的准静态失效条件、分辨率/变化量例子、Q增大时的说明，直到 Therefore 开始的小Q建议。",
+      "This characteristic 与 Furthermore 的字面连接词保留，但 Furthermore 在当前段落的邻接内容因删去7句而改变。",
+      "末尾加入本次未定位完整来源的 Since…公式…where 句。"
+    ],
+    "attribution_risk": "前三句确实来自 Shen 同一原段，不应虚称整段来自同一原段；S04中的共用多普勒概念在Huang可定位，但不能据此认定S04英文来源于Huang，更不能把本文跨帧公式和wrap定义归于Shen。",
+    "original_paragraph_structure_preserved": false,
+    "paragraph_exact_or_term_only": false
+  },
+  "language_all_exact_or_term_only": false,
+  "verdict": "严格不通过：4个完整句中3句TERM_ONLY、1句NO_SOURCE；整段组织也未完整保留。此结论仅针对语言来源与替换边界，不判定技术正确性。",
+  "verification": {
+    "draft_tex_exact_concatenation": true,
+    "coverage": "按顺序拼接4条draft_tex与读取的P06.input.txt完全相同（保留公式、where和label）；不漏句、不重复。",
+    "pdf_visual_check": [
+      "Shen PDF第4页",
+      "Shen PDF第5页"
+    ],
+    "extraction_normalization": "原句仅规范化提取层断行、行末连字符、异常字内空格及TeX数学显示；已回看Shen两页PDF确认句法与原段边界。",
+    "external_source_quotes": "未引用Li/Bemani原句。"
+  }
+}

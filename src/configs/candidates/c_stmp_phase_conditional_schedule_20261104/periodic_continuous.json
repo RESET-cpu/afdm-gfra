@@ -1,0 +1,11 @@
+{
+  "schema": "c-stmp-phase-conditional-schedule-20261104-v1",
+  "name": "periodic_continuous",
+  "policy": "periodic_continuous",
+  "selected_configuration": "src/configs/candidates/c_stmp_phase_selection_20261030/physical_no_hypotheses_legacy_stop.json",
+  "selected_configuration_sha256": "ea03572d8eb59dd11da2f24b200d5855c0a3961f99ae81f24dfd736b04564750",
+  "phase": {
+    "relative_signal_change_tolerance": 0.01
+  },
+  "parameter_basis": "0.01 reuses the existing phase-trial relative tolerance; not tuned on this diagnostic. Conditional tolerances and initial minimum iterations come from the known-phase receiver binding."
+}

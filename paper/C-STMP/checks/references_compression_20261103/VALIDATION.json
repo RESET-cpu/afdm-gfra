@@ -1,0 +1,121 @@
+{
+  "checks": {
+    "abstract_identical": true,
+    "introduction_identical_except_citations": true,
+    "02_system_model.tex_identical": true,
+    "07_conclusion.tex_identical": true,
+    "appendix_parameter_estimation.tex_identical": true,
+    "appendix_afdm_channel_model.tex_identical": true,
+    "appendix_evaluation_protocol.tex_identical": true,
+    "01_introduction.tex_numbered_math_identical": true,
+    "01_introduction.tex_labels_identical": true,
+    "01_introduction.tex_graphics_identical": true,
+    "02_system_model.tex_numbered_math_identical": true,
+    "02_system_model.tex_labels_identical": true,
+    "02_system_model.tex_graphics_identical": true,
+    "03_bayesian_receiver_design.tex_numbered_math_identical": true,
+    "03_bayesian_receiver_design.tex_labels_identical": true,
+    "03_bayesian_receiver_design.tex_graphics_identical": true,
+    "04_generative_priors.tex_numbered_math_identical": true,
+    "04_generative_priors.tex_labels_identical": true,
+    "04_generative_priors.tex_graphics_identical": true,
+    "05_overall_algorithm.tex_numbered_math_identical": true,
+    "05_overall_algorithm.tex_labels_identical": true,
+    "05_overall_algorithm.tex_graphics_identical": true,
+    "06_simulation_results.tex_numbered_math_identical": true,
+    "06_simulation_results.tex_labels_identical": true,
+    "06_simulation_results.tex_graphics_identical": true,
+    "07_conclusion.tex_numbered_math_identical": true,
+    "07_conclusion.tex_labels_identical": true,
+    "07_conclusion.tex_graphics_identical": true,
+    "appendix_afdm_channel_model.tex_numbered_math_identical": true,
+    "appendix_afdm_channel_model.tex_labels_identical": true,
+    "appendix_afdm_channel_model.tex_graphics_identical": true,
+    "appendix_evaluation_protocol.tex_numbered_math_identical": true,
+    "appendix_evaluation_protocol.tex_labels_identical": true,
+    "appendix_evaluation_protocol.tex_graphics_identical": true,
+    "appendix_parameter_estimation.tex_numbered_math_identical": true,
+    "appendix_parameter_estimation.tex_labels_identical": true,
+    "appendix_parameter_estimation.tex_graphics_identical": true,
+    "appendix_second_order_training.tex_numbered_math_identical": true,
+    "appendix_second_order_training.tex_labels_identical": true,
+    "appendix_second_order_training.tex_graphics_identical": true,
+    "main_page_count": true,
+    "main_43_references": true,
+    "main_no_unresolved_or_overfull": true,
+    "main_conclusion_included": true,
+    "main_appendix_C_policy": true,
+    "main_full_page_count": true,
+    "main_full_43_references": true,
+    "main_full_no_unresolved_or_overfull": true,
+    "main_full_conclusion_included": true,
+    "main_full_appendix_C_policy": true,
+    "original_35_references_retained": true,
+    "exactly_8_added": true
+  },
+  "all_pass": true,
+  "numbered_math_blocks_checked": 62,
+  "documents": {
+    "main": {
+      "pages": 13,
+      "references": 43,
+      "sha256": "0443f083c8979c427a01472dc017fdaab3370d33506cd95001f9b648f5883a04",
+      "diagnostics": [],
+      "appendix_C": false,
+      "url_entries": 3
+    },
+    "main_full": {
+      "pages": 15,
+      "references": 43,
+      "sha256": "a88a248d62234feec57016b18ab175ed17c8b97fea6e800e3a43ab6745351a40",
+      "diagnostics": [],
+      "appendix_C": true,
+      "url_entries": 3
+    }
+  },
+  "word_changes": {
+    "01_introduction.tex": {
+      "before": 1092,
+      "after": 1092,
+      "removed": 0
+    },
+    "03_bayesian_receiver_design.tex": {
+      "before": 690,
+      "after": 691,
+      "removed": -1
+    },
+    "04_generative_priors.tex": {
+      "before": 863,
+      "after": 864,
+      "removed": -1
+    },
+    "05_overall_algorithm.tex": {
+      "before": 1090,
+      "after": 917,
+      "removed": 173
+    },
+    "06_simulation_results.tex": {
+      "before": 1975,
+      "after": 1833,
+      "removed": 142
+    }
+  },
+  "added_references": [
+    "hyvarinen2005",
+    "ke2020",
+    "kodheli2021",
+    "lin2017",
+    "ma2017",
+    "mei2022",
+    "rangan2019",
+    "wax1985"
+  ],
+  "scope": "Manuscript, citation placement, publication metadata, layout; no new experimental runs.",
+  "visual_review": {
+    "renderer": "Poppler pdftoppm",
+    "main_pages": "1-13 overview; detailed review of algorithm, network, experiment transitions and references",
+    "full_pages": "12-15 including Appendix C and references",
+    "overlap_or_clipping_observed": false,
+    "status": "PASS"
+  }
+}

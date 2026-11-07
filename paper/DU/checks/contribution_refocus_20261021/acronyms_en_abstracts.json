@@ -1,0 +1,92 @@
+{
+  "checker": "ars-acronym-check/1.0",
+  "input": "C:\\Users\\25911\\Desktop\\afdm-gfra\\paper\\TWC\\checks\\contribution_refocus_20261021\\writing_draft.md",
+  "input_sha256": "b8fb881dee9ab0cca8e2cc9f9f20560752d188cb48ef67d56dcc4b971489b6fb",
+  "status": "partial",
+  "allowlist": {
+    "default": 29,
+    "user": []
+  },
+  "coverage": {
+    "body": "checked",
+    "abstract_en": "checked",
+    "abstract_zh": "checked"
+  },
+  "scope_lines": {
+    "body": [
+      [
+        10,
+        35
+      ]
+    ],
+    "abstract_en": [
+      [
+        2,
+        4
+      ]
+    ],
+    "abstract_zh": [
+      [
+        6,
+        8
+      ]
+    ]
+  },
+  "unread_sections": [],
+  "coverage_limits": [
+    {
+      "scope": "body",
+      "line": 11,
+      "acronym": "GFRA",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 11,
+      "acronym": "IoT",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 15,
+      "acronym": "OTFS",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 17,
+      "acronym": "MIMO",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 21,
+      "acronym": "MP",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "abstract_en",
+      "line": 3,
+      "acronym": "MP",
+      "reason": "unconfirmed_definition"
+    }
+  ],
+  "findings": [
+    {
+      "scope": "body",
+      "line": 13,
+      "rule": "undefined",
+      "acronym": "NR",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 13,
+      "rule": "undefined",
+      "acronym": "NTN",
+      "expansion": null,
+      "occurrences": 1
+    }
+  ]
+}

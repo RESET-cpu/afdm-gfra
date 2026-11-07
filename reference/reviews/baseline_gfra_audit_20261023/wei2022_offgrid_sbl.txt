@@ -1,0 +1,3013 @@
+=== PDF PAGE 1 ===
+arXiv:2101.05629v1  [cs.IT]  14 Jan 2021
+1
+Off-grid Channel Estimation with Sparse
+Bayesian Learning for OTFS Systems
+Zhiqiang Wei, Member , IEEE, Weijie Y uan, Member , IEEE, Shuangyang
+Li, Student Member , IEEE, Jinhong Y uan, Fellow, IEEE, and Derrick Wing Kwan
+Ng, Fellow, IEEE
+Abstract
+This paper proposes an off-grid channel estimation scheme f or orthogonal time-frequency space
+(OTFS) systems adopting the sparse Bayesian learning (SBL) framework. To avoid channel spreading
+caused by the fractional delay and Doppler shifts and to full y exploit the channel sparsity in the delay-
+Doppler (DD) domain, we estimate the original DD domain chan nel response rather than the effective
+DD domain channel response as commonly adopted in the litera ture. OTFS channel estimation is ﬁrstly
+formulated as a one-dimensional (1D) off-grid sparse signa l recovery (SSR) problem based on a virtual
+sampling grid deﬁned in the DD space, where the on-grid and of f-grid components of the delay and
+Doppler shifts are separated for estimation. In particular , the on-grid components of the delay and
+Doppler shifts are jointly determined by the entry indices w ith signiﬁcant values in the recovered
+sparse vector. Then, the corresponding off-grid component s are modeled as hyper-parameters in the
+proposed SBL framework, which can be estimated via the expec tation-maximization method. To strike
+a balance between channel estimation performance and compu tational complexity, we further propose
+a two-dimensional (2D) off-grid SSR problem via decoupling the delay and Doppler shift estimations.
+In our developed 1D and 2D off-grid SBL-based channel estima tion algorithms, the hyper-parameters
+are updated alternatively for computing the conditional po sterior distribution of channels, which can be
+exploited to reconstruct the effective DD domain channel. C ompared with the 1D method, the proposed
+2D method enjoys a much lower computational complexity whil e only suffers a slight performance
+degradation. Simulation results verify the superior perfo rmance of the proposed channel estimation
+schemes over state-of-the-art schemes.
+I. I NTRODUCTION
+Future wireless systems are envisioned to enable a wide rang e of emerging mobile appli-
+cations, such as low-earth-orbit satellites (LEOS), auton omous cars, in-vehicle infotainment,
+and unmanned aerial vehicles (UA V) [1]. As the airborne, spa ceborne, and vehicles are usually
+Zhiqiang Wei, Weijie Y uan, Shuangyang Li, Jinhong Y uan, and Derrick Wing Kwan Ng are with the School of Electrical
+Engineering and Telecommunications, the University of New South Wales, Australia (email: zhiqiang.wei; weijie.yuan ;
+shuangyang.li; j.yuan; w.k.ng@unsw.edu.au).
+
+=== PDF PAGE 2 ===
+2
+fast moving, the associated severe Doppler spread experien ced by channels in high mobility
+propagation environments imposes new challenges on its air interface design. Recently, a new
+modulation waveform, namely orthogonal time-frequency sp ace (OTFS), has been proposed as a
+promising candidate for realizing high-mobility communic ations owing to its intrinsic advantages
+of handling the problems caused by Doppler effect [2], [3].
+In contrast to the existing one-dimensional (1D) time-doma in or frequency-domain modulation
+techniques, such as orthogonal frequency-division multip lexing (OFDM), OTFS is a two-
+dimensional (2D) modulation scheme, where the information symbols are carried over 2D
+localized pulses deﬁned in the delay-Doppler (DD) domain. I n fact, each information symbol
+multiplexed in the DD domain is spread across the whole time- frequency (TF) domain, allowing
+the potentials of exploiting the full diversity to achieve r eliable communications against various
+channel impairments. In addition, the channel in the DD doma in exhibits various beneﬁcial
+properties, such as separability, stability, and possibly sparsity [1], which can be exploited for
+efﬁcient channel estimation and data detection. In particu lar, processing the received signals in
+the Doppler domain of wireless channels allows us to separat e the propagation paths experiencing
+an identical delay. Besides, OTFS modulation can transform a time-variant channel in the TF
+domain into a 2D quasi-time-invariant channel in the DD doma in and thus relieves the impacts
+caused by channel aging [2], [3]. Additionally, the DD domai n effective channel is generally
+sparse in an open-space rural propagation environment with a limited number of moving scatters.
+As a result, the coupling relationship between data symbols and the channel in the DD domain
+is much simpler than the counterpart in the TF domain, which i s crucial for accurate channel
+acquisition and efﬁcient detection algorithm design.
+Since OTFS multiplexes information symbols in the DD domain , it enables the possibility
+of channel probing via designing a new training signaling in the DD domain [4], [5], which
+is a challenging but vital requirement for reliable detecti on. In particular, channel spreading
+[6] caused by fractional Doppler and delay sacriﬁces the cha nnel sparsity which degrades the
+channel estimation performance. Usually, a guard space is i nserted between the pilot and data
+symbols to mitigate the interference of unknown data symbol s for channel estimation, which
+incurs a signiﬁcant signaling overhead [4]. In fact, the cha nnel estimation problem of OTFS
+was ﬁrstly studied in [4], where a single impulse was embedde d in the DD domain and a
+threshold-based estimation method was proposed. Then, its extension to multiple-input multiple-
+output OTFS (MIMO-OTFS) systems was investigated in [5] via positioning the pilot impulses
+for different transmit antennas with sufﬁcient guard spaci ng in the DD domain. However, their
+
+=== PDF PAGE 3 ===
+3
+channel estimation performances are sensitive to the avail ability of guard space [4], [5]. Indeed,
+to exploit the channel sparsity in the DD domain, more advanc ed channel estimation approaches
+based on compressed sensing techniques have been proposed i n the literature. For instance, the
+authors in [7] proposed a three-dimensional (3D) structure d orthogonal matching pursuit (SOMP)
+algorithm to estimate the delay-Doppler-angle domain chan nel via exploiting the 3D structured
+sparsity. A further extension in [8] proposed a 3D Newtonize d OMP (NOMP) algorithm, which
+can extract the fractional component in the Doppler and angl e domains via Newton’s method.
+Y et, its channel estimation performance is mainly limited b y the greedy OMP approach, which is
+generally far away from that achieved by the optimal estimat ion. Besides, a most recent work in
+[9] applied the sparse Bayesian learning approach for the ch annel estimation in OTFS systems,
+which outperforms the OMP methods [7], [8]. Nevertheless, t he proposed scheme in [9] only
+applies to the integer Doppler case and is essentially an on- grid method, where all the estimated
+Doppler shifts are constrained on the coarse DD domain grid, which is only valid in limited
+practical scenarios.
+In practice, the DD domain channel sparsity may not always ho ld [6], where conventional
+compressed sensing-based channel estimation cannot achie ve a satisfactory performance. In
+particular, due to the limited bandwidth and the limited fra me duration, the exact Doppler
+frequency shift or delay shift may straddle a pair of ﬁnite-r esolution bins, rather than falling
+exactly into a single bin, which is known as off-grid. In this case, the effective DD domain channel
+is spread across all the Doppler and delay indices, when off- grid happens in the Doppler and
+delay domains, respectively. As a result, although the original DD domain channel response is
+sparse, the effective DD domain channel may not be sparse due to channel spreading. On the
+other hand, although increasing the sampling resolution in the DD domain is a viable approach to
+suppress the impacts caused by channel spreading, it consum es more bandwidth and introduces
+longer latency. As a result, various approaches have been pr oposed as a remedy. For instance,
+our previous work [6] proposed to apply a Dolph-Chebyshev (D C) window to suppress channel
+spreading and thus to enhance the effective DD domain channe l sparsity, which substantially
+improves the channel estimation performance compared with [4]. Y et, [6] still estimates the
+effective DD domain channel, rather than the original DD dom ain channel response, and thus
+remains suffering from the inevitable channel spreading.
+In this paper, we formulate an off-grid sparse signal recove ry (SSR) problem and propose
+to employ a sparse Bayesian learning (SBL) framework to esti mate the original DD domain
+channel response for OTFS systems. In particular, to avoid c hannel spreading and to fully reap
+
+=== PDF PAGE 4 ===
+4
+the potential sparsity, we aim to estimate the original DD do main channel response directly rather
+than the effective DD domain channel, which is fundamentall y different from [7], [9]. Besides,
+the proposed off-grid channel estimation scheme is essenti ally a semi-parametric estimation
+approach. In particular, the exact Doppler and delay shifts can be estimated via their nearest
+grid indices in the recovered sparse vector while the corres ponding off-grid components can be
+estimated via some parametric approach, such as the expecta tion-maximization (EM) algorithm.
+There are three advantages of the proposed SBL-based channe l estimation approaches. Firstly,
+the hyperprior structure of SBL [10] is ﬂexible such that the channel compactness and sparsity
+in the DD domain can be easily exploited. Secondly, SBL can ou tput the posterior distribution
+of the original DD domain channel response, where the mean de notes the channel estimate
+and the variance determines the channel estimation accurac y. Thirdly, SBL avoids the use of
+sparse regularization parameters [11] and it is not sensiti ve to the other initialization parameters,
+such as the number of paths and noise power. As a result, the pr oposed channel estimation
+approach signiﬁcantly outperforms the algorithm in [8], wh ich is the only work of compresses
+sensing-based channel estimation so far that can handle the fractional Doppler case. The main
+contributions of this work are given as follows:
+• By characterizing the DD domain input-output relationship , we ﬁrst reformulate the channel
+estimation of OTFS systems as a one-dimensional (1D) SSR pro blem, where we directly
+estimate the original DD domain response rather than the eff ective DD domain channel,
+e.g. [4]–[6]. Moreover, we establish a 1D off-grid compress ed channel estimation model
+based on the ﬁrst-order linear approximation, which enable s us to improve the delay and
+Doppler shift estimation accuracy while maintaining a low c omputational complexity. The
+developed model serves as a generalized platform which is ap plicable to different pilot and
+data arrangements, arbitrary windows, as well as pulse shap ing ﬁlters adopted at the OTFS
+transceivers.
+• We ﬁrst propose a 1D off-grid SBL-based channel estimation a lgorithm, which can estimate
+both the on-grid and off-grid components of the delay and Dop pler shifts. In particular, the
+on-grid component is obtained by the entry indices with sign iﬁcant values in the recovered
+sparse vector. The corresponding off-grid components are t reated as hyper-parameters in the
+SBL framework which can be estimated via an iterative algori thm based on the expectation-
+maximization approach.
+• To further reduce the computational complexity, we decoupl e the delay and Doppler shift
+estimation and develop a 2D off-grid compressed channel est imation model. A two-step
+
+=== PDF PAGE 5 ===
+5
+algorithm is proposed to estimate the Doppler and delay shif ts, respectively, where the ﬁrst-
+step is realized via applying SBL to multiple snapshot cases and the second step is achieved
+by solving multiple 1D SSR problems in parallel. The computa tional complexity order of
+the proposed 2D off-grid method is proportional to the summa tion of the sizes of delay and
+Doppler grids, while the counterpart of the proposed 1D off- grid method is proportional to
+their product.
+• Extensive simulations are conducted to evaluate and compar e the performance of our
+proposed schemes. We demonstrate that our proposed 1D off-g rid SBL-based scheme can
+achieve the most accurate channel estimates compared with t he state-of-the-art schemes
+in the literature [4], [6]–[9]. Also, the performance of our proposed 2D off-grid SBL-
+based scheme approaches closely to that of the 1D method, wit h a signiﬁcantly reduced
+computational complexity.
+Notations: Boldface capital and lower case letters are reserved for mat rices and vectors,
+respectively; (·)H denotes the Hermitian transpose of a vector or a matrix; (·)T denotes the
+transpose of a vector or a matrix; (·)− 1 denotes the inverse of a square matrix; A denotes the
+constellation set; Z+ denotes the set of all non-negative integers; CM × N denotes the set of all
+M × N matrices with complex entries; |·|denotes the absolute value of a complex scalar or
+the cardinality of a set; EX{·} denotes the expectation of the input with respect to (w.r.t. ) the
+distribution of X; (·)∗ denotes the conjugate operation; ⊗ is the Kronecker product operator;
+⊙ is the point-wise product operator; (·)N denotes the modulus operation w.r.t. N; diag{·}
+returns a square diagonal matrix with the elements of input v ector on the main diagonal; ℜ{·}
+returns the real part of the input complex number; ⌊·⌋ is the ﬂoor function which returns
+the largest integer smaller than the input value; ⌈·⌉ is the ceiling function which returns the
+smallest integer larger than the input value; IM denote the identity matrix of size M × M;
+{X}n denotes the n-th column of the matrix X and {X}m,n denotes the [m, n ]-th entry of
+the matrix X; {x}n denotes the n-th entry of the vector x and {x}− n denotes the vector
+without the n-th entry of x. The big-O notation O (·) asymptotically describes the order of
+computational complexity. The circularly symmetric compl ex Gaussian distribution with mean
+µ and covariance matrix Σ is denoted by CN (µ, Σ); the uniform distribution between a and b is
+denoted by U [a, b ]; ∼ stands for “distributed as”; ∝ denotes “proportional to”. The probability
+density function (PDF) for a random complex-valued vector x ∼ CN (µ, Σ) is deﬁned as
+CN (x |µ, Σ) = 1
+πN |Σ| exp
+{
+− (x − µ)HΣ− 1 (x − µ)
+}
+. The PDF for a random variable x follows
+a Gamma distribution is deﬁned as Γ (x |a, b ) = baxa− 1 exp{− bx}
+Γ(a) , where constants a > 0 and b > 0,
+
+=== PDF PAGE 6 ===
+6
+[ ]', ' x k l [ ],y k l 
+OTFS 
+modulator 
+OTFS 
+demodulator Original DD domain 
+channel response 
+( ),h τ ν 
+Effective DD domain channel 
+Fig. 1. OTFS system model in the DD domain.
+and Γ (a) is a Gamma function.
+II. S YSTEM MODEL
+For ease of presentation, as shown in Fig. 1, we directly pres ent the DD domain input-output
+relationship of OTFS following the well-known derivations in the literature [1], [6], [8], [12]:
+y [k, l ] =
+N − 1∑
+k′=0
+M − 1∑
+l′=0
+x [k′, l ′]hw [k − k′, l − l′] + z [k, l ] , (1)
+where x [k′, l ′] ∈ A is the modulated symbol arranged on the [k′, l ′]-th grid point in the DD
+domain and y [k, l ] ∈ C denotes the [k, l ]-th sampled receiving signal in the DD domain. V ariable
+z [k, l ] denotes the additive noise whose distribution depends on th e imposed receiver window
+[6]. For example, adopting a rectangular window at the recei ver, we have z [k, l ] ∼ CN (0, σ 2),
+where σ 2 denotes the unknown noise power [6]. Integer N denotes the number of time slots
+with a slot duration of T for the OTFS system, resulting in one OTFS frame duration of N T.
+Besides, integer M represents the number of subcarriers with a subcarrier spac ing of ∆f for
+the OTFS system and the total system bandwidth is M∆f . Interested readers may refer to our
+previous work [6] for more derivation details of (1) 1.
+In (1), hw [k − k′, l − l′] denotes the effective DD domain channel , which is obtained by
+sampling the original DD domain channel response . In particular, the original DD domain
+channel response is given by
+h (ν, τ ) =
+P∑
+i=1
+hiδ (ν − νi) δ (τ − τi) , (2)
+where P represents the number of paths in the channel, hi is the channel coefﬁcient of the
+i-th path, and δ (·) is the Dirac delta function. V ariables τi ∈ (0, τ max) and νi ∈ (− νmax, ν max)
+denote the delay and Doppler shifts of the i-th path, respectively. In particular, constants νmax
+and τmax denote the maximum Doppler shift and the maximum delay shift in the propagation
+environments, which are related to the maximum relative vel ocity among the transceivers or
+1Note that the input-output relationship in (1) was derived f or a single-antenna OTFS transceiver. As we mainly focus on
+handling the fractional Doppler and delay estimation issue of OTFS, we would like to adopt a single-input single-output system
+in this paper for obtaining important system design insight s. The extension to multiple-input multiple-output system s [13] will
+be considered in our future work.
+
+=== PDF PAGE 7 ===
+7
+scatters and the maximum propagation distance, respective ly. In this paper, we assume that the
+number of path P is unknown while νmax and τmax are known in advance by our proposed
+channel estimation approaches. In fact, the Doppler and del ay shift boundary can be obtained
+empirically via long-term measurements, i.e., i.e., νmax = max i{|νi|} and τmax = max i{τi}.
+However, the number of paths for each channel realization ma inly depends on the presenting
+scatters in the propagation environment, which is usually u npredictable. As a result, the effective
+DD domain channel can be obtained by [1], [6], [8], [12]
+hw [k − k′, l − l′] =
+P∑
+i=1
+hiw(k− k′− kνi, l − l′− lτi)e− j2πνilτi =
+P∑
+i=1
+˜hiw(k− k′− kνi, l − l′− lτi), (3)
+where k, k ′ ∈ { 0, . . . , N − 1}, l, l ′ ∈ { 0, . . . , M − 1}, and kνi = νiN T ∈ R and lτi = τiM∆f ∈
+R represent the corresponding normalized version of νi and τi, respectively. To facilitate the
+channel estimation, the phase e− j2πνilτi is absorbed into the channel coefﬁcient ˜hi = hie− j2πνilτi
+since the delay and Doppler variables are not separable in th e exponential function.
+In (3), w (k − k′ − kν, l − l′ − lτ ) is the sampling function, which captures the joint effects
+of the Doppler and delay shift of the original DD domain chann el response, the adopted pulse
+shaping ﬁlters and the TF domain window at the OTFS modulator and demodulator, as shown
+in Fig. 1, which can be obtained by [6], [12]
+w (k − k′ − kν, l − l′ − lτ )
+= 1
+N M
+N − 1∑
+n=0
+M − 1∑
+m=0
+M − 1∑
+m′̸=m
+Agrxgtx
+(
+− lτ
+1
+M∆f , (m − m′) ∆f − kν
+1
+N T
+)
+× U [n, m ′] V [n, m ′] e− j2π
+n(k− k′− kν )
+N e− j2π (ml− m′l′− m′lτ )
+M
++e− j2π k′
+N
+1
+N M
+N − 1∑
+n=1
+M − 1∑
+m=0
+M − 1∑
+m′=0
+Agrxgtx
+(
+T − lτ
+1
+M∆f , (m − m′) ∆f − kν
+1
+N T
+)
+× U [n − 1, m ′] V [n − 1, m ′] e− j2π
+n(k− k′− kν )
+N e− j2π (ml− m′l′− m′lτ )
+M , (4)
+where U [n, m ] and V [n, m ] denote the adopted transmit window and receiver window in th e
+[n, m ]-th TF domain point, respectively. The ambiguity function Agrxgtx (τ, ν ) for the adopted
+transmit pulse shaping ﬁlter gtx (t) and receiver pulse shaping ﬁlter grx (t) can be deﬁned by
+Agrxgtx (τ, ν ) =
+∫
+t
+gtx (t) g∗
+rx (t − τ) e− j2πν (t− τ )dt. (5)
+Note that the considered system model in (1)-(4) is a general ized framework, which are applicable
+to an arbitrary pulse shaping ﬁlter and an arbitrary TF domai n window. In (4), we can observe
+that the sampling function has a circular structure with a pe riod of N and M in the Doppler
+and delay domains, respectively. As a result, the effective DD domain channel hw [k − k′, l − l′]
+also exhibits a circular structure with a period of N and M in the Doppler and delay domains,
+respectively, i.e., hw [k − k′, l − l′] = hw [(k − k′)N , (l − l′)M ].
+
+=== PDF PAGE 8 ===
+8
+A commonly studied case in the OTFS literature is to apply an i deal pulse shaping ﬁlter [12]
+to the transceiver, which satisﬁes the bi-orthogonal condi tion [6] as follows
+Agrxgtx
+(
+(n − n′) T − lτ
+1
+M∆f , (m − m′) ∆f − kν
+1
+N T
+)
+= qτmax (t − nT ) qνmax (f − m∆f ) ,
+(6)
+with
+qτmax (t− nT ) =
+{
+δ [n] |t− nT | ≤ τmax,
+q (t) otherwise ,
+and qνmax (f − m∆f ) =
+{
+δ [m] |f − m∆f | ≤ νmax,
+q (t) otherwise ,
+(7)
+where q (x) is an arbitrary function. Furthermore, with adopting the re ctangular TF domain
+window [6] at the transceiver, i.e., U [n, m ] = V [n, m ] = 1 , ∀m, n , the sampling function in (4)
+can be simpliﬁed as
+w (k − k′ − kν, l − l′ − lτ ) = wν (k − k′ − kν) wτ (l − l′ − lτ ) , (8)
+where the sampling function can be decomposed as the samplin g functions in the Doppler and
+delay domains, respectively, which are given by
+wν (k − k′ − kν) = 1
+N
+
+ e− j(N − 1)π k− k′− kν
+N
+sin (π (k − k′ − kν))
+sin
+(
+π(k− k′− kν )
+N
+)
+
+ and
+wτ (l − l′ − lτ ) = 1
+M
+
+ e− j(M − 1)π l− l′− lτ
+M
+sin (π (l − l′ − lτ ))
+sin
+(
+π(l− l′− lτ )
+M
+)
+
+ , (9)
+respectively.
+For notational simplicity, we focus on the case of ideal puls e shaping and rectangular window
+case in this paper. The designed channel estimation algorit hm can be easily extended to the case
+of arbitrary pulse shaping ﬁlter and arbitrary window with s traightforward modiﬁcations of the
+sampling functions following (4).
+To visualize the difference between the original DD domain c hannel response and the effective
+DD domain channel, we plot a snapshot of the corresponding no rmalized channel gains in Fig.
+2 and Fig. 3, respectively, where we assume M = N = 16 and P = 5 . We can observe that
+the original DD domain channel response is indeed sparse. Ho wever, due to the existence of
+fractional Doppler and delay, i.e., non-integer kν and lτ , even with ideal pulse shaping ﬁlters, the
+sampling functions in (9) are non-zero for k − k′ ̸= kν and l − l′ ̸= lτ . It causes channel spreading
+in the effective DD domain channel in (3), which is far from sp arse. As a result, estimating the
+effective DD domain channel using compressed sensing techn iques [7], [9] may not lead to a
+satisfactory performance. Therefore, in this paper, we pro pose to directly estimate the original
+DD domain channel response h (ν, τ ) and reconstruct the effective DD domain channel according
+to (3), which is a key for realizing effective data detection .
+
+=== PDF PAGE 9 ===
+9
+0
+15
+0.2
+0.4Normalized original DD domain channel response
+10
+0.6
+5
+Delay index
+0.8
+Doppler index
+1
+05
+-50
+Fig. 2. Normalized original DD domain channel response.
+0
+15
+0.2
+0.4Normalized effective DD domain channel10
+0.6
+5
+Delay index
+0.8
+Doppler index
+1
+05
+-50
+Fig. 3. Normalized effective DD domain channel gain.
+III. 1D O FF-GRID COMPRESSED CHANNEL ESTIMATION
+In this section, with the DD domain input-output relationsh ip in mind, we formulate the
+channel estimation problem as a 1D sparse signal recovery (S SR) problem.
+A. Channel Estimation Problem F ormulation
+To facilitate channel estimation, the system model in (1) ca n rewritten as
+y = Φ (kν, lτ ) ˜h + z, (10)
+where y ∈ CM N× 1 is the vectorized form of y [k, l ] and vector z ∼ CN (0, σ 2IM N) ∈ CM N× 1 is
+the vectorized form of z [k, l ]. V ectorskν = [kν1, . . . , k νP ]T ∈ RP × 1, lτ = [lτ1, . . . , l τP ]T ∈ RP × 1,
+and ˜h =
+[
+˜h1, . . . , ˜
+hP
+]T
+∈ CP × 1 collect the normalized Doppler shifts, the normalized dela y
+shifts, and the channel coefﬁcients, respectively. Matrix Φ (kν, lτ ) ∈ CM N× P is the measurement
+matrix, which can be formulated as
+Φ (kν, lτ ) = [ φ (kν1, l τ1) , . . . , φ (kνP , l τP )] , (11)
+where φ (kνi, l τi) ∈ CM N× 1 and its (kM + l)-th entry can be given by
+{φ (kνi, l τi)}kM +l =
+N − 1∑
+k′=0
+M − 1∑
+l′=0
+x [k′, l ′] w(k − k′ − kνi, l − l′ − lτi). (12)
+The channel estimation problem is to estimate the normalize d Doppler shifts kν, the normalized
+delay shifts lτ , and the channel coefﬁcients ˜h based on the function Φ (kν, lτ ) and the received
+signal y. One observation is that when the number of path P is unknown, the length of ˜h is
+not ﬁxed and thus estimating ˜h is a challenging task. Besides, since the measurement matri x
+Φ (kν, lτ ) depends on the unknown variables kν and lτ , conventional methods, such as least
+square (LS) or minimum mean square error (MMSE) channel esti mation are not applicable to the
+considered case. Moreover, the measurement matrix Φ (kν, lτ ) also depends on the arrangement
+of data and pilot symbols in the DD domain x [k′, l ′]. For simplicity, we only exploit the pilot
+
+=== PDF PAGE 10 ===
+10
+symbols in the measurement matrix Φ (kν, lτ ) for channel estimation. In particular, the impacts
+of data symbols in the measurement matrix Φ (kν, lτ ) are treated as the model error which is
+assumed to behave as independent Gaussian noise and can be ab sorbed into the measurement
+noise [10]. Thus, the received signal corresponding to the p ilot can be obtained by
+y [k, l ] =
+∑
+k′∈K p
+∑
+l′∈L p
+x [k′, l ′]hw [k − k′, l − l′] + ˜z [k, l ] , (13)
+and the measurement matrix can be rewritten as
+{φ (kνi, l τi)}kM +l =
+∑
+k′∈K p
+∑
+l′∈L p
+x [k′, l ′] w(k − k′ − kνi, l − l′ − lτi), (14)
+where Kp and Lp denote the index sets of pilot symbols in the Doppler and dela y domains,
+respectively, and ˜z [k, l ] denotes the new noise variable absorbing the interference o f data
+symbols. Note that the proposed model does not specify the pi lot arrangement. Speciﬁcally,
+when |Kp| = |Lp| = 1 , the model in (14) degenerates to a single pilot impulse case in [6].
+When |Kp|= |Lp|> 1, it is equivalent to multiple pulses or the pilot sequence ca ses in [7]. For
+notational simplicity, we consider a single pulse case, i.e ., Kp = {kp} and Lp = {lp}, where a
+single pilot impulse is inserted in the [kp, l p]-th DD grid point.
+Due to the compactness of the DD domain channel, i.e., τi ∈ (0, τ max) and νi ∈ (− νmax, ν max),
+only a fraction of the symbols in y are affected the single pilot impulse. To reduce the
+computational complexity, we consider a truncated yT to estimate the channel, which is actually
+a sufﬁcient statistic for channel estimation of OTFS systems. In particular, give n the maximum
+Doppler shift νmax and the maximum delay shift τmax, we only need to consider the received
+signal y [k, l ] in the range of kp − kmax ≤ k ≤ kp + kmax and lp ≤ l ≤ lp + kmax, where
+kmax = ⌈νmaxN T⌉ and lmax = ⌈τmaxM∆f ⌉. As a result, we have
+yT = ΦT (kν, lτ ) ˜h + ˜zT, (15)
+where yT ∈ CMTNT× 1 and ˜zT ∈ CMTNT× 1 are obtained by {yT}kMT+l = y [k, l ] and
+{˜zT}kMT+l = ˜z [k, l ], respectively, with NT = 2 kmax + 1 and MT = lmax + 1. The truncated
+measurement matrix is given by
+ΦT (kν, lτ ) = [ φT (kν1, l τ1) , . . . , φT (kνP , l τP )] ∈ CMTNT× P , (16)
+where φT (kν, l τ ) ∈ CMTNT× 1 and it is deﬁned by
+{φT (kνi, l τi)}kMT+l = x [kp, l p] w(k − kp − kνi, l − lp − lτi), (17)
+with kp − kmax ≤ k ≤ kp + kmax and lp ≤ l ≤ lp + kmax. We can observe that the estimation
+model in (15) is non-linear due to the coupling of unknown Dop pler and delay shifts with the
+measurement matrix, which motivates us to propose the ﬁrst- order linear approximation in next
+section.
+
+=== PDF PAGE 11 ===
+11
+B. First-Order Linear Approximation
+Following the principle of compressed channel sensing [14] , we formulate an SSR problem
+via a virtual representation based on a virtual sampling gri d in the DD space. Deﬁne a
+virtual sampling grid in the range of (0, τ max) and (− νmax, ν max) in the DD domain, i.e.,
+kν =
+[
+kν0, . . . , kνMτ Nν − 1
+]
+∈ RMτ Nν × 1 and lτ =
+[
+lτ0, . . . , lτMτ Nν − 1
+]
+∈ RMτ Nν × 1, where Nν and Mτ
+denote the virtual sampling grid size in the Doppler and dela y domains, respectively 2. Typically
+considering an equally spaced sampling grid with a virtual D oppler resolution rν = 2νmax
+Nν
+and
+a virtual delay resolution rτ = τmax
+Mτ
+, we have kνk′′Mτ +l′′ = k′′rν − νmax and lτk′′Mτ +l′′ = l′′rτ ,
+∀k′′ ∈ { 0, . . . , N ν − 1} and ∀l′′ ∈ { 0, . . . , M τ − 1}. To separate the estimation of the on-grid
+and off-grid components of Doppler and delay shifts based on the constructed virtual sampling
+grid, we can perform a linear approximation as follows:
+φT (kνi, l τi) ≈ φT
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+)
++ φ′
+T,ν
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+) (
+kνi −
+k
+i
+νk′′Mτ +l′′
+)
++ φ′
+T,τ
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+) (
+lτi −
+l
+i
+τk′′Mτ +l′′
+)
+= φT
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+)
++ φ′
+T,ν
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+)
+κi
+νk′′Mτ +l′′
++ φ′
+T,τ
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+)
+ιi
+τk′′Mτ +l′′, (18)
+where the approximation is due to the exclusion of the higher order derivatives. V ariables
+k
+i
+νk′′Mτ +l′′ and
+l
+i
+τk′′Mτ +l′′ denote the unknown nearest grid points of kνi and lτi, respectively.
+V ectorsφ′
+T,ν (kν, l τ ) = ∂φT(kν ,lτ )
+∂kν
+∈ CMTNT× 1 and φ′
+T,τ (kν, l τ ) = ∂φT(kν ,lτ )
+∂lτ
+∈ CMTNT× 1 denote
+the ﬁrst-order gradient of φT (kν, l τ ) w.r.t. kν and lτ , respectively. Also, the (kMτ + l)-th entries
+of φ′
+T,ν (kν, l τ ) and φ′
+T,τ (kν, l τ ) are given by
+{φ′
+T,ν (kν, l τ )}kM +l = x [kp, l p] wτ (l − lp − lτ ) w′
+ν (k − kp − kν) and
+{φ′
+T,τ (kν, l τ )}kM +l = x [kp, l p] w′
+τ (l − lp − lτ ) wν (k − kp − kν), (19)
+respectively, where
+w′
+ν (k − kp − kν) = ∂wν (k − kp − kν)
+∂kν
+= 1
+N
+N − 1∑
+n=0
+j2πn
+N e− j2πnT (k− kp− kν )
+N T and
+w′
+τ (l − lp − lτ ) = ∂wτ (l − lp − lτ )
+∂lτ
+= − 1
+M
+M − 1∑
+m=0
+j2πm
+M e
+j2πm∆f
+(l− lp− lτ )
+M ∆f . (20)
+2Note that increasing the virtual Doppler and delay resoluti ons can improve the accuracy of the on-grid channel estimati on
+schemes. However, the computational complexity will be pro hibitively high. Therefore, our proposed off-grid channel estimation
+can mitigate the impact of coarse virtual sampling grid and t hus can achieve a satisfactory performance with a much lower
+computational complexity. The impacts of virtual sampling resolution for both on-grid and off-grid methods will be inv estigated
+in Section VI through simulations.
+
+=== PDF PAGE 12 ===
+12
+V ariablesκi
+νk′′Mτ +l′′ and ιi
+τk′′Mτ +l′′ represent the off-grid components of the Doppler and delay
+shifts of the i-th path, respectively, and they are deﬁned as:
+κi
+νk′′Mτ +l′′=kνi −
+k
+i
+νk′′Mτ +l′′ ∈
+[
+− 1
+2 rν, 1
+2 rν
+]
+and ιi
+τk′′Mτ +l′′=lτi −
+l
+i
+τk′′Mτ +l′′ ∈
+[
+− 1
+2 rτ , 1
+2 rτ
+]
+, (21)
+respectively. Now, substituting (18) into the system model in (15), we have
+yT ≈
+P∑
+i=1
+[
+φT
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+)
++ φ′
+T,ν
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+)
+κi
+νk′′Mτ +l′′
++φ′
+T,τ
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+)
+ιi
+τk′′Mτ +l′′
+]
+˜hi + ˜zT. (22)
+We can observe that the Doppler and delay shifts can be estima ted via estimating the on-grid
+components, i.e., the nearest grid point
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+)
+, and the off-grid components, i.e.,(
+κi
+νk′′Mτ +l′′, ι i
+τk′′Mτ +l′′
+)
+, separately. After obtaining the on-grid and off-grid comp onents, we can
+recover the Doppler and delay shift as kνi =
+k
+i
+νk′′Mτ +l′′+ κi
+νk′′Mτ +l′′ and lτi =
+l
+i
+τk′′Mτ +l′′+ ιi
+τk′′Mτ +l′′,
+respectively. This separation enables the possibility to r ecast the channel estimation as a 1D off-
+grid SSR problem.
+C. 1D Off-grid SSR Model
+In (22), the nearest grid point
+(
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′
+)
+, the corresponding off-grid component(
+κi
+νk′′Mτ +l′′, ι i
+τk′′Mτ +l′′
+)
+, and the channel coefﬁcient ˜hi, ∀i, are unknown and remained to be
+estimated. In other words, the goal is to estimate
+{
+k
+i
+νk′′Mτ +l′′,
+l
+i
+τk′′Mτ +l′′, κ i
+νk′′Mτ +l′′, ι i
+τk′′Mτ +l′′, ˜
+hi
+}
+given y and the functions φT (kν, l τ ), φ′
+T,ν (kν, l τ ) and φ′
+T,τ (kν, l τ ). As P ≪ Mτ Nν usually
+holds, we recast (22) as an SSR problem based on the virtual sa mpling grid:
+yT =
+ΦT (κν, ιτ ) h + zT, (23)
+where the linear approximation error in (22) is also absorbe d into the noise term. The new
+measurement matrix can be formulated as
+ΦT (κν, ιτ ) = ΦT + ΦT,ν diag (κν) + ΦT,τ diag (ιτ ) ∈ CMTNT× Mτ Nν , (24)
+where ΦT ∈ CMTNT× Mτ Nν , ΦT,ν ∈ CMTNT× Mτ Nν , ΦT,τ ∈ CMTNT× Mτ Nν , κν ∈ RMτ Nν × 1, and
+ιτ ∈ RMτ Nν × 1 are deﬁned based on the virtual sampling grid kν and lτ , and they are given by
+ΦT =
+[
+φT
+(
+kν0, lτ0
+)
+, . . . , φT
+(
+kνk′′Mτ +l′′, lτk′′Mτ +l′′
+)
+, . . . , φT
+(
+kνMτ Nν − 1, lτMτ Nν − 1
+)]
+, (25)
+ΦT,ν =
+[
+φ′
+T,ν
+(
+kν0, lτ0
+)
+, . . . , φ′
+T,ν
+(
+kνk′′Mτ +l′′, lτk′′Mτ +l′′
+)
+, . . . , φ′
+T,ν
+(
+kνMτ Nν − 1, lτMτ Nν − 1
+)]
+,
+ΦT,τ =
+[
+φ′
+T,τ
+(
+kν0, lτ0
+)
+, . . . , φ′
+T,τ
+(
+kνk′′Mτ +l′′, lτk′′Mτ +l′′
+)
+, . . . , φ′
+T,τ
+(
+kνMτ Nν − 1, lτMτ Nν − 1
+)]
+,
+κν =
+[
+κν0, . . . , κ νk′′Mτ +l′′, . . . , κ νMτ Nν − 1
+]T
+, and ιτ =
+[
+ιτ0, . . . , ι τk′′Mτ +l′′, . . . , ι τMτ Nν − 1
+]T
+,
+respectively. The new noise vector is deﬁned as zT ∼ CN
+(
+0, σ 2IMTNT
+)
+∈ CMTNT× 1, where σ 2
+is the unknown noise power including the background noise po wer, the interference power due
+
+=== PDF PAGE 13 ===
+13
+to the unknown data symbols, as well as the modeling error ind uced by our proposed ﬁrst-order
+approximation in (22).
+In (23), the unknown vectors h, κν, and ιτ are remained to be estimated. We can observe
+that when k′′ = k
+i
+νk′′Mτ +l′′ and l′′ =
+l
+i
+τk′′Mτ +l′′, ∀i, these unknown vectors can be deﬁned as
+{
+h}k′′Mτ +l′′ = ˜hi, κνk′′Mτ +l′′ = kνi − k
+i
+νk′′Mτ +l′′, and ιτk′′Mτ +l′′ = lτi −
+l
+i
+τk′′Mτ +l′′. The remain entries
+in
+h, κν, and ιτ are all zeros. In other words, h, κν, ιτ are all P -sparse channel vectors with the
+same support, i.e., joint sparsity [10]. The on-grid compon ents are determined by the indices of
+the non-zero entries in h, while the off-grid components can be given by the estimated parameters
+κν and ιτ , as detailed in the next section. We can observe that the prop osed model degenerates
+to the case of on-grid sparse channel estimation [9] when for cing the off-grid components as
+zeros, i.e., κν = ιτ = 0.
+IV. 1D O FF-GRID SBL- BASED CHANNEL ESTIMATION ALGORITHM
+In this section, we propose the off-grid SBL algorithm for es timating the unknown sparse
+vectors in the 1D SSR problem in (23).
+A. Hierarchical Hyperprior Distribution
+To exploit the sparsity of the original DD domain channel res ponse, we formulate a hierarchical
+hyperprior distribution following the SBL framework [10], as illustrated in Fig. 4. In particular,
+the prior distribution of unknown channel vector
+h is assumed to follow
+p
+(
+h |α
+)
+= CN
+(
+h |0, Λ
+)
+, (26)
+where the covariance matrix Λ = diag ( α) is a diagonal matrix and α =
+[α 0, . . . , α k′′Mτ +l′′, . . . α Mτ Nν − 1]T ∈ RMτ Nν × 1 with α k′′Mτ +l′′ ≥ 0 is the hyper-parameter to
+model the sparsity of h. In particular, when α k′′Mτ +l′′ = 0, the corresponding channel coefﬁcient
+{h}k′′Mτ +l′′ = 0 . Otherwise, the corresponding channel coefﬁcient is non-z ero. To avoid the
+impact of the initialization of α on the channel estimation performance, we further assume th at
+the hyper-parameters α are independent and follow the Gamma distribution [10]:
+p (α |ρ ) =
+Nν − 1∏
+k′′=0
+Mτ − 1∏
+l′′=0
+Γ (α k′′Mτ +l′′ |1, ρ ) , (27)
+where ρ > 0 is a ﬁxed root parameter for α. The hyperprior formulation deﬁned in (26) and
+(27) results in a Laplace prior, see (17) in [11], and hence a s parse estimation of h is preferred.
+Moreover, we assume that the noise vector zT follows a complex Gaussian distribution
+p (zT |β0 ) = CN
+(
+zT
+⏐
+⏐0, β − 1
+0 IMTNT
+)
+, (28)
+where β0 denotes the inverse of the unknown noise variance
+σ 2 and it further follows:
+
+=== PDF PAGE 14 ===
+14
+h
+( )p h α
+α
+( )p ρα
+ρ ,c d 
+νκτι
+( )p τι ( )p νκ
+Hyper-parameters
+Hyper-parameter 
+distribution 
+Prior distribution 
+Random variables
+Root parameters
+( )0 ,p c d β
+0β
+Fig. 4. A hierarchical hyperprior distribution for the prop osed off-grid SBL channel estimation.
+p (β0 |c, d ) = Γ ( β0 |c, d ) , (29)
+with c, d > 0 are ﬁxed root parameters. Furthermore, unknown off-grid Do ppler and delay
+variables follow a uniform distribution within their bound s in (21), i.e.,
+κνk′′Mτ +l′′ ∼ U
+[
+− 1
+2 rν, 1
+2 rν
+]
+and ιτk′′Mτ +l′′ ∼ U
+[
+− 1
+2 rτ , 1
+2 rτ
+]
+, ∀k′′, l ′′. (30)
+As shown in Fig. 4, the off-grid Doppler and delay (κν, ιτ ) are modeled as hyper-parameters,
+which will be updated concurrently with the posterior distr ibution of channel vector h in our
+proposed algorithm in next section.
+B. Off-grid SBL-based Channel Estimation Algorithm
+According to the Bayesian principle, the optimal estimatio n of the unknown variables in
+(23) can be obtained from the posterior distribution p
+(
+h, α, κν, ιτ , β 0 |yT
+)
+, which includes
+the full information of both their prior distribution and th e measurement yT. However, the
+posterior distribution p
+(
+h, α, κν, ιτ , β 0 |yT
+)
+cannot be expressed explicitly due to the non-
+linearly coupled unknown variables in the measurement matr ix ΦT (κν, ιτ ) in (23). The unknown
+hyper-parameters α and β0, which determine the prior distribution of h and the likelihood
+function p
+(
+yT
+⏐
+⏐
+h
+)
+, respectively, are also the main obstacles to derive the pos terior distribution.
+Following the Bayes’ rule, the posterior distribution can b e decomposed as
+p
+(
+h, α, κν, ιτ , β 0 |yT
+)
+= p
+(
+h |yT, α, κν, ιτ , β 0
+)
+p (α, κν, ιτ , β 0 |yT ) . (31)
+Inspired by this decomposition, we prefer to derive the cond itional posterior distribution of h for
+given hyper-parameters (α, κν, ιτ , β 0), i.e., p
+(
+h |yT; α, κν, ιτ , β 0
+)
+, and then update the hyper-
+parameters (α, κν, ιτ , β 0) to maximize the posterior distribution p (α, κν, ιτ , β 0 |yT ). In turn, the
+updated point estimates of the hyper-parameters can be furt her adopted to update the conditional
+posterior distribution. Such an alternative inference cal culation will be proceeded repeatedly until
+convergence.
+
+=== PDF PAGE 15 ===
+15
+In the t-th iteration, given the hyper-parameters
+(
+α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+, the conditional posterior
+distribution of h is given by
+p
+(
+h
+⏐
+⏐
+⏐yT; α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+=
+p
+(
+yT,
+h; α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+p
+(
+yT; α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+=
+p
+(
+yT
+⏐
+⏐
+⏐
+h; κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+p
+(
+h; α(t))
+p
+(
+yT; α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+) ∝ p
+(
+yT
+⏐
+⏐
+⏐
+h; κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+p
+(
+h; α(t))
+, (32)
+where the prior distribution p
+(
+h; α(t))
+is given by (26) and p
+(
+yT
+⏐
+⏐
+⏐
+h; κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+denotes the
+likelihood function for given hyper-parameters
+(
+κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+and it is given by
+p
+(
+yT
+⏐
+⏐
+⏐
+h; κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+= CN
+(
+yT
+⏐
+⏐
+⏐
+⏐
+ΦT
+(
+κ(t)
+ν , ι(t)
+τ
+)
+h,
+(
+β (t)
+0
+)− 1
+IMTNT
+)
+. (33)
+Note that p
+(
+yT; α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+in (33) is a normalized term, which is omitted to facilitate
+the derivation. In fact, p
+(
+yT; α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+can be interpreted as the model evidence, which
+measures the possibility of the observations yT given the hyper-parameters.
+Combining (26), (32), and (33), the conditional posterior d istribution of h can be obtained by
+p
+(
+h
+⏐
+⏐
+⏐yT; α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+= CN
+(
+h
+⏐
+⏐
+⏐µ(t)
+h , Σ(t)
+h
+)
+(34)
+and the conditional posterior mean and covariance matrix in the t-th iteration are given by 3
+µ(t)
+h = β (t)
+0 Σ(t)
+h Φ
+H
+T
+(
+κ(t)
+ν , ι(t)
+τ
+)
+yT and (35)
+Σ(t)
+h =
+(
+β0ΦT
+(
+κ(t)
+ν , ι(t)
+τ
+)H
+ΦT
+(
+κ(t)
+ν , ι(t)
+τ
+)
++
+(
+Λ(t))− 1)− 1
+(36)
+= Λ(t) − Λ(t)ΦT
+(
+κ(t)
+ν , ι(t)
+τ
+)H
+(37)
+×
+((
+β (t)
+0
+)− 1
+IMTNT + ΦT
+(
+κ(t)
+ν , ι(t)
+τ
+)
+Λ(t)ΦT
+(
+κ(t)
+ν , ι(t)
+τ
+)H
+)− 1
+ΦT
+(
+κ(t)
+ν , ι(t)
+τ
+)
+Λ(t),
+respectively. Note that the covariance matrix in (37) is obt ained by the matrix inversion lemma,
+which can signiﬁcantly reduce the computational complexit y of the matrix inverse operation in
+(36) as usually Mτ ≫ MT and Nν ≫ NT.
+Then, given the conditional posterior distribution p
+(
+h
+⏐
+⏐
+⏐yT; α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+in the t-th
+iteration, the hyper-parameters (α, κν, ιτ , β 0) can be updated by maximizing the posterior
+distribution p (α, κν, ιτ , β 0 |yT ). Note that p (α, κν, ιτ , β 0 |yT ) ∝ p (yT, α, κν, ιτ , β 0) as the
+observation yT is independent of the hyper-parameters. An expectation-ma ximization (EM)
+algorithm [16] is employed for updating the hyper-paramete rs in the (t + 1)-th iteration. In
+particular, the expectation step is w.r.t. the joint distri bution function p
+(
+yT,
+h, α, κν, ιτ , β 0
+)
+via
+3The estimation of the posterior mean and covariance matrix i n (35) and (36) are the optimal solution of the inverse proble m
+in (23) for given
+(
+α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+. Note that some low-complexity approximate inference meth ods [15], such as variational
+Bayesian or message passing algorithm, can achieve a subopt imal solution, which are out of the scope of this paper.
+
+=== PDF PAGE 16 ===
+16
+marginalizing over the conditional posterior distributio n of h. According to the Bayes’ rule, the
+joint distribution p
+(
+yT, h, α, κν, ιτ , β 0
+)
+can be decomposed as
+p
+(
+yT, h, α, κν, ιτ , β 0
+)
+= p
+(
+yT
+⏐
+⏐
+h, κν, ιτ , β 0
+)
+p
+(
+h |α
+)
+p (α) p (κν) p (ιτ ) p (β0) . (38)
+Now, the expectation and maximization steps can be deﬁned as follows:
+• Expectation step: In this step, we aim to obtain an objective function of the hyper-parameters
+(α, κν, ιτ , β 0) via averaging the joint distribution in (38) over the condit ional posterior
+distribution of h, i.e.,
+Q
+(
+α, κν, ιτ , β 0
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+= E
+h
+⏐
+⏐
+⏐yT;α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+{
+ln
+[
+p
+(
+yT,
+h, α, κν, ιτ , β 0
+)]}
+.
+(39)
+• Maximization step: In this step, we optimize each hyper-par ameter alternatively to maximize
+the obtained objective function in the expectation step , i. e.,
+α(t+1) = arg maximize Q
+(
+α
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+, (40)
+κ(t+1)
+ν = arg maximize Q
+(
+κν
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+, (41)
+ι(t+1)
+τ = arg maximize Q
+(
+ιτ
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+, and (42)
+β (t+1)
+0 = arg maximize Q
+(
+β0
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+. (43)
+Following deﬁnitions in (39)-(43), the closed-form updati ng rule for each hyper-parameter
+will be derived as follows. In particular, the updating rule for the hyper-parameter (α, β 0) are
+stated in the following proposition.
+Proposition 1: The hyper-parameter (α, β 0) can be updated by
+α (t+1)
+k′′Mτ +l′′ =
+√
+1 + 4ρ
+{⏐
+⏐
+⏐{µ(t)
+h }k′′Mτ +l′′
+⏐
+⏐
+⏐
+2
++ {Σ(t)
+h }k′′Mτ +l′′,k′′Mτ +l′′
+}
+− 1
+2ρ and (44)
+β0
+(t+1) = c − 1 + MTNT
+d + Aβ0
+, (45)
+respectively, where
+Aβ0 =
+
+
+yT −
+ΦT
+(
+κ(t)
+ν , ι(t)
+τ
+)
+µ(t)
+h
+
+
+
+2
++
+(
+β (t)
+0
+)− 1 Nν − 1∑
+k′′=0
+Mτ − 1∑
+l′′=0
+(
+1 −
+(
+α (t)
+k′′Mτ +l′′
+)− 1{
+Σ(t)
+h
+}
+k′′,l′′
+)
+. (46)
+proof 1: Please refer to Appendix of Proposition 1.
+To update off-grid components of the Doppler shift, i.e., κν, the objective function in (41)
+can be obtained by
+Q
+(
+κν
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+= E
+h
+⏐
+⏐
+⏐yT;α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+{
+ln
+[
+p
+(
+yT
+⏐
+⏐
+⏐
+h, κν, ι(t)
+τ , β (t)
+0
+)
+p (κν)
+]}
+=Eh
+⏐
+⏐
+⏐yT;α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+{
+ln
+[
+CN
+(
+yT
+⏐
+⏐
+⏐
+⏐
+ΦT
+(
+κν, ι(t)
+τ
+)
+h,
+(
+β (t)
+0
+)− 1
+IMTNT
+)]}
+. (47)
+It can be seen that maximizing the objective function in (47) is equivalent to
+minimize
+κν
+Eh
+⏐
+⏐
+⏐yT;α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+{
+yT −
+ΦT
+(
+κν, ι(t)
+τ
+)
+h
+
+2}
+⇔ minimize
+κν
+(
+κT
+ν Aνκν − 2bT
+ν κν
+)
+,
+(48)
+
+=== PDF PAGE 17 ===
+17
+where Aν ∈ RMτ Nν × Mτ Nν and bν ∈ RMτ Nν × 1 are given by
+Aν = ℜ
+{
+ΦH
+T,νΦT,ν ⊙
+((
+µ(t)
+h
+)∗ (
+µ(t)
+h
+)T
++
+(
+Σ(t)
+h
+)T)}
+and (49)
+bν = ℜ
+{
+diag
+(
+µ(t)
+h
+)
+ΦT
+T,νy∗
+T − diag
+((
+µ(t)
+h
+(
+µ(t)
+h
+)H
++ Σ(t)
+h
+) (
+ΦT + ΦT,τ diag
+(
+ι(t)
+τ
+))H
+ΦT,ν
+)}
+,
+respectively.
+Since κν is jointly sparse with h sharing the same support, to reduce the complexity for
+optimizing κν, we can truncate Aν, κν, and bν according to α(t). However, the number of
+paths P , i.e., the number of non-zero entries in h is unknown. As typically a sparse vector
+with a length of Mτ Nν and at most MTNT
+ln(Mτ Nν ) non-zero entries can be recovered based on MTNT
+measurements by compressed sensing technique [17], we set ˆP =
+⌊
+MTNT
+ln(Mτ Nν )
+⌋
+and truncate Aν,
+κν, and bν accordingly. In particular, if α (t)
+k′′Mτ +l′′ is one of the largest ˆP entries of α(t), the
+[k′′Mτ + l′′, k ′′Mτ + l′′]-th entry of Aν and the (k′′Mτ + l′′)-th entry of bν will be selected,
+resulting in AT
+ν ∈ R ˆP × ˆP and bT
+ν ∈ R ˆP × 1, respectively. The index k′′Mτ + l′′ will be included
+in the truncation index set S (t)
+ν with
+⏐
+⏐
+⏐S (t)
+ν
+⏐
+⏐
+⏐ = ˆP . Also, the (k′′Mτ + l′′)-th entry of κν will be
+selected, resulting a truncated version of unknown hyper-p arameter, i.e., κT
+ν ∈ R ˆP × 1. When AT
+ν
+is invertible, κT
+ν can be updated by (
+κT
+ν
+)(t+1)
+=
+(
+AT
+ν
+)− 1
+bT
+ν . (50)
+Otherwise, we perform an element-wise update for κT
+ν , i.e.,
+{
+(
+κT
+ν
+)(t+1)
+}n = {bT
+ν }n − {{ AT
+ν }n}T
+− n{κT
+ν }− n
+{AT
+ν }n,n
+, ∀n ∈ { 1, . . . , ˆP }. (51)
+Note that κνk′′Mτ +l′′ ∈
+[
+− 1
+2rν, 1
+2 rν
+]
+and thus we have
+{(κT
+ν )(t+1)}n =
+
+
+
+
+
+
+
+{
+(
+κT
+ν
+)(t+1)
+}n, if {
+(
+κT
+ν
+)(t+1)
+}n ∈
+[
+− 1
+2rν, 1
+2 rν
+]
+,
+− 1
+2rν, if {
+(
+κT
+ν
+)(t+1)
+}n < − 1
+2rν,
+1
+2 rν, otherwise.
+(52)
+Now, given the estimated (κT
+ν )(t+1), we can recover
+(κν)(t+1) based on the truncation index
+set S (t)
+ν . Note that due to the estimation error of α(t), the truncation above may introduce
+performance loss in estimating the off-grid Doppler shift. However, when the iterations is close
+to convergence, the estimation of α(t) is accurate and thus the performance loss due to the
+proposed truncation is marginal.
+Similarly, the off-grid components of the delay shift, i.e. , ιτ , can be updated by
+minimize
+ιτ
+Eh
+⏐
+⏐
+⏐yT;α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+{
+yT −
+ΦT
+(
+κ(t)
+ν , ιτ
+)
+h
+
+2}
+⇔ minimize
+ιτ
+(
+ιT
+τ Aτ ιτ − 2bT
+τ ιτ
+)
+,
+(53)
+where Aτ ∈ RMτ Nν × Mτ Nν and bτ ∈ RMτ Nν × 1 are given by
+Aτ = ℜ
+{
+ΦH
+T,τ ΦT,τ ⊙
+((
+µ(t)
+h
+)∗ (
+µ(t)
+h
+)T
++
+(
+Σ(t)
+h
+)T)}
+and (54)
+bτ = ℜ
+{
+diag
+(
+µ(t)
+h
+)
+ΦT
+T,τ y∗
+T − diag
+((
+µ(t)
+h
+(
+µ(t)
+h
+)H
++ Σ(t)
+h
+) (
+ΦT + ΦT,ν diag
+(
+κ(t)
+ν
+))H
+ΦT,τ
+)}
+,
+
+=== PDF PAGE 18 ===
+18
+Algorithm 1 1D Off-grid SBL-based Channel Estimation Algorithm
+1: Initialization
+Initialize the convergence tolerance ǫ, the maximum number of iterations Tmax, the iteration counter t = 1 , the root
+parameters ρ, c and d, and the noise variance
+σ 2 = ∥yT ∥2
+100MT NT
+. Initialize the hyper-parameters α(t) =
+⏐
+⏐
+⏐
+Φ
+H
+T (κν , ιτ ) yT
+⏐
+⏐
+⏐,
+κ(t)
+ν = ι(t)
+τ = 0, and β (t)
+0 = 1
+σ2 .
+2: repeat
+3: Update the conditional posterior mean µ(t)
+h and covariance matrix Σ(t)
+h according to (35) and (36), respectively
+4: Update the hyper-parameters
+(
+α(t+1), κ(t+1)
+ν , ι(t+1)
+τ , β (t+1)
+0
+)
+according to (44), (52), (57), and (45), respectively
+5: t = t + 1
+6: until t = Tmax or ∥α(t+1)− α(t)∥2
+∥α(t)∥2
+≤ ǫ
+7: Return the converged solution ˆh = µ(t)
+h , ˆkν = kν + κ(t)
+ν , and ˆlτ = lτ + ι(t)
+τ .
+respectively. Similarly, we can truncate Aτ , bτ , and ιτ according to α(t) as AT
+τ ∈ R ˆP × ˆP ,
+bT
+τ ∈ R ˆP × 1, and ιT
+τ ∈ R ˆP × 1 respectively, and obtain a truncation index set S (t)
+τ . When AT
+τ is
+invertible, ιT
+τ can be updated by (
+ιT
+τ
+)(t+1)
+=
+(
+AT
+τ
+)− 1
+bT
+τ . (55)
+Otherwise, an element-wise update for ιT
+τ can be obtained by
+{ιT
+τ }n = {bT
+τ }n − {{ AT
+τ }n}T
+− n{κT
+τ }− n
+{AT
+τ }n,n
+, ∀n ∈ { 1, . . . , ˆP }. (56)
+Since ιτk′′M +l′′ ∈
+[
+− 1
+2rτ , 1
+2rτ
+]
+, we have
+{(ιT
+τ )(t+1)}n =
+
+
+
+
+
+
+
+{
+(
+ιT
+τ
+)(t+1)
+}n, if{
+(
+ιT
+τ
+)(t+1)
+}n ∈
+[
+− 1
+2rτ , 1
+2rτ
+]
+,
+− 1
+2 rτ , if{
+(
+ιT
+τ
+)(t+1)
+}n < − 1
+2rτ ,
+1
+2rτ , otherwise.
+(57)
+Now, we can recover (ιτ )(t+1) based on the estimated (ιT
+τ )(t+1) and the truncation index set S (t)
+τ .
+Now, the proposed 1D off-grid SBL-based channel estimation algorithm for OTFS can be
+summarized in Algorithm 1, where the hyper-parameters are updated alternatively ac cording to
+(44), (52), (57), and (45), with concurrently updating the c onditional posterior distribution of
+h
+according to (35) and (36). When the maximum number of iterat ions is reached or the changes
+of hyper-parameter α are smaller than a predeﬁned convergence tolerance ǫ, the algorithm
+terminates and outputs the estimated channel coefﬁcient ˆh, the estimated normalized Doppler
+shift ˆkν, and the estimated normalized delay shift ˆlτ . By the virtue of the EM algorithm [16], the
+proposed algorithm is guaranteed to converge to the station ary point of p (α, κν, ιτ , β 0 |yT ) since
+it is non-decreasing over iterations. The computational co mplexity of the proposed algorithm is
+dominated by computing the conditional posterior covarian ce matrix in (36), which has an order
+of O (M 2
+τ N 2
+ν MTNT) [10]. We can observe that the 1D off-grid SBL-based channel e stimation
+algorithm suffers from high computational complexity with a large virtual sampling grid size,
+i.e., Mτ → ∞ and Nν → ∞ . This motivates us to propose the 2D off-grid SBL-based chan nel
+estimation as detailed in the next section, which enjoys a lo wer computational complexity.
+
+=== PDF PAGE 19 ===
+19
+Remark 1: The above proposed framework treats the unknown data symbol s in the measure-
+ment matrix in (23) as the impact of noise. To mitigate the imp acts of the unknown data symbols,
+we can further proposed an iterative data-aided channel est imation scheme. The key idea of data-
+aided channel estimation [18] is that the estimated data sym bols can be viewed as pilots, which
+can in turn further improve the channel estimation performa nce. In particular, we ﬁrst perform
+the proposed off-grid 1D channel estimation, i.e., Algorithm 1, based on (23) assuming only
+pilot symbol available in its measurement matrix. Then, we r econstruct the effective DD domain
+channel through (3) and perform data detection to estimate t he data symbols ˆx [k, l ] based on (1).
+Substituting the estimated symbols ˆx [k, l ] into the measurement matrix in (23), we can perform
+our proposed Algorithm 1 again to update the channel estimation. Such an iteration p rocedure
+proceeds until the estimated channel does not change. The pe rformance of the proposed data-
+aided channel estimation will be evaluated in the Section VI .
+V. 2D O FF-GRID SBL- BASED CHANNEL ESTIMATION
+In this section, to reduce the computational complexity of t he SBL-based channel estimation,
+we propose a 2D off-grid SSR model and a 2D off-grid SBL-based channel estimation algorithm.
+Note that all the previous works for compressed channel sens ing of OTFS [7]–[9] are based on
+1D SSR model, which are fundamentally different from our pro posed 2D model.
+A. 2D Off-grid SSR Model
+When the pilot sequence is separable in Doppler and delay dom ains, i.e., X = xν ⊗ xH
+τ , where
+X ∈ C|Kp|×|Lp| collects the pilot symbols x [k′, l ′], xν ∈ C|Kp|× 1 collects the pilot symbols xν [k′]
+in the Doppler domain, and xτ ∈ C|Lp|× 1 collects the pilot symbols xτ [l′] in the delay domain,
+∀k′ ∈ K p and ∀l′ ∈ L p, the system model in (13) can be rewritten as
+y [k, l ] =
+∑
+k′∈K p
+∑
+l′∈L p
+xν [k′] xτ [l′]hw [k − k′, l − l′] + z [k, l ]
+=
+P∑
+i=1
+˜hi
+∑
+k′∈K p
+xν [k′] wν(k − k′ − kνi)
+∑
+l′∈L p
+xτ [l′] wτ (l − l′ − lτi) + z [k, l ]
+(a)
+=
+P∑
+i=1
+˜hixν [kp] wν(k − kp − kνi)xτ [lp] wτ (l − lp − lτi) + z [k, l ] . (58)
+Equality (a) is obtained with adopting a single pilot impulse, i.e., |Kp| = |Lp| = 1 . Note that
+for the case of a single pilot impulse, the pilot sequence is s eparable as x [kp, l p] = xν [kp] xτ [lp]
+always holds.
+From (58), we can observe that it is possible to decouple the e stimation of the normalized
+Doppler shift kνi and the normalized delay shift lτi, which is different from the 1D model in
+
+=== PDF PAGE 20 ===
+20
+Section III. Beneﬁting from this decoupling, it is possible to reduce the computational complexity
+based on the proposed 2D SSR model as follows. To this end, we d eﬁne the virtual sampling grid
+for Doppler and delay domains individually, which is differ ent from that in (18). In particular,
+the Doppler virtual sampling grid 4 is deﬁned in the range of (− νmax, ν max) with a virtual Doppler
+resolution rν = 2νmax
+Nν
+, resulting in kν =
+[
+kν0, . . . , kνNν − 1
+]
+∈ RNν × 1 and kνk′′ = k′′rν − νmax.
+On the other hand, the delay virtual sampling grid is deﬁned i n the range of (0, τ max) with a
+virtual delay resolution rτ = τmax
+Mτ
+, resulting in lτ =
+[
+lτ0, . . . , lτMτ − 1
+]
+∈ RMτ × 1 and lτl′′ = l′′rτ .
+Now, similar to (23), we can recast the system model in (58) as a 2D SSR problem based on
+the deﬁned virtual sampling grids and the ﬁrst-order approx imation:
+YT = ΦL (κν) HΦ
+T
+R (ιτ ) +
+ZT, (59)
+where YT ∈ CNT× MT collects the received signal y [k, l ] in the range of kp− kmax ≤ k ≤ kp+kmax
+and lp ≤ l ≤ lp + kmax thanks to the compactness of the DD domain channel. Also, mat rix
+ZT ∈ CNT× MT collects the new noise z [k, l ] ∼ CN
+(
+0, σ 2
+)
+, where σ 2 is the unknown noise
+power taking into account the measurement noise, approxima tion error, as well as the interference
+from unknown data symbols. The unknown channel matrix H ∈ CNν × Mτ collects the channel
+coefﬁcients ˜hi, ∀i, i.e., {H}k
+i
+νk′′,
+l
+i
+τl′′
+= ˜hi, where
+k
+i
+νk′′ and
+l
+i
+τl′′ denote the unknown nearest points
+of kνi and lτi, respectively. In other words, there are at most P non-zero entries in the sparse
+unknown channel matrix
+H.
+In (59), the left measurement matrix ΦL (κν) ∈ CNT× Nν and the right measurement matrix
+ΦR (ιτ ) ∈ CMT× Mτ are deﬁned as
+ΦL (κν) = ΦL + ΦL,ν diag (κν) and ΦR (ιτ ) = ΦR + ΦR,τ diag (ιτ ) , (60)
+respectively, where κν =
+[
+κν0, . . . , κ νNν − 1
+]
+∈ RNν × 1 and ιτ =
+[
+ιτ0, . . . , ι τMτ − 1
+]
+∈ RMτ × 1.
+And the matrices ΦL, ΦL,ν ∈ CNT× Nν and ΦR, ΦR,τ ∈ CMT× Mτ are deﬁned as {ΦL}k,k′′ =
+xν [kp] wν(k − kp − kνk′′), {ΦL,ν}k,k′′ = xν [kp] w′
+ν(k − kp − kνk′′), {ΦR}l,l′′ = xτ [lp] wτ (l −
+lp − lτl′′), and {ΦR,τ }l,l′′ = xτ [lp] w′
+τ (l − lp − lτl′′), respectively, ∀k′′ ∈ { 0, . . . , N ν − 1} and
+∀l′′∈ { 0, . . . , M τ − 1}.
+B. 2D Off-grid SBL-based Channel Estimation Algorithm
+Based on the built 2D off-grid SSR model in (59), we propose a t wo-step SBL-based channel
+estimation algorithm in this section, where the ﬁrst step es timates the composite matrix D =
+HΦ
+T
+R (ιτ ) and the second step aims to recovery
+H based on the estimated D.
+4For notational consistency, in this section, we reuse some n otations of Section III.
+
+=== PDF PAGE 21 ===
+21
+1) First Step: Deﬁning a composite matrix D = HΦ
+T
+R (ιτ ) = [ dc,0, . . . , dc,MT− 1] ∈ CNν × MT,
+the system model in (59) can be rewritten as
+YT =
+ΦL (κν) D + ZT, (61)
+where D is a row-sparse channel matrix sharing the same row-sparsit y with H, i.e., the sparsity
+in the Doppler domain, dc,l ∈ CNν × 1 denotes the l-th column of D, and all columns dc,l are
+jointly sparse with the same support, ∀l ∈ { 0, . . . , M T − 1}. To recovery D, we can develop
+an SBL algorithm for a multiple snapshots case assuming a row sparsity in D. In particular,
+the unknown matrix D and the hyper-parameters (αν, κν, β 0) are updated iteratively, where
+αν =
+[
+α ν0, . . . , α νk′′, . . . α νNν − 1
+]
+∈ RNν × 1 with α νk′′ > 0 models the row-sparsity of D.
+Assuming independent columns of D, the prior distribution of the unknown matrix D assumes
+to follow
+p (D |αν ) =
+MT∏
+l=1
+CN (dc,l |0, Λ) , (62)
+where Λ = diag ( αν) and p (αν |ρ ) =
+Nν − 1∏
+k′′=0
+Γ
+(
+α νk′′ |1, ρ
+)
+, with ρ > 0. And the unknown
+off-grid components of the Doppler shift in the measurement matrix of (61) follows κνk′′ ∼
+U
+[
+− 1
+2 rν, 1
+2rν
+]
+, ∀k′′∈ { 0, . . . , N ν − 1}. The new noise matrix follows
+p
+(
+ZT |β0
+)
+=
+MT− 1∏
+l=0
+CN
+(
+zl
+⏐
+⏐0, β − 1
+0 INT
+)
+, (63)
+where
+ZT = [z0, . . . , zMT− 1], zl ∈ CNT× 1, and p (β0 |c, d ) = Γ ( β0 |c, d ), with c, d > 0. Now, the
+likelihood function for given (κν, β 0) for (61) is given by
+p (YT |D; κν, β 0 ) =
+MT− 1∏
+l=0
+CN
+(
+yl
+⏐
+⏐
+ΦL (κν) dc,l, β − 1
+0 INT
+)
+, (64)
+and the joint distribution can be decomposed by
+p (YT, D, αν, κν, β 0) = p (YT |D, κν, β 0 ) p (D |αν ) p (αν) p (κν) p (β0) , (65)
+where yl ∈ CNT× 1 is the l-th column of YT.
+Now, given the hyper-parameters
+(
+α(t)
+ν , κ(t)
+ν , β (t)
+0
+)
+in the t-th iteration, the conditional posterior
+distribution of D can be obtained by
+p
+(
+D
+⏐
+⏐
+⏐YT; κ(t)
+ν , β (t)
+0
+)
+=
+MT− 1∏
+l=0
+CN
+(
+dc,l
+⏐
+⏐
+⏐µ(t)
+dc,l, Σ(t)
+dc
+)
+, (66)
+where the conditional posterior mean for dc,l, ∀ ∈ { 0, . . . , M T− 1}, and their common covariance
+matrix are given by
+µ(t)
+dc,l
+= β (t)
+0 Σ(t)
+dc
+ΦL
+(
+κ(t)
+ν
+)
+yl and (67)
+Σ(t)
+dc =
+(
+β (t)
+0 Φ
+H
+L
+(
+κ(t)
+ν
+)
+ΦL
+(
+κ(t)
+ν
+)
++
+(
+Λ(t))− 1)− 1
+= Λ(t) − Λ(t)Φ
+H
+L
+(
+κ(t)
+ν
+)((
+β (t)
+0
+)− 1
+INT +
+ΦL
+(
+κ(t)
+ν
+)
+ΛΦ
+H
+L
+(
+κ(t)
+ν
+))− 1
+ΦL
+(
+κ(t)
+ν
+)
+Λ(t), (68)
+
+=== PDF PAGE 22 ===
+22
+respectively.
+Similar to Proposition 1, following the EM principle [16], t he hyper-parameters (α, β 0) can
+be updated by the following rules
+α (t+1)
+k′′ =
+√
+1 + 4 ρ
+MT
+1
+MT
+∑MT− 1
+l=0 {
+⏐
+⏐
+⏐{µ(t)
+dc,l
+}k′′
+⏐
+⏐
+⏐
+2
++ {Σ(t)
+dc }k′′,k′′} − 1
+2 ρ
+MT
+and (69)
+β (t+1)
+0 = c − 1 + MTNT
+d + ∑MT− 1
+l=0 Al
+β0
+, (70)
+respectively, and Al
+β0 =
+
+
+yl −
+Φ
+H
+L
+(
+κ(t)
+ν
+)
+µ(t)
+dc,l
+
+
+
+2
++
+(
+β (t)
+0
+)− 1 Nν − 1∑
+k′′=0
+(
+1 −
+(
+α νk′′
+)− 1
+{Σ(t)
+dc }k′′,k′′
+)
+.
+Also, the hyper-parameter κν can be updated by
+κν = (Aν)− 1 bν, (71)
+when Aν = 1
+MT
+∑MT
+l=1 ℜ
+{
+ΦH
+L,νΦL,ν ⊙
+((
+µ(t)
+dc,l
+)∗ (
+µ(t)
+dc,l
+)T
++
+(
+Σ(t)
+dc
+)T)}
+∈ RNν × Nν is invertible
+and bν is given by
+bν = 1
+MT
+MT∑
+l=1
+ℜ
+{
+diag
+(
+µ(t)
+dc,l
+)
+ΦT
+L,νy∗
+l − diag
+((
+µ(t)
+dc,l
+(
+µ(t)
+dc,l
+)H
++ Σ(t)
+dc
+)
+ΦL,ν
+)}
+∈ RNν × 1.
+(72)
+When Aν is not invertible, we perform an element-wise update for κν, i.e.,
+{κ(t+1)
+ν }n = {bν}n − {{ Aν}n}T
+− n{κν}− n
+{Aν}n,n
+. (73)
+Note that κνk′′ ∈
+[
+− 1
+2 rν, 1
+2 rν
+]
+and thus we have
+{κ(t+1)
+ν }n =
+
+
+
+
+
+
+
+{κ(t+1)
+ν }n, if {κ(t+1)
+ν }n ∈
+[
+− 1
+2 rν, 1
+2 rν
+]
+,
+− 1
+2 rν, if {κ(t+1)
+ν }n < − 1
+2rν,
+1
+2rν, otherwise.
+(74)
+Now, the conditional posterior distribution of the unknown matrix D and the values of hyper-
+parameters (α, κν, β 0) can be updated according to (67), (68), (69), (70), and (74) i teratively,
+as detailed in line 1 − 8 in Algorithm 2 as follows. After convergence, we can obtain ˆD =[
+µ(t)
+dc,0, . . . , µ(t)
+dc,MT− 1
+]
+and the Doppler shift ˆkν = kν + κ(t)
+ν , where ˆD will be used to estimate
+the unknown channel matrix and the delay shift in the second s tep.
+2) Second Step: The estimated composite matrix ˆD can be rewritten as ˆD =[
+ˆdr,0, . . . , ˆdr,Nν− 1
+]T
+, where
+(
+ˆdr,k
+)T
+∈ C1× MT denotes the k-th row vector of ˆD. Besides,
+based on the deﬁnition of D in (61), we can assume ˆD = HΦ
+T
+R (ιτ ). Therefore, deﬁning
+H =
+[
+h0, . . . , hNν − 1
+]T
+, where h
+T
+k ∈ C1× Mτ denotes the k-th row vector of
+H, we can obtain
+Nν 1D SSR problems:
+ˆdr,k = ΦR (ιτ ) hk, ∀k ∈ { 0, . . . , N ν − 1}, (75)
+which can be solved in parallel using Algorithm 1. The details for recovering hk are omitted
+here to concise our presentation.
+Now, the 2D off-grid SBL-based channel estimation algorith m can be summarized in Algo-
+rithm 2. The convergence of the ﬁrst step can be guaranteed by the vi rtue of the EM algorithm
+
+=== PDF PAGE 23 ===
+23
+Algorithm 2 2D Off-grid SBL-based Channel Estimation Algorithm
+1: Initialization
+Initialize the convergence tolerance ǫ, the maximum number of iterations Tmax, the iteration counter t = 1 , the
+root parameters ρ, c, and d, and the noise variance
+σ 2 = ∥YT ∥2
+100MT NT
+. Initialize the hyper-parameters α (t)
+νk′′ =
+1
+MT
+∑MT− 1
+l=0
+{⏐
+⏐
+⏐{
+Φ
+H
+L (κν ) YT}k′′,l
+⏐
+⏐
+⏐
+}
+, κ(t)
+ν = 0, and β (t)
+0 = 1
+σ2 .
+2: repeat {First Step }
+3: Update the conditional posterior mean µ(t)
+dc,l and covariance matrix Σ(t)
+dc according to (67) and (68), respectively
+4: Update the hyper-parameters
+(
+α(t+1)
+ν , κ(t+1)
+ν , β (t+1)
+0
+)
+according to (69), (74), and (70), respectively
+5: t = t + 1
+6: until t = Tmax or
+
+
+α(t+1)
+ν − α(t)
+ν
+
+
+
+2
+
+
+α(t)
+ν
+
+
+
+2
+≤ ǫ
+7: Output the converged solution ˆD =
+[
+µ(t)
+dc,0 , . . . , µ(t)
+dc,MT − 1
+]
+=
+[
+ˆdr,0, . . . , ˆdr,Nν − 1
+]T
+and ˆkν =
+kν + κ(t)
+ν .
+8: Second Step : Recover ˆhk and ˆlτ according to Algorithm 1, based on the model in (75), ∀k.
+[16], where p (α, κν, β 0 |YT ) will be non-decreasing for each iteration. The computation al
+complexity of the proposed algorithm is dominated by channe l inversion operations in both
+the ﬁrst step and second step, which has an order of O (N 2
+ν NT + M 2
+τ MT) [10]. We can observe
+that the computational complexity of Algorithm 2 is much lower compared with Algorithm
+1. In particular, beneﬁting from the decoupling of Doppler a nd delay shift estimation of our
+proposed 2D method, its computational complexity order is p roportional to the summation of
+the sizes of delay and Doppler grids, i.e., O (N 2
+ν NT + M 2
+τ MT), while the counterpart of the
+proposed 1D off-grid method is proportional to their produc t, i.e., O (N 2
+ν M 2
+τ NTMT).
+VI. S IMULATIONS
+In this section, we evaluate the channel estimation perform ance of our proposed 1D and
+2D off-grid SBL-based channel estimation algorithms. Unle ss speciﬁed otherwise, the system
+parameters used in the our simulations are given as follows. The DD domain grid size is M =
+N = 32 , the carrier frequency is 3 GHz, the subcarrier spacing is ∆f = 15 kHz, and the
+slot duration is T = 1
+∆f
+. The total number of path is set as P = 5 , the normalized maximum
+Doppler shift and maximum delay shift are given by kmax = 3 and lmax = 4 , respectively.
+The Doppler and delay shifts are randomly and uniformly gene rated within [− νmax, ν max] and
+[0, τ max], respectively. Note that the adopted maximum Doppler and de lay shift correspond to the
+maximum relative velocity of 506. 25 km/h among the transceivers or scatters and the maximum
+propagation distance difference of 2. 5 km between propagating paths, respectively. The channel
+coefﬁcients hi are generated according to the distribution hi ∼ CN (0, q lτi ), where qlτi follows
+a normalized exponential power delay proﬁle 5, i.e., qlτi =
+exp(− 0.1lτi )∑
+i exp(− 0.1lτi ). A single pilot impulse
+is inserted at [kp, l p] =
+[M
+2 + 1, N
+2 + 1
+]
+in the DD domain and a normalized constellation is
+5Here, we assume that the path loss and shadowing have been com pensated following the literature studying OTFS [12], [19] .
+
+=== PDF PAGE 24 ===
+24
+assumed for data symbols, i.e., E
+{
+|x [k, l ]|2}
+= 1 . The power of the pilot symbol is 30 dB
+higher than that of the data symbols, i.e., 10 log10
+|xp|2
+E{|x[k,l]|2} = 30 dB. The system signal-to-
+noise ratio (SNR) is deﬁned as SNR = 1
+N0
+and is set in the range of [0, 30] dB. The virtual
+Doppler and delay sampling resolutions are set in the range rν, r τ ∈ [0. 2, 0. 9]. Following [4], [6],
+the DD domain grids in the range kp − 2kmax ≤ k ≤ kp +2kmax and lp − lmax ≤ l ≤ lp +lmax, with
+k ̸= kp and l ̸= lp, remain null serving as guard space to mitigate the interfer ence from the data
+symbols to the pilot symbol. In our proposed Algorithms 1 and 2, we set ǫ = 10 − 3, ρ = 10 − 2,
+and c = d = 10 − 4 [10]. For comparison, we evaluate the performance of the tra ditional impulse-
+based channel estimation method [4], our previously propos ed channel estimation exploiting DC
+window in the TF domain [6], and NOMP-based channel estimati on in [8], which are denoted
+as “Traditional impulse”, “Traditional impulse + DC window ”, “Off-grid NOMP”, respectively.
+Besides, to demonstrate the performance gain of our propose d off-grid methods, the channel
+estimation performance for on-grid schemes with kν = lτ = 0 based on OMP [7], 1D SBL
+[9], and our proposed 2D SBL are also evaluated, which are den oted as “On-grid OMP”, “1D
+on-grid SBL”, “2D on-grid SBL”, respectively. Note that the additional steps introduced by our
+proposed off-grid methods is the hyper-parameter update co mpared with the on-grid methods,
+which can be efﬁciently computed. However, the computation al complexities of both the on-grid
+and off-grid methods are dominated by the matrix inversion o peration and thus they are in the
+same order.
+Note that the traditional channel estimation methods of OTF S, such as “Traditional impulse”
+and “Traditional impulse + DC window”, are mainly to estimat e the effective DD domain
+channel rather than the original DD domain channel response as our proposed scheme in this
+paper. Therefore, for our proposed schemes, we reconstruct the effective DD domain channel
+ˆhw [k − k′, l − l′] based on the estimated original DD domain channel response a ccording to (3)
+and deﬁne the normalized mean square error (NMSE) of channel estimation as
+NMSE =
+∑N − 1
+k− k′=0
+∑M − 1
+l− l′=0
+⏐
+⏐
+⏐hw [k − k′, l − l′] − ˆhw [k − k′, l − l′]
+⏐
+⏐
+⏐
+2
+∑N − 1
+k− k′=0
+∑M − 1
+l− l′=0 |hw [k − k′, l − l′]|2 , (76)
+where the summation is over k − k′ ∈ [0, N − 1] and l − l′ ∈ [0, M − 1] as hw [k − k′, l − l′] =
+hw [(k − k′)N , (l − l′)M ]. All the simulation results are averaged over 1, 000 OTFS frames.
+A. NMSE versus SNR with Different Virtual Sampling Resoluti ons
+Fig. 5 and Fig. 6 illustrate the performance of our proposed c hannel estimation schemes with
+high and low virtual sampling resolutions, respectively. I n the case of a high virtual sampling
+resolution with rν = rτ = 0 . 5, we can observe that our proposed 1D off-grid SBL-based
+
+=== PDF PAGE 25 ===
+25
+0 5 10 15 20 25 30
+SNR (dB)
+-22
+-20
+-18
+-16
+-14
+-12
+-10
+-8
+-6
+NMSE (dB)
+1D off-grid SBL
+1D on-grid SBL
+2D off-grid SBL
+2D on-grid SBL
+On-grid OMP
+Off-grid NOMP
+Traditional impulse
+Traditional impulse + DC window
+Fig. 5. NMSE of effective channel estimation versus SNR
+with a high virtual sampling resolution rν = rτ = 0. 5.
+0 5 10 15 20 25 30
+SNR (dB)
+-15
+-14
+-13
+-12
+-11
+-10
+-9
+-8
+-7
+-6
+NMSE (dB)
+1D off-grid SBL
+1D on-grid SBL
+2D off-grid SBL
+2D on-grid SBL
+On-grid OMP
+Off-grid NOMP
+Traditional impulse
+Traditional impulse + DC window
+Fig. 6. NMSE of effective channel estimation versus SNR
+with a low virtual sampling resolution rν = rτ = 0. 8.
+channel estimation achieves the lowest NMSE and the perform ance gain over the on-grid method
+is about 1.5 dB in the high SNR regime. Moreover, the proposed 2D off-grid/on-grid SBL-
+based schemes achieve a coarser channel estimation than the proposed 1D methods due to
+potential estimation error propagation from the ﬁrst step t o the second step in Algorithm 2.
+However, owing to the decoupling of our proposed 2D model, th e computational complexity is
+signiﬁcantly reduced. Note that the 2D on-grid SBL-based sc heme outperforms the 2D off-grid
+SBL-based scheme. This is because the non-linear coupling o f the hyper-parameters (κν, ιτ ) in
+the measurement matrices in our proposed 2D off-grid model i n (59) may reduce the gain offered
+by estimating the off-grid components for a high virtual sam pling resolution. Additionally, the
+OMP-based methods, including both “On-grid OMP” and “Off-g rid NOMP”, achieve a better
+NMSE performance than the impulse-based methods, includin g both “Traditional impulse” and
+“Traditional impulse + DC window”, since the former methods can exploit the channel sparsity
+in the DD domain. However, the OMP-based methods perform wor se than our proposed SBL-
+based methods as OMP is heuristic and is generally far from th e optimal solution. In fact, our
+proposed SBL-based methods are derived from the maximum a po steriori probability estimate in
+(31) which can effectively capture the main properties of th e channel for estimation. Although the
+NOMP method [8] can reﬁne the delay and Doppler shifts estima tion through Newton’s method
+and achieves a 2 dB NMSE gain compared with the on-grid OMP met hod [7], its NMSE is still
+substantially higher than that of our proposed SBL-based sc hemes owing to the superiority of
+the SBL framework. Note that our previous work of DC window-b ased channel estimation [6]
+can achieve a better performance than the traditional impul se method in the high SNR regime
+thanks to the improved channel sparsity obtained by windowi ng. However, the work in [6] still
+suffers from a high NMSE compared with the compressed sensin g-based channel estimation
+
+=== PDF PAGE 26 ===
+26
+0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+Vritual Doppler resolution
+-24
+-22
+-20
+-18
+-16
+-14
+-12
+-10
+-8
+NMSE (dB) 1D off-grid SBL
+1D on-grid SBL
+2D off-grid SBL
+2D on-grid SBL
+On-grid OMP
+Off-grid NOMP
+Traditional impulse
+Traditional impulse + DC window
+Fig. 7. NMSE of effective channel estimation versus the
+virtual resolution.
+0 5 10 15 20 25 30
+SNR (dB)
+-13
+-12
+-11
+-10
+-9
+-8
+-7
+-6
+-5
+NMSE (dB)
+1D off-grid SBL
+1D on-grid SBL
+2D off-grid SBL
+2D on-grid SBL
+On-grid OMP
+Off-grid NOMP
+Traditional impulse
+Traditional impulse + DC window
+Fig. 8. NMSE of effective channel estimation versus SNR
+without guard space for rν = rτ = 0. 8.
+approaches. In fact, the work in [6] estimates the effective DD domain channel instead of the
+original DD domain channel response, where the sparsity of t he former channel is sacriﬁced
+compared with the latter one due to inevitable channel sprea ding.
+For the case of a low virtual sampling resolution with rν = rτ = 0. 8, we can observe a similar
+performance trend as Fig. 5 for the compressed sensing-base d channel estimation schemes. The
+only difference is that for our proposed 2D model, the off-gr id method outperforms the on-
+grid method since the former can estimate the off-grid compo nents of delay and Doppler shifts
+and thus can achieve a high channel estimation accuracy. We c an observe that the OMP-based
+methods are even worse than the impulse-based approaches as the former suffer from the low
+virtual sampling resolution. However, even with a low virtu al sampling resolution, our proposed
+1D off-grid SBL-based channel estimation can still achieve the best performance.
+B. NMSE versus the Virtual Sampling Resolution
+To investigate the impact of the virtual sampling resolutio n, Fig. 7 illustrates the channel
+estimation performance versus the virtual sampling resolu tion in the Doppler domain with a ﬁxed
+virtual delay sampling resolution rτ = 0 . 5. We can observe that the NMSE of the compressed
+sensing-based channel estimation increases with decreasi ng the virtual Doppler resolution from
+rν = 0 . 2 to rν = 0 . 9. In contrast, the NMSE of the impulse-based channel estimat ion methods
+is invariant since it estimates the effective DD domain chan nel which does not depend on the
+virtual sampling resolution. However, the computational c omplexity of the compressed sensing-
+based approaches increases signiﬁcantly with the increasi ng virtual sampling resolution. For our
+proposed 2D model, the on-grid approach outperforms the off -grid method with a high virtual
+Doppler resolution while the former scheme is worse than the latter one with a low virtual
+Doppler resolution. In fact, the 2D on-grid SBL-based schem e becomes more accurate for a
+
+=== PDF PAGE 27 ===
+27
+high virtual sampling resolution and enjoys a simpler estim ation model with fewer unknown
+parameters. With reducing the virtual sampling resolution , i.e., increasing rν, the NMSE of
+the proposed 2D on-grid SBL-based scheme becomes higher sin ce all the estimated delay and
+Doppler shifts are constrained on the coarse DD domain grid. In contrast, our proposed off-grid
+approach can compensate the loss of the low virtual sampling resolution through estimating the
+off-grid components as hyper-parameters and thus enjoys a m ore accurate channel estimation.
+C. NMSE versus SNR without Guard Space
+In practice, guard spaces are introduced to mitigate the int erference from data symbols to the
+pilot symbol. However, the insertion causes a signiﬁcantly high signaling overhead for OTFS.
+In particular, nulling the DD domain space in the range of kp − 2kmax ≤ k ≤ kp + 2kmax and
+lp− lmax ≤ l ≤ lp+lmax results in (4kmax + 1) (2lmax + 1) overhead symbols out of M N symbols.
+Therefore, it is interesting to investigate the robustness of our proposed channel estimation
+schemes against the interference via evaluating the channe l estimation performance without the
+use of guard space. Fig. 8 demonstrates the NMSE of channel es timation without guard space
+for rν = rτ = 0. 8. We can observe that our proposed 1D off-grid SBL-based chan nel estimation
+can achieve the lowest NMSE and possesses about 1 dB gain comp ared to that of 1D on-grid
+SBL-based channel estimation, which is consistent to previ ous results. Besides, it is worth to
+note that the on-grid methods outperform the off-grid metho ds for both OMP-based and 2D SBL-
+based channel estimation schemes. This is because the on-gr id methods are based on a linear
+SSR model while the off-grid methods are based on a non-linea r model, e.g. (59). As a result,
+the on-grid methods are more robust against the interferenc e than that of the off-grid methods.
+Also, comparing Fig. 6 and Fig. 8, it can be seen that there is a bout 1 ∼ 2 dB loss in channel
+estimation NMSE for all the evaluated schemes due to the high er amount of interference from
+data symbols without guard space. This motivates us to furth er employ the proposed data-aided
+channel estimation scheme in next subsection.
+D. Data-Aided Channel Estimation
+Fig. 9 illustrates the NMSE performance for different itera tions in our proposed 1D off-
+grid SBL-based channel estimation adopting the data-aided philosophy [18]. We adopt binary
+phase shift keying (BPSK) modulation for x [k, l ] and the sum-product algorithm proposed in
+our previous work [6] for data detection. To improve the data detection performance, a half-
+rate convolutional code and the maximum likelihood sequenc e estimation are applied at OTFS
+transceiver. We can observe that about 1.5 dB decreases in NM SE can be achieved by the
+
+=== PDF PAGE 28 ===
+28
+0 5 10 15 20 25 30
+SNR (dB)
+-14
+-13
+-12
+-11
+-10
+-9
+-8
+NMSE (dB)
+Pilot only
+Data-aided 1st iteration
+Data-aided 2nd iteration
+Data-aided 3rd iteration
+Data-aided 4th iteration
+Performance gain achieved by
+data-aided channel estimation
+Fig. 9. NMSE of effective channel estimation versus SNR with data-aided channel estimation.
+ﬁrst data-aided iteration, while the performance improvem ent is marginal for the remaining
+iterations. In fact, the ﬁrst iteration can retrieve most of the unknown data symbols and provides
+the most signiﬁcant information to reconstruct the measure ment matrix in (23). The following
+iterations can further improve the accuracy of data detecti on based on the reﬁned channel
+estimates. However, the additional information provided f rom the reﬁned channel estimation
+is marginal compared with the ﬁrst iteration. Considering t he high computational complexity of
+data detection and channel estimation, we only need the ﬁrst iteration to achieve an acceptable
+channel estimation performance in practice.
+VII. C ONCLUSIONS
+In this paper, we proposed an off-grid SBL-based channel est imation scheme, which estimates
+the original DD domain channel response instead of the effec tive DD domain channel. In
+particular, the channel estimation problem was reformulat ed as 1D and 2D off-grid SSR problems
+adopting linear approximation, where the on-grid and off-g rid components of both the delay and
+Doppler shifts are separated for estimation. Based on the SB L framework, we developed 1D and
+2D off-grid SBL-based channel estimation algorithms, wher e the on-grid components of the delay
+and Doppler shifts are estimated based on the recovered chan nel vector and the corresponding
+off-grid components are estimated by the proposed EM algori thm. Extensive simulations have
+been conducted to demonstrate the superior channel estimat ion performance of our proposed
+schemes and revealed some interesting insights. Particula rly, (1) compared with estimating the
+effective DD domain channel, estimating the original DD dom ain channel response can avoid
+channel spreading due to fractional delay and Doppler shift s and thus can effectively exploit
+the DD domain channel sparsity; (2) compared with the on-gri d methods, the proposed off-
+
+=== PDF PAGE 29 ===
+29
+grid channel compressed sensing scheme can further improve the channel estimation accuracy
+of OTFS systems even with a low virtual sampling resolution w hile only introduces a slightly
+higher computational complexity; (3) the proposed 1D off-g rid SBL-based channel estimation
+scheme can achieve a superior performance while the propose d 2D off-grid scheme enjoys a much
+lower computational complexity via decoupling the delay an d Doppler estimations; (4) further
+adopting the data-aided channel estimation in our proposed scheme can improve its robustness
+against the interference caused by unknown data symbols and thus can further improve the
+channel estimation performance even in the absence of guard space.
+APPENDIX : P ROOF OF PROPOSITION 1
+To update α, the objective function is obtained by substituting the ite ms related to α in (38)
+into (40), yielding
+Q
+(
+α
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+= E
+h
+⏐
+⏐
+⏐yT;α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+{
+ln
+[
+p
+(
+h |α
+)
+p (α)
+]}
+(77)
+=Eh
+⏐
+⏐
+⏐yT;α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+{
+−
+Nν − 1∑
+k′′=0
+Mτ − 1∑
+l′′=0
+ln (α k′′Mτ +l′′) −
+h
+H
+Λ− 1h − ρ
+Nν − 1∑
+k′′=0
+Mτ − 1∑
+l′′=0
+α k′′Mτ +l′′
+}
+.
+We can observe that the objective function in (77) is neither convex nor concave w.r.t. α. In
+general, there is no systematic and computational efﬁcient solution to maximize (77). As a
+compromise, we propose a closed-from updating rule of α, which is computational efﬁcient and
+is guaranteed to converge to a stationary point of (77), as co mmonly done in the literature [10].
+In particular, taking the derivative of Q
+(
+α
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+w.r.t. α k′′Mτ +l′′, we have
+∂Q
+(
+α
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+∂α k′′Mτ +l′′
+= − 1
+α k′′Mτ +l′′
++ 1
+α 2
+k′′Mτ +l′′
+{
+⏐
+⏐
+⏐{µ(t)
+h }k′′Mτ +l′′
+⏐
+⏐
+⏐
+2
++ {Σ(t)
+h }k′′Mτ +l′′,k′′Mτ +l′′} − ρ. (78)
+Imposing
+∂Q
+(
+α
+⏐
+⏐
+⏐α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+)
+∂αk′′Mτ +l′′
+= 0, the updating rule of α k′′Mτ +l′′ can be obtained by (44).
+To update β0, the objective function in (43) can be obtained by
+Q
+(
+β0
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+= E
+h
+⏐
+⏐
+⏐yT;α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+{
+ln
+[
+p
+(
+yT
+⏐
+⏐
+h, κ(t)
+ν , ι(t)
+τ , β 0
+)
+p (β0)
+]}
+=Eh
+⏐
+⏐
+⏐yT;α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+{
+ln
+[
+CN
+(
+yT
+⏐
+⏐
+ΦT
+(
+κ(t)
+ν , ι (t)
+τ
+)
+h, β − 1
+0 IMTNT
+)]
++ ln [Γ (β0 |c, d )]
+}
+= (c − 1 + MTNT) ln (β0) − (d + Aβ0) β0, (79)
+where Aβ0 is given by (46). Taking derivative of Q
+(
+β0
+⏐
+⏐
+⏐α(t), κ(t)
+ν , ι(t)
+τ , β (t)
+0
+)
+w.r.t. β0 and imposing
+∂Q
+(
+β0
+⏐
+⏐
+⏐α(t),κ(t)
+ν ,ι(t)
+τ ,β(t)
+0
+)
+∂αk′′Mτ +l′′ = 0, we can obtain the updating rule for β0 as (45).
+
+=== PDF PAGE 30 ===
+30
+REFERENCES
+[1] Z. Wei, W. Y uan, S. Li, J. Y uan, G. Bharatula, R. Hadani, an d L. Hanzo, “Orthogonal time-frequency space modulation:
+A full-diversity next generation waveform,” arXiv preprint arXiv:2010.03344 , 2020.
+[2] R. Hadani, S. Rakib, M. Tsatsanis, A. Monk, A. J. Goldsmit h, A. F. Molisch, and R. Calderbank, “Orthogonal time
+frequency space modulation,” in Proc. IEEE Wireless Commun. and Networking Conf. , 2017, pp. 1–6.
+[3] S. Li, J. Y uan, W. Y uan, Z. Wei, B. Bai, and D. W. K. Ng, “Perf ormance analysis of coded OTFS systems over high-mobility
+channels,” arXiv preprint arXiv:2010.13008 , 2020.
+[4] P . Raviteja, K. T. Phan, and Y . Hong, “Embedded pilot-aid ed channel estimation for OTFS in delay-doppler channels,”
+IEEE Trans. V eh. Technol., vol. 68, no. 5, pp. 4906–4917, May 2019.
+[5] M. Kollengode Ramachandran and A. Chockalingam, “MIMO- OTFS in high-doppler fading channels: Signal detection
+and channel estimation,” in Proc. IEEE Global Commun. Conf. , Dec. 2018, pp. 206–212.
+[6] Z. Wei, W. Y uan, S. Li, J. Y uan, and D. W. K. Ng, “Transmitte r and receiver window designs for orthogonal time frequency
+space modulation,” arXiv preprint arXiv:1709.02505 , 2020.
+[7] W. Shen, L. Dai, J. An, P . Fan, and R. W. Heath, “Channel est imation for orthogonal time frequency space (OTFS) massive
+MIMO,” IEEE Trans. Signal Process. , vol. 67, no. 16, pp. 4204–4217, Jul. 2019.
+[8] M. Li, S. Zhang, F. Gao, P . Fan, and O. A. Dobre, “A new path d ivision multiple access for the massive MIMO-OTFS
+networks,” IEEE J. Select. Areas Commun. , early access, 2020.
+[9] L. Zhao, W. J. Gao, and W. Guo, “Sparse Bayesian learning o f delay-doppler channel for OTFS system,” IEEE Commun.
+Lett., vol. 24, no. 12, pp. 2766–2769, 2020.
+[10] Z. Yang, L. Xie, and C. Zhang, “Off-grid direction of arr ival estimation using sparse Bayesian inference,” IEEE Trans.
+Signal Process. , vol. 61, no. 1, pp. 38–43, Jan. 2013.
+[11] S. D. Babacan, R. Molina, and A. K. Katsaggelos, “Bayesi an compressive sensing using laplace priors,” IEEE Trans.
+Image Process., vol. 19, no. 1, pp. 53–63, Jan. 2010.
+[12] P . Raviteja, K. T. Phan, Y . Hong, and E. Viterbo, “Interf erence cancellation and iterative detection for orthogona l time
+frequency space modulation,” IEEE Trans. Wireless Commun. , vol. 17, no. 10, pp. 6501–6515, Oct. 2018.
+[13] J. Zhang, E. Bj¨ ornson, M. Matthaiou, D. W. K. Ng, H. Yang , and D. J. Love, “Prospective multiple antenna technologie s
+for beyond 5G,” IEEE J. Select. Areas Commun. , vol. 38, no. 8, pp. 1637–1660, Jun. 2020.
+[14] W. U. Bajwa, J. Haupt, A. M. Sayeed, and R. Nowak, “Compre ssed channel sensing: A new approach to estimating sparse
+multipath channels,” Proceed. of the IEEE , vol. 98, no. 6, pp. 1058–1076, Jun. 2010.
+[15] C. K. Thomas and D. Slock, “Convergence analysis of spar se bayesian learning under approximate inference techniqu es,”
+in 53rd Asilomar Conference on Signals, Systems, and Computer s, 2019, pp. 764–768.
+[16] T. K. Moon, “The expectation-maximization algorithm, ” IEEE Signal Process. Mag. , vol. 13, no. 6, pp. 47–60, Nov. 1996.
+[17] E. J. Cand` es, J. K. Romberg, and T. Tao, “Stable signal r ecovery from incomplete and inaccurate measurements,”
+Communications on Pure and Applied Mathematics , vol. 59, no. 8, pp. 1207–1223, Mar. 2006.
+[18] J. Ma and L. Ping, “Data-aided channel estimation in lar ge antenna systems,” IEEE Trans. Signal Process. , vol. 62, no. 12,
+pp. 3111–3124, 2014.
+[19] W. Y uan, Z. Wei, J. Y uan, and D. W. K. Ng, “A simple variati onal Bayes detector for orthogonal time frequency space
+(OTFS) modulation,” IEEE Trans. V eh. Technol., vol. 69, no. 7, pp. 7976–7980, Jul. 2020.

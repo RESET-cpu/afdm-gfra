@@ -1,0 +1,194 @@
+{
+  "status": "FAILED",
+  "failures": [
+    {
+      "receipt": {
+        "pid": 140856,
+        "created_unix": 1793978917.772531,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_phase_pool_20261106.run",
+          "worker",
+          "--session",
+          "1793978739718595600",
+          "--slot",
+          "0"
+        ],
+        "started_unix": 1793981589.8718379,
+        "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\STATE.json",
+        "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\stdout.log",
+        "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\stderr.log",
+        "slot": 0,
+        "position": 4483,
+        "closing": false
+      },
+      "exit_code": null,
+      "state": {
+        "stage": "FAILED",
+        "updated_unix": 1793981589.8731863,
+        "traceback": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\src\\evaluation\\white_phase_pool_20261106\\run.py\", line 213, in worker\n    g.write_json(folder/'STATE.json',dict(stage='BUSY',position=position,started_unix=began,\n    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        updated_unix=began,**identity))\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\utils.py\", line 42, in write_json\n    temp.replace(path)\n    ~~~~~~~~~~~~^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 780, in replace\n    os.replace(self, target)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nPermissionError: [WinError 5] 拒绝访问。: 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\white_phase_frontend_marginal_1000_20261106\\\\runtime_pool_20261106\\\\sessions\\\\1793978739718595600\\\\worker0\\\\STATE.json.135584.tmp' -> 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\white_phase_frontend_marginal_1000_20261106\\\\runtime_pool_20261106\\\\sessions\\\\1793978739718595600\\\\worker0\\\\STATE.json'\n",
+        "pid": 135584,
+        "created_unix": 1793978917.7930217,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_phase_pool_20261106.run",
+          "worker",
+          "--session",
+          "1793978739718595600",
+          "--slot",
+          "0"
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "pid": 140856,
+        "created_unix": 1793978917.772531,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_phase_pool_20261106.run",
+          "worker",
+          "--session",
+          "1793978739718595600",
+          "--slot",
+          "0"
+        ],
+        "started_unix": 1793981589.8718379,
+        "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\STATE.json",
+        "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\stdout.log",
+        "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\stderr.log",
+        "slot": 0,
+        "position": 4483,
+        "closing": false
+      },
+      "exit_code": null,
+      "state": {
+        "stage": "FAILED",
+        "updated_unix": 1793981589.8731863,
+        "traceback": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\src\\evaluation\\white_phase_pool_20261106\\run.py\", line 213, in worker\n    g.write_json(folder/'STATE.json',dict(stage='BUSY',position=position,started_unix=began,\n    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        updated_unix=began,**identity))\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\utils.py\", line 42, in write_json\n    temp.replace(path)\n    ~~~~~~~~~~~~^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 780, in replace\n    os.replace(self, target)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nPermissionError: [WinError 5] 拒绝访问。: 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\white_phase_frontend_marginal_1000_20261106\\\\runtime_pool_20261106\\\\sessions\\\\1793978739718595600\\\\worker0\\\\STATE.json.135584.tmp' -> 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\white_phase_frontend_marginal_1000_20261106\\\\runtime_pool_20261106\\\\sessions\\\\1793978739718595600\\\\worker0\\\\STATE.json'\n",
+        "pid": 135584,
+        "created_unix": 1793978917.7930217,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_phase_pool_20261106.run",
+          "worker",
+          "--session",
+          "1793978739718595600",
+          "--slot",
+          "0"
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "pid": 140856,
+        "created_unix": 1793978917.772531,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_phase_pool_20261106.run",
+          "worker",
+          "--session",
+          "1793978739718595600",
+          "--slot",
+          "0"
+        ],
+        "started_unix": 1793981589.8718379,
+        "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\STATE.json",
+        "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\stdout.log",
+        "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\stderr.log",
+        "slot": 0,
+        "position": 4483,
+        "closing": false
+      },
+      "exit_code": null,
+      "state": {
+        "stage": "FAILED",
+        "updated_unix": 1793981589.8731863,
+        "traceback": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\src\\evaluation\\white_phase_pool_20261106\\run.py\", line 213, in worker\n    g.write_json(folder/'STATE.json',dict(stage='BUSY',position=position,started_unix=began,\n    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        updated_unix=began,**identity))\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\utils.py\", line 42, in write_json\n    temp.replace(path)\n    ~~~~~~~~~~~~^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 780, in replace\n    os.replace(self, target)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nPermissionError: [WinError 5] 拒绝访问。: 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\white_phase_frontend_marginal_1000_20261106\\\\runtime_pool_20261106\\\\sessions\\\\1793978739718595600\\\\worker0\\\\STATE.json.135584.tmp' -> 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\white_phase_frontend_marginal_1000_20261106\\\\runtime_pool_20261106\\\\sessions\\\\1793978739718595600\\\\worker0\\\\STATE.json'\n",
+        "pid": 135584,
+        "created_unix": 1793978917.7930217,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_phase_pool_20261106.run",
+          "worker",
+          "--session",
+          "1793978739718595600",
+          "--slot",
+          "0"
+        ]
+      }
+    },
+    {
+      "receipt": {
+        "pid": 140856,
+        "created_unix": 1793978917.772531,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_phase_pool_20261106.run",
+          "worker",
+          "--session",
+          "1793978739718595600",
+          "--slot",
+          "0"
+        ],
+        "started_unix": 1793981589.8718379,
+        "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\STATE.json",
+        "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\stdout.log",
+        "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793978739718595600\\worker0\\stderr.log",
+        "slot": 0,
+        "position": 4483,
+        "closing": false
+      },
+      "exit_code": 1,
+      "state": {
+        "stage": "FAILED",
+        "updated_unix": 1793981589.8731863,
+        "traceback": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\src\\evaluation\\white_phase_pool_20261106\\run.py\", line 213, in worker\n    g.write_json(folder/'STATE.json',dict(stage='BUSY',position=position,started_unix=began,\n    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        updated_unix=began,**identity))\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\utils.py\", line 42, in write_json\n    temp.replace(path)\n    ~~~~~~~~~~~~^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 780, in replace\n    os.replace(self, target)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nPermissionError: [WinError 5] 拒绝访问。: 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\white_phase_frontend_marginal_1000_20261106\\\\runtime_pool_20261106\\\\sessions\\\\1793978739718595600\\\\worker0\\\\STATE.json.135584.tmp' -> 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\white_phase_frontend_marginal_1000_20261106\\\\runtime_pool_20261106\\\\sessions\\\\1793978739718595600\\\\worker0\\\\STATE.json'\n",
+        "pid": 135584,
+        "created_unix": 1793978917.7930217,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_phase_pool_20261106.run",
+          "worker",
+          "--session",
+          "1793978739718595600",
+          "--slot",
+          "0"
+        ]
+      }
+    }
+  ],
+  "automatic_retry": false
+}

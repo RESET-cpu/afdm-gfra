@@ -1,0 +1,23 @@
+{
+  "schema": "afdm-proposed-phase-v1",
+  "method": "message_gem",
+  "source": "result/candidates/phase_message_gem_20261022/ACCEPTED.json",
+  "initializer": "directional_coordinate",
+  "initialization": {
+    "coordinate_sweeps": 3,
+    "local_maxiter": 40,
+    "joint_maxiter": 500
+  },
+  "layer_updates": {
+    "count": 9,
+    "minimum_sweeps": 2,
+    "maximum_sweeps": 10,
+    "relative_tolerance": 1e-07,
+    "covariance": "isotropic Gaussian message; full projected cross-user posterior"
+  },
+  "learned_layers": 10,
+  "learned_passes": 1,
+  "training_second_moment": "result/models/proposed_10/phase_moments.npz",
+  "global_neural_descent_claim": false,
+  "independent_confirmation": false
+}

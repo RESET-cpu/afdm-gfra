@@ -12,15 +12,28 @@ __pycache__/
 htmlcov/
 dist/
 build/
-tmp/
-/archive/
-outputs/
-preservation/
-/runs/*
-/results/*
-!/results/baseline_comparison_500_20261018/
-/data/**/*.npy
-/data/**/*.npz
+/result/*
+/archive/result_legacy_20261023/
+!/result/README.md
+# Selected small summaries are added explicitly; never add all of result/.
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.npy
+*.npz
+*.mat
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+*.bin
+*.jsonl
+*.zip
+*.tar
+*.gz
 /paper/checks/
 /paper/history/
 /paper/build/
@@ -29,21 +42,19 @@ preservation/
 *.blg
 *.log
 *.out
-/cloud/VALIDATION.local.json
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+/paper/*/checks/**/before/
+/paper/*/checks/**/build*/
+/paper/*/checks/**/preview*/
+/paper/*/checks/**/render*/
+/reference/literature/**/*.pdf
+/archive/figure_cleanup_20261104/
+/archive/convergence_unused_20261106/
+/src/history/cloud/VALIDATION.local.json
 
-# Frozen training banks and their moment/identity files.
-!/data/proposed/*.npy
-!/data/proposed/*.npz
-
-# Selected 5,000-sample run and its original dependencies.
-!/runs/proposed_sample_sizes_20261018/
-/runs/proposed_sample_sizes_20261018/*
-!/runs/proposed_sample_sizes_20261018/PLAN.json
-!/runs/proposed_sample_sizes_20261018/n5000/
-!/runs/proposed_sample_sizes_20261018/initialization/
-!/runs/proposed_sample_sizes_20261018/configs/
-/runs/proposed_sample_sizes_20261018/configs/*
-!/runs/proposed_sample_sizes_20261018/configs/n5000.json
-!/runs/proposed_sample_sizes_20261018/data/
-/runs/proposed_sample_sizes_20261018/data/*
-!/runs/proposed_sample_sizes_20261018/data/n5000/
+# Disposable previews; archived copies remain available locally.
+/tmp/
+/archive/project_cleanup_20261030/temporary/
+/archive/project_cleanup_20261030/build/

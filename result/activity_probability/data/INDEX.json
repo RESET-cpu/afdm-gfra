@@ -1,0 +1,108 @@
+{
+  "experiment": "activity_probability",
+  "label": "活动概率",
+  "generated_utc": "2026-10-23T12:19:10.262877+00:00",
+  "entries": [
+    {
+      "entry": "history/final2000",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\final2000\\activity_probability",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\final2000\\activity_probability",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/lstmp_v3_formal2000_20261021",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\lstmp_v3_formal2000_20261021\\activity_probability",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\lstmp_v3_formal2000_20261021\\activity_probability",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_20261023",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_20261023\\activity_probability",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_20261023\\activity_probability",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "planned_2000_ten_layer",
+      "status": "PLANNED_NOT_STARTED",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_initialization_runtime_20261023\\activity_probability",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_initialization_runtime_20261023\\activity_probability",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_message_gem_20261022",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_message_gem_20261022\\activity_probability",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_message_gem_20261022\\activity_probability",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_runtime_20261023",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_runtime_20261023\\activity_probability",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_runtime_20261023\\activity_probability",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "known_phase_1000_baselines_20261025",
+      "status": "COMPLETE",
+      "summary_available": true,
+      "plan_available": true,
+      "methods": [
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "evaluation_scenes": 1000,
+      "expected_results": 20000,
+      "reused_results": 4000,
+      "new_inferences": 16000,
+      "readout": "selected_readout_20261025",
+      "plan_sha256": "3b33e721a325754002ce05dace2d4e1c1a7f9dca7468265e1730c2183c84f981",
+      "summary": "known_phase_1000_baselines_20261025\\selected_readout_20261025\\SUMMARY.json",
+      "report": "known_phase_1000_baselines_20261025\\selected_readout_20261025\\REPORT.md",
+      "completion": "known_phase_1000_baselines_20261025\\selected_readout_20261025\\COMPLETE.json",
+      "completion_sha256": "ea54906fd9ae94ece8c0f5a7847c44a51bd057d26f4988225ef688b9ede25849",
+      "figures": "result\\activity_probability\\figures\\baselines_selected_readout_20261025",
+      "independent_test": false,
+      "history": [
+        {
+          "utc": "2026-10-25T17:57:38.901872+00:00",
+          "event": "Adopted readout and three figures verified",
+          "previous_entry": {
+            "entry": "known_phase_1000_baselines_20261025",
+            "status": "RUNNING",
+            "summary_available": false,
+            "plan_available": true,
+            "methods": [
+              "offgrid_sbl",
+              "gnn",
+              "gamp",
+              "somp"
+            ],
+            "evaluation_scenes": 1000,
+            "expected_results": 20000,
+            "reused_results": 4000,
+            "new_inferences": 16000,
+            "readout": "selected_readout_20261025",
+            "plan_sha256": "3b33e721a325754002ce05dace2d4e1c1a7f9dca7468265e1730c2183c84f981"
+          }
+        }
+      ]
+    }
+  ],
+  "note": "Directory entries preserve source protocols; a stored plan or partial output is not a completed experiment.",
+  "current_active_batch": null,
+  "updated_utc": "2026-10-25T17:57:38.901872+00:00",
+  "previous_active_batch": "known_phase_1000_baselines_20261025",
+  "current_baseline_result": "known_phase_1000_baselines_20261025\\selected_readout_20261025"
+}

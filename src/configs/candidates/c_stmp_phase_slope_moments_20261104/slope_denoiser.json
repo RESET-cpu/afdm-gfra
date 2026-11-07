@@ -1,0 +1,12 @@
+{
+  "schema": "c-stmp-phase-slope-moments-20261104-v1",
+  "name": "slope_denoiser",
+  "policy": "slope_denoiser",
+  "selected_configuration": "src/configs/candidates/c_stmp_phase_selection_20261030/physical_no_hypotheses_legacy_stop.json",
+  "selected_configuration_sha256": "ea03572d8eb59dd11da2f24b200d5855c0a3961f99ae81f24dfd736b04564750",
+  "phase": {
+    "relative_signal_change_tolerance": 0.01,
+    "moment_source": "denoiser"
+  },
+  "parameter_basis": "Existing conditional convergence controls and 1% expected-observation-change tolerance are unchanged; one fixed-order common-slope coordinate sweep; no threshold tuning."
+}

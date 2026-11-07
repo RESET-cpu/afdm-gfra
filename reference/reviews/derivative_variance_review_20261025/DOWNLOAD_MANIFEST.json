@@ -1,0 +1,61 @@
+{
+  "scope": "Three papers explicitly requested after the derivative-variance literature discussion",
+  "updated_utc": "2026-10-25T02:58:58.334073+00:00",
+  "papers": [
+    {
+      "id": "01_manor_michaeli_2024_posterior",
+      "title": "On the Posterior Distribution in Denoising: Application to Uncertainty Quantification",
+      "version": "arXiv:2309.13598v2",
+      "url": "https://arxiv.org/pdf/2309.13598v2",
+      "checked_utc": "2026-10-25T02:58:46.324089+00:00",
+      "resolved_url": "https://arxiv.org/pdf/2309.13598v2",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pages": 31,
+      "bytes": 25473125,
+      "sha256": "4a1dd5dafb17f95e4970c401258725d0b53775824de48329158955ec25db26f0",
+      "pdf": "papers/01_manor_michaeli_2024_posterior.pdf",
+      "text": "text/01_manor_michaeli_2024_posterior.txt",
+      "identity_verified": true,
+      "all_pages_parsed": true,
+      "first_page_excerpt": "Published as a conference paper at ICLR 2024\nON THE POSTERIOR DISTRIBUTION IN DENOISING :\nAPPLICATION TO UNCERTAINTY QUANTIFICATION\nHila Manor\nFaculty of Electrical and Computer Engineering\nTechnion – Israel Institute of Technology\nhila.manor@campus.technion.ac.il\nTomer Michaeli\nFaculty of Electrical and Computer Engineering\nTechnion – Israel Institute of Technology\ntomer.m@ee.technion.ac.il\nABSTRACT\nDenoisers play a central role in many applications, from noise suppression in low-\ngrade imaging sensors, to empowering score-based generative models. The latter\ncategory of methods makes use of Tweedie’s formula, which links the posterior\nmean in Gaussian denoising ( i.e., the minimum MSE denoiser) with the score of\nthe data distribution. Here, we derive a fundamental relation between the higher-\norder central moments of the posterior distribution, and the higher-order deriva-\ntives of the posterior mean. We harness this result for uncertainty quantification of\npre-trained denoisers. Part"
+    },
+    {
+      "id": "02_boys_2024_tmpd",
+      "title": "Tweedie Moment Projected Diffusions for Inverse Problems",
+      "version": "arXiv:2310.06721v3",
+      "url": "https://arxiv.org/pdf/2310.06721v3",
+      "checked_utc": "2026-10-25T02:58:46.325115+00:00",
+      "resolved_url": "https://arxiv.org/pdf/2310.06721v3",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pages": 45,
+      "bytes": 16877582,
+      "sha256": "66d6508a68e4ffbcbd4863f299f9a60d0d5bd35129929b1a7f51c36de00caa72",
+      "pdf": "papers/02_boys_2024_tmpd.pdf",
+      "text": "text/02_boys_2024_tmpd.txt",
+      "identity_verified": true,
+      "all_pages_parsed": true,
+      "first_page_excerpt": "Tweedie Moment Projected Diffusions for Inverse Problems\nBenjamin Boys bb515@cam.ac.uk\nDepartment of Engineering, University of Cambridge, Cambridge, United Kingdom\nJakiw Pidstrigach jakiw.pidstrigach@stats.ox.ac.uk\nDepartment of Statistics, University of Oxford, United Kingdom\nMark Girolami mag92@cam.ac.uk\nDepartment of Engineering, University of Cambridge, Cambridge, United Kingdom\nThe Alan Turing Institute, London, United Kingdom\nSebastian Reich sereich@uni-potsdam.de\nUniversitat Potsdam, Berlin, Germany\nAlan Mosca alan@nplan.io\nnPlan\nO. Deniz Akyildiz deniz.akyildiz@imperial.ac.uk\nImperial College London, London, United Kingdom\nAbstract\nDiffusiongenerativemodelsunlocknewpossibilitiesforinverseproblemsastheyallowforthe\nincorporation of strong empirical priors in scientific inference. Recently, diffusion models are\nrepurposed for solving inverse problems using Gaussian approximations to conditional den-\nsities of the reverse process via Tweedie’s formula to parameterise the mean, com"
+    },
+    {
+      "id": "03_shastri_2022_dgec",
+      "title": "Denoising Generalized Expectation-Consistent Approximation for MR Image Recovery",
+      "version": "arXiv:2206.05049v2",
+      "url": "https://arxiv.org/pdf/2206.05049v2",
+      "reuse": "../stmp_message_awgn_review_20261024/papers/18_shastri2022_dgec.pdf",
+      "checked_utc": "2026-10-25T02:58:46.326115+00:00",
+      "acquisition": "reused_local",
+      "reused_from": "D:\\afdm-gfra\\reference\\stmp_message_awgn_review_20261024\\papers\\18_shastri2022_dgec.pdf",
+      "status": "available",
+      "pages": 40,
+      "bytes": 5541658,
+      "sha256": "0d6d39a591efe6755999178292f51550ea60c8476c68a6c08aab52f5f223a50e",
+      "pdf": "papers/03_shastri_2022_dgec.pdf",
+      "text": "text/03_shastri_2022_dgec.txt",
+      "identity_verified": true,
+      "all_pages_parsed": true,
+      "first_page_excerpt": "1\nDenoising Generalized Expectation-Consistent\nApproximation for MR Image Recovery\nSaurav K. Shastri, Rizwan Ahmad, Christopher A. Metzler, and Philip Schniter\nAbstract\nTo solve inverse problems, plug-and-play (PnP) methods replace the proximal step in a convex optimization algo-\nrithm with a call to an application-speciﬁc denoiser, often implemented using a deep neural network (DNN). Although\nsuch methods yield accurate solutions, they can be improved. For example, denoisers are usually designed/trained to\nremove white Gaussian noise, but the denoiser input error in PnP algorithms is usually far from white or Gaussian.\nApproximate message passing (AMP) methods provide white and Gaussian denoiser input error, but only when the\nforward operator is sufﬁciently random. In this work, for Fourier-based forward operators, we propose a PnP algorithm\nbased on generalized expectation-consistent (GEC) approximation—a close cousin of AMP—that offers predictable\nerror statistics at each iteration,"
+    }
+  ]
+}

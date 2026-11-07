@@ -1,0 +1,17 @@
+{
+  "schema": "c-stmp-shen-physical-every-20261104-v1",
+  "name": "physical_every",
+  "frontend_binding": "src/configs/candidates/C_STMP_phase_frontend_20261027.json",
+  "frontend_binding_sha256": "d1c5df6553426af1cee2037fb17038f814ac431bdeabb839f58db17baa6eb77e",
+  "initialization": "physical",
+  "outer_loop": {
+    "maximum_iterations": 600,
+    "squared_relative_channel_tolerance": 2.5e-7,
+    "update": "every_nonterminated_outer_iteration",
+    "stopping": "Shen Algorithm 1 line 19; project threshold",
+    "state_reset_after_phase": false,
+    "stability_gate": false,
+    "post_update_wait": false
+  },
+  "scope": "Independent bounded diagnostic; same physical initialization and phase update kernel as shen_frames_physical. No mainline change."
+}

@@ -1,0 +1,45 @@
+{
+  "checked_date": "2026-10-22",
+  "repository": "https://github.com/chang-cai/score-massive-connectivity",
+  "current_main_commit": "0c75680c966dcb8e46250de146f4c27e9294c283",
+  "branch_verified_via": "GitHub connector, GET /branches/main",
+  "full_tree_truncated": false,
+  "all_ten_python_files_read": true,
+  "training_entrypoint_present": false,
+  "evidence": "Full recursive tree; main_stmp_jadce.py loads saved weights and sets eval; all Python files contain no backward call or optimizer training loop.",
+  "author_training_data_generation_code_present": false,
+  "executed_author_code": false,
+  "downloaded_weights_or_data": false,
+  "paper": "https://arxiv.org/html/2506.00581v2",
+  "published_paper_local": "reference/literature/cai2026.pdf",
+  "published_text_local": "reference/literature/section_structure_20261009/cai.txt",
+  "references": [
+    {
+      "section": "IV-B",
+      "equations": [
+        47,
+        48,
+        49
+      ],
+      "meaning": "Channel denoising score matching across noise levels"
+    },
+    {
+      "section": "IV-C",
+      "equation": 54,
+      "printed_page": 3583,
+      "meaning": "Freeze first-order score or block second-order loss gradient into it"
+    },
+    {
+      "section": "VI-A1 and VI-A2",
+      "printed_page": 3585,
+      "meaning": "50000/5000 channel samples; -10 to 30 dB integer denoising levels; Adam, 1e-4, batch 400, 400 epochs, EMA .999"
+    },
+    {
+      "section": "VI-A3",
+      "printed_page": 3585,
+      "meaning": "500 NMSE and 5000 activity-error Monte Carlo trials"
+    }
+  ],
+  "discrepancy": "Paper says 400 epochs; published YAML max_epochs is 1000. No training runner exists to resolve the actual executed setting.",
+  "reference_only": true
+}

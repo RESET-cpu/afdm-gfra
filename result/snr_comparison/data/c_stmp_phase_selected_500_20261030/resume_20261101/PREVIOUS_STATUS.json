@@ -1,0 +1,35 @@
+{
+  "stage": "FAILED",
+  "planned": 3000,
+  "completed": 654,
+  "reused": 25,
+  "new_completed": 629,
+  "dispatched_new": 631,
+  "pending": 0,
+  "failed": 2,
+  "failures": [
+    {
+      "scene": 108,
+      "index": 1,
+      "error": "concurrent.futures.process._RemoteTraceback: \n\"\"\"\nTraceback (most recent call last):\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\concurrent\\futures\\process.py\", line 254, in _process_worker\n    r = call_item.fn(*call_item.args, **call_item.kwargs)\n  File \"C:\\Users\\25911\\Desktop\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\run.py\", line 177, in execute\n    RUNNER.run(VARIANT, case['scene'], case['index'], destination, 'cuda')\n    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\result\\candidates\\c_stmp_phase_selection_20261030\\run_case.py\", line 60, in run\n    arrays,record=model.infer(UnknownPhaseInput(raw['y'],raw['pilot'],1.,float(raw['rho'])))\n                  ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\algorithm\\C_STMP_phase_selection_20261030\\receiver.py\", line 40, in infer\n    initial, initialization = phase_estimation.estimate(raw, self.phase_controls, observer=phase_observer)\n                              ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\system\\receiver\\phase_estimation.py\", line 147, in estimate\n    peaks = candidates(raw[user], residual.reshape(y3.shape), coordinates, controls)\n  File \"D:\\afdm-gfra\\src\\system\\receiver\\phase_estimation.py\", line 100, in candidates\n    scores = coarse_scores(raw, received, controls.phase_bins, controls.batched_correlations)\n  File \"D:\\afdm-gfra\\src\\system\\receiver\\phase_estimation.py\", line 61, in coarse_scores\n    norms = np.sum(abs(raw)**2, axis=(1, 2))\n                   ~~~~~~~~^^~\nnumpy._core._exceptions._ArrayMemoryError: Unable to allocate 1.53 MiB for an array with shape (784, 16, 16) and data type float64\n\"\"\"\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"C:\\Users\\25911\\Desktop\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\run.py\", line 229, in run\n    result = Path(future.result())\n                  ~~~~~~~~~~~~~^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\concurrent\\futures\\_base.py\", line 449, in result\n    return self.__get_result()\n           ~~~~~~~~~~~~~~~~~^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\concurrent\\futures\\_base.py\", line 401, in __get_result\n    raise self._exception\nnumpy._core._exceptions._ArrayMemoryError: Unable to allocate 1.53 MiB for an array with shape (784, 16, 16) and data type float64\n"
+    },
+    {
+      "scene": 108,
+      "index": 2,
+      "error": "Traceback (most recent call last):\n  File \"C:\\Users\\25911\\Desktop\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\run.py\", line 229, in run\n    result = Path(future.result())\n                  ~~~~~~~~~~~~~^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\concurrent\\futures\\_base.py\", line 449, in result\n    return self.__get_result()\n           ~~~~~~~~~~~~~~~~~^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\concurrent\\futures\\_base.py\", line 401, in __get_result\n    raise self._exception\nconcurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.\n"
+    }
+  ],
+  "completed_by_snr": {
+    "-4": 113,
+    "-2": 109,
+    "0": 108,
+    "2": 108,
+    "4": 108,
+    "6": 108
+  },
+  "nonconverged": 0,
+  "active": [],
+  "elapsed_seconds": 5649.11741733551,
+  "updated_unix": 1793339877.3724763,
+  "stop_reason": "RUNTIME_OR_VALIDATION_FAILURE"
+}

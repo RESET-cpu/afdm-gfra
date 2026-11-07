@@ -1,0 +1,141 @@
+"""Independent candidate: periodic phase updates until conditional STMP stopping.
+
+The conditional equations are unchanged. Only the pilot operator, channel
+message coordinates and stopping counters change at the scheduled updates.
+Derivation: paper/docs/STMP_PHASE.md and PHASE_MESSAGE_GEM.md, equations (1)-(4).
+"""
+import time
+
+import numpy as np
+
+from algorithm.proposed.phase_math import observed_covariances
+from algorithm.proposed.phase_update import update as update_phase
+from system.phase import phase_operator
+from .gaussian import gaussian_extrinsic, hermitian
+from .iterations import moment_damp, _iteration_changes, _stopping_step, _message_diagnostics
+from .linear import SpatialLinear
+from .records import SpatialResult
+
+
+def rotate_messages(angle, query, feedback, estimate, denoiser):
+    """Transport all persistent channel means by the same per-user rotation."""
+    rotation = np.exp(1j * np.asarray(angle))[:, None, None, None]
+    denoiser.site_mean = denoiser.site_mean * rotation
+    return query * rotation, feedback * rotation, estimate * rotation
+
+
+def infer(inputs, denoiser, *, scale, initial_variance, controls,
+          phase_configuration, initial_slopes, observer=None, decision_threshold=.5):
+    controls.validate_stopping()
+    if controls.covariance_mode != "isotropic":
+        raise ValueError("Phase updates require the isotropic STMP configuration")
+    schedule = phase_configuration["periodic_update"]
+    start, interval = schedule["start"], schedule["interval"]
+    settle = phase_configuration["minimum_iterations_after_last_update"]
+    if (any(type(i) is not int or i < 1 for i in (start, interval, settle))
+            or settle > interval or start + settle > controls.iterations):
+        raise ValueError("Periodic phase updates require positive start/interval and final conditional refinement")
+    q, k, n = inputs.pilot.shape
+    m, rows = inputs.observation.shape[1:]
+    beta = np.asarray(initial_slopes, float).copy()
+    if beta.shape != (k,) or not np.isfinite(beta).all():
+        raise ValueError("Finite initial phase slope per user required")
+    y, noise = inputs.observation / scale, inputs.noise_variance / scale**2
+    physical_y = inputs.observation.transpose(0, 2, 1).reshape(q * rows, m)
+    frames = np.repeat(np.arange(q), rows)
+    started = time.perf_counter()
+    gram = observed_covariances(inputs.pilot, np.eye(rows * n))
+    linear = SpatialLinear(phase_operator(inputs.pilot, beta), m, noise)
+    setup = time.perf_counter() - started
+    started = time.perf_counter()
+    prior = np.zeros((k, m, rows, n), complex)
+    prior_cov = np.eye(m) * max(float(initial_variance), 1e-12)
+    old_r = old_v = old_out = old_out_v = old_mean = old_p = None
+    stable = fresh = decision_stable = 0
+    old_decision = None
+    trace, steps = [], []
+    reason = "MAX_ITERATIONS"
+    last_update = 0
+
+    for iteration in range(1, controls.iterations + 1):
+        tick = time.perf_counter()
+        _, _, r, v = linear.update(y, prior, prior_cov)
+        linear_seconds = time.perf_counter() - tick
+        r, v = moment_damp(old_r, old_v, r, v, controls.damping)
+        state = denoiser(r, v)
+        posterior = hermitian(state.spatial_covariance.mean(axis=0))
+        posterior = np.eye(m) * np.trace(posterior).real / m
+        out, out_v, fraction, used = gaussian_extrinsic(state.mean, posterior, r, v,
+            controls.variance_fraction_floor, controls.variance_fraction_ceiling)
+        out, out_v = moment_damp(old_out, old_out_v, out, out_v, controls.damping)
+        if not np.isfinite(out).all() or not np.isfinite(out_v).all():
+            raise FloatingPointError("Invalid extrinsic output")
+        changes = _iteration_changes(state, old_mean, old_p, v, old_v)
+        change, estimate_change, activity_change, covariance_change = changes
+        stable, fresh, decision_stable, old_decision, converged = _stopping_step(
+            controls, iteration, *changes, denoiser.message_fresh, state.activity,
+            decision_threshold, stable, fresh, decision_stable, old_decision)
+        # Test stopping before the next due phase update. Resetting the windows
+        # first would prevent a window of 10 from completing with period 10.
+        converged = bool(converged and steps and iteration >= last_update + settle)
+        due = iteration >= start and (iteration - start) % interval == 0
+        row = dict(iteration=iteration, convergence_change=change, converged=converged,
+            estimate_change=estimate_change, activity_change=activity_change,
+            input_covariance_change=covariance_change, stable_iterations=stable,
+            fresh_iterations=fresh, decision_stable_iterations=decision_stable,
+            linear_seconds=linear_seconds, phase_update_due=due,
+            phase_updates_completed=len(steps),
+            iterations_since_last_phase_update=iteration-last_update,
+            **_message_diagnostics(linear, y, state.mean, v, posterior, fraction, used, noise),
+            **denoiser.last)
+        trace.append(row)
+        if observer is not None:
+            observer(row, state, r, v, prior, prior_cov, out, out_v, posterior)
+        old_r, old_v, old_out, old_out_v = r, v, out, out_v
+        old_mean, old_p = state.mean.copy(), state.activity.copy()
+
+        # Leave a full conditional refinement before the hard iteration limit.
+        # Returned channel and phase must describe the same operator.
+        if due and not converged and iteration + settle <= controls.iterations:
+            tick = time.perf_counter()
+            scalar = float(np.trace(out_v).real / m)
+            if not np.allclose(out_v, scalar * np.eye(m), rtol=1e-10, atol=1e-12 * scalar):
+                raise ValueError("Only the actual isotropic feedback covariance may enter phase fitting")
+            physical = out * scale
+            projected = np.einsum("qkn,kmrn->kqrm", inputs.pilot, physical,
+                                  optimize=True).reshape(k, q * rows, m)
+            projected *= np.exp(1j * beta[:, None] * frames)[:, :, None]
+            previous_beta = beta.copy()
+            beta, angle, step = update_phase(gram, projected, physical_y,
+                inputs.noise_variance, frames, beta, scalar * scale**2)
+            old_r, old_out, old_mean = rotate_messages(angle, old_r, old_out, old_mean, denoiser)
+            # The constant rotation belongs to the channel message. The slope
+            # belongs to the new pilot; its SVD must be rebuilt, not reused.
+            rebuild = time.perf_counter()
+            linear = SpatialLinear(phase_operator(inputs.pilot, beta), m, noise)
+            rebuild_seconds = time.perf_counter() - rebuild
+            stable = fresh = decision_stable = 0
+            old_decision = None
+            denoiser.message_fresh = False
+            step["conditional_quadratic"].pop("users", None)
+            step.update(after_iteration=iteration, message_variance=scalar * scale**2,
+                before_slopes=previous_beta.tolist(), after_slopes=beta.tolist(),
+                seconds=time.perf_counter() - tick, linear_rebuild_seconds=rebuild_seconds,
+                rotated_cached_means=["query", "feedback", "estimate", "gaussian_site"],
+                stopping_windows_reset=True)
+            steps.append(step)
+            last_update = iteration
+            row.update(converged=False, phase_update_index=len(steps), stopping_windows_reset=True)
+            converged = False
+        elif due:
+            row["phase_update_skipped"] = ("conditional_stmp_converged" if converged
+                                           else "final_conditional_refinement")
+        prior, prior_cov = old_out, old_out_v
+        if converged:
+            reason = "CONVERGED"
+            break
+
+    result = SpatialResult(state.mean * scale, state.conditional_mean * scale,
+        state.activity, state.spatial_covariance * scale**2, tuple(trace), reason,
+        setup, time.perf_counter() - started - sum(s["seconds"] for s in steps))
+    return result, beta, steps

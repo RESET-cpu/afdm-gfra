@@ -1,0 +1,182 @@
+{
+  "checker": "ars-acronym-check/1.0",
+  "input": "paper\\C-STMP\\checks\\prose_streamline_20261030\\acronym_input.md",
+  "input_sha256": "a6b2597bc31f7a1bcc7ca942ee4a1bf40f7b583d979db3b86d50c1a14581c07c",
+  "status": "partial",
+  "allowlist": {
+    "default": 29,
+    "user": []
+  },
+  "coverage": {
+    "body": "checked",
+    "abstract_en": "not_in_input",
+    "abstract_zh": "not_in_input"
+  },
+  "scope_lines": {
+    "body": [
+      [
+        2,
+        24
+      ],
+      [
+        26,
+        52
+      ],
+      [
+        54,
+        72
+      ],
+      [
+        74,
+        96
+      ],
+      [
+        98,
+        112
+      ],
+      [
+        114,
+        165
+      ]
+    ]
+  },
+  "unread_sections": [],
+  "coverage_limits": [
+    {
+      "scope": "body",
+      "line": 3,
+      "acronym": "GFRA",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 3,
+      "acronym": "IoT",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 13,
+      "acronym": "MMSE",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 37,
+      "acronym": "CPP",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 55,
+      "acronym": "CCD",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 57,
+      "acronym": "GPJD",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 57,
+      "acronym": "MFLE",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 121,
+      "acronym": "SNR",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 133,
+      "acronym": "NMSE",
+      "reason": "unconfirmed_definition"
+    }
+  ],
+  "findings": [
+    {
+      "scope": "body",
+      "line": 55,
+      "rule": "defined_after_use",
+      "acronym": "DRE",
+      "expansion": "density ratio estimation",
+      "occurrences": 12
+    },
+    {
+      "scope": "body",
+      "line": 55,
+      "rule": "defined_after_use",
+      "acronym": "GP",
+      "expansion": "generative prior",
+      "occurrences": 12
+    },
+    {
+      "scope": "body",
+      "line": 55,
+      "rule": "defined_after_use",
+      "acronym": "MP",
+      "expansion": "message passing",
+      "occurrences": 12
+    },
+    {
+      "scope": "body",
+      "line": 117,
+      "rule": "undefined",
+      "acronym": "NTN",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 117,
+      "rule": "undefined",
+      "acronym": "TDL",
+      "expansion": null,
+      "occurrences": 1
+    },
+    {
+      "scope": "body",
+      "line": 127,
+      "rule": "undefined",
+      "acronym": "ASPL",
+      "expansion": null,
+      "occurrences": 3
+    },
+    {
+      "scope": "body",
+      "line": 127,
+      "rule": "undefined",
+      "acronym": "GAMP",
+      "expansion": null,
+      "occurrences": 4
+    },
+    {
+      "scope": "body",
+      "line": 127,
+      "rule": "undefined",
+      "acronym": "GNN",
+      "expansion": null,
+      "occurrences": 4
+    },
+    {
+      "scope": "body",
+      "line": 127,
+      "rule": "undefined",
+      "acronym": "SBL",
+      "expansion": null,
+      "occurrences": 11
+    },
+    {
+      "scope": "body",
+      "line": 137,
+      "rule": "undefined",
+      "acronym": "MSE",
+      "expansion": null,
+      "occurrences": 1
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "c-stmp-phase-em-20261103-v1",
+  "name": "own_posterior_phase_em_zero",
+  "receiver_configuration": "src/configs/candidates/C_STMP_variance_em_20261025.json",
+  "receiver_configuration_sha256": "044d906052bf9150b9dbc09a64efaa545af6f70972cd96fd18f75a8e840f23b8",
+  "initialization": "zero_slopes",
+  "variance_policy": "reject_nonpositive_pooled",
+  "iteration_policy": {
+    "e_step_iterations": 60,
+    "phase_tolerance": 0.0001,
+    "m_step": {
+      "max_steps": 20,
+      "gradient_tolerance": 1e-7,
+      "armijo": 0.0001,
+      "max_backtracks": 12
+    }
+  },
+  "budget_source": "600 total message iterations from the frozen receiver; 60 per E block from its minimum inference length. M-step budget20 and phase tolerance1e-4 are fixed project choices before this single-case run.",
+  "selection_status": "INDEPENDENT_UNVALIDATED_CANDIDATE"
+}

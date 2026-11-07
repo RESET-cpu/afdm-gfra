@@ -1,0 +1,120 @@
+{
+  "created_unix": 1792980377.8530142,
+  "authorization": "你有让5080火力全开吗，不行多开一些并行进程",
+  "parent_plan": "D:\\afdm-gfra\\result\\user_count\\data\\c_stmp_variance_em_500_resumed_20261026\\PLAN.json",
+  "parent_plan_sha256": "da77f218c52b2f2c9484cb97b6781b525198cf00357df51d09ffc1f27379fb63",
+  "driver_sha256": "1bf43e6b52609abea1898086299442e8211bdc9a4647f5dfa23facbb7d6b2240",
+  "maximum_workers": 7,
+  "initial_dispatch_limit": 7,
+  "allowed_dispatch_limits": [
+    6,
+    7
+  ],
+  "threads_per_worker": 2,
+  "change": "Only process concurrency from six to seven; saved outputs and pending inputs preserved.",
+  "resource_measurements": {
+    "D:\\afdm-gfra\\result\\user_count\\data\\c_stmp_variance_em_500_resumed_20261026\\performance\\sample_1792980087678633400.json": "3c51d11a621923ff92a95841358b73a243aff36c13ff78e1f29f7748ba541038",
+    "D:\\afdm-gfra\\result\\user_count\\data\\c_stmp_variance_em_500_resumed_20261026\\performance\\sample_1792980136693555400.json": "9d84d5ec6c91f31d0e9f5a315a6dfb6d6afce795f9bde4b6e055a8fdb8aaf6a3"
+  },
+  "input_manifest_sha256": "960b537c710eef87a8c17497603f23b327508cf6a84b0b3a17edc896ca626dbd",
+  "receiver_configuration_unchanged": true,
+  "original_process": {
+    "pid": 75012,
+    "create_time": 1792979376.8801787,
+    "cmdline": [
+      "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-u",
+      "D:\\afdm-gfra\\result\\user_count\\data\\c_stmp_variance_em_500_resumed_20261026\\run.py",
+      "run"
+    ],
+    "created_unix": 1792979392.8914223,
+    "plan_sha256": "da77f218c52b2f2c9484cb97b6781b525198cf00357df51d09ffc1f27379fb63"
+  },
+  "original_workers": [
+    {
+      "pid": 100588,
+      "create_time": 1792979392.9275267,
+      "cmdline": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=75012, pipe_handle=1212)",
+        "--multiprocessing-fork"
+      ]
+    },
+    {
+      "pid": 70704,
+      "create_time": 1792979392.9342165,
+      "cmdline": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=75012, pipe_handle=1248)",
+        "--multiprocessing-fork"
+      ]
+    },
+    {
+      "pid": 91040,
+      "create_time": 1792979392.9217157,
+      "cmdline": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=75012, pipe_handle=1176)",
+        "--multiprocessing-fork"
+      ]
+    },
+    {
+      "pid": 96388,
+      "create_time": 1792979392.9108248,
+      "cmdline": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=75012, pipe_handle=1108)",
+        "--multiprocessing-fork"
+      ]
+    },
+    {
+      "pid": 99572,
+      "create_time": 1792979392.9157147,
+      "cmdline": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=75012, pipe_handle=1160)",
+        "--multiprocessing-fork"
+      ]
+    },
+    {
+      "pid": 99856,
+      "create_time": 1792979392.9032984,
+      "cmdline": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=75012, pipe_handle=728)",
+        "--multiprocessing-fork"
+      ]
+    }
+  ],
+  "inference_retry": false,
+  "extra_inferences": 0,
+  "scene_count_per_condition": 500,
+  "finalization": "Same saved-output audit and figure; no later experiment."
+}

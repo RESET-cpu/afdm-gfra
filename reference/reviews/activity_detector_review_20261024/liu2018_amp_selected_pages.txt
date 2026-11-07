@@ -1,0 +1,59 @@
+PDF PAGE 6
+                                                                                                                                                                                     6
+
+
+is   known   [20]–[22].   When   the   device   activity   needs   to   be                   the  fact  that  the  vector  AMP  algorithm  involves  non-linear
+detected,  the  above  MMSE  denoiser  is  a  non-linear function                            processing  inφt,n     as   in   (18).   This  scalar  form  of  the   state
+of ˆxt,n     due  to  the  functional  form  ofφt,n  .                                       evolution signiﬁcantly simpliﬁes performance analysis of the
+                                                                                             device  activity  detection  and  channel  estimation.
+D.   State  Evolution  for  MMSE  Denoiser  Based  Vector  AMP
+   The    general    state    evolution    of    the    AMP    algorithm    as               E.   Device    Detection    and    Channel    Estimation    by    Vector
+in   (15)   applies   to   any   arbitrary   denoiserηt,n (·).   With   the                  AMP
+MMSE denoiser (18), the state evolution can be considerably                                      We   are   now   ready   to   state   the   proposed   device   activity
+simpliﬁed.                                                                                   detector  and  channel  estimator.  Observe  that  the  functional
+   Theorem   1:   Consider   the   MMSE   denoiser   based   vector                          form  ofφt,n     as  given  in  (18)   is  such  that  for  largeM,  we
+AMP  algorithm  for  device  detection  and  channel  estimation                             have  thatφt,n    tends  to 1  ifπt,n>ψt,n    and 0  ifπt,n<ψt,n  .
+in  the  asymptotic  regime  in  which  the  number  of  usersN,                             As  a  result,  the  AMP  algorithm suggests that  it  is  reasonable
+the   number   of   active   usersK,   and   the   length   of   the   pilot                 to  adopt  a  threshold  strategy  for  user  activity  detection,  i.e.,
+sequencesL  all  go  to  inﬁnity,  while  their  ratios  converge  to                        to  declare  a   user  as  active  or  not  simply  based  on  whether
+some   ﬁxed   positive  values,   i.e.,N/L   → ω    andK/N   → ǫ                             πt,n    exceeds  the  threshold  ofψt,n  .  Using  (25)-(26)  and  the
+withω,ǫ   ∈  (0, ∞ ),   and   while   keeping   the   total   transmit                       scalar  form  of  the  AMP  state  evolution,  the  proposed device
+powerξ   ﬁxed.   The   matrix Σt    in   the   state   evolution   (15)                      activity  detector  and  channel  estimator  are  as  follows.
+always   stays   as   a   diagonal   matrix   with   identical   diagonal                        Deﬁnition   1:   The   MMSE   vector   AMP   algorithm   based
+entries  after  each  iteration,  i.e.,                                                      device activity detector is deﬁned as the following threshold-
+                            Σt =τ2t I,     ∀t ≥  0.                                                   (22)based    detector.    Aftert    iterations    of    AMP,    computeτ2t
+                                                                                             according  to   (27)-(28).   For   each  usern,   compareπt,n     and
+In  this  case,  the  signal  model  given  in  (17)  reduces  to                            ψt,n     as  deﬁned  in  (25)-(26),  i.e.,
+                              ˆxt,n  = xn +τtvn.                                                       (23)̟ (xtn, Rt) =
+Moreover,  the  MMSE  denoiser  given  in  (18)  reduces  to                                    {  1,     if ((Rt)Han +xtn)H((Rt)Han +xtn)>θt,n,
+                                   (   βn          )                                                 0,     if ((Rt)Han +xtn)H((Rt)Han +xtn)<θt,n,
+        ηt,n (ˆxt,n ) =φt,n           βn +τ2t         ˆxt,n,     ∀t,n,                       (24)                                                                               (30)
+                                                                                                                                           (            )/(                       )
+whereφt,n       is     given    in     (19),     whileπt,n       andψt,n       are           with  a  thresholdθt,n  =M log                   1+ βn              1                   .
+                                                                                                                                                    τ2t          τ2t  −         1τ2t +βn
+respectively  given  by                                                                      Further,  given  that  a  devicek  is  declared  active,  its  channel
+                            (    1                   )    ˆxHt,n ˆxt,n                       is  estimated  as:
+                 πt,n  =       τ2t  −        1τ2t +βn        M  ,                           (25)                                  ˆht,k  = xtk.                                                                    (31)
+                                  (             )
+                 ψt,n  = log         1+βnτ2t       .                                                                    (26)We   remark   that   the   MMSE   denoiser   given   in   (24)   is   a
+                                                                                             scaled version of the observation. As a result, the complexity
+At  last,τ2t    can  be  iteratively  obtained  as  follows                                  of   the   vector   AMP   algorithm   introduced   in   (13)   and   (14)
+                                                                                             mainly  comes from  the  matrix  multiplicationAXt+1.  Since
+   τ20 =σ2ξ  +ωǫEβ[β],                                                                                                            (27)A ∈  CL× N    and Xt+1  ∈  CN× M,   the   complexity   of   the
+                                [ βτ2t        ]                                              AMP  algorithm  is  in  the  order  of O(LNM)  per  iteration.
+   τ2t+1 =σ2ξ  +ωǫEβ               β +τ2t       +ωEβ[ϑt,β (τ2t )],t  ≥  0,
+                                                                                   (28)      IV.    PERFORMANCE   OF  VECTOR  AMP  BASED  DETECTOR
+with  the  termϑt,β (τ2t )  expressed  as                                                        In  this  section,  we  analyze  the  performance  of  the  above
+                                [                                                      ]     MMSE  vector  AMP  based  device  activity  detector  in  terms
+ϑt,β (τ2t ) =  1                  φt,β (1−φt,β )  β2                                      .  of   missed   detection   and   false   alarm   error   probabilities,   as
+                 ME ˆXt,β                               (β +τ2t )2 ˆXHt,β  ˆXt,β             well   as   the   associated   channel   estimation   error   based   on
+                                                                                   (29)      the   state   evolution,   as   functions   of   the   number   of   receive
+Here,  ˆXt,β      is  the  random  vector  that  captures  the  distribu-                    antennasM    at   the   BS.   The   results   of   this   section   pertain
+                                                                                             to   ﬁniteM.   Asymptotic  result   withM   going  to   inﬁnity   is
+tion  of  the  signal ˆxt,n     given  in  (23),  andφt,β      captures  the                 presented  in  the  next  section.
+distribution  ofφt,n  ,  which  is  implicitly  a  function  of ˆxt,n  .
+       Proof:  Please  refer  to  Appendix  B.                                               A.   Probabilities  of  Missed  Detection  and  False  Alarm
+   The   key   observation  of   Theorem   1   is   that   because   each
+user’s   channels   across   the   multiple   receive   antennas  at   the                       We    are   ready   to   examine   the   error   probability   for   the
+BS  are assumed to  be uncorrelated, the residual noise in  (17)                             MMSE   vector  AMP   based  detector  as   deﬁned  in   (30).   Let
+remains  uncorrelated  across  the  antennas.  This  is  in  spite  of                       the  missed  detection  and  false  alarm  probabilities  of  usern

@@ -1,0 +1,203 @@
+{
+  "paragraph_id": "P09",
+  "source_file": "D:/afdm-gfra/paper/C-STMP/sections/02_system_model.tex",
+  "source_lines": {
+    "start": 222,
+    "end": 225
+  },
+  "audit_scope": "仅逐句语言一致性与术语替换边界；不以模型正确性替代原句证据，不修改正文。",
+  "source_materials": [
+    {
+      "key": "cai2026",
+      "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+      "page": 4,
+      "printed_page": 3578,
+      "section": "II-B. Problem Statement",
+      "text_locator": "sources/cai2026.clean.pages.txt:437-439",
+      "visual_check": "已查看第4页渲染图tmp/P07_cai_p4.png，确认完整原句、标点和原段后续句。"
+    },
+    {
+      "key": "cai2026_stmp_v2",
+      "pdf": "D:/afdm-gfra/reference/literature/cai2026_stmp_v2.pdf",
+      "page": 4,
+      "section": "II-B. Problem Statement",
+      "text_locator": "sources/cai2026_stmp_v2.clean.pages.txt:476-478",
+      "visual_check": "已查看第4页渲染图tmp/P07_caiv2_p4.png，确认相同完整原句、标点和原段后续句。"
+    }
+  ],
+  "sentences": [
+    {
+      "id": "P09-S01",
+      "draft": "In this paper, we aim to simultaneously detect the active devices and estimate the corresponding channels based on the observation $\\mathbf Y$ under a Bayesian inference framework \\cite{cai2026}.",
+      "draft_lines": {
+        "start": 222,
+        "end": 224
+      },
+      "category": "EXACT",
+      "source_file": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+      "source_page": 4,
+      "source_section": "II-B. Problem Statement，首段第一句；期刊印刷页3578。",
+      "source_quote": "In this paper, we aim to simultaneously detect the active devices and estimate the corresponding channels based on the observation Y under a Bayesian inference framework.",
+      "corroborating_source": {
+        "source_file": "D:/afdm-gfra/reference/literature/cai2026_stmp_v2.pdf",
+        "source_page": 4,
+        "source_section": "II-B. Problem Statement，首段第一句",
+        "source_quote": "In this paper, we aim to simultaneously detect the active devices and estimate the corresponding channels based on the observation Y under a Bayesian inference framework."
+      },
+      "changes": {
+        "necessary_term_substitutions": [],
+        "other_changes": [],
+        "display_only_changes": [
+          "PDF中的粗体数学符号Y以TeX $\\mathbf Y$书写。",
+          "换行和空格规范化。",
+          "句末增加本文引用\\cite{cai2026}，属于协议明确允许的引用显示层差异。"
+        ]
+      },
+      "word_alignment": {
+        "normalization": "只合并换行空格、将TeX粗体Y转换为PDF所显示的Y、排除引用标记；逗号与句号保留。",
+        "normalized_source": "In this paper, we aim to simultaneously detect the active devices and estimate the corresponding channels based on the observation Y under a Bayesian inference framework.",
+        "normalized_draft": "In this paper, we aim to simultaneously detect the active devices and estimate the corresponding channels based on the observation Y under a Bayesian inference framework.",
+        "all_words_identical_in_order": true,
+        "word_count": 26,
+        "word_sequence": [
+          "In",
+          "this",
+          "paper",
+          "we",
+          "aim",
+          "to",
+          "simultaneously",
+          "detect",
+          "the",
+          "active",
+          "devices",
+          "and",
+          "estimate",
+          "the",
+          "corresponding",
+          "channels",
+          "based",
+          "on",
+          "the",
+          "observation",
+          "Y",
+          "under",
+          "a",
+          "Bayesian",
+          "inference",
+          "framework"
+        ]
+      },
+      "reason": "两个版本的完整句子均可逐词一一对齐；除协议允许的排版和引用显示差异外，没有术语、谓语、连接词或词序改动。",
+      "model_correctness_boundary": "该判定仅确认文字相同；蔡文的Y来自MIMO-OFDM模型，本文的Y来自AFDM多帧模型。相同任务总述不证明两套观测模型、贝叶斯先验或估计器等价。",
+      "minimum_recommendation": "语言一致性无需修改；保留现有来源标注。"
+    },
+    {
+      "id": "P09-S02",
+      "draft": "We consider $Q<KN$ in \\eqref{eq:mmv}.",
+      "draft_lines": {
+        "start": 225,
+        "end": 225
+      },
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_locator": "本次核查未定位可与该整句逐词对齐的来源。已全文检索7份clean.pages.txt，并直接复核蔡文两个版本第4页II-A式(4)及II-B首段。",
+      "source_quote": null,
+      "changes": {
+        "necessary_term_substitutions": [],
+        "other_changes": [
+          "相对于已定位的蔡文II-B原段，本文在任务总述后新增整句“We consider Q<KN in (本文MMV公式).”；原文对应位置紧接精确贝叶斯估计器难以计算的说明。"
+        ],
+        "display_only_changes": [
+          "\\eqref{eq:mmv}为本文公式引用，显示形式本身不构成来源证据。"
+        ]
+      },
+      "search_evidence": {
+        "corpus": [
+          "cai2026.clean.pages.txt",
+          "cai2026_stmp_v2.clean.pages.txt",
+          "shen2025.clean.pages.txt",
+          "ding2026.clean.pages.txt",
+          "huang2026.clean.pages.txt",
+          "li2023.clean.pages.txt",
+          "bemani2022.clean.pages.txt"
+        ],
+        "queries": [
+          "We consider",
+          "we assume",
+          "Q<KN",
+          "Q<NK",
+          "T<K",
+          "NT<NK",
+          "NT<KN",
+          "underdetermined",
+          "under-determined",
+          "smaller than",
+          "less than",
+          "fewer than",
+          "pilot length"
+        ],
+        "normalization": "跨行搜索时合并空白；不等式查询另行删除空白，以免漏掉Q < KN等排版。",
+        "full_sentence_found": false,
+        "inequality_queries_found": false,
+        "related_but_not_sentence_sources": [
+          {
+            "source_file": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+            "source_page": 4,
+            "source_section": "II-A，式(4)后维度定义；II-B首段",
+            "source_locator": "原文给出Q矩阵为NT×NK维，II-B任务句后直接接Exact Bayesian estimators句；没有We consider ... in (...)的目标完整句。",
+            "why_insufficient": "矩阵维度与本文Q×KN维模型相关，但不能从公式倒推一条未出现的英文原句，也不能由此获得严格Q<KN的语言来源。"
+          },
+          {
+            "source_file": "D:/afdm-gfra/reference/literature/cai2026_stmp_v2.pdf",
+            "source_page": 4,
+            "source_section": "II-A，式(4)后；II-B首段",
+            "source_locator": "同一期刊版的维度与段落顺序。",
+            "why_insufficient": "同样没有对应完整句。"
+          },
+          {
+            "source_file": "D:/afdm-gfra/reference/literature/huang2026.pdf",
+            "source_page": 3,
+            "source_section": "式(6)后的导频设计说明",
+            "source_locator": "关于直接估计完整AFDM有效信道时，单个pilot sequence使式(6)欠定并因而需要多个pilot sequences的长因果句。",
+            "why_insufficient": "这是另一模型的因果解释；不能仅把其中‘欠定’概念改写为We consider Q<KN in (...)后称作术语替换。"
+          },
+          {
+            "source_file": "D:/afdm-gfra/reference/literature/shen2025.pdf",
+            "source_page": 5,
+            "source_section": "式(16)后、III节前的问题讨论",
+            "source_locator": "关于fractional Doppler造成的phase rotation、sensing matrix及待估变量耦合的长说明句。",
+            "why_insufficient": "该句结构、机制与目标句不一致，不能作为目标整句的逐词来源。"
+          }
+        ]
+      },
+      "reason": "本次核查未定位完整原句；‘We consider’是通用句型，Q<KN可以是本文设定，但这些均不足以判为EXACT或TERM_ONLY。",
+      "model_correctness_boundary": "本条不判Q<KN技术错误。它是本文针对Q×KN观测矩阵选择的条件；条件是否合理、是否需在正文保留，与英文原句是否有可对齐来源是两个问题。",
+      "minimum_recommendation": "作为本文自定条件明确记录，并继续标为不满足全段原句一致要求；如仍要求每句均有来源，应补到完整对应原句再核查。不要仅补引用、泛称术语替换，或为通过语言审核擅自改变Q<KN。"
+    }
+  ],
+  "counts": {
+    "total": 2,
+    "EXACT": 1,
+    "TERM_ONLY": 0,
+    "OTHER_CHANGE": 0,
+    "NO_SOURCE": 1,
+    "UNVERIFIED": 0,
+    "passed": 1,
+    "failed": 1
+  },
+  "paragraph_structure": {
+    "same_original_paragraph": false,
+    "original_structure": "蔡文两个版本II-B首段均为任务总述句，随后在同一原段解释Exact Bayesian estimators一般难以计算。下一原段才由Alternatively引出消息传递。",
+    "draft_structure": "当前P09保留蔡文首段第一句，然后添加Q<KN条件句。",
+    "sentence_order": "已借用的第一句自身词序完整保留；两句整体并非蔡文原段的连续顺序。",
+    "connective_preservation": "S01内部and、based on、under等连接关系完整保留；S02无可对齐原句或原段连接关系。",
+    "cross_source_splicing": "未确认S02来自另一文献，因此不能断言两篇原文拼接；可确认是一个完整来源句与一个本次未定位来源句的组合。",
+    "attribution_risk": "不能用S01句末cai2026的引用把S02条件及本文AFDM观测模型一并归于蔡文。",
+    "paragraph_pass": false
+  },
+  "verdict": "不通过最严格的整段标准：S01为EXACT，S02为NO_SOURCE；且P09整体不对应同一原文段落。该结果是语言来源判定，不是模型错误判定。",
+  "modifications_to_manuscript": false
+}

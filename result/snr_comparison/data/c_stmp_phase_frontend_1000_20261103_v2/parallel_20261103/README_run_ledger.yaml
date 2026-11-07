@@ -1,0 +1,37 @@
+ledger: ars-run-ledger/1.0
+created_at: '2026-11-03T15:32:09Z'
+entries:
+- seq: 1
+  kind: initial_instructions
+  at: '2026-11-03T15:32:09Z'
+  user_words: 能不能让我的5080火力全开
+  prev_hash: null
+  hash: 4b4b161a3565d85da25417552e48c85ef2d8cbb21406dcb29e9e8e7924e012d8
+- seq: 2
+  kind: tool_receipt
+  at: '2026-11-03T15:32:09Z'
+  step: parallel_execution_handoff
+  command: Drain serial dispatch; verify 171 preserved outputs; freeze parallel plan;
+    launch unchanged workers with maximum concurrency 4; partial report audit
+  status: passed
+  exit_status: 0
+  retries_used: 0
+  input_sha256:
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\parallel_20261103\PLAN.json: 03934f03b4b4ade0535a8a9bff461be4518d4bc2bbe29bc615a95e07b4e415aa
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\parallel_20261103\START.json: 775beda733bdf9ba7a672162e385891c2dd799789a7fb44cc8f78202696284e2
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\parallel_20261103\PRESERVED_OUTPUTS.json: 13b7dc3ac6eb5789a11ec0650fe31e7764241e51117e5e6732ffca335848c3bb
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\parallel_20261103\HANDOFF_REPORT_AUDIT.json: f4f908a70e2bb448cc1a4fead3abace6458c437244f1f2f8dc7079ec071d997b
+  prev_hash: 4b4b161a3565d85da25417552e48c85ef2d8cbb21406dcb29e9e8e7924e012d8
+  hash: 05604886d075f524c2abf6cde25e63117486c2ac41b8b993cabdb53266e763e3
+- seq: 3
+  kind: progress
+  at: '2026-11-03T15:33:44Z'
+  stage: parallel_run
+  counters:
+    completed_at_checkpoint: 201
+    planned: 6000
+    active_workers: 4
+    execution_failures: 0
+    preserved_before_handoff: 171
+  prev_hash: 05604886d075f524c2abf6cde25e63117486c2ac41b8b993cabdb53266e763e3
+  hash: 18297ab3334bf1ea8430c7ac28d0d858f10c7b974c8c731081a27e52a1da8c46

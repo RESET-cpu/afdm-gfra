@@ -1,0 +1,176 @@
+{
+  "paragraph_id": "P04",
+  "source_lines": [
+    98,
+    112
+  ],
+  "source_file": "D:\\afdm-gfra\\paper\\C-STMP\\sections\\02_system_model.tex",
+  "audit_scope": "仅审查当前 P04 的完整句语言一致性、替换边界和段落组织；不修改论文。公式与英文语言层分别记录。",
+  "evidence_method": "搜索 SOURCES.json 所列7份 clean.pages.txt，交叉核对原始 pages.txt；另用 pypdf 直接读取 Cai 第4页、Bemani 第8-9页、Huang 第2页 PDF。仅规范化 fi 连字、断行与数学排版；相关文字清楚，无额外视觉消歧需要。",
+  "sentences": [
+    {
+      "id": "P04-S01",
+      "draft": "Assume that the chirp-periodic prefix (CPP) duration satisfies $N_{\\rm CPP}T_s\\geq\\max_{k,\\ell}\\tau_{k\\ell}$.",
+      "draft_tex": "Assume that the chirp-periodic prefix (CPP) duration satisfies\r\n$N_{\\rm CPP}T_s\\geq\\max_{k,\\ell}\\tau_{k\\ell}$.\r\n",
+      "category": "OTHER_CHANGE",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 4,
+      "source_section": "II-A. System Model；式(3)前的 CP 长度假设",
+      "source_quote": "Assume that the cyclic prefix (CP) length exceeds the maximum channel delay spread.",
+      "source_locator": "期刊页3578，PDF第4页；导频矩阵定义之后、去除CP并作DFT的句子之前。最近可对齐的英文骨架来源，不据此推断写作历史。",
+      "secondary_sources": [
+        {
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+          "source_page": 4,
+          "source_section": "II-A，式(3)之前",
+          "source_locator": "同一完整CP长度假设句。"
+        },
+        {
+          "source_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\bemani2022.pdf",
+          "source_page": 8,
+          "source_section": "III-A. Modulation，式(19)前一完整句",
+          "source_locator": "该句说明负索引样本中的前缀及以采样数计的最大时延条件；允许相等。只作相关概念定位，不作英文直引。"
+        }
+      ],
+      "changes": {
+        "necessary_substitutions": [
+          "cyclic prefix (CP) → chirp-periodic prefix (CPP)：技术对象与缩写。",
+          "length → duration：从采样长度到持续时间的量纲用语适配。",
+          "最大时延用 max_{k,ell} tau_{kell} 表示，另需注明其所有设备及路径的适用范围。"
+        ],
+        "other_changes": [
+          "谓语 exceeds 改为 satisfies，并把宾语改成整个不等式，改变句法关系。",
+          "严格超过变成 ≥，属于条件边界变化。",
+          "Bemani 的相关句还含负索引位置、发送要求及 where 定义；当前句删去这些成分并改成假设句，其概念依据不能替代整句一致性。"
+        ]
+      },
+      "formula_adaptation": "当前不等式具体化本文多设备、多路径时延。Cai 原句未给出该式；Bemani 的采样数长度条件只提供相关概念依据。",
+      "reason": "定位到了完整源句，但谓语、宾语结构和条件边界发生非术语改变。",
+      "minimal_action": "保留 OTHER_CHANGE 标记，将本文持续时间条件说明为模型选择；若要求严格原句式，需另处理谓语和条件边界，不能把整个不等式视为单一术语。"
+    },
+    {
+      "id": "P04-S02",
+      "draft": "With the chirp periodicity, the prefix is \\cite{bemani2022} \\begin{equation} \\begin{gathered} s_{qk}[t]=e^{j2\\pi c_1(t^2-\\langle t\\rangle_N^2)} s_{qk}[\\langle t\\rangle_N],\\\\ -N_{\\rm CPP}\\leq t<0, \\end{gathered} \\label{eq:cpp} \\end{equation} where $\\langle x\\rangle_N=x-N\\lfloor x/N\\rfloor$ and $2Nc_1\\in\\mathbb N_+$.",
+      "draft_tex": "With the chirp periodicity, the prefix is \\cite{bemani2022}\r\n\\begin{equation}\r\n \\begin{gathered}\r\n s_{qk}[t]=e^{j2\\pi c_1(t^2-\\langle t\\rangle_N^2)}\r\n s_{qk}[\\langle t\\rangle_N],\\\\\r\n -N_{\\rm CPP}\\leq t<0,\r\n \\end{gathered}\r\n \\label{eq:cpp}\r\n\\end{equation}\r\nwhere $\\langle x\\rangle_N=x-N\\lfloor x/N\\rfloor$ and\r\n$2Nc_1\\in\\mathbb N_+$.\r\n",
+      "category": "OTHER_CHANGE",
+      "source_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\bemani2022.pdf",
+      "source_page": 8,
+      "source_section": "III-A. Modulation，式(19)及完整引导句",
+      "source_quote": "With the periodicity defined in (15), the prefix is [公式 (19)].",
+      "source_locator": "PDF第8页末尾，式(19)的完整引导句；原句在公式后结束，没有当前稿的 where 从句。公式用位置占位，英文从句未省略。该英文原句只在JSON出现一次。",
+      "secondary_sources": [
+        {
+          "source_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\bemani2022.pdf",
+          "source_page": 9,
+          "source_section": "III-A结尾，III-B标题之前",
+          "source_locator": "页首独立句讨论CPP何时等同CP，联合条件包含2Nc1为整数及N为偶数。当前正整数假设并非此完整句的逐词替换。"
+        },
+        {
+          "source_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\bemani2022.pdf",
+          "source_page": 10,
+          "source_section": "III-D. Input-Output relation，式(29)之后、式(30)之前",
+          "source_locator": "模N运算的符号说明与等价时延定义在另一完整句内；并非式(19)后已有当前where定义。"
+        }
+      ],
+      "changes": {
+        "necessary_substitutions": [
+          "s[n] → s_{qk}[t]，n → t：增添帧/设备索引及替换时域索引。",
+          "L_cp → N_CPP：前缀长度符号。",
+          "虚数记号及TeX排版适配。"
+        ],
+        "other_changes": [
+          "删除原句对周期性的公式定位限定，并加入 chirp 修饰词；不是仅更换公式编号。",
+          "新增整个 where 从句：模N的显式定义。原句在式(19)后已经结束。",
+          "新增 and 连接的正整数假设。第9页相关来源是独立CPP/CP等同句，带有另一个偶数条件；删去原谓语、结论及偶数条件后不能称为整句复用。",
+          "把句末移到新增where条件之后，形成原文没有的连接关系。"
+        ]
+      },
+      "formula_adaptation": "源式(19)为N+n一次移位及负整数索引；当前为模N延拓、指数平方差和 -N_CPP≤t<0 范围。单列为本文公式适配，不仅凭公式不同判语言不合格，也不在此核定长前缀或分数索引扩展正确性。",
+      "model_scope_difference": "模定义和正整数设计条件属于新增模型说明。Bemani第9页的偶数条件用于CPP等同CP；本报告未声称它是所有CPP定义的必要条件。",
+      "reason": "公式引导框架有来源，但删改定语并增添全部where条件，完整句超出术语或符号替换。",
+      "minimal_action": "明确区分原句与本文模定义、设计条件及延拓适配；不得把新增where解释归为Bemani原句。"
+    },
+    {
+      "id": "P04-S03",
+      "draft": "Each AFDM frame spans a duration of $T_{\\rm frame}=(N+N_{\\rm CPP})T_s$ \\cite{huang2026}.",
+      "draft_tex": "Each AFDM frame spans a duration of\r\n$T_{\\rm frame}=(N+N_{\\rm CPP})T_s$ \\cite{huang2026}.\r\n",
+      "category": "TERM_ONLY",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\huang2026.pdf",
+      "source_page": 2,
+      "source_section": "II. System Model；第2页左栏首段第3个完整句",
+      "source_quote": "Each AFDM frame spans a duration of T = NΔt.",
+      "source_locator": "期刊页2950；在AFDM chirp子载波数量定义之后、采样率说明之前。",
+      "changes": {
+        "necessary_substitutions": [
+          "T → T_frame：帧时长符号。",
+          "Δt → T_s：采样间隔符号。",
+          "时长表达 NΔt → (N+N_CPP)T_s：含前缀的本文模型适配；见formula_adaptation。"
+        ],
+        "other_changes": []
+      },
+      "formula_adaptation": "源文T=NΔt；本文T_frame=(N+N_CPP)T_s，新增CPP持续时间。按协议把数学表达式与英文句式分层，不以公式不同本身判OTHER_CHANGE。",
+      "model_scope_difference": "Huang原句只给出N个采样间隔的时长，不直接证明本文包含CPP的帧时长。TERM_ONLY只确认英文词语、词序与连接关系，不认证模型范围完全一致。",
+      "reason": "全部英文词语、句型和词序均一致，仅数学符号/时长表达适配；前缀范围变化另列。",
+      "minimal_action": "语言层保留TERM_ONLY，同时注明包含CPP的帧时长为本文定义，避免让引用表示Huang已采用同一定义。"
+    }
+  ],
+  "counts": {
+    "EXACT": 0,
+    "TERM_ONLY": 1,
+    "OTHER_CHANGE": 2,
+    "NO_SOURCE": 0,
+    "UNVERIFIED": 0,
+    "total": 3
+  },
+  "searched_sources": [
+    "shen2025",
+    "cai2026",
+    "cai2026_stmp_v2",
+    "ding2026",
+    "huang2026",
+    "li2023",
+    "bemani2022"
+  ],
+  "search_queries": [
+    "chirp.periodic|prefix|frame spans|duration of|chirp periodicity",
+    "Assume that.*duration|duration satisfies|With the chirp periodicity|Each AFDM frame spans|floor|modulo|modulus|positive integer",
+    "With the periodicity|Each AFDM frame|Assume that the cyclic|N is even"
+  ],
+  "paragraph_structure": {
+    "same_original_paragraph": false,
+    "source_sequence": [
+      "S01：Cai期刊版/v2 PDF第4页II-A的CP长度句骨架；Bemani PDF第8页另有允许相等的前缀条件依据。",
+      "S02：Bemani PDF第8页III-A式(19)引导句及公式；新增where的部分相关概念分散于第9-10页其他句。",
+      "S03：Huang PDF第2页II首段的帧时长句。"
+    ],
+    "structure_changes": [
+      "三句跨Cai、Bemani、Huang组织，不来自同一原段。",
+      "Cai的前缀假设原位于导频矩阵定义与去CP/DFT接收式之间，当前放在CPP延拓式之前。",
+      "Bemani式(19)前的前缀目的、CPP/CP区别、负索引发送说明及相应连接关系未保留。",
+      "Bemani式(19)后原接独立CPP/CP等同说明，当前接新增where，并转入Huang的帧时长句。",
+      "Huang帧时长句原承接子载波数并引出采样率，当前改放CPP公式之后。"
+    ],
+    "paragraph_exact_or_term_only": false,
+    "attribution_risk": "多设备最大差分时延、模延拓、正整数条件及含CPP帧时长均含本文表达/模型适配，不能由邻近引文转成来源原句原段。"
+  },
+  "verdict": "严格不通过：3句中1句在英文语言层为TERM_ONLY，2句为OTHER_CHANGE；段落跨来源且连接关系未完整保留。不是对模型技术正确性的判决。",
+  "quote_budget": {
+    "bemani2022": {
+      "json_english_words": 8,
+      "markdown_english_words": 0,
+      "total": 8,
+      "limit": 25,
+      "note": "仅S02 source_quote一处完整引导句，公式以位置代替。其余使用中文说明与页码；当前待审稿原样回显不计新增原文摘引。"
+    },
+    "li2023": {
+      "total": 0,
+      "limit": 25
+    }
+  },
+  "coverage": {
+    "exact_concatenation_matches_input": true,
+    "sentence_count": 3,
+    "input_sha256": "44bd708914ba4b9eb755651c12c41018c4f01dcf57e1c2bb1aec552a64186e37",
+    "boundary_note": "S02包含完整显示公式及where从句，未拆句计数。"
+  }
+}

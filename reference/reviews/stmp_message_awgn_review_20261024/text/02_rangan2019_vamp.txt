@@ -1,0 +1,3155 @@
+=== PDF PAGE 1 ===
+arXiv:1610.03082v2  [cs.IT]  12 Jun 2018
+1
+V ector Approximate Message Passing
+Sundeep Rangan, Fellow, IEEE, Philip Schniter, Fellow, IEEE, and Alyson K. Fletcher, Member , IEEE.
+Abstract—The standard linear regression (SLR) problem is to
+recover a vector x0 from noisy linear observations y = Ax0 +w.
+The approximate message passing (AMP) algorithm proposed b y
+Donoho, Maleki, and Montanari is a computationally efﬁcien t
+iterative approach to SLR that has a remarkable property: fo r
+large i.i.d. sub-Gaussian matrices A, its per-iteration behavior is
+rigorously characterized by a scalar state-evolution whos e ﬁxed
+points, when unique, are Bayes optimal. The AMP algorithm,
+however , is fragile in that even small deviations from the i. i.d.
+sub-Gaussian model can cause the algorithm to diverge. This
+paper considers a “vector AMP” (V AMP) algorithm and shows
+that V AMP has a rigorous scalar state-evolution that holds u nder
+a much broader class of large random matrices A: those that are
+right-orthogonally invariant. After performing an initia l singular
+value decomposition (SVD) of A, the per-iteration complexity of
+V AMP is similar to that of AMP . In addition, the ﬁxed points of
+V AMP’s state evolution are consistent with the replica pred iction
+of the minimum mean-squared error derived by Tulino, Caire,
+Verd ´ u, and Shamai. Numerical experiments are used to conﬁr m
+the effectiveness of V AMP and its consistency with state-evolution
+predictions.
+Index Terms —Belief propagation, message passing, inference
+algorithms, random matrices, compressive sensing.
+I. I NTRODUCTION
+Consider the problem of recovering a vector x0∈ RN from
+noisy linear measurements of the form
+y = Ax0 + w∈ RM , (1)
+where A is a known matrix and w is an unknown, unstructured
+noise vector. In the statistics literature, this problem is known
+as standard linear regression , and in the signal processing
+literature this is known as solving a linear inverse problem , or
+as compressive sensing when M≪ N and x0 is sparse.
+A. Problem F ormulations
+One approach to recovering x0 is regularized quadratic
+loss minimization , where an estimate ˆx of x0 is computed
+by solving an optimization problem of the form
+ˆx = arg min
+x∈ RN
+1
+2∥y− Ax∥2
+2 + f (x). (2)
+S. Rangan (email: srangan@nyu.edu) is with the Department o f Electrical
+and Computer Engineering, New Y ork University, Brooklyn, N Y , 11201.
+His work was supported by the National Science Foundation un der Grants
+1302336, 1564142, and 1547332.
+P . Schniter (email: schniter.1@osu.edu) is with the Department of Electrical
+and Computer Engineering, The Ohio State University, Colum bus, OH, 43210.
+His work was supported in part by the National Science Founda tion grant
+CCF-1527162.
+A. K. Fletcher (email: akﬂetcher@ucla.edu) is with the Depa rtments of
+Statistics, Mathematics, and Electrical Engineering, Uni versity of California,
+Los Angeles, CA, 90095. Her work is supported in part by Natio nal Science
+Foundation grants 1254204 and 1564278 as well as the Ofﬁce of Naval
+Research grant N00014-15-1-2677.
+Here, the penalty function or “regularization” f (x) is chosen
+to promote a desired structure in ˆx. For example, the choice
+f (x) = λ∥x∥1 with λ > 0 promotes sparsity in ˆx.
+Another approach is through the Bayesian methodology.
+Here, one presumes a prior density p(x) and likelihood
+function p(y|x) and then aims to compute the posterior density
+p(x|y) = p(y|x)p(x)
+∫ p(y|x)p(x) dx (3)
+or, in practice, a summary of it [1]. Example summaries
+include the maximum a posteriori (MAP) estimate
+ˆxMAP = arg max
+x
+p(x|y), (4)
+the minimum mean-squared error (MMSE) estimate
+ˆxMMSE = arg min
+˜x
+∫
+∥x− ˜x∥2p(x|y) dx = E[x|y], (5)
+or the posterior marginal densities {p(xn|y)}N
+n=1.
+Note that, if the noise w is modeled as w∼N (0, γ − 1
+w I),
+i.e., additive white Gaussian noise (AWGN) with some preci-
+sion γw > 0, then the regularized quadratic loss minimization
+problem (2) is equivalent to MAP estimation under the prior
+p(x) ∝ exp[− γwf (x)], where ∝ denotes equality up to a
+scaling that is independent of x. Thus we focus on MAP ,
+MMSE, and marginal posterior inference in the sequel.
+B. Approximate Message Passing
+Recently, the so-called approximate message passing
+(AMP) algorithm [2], [3] was proposed as an iterative method
+to recover x0 from measurements of the form (1). The AMP
+iterations are speciﬁed in Algorithm 1. There, 1 g1(·, γ k) :
+RN→ RN is a denoising function parameterized by γk, and
+⟨g′
+1(rk, γ k)⟩ is its divergence at rk. In particular, g′
+1(rk, γ k)∈
+RN is the diagonal of the Jacobian,
+g′
+1(rk, γ k) = diag
+[ ∂g1(rk, γ k)
+∂rk
+]
+, (6)
+and⟨·⟩ is the empirical averaging operation
+⟨u⟩ := 1
+N
+N∑
+n=1
+un. (7)
+When A is a large i.i.d. sub-Gaussian matrix, w ∼
+N (0, γ − 1
+w0 I), and g1(·, γ k) is separable, i.e.,
+[g1(rk, γ k)]n = g1(rkn, γ k)∀n, (8)
+with identical Lipschitz components g1(·, γ k) : R→ R, AMP
+displays a remarkable behavior, which is that rk behaves like
+1The subscript “1” in g1 is used promote notational consistency with V ector
+AMP algorithm presented in the sequel.
+
+=== PDF PAGE 2 ===
+2
+Algorithm 1 AMP
+Require: Matrix A∈ RM× N , measurement vector y, denoiser
+g1(·, γ k), and number of iterations Kit.
+1: Set v− 1 = 0 and select initial r0, γ 0.
+2: for k = 0, 1, . . . , K it do
+3: ˆxk = g1(rk, γ k)
+4: α k =⟨g′
+1(rk, γ k)⟩
+5: vk = y− Aˆxk + N
+M α k− 1vk− 1
+6: rk+ 1= ˆxk + ATvk
+7: Select γk+ 1
+8: end for
+9: Return ˆxKit .
+a white-Gaussian-noise corrupted version of the true signa l x0
+[2]. That is,
+rk = x0 +N (0, τ kI), (9)
+for some variance τk > 0. Moreover, the variance τk can be
+predicted through the following state evolution (SE):
+E(γk, τ k) = 1
+N E
+[
+g1
+(
+x0 +N (0, τ kI), γ k
+)
+− x0
+2]
+(10a)
+τk+ 1= γ − 1
+w0 + N
+ME(γk, τ k), (10b)
+whereE(γk, τ k) is the MSE of the AMP estimate ˆxk.
+The AMP SE (10) was rigorously established for i.i.d.
+Gaussian A in [4] and for i.i.d. sub-Gaussian A in [5] in the
+large-system limit (i.e., N, M →∞ and N/M → δ∈ (0, 1))
+under some mild regularity conditions. Because the SE (10)
+holds for generic g1(·, γ k) and generic γk-update rules, it
+can be used to characterize the application of AMP to many
+problems, as further discussed in Section II-A.
+C. Limitations, Modiﬁcations, and Alternatives to AMP
+An important limitation of AMP’s SE is that it holds only
+under large i.i.d. sub-Gaussian A. Although recent analysis
+[6] has rigorously analyzed AMP’s performance under ﬁnite-
+sized i.i.d. Gaussian A, there remains the important question
+of how AMP behaves with general A.
+Unfortunately, it turns out that the AMP Algorithm 1 is
+somewhat fragile with regard to the construction of A. For
+example, AMP diverges with even mildly ill-conditioned or
+non-zero-mean A [7]–[9]. Although damping [7], [9], mean-
+removal [9], sequential updating [10], and direct free-ene rgy
+minimization [11] all help to prevent AMP from diverging,
+such strategies are limited in effectiveness.
+Many other algorithms for standard linear regression (1)
+have been designed using approximations of belief propagat ion
+(BP) and/or free-energy minimization. Among these are the
+Adaptive Thouless-Anderson-Palmer (ADA TAP) [12], Expec-
+tation Propagation (EP) [13], [14], Expectation Consisten t
+Approximation (EC) [15]–[17], (S-transform AMP) S-AMP
+[18], [19], and (Orthogonal AMP) OAMP [20] approaches.
+Although numerical experiments suggest that some of these a l-
+gorithms are more robust than AMP Algorithm 1 to the choice
+of A, their convergence has not been rigorously analyzed. In
+particular, there remains the question of whether there exi sts
+an AMP-like algorithm with a rigorous SE analysis that holds
+for a larger class of matrices than i.i.d. sub-Gaussian. In t he
+sequel, we describe one such algorithm.
+D. Contributions
+In this paper, we propose a computationally efﬁcient itera-
+tive algorithm for the estimation of the vector x0 from noisy
+linear measurements y of the form in (1). (See Algorithm 2.)
+We call the algorithm “ vector AMP ” (V AMP) because i)
+its behavior can be rigorously characterized by a scalar SE
+under large random A, and ii) it can be derived using an
+approximation of BP on a factor graph with vector-valued
+variable nodes. We outline V AMP’s derivation in Section III
+with the aid of some background material that is reviewed in
+Section II.
+In Section IV, we establish the V AMP SE in the case of
+large right-orthogonally invariant random A and separable
+Lipschitz denoisers g1(·, γ k), using techniques similar to those
+used by Bayati and Montanari in [4]. Importantly, these righ t-
+orthogonally invariant A allow arbitrary singular values and
+arbitrary left singular vectors, making V AMP much more
+robust than AMP in regards to the construction of A. In
+Section V, we establish that the asymptotic MSE predicted by
+V AMP’s SE agrees with the MMSE predicted by the replica
+method [21] when V AMP’s priors are matched to the true
+data. Finally, in Section VI, we present numerical experime nts
+demonstrating that V AMP’s empirical behavior matches its S E
+at moderate dimensions, even when A is highly ill-conditioned
+or non-zero-mean.
+E. Relation to Existing W ork
+The idea to construct algorithms from graphical models
+with vector-valued nodes is not new, and in fact underlies th e
+EC- and EP-based algorithms described in [13]–[17]. The use
+of vector-valued nodes is also central to the derivation of S -
+AMP [18], [19]. In the sequel, we present a simple derivation
+of V AMP that uses the EP methodology from [13], [14], which
+passes approximate messages between the nodes of a factor
+graph. But we note that V AMP can also be derived using the
+EC methodology, which formulates a variational optimizati on
+problem using a constrained version of the Kullback-Leible r
+distance and then relaxes the density constraints to moment
+constraints. For more details on the latter approach, we ref er
+the interested reader to the discussion of “diagonal restri cted
+EC” in [15, App. D] and “uniform diagonalized EC” in [17].
+It was recently shown [16] that, for large right-orthogonal ly
+invariant A, the ﬁxed points of diagonal-restricted EC are
+“good” in the sense that they are consistent with a certain
+replica prediction of the MMSE that is derived in [16]. Since
+the ﬁxed points of ADA TAP and S-AMP are known [18]
+to coincide with those of diagonal-restricted EC (and thus
+V AMP), all of these algorithms can be understood to have
+good ﬁxed points. The trouble is that these algorithms do not
+necessarily converge to their ﬁxed points. For example, S-
+AMP diverges with even mildly ill-conditioned or non-zero-
+mean A, as demonstrated in Section VI. Our main contribution
+
+=== PDF PAGE 3 ===
+3
+is establishing that VAMP’s behavior can be exactly predict ed
+by an SE analysis analogous to that for AMP . This SE analysis
+then provides precise convergence guarantees for large rig ht-
+orthogonally invariant A. The numerical results presented in
+Section VI conﬁrm that, in practice, V AMP’s convergence is
+remarkably robust, even with very ill-conditioned or mean-
+perturbed matrices A of ﬁnite dimension.
+The main insight that leads to both the V AMP algorithm
+and its SE analysis comes from a consideration of the sin-
+gular value decomposition (SVD) of A. Speciﬁcally, take the
+“economy” SVD,
+A =
+UDiag(s)V
+T
+, (11)
+where s∈ RR for R := rank(A)≤ min(M, N ). The V AMP
+iterations can be performed by matrix-vector multiplicati ons
+with V∈ RN × R and V
+T
+, yielding a structure very similar
+to that of AMP . Computationally, the SVD form of V AMP
+(i.e., Algorithm 2) has the beneﬁt that, once the SVD has
+been computed, V AMP’s per-iteration cost will be dominated
+by O(RN ) ﬂoating-point operations (ﬂops), as opposed to
+O(N 3) for the EC methods from [15, App. D] or [17].
+Furthermore, if these matrix-vector multiplications have fast
+implementations (e.g., O(N ) when
+V is a discrete wavelet
+transform), then the complexity of V AMP reduces accord-
+ingly. We emphasize that V AMP uses a single SVD, not a
+per-iteration SVD. In many applications, this SVD can be
+computed off-line. In the case that SVD complexity may be
+an issue, we note that it costs O(M N R) ﬂops by classical
+methods or O(M N log R) by modern approaches [22].
+The SVD offers more than just a fast algorithmic implemen-
+tation. More importantly, it connects V AMP to AMP in such
+a way that the Bayati and Montanari’s SE analysis of AMP
+[4] can be extended to obtain a rigorous SE for V AMP . In this
+way, the SVD can be viewed as a proof technique. Since it
+will be useful for derivation/interpretation in the sequel , we
+note that the V AMP iterations can also be written without an
+explicit SVD (see Algorithm 3), in which case they coincide
+with the uniform-diagonalization variant of the generaliz ed EC
+method from [17]. In this latter implementation, the linear
+MMSE (LMMSE) estimate (24) must be computed at each
+iteration, as well as the trace of its covariance matrix (25) ,
+which both involve the inverse of an N× N matrix.
+The OAMP-LMMSE algorithm from [20] is similar to
+V AMP and diagonal-restricted EC, but different in that it ap -
+proximates certain variance terms. This difference can be s een
+by comparing equations (30)-(31) in [20] to lines 8 and 10 in
+Algorithm 2 (or lines 14 and 7 in Algorithm 3). Furthermore,
+OAMP-LMMSE differs from V AMP in its reliance on matrix
+inversion (see, e.g., the comments in the Conclusion of [20] ).
+Shortly after the initial publication of this work, [23] pro ved
+a very similar result for the complex case using a fully
+probabilistic analysis.
+F . Notation
+We use capital boldface letters like A for matrices, small
+boldface letters like a for vectors, (·)T for transposition, and
+an = [ a]n to denote the nth element of a. Also, we use
+∥a∥p = ( ∑
+n|an|p)1/p for the ℓp norm of a,∥A∥2 for the
+spectral norm of A, Diag(a) for the diagonal matrix created
+from vector a, and diag(A) for the vector extracted from the
+diagonal of matrix A. Likewise, we use IN for the N× N
+identity matrix, 0 for the matrix of all zeros, and 1 for the
+matrix of all ones. For a random vector x, we denote its
+probability density function (pdf) by p(x), its expectation
+by E[x], and its covariance matrix by Cov[x]. Similarly, we
+use p(x|y), E[x|y], and Cov[x|y] for the conditional pdf,
+expectation, and covariance, respectively. Also, we use E[x|b]
+and Cov[x|b] to denote the expectation and covariance of
+x∼ b(x), i.e., x distributed according to the pdf b(x). We refer
+to the Dirac delta pdf using δ(x) and to the pdf of a Gaussian
+random vector x∈ RN with mean a and covariance C using
+N (x; a, C) = exp( − (x− a)TC− 1(x− a)/ 2)/
+√
+(2π )N|C|.
+Finally, p(x) ∝ f (x) says that functions p(·) and f (·) are
+equal up to a scaling that is invariant to x.
+II. B ACKGROUND ON THE AMP A LGORITHM
+In this section, we provide background on the AMP algo-
+rithm that will be useful in the sequel.
+A. Applications to Bayesian Inference
+We ﬁrst detail the application of the AMP Algorithm 1 to
+the Bayesian inference problems from Section I-A. Suppose
+that the prior on x is i.i.d., so that it takes the form
+p(x) =
+N∏
+n=1
+p(xn). (12)
+Then AMP can be applied to MAP problem (4) by choosing
+the scalar denoiser as
+g1(rkn, γ k) = arg min
+xn∈ R
+[ γk
+2|xn− rkn|2− ln p(xn)
+]
+. (13)
+Likewise, AMP can be applied to the MMSE problem (5) by
+choosing
+g1(rkn, γ k) = E[xn|rkn, γ k], (14)
+where the expectation in (14) is with respect to the conditio nal
+density
+p(xn|rkn, γ k)∝ exp
+[
+− γk
+2|rkn− xn|2 + ln p(xn)
+]
+. (15)
+In addition, p(xn|rkn, γ k) in (15) acts as AMP’s iteration- k
+approximation of the marginal posterior p(xn|y). For later use,
+we note that the derivative of the MMSE scalar denoiser (14)
+w.r.t. its ﬁrst argument can be expressed as
+g′
+1(rkn, γ k) = γkvar [xn|rkn, γ k] , (16)
+where the variance is computed with respect to the density (1 5)
+(see, e.g., [24]).
+In (13)-(15), γk can be interpreted as an estimate of τ− 1
+k ,
+the iteration- k precision of rk from (9). In the case that τk is
+known, the “matched” assignment
+γk = τ− 1
+k (17)
+
+=== PDF PAGE 4 ===
+4
+leads to the interpretation of (13) and (14) as the scalar MAP
+and MMSE denoisers of rkn, respectively. Since, in practice,
+τk is usually not known, it has been suggested to use
+γk+ 1= M
+∥vk∥2 , (18)
+although other choices are possible [25].
+B. Relation of AMP to IST
+The AMP Algorithm 1 is closely related to the well-known
+iterative soft thresholding (IST) algorithm [26], [27] that can
+be used 2 to solve (2) with convex f (·). In particular, if the
+term
+N
+M α k− 1vk− 1 (19)
+is removed from line 5 of Algorithm 1, then what remains is
+the IST algorithm.
+The term (19) is known as the Onsager term in the statistical
+physics literature [28]. Under large i.i.d. sub-Gaussian A, the
+Onsager correction ensures the behavior in (9). When (9)
+holds, the denoiser g1(·, γ k) can be optimized accordingly, in
+which case each iteration of AMP becomes very productive.
+As a result, AMP converges much faster than ISTA for i.i.d.
+Gaussian A (see, e.g., [25] for a comparison).
+C. Derivations of AMP
+The AMP algorithm can be derived in several ways. One
+way is through approximations of loopy belief propagation
+(BP) [29], [30] on a bipartite factor graph constructed from
+the factorization
+p(y, x) =
+[ M∏
+m=1
+N (ym; aT
+mx, γ − 1
+w )
+] [ N∏
+n=1
+p(xn)
+]
+, (20)
+where aT
+m denotes the mth row of A. We refer the reader
+to [3], [24] for details on the message-passing derivation o f
+AMP , noting connections to the general framework of expec-
+tation propagation (EP) [13], [14]. AMP can also be derived
+through a “free-energy” approach, where one i) proposes a
+cost function, ii) derives conditions on its stationary poi nts,
+and iii) constructs an algorithm whose ﬁxed points coincide
+with those stationary points. We refer the reader to [18], [3 1],
+[32] for details, and note connections to the general framew ork
+of expectation consistent approximation (EC) [15], [17].
+III. T HE VECTOR AMP A LGORITHM
+The V ector AMP (V AMP) algorithm is stated in Algo-
+rithm 2. In line 9, “
+s2” refers to the componentwise square
+of vector s. Also, Diag(a) denotes the diagonal matrix whose
+diagonal components are given by the vector a.
+2The IST algorithm is guaranteed to converge [27] when ∥A∥2 < 1.
+Algorithm 2 V ector AMP (SVD Form)
+Require: Matrix A ∈ RM× N ; measurements y ∈ RM ;
+denoiser g1(·, γ k); assumed noise precision γw≥ 0; and
+number of iterations Kit.
+1: Compute economy SVD UDiag(s)V
+T
+= A with U
+T
+U =
+IR, V
+T
+V = IR, s∈ RR
++, R = rank(A).
+2: Compute preconditioned ˜y := Diag(
+s)− 1U
+T
+y
+3: Select initial r0 and γ0≥ 0.
+4: for k = 0, 1, . . . , K it do
+5: ˆxk = g1(rk, γ k)
+6: α k =⟨g′
+1(rk, γ k)⟩
+7: ˜rk = ( ˆxk− α krk)/ (1− α k)
+8: ˜γk = γk(1− α k)/α k
+9: dk = γwDiag
+(
+γws2 + ˜γk1
+) − 1
+s2
+10: γk+ 1= ˜γk⟨dk⟩/ ( N
+R−⟨ dk⟩)
+11: rk+ 1= ˜rk + N
+R VDiag
+(
+dk/ ⟨dk⟩
+)( ˜y− V
+T
+˜rk
+)
+12: end for
+13: Return ˆxKit .
+A. Relation of VAMP to AMP
+A visual examination of V AMP Algorithm 2 shows many
+similarities with AMP Algorithm 1. In particular, the denoi sing
+and divergence steps in lines 5-6 of Algorithm 2 are identica l
+to those in lines 3-4 of Algorithm 1. Likewise, an Onsager
+term α krk is visible in line 7 of Algorithm 2, analogous to
+the one in line 5 of Algorithm 1. Finally, the per-iteration
+computational complexity of each algorithm is dominated by
+two matrix-vector multiplications: those involving A and AT
+in Algorithm 1 and those involving
+V and V
+T
+in Algorithm 2.
+The most important similarity between the AMP and V AMP
+algorithms is not obvious from visual inspection and will be
+established rigorously in the sequel. It is the following: f or
+certain large random A, the V AMP quantity rk behaves like a
+white-Gaussian-noise corrupted version of the true signal x0,
+i.e.,
+rk = x0 +N (0, τ kI), (21)
+for some variance τk > 0. Moreover, the noise variance τk can
+be tracked through a scalar SE formalism whose details will
+be provided in the sequel. Furthermore, the V AMP quantity
+γk can be interpreted as an estimate of τ− 1
+k in (21), analogous
+to the AMP quantity γk discussed around (17).
+It should be emphasized that the class of matrices A under
+which the V AMP SE holds is much bigger than the class under
+which the AMP SE holds. In particular, V AMP’s SE holds
+for large random matrices A whose right singular 3 vector
+matrix V∈ RN × N is uniformly distributed on the group of
+orthogonal matrices. Notably, V AMP’s SE holds for arbitrary
+(i.e., deterministic) left singular vector matrices U and singular
+values, apart from some mild regularity conditions that wil l be
+3We use several forms of SVD in this paper. Algorithm 2 uses the
+“economy” SVD A =
+UDiag(s)V
+T
+∈ RM ×N , where s ∈ RR
++ with
+R = rank( A), so that
+U and/or V may be tall. The discussion in
+Section III-A uses the “standard” SVD A = USVT, where S ∈ RM ×N and
+both U and V are orthogonal. Finally, the state-evolution proof in Sect ion IV
+uses the standard SVD on square A ∈ RN×N .
+
+=== PDF PAGE 5 ===
+5
+PSfrag replacements
+p(x1)
+x1
+δ(x1− x2)
+x2
+N (y; Ax2, γ − 1
+w I)
+Fig. 1. The factor graph used for the derivation of V AMP . The circles represent
+variable nodes and the squares represent factor nodes from ( 23).
+detailed in the sequel. In contrast, AMP’s SE is known to hold
+[4], [5] only for large i.i.d. sub-Gaussian matrices A, which
+implies i) random orthogonal U and V and ii) a particular
+distribution on the singular values of A.
+B. EP Derivation of VAMP
+As with AMP (i.e., Algorithm 1), V AMP (i.e., Algorithm 2)
+can be derived in many ways. Here we present a very simple
+derivation based on an EP-like approximation of the sum-
+product (SP) belief-propagation algorithm. Unlike the AMP
+algorithm, whose message-passing derivation uses a loopy
+factor graph with scalar-valued nodes, the V AMP algorithm
+uses a non-loopy graph with vector-valued nodes, hence the
+name “vector AMP .” We note that V AMP can also be derived
+using the “diagonal restricted” or “uniform diagonalizati on”
+EC approach [15], [17], but that derivation is much more
+complicated.
+To derive V AMP , we start with the factorization
+p(y, x) = p(x)N (y; Ax, γ − 1
+w I), (22)
+and split x into two identical variables x1 = x2, giving an
+equivalent factorization
+p(y, x1, x2) = p(x1)δ(x1− x2)N (y; Ax2, γ − 1
+w I), (23)
+where δ(·) is the Dirac delta distribution. The factor graph
+corresponding to (23) is shown in Figure 1. We then pass
+messages on this factor graph according to the following rul es.
+1) Approximate beliefs
+: The approximate belief bapp(x) on
+variable node x isN (x; ˆx, η − 1I), where ˆx = E[x|bsp]
+and η− 1 =⟨diag(Cov[x|bsp])⟩ are the mean and aver-
+age variance of the corresponding SP belief bsp(x) ∝∏
+i µ fi→ x(x), i.e., the normalized product of all messages
+impinging on the node. See Figure 2(a) for an illustration.
+2) V ariable-to-factor messages: The message from a vari-
+able node x to a connected factor node fi is µ x→ fi (x)∝
+bapp(x)/µ fi→ x(x), i.e., the ratio of the most recent
+approximate belief bapp(x) to the most recent message
+from fi to x. See Figure 2(b) for an illustration.
+3) Factor-to-variable messages: The message from a factor
+node f to a connected variable node xi is µ f → xi(xi)∝∫
+f (xi,{xj}j̸=i}) ∏
+j̸=i µ xj → f (xj ) dxj. See Figure 2(c)
+for an illustration.
+By applying the above message-passing rules to the factor
+graph in Figure 1, one obtains Algorithm 3. (See Appendix A
+for a detailed derivation.) Lines 11–12 of Algorithm 3 use
+g2(r2k, γ 2k) :=
+(
+γwATA + γ2kI
+) − 1 (
+γwATy + γ2kr2k
+)
+,
+(24)
+which can be recognized as the MMSE estimate of a random
+vector x2 under likelihood N (y; Ax2, γ − 1
+w I) and prior x2∼
+PSfrag replacements
+x
+x
+x2
+x3
+x1f (x1, x2, x3)f1(x)
+f1(x)
+f2(x)
+f2(x)
+f3(x)
+f3(x) µ f1→ x(x)
+µ f2→ x(x)
+µ f2→ x(x)
+µ f3→ x(x)
+µ f3→ x(x)
+µ x→ f1 (x)
+µ x2→ f (x2)
+µ x3→ f (x3)
+µ f → x1 (x1)
+(a)
+(b) (c)
+Fig. 2. Factor graphs to illustrate (a) messaging through a f actor node and
+(b) messaging through a variable node.
+Algorithm 3 V ector AMP (LMMSE form)
+Require: LMMSE estimator g2(r2k, γ 2k) from (24), denoiser
+g1(·, γ 1k), and number of iterations Kit.
+1: Select initial r10 and γ10≥ 0.
+2: for k = 0, 1, . . . , K it do
+3: // Denoising
+4: ˆx1k = g1(r1k, γ 1k)
+5: α 1k =⟨g′
+1(r1k, γ 1k)⟩
+6: η1k = γ1k/α 1k
+7: γ2k = η1k− γ1k
+8: r2k = (η1k ˆx1k− γ1kr1k)/γ 2k
+9:
+10: // LMMSE estimation
+11: ˆx2k = g2(r2k, γ 2k)
+12: α 2k =⟨g′
+2(r2k, γ 2k)⟩
+13: η2k = γ2k/α 2k
+14: γ1,k + 1= η2k− γ2k
+15: r1,k + 1= (η2k ˆx2k− γ2kr2k)/γ 1,k + 1
+16: end for
+17: Return ˆx1Kit .
+N (r2k, γ − 1
+2k I). Since this estimate is linear in r2k, we will
+refer to it as the “LMMSE” estimator. From (6)-(7) and (24),
+it follows that line 12 of Algorithm 3 uses
+⟨g′
+2(r2k, γ 2k)⟩ = γ2k
+N Tr
+[(
+γwATA + γ2kI
+) − 1]
+. (25)
+Algorithm 3 is merely a restatement of V AMP Algorithm 2.
+Their equivalence can then be seen by substituting the “econ -
+omy” SVD A = UDiag(s)V
+T
+into Algorithm 3, simplifying,
+and equating ˆxk≡ ˆx1k, rk≡ r1k, γk≡ γ1k, ˜γk≡ γ2k, and
+α k≡ α 1k.
+As presented in Algorithm 3, the steps of V AMP exhibit an
+elegant symmetry. The ﬁrst half of the steps perform denoisi ng
+on r1k and then Onsager correction in r2k, while the second
+half of the steps perform LMMSE estimation r2k and Onsager
+correction in r1,k + 1.
+C. Implementation Details
+For practical implementation with ﬁnite-dimensional A, we
+ﬁnd that it helps to make some small enhancements to V AMP .
+In the discussion below we will refer to Algorithm 2, but the
+same approaches apply to Algorithm 3.
+
+=== PDF PAGE 6 ===
+6
+First, we suggest to clip the precisions γk and ˜γk to a
+positive interval [γmin, γ max]. It is possible, though uncom-
+mon, for line 6 of Algorithm 2 to return a negative α k, which
+will lead to negative γk and ˜γk if not accounted for. For the
+numerical results in Section VI, we used γmin = 1× 10− 11
+and γmax = 1× 1011.
+Second, we ﬁnd that a small amount of damping can be
+helpful when A is highly ill-conditioned. In particular, we
+suggest to replace lines 5 and 10 of Algorithm 2 with the
+damped versions
+ˆxk = ρg1(rk, γ k) + (1− ρ)ˆxk− 1 (26)
+γk+ 1= ρ˜γk⟨dk⟩R/ (N−⟨ dk⟩R) + (1− ρ)γk (27)
+for all iterations k > 1, where ρ∈ (0, 1] is a suitably chosen
+damping parameter. Note that, when ρ = 1 , the damping has
+no effect. For the numerical results in Section VI, we used
+ρ = 0. 97.
+Third, rather than requiring V AMP to complete Kit iter-
+ations, we suggest that the iterations are stopped when the
+normalized difference ∥r1k− r1,k − 1∥/ ∥r1k∥ falls below a
+tolerance τ. For the numerical results in Section VI, we used
+τ = 1× 10− 4.
+We note that the three minor modiﬁcations described above
+are standard features of many AMP implementations, such
+as the one in the GAMPmatlab toolbox [33]. However, as
+discussed in Section I-C, they are not enough to stabilize AM P
+for in the case of ill-conditioned or non-zero-mean A.
+Finally, we note that the V AMP algorithm requires the user
+to choose the measurement-noise precision γw and the de-
+noiser g1(·, γ k). Ideally, the true noise precision γw0 is known
+and the signal x0 is i.i.d. with known prior p(xj), in which
+case the MMSE denoiser can be straightforwardly designed.
+In practice, however, γw0 and p(xj ) are usually unknown.
+Fortunately, there is a simple expectation-maximization ( EM)-
+based method to estimate both quantities on-line, whose det ails
+are given in [34]. The numerical results in [34] show that
+the convergence and asymptotic performance of EM-V AMP is
+nearly identical to that of V AMP with known γw0 and p(xj).
+For the numerical results in Section VI, however, we assume
+that γw0 and p(xj ) are known.
+Matlab implementations of V AMP and EM-V AMP can be
+found in the public-domain GAMPmatlab toolbox [33].
+IV. S TATE EVOLUTION
+A. Large-System Analysis
+Our primary goal is to understand the behavior of the
+V AMP algorithm for a certain class of matrices in the high-
+dimensional regime. We begin with an overview of our anal-
+ysis framework and follow with more details in later section s.
+1) Linear measurement model: Our analysis considers a
+sequence of problems indexed by the signal dimension N .
+For each N , we assume that there is a “true” vector x0∈ RN
+which is observed through measurements of the form,
+y = Ax0 + w∈ RN , w∼N (0, γ − 1
+w0 IN ), (28)
+where A∈ RN × N is a known transform and w is Gaussian
+noise with precision γw0. Note that we use γw0 to denote the
+“true” noise precision to distinguish it from γw, which is the
+noise precision postulated by the estimator.
+For the transform A, our key assumption is that it can
+be modeled as a large, right-orthogonally invariant random
+matrix. Speciﬁcally, we assume that it has an SVD of the
+form
+A = USVT, S = Diag( s), (29)
+where U and V are N× N orthogonal matrices such that
+U is deterministic and V is Haar distributed (i.e. uniformly
+distributed on the set of orthogonal matrices). We refer to A as
+“right-orthogonally invariant” because the distribution of A is
+identical to that of A V0 for any ﬁxed orthogonal matrix V0.
+We will discuss the distribution of the singular values s∈ RN
+below.
+Although we have assumed that A is square to streamline
+the analysis, we make this assumption without loss of gener-
+ality. For example, by setting
+U =
+[
+U0 0
+0 I
+]
+, s =
+[
+s0
+0
+]
+,
+our formulation can model a wide rectangular matrix whose
+SVD is U0S0VT with diag(S0) = s0. A similar manipulation
+allows us to model a tall rectangular matrix.
+2) Denoiser: Our analysis applies to a fairly general class
+of denoising functions g1(·, γ 1k) indexed by the parameter
+γ1k≥ 0. Our main assumption is that the denoiser is separable,
+meaning that it is of the form (8) for some scalar denoiser
+g1(·, γ 1k). As discussed above, this separability assumption
+will occur for the MAP and MMSE denoisers under the
+assumption of an i.i.d. prior. However, we do not require the
+denoiser to be MAP or MMSE for any particular prior. We will
+impose certain Lipschitz continuity conditions on g1(·, γ 1k) in
+the sequel.
+3) Asymptotic distributions: It remains to describe the
+distributions of the true vector x0 and the singular-value
+vector s. A simple model would be to assume that they are
+random i.i.d. sequences that grow with N . However, following
+the Bayati-Montanari analysis [4], we will consider a more
+general framework where each of these vectors is modeled as
+deterministic sequence for which the empirical distributi on of
+the components converges in distribution. When the vectors
+x0 and s are i.i.d. random sequences, they will satisfy this
+condition almost surely. Details of this analysis framewor k
+are reviewed in Appendix B.
+Using the deﬁnitions in Appendix B, we assume that the
+components of the singular-value vector s ∈ RN in (29)
+converge empirically with second-order moments as
+lim
+N →∞
+{sn}N
+n=1
+P L(2)
+= S, (30)
+for some positive random variable S. We assume that E[S] > 0
+and S ∈ [0, S max] for some ﬁnite maximum value Smax.
+Additionally, we assume that the components of the true
+vector, x0, and the initial input to the denoiser, r10, converge
+empirically as
+lim
+N →∞
+{(r10,n , x 0
+n)}N
+n=1
+P L(2)
+= ( R10, X 0), (31)
+
+=== PDF PAGE 7 ===
+7
+for some random variables (R10, X 0). Note that the conver-
+gence with second-order moments requires that E[(X 0)2] <
+∞ and E[R2
+10] <∞ , so they have bounded second moments.
+We also assume that the initial second-order term, if depend ent
+on N , converges as
+lim
+N →∞
+γ10(N ) = γ 10, (32)
+for some γ 10 > 0.
+As stated above, most of our analysis will apply to general
+separable denoisers g1(·, γ 1k). However, some results will
+apply speciﬁcally to MMSE denoisers. Under the assumption
+that the components of the true vector x0 are asymptotically
+distributed like the random variable X 0, as in (31), the MMSE
+denoiser (14) and its derivative (16) reduce to
+g1(r1, γ 1) = E
+[
+X 0|R1 = r1
+]
+,
+g′
+1(r1, γ 1) = γ1var
+[
+X 0|R1 = r1
+]
+, (33)
+where R1 is the random variable representing X 0 corrupted
+by AWGN noise, i.e.,
+R1 = X 0 + P, P ∼N (0, γ − 1
+1 ),
+with P being independent of X 0. Thus, the MMSE denoiser
+and its derivative can be computed from the posterior mean
+and variance of X 0 under an AWGN measurement.
+B. Error Functions
+Before describing the state evolution (SE) equations and
+the analysis in the LSL, we need to introduce two key
+functions: error functions and sensitivity functions . We begin
+by describing the error functions.
+The error functions, in essence, describe the mean squared
+error (MSE) of the denoiser and LMMSE estimators under
+AWGN measurements. Recall from Section IV -A, that we have
+assumed that the denoiser g1(·, γ 1) is separable with some
+componentwise function g1(·, γ 1). For this function g1(·, γ 1),
+deﬁne the error function as
+E1(γ1, τ 1) := E
+[
+(g1(R1, γ 1)− X 0)2]
+,
+R1 = X 0 + P, P ∼N (0, τ 1). (34)
+The function E1(γ1, τ 1) thus represents the MSE of the esti-
+mate ˆX = g1(R1, γ 1) from a measurement R1 corrupted by
+Gaussian noise of variance τ1. For the LMMSE estimator, we
+deﬁne the error function as
+E2(γ2, τ 2) := lim
+N →∞
+1
+N E
+[
+∥g2(r2, γ 2)− x0∥2]
+,
+r2 = x0 + q, q∼N (0, τ 2I),
+y = Ax0 + w, w∼N (0, γ − 1
+w0 I), (35)
+which is the average per component error of the vector esti-
+mate under Gaussian noise. Note that E2(γ2, τ 2) is implicitly
+a function of the noise precision levels γw0 and γw (through
+g2 from (24)), but this dependence is omitted to simplify the
+notation.
+We will say that both estimators are “matched” when
+τ1 = γ − 1
+1 , τ 2 = γ − 1
+2 , γ w = γw0,
+so that the noise levels used by the estimators both match the
+true noise levels. Under the matched condition, we will use
+the simpliﬁed notation
+E1(γ1) :=E1(γ1, γ − 1
+1 ), E2(γ2) :=E2(γ2, γ − 1
+2 ).
+The following lemma establishes some basic properties of th e
+error functions.
+Lemma 1. Recall the error functions E1,E2 deﬁned above.
+(a) F or the MMSE denoiser (33) under the matched condition
+τ1 = γ − 1
+1 , the error function is the conditional variance
+E1(γ1) = var
+[
+X 0|R1 = X 0+P
+]
+, P ∼N (0, γ − 1
+1 ).
+(36)
+(b) The LMMSE error function is given by
+E2(γ2, τ 2) = lim
+N →∞
+1
+N Tr
+[
+Q− 2 ˜Q
+]
+, (37)
+where Q and ˜Q are the matrices
+Q := γwATA + γ2I, ˜Q := γ 2
+w
+γw0
+ATA + τ2γ 2
+2 I. (38)
+Under the matched condition τ2 = γ − 1
+2 and γw = γw0,
+E2(γ2) = lim
+N →∞
+1
+N Tr
+[
+Q− 1]
+. (39)
+(c) The LMMSE error function is also given by
+E2(γ2, τ 2) = E
+[ γ 2
+wS2/γ w0 + τ2γ 2
+2
+(γwS2 + γ2)2
+]
+, (40)
+where S is the random variable (30) representing the
+distribution of the singular values of A. F or the matched
+condition τ2 = γ − 1
+2 and γw = γw0,
+E2(γ2) = E
+[ 1
+γwS2 + γ2
+]
+. (41)
+Proof. See Appendix C. □
+C. Sensitivity Functions
+The sensitivity functions describe the expected divergenc e
+of the estimator. For the denoiser, the sensitivity functio n is
+deﬁned as
+A1(γ1, τ 1) := E [g′
+1(R1, γ 1)] ,
+R1 = X 0 + P, P ∼N (0, τ 1), (42)
+which is the average derivative under a Gaussian noise input .
+For the LMMSE estimator, the sensitivity is deﬁned as
+A2(γ2) := lim
+N →∞
+1
+N Tr
+[ ∂g2(r2, γ 2)
+∂r2
+]
+. (43)
+Lemma 2. F or the sensitivity functions above:
+(a) F or the MMSE denoiser (33) under the matched condition
+τ1 = γ − 1
+1 , the sensitivity function is given by
+A1(γ1, γ − 1
+1 ) = γ1var
+[
+X 0|R1 = X 0 +N (0, γ − 1
+1 )
+]
+,
+(44)
+which is the ratio of the conditional variance to the
+measurement variance γ − 1
+1 .
+
+=== PDF PAGE 8 ===
+8
+(b) The LMMSE estimator’s sensitivity function is given by
+A2(γ2) = lim
+N →∞
+1
+N γ2Tr
+[
+(γwATA + γ2I)− 1
+]
+.
+(c) The LMMSE estimator’s sensitivity function can also be
+written as
+A2(γ2) = E
+[ γ2
+γwS2 + γ2
+]
+.
+Proof. See Appendix C. □
+D. State Evolution Equations
+We can now describe our main result, which is the SE
+equations for V AMP . For a given iteration k≥ 1, consider
+the set of components,
+{(ˆx1k,n , r 1k,n , x 0
+n), n = 1, . . . , N }.
+This set represents the components of the true vector x0,
+its corresponding estimate ˆx1k and the denoiser input r1k.
+Theorem 1 below will show that, under certain assumptions,
+these components converge empirically as
+lim
+N →∞
+{(ˆx1k,n , r 1k,n , x 0
+n)}
+P L(2)
+= ( ˆX1k, R 1k, X 0), (45)
+where the random variables ( ˆX1k, R 1k, X 0) are given by
+R1k = X 0 + Pk, P k∼N (0, τ 1k), (46a)
+ˆX1k = g1(R1k,
+γ 1k), (46b)
+for constants γ1k and τ1k that will be deﬁned below. Thus,
+each component r1k,n appears as the true component x0
+n
+plus Gaussian noise. The corresponding estimate ˆx1k,n then
+appears as the denoiser output with r1k,n as the input. Hence,
+the asymptotic behavior of any component x0
+n and its corre-
+sponding ˆx1k,n is identical to a simple scalar system. We will
+refer to (45)-(46) as the denoiser’s scalar equivalent model .
+For the LMMSE estimation function, we deﬁne the trans-
+formed error and transformed noise,
+qk := VT(r2k− x0), ξ := UTw, (47)
+where U and V are the matrices in the SVD decomposition
+(29). Theorem 1 will also show that these transformed errors
+and singular values sn converge as,
+lim
+N →∞
+{(qk,n , ξ n, s n)}
+P L(2)
+= ( Qk, Ξ, S ), (48)
+to a set of random variables (Qk, Ξ, S ). These random vari-
+ables are independent, with S deﬁned in the limit (30) and
+Qk∼N (0, τ 2k), Ξ∼N (0, γ − 1
+w0 ), (49)
+where τ2k is a variance that will be deﬁned below and γw0 is
+the noise precision in the measurement model (28). Thus (48) -
+(49) is a scalar equivalent model for the LMMSE estimator.
+The variance terms are deﬁned recursively through what are
+called state evolution equations,
+α 1k = A1(γ 1k, τ 1k) (50a)
+η1k = γ1k
+α 1k
+, γ2k = η1k− γ1k (50b)
+τ2k = 1
+(1− α 1k)2
+[
+E1(γ 1k, τ 1k)− α 2
+1kτ1k
+]
+, (50c)
+α 2k = A2(γ 2k, τ 2k) (50d)
+η2k = γ2k
+α 2k
+, γ1,k + 1= η2k− γ2k (50e)
+τ1,k + 1= 1
+(1− α 2k)2
+[
+E2(γ 2k, τ 2k)− α 2
+2kτ2k
+]
+, (50f)
+which are initialized with
+τ10 = E[(R10− X 0)2], (51)
+and
+γ10 deﬁned from the limit (32).
+Theorem 1. Under the above assumptions and deﬁnitions,
+assume additionally that for all iterations k:
+(i) The solution α 1k from the SE equations (50) satisﬁes
+α 1k∈ (0, 1). (52)
+(ii) The functions Ai(γi, τ i) andEi(γi, τ i) are continuous at
+(γi, τ i) = ( γ ik, τ ik).
+(iii) The denoiser function g1(r1, γ 1) and its derivative
+g′
+1(r1, γ 1) are uniformly Lipschitz in r1 at γ1 = γ1k. (See
+Appendix B for a precise deﬁnition of uniform Lipschitz
+continuity.)
+Then, for any ﬁxed iteration k≥ 0,
+lim
+N →∞
+(α ik, η ik, γ ik) = (
+α ik, ηik, γ ik) (53)
+almost surely. In addition, the empirical limit (45) holds almost
+surely for all k > 0, and (48) holds almost surely for all k≥ 0.
+E. Mean Squared Error
+One important use of the scalar equivalent model is to
+predict the asymptotic performance of the V AMP algorithm
+in the LSL. For example, deﬁne the asymptotic mean squared
+error (MSE) of the iteration- k estimate ˆxik as
+MSEik := lim
+N →∞
+1
+N∥ˆxik− x0∥2. (54)
+For this MSE, we claim that
+MSEik =Ei(γik, τ ik). (55)
+To prove (55) for i = 1, we write
+MSE1k = lim
+N →∞
+1
+N
+N∑
+n=1
+(ˆx1k,n − x0
+n)2
+(a)
+= E[( ˆX1k− X 0)2]
+(b)
+= E[(g1(R1,
+γ1k)− X 0)2]
+(c)
+=E1(γ 1k, τ 1k)
+where (a) and (b) follow from the convergence in (45) and the
+scalar equivalent model (45), and where (c) follows from (34 ).
+Using the scalar equivalent model (48), the deﬁnition of E2(·)
+
+=== PDF PAGE 9 ===
+9
+in (35), and calculations similar to the proof of Lemma 1, one
+can also show that (55) holds for i = 2.
+Interestingly, this type of calculation can be used to compu te
+any other componentwise distortion metric. Speciﬁcally, g iven
+any distortion function d(x, ˆx) that is pseudo-Lipschitz of
+order two, its average value is given by
+lim
+N →∞
+1
+N
+N∑
+n=1
+d(x0
+n, ˆx1k,n ) = E
+[
+d(X 0, ˆX1k)
+]
+,
+where the expectation is from the scalar equivalent model (4 5).
+F . Contractiveness of the Denoiser
+An essential requirement of Theorem 1 is the condition (52)
+that
+α 1k∈ (0, 1). This assumption requires that, in a certain
+average, the denoiser function g1(·, γ 1) is increasing (i.e.,
+g′
+1(r1n, γ 1) > 0) and is a contraction (i.e., g′
+1(r1n, γ 1) < 1).
+If these conditions are not met, then α 1k ≤ 0 or α 1k≥ 1,
+and either the estimated precision η1k or γ 2k in (50b) may be
+negative, causing subsequent updates to be invalid. Thus, α 1k
+must be in the range (0, 1). There are two important conditions
+under which this increasing contraction property are prova bly
+guaranteed:
+Strongly convex penalties: Suppose that g1(r1n, γ 1) is the
+either the MAP denoiser (13) or the MMSE denoiser (14) for
+a density p(xn) that is strongly log-concave. That is, there
+exists constants c1, c 2 > 0 such that
+c1≤− ∂ 2
+∂x 2
+n
+ln p(xn)≤ c2.
+Then, using results from log-concave functions [35], it is
+shown in [11] that
+g′
+1(r1n, γ 1)∈
+[ γ1
+c2 + γ1
+, γ1
+c1 + γ1
+]
+⊂ (0, 1),
+for all r1n and γ1 > 0. Hence, from the deﬁnition of the
+sensitivity function (42), the sensitivity α 1k in (50a) will be
+in the range (0, 1).
+Matched MMSE denoising: Suppose that g1(r1n, γ 1) is
+the MMSE denoiser in the matched condition where γ1k =
+τ− 1
+1k for some iteration k. From (44),
+A1(γ1, γ − 1
+1 ) = γ1var
+[
+X 0|R1 = X 0 +N (0, γ − 1
+1 )
+]
+.
+Since the conditional variance is positive, A1(γ1, γ − 1
+1 ) > 0.
+Also, since the variance is bounded above by the MSE of a
+linear estimator,
+γ1var
+[
+X 0|R1 = X 0 +N (0, γ − 1
+1 )
+]
+≤ γ1
+γ − 1
+1 τx0
+τx0 + γ − 1
+1
+= γ1τx0
+1 + γ1τx0
+< 1,
+where τx0 = var( X 0). Thus, we have A1(γ1, γ − 1
+1 )∈ (0, 1)
+and α 1k∈ (0, 1).
+In the case when the prior is not log-concave and the
+estimator uses an denoiser that is not perfectly matched, α 1k
+may not be in the valid range (0, 1). In these cases, V AMP
+may obtain invalid (i.e. negative) variance estimates.
+V. MMSE D ENOISING , O PTIMALITY , AND CONNECTIONS
+TO THE REPLICA METHOD
+An important special case of the V AMP algorithm is when
+we apply the MMSE optimal denoiser under matched γw. In
+this case, the SE equations simplify considerably.
+Theorem 2. Consider the SE equations (50) with the MMSE
+optimal denoiser (33), matched γw = γw0, and matched initial
+condition
+γ10 = τ− 1
+10 . Then, for all iterations k≥ 0,
+η1k = 1
+E1(γ 1k) , γ 2k = τ− 1
+2k = η1k− γ 1k, (56a)
+η2k = 1
+E2(γ 2k) , γ 1,k + 1= τ− 1
+1,k + 1= η2k− γ 2k. (56b)
+In addition, for estimators i = 1, 2, ηik is the inverse MSE:
+η− 1
+ik = lim
+N →∞
+1
+N∥ˆxik− x0∥2. (56c)
+Proof. See Appendix H. □
+It is useful to compare this result with the work [21], which
+uses the replica method from statistical physics to predict
+the asymptotic MMSE error in the LSL. To state the result,
+given a positive semideﬁnite matrix C, we deﬁne its Stieltjes
+transform as
+SC(ω ) = 1
+N Tr
+[
+(C− ω IN )− 1]
+= 1
+N
+N∑
+n=1
+1
+λ n− ω , (57)
+where λ n are the eigenvalues of C. Also, let RC(ω ) denote
+the so-called R-transform of C, given by
+RC(ω ) = S− 1
+C (− ω )− 1
+ω , (58)
+where the inverse S− 1
+C (·) is in terms of composition of
+functions. The Stieltjes and R-transforms are discussed in
+detail in [36]. The Stieltjes and R-transforms can be extended
+to random matrix sequences by taking limits as N→∞ (for
+matrix sequences where these limits converge almost surely ).
+Now suppose that ˆx = E[x0|y] is the MMSE estimate of
+x0 given y. Let η− 1 be the asymptotic inverse MSE
+η− 1 := lim
+N →∞
+1
+N∥ˆx− x0∥2.
+Using a so-called replica symmetric analysis, it is argued i n
+[21] that this MSE should satisfy the ﬁxed point equations
+γ 1 = RC(− η− 1), η− 1 =E1(γ 1), (59)
+where C = γw0ATA. A similar result is given in [16].
+Theorem 3. Let γ i, ηi be any ﬁxed point solutions to the SE
+equations (56) of VAMP under MMSE denoising and matched
+γw = γw0. Then η1 = η2. If we deﬁne η := ηi as the common
+value, then γ 1 and η satisfy the replica ﬁxed point equation
+(59).
+Proof. Note that we have dropped the iteration index k since
+we are discussing a ﬁxed point. First, (56) shows that, at any
+ﬁxed point,
+γ1 + γ 2 = η1 = η2,
+
+=== PDF PAGE 10 ===
+10
+so that
+η1 = η2. Also, in the matched case, (41) shows that
+E2(γ 2) = SC(− γ2).
+Since η− 1 =E2(γ 2), we have that
+γ1 = η− γ 2 = η + S− 1
+C (η− 1) = RC(− η− 1).
+Also, η− 1 = η− 1
+1 =E(γ 1). □
+The consequence of Theorem 3 is that, if the replica
+equations (59) have a unique ﬁxed point, then the MSE
+achieved by the V AMP algorithm exactly matches the Bayes
+optimal MSE as predicted by the replica method. Hence,
+if this replica prediction is correct, then the V AMP method
+provides a computationally efﬁcient method for ﬁnding MSE
+optimal estimates under very general priors—including pri ors
+for which the associated penalty functions are not convex.
+The replica method, however, is generally heuristic. But in
+the case of i.i.d. Gaussian matrices, it has recently been pr oven
+that the replica prediction is correct [37], [38].
+VI. N UMERICAL EXPERIMENTS
+In this section, we present numerical experiments that
+compare the V AMP 4 Algorithm 2 to the V AMP state evo-
+lution from Section IV, the replica prediction from [21], th e
+AMP Algorithm 1 from [3], the S-AMP algorithm from [18,
+Sec. IV], the adaptively damped (AD) GAMP algorithm from
+[9], and the support-oracle MMSE estimator, whose MSE
+lower bounds that achievable by any practical method. In all
+cases, we consider the recovery of vectors x0 ∈ RN from
+AWGN-corrupted measurements y ∈ RM constructed from
+(1), where x0 was drawn i.i.d. zero-mean Bernoulli-Gaussian
+with Pr{x0
+j ̸= 0} = 0 . 1, where w ∼ N(0, I/γ w0), and
+where M = 512 and N = 1024 . All methods under test
+were matched to the true signal and noise statistics. When
+computing the support-oracle MMSE estimate, the support of
+x0 is assumed to be known, in which case the problem reduces
+to estimating the non-zero coefﬁcients of x0. Since these non-
+zero coefﬁcients are Gaussian, their MMSE estimate can be
+computed in closed form. For V AMP we used the implemen-
+tation enhancements described in Section III-C. For line 7 o f
+AMP Algorithm 1, we used 1/γ k+ 1 = 1 /γ w0 + N
+M α k/γ k, as
+speciﬁed in [3, Eq. (25)]. For the AMP , S-AMP , and AD-
+GAMP algorithms, we allowed a maximum of 1000 iterations,
+and for the V AMP algorithm we allowed a maximum of 100
+iterations.
+A. Ill-conditioned A
+First we investigate algorithm robustness to the condition
+number of A. For this study, realizations of A were con-
+structed from the SVD A =
+UDiag(s)V
+T
+∈ RM× N with geo-
+metric singular values s∈ RM . That is, ¯si/ ¯si− 1 = ρ∀i, with ρ
+chosen to achieve a desired condition number κ(A) := ¯s1/ ¯sM
+and with ¯s1 chosen so that ∥A∥2
+F = N . The singular vector
+matrices
+U, V were drawn uniformly at random from the
+group of orthogonal matrices, i.e., from the Haar distribut ion.
+4A Matlab implementation of V AMP can be found in the public-do main
+GAMPmatlab toolbox [33].
+100 101 102 103 104 105 106
+-50
+-45
+-40
+-35
+-30
+-25
+-20
+-15
+-10
+-5
+0
+AMP
+S-AMP
+VAMP
+replica
+oracle
+PSfrag replacements
+condition number κ(A)
+median NMSE [dB]
+AD-GAMP
+Fig. 3. NMSE versus condition number κ(A) at ﬁnal algorithm iteration. The
+reported NMSE is the median over 500 realizations, with error bars shown
+on the V AMP trace.
+Finally, the signal and noise variances were set to achieve a
+signal-to-noise ratio (SNR) E[∥Ax∥2]/ E[∥w∥2] of 40 dB.
+Figure 3 plots the median normalized MSE (NMSE)
+achieved by each algorithm over 500 independent realizations
+of {A, x, w}, where NMSE (ˆx) := ∥ˆx− x0∥2/ ∥x0∥2. To
+enhance visual clarity, NMSEs were clipped to a maximum
+value of 1. Also, error bars are shown that (separately) quantify
+the positive and negative standard deviations of V AMP’s
+NMSE from the median value. The NMSE was evaluated for
+condition numbers κ(A) ranging from 1 (i.e., row-orthogonal
+A) to 1× 106 (i.e., highly ill-conditioned A).
+In Figure 3, we see that AMP and S-AMP diverged for
+even mildly ill-conditioned A. We also see that, while adaptive
+damping helped to extend the operating range of AMP , it had a
+limited effect. In contrast, Figure 3 shows that V AMP’s NMSE
+stayed relatively close to the replica prediction for all co ndition
+numbers κ(A). The small gap between V AMP and the replica
+prediction is due to ﬁnite-dimensional effects; the SE anal ysis
+from Section IV establishes that this gap closes in the large -
+system limit. Finally, Figure 3 shows that the oracle bound i s
+close to the replica prediction at small κ(A) but not at large
+κ(A).
+Figure 4(a) plots NMSE versus algorithm iteration for
+condition number κ(A) = 1 and Figure 4(b) plots the same for
+κ(A) = 1000 , again with error bars on the V AMP traces. Both
+ﬁgures show that the V AMP trajectory stayed very close to the
+V AMP-SE trajectory at every iteration. The ﬁgures also show
+that V AMP converges a bit quicker than AMP , S-AMP , and
+AD-GAMP when κ(A) = 1 , and that V AMP’s convergence
+rate is relatively insensitive to the condition number κ(A).
+B. Non-zero-mean A
+In this section, we investigate algorithm robustness to the
+componentwise mean of A. For this study, realizations of A
+were constructed by ﬁrst drawing an i.i.d. N (µ, 1/M ) matrix
+and then scaling it so that ∥A∥2
+F = N (noting that essentially
+no scaling is needed when µ≈ 0). As before, the signal and
+
+=== PDF PAGE 11 ===
+11
+100 101 102 103
+-50
+-40
+-30
+-20
+-10
+0
+AMP
+S-AMP
+VAMP
+VAMP SE
+oracle
+100 101 102 103
+-40
+-30
+-20
+-10
+0
+AMP
+S-AMP
+VAMP
+VAMP SE
+oracle
+PSfrag replacements
+(a)
+(b)
+iteration
+median NMSE [dB] median NMSE [dB]
+AD-GAMP
+AD-GAMP
+Fig. 4. NMSE versus algorithm iteration for condition numbe r κ(A) = 1 in
+(a) and κ(A) = 1000 in (b). The reported NMSE is the median over 500
+realizations, with error bars shown on the V AMP traces.
+10-3 10-2 10-1 100 101
+-50
+-45
+-40
+-35
+-30
+-25
+-20
+-15
+-10
+-5
+0 SNR=40dB, N=1024, M=512, rho=0.2, isCmplx=0, median of 500
+AMP
+S-AMP
+VAMP
+replica
+oracle
+PSfrag replacements
+mean µ of A
+median NMSE [dB]
+MAD-GAMP
+Fig. 5. NMSE versus mean µ at ﬁnal algorithm iteration. The reported NMSE
+is the median over 200 realizations, with error bars shown on the V AMP trace.
+noise variances were set to achieve an SNR of 40 dB. For
+AD-GAMP , we used the mean-removal trick proposed in [9].
+Figure 5 plots the NMSE achieved by each algorithm over
+200 independent realizations of {A, x, w}. The NMSE was
+evaluated for mean parameters µ between 0. 001 and 10. Note
+that, when µ > 0. 044, the mean is larger than the standard
+deviation. Thus, the values of µ that we consider are quite
+extreme relative to past studies like [8].
+Figure 5 shows that AMP and S-AMP diverged for even
+mildly mean-perturbed A. In contrast, the ﬁgure shows that
+V AMP and mean-removed AD-GAMP (MAD-GAMP) closely
+matched the replica prediction for all mean parameters µ .
+It also shows a relatively small gap between the replica
+prediction and the oracle bound, especially for small µ .
+Figure 6(a) plots NMSE versus algorithm iteration for
+matrix mean µ = 0 . 001 and Figure 6(b) plots the same for
+µ = 1 . When µ = 0 . 001, V AMP closely matched its SE at
+100 101 102 103
+-50
+-40
+-30
+-20
+-10
+0
+AMP
+S-AMP
+VAMP
+VAMP SE
+oracle
+100 101 102 103
+-20
+-15
+-10
+-5
+0
+AMP
+S-AMP
+VAMP
+VAMP SE
+oracle
+PSfrag replacements
+(a)
+(b)
+iteration
+median NMSE [dB] median NMSE [dB]
+MAD-GAMP
+MAD-GAMP
+Fig. 6. NMSE versus algorithm iteration when A has mean µ = 0.001 in (a)
+and µ = 1 in (b). The reported NMSE is the median over 200 realizations,
+with error bars shown on the V AMP traces.
+all iterations and converged noticeably quicker than AMP , S -
+AMP , and MAD-V AMP . Whenµ = 1 , there was a small but
+noticeable gap between V AMP and its SE for the ﬁrst few
+iterations, although the gap closed after about 10 iterations.
+This gap may be due to the fact that the random matrix A used
+for this experiment was not right-orthogonally invariant, since
+the dominant singular vectors are close to (scaled versions of)
+the 1s vector for sufﬁciently large µ .
+C. Row-orthogonal A
+In this section we investigate algorithm NMSE versus
+SNR for row-orthogonal A, i.e., A constructed as in Sec-
+tion VI-A but with κ(A) = 1 . Previous studies [16], [19]
+have demonstrated that, when A is orthogonally invariant but
+not i.i.d. Gaussian (e.g., row-orthogonal), the ﬁxed point s of
+S-AMP and diagonal-restricted EC are better than those of
+AMP because the former approaches exploit the singular-val ue
+spectrum of A, whereas AMP does not.
+Table I reports the NMSE achieved by V AMP , S-AMP , and
+AMP at three levels of SNR: 10 dB, 20 dB, and 30 dB. The
+NMSEs reported in the table were computed from an average
+of 1000 independent realizations of {A, x, w}. Since the
+NMSE differences between the algorithms are quite small, th e
+table also reports the standard error on each NMSE estimate
+to conﬁrm its accuracy.
+Table I shows that V AMP and S-AMP gave nearly identical
+NMSE at all tested SNRs, which is expected because these two
+algorithms share the same ﬁxed points. The table also shows
+that V AMP’s NMSE was strictly better than AMP’s NMSE
+at low SNR (as expected), but that the NMSE difference
+narrows as the SNR increases. Finally, the table reports the
+replica prediction of the NMSE, which is about 3% lower
+(i.e.,− 0. 15 dB) than V AMP’s empirical NMSE at each SNR.
+We attribute this difference to ﬁnite-dimensional effects .
+
+=== PDF PAGE 12 ===
+12
+SNR replica V AMP(stderr) S-AMP(stderr) AMP(stderr)
+10 dB 5.09e-02 5.27e-02(4.3e-04) 5.27e-02(4.3e-04) 5.42e-02( 4.2e-04)
+20 dB 3.50e-03 3.57e-03(2.7e-05) 3.58e-03(2.7e-05) 3.62e-03( 2.6e-05)
+30 dB 2.75e-04 2.84e-04(2.2e-06) 2.85e-04(2.2e-06) 2.85e-04( 2.1e-06)
+TABLE I
+AVERAGE NMSE VERSUS SNR FOR ROW -ORTHOGONAL A, WHERE THE
+AVERAGE WAS COMPUTED FROM 1000 REALIZATIONS . STANDARD ERROR
+DEVIATIONS ARE ALSO REPORTED .
+D. Discussion
+Our numerical results conﬁrm what is already known about
+the ﬁxed points of diagonally restricted EC (via V AMP) and
+S-AMP . That is, whenA is large and right-orthogonally invari-
+ant, they agree with each other and with the replica predicti on;
+and when A is large i.i.d. Gaussian (which is a special case
+of right-orthogonally invariant [36]), they furthermore a gree
+with the ﬁxed points of AMP [16], [19].
+But our numerical results also clarify that it is not enough
+for an algorithm to have good ﬁxed points, because it may not
+converge to its ﬁxed points. For example, although the ﬁxed
+points of S-AMP are good (i.e., replica matching) for any large
+right-orthogonally invariant A, our numerical results indicate
+that S-AMP converges only for a small subset of large right-
+orthogonally invariant A: those with singular-value spectra
+similar (or ﬂatter than) i.i.d. Gaussian A.
+The SE analysis from Section IV establishes that, in the
+large-system limit and under matched priors, V AMP is guar-
+anteed to converge to a ﬁxed point that is also a ﬁxed point
+of the replica equation (59). Our numerical results suggest
+that, even with large but ﬁnite-dimensional right orthogon ally
+invariant A (i.e., 512× 1024 in our simulations), V AMP attains
+NMSEs that are very close to the replica prediction.
+VII. C ONCLUSIONS
+In this paper, we considered the standard linear regression
+(SLR) problem (1), where the goal is to recover the vector x0
+from noisy linear measurements y = Ax0 + w. Our work is
+inspired by Donoho, Maleki, and Montanari’s AMP algorithm
+[2], which offers a computationally efﬁcient approach to SL R.
+AMP has the desirable property that its behavior is rigorous ly
+characterized under large i.i.d. sub-Gaussian A by a scalar
+state evolution whose ﬁxed points, when unique, are Bayes
+optimal [4]. A major shortcoming of AMP , however, is its
+fragility with respect to the i.i.d. sub-Gaussian model on A:
+even small perturbations from this model can cause AMP to
+diverge.
+In response, we proposed a vector AMP (V AMP) algorithm
+that (after performing an initial SVD) has similar complexi ty
+to AMP but is much more robust with respect to the matrix A.
+Our main contribution is establishing that V AMP’s behavior
+can be rigorously characterized by a scalar state-evolutio n
+that holds for large, right-orthogonally invariant A. The ﬁxed
+points of V AMP’s state evolution are, in fact, consistent wi th
+the replica prediction of the minimum mean-squared error
+recently derived in [21]. We also showed how V AMP can
+be derived as an approximation of belief propagation on a
+factor graph with vector-valued nodes, hence the name “vect or
+AMP .” Finally, we presented numerical experiments to demon-
+strate V AMP’s robust convergence for ill-conditioned and
+mean-perturbed matrices A that cause earlier AMP algorithms
+to diverge.
+As future work, it would be interesting to extend V AMP
+to the generalized linear model, where the outputs Ax0 are
+non-linearly mapped to y. Also, it would be interesting to
+design and analyze extensions of V AMP that are robust to
+more general models for A, such as the case where A is
+statistically coupled to x0.
+APPENDIX A
+MESSAGE -PASSING DERIVATION OF VAMP
+In this appendix, we detail the message-passing derivation
+of Algorithm 3. Below, we will use k to denote the V AMP
+iteration and n to index the elements of N -dimensional vectors
+like x1, r1k and ˆx1k. We start by initializing the message-
+passing with µ δ→ x1 (x1) = N (x1; r10, γ − 1
+10 I). The following
+steps are then repeated for k = 0, 1, 2, . . . .
+From Rule 1, we ﬁrst set the approximate belief on
+x1 as N (x1; ˆx1k, η − 1
+1k I), where ˆx1k = E[x1|bsp(x1)] and
+η− 1
+1k =⟨diag(Cov[x1|bsp(x1)])⟩ for the SP belief bsp(x1)∝
+p(x1)N (x1; r1k, γ − 1
+1k I). With an i.i.d. prior p(x1) as in (12),
+we have that [ˆx1k]n = g1(r1k,n , γ 1k) for the conditional-mean
+estimator g1(·, γ 1k) given in (14), yielding line 4 of Algo-
+rithm 3. Furthermore, from (16) we see that the correspondin g
+conditional covariance is γ − 1
+1k g′
+1(r1k,n , γ 1k), yielding lines 5-6
+of Algorithm 3.
+Next, Rule 2 says to set the message µ x1→ δ(x1) propor-
+tional to N (x1; ˆx1k, η − 1
+1k I)/ N (x1; r1k, γ − 1
+1k I). Since
+N (x; ˆx, η − 1I)/ N (x; r, γ − 1I)
+∝N
+(
+x; (ˆxη− rγ)/ (η− γ), (η− γ)− 1I
+)
+, (60)
+we have µ x1→ δ(x1) =N (x1; r2k, γ − 1
+2k I) for r2k = ( ˆx1kη1k−
+r1kγ1k)/ (η1k− γ1k) and γ2k = η1k− γ1k, yielding lines 7-8 of
+Algorithm 3. Rule 3 then implies that the message µ x1→ δ(x1)
+will ﬂow rightward through the δ node unchanged, manifesting
+as µ δ→ x2 (x2) =N (x2; r2k, γ − 1
+2k I) on the other side.
+Rule 1 then says to set the approximate belief on
+x2 at N (x2; ˆx2k, η − 1
+2k I), where ˆx2k = E[x2|bsp(x2)] and
+η− 1
+2k =⟨diag(Cov[x2|bsp(x2)])⟩ for the SP belief bsp(x2)∝
+N (x2; r2k, γ − 1
+2k I)N (y; Ax2, γ − 1
+w I). Using standard manipu-
+lations, it can be shown that this belief is Gaussian with mea n
+ˆx2k =
+(
+γwATA + γ2kI
+) − 1 (
+γwATy + γ2kr2k
+)
+(61)
+and covariance (γwATA + γ2kI)− 1. The equivalence between
+(61) and (24) explains line 11 of Algorithm 3. Furthermore, i t
+can be seen by inspection that the average of the diagonal
+of this covariance matrix coincides with γ − 1
+2k⟨g′
+2(r2k, γ 2k)⟩
+for⟨g′
+2(r2k, γ 2k)⟩ from (25), thus explaining lines 12-13 of
+Algorithm 3.
+Rule 2 then says to set the message µ x2→ δ(x2) at
+N (x2; ˆx2k, η − 1
+2k I)/ N (x2; r2k, γ − 1
+2k I), which (60) simpliﬁes to
+N (x2; r1,k + 1, γ − 1
+1,k + 1I) for r1,k + 1= ( ˆx2kη2k− r2kγ2k)/ (η2k−
+γ2k) and γ1,k + 1 = η2k− γ2k, yielding lines 14-15 of Algo-
+rithm 3. Finally, Rule 3 implies that the message µ x2→ δ(x2)
+
+=== PDF PAGE 13 ===
+13
+ﬂows left through the δ node unchanged, manifesting as
+µ δ→ x1 (x1) = N (x1; r1k+ 1, γ − 1
+1,k + 1I) on the other side. The
+above messaging sequence is then repeated with k← k + 1.
+APPENDIX B
+CONVERGENCE OF VECTOR SEQUENCES
+We review some deﬁnitions from the Bayati-Montanari
+paper [4], since we will use the same analysis framework in
+this paper. Fix a dimension r > 0, and suppose that, for each
+N , x(N ) is a vector of the form
+x(N ) = ( x1(N ), . . . , xN (N )),
+with vector sub-components xn(N ) ∈ Rr. Thus, the total
+dimension of x(N ) is rN . In this case, we will say that x(N )
+is a block vector sequence that scales with N under blocks
+xn(N )∈ Rr. When r = 1 , so that the blocks are scalar, we
+will simply say that x(N ) is a vector sequence that scales with
+N . Such vector sequences can be deterministic or random. In
+most cases, we will omit the notational dependence on N and
+simply write x.
+Now, given p≥ 1, a function f : Rs→ Rr is called pseudo-
+Lipschitz of order p, if there exists a constant C > 0 such that
+for all x1, x2∈ Rs,
+∥f (x1)− f (x2)∥≤ C∥x1− x2∥
+[
+1 +∥x1∥p− 1 +∥x2∥p− 1]
+.
+Observe that in the case p = 1 , pseudo-Lipschitz continuity
+reduces to the standard Lipschitz continuity.
+Now suppose that x = x(N ) is a block vector sequence,
+which may be deterministic or random. Given p≥ 1, we will
+say that x = x(N ) converges empirically with p-th order
+moments if there exists a random variable X∈ Rr such that
+(i) E|X|p <∞ ; and
+(ii) for any scalar-valued pseudo-Lipschitz continuous fu nc-
+tion f (·) of order p,
+lim
+N →∞
+1
+N
+N∑
+n=1
+f (xn(N )) = E [f (X)] a.s.. (62)
+Thus, the empirical mean of the components f (xn(N ))
+converges to the expectation E[f (X)]. When x converges
+empirically with p-th order moments, we will write, with some
+abuse of notation,
+lim
+N →∞
+{xn}N
+n=1
+P L(p)
+= X, (63)
+where, as usual, we have omitted the dependence xn =
+xn(N ). Note that the almost sure convergence in condition (ii)
+applies to the case where x(N ) is a random vector sequence.
+Importantly, this condition holds pointwise over each func tion
+f (·). It is shown in [4, Lemma 4] that, if condition (i) is true
+and condition (ii) is true for any bounded continuous functi ons
+f (x) as well as f (x) = xp, then condition (ii) holds for all
+pseudo-Lipschitz functions of order p.
+We conclude with one ﬁnal deﬁnition. Let φ(r, γ ) be a
+function on r ∈ Rs and γ ∈ R. We say that φ(r, γ ) is
+uniformly Lipschitz continuous in r at γ =
+γ if there exists
+constants L1 and L2≥ 0 and an open neighborhood U of γ,
+such that
+∥φ(r1, γ )− φ(r2, γ )∥≤ L1∥r1− r2∥, (64)
+for all r1, r2∈ Rs and γ∈ U ; and
+∥φ(r, γ 1)− φ(r, γ 2)∥≤ L2 (1 +∥r∥)|γ1− γ2|, (65)
+for all r∈ Rs and γ1, γ 2∈ U .
+APPENDIX C
+PROOF OF LEMMAS 1 AND 2
+For Lemma 1, part (a) follows immediately from (33) and
+(34). To prove part (b), suppose
+y = Ax0 + w, r2 = x0 + q.
+Then, the error is given by
+g2(r2, γ 2)− x0 (a)
+=
+(
+γwATA + γ2I
+) − 1
+×
+(
+γwATAx0 + γwATw + γ2r2
+)
+− x0
+(b)
+=
+(
+γwATA + γ2I
+) − 1 (
+γ2q + γwATw
+)
+,
+(c)
+= Q− 1
+(
+γ2q + γwATw
+)
+,
+where (a) follows by substituting y = Ax0 + w into (24); part
+(b) follows from the substitution r2 = x0 + q and collecting
+the terms with x0; and (c) follows from the deﬁnition of Q
+in (38). Hence, the error covariance matrix is given
+E
+[
+(g2(r2, γ 2)− x0)(g2(r2, γ 2)− x0)T
+]
+= Q− 1
+[
+γ 2
+2E[qqT] + γ 2
+wAE[wwT]AT
+]
+Q− 1
+= Q− 1 ˜QQ− 1,
+where we have used the the fact that q and w are independent
+Gaussians with variances τ2 and γ − 1
+w0 . This proves (37). Then,
+under the matched condition, we have that Q = ˜Q, which
+proves (39). Part (c) of Lemma 1 follows from part (b) by
+using the SVD (29).
+For Lemma 2, part (a) follows from averaging (33) over r1.
+Part (b) follows by taking the derivative in (24) and part (c)
+follows from using the SVD (29).
+APPENDIX D
+ORTHOGONAL MATRICES UNDER LINEAR CONSTRAINTS
+In preparation for proving Theorem 1, we derive various
+results on orthogonal matrices subject to linear constrain ts.
+To this end, suppose V ∈ RN × N is an orthogonal matrix
+satisfying linear constraints
+A = VB, (66)
+for some matrices A, B∈ RN × s for some s. Assume A and
+B are full column rank (hence s≤ N ). Let
+UA = A(ATA)− 1/ 2, UB = B(BTB)− 1/ 2. (67)
+
+=== PDF PAGE 14 ===
+14
+Also, let UA⊥ and UB⊥ be any N× (N− s) matrices
+whose columns are an orthonormal bases for Range(A)⊥ and
+Range(B)⊥ , respectively. Deﬁne
+˜V := UT
+A⊥ VUB⊥ , (68)
+which has dimension (N− s)× (N− s).
+Lemma 3. Under the above deﬁnitions ˜V satisﬁes
+V = A(ATA)− 1BT + UA⊥ ˜VUT
+B⊥ . (69)
+Proof. Let PA := UAUT
+A and P⊥
+A := UA⊥ UT
+A⊥ are
+the orthogonal projections onto Range(A) and Range(A)⊥
+respectively. Deﬁne PB and P⊥
+B similarly. Since, A = VB,
+we have VTA = B and therefore,
+P⊥
+AVPB = 0, PAVP⊥
+B = 0. (70)
+Therefore,
+V = (PA + P⊥
+A)V(PB + P⊥
+B)
+= (PAVPB + P⊥
+AVP⊥
+B). (71)
+Now,
+PAVPB = PAVB(BBT)− 1BT
+= PAA(BBT)− 1BT
+= A(BBT)− 1BT = A(ATA)− 1BT, (72)
+where, in the last step we used the fact that
+ATA = BTVTVB = BTB.
+Also, using the deﬁnition of ˜V in (68),
+PA⊥ VPT
+B⊥ = UA⊥ ˜VUT
+B⊥. (73)
+Substituting (72) and (73) into (71) obtains (69). To prove t hat
+˜V is orthogonal,
+˜VT ˜V
+(a)
+= UT
+B⊥ VPAVUB⊥
+(b)
+= UT
+B⊥ VTVUB⊥
+(c)
+= I,
+where (a) uses (68); (b) follows from (70) and (c) follows
+from the fact that V and UB⊥ have orthonormal columns.
+□
+Lemma 4. Let V∈ RN × N be a random matrix that is Haar
+distributed. Suppose that A and B are deterministic and G
+is the event that V satisﬁes linear constraints (66). Then, the
+conditional distribution given G, ˜V is Haar distributed matrix
+independent of G. Thus,
+V|G
+d
+= A(ATA)− 1BT + UA⊥ ˜VUT
+B⊥ ,
+where ˜V is Haar distributed and independent of G.
+Proof. Let ON be the set of N× N orthogonal matrices and
+letL be the set of matrices V∈ ON that satisfy the linear
+constraints (66). If pV(V) is the uniform density on ON (i.e.
+the Haar measure), the conditional density on V given the
+event G,
+pV|G(V|G) = 1
+Z pV(V)/BD
+{V∈L} ,
+where Z is the normalization constant. Now let φ : ˜V↦→ V
+be the mapping described by (69) which maps ON − s toL.
+This mapping is invertible. Since φ is afﬁne, the conditional
+density on ˜V is given by
+p ˜V|G( ˜V|G)∝ pV|G(φ( ˜V)|G)
+∝ pV(φ( ˜V))/BD
+{φ ( ˜V∈L )} = pV(φ( ˜V)), (74)
+where in the last step we used the fact that, for any matrix
+˜V, φ( ˜V)∈L (i.e. satisﬁes the linear constraints (66)). Now
+to show that ˜V is conditionally Haar distributed, we need to
+show that for any orthogonal matrix W0∈ ON − s,
+p ˜V|G(W0 ˜V|G) = p ˜V|G( ˜V|G). (75)
+To prove this, given W0∈ ON − s, deﬁne the matrix,
+W = UAUT
+A + UA⊥ W0UT
+A⊥ .
+One can verify that W∈ ON (i.e. it is orthogonal) and
+φ(W0 ˜V) = Wφ( ˜V). (76)
+Hence,
+p ˜V|G(W0 ˜V|G)
+(a)
+∝ pV(φ(W0 ˜V))
+(b)
+∝ pV(Wφ( ˜V))
+(c)
+∝ pV(φ( ˜V)),
+where (a) follows from (74); (b) follows from (76); and
+(c) follows from the orthogonal invariance of V. Hence,
+the conditional density of ˜V is invariant under orthogonal
+transforms and is thus Haar distributed. □
+We will use Lemma 4 in conjunction with the following
+simple result.
+Lemma 5. Fix a dimension s≥ 0, and suppose that x(N )
+and U(N ) are sequences such that for each N ,
+(i) U = U(N )∈ RN × (N − s) is a deterministic matrix with
+UTU = I;
+(ii) x = x(N )∈ RN − s a random vector that is isotropically
+distributed in that Vx
+d
+= x for any orthogonal (N− s)×
+(N− s) matrix V.
+(iii) The normalized squared Euclidean norm converges al-
+most surely as
+lim
+N →∞
+1
+N∥x∥2 = τ,
+for some τ > 0.
+Then, if we deﬁne y = Ux, we have that the components of
+y converge empirically to a Gaussian random variable
+lim
+N →∞
+{yn}
+P L(2)
+= Y ∼N (0, τ ). (77)
+Proof. Since x is isotropically distributed, it can be generated
+as a normalized Gaussian, i.e.
+x
+d
+= ∥x∥
+∥w0∥ w0, w0∼N (0, IN − s).
+For each N , let U⊥ be an N× s matrix such that S := [U U⊥ ]
+is orthogonal. That is, the s columns of U⊥ are an orthonormal
+
+=== PDF PAGE 15 ===
+15
+basis of the orthogonal complement of the Range(U). If we
+let w1∼N (0, Is), then if we deﬁne
+w =
+[ w0
+w1
+]
+,
+so that w∼N (0, IN ). With this deﬁnition, we can write y
+as
+y = Ux
+d
+= ∥x∥
+∥w0∥ [Sw− U⊥ w1] . (78)
+Now,
+lim
+N →∞
+∥x∥
+∥w0∥ =√ τ ,
+almost surely. Also, since w∼N (0, I) and S is orthogonal,
+Sw∼N (0, I). Finally, since w1 is s-dimensional,
+lim
+N →∞
+1
+N∥U⊥ w1∥2 = lim
+N →∞
+1
+N∥w1∥2 = 0,
+almost surely. Substituting these properties into (78), we obtain
+(77). □
+APPENDIX E
+A G ENERAL CONVERGENCE RESULT
+To analyze the V AMP method, we a consider the following
+more general recursion. For each dimension N , we are given
+an orthogonal matrix V∈ RN × N , and an initial vector u0∈
+RN . Also, we are given disturbance vectors
+wp = (wp
+1, . . . , w p
+n), wq = (wq
+1, . . . , w q
+n),
+where the components wp
+n∈ Rnp and wq
+n∈ Rnq for some
+ﬁnite dimensions np and nq that do not grow with N . Then,
+we generate a sequence of iterates by the following recursio n:
+pk = V uk (79a)
+α 1k =⟨f ′
+p(pk, wp, γ 1k)⟩, γ 2k = Γ 1(γ1k, α 1k) (79b)
+vk = C1(α 1k) [fp(pk, wp, γ 1k)− α 1kpk] (79c)
+qk = VTvk (79d)
+α 2k =⟨f ′
+q(qk, wq, γ 2k)⟩, γ 1,k + 1= Γ 2(γ2k, α 2k) (79e)
+uk+ 1= C2(α 2k) [fq(qk, wq, γ 2k)− α 2kqk] , (79f)
+which is initialized with some vector u0 and scalar γ10. Here,
+fp(·) and fq(·) are separable functions, meaning
+[fp(p, wp, γ 1)]n = fp(pn, w p
+n, γ 1)∀n,
+[fq(q, wq, γ 2)]n = fq(qn, w q
+n, γ 2)∀n, (80)
+for scalar-valued functions fp(·) and fq(·). The functions Γi(·)
+and Ci(·) are also scalar-valued. In the recursion (79), the
+variables γ1k and γ2k represent some parameter of the update
+functions fp(·) and fq(·), and the functions Γi(·) represent how
+these parameters are updated.
+Similar to our analysis of the V AMP , we consider the
+following large-system limit (LSL) analysis. We consider a
+sequence of runs of the recursions indexed by N . We model
+the initial condition u0 and disturbance vectors wp and wq
+as deterministic sequences that scale with N and assume that
+their components converge empirically as
+lim
+N →∞
+{u0n}
+P L(2)
+= U0, (81)
+and
+lim
+N →∞
+{wp
+n}
+P L(2)
+= W p, lim
+N →∞
+{wq
+n}
+P L(2)
+= W q, (82)
+to random variables U0, W p and W q. The vectors Wp and Wq
+are random vectors in Rnp and Rnq , respectively. We assume
+that the initial constant converges as
+lim
+N →∞
+γ10 =
+γ10, (83)
+for some γ 10. The matrix V ∈ RN × N is assumed to
+be uniformly distributed on the set of orthogonal matrices
+independent of r0, wp and wq. Since r0, wp and wq are
+deterministic, the only randomness is in the matrix V.
+Under the above assumptions, deﬁne the SE equations
+α 1k = E
+[
+f ′
+p(Pk, W p, γ1k)
+]
+, (84a)
+τ2k = C2
+1 (α 1k)
+{
+E
+[
+f 2
+p (Pk, W p, γ 1k)
+]
+− α 2
+1kτ1k
+}
+(84b)
+γ 2k = Γ 1(γ1k, α 1k) (84c)
+α 2k = E
+[
+f ′
+q(Qk, W q, γ2k
+]
+, (84d)
+τ1,k + 1= C2
+2 (α 2k)
+{
+E
+[
+f 2
+q (Qk, W q, γ 2k)
+]
+− α 2
+2kτ2k
+}
+(84e)
+γ1,k + 1= Γ 2(
+γ2k, α 2k), (84f)
+which are initialized with γ 10 in (83) and
+τ10 = E[U 2
+0 ], (85)
+where U0 is the random variable in (81). In the SE equa-
+tions (84), the expectations are taken with respect to rando m
+variables
+Pk∼N (0, τ 1k), Q k∼N (0, τ 2k),
+where Pk is independent of W p and Qk is independent of
+W q.
+Theorem 4. Consider the recursions (79) and SE equations
+(84) under the above assumptions. Assume additionally that,
+for all k:
+(i) F or i = 1, 2, the functions
+Ci(α i), Γi(γi, α i),
+are continuous at the points (γi, α i) = ( γik, α ik) from
+the SE equations; and
+(ii) The function fp(p, w p, γ 1) and its derivative
+f ′
+p(p, w p, γ 1) are uniformly Lipschitz continuous in
+(p, w p) at γ1 = γ1k.
+(iii) The function fq(q, w q, γ 2) and its derivative
+f ′
+q(q, w q, γ 2) are uniformly Lipschitz continuous in
+(q, w q) at γ2 = γ 2k.
+Then,
+(a) F or any ﬁxed k, almost surely the components of
+(wp, p0, . . . , pk) empirically converge as
+lim
+N →∞
+{(wp
+n, p 0n, . . . , p kn)}
+P L(2)
+= ( W p, P 0, . . . , P k),
+(86)
+where W p is the random variable in the limit (82) and
+(P0, . . . , P k) is a zero mean Gaussian random vector
+
+=== PDF PAGE 16 ===
+16
+independent of W p, with E[P 2
+k ] = τ1k. In addition, we
+have that
+lim
+N →∞
+(α 1k, γ 1k) = ( α 1k, γ1k), (87)
+almost surely.
+(b) F or any ﬁxed k, almost surely the components of
+(wq, q0, . . . , qk) empirically converge as
+lim
+N →∞
+{(wq
+n, q 0n, . . . , q kn)}
+P L(2)
+= ( W q, Q 0, . . . , Q k),
+(88)
+where W q is the random variable in the limit (82) and
+(Q0, . . . , Q k) is a zero mean Gaussian random vector
+independent of W q, with E[P 2
+k ] = τ2k. In addition, we
+have that
+lim
+N →∞
+(α 2k, γ 2k) = ( α 2k, γ2k), (89)
+almost surely.
+Proof. We will prove this in the next Appendix, Appendix F.
+□
+APPENDIX F
+PROOF OF THEOREM 4
+A. Induction Argument
+We use an induction argument. Given iterations k, ℓ ≥ 0,
+deﬁne the hypothesis, Hk,ℓ as the statement:
+• Part (a) of Theorem 4 is true up to k; and
+• Part (b) of Theorem 4 is true up to ℓ.
+The induction argument will then follow by showing the
+following three facts:
+• H0, − 1 is true;
+• If Hk,k − 1 is true, then so is Hk,k ;
+• If Hk,k is true, then so is Hk+ 1,k .
+B. Induction Initialization
+We ﬁrst show that the hypothesis H0, − 1 is true. That is,
+we must show (86) and (87) for k = 0 . This is a special
+case of Lemma 5. Speciﬁcally, for each N , let U = IN , the
+N× N identity matrix, which trivially satisﬁes property (i) of
+Lemma 5 with s = 0 . Let x = p0. Since p0 = V u0 and
+V is Haar distributed independent of u0, we have that p0 is
+orthogonally invariant and satisﬁes property (ii) of Lemma 5.
+Also,
+lim
+N →∞
+∥p0∥2 (a)
+= lim
+N →∞
+∥u0∥2 (b)
+= E[U 2
+0 ]
+(c)
+= τ10,
+where (a) follows from the fact that p0 = V u0 and V is
+orthogonal; (b) follows from the assumption (81) and (c)
+follows from the deﬁnition (85). This proves property (iii) of
+Lemma 5. Hence, p0 = Up0, we have that the components
+of p0 converge empirically as
+lim
+N →∞
+{p0n}
+P L(2)
+= P0∼N (0, τ 10),
+for a Gaussian random variable P0. Moreover, since V is
+independent of wp, and the components of wp converge
+empirically as (82), we have that the components of pn, wp
+almost surely converge empirically as
+lim
+N →∞
+{wp
+n, p 0n}
+P L(2)
+= ( W p, P 0),
+where W p is independent of P0. This proves (86) for k = 0.
+Now, we have assumed in (83) that γ10→
+γ10 as N→∞ .
+Also, since f ′
+p(p, w p, γ 1) is uniformly Lipschitz continuous in
+(p, w p) at γ1 = γ10, we have that α 10 =⟨f ′
+p(p0, wp, γ 10)⟩
+converges to α 10 in (84a) almost surely. This proves (87).
+C. The Induction Recursion
+We next show the implication Hk,k − 1⇒ Hk,k . The impli-
+cation Hk,k ⇒ Hk+ 1,k is proven similarly. Hence, ﬁx k and
+assume that Hk,k − 1 holds. Since Γ1(γi, α i) is continuous at
+(γ 1k, α 1k), the limits (87) combined with (84c) show that
+lim
+N →∞
+γ2k = lim
+N →∞
+Γ1(γ1k, α 1k) = γ 2k.
+In addition, the induction hypothesis shows that for ℓ =
+0, . . . , k , the components of (wp, pℓ) almost surely converge
+empirically as
+lim
+N →∞
+{(wp
+n, p ℓn)}
+P L(2)
+= ( W p, P ℓ),
+where Pℓ ∼ N(0, τ 1ℓ) for τ1ℓ given by the SE equations.
+Since fp(·) is Lipschitz continuous and C1(α 1ℓ) is continuous
+at α 1ℓ = α 1ℓ, one may observe that the deﬁnition of vℓ in
+(79c) and the limits (87) show that
+lim
+N →∞
+{(wp
+n, p ℓn, v ℓn)}
+P L(2)
+= ( W p, P ℓ, V ℓ),
+where Vℓ is the random variable
+Vℓ = gp(Pℓ, W p, γ1ℓ, α 1ℓ), (90)
+and gp(·) is the function
+gp(p, w p, γ 1, α 1) := C1(α 1) [fp(p, w p, γ 1)− α 1p] . (91)
+Similarly, we have the limit
+lim
+N →∞
+{(wq
+n, q ℓn, u ℓn)}
+P L(2)
+= ( W q, Q ℓ, U ℓ),
+where Uℓ is the random variable,
+Uℓ = gq(Qℓ, W q, γ2ℓ, α 2ℓ) (92)
+and gq(·) is the function
+gq(q, w q, γ 2, α 2) := C2(α 1) [fq(q, w q, γ 2)− α 2q] . (93)
+We next introduce the notation
+Uk := [u0···uk]∈ RN × (k+ 1),
+to represent the ﬁrst k+1 values of the vector uℓ. We deﬁne
+the matrices Vk, Qk and Pk similarly. Using this notation,
+let Gk be the tuple of random matrices,
+Gk :={Uk, Pk, Vk, Qk− 1} . (94)
+With some abuse of notation, we will also use Gk to denote
+the sigma-algebra generated by these variables. The set (94 )
+
+=== PDF PAGE 17 ===
+17
+contains all the outputs of the algorithm (79) immediately
+before (79d) in iteration k.
+Now, the actions of the matrix V in the recursions (79)
+are through the matrix-vector multiplications (79a) and (7 9d).
+Hence, if we deﬁne the matrices
+Ak := [Pk Vk− 1] , Bk := [Uk Qk− 1] , (95)
+the output of the recursions in the set Gk will be unchanged
+for all matrices V satisfying the linear constraints
+Ak = VBk. (96)
+Hence, the conditional distribution of V given Gk is precisely
+the uniform distribution on the set of orthogonal matrices
+satisfying (96). The matrices Ak and Bk are of dimensions
+N× s where s = 2 k + 1. From Lemma 4, this conditional
+distribution is given by
+V|Gk
+d
+= Ak(AT
+kAk)− 1BT
+k + UA⊥
+k
+˜VUT
+B⊥
+k
+, (97)
+where UA⊥
+k
+and UB⊥
+k
+are N× (N− s) matrices whose
+columns are an orthonormal basis for Range(Ak)⊥ and
+Range(Bk)⊥ . The matrix ˜V is Haar distributed on the set
+of (N− s)× (N− s) orthogonal matrices and independent of
+Gk.
+Using (97) we can write qk in (79d) as a sum of two terms
+qk = VTvk = qdet
+k + qran
+k , (98)
+where qdet
+k is what we will call the deterministic part:
+qdet
+k = Bk(AT
+kAk)− 1AT
+kvk, (99)
+and qran
+k is what we will call the random part:
+qran
+k = UB⊥
+k
+˜VTUT
+A⊥
+k
+vk. (100)
+The next few lemmas will evaluate the asymptotic distributi ons
+of the two terms in (98).
+Lemma 6. Under the induction hypothesis Hk,k − 1, there exist
+constants βk, 0, . . . , β k,k − 1 such that the components of qdet
+k
+along with (q0, . . . , qk− 1) converge empirically as
+lim
+N →∞
+{
+wq
+n, q 0n, . . . , q k− 1,n , q det
+kn )
+}
+P L(2)
+= ( W q, Q 0, . . . , Q k− 1, Q det
+k ), (101)
+where Qℓ, ℓ = 0, . . . , k − 1 are the Gaussian random variables
+in induction hypothesis (88) and Qdet
+k is a linear combination,
+Qdet
+k = βk0Q0 +···+ βk,k − 1Qk− 1. (102)
+Proof. We evaluate the asymptotic values of various terms in
+(99). Using the deﬁnition of Ak in (95),
+AT
+kAk =
+[
+PT
+kPk PT
+kVk− 1
+VT
+k− 1Pk VT
+k− 1Vk− 1
+]
+We can then easily evaluate the asymptotic value of these ter ms
+as follows. For example, the asymptotic value of the (i, j )
+component of the matrix PT
+kPk is given by
+lim
+N →∞
+1
+N
+[
+PT
+kPk
+]
+ij
+(a)
+= 1
+N pT
+i pj
+= 1
+N
+N∑
+n=1
+pinpjn
+(b)
+= E(PiPj)
+(c)
+= [ Qp
+k]ij ,
+where (a) follows since the i-th column of Pk is precisely
+the vector pi; (b) follows due to convergence assumption in
+(86); and in (c), we use Qp
+k to denote the covariance matrix
+of (P0, . . . , P k). Similarly
+lim
+N →∞
+1
+N VT
+k− 1Vk− 1 = Qv
+k− 1,
+where Qv
+k− 1 has the components,
+[
+Qv
+k− 1
+]
+ij = E [ViVj] ,
+where Vi is the random variable in (90). Finally, the expecta-
+tion for the cross-terms are given by
+E[ViXj]
+(a)
+= E[gp(Pi, W p,
+γ1i, α 1i)Xj]
+(b)
+= E
+[
+g′
+p(Pi, W p, γ 1i, α 1i)
+]
+E[XiXj]
+(c)
+= E[XiXj]C1(α 1i)
+(
+E
+[
+f ′
+p(Pi, W p, γ1i)
+]
+− α 1i
+)
+(d)
+= 0 ,
+where (a) follows from (90); (b) follows from Stein’s Lemma;
+and (c) follows from the deﬁnition of gp(·) in (91); and (d)
+follows from (84a). The above calculations show that
+lim
+N →∞
+1
+N AT
+kAk
+a.s.
+=
+[ Qp
+k 0
+0 Q v
+k− 1
+]
+, (103)
+A similar calculation shows that
+lim
+N →∞
+1
+N AT
+ksk =
+[
+0
+bs
+k
+]
+, (104)
+where bv
+k is the vector of correlations
+bv
+k =
+[E[V0Vk] E[V1Vk]··· E[Vk− 1Vk]]T
+. (105)
+Combining (103) and (104) shows that
+lim
+N →∞
+(AT
+kAk)− 1AT
+kvk
+a.s.
+=
+[
+0
+βk
+]
+, (106)
+where
+βk :=
+[
+Qv
+k− 1
+]− 1
+bv
+k.
+Therefore,
+qdet
+k = Bk(AT
+kAk)− 1AT
+kvk
+= [Uk Qk− 1]
+[
+0
+βk
+]
++ ξ
+=
+k− 1∑
+ℓ=0
+βkℓqℓ + ξ, (107)
+where ξ∈ RN is the error,
+ξ = Bks, s := (AT
+kAk)− 1AT
+kvk−
+[ 0
+βk
+]
+. (108)
+We next need to bound the norm of the error term ξ. Since
+ξ = Bks, the deﬁnition of Bk in (95) shows that
+ξ =
+k∑
+i=0
+siui +
+k− 1∑
+j=0
+sk+j+1qj , (109)
+
+=== PDF PAGE 18 ===
+18
+where we have indexed the components of s in (108) as s =
+(s0, . . . , s 2k). From (106), the components sj → 0 almost
+surely, and therefore
+lim
+N →∞
+max
+j=0,..., 2k
+|sj|
+a.s.
+= 0 .
+Also, by the induction hypothesis,
+lim
+N →∞
+1
+N∥ui∥2 a.s.
+= E(U 2
+i ), lim
+N →∞
+1
+N∥qj∥2 a.s.
+= E(Q2
+j ).
+Therefore, from (109),
+lim
+N →∞
+1
+N∥ξ∥2≤ lim
+N →∞
+[
+max
+j=0,..., 2k
+|sj|2
+]
+× 1
+N
+
+ ∑
+i
+∥ui∥2 +
+∑
+j
+∥qj∥2
+
+ a.s.
+= 0 . (110)
+Therefore, if f (q1,···, q k) is pseudo-Lipschitz continuous of
+order 2,
+lim
+N →∞
+1
+N
+N∑
+n=1
+f (q0n,···, q k− 1,n , q det
+k )
+(a)
+= lim
+N →∞
+1
+N
+N∑
+n=1
+f
+(
+q0n,···, q k− 1,n ,
+k− 1∑
+ℓ=0
+βkℓqℓn
+)
+(b)
+= E
+[
+f
+(
+Q0,···, Q k− 1,
+k− 1∑
+ℓ=0
+βkℓQℓn
+)]
+,
+where (a) follows from the (107), the bound (110), and the
+pseudo-Lipschitz continuity of f (·); and (b) follows from the
+fact that f (·) is pseudo-Lipschitz continuous and the induction
+hypothesis that
+lim
+N →∞
+{q0n,···, q k− 1,n}
+P L(2)
+= ( Q0, . . . , Q k− 1).
+This proves (101).
+□
+Lemma 7. Under the induction hypothesis Hk,k − 1, the follow-
+ing limit holds almost surely
+lim
+N →∞
+1
+N∥UT
+A⊥
+k
+sk∥2 = ρk, (111)
+for some constant ρk≥ 0.
+Proof. From (95), the matrix Ak has s = 2 k + 1 columns.
+From Lemma 4, UA⊥
+k
+is an orthonormal basis of N− s in
+the Range(Ak)⊥ . Hence, the energy ∥UA⊥
+k
+sk∥2 is precisely
+∥UA⊥
+k
+sk∥2 = sT
+ksk− sT
+kAk(AT
+kAk)− 1AT
+ksk.
+Using similar calculations as the previous lemma, we have
+lim
+N →∞
+1
+N∥UAk sk∥2 = E[S2
+k]− (bs
+k)T [Qs
+k]− 1 bs
+k.
+Hence, the lemma is proven if we deﬁne ρk as the right hand
+side of this equation. □
+Lemma 8. Under the induction hypothesis Hk,k − 1, the com-
+ponents of the “random” part qran
+k along with the components
+of (wq, q0, . . . , qk− 1) almost surely converge empirically as
+lim
+N →∞
+{(wq
+n, q 0n, . . . , q k− 1,n , q ran
+kn )}
+P L(2)
+= ( W q, Q 0, . . . , Q k− 1, U k), (112)
+where Uk ∼ N(0, ρ k) is a Gaussian random variable in-
+dependent of (W q, Q 0, . . . , Q k− 1) and ρk is the constant in
+Lemma 7.
+Proof. This is a direct application of Lemma 5. Let x =
+˜VTUT
+A⊥
+k
+sk so that
+qdet
+k = UB⊥
+k
+xk.
+For each N , UB⊥
+k
+∈ RN × (N − s) is a matrix with orthonormal
+columns spanning Range(Bk)⊥ . Also, since ˜V is uniformly
+distributed on the set of (N− s)× (N− s) orthogonal matrices,
+and independent of Gk, the conditional distribution xk given
+Gk is orthogonally invariant in that
+Uxk|Gk
+d
+= xk|Gk
+,
+for any orthogonal matrix U. Lemma 7 also shows that
+lim
+N →∞
+1
+N∥xk∥2 = ρk,
+almost surely. The limit (112) now follows from Lemma 5.
+□
+Using the partition (98) and Lemmas 6 and 8, the compo-
+nents of (wq, q0, . . . , qk) almost surely converge empirically
+as
+lim
+N →∞
+{(wq
+n, q 0n, . . . , q kn)}
+P L(2)
+= lim
+N →∞
+{(wq
+n, q 0n, . . . , q det
+kn + qran
+kn )}
+P L(2)
+= ( W q, Q 0, . . . , Q k),
+where Qk is the random variable
+Qk = βk0Q0 +···+ βk,k − 1Qk− 1 + Uk.
+Since (Q0, . . . , Q k− 1) is jointly Gaussian and Uk is Gaussian
+independent of (Q0, . . . , Q k− 1) we have that (Q0, . . . , Q k) is
+Gaussian. This proves (88).
+Now the function Γ1(γ1, α 1) is assumed to be continuous at
+(
+γ 1k, α 1k). Also, the induction hypothesis assumes that α 1k→
+α 1k and γ1k→ γ 1k almost surely. Hence,
+lim
+N →∞
+γ2k = lim
+N →∞
+Γ1(γ1k, α 1k) = γ 2k. (113)
+In addition, since we have assumed that f ′
+q(q, wq, γ 1) is
+Lipschitz continuous in (q, wq) and continuous in γ1,
+lim
+N →∞
+α 2k = lim
+N →∞
+⟨f ′
+q(qk, wq, γ 1k)⟩
+= E
+[
+f ′
+q(Qk, W q, γ1k)
+]
+= α 1k. (114)
+The limits (113) and (114) prove (89).
+
+=== PDF PAGE 19 ===
+19
+Finally, we need to show that E[Q2
+k] = τ2k is the variance
+from the SE equations.
+E[Q2
+k]
+(a)
+= lim
+N →∞
+1
+N∥qk∥2
+(b)
+= lim
+N →∞
+1
+N∥vk∥2
+(c)
+= E [gp(Pk, W p, γ 1k, α 1k)]
+(d)
+= C2
+1 (α 1k)E
+[
+(fp(Pk, W p, γ 1k)− α 1kPk)2
+]
+= C2
+1 (α 1k)
+{
+E
+[
+f 2
+p (Pk, W p, γ 1k)
+]
+− 2α 1kE [Pkfp(Pk, W p, γ 1k)] + α 2
+1kE
+[
+P 2
+k
+]}
+(e)
+= C2
+1 (
+α 1k)
+{
+E
+[
+f 2
+p (Pk, W p, γ 1k)
+]
+− 2α 1kτ1kE
+[
+f ′
+p(Pk, W p, γ1k)
+]
++ α 2
+1kτ1k
+}
+(f )
+= C2
+1 (
+α 1k)
+{
+E
+[
+f 2
+p (Pk, W p, γ1k)
+]
+− α 2
+1kτ1k
+}
+(g)
+= τ2k, (115)
+where (a) follows from the fact that the components of qk
+converge empirically to Qk; (b) follows from (79d) and the
+fact that V is orthogonal; (c) follows from the limit (90); and
+(d) follows from (91); (e) follows from Stein’s Lemma and
+the fact that E[P 2
+k ] = τ1k; (f) follows from the deﬁnition of
+α 1k in (84a); and (g) follows from (84b). Thus, E[Q2
+k] = τ2k,
+and we have proven the implication Hk,k − 1⇒ Hk,k .
+APPENDIX G
+PROOF OF THEOREM 1
+Theorem 1 is essentially a special case of Theorem 4. We
+need to simply rewrite the recursions in Algorithm 3 in the
+form (79). To this end, deﬁne the error terms
+pk := r1k− x0, vk := r2k− x0, (116)
+and their transforms,
+uk := VTpk, qk := VTvk. (117)
+Also, deﬁne the disturbance terms
+wq := (ξ, s), wp := x0, ξ := UTw, (118)
+and the componentwise update functions
+fq(q, (ξ, s ), γ 2) := γwsξ + γ2q
+γws2 + γ2
+, (119a)
+fp(p, x 0, γ 1) = g1(p + x0, γ 1)− x0. (119b)
+With these deﬁnitions, we claim that the outputs satisfy the
+recursions:
+pk = V uk (120a)
+α 1k =⟨f ′
+p(pk, x0, γ 1k)⟩, γ 2k = (1− α 1k)γ1k
+α 1k
+(120b)
+vk = 1
+1− α 1k
+[
+fp(pk, x0, γ 1k)− α 1kpk
+]
+(120c)
+qk = VTvk (120d)
+α 2k =⟨f ′
+q(qk, wq, γ 2k)⟩, γ 1,k + 1= (1− α 2k)γ2k
+α 2k
+(120e)
+uk+ 1= 1
+1− α 2k
+[fq(qk, wq, γ 2k)− α 2kqk] (120f)
+Before we prove (120), we can see that (120) is a special case
+of the general recursions in (79) if we deﬁne
+Ci(α i) = 1
+1− α i
+, Γi(γi, α i) = γi
+[ 1
+α i
+− 1
+]
+.
+It is also straightforward to verify the continuity assumpt ions
+in Theorem 4. The assumption of Theorem 1 states that
+α ik ∈ (0, 1). Since γ 10 > 0, γik > 0 for all k and
+i. Therefore, Ci(α i) and Γi(γi, α i) are continuous at all
+points (γi, α i) = ( γ ik, α ik). Also, since s∈ [0, S max] and
+γ2k > 0 for all k, the function fq(q, (ξ, s ), γ 2) in (119) is
+uniformly Lipschitz continuous in (q, ξ, s ) at all γ2 = γ2k.
+Similarly, since the denoiser function g1(r1, γ 1) is assumed be
+to uniformly Lipschitz continuous in r1 at all γ1 = γ 1k, so is
+the function fp(r1, x 0, γ 1) in (119b). Hence all the conditions
+of Theorem 4 are satisﬁed. The SE equations (50) immediately
+from the general SE equations (84). In addition, the limits ( 45)
+and and (48) are special cases of the limits (86) and (88). Thi s
+proves Theorem 1.
+So, it remains only to show that the updates in (120) indeed
+hold. Equations (120a) and (120d) follow immediately from
+the deﬁnitions (116) and (117). Next, observe that we can
+rewrite the LMMSE estimation function (24) as
+g2(r2k, γ 2k)
+(a)
+=
+(
+γwATA + γ2kI
+) − 1 (
+γwATAx0 + γwATw + γ2kr2k
+)
+(b)
+= x0 +
+(
+γwATA + γ2kI
+) − 1 (
+γ2k(r2k− x0) + γwATw
+)
+(d)
+= x0 + V
+(
+γwS2 + γ2kI
+) − 1
+(γ2kqk + Sξ) ,
+(d)
+= x0 + Vfq(qk, wq, γ 2k), (121)
+where (a) follows by substituting (28) into (24); (b) is a sim ple
+algebraic manipulation; (c) follows from the SVD deﬁnition
+(29) and the deﬁnitions ξ in (118) and qk in (117); and (d)
+follows from the deﬁnition of componentwise function fq(·)
+
+=== PDF PAGE 20 ===
+20
+in (119a). Therefore, the divergence α 2k satisﬁes
+α 2k
+(a)
+= 1
+N Tr
+[ ∂g2(r2k, γ 2k)
+∂r2k
+]
+(b)
+= 1
+N Tr
+[
+VDiag(f ′
+q(qk, wq, γ 2k)) ∂qk
+∂r2k
+]
+(c)
+= 1
+N Tr
+[
+VDiag(f ′
+q(qk, wq, γ 2k))VT
+]
+(d)
+=⟨f ′
+q(qk, wq, γ 2k)⟩, (122)
+where (a) follows from line 12 of Algorithm 3 and (6)–
+(7); (b) follows from (121); (c) follows from (117); and (d)
+follows from VTV = I and (6)–(7). Also, from lines 13-14
+of Algorithm 3,
+γ1,k + 1= η2k− γ2k = γ2k
+[ 1
+α 2k
+− 1
+]
+. (123)
+Equations (122) and (123) prove (120e). In addition,
+pk+ 1
+(a)
+= r1,k + 1− x0
+(b)
+= 1
+1− α 2k
+[g2(r2k, γ 2k)− α 2kr2k]− x0
+(c)
+= 1
+1− α 2k
+[
+x0 + Vfq(qk, wq, γ 2k)− α 2k(x0 + vk)
+]
+− x0
+(d)
+= 1
+1− α 2k
+[Vfq(qk, wq, γ 2k)− α 2kvk]
+(e)
+= V
+[ 1
+1− α 2k
+[fq(qk, wq, γ 2k)− α 2kqk]
+]
+, (124)
+where (a) follows from (116); (b) follows from lines 11-15 of
+Algorithm 3; (c) follows from (121) and the deﬁnition of vk in
+(116); (d) follows from collecting the terms with x0; and (e)
+follows from the deﬁnition qk = VTvk in (117). Combining
+(124) with uk+ 1= VTpk+ 1 proves (120f).
+The derivation for the updates for vk are similar. First,
+α 1k
+(a)
+=⟨g′
+1(r1k, γ 1k)⟩
+(b)
+=⟨f ′
+p(pk, x0)⟩, (125)
+where (a) follows from line 5 of Algorithm 3 and (b) follows
+from the vectorization of fp(·) in (119b) and the fact that pk =
+r1k + x0. Also, from lines 6-7 of Algorithm 3,
+γ2k = η1k− γ1k = γ1k
+[ 1
+α 1k
+− 1
+]
+. (126)
+Equations (125) and (126) prove (120b). Also,
+vk
+(a)
+= r2k− x0
+(b)
+= 1
+1− α 1k
+[g1(r1k, γ 1k)− α 1kr1k]− x0
+(c)
+= 1
+1− α 1k
+[
+fp(pk, x0, γ 1k) + x0− α 1k(pk + x0)
+]
+− x0
+(d)
+= 1
+1− α 1k
+[
+fp(pk, x0, γ 1k)− α 1kpk
+]
+(127)
+where (a) is the deﬁnition of vk in (116); (b) follows from
+lines 4-8 of Algorithm 3; (c) follows from the vectorization
+of fp(·) in (119b) and the deﬁnition of pk in (116); and (d)
+follows from collecting the terms with x0. This proves (120c).
+All together, we have proven (120) and the proof is complete.
+APPENDIX H
+PROOF OF THEOREM 2
+We use induction. Suppose that, for some k,
+γ 1k = τ− 1
+1k .
+From (50a), (44) and (36),
+α 1k = γ 1kE1(γ 1k). (128)
+Hence, from (50b), η− 1
+1k =E1(γ 1k) and γ 2k = η1k− γ1k.
+Also,
+τ2k
+(a)
+= 1
+(1− α 1k)2
+[
+E1(γ 1k, τ 1k)− α 2
+1kτ1k
+]
+(b)
+= 1
+(1− γ1kE1(γ 1k))2
+[
+E1(γ 1k, τ 1k)− γ 1kE 2
+1 (γ 1k)
+]
+(c)
+= E1(γ 1k, τ 1k)
+1− γ1kE1(γ 1k)
+(d)
+= 1
+η1k− γ 1k
+,
+where (a) follows from (50c); (b) follows from (128) and the
+matched condition
+γ 1k = τ− 1
+1k ; (c) follows from canceling
+terms in the fraction and (d) follows from the fact that η− 1
+1k =
+E1(γ 1k) and γ 1k = η1k/ α 1k. This proves (56a). A similar
+argument shows that (56b) holds if γ2k = τ− 1
+2k . Finally, (56c)
+follows from (56) and (55).
+REFERENCES
+[1] M. Pereyra, P . Schniter, E. Chouzenoux, J.-C. Pesquet, J .-Y . Tourneret,
+A. Hero, and S. McLaughlin, “A survey of stochastic simulati on and
+optimization methods in signal processing,” IEEE J. Sel. Topics Signal
+Process., vol. 10, pp. 1–14, 2016.
+[2] D. L. Donoho, A. Maleki, and A. Montanari, “Message-pass ing algo-
+rithms for compressed sensing,” Proc. Nat. Acad. Sci. , vol. 106, no. 45,
+pp. 18 914–18 919, Nov. 2009.
+[3] ——, “Message passing algorithms for compressed sensing I: Motivation
+and construction,” in Proc. Info. Theory W orkshop, Jan. 2010, pp. 1–5.
+[4] M. Bayati and A. Montanari, “The dynamics of message pass ing on
+dense graphs, with applications to compressed sensing,” IEEE Trans.
+Inform. Theory , vol. 57, no. 2, pp. 764–785, Feb. 2011.
+[5] M. Bayati, M. Lelarge, and A. Montanari, “Universality i n polytope
+phase transitions and message passing algorithms,” Ann. Appl. Prob. ,
+vol. 25, no. 2, pp. 753–822, 2015.
+[6] C. Rush and R. V enkataramanan, “Finite-sample analysis of approximate
+message passing,” in Proc. IEEE ISIT , 2016, pp. 755–759.
+[7] S. Rangan, P . Schniter, and A. K. Fletcher, “On the conver gence of
+approximate message passing with arbitrary matrices,” in Proc. IEEE
+ISIT, Jul. 2014, pp. 236–240.
+[8] F. Caltagirone, L. Zdeborov´ a, and F. Krzakala, “On conv ergence of
+approximate message passing,” in Proc. IEEE ISIT, Jul. 2014, pp. 1812–
+1816.
+[9] J. Vila, P . Schniter, S. Rangan, F. Krzakala, and L. Zdebo rov´ a, “Adaptive
+damping and mean removal for the generalized approximate me ssage
+passing algorithm,” in Proc. IEEE ICASSP , 2015, pp. 2021–2025.
+[10] A. Manoel, F. Krzakala, E. W. Tramel, and L. Zdeborov´ a, “Swept
+approximate message passing for sparse estimation,” in Proc. ICML ,
+2015, pp. 1123–1132.
+[11] S. Rangan, A. K. Fletcher, P . Schniter, and U. S. Kamilov , “Inference
+for generalized linear models via alternating directions a nd Bethe free
+energy minimization,” in Proc. IEEE ISIT , 2015, pp. 1640–1644.
+[12] M. Opper and O. Winther, “Adaptive and self-averaging T houless-
+Anderson-Palmer mean-ﬁeld theory for probabilistic model ing,” Physi-
+cal Review E , vol. 64, no. 5, p. 056131, 2001.
+[13] T. P . Minka, “A family of algorithms for approximate Bay esian infer-
+ence,” Ph.D. dissertation, Dept. Comp. Sci. Eng., MIT, Camb ridge, MA,
+2001.
+[14] M. Seeger, “Expectation propagation for exponential f amilies,” EPFL-
+REPORT-161464, 2005.
+[15] M. Opper and O. Winther, “Expectation consistent appro ximate infer-
+ence,” J. Mach. Learning Res. , vol. 1, pp. 2177–2204, 2005.
+
+=== PDF PAGE 21 ===
+21
+[16] Y . Kabashima and M. V ehkaper¨ a, “Signal recovery using expectation
+consistent approximation for linear observations,” in Proc. IEEE ISIT ,
+2014, pp. 226–230.
+[17] A. K. Fletcher, M. Sahraee-Ardakan, S. Rangan, and P . Sc hniter,
+“Expectation consistent approximate inference: Generali zations and con-
+vergence,” in Proc. IEEE ISIT , 2016, pp. 190–194.
+[18] B. C ¸ akmak, O. Winther, and B. H. Fleury, “S-AMP: Approx imate mes-
+sage passing for general matrix ensembles,” in Proc. IEEE Information
+Theory W orkshop (ITW), 2014, pp. 192–196.
+[19] ——, “S-AMP for non-linear observation models,” in Proc. IEEE ISIT ,
+2015, pp. 2807–2811.
+[20] J. Ma and L. Ping, “Orthogonal AMP,” arXiv:1602.06509, 2016.
+[21] A. M. Tulino, G. Caire, S. V erd´ u, and S. Shamai, “Support recovery with
+sparsely sampled free random matrices,” IEEE Trans. Inform. Theory ,
+vol. 59, no. 7, pp. 4243–4271, 2013.
+[22] N. Halko, P . G. Martinsson, and J. A. Tropp, “Finding str ucture
+with randomness: Probabilistic algorithms for constructi ng approximate
+matrix decompositions,” SIAM Rev., vol. 53, no. 2, pp. 217–288, 2011.
+[23] K. Takeuchi, “Rigorous dynamics of expectation-propa gation-based sig-
+nal recovery from unitarily invariant measurements,” in Proc. ISIT, 2017,
+pp. 501–505.
+[24] S. Rangan, “Generalized approximate message passing f or estimation
+with random linear mixing,” in Proc. IEEE ISIT , 2011, pp. 2174–2178.
+[25] A. Montanari, “Graphical model concepts in compressed sensing,”
+in Compressed Sensing: Theory and Applications , Y . C. Eldar and
+G. Kutyniok, Eds. Cambridge Univ. Press, Jun. 2012, pp. 394– 438.
+[26] A. Chambolle, R. A. DeV ore, N. Y . Lee, and B. J. Lucier, “N onlinear
+wavelet image processing: V ariational problems, compression, and noise
+removal through wavelet shrinkage,” IEEE Trans. Image Process., vol. 7,
+no. 3, pp. 319–335, Mar. 1998.
+[27] I. Daubechies, M. Defrise, and C. D. Mol, “An iterative t hresholding al-
+gorithm for linear inverse problems with a sparsity constra int,” Commun.
+Pure Appl. Math. , vol. 57, no. 11, pp. 1413–1457, Nov. 2004.
+[28] D. J. Thouless, P . W. Anderson, and R. G. Palmer, “Soluti on of ‘solvable
+model of a spin glass’,” Phil. Mag. , vol. 35, pp. 983–990, 1977.
+[29] J. Pearl, Probabilistic Reasoning in Intelligent Systems: Networks of
+Plausible Inference. San Mateo, CA: Morgan Kaufmann Publ., 1988.
+[30] J. S. Y edidia, W. T. Freeman, and Y . Weiss, “Understandi ng belief
+propagation and its generalizations,” in Exploring Artiﬁcial Intelligence
+in the New Millennium . San Francisco, CA: Morgan Kaufmann
+Publishers, 2003, pp. 239–269.
+[31] S. Rangan, P . Schniter, E. Riegler, A. Fletcher, and V . C evher, “Fixed
+points of generalized approximate message passing with arb itrary ma-
+trices,” in Proc. IEEE ISIT , Jul. 2013, pp. 664–668.
+[32] F. Krzakala, A. Manoel, E. W. Tramel, and L. Zdeborov´ a, “V ariational
+free energies for compressed sensing,” in Proc. IEEE ISIT , Jul. 2014,
+pp. 1499–1503.
+[33] “Generalized approximate message passing,” Source-
+Forge.net project GAMPmatlab, available on-line at
+http://gampmatlab.sourceforge.net/.
+[34] A. K. Fletcher and P . Schniter, “Learning and free energ ies for vector
+approximate message passing,” arXiv:1602.08207, 2016.
+[35] H. J. Brascamp and E. H. Lieb, “On extensions of the Brunn -Minkowski
+and Pr´ ekopa-leindler theorems, including inequalities f or log concave
+functions, and with an application to the diffusion equatio n,” in Inequal-
+ities. Berlin: Springer, 2002, pp. 441–464.
+[36] A. Tulino and S. V erd´ u, “Random matrix theory and wirel ess commu-
+nications,” F ound. Trends Commun. Info. Thy., vol. 1, pp. 1–182, 2004.
+[37] G. Reeves and H. D. Pﬁster, “The replica-symmetric pred iction for
+compressed sensing with Gaussian matrices is exact,” in Proc. IEEE
+ISIT, 2016.
+[38] J. Barbier, M. Dia, N. Macris, and F. Krzakala, “The mutu al information
+in random linear estimation,” arXiv:1607.02335, 2016.

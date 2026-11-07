@@ -1,0 +1,64 @@
+{
+  "checked_utc": "2026-10-24T11:01:24.824570+00:00",
+  "status": "PILOT_COMPLETE_VERIFIED_USER_COUNT_DEFERRED",
+  "processes": [],
+  "pilot_status": {
+    "stage": "INFERENCE_COMPLETE",
+    "pid": 80572,
+    "started_unix": 1792796296.3898094,
+    "updated_unix": 1792838326.4935942,
+    "elapsed_seconds": 42030.103785037994,
+    "completed": 30000,
+    "planned": 30000,
+    "completed_by_method": {
+      "STMP": 6000,
+      "offgrid_sbl": 6000,
+      "gnn": 6000,
+      "gamp": 6000,
+      "somp": 6000
+    },
+    "prepared_inputs": 6000,
+    "total_inputs": 6000,
+    "dispatched_tasks": {
+      "gpu": 6000,
+      "cpu": 24000
+    },
+    "pending": 0,
+    "execution": {
+      "gpu_workers": 4,
+      "cpu_workers": 1,
+      "threads_per_worker": 4,
+      "driver": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_1000_20261023\\parallel_run.py",
+      "driver_sha256": "835d7193909f6ba8c1a5e88a94adb06760c9a60ef742da0991fad35b0fcb015c",
+      "hard_timeout_seconds": 604800,
+      "process_model": "spawn; persistent models; one writer for inputs; independent CPU/GPU queues",
+      "timing": "Concurrent throughput experiment, not isolated method latency",
+      "environment": {
+        "KMP_BLOCKTIME": "0",
+        "OMP_WAIT_POLICY": "PASSIVE"
+      }
+    }
+  },
+  "user_count_launched": false,
+  "user_count_stop_sha256": "2a27eeacd80e9d58abc7cabf5d98349ea836d40ec42c097f56ec38faeb0fbb07",
+  "queue_failure": true,
+  "snr_status": "COMPLETE",
+  "snr_complete_sha256": "e1bb822bc63551ef1bf329f16e3283453e9704d501286a264fa23e1d81856d4e",
+  "snr_verified_files": 14,
+  "shared_lock": {
+    "pid": 80572,
+    "created_unix": 1792796296.3901203,
+    "command": [
+      "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_1000_20261023\\parallel_run.py",
+      "--plan",
+      "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_1000_20261023\\PLAN.json"
+    ]
+  },
+  "action": "Pilot finalized and verified; pause automation; do not launch user-count.",
+  "user_count_running_processes": [],
+  "checks_failed": [],
+  "queue_failure_classification": "EXPECTED_USER_REQUESTED_PAUSE",
+  "queue_pause_verification": "QUEUE_PAUSE_VERIFIED.json",
+  "complete_sha256": "d819a280dd4cb4505dd5226438640480c4e42b32b9dc8b1881a840c905d4281d",
+  "final_verification": "MONITOR_FINAL_VERIFICATION.json"
+}

@@ -1,0 +1,4112 @@
+=== PDF PAGE 1 ===
+Chalmers Publication Library
+Algorithms for Joint Phase Estimation and Decoding for MIMO Systems in the
+Presence of Phase Noise and Quasi-Static Fading Channels
+This document has been downloaded from Chalmers Publication Library (CPL). It is the author´s
+version of a work that was accepted for publication in:
+IEEE Transactions on Signal Processing (ISSN: 1053-587X)
+Citation for the published paper:
+Krishnan, R. ; Colavolpe, G. ; Graell i Amat, A. et al. (2015) "Algorithms for Joint Phase
+Estimation and Decoding for MIMO Systems in the Presence of Phase Noise and Quasi-
+Static Fading Channels". IEEE Transactions on Signal Processing
+Downloaded from: http://publications.lib.chalmers.se/publication/217287
+Notice: Changes introduced as a result of publishing processes such as copy-editing and
+formatting may not be reflected in this document. For a definitive version of this work, please refer
+to the published source. Please note that access to the published version might require a
+subscription.
+Chalmers Publication Library (CPL) offers the possibility of retrieving research publications produced at Chalmers
+University of Technology. It covers all types of publications: articles, dissertations, licentiate theses, masters theses,
+conference papers, reports etc. Since 2006 it is the official tool for Chalmers official publication statistics. To ensure that
+Chalmers research results are disseminated as widely as possible, an Open Access Policy has been adopted.
+The CPL service is administrated and maintained by Chalmers Library.
+(article starts on next page)
+=== PDF PAGE 2 ===
+1
+Algorithms for Joint Phase Estimation and Decoding
+for MIMO Systems in the Presence of Phase Noise
+and Quasi-Static Fading Channels
+Rajet Krishnan, Student Member , IEEE, Giulio Colavolpe, Senior Member , IEEE
+Alexandre Graell i Amat, Senior Member , IEEE, and Thomas Eriksson
+Abstract—In this work, we derive the maximum a posteriori
+(MAP) symbol detector for a multiple-input multiple-output system
+in the presence of Wiener phase noise due to noisy local oscillators,
+and quasi-static fading channels. As in single-antenna systems, the
+computation of the optimum receiver is an analytically intractable
+problem and is unimplementable in practice. In this purview, we
+propose three suboptimal, low-complexity algorithms for approxi-
+mately implementing the MAP symbol detector, which involve joint
+phase noise estimation and data detection. Our ﬁrst algorithm
+is obtained by means of the sum-product algorithm, where we
+use the multivariate Tikhonov canonical distribution approach.
+In our next algorithm, we derive an approximate MAP symbol
+detector based on the smoother-detector framework, wherein the
+detector is properly designed by incorporating the phase noise
+statistics from the smoother . The third algorithm is derived based
+on the variational Bayesian framework. By simulations, we evaluate
+the performance of the proposed algorithms for both uncoded
+and coded data transmissions, and we observe that the proposed
+techniques signiﬁcantly outperform the other important algorithms
+from prior works, which are considered in this work.
+Index Terms – Maximum a posteriori (MAP) detection, phase
+noise, sum-product algorithm (SPA), variational Bayesian (VB)
+framework, extended Kalman smoother (EKS), MIMO.
+I. I NTRODUCTION
+E
+MPLOYING multiple-input multiple-output (MIMO) sys-
+tems has been shown to signiﬁcantly enhance performance
+in terms of data rate and link reliability in wireless fading
+environments [1]. In general, the analysis and design of MIMO
+system is based on the assumption that the carrier phase is
+perfectly known at the receiver, and that there is no phase noise in
+the system. The phase noise manifests in a MIMO system as the
+random, time-varying phase differences between the oscillators
+connected to the antennas at the transmitter and the receiver.
+Practical designs of MIMO systems based on this assumption
+can result in signiﬁcant performance losses and have to be ad-
+dressed appropriately [2]. The detrimental effects of phase noise
+can be even more pronounced in scenarios where independent
+oscillators are connected to each transmit and receive antenna
+(or a subset of them). This scenario is particularly relevant for
+line-of-sight MIMO systems that operate at carrier frequencies of
+around 10 GHz or lesser. Here, separate oscillators are needed
+Copyright (c) 2015 IEEE. Personal use of this material is permitted. However,
+permission to use this material for any other purposes must be obtained from
+the IEEE by sending a request to pubs-permissions@ieee.org.
+Rajet Krishnan, Alexandre Graell i Amat, and Thomas Eriksson are with
+the Department of Signals and Systems, Chalmers University of Technology,
+Gothenburg, Sweden (e-mail: frajet, alexandre.graell, thomase g@chalmers.se).
+Giulio Colavolpe is with Dipartimento di Ingegneria dell’Informazione, Uni-
+versity of Parma, Parma, Italy (e-mail: giulio@unipr.it).
+Research supported by the Swedish Research Council under grant #2011-5961.
+for each antenna [3], since the antennas are placed far from
+each other [4]. The scenario under consideration also corresponds
+to a massive MIMO system [5], [6], where a large number of
+antennas are placed at the base station and each user terminal is
+equipped with a single antenna.
+The problem of designing receiver algorithms in the presence
+of random, time-varying phase noise due to noisy local oscil-
+lators has been studied extensively for single-antenna systems.
+We refer the readers to [7]–[10] and the references therein.
+To address the problem of designing receiver algorithms for
+joint phase noise estimation and data detection, the expectation-
+maximization (EM) framework is applied in [7], resulting in a
+code-aided synchronization technique. In [8], receiver algorithms
+are developed based on the sum-product algorithm (SPA) by
+constraining the probability density functions (pdfs) computed
+by the SPA to be in a certain canonical family (for e.g., the
+exponential family). This method of constraining the pdfs is
+referred to as the canonical distribution approach [11], and in
+particular, using the Tikhonov canonical distribution in [8] results
+to be the most convenient and effective choice. The variational
+Bayesian (VB) framework is adopted in [9] to develop efﬁcient
+algorithms for joint phase noise estimation and data detection.
+In [10], receiver algorithms are derived by using a smoother-
+detector structure based on the maximum a posteriori (MAP)
+symbol detector derived in [12], where the detector is properly
+designed by incorporating the phase noise statistics from the
+smoother.
+The effect of phase noise on MIMO systems has been in-
+vestigated in some recent work [2], [6], [13], [14], where the
+impact of phase noise on the MIMO channel measurements and
+the estimated capacity is studied. In [3], data-aided estimation
+of phase noise is studied using a Wiener ﬁlter. In [13], the
+problem of joint channel and phase noise estimation in a MIMO
+system is explored, and bounds on the estimation performance
+are derived. Soft-symbol aided estimation using an extended
+Kalman Smoother (EKS) and relevant estimation bounds are
+investigated in [15]. However, these works do not consider the
+problem of designing receiver algorithms for joint phase noise
+estimation and data detection. One of the few works investigating
+this problem can be found in [16], where the VB framework
+is employed. In general, MIMO receiver design has focused
+on developing algorithms for joint channel estimation and data
+detection (refer to [19], [20] and the references therein)—it is
+perceived that the phase noise can be handled by existing channel
+estimation-data detection algorithms since it can be regarded to
+be a part of the channel [2].
+In this paper, we consider the problem of designing receiver
+=== PDF PAGE 3 ===
+2
+algorithms for joint phase noise estimation and data detection
+in a MIMO system, where each transmit and receive antenna
+is connected to an independent noisy oscillator. We focus on
+the scenario where the phase noise process is a discrete Wiener
+process [18] and drifts much faster than the channel [6], [16].
+This implies that the phase noise in the system cannot be handled
+by moving it into the channel matrix and then compensating
+it by means of channel estimation—this is a typical scenario
+when noisy oscillators are used in the system and the channel is
+essentially quasi-static fading. For instance, in the case of ﬁxed
+access networks like microwave backhaul networks, where the
+channel essentially remains a constant for a long period of time
+(quasi-static fading), the phase noise changes much faster than
+the channel [17]. Separate phase noise estimators are also crucial
+in line-of-sight (LoS) MIMO systems, where a full-rank channel
+matrix is achieved by a careful placement of the antennas. In this
+case, the channel is almost constant and it varies much slower
+than phase noise. Finally, for the scenarios considered above,
+as the carrier frequency increases, the phase noise innovation
+variance will increase signiﬁcantly, and the phase noise will be
+required to be tracked symbol-by-symbol.
+For the MIMO system under consideration, we derive the
+MAP symbol detector which minimizes the symbol error prob-
+ability. This receiver structure explicitly involves the estimation
+of the a posteriori pdf of the phase noise and data detection. The
+computation of the a posteriori phase noise pdf is analytically
+intractable for the Wiener phase noise process. This motivates
+the need for investigating practical, low complexity receiver
+algorithms for joint phase noise estimation and data detection
+that also have a good performance. To this end, we propose
+three new algorithms based on the sum-product algorithm (SPA),
+the smoother-detector framework from [10], [12], and the VB
+framework in [9], respectively, for arbitrary number of transmit
+and receive antennas. We evaluate the performance of the pro-
+posed algorithms in strong phase noise scenarios in the presence
+of Rayleigh fading. We consider both uncoded and coded data
+transmissions, and compare the performance of the proposed
+algorithms with that of those available in the literature. We
+observe that the proposed algorithms signiﬁcantly outperform
+those from literature, which are considered in this work.
+The remainder of the paper is as follows. In Section II,
+the MIMO system model under study is presented. We derive
+the optimal MAP symbol detector in Section III. In Sections
+IV, V, and VI, we derive the SPA-based, smoother-detector-
+based, and VB-based algorithms, respectively. The computational
+complexity of the receivers is studied in Section VII. We present
+our simulation results in Section VIII. Finally, we summarize our
+key ﬁndings in Section IX.
+Notation: the expectation and variance operators are denoted
+as E[·] and Var(·), respectively. The conjugate of a complex
+number is denoted as [·]∗, and ȷ = √−1. ℜ{·}, ℑ{·}, | · | ,
+and \· are the real, imaginary part, magnitude, and angle of
+a complex number, respectively. The pdf and probability mass
+function (pmf) of a random variable are denoted as p(·) and
+P (·), respectively.
+II. S YSTEM MODEL
+We consider a MIMO system with Nt transmit antennas and
+Nr receive antennas. Data is transmitted as frames consisting
+of L symbols, and we consider both coded and uncoded trans-
+mission. The channel between the transmit-receive antennas is
+assumed to be a constant over the length of a frame, and is known
+(or estimated). Each antenna is equipped with an independent
+free-running oscillator that is perturbed by a random phase noise
+process, which varies much faster than the channel [16], and
+conforms to the model in (1) and (2). Speciﬁcally, the phase
+noise process from the oscillators is assumed to be varying
+from symbol-to-symbol as in (2). We assume that for given
+frame, the channel and phase noise are ﬁrst jointly estimated as
+in [13]. This is done by ﬁrst transmitting a training sequence
+that is used to estimate the channel and the phase noise by
+means of a least square estimator. The training sequence is then
+followed by the transmission of data symbols, during which an
+autonomous phase noise estimation algorithm is used to track the
+time-varying phase noise followed by data detection. The joint
+channel and phase noise estimates obtained from the training
+sequence are used as the true channel values in the (autonomous)
+phase noise estimation and data detection algorithm.
+Assuming square-root Nyquist pulses for transmission, and
+matched ﬁltering followed by sampling at symbol period Ts, the
+received signal in the kth time instant at the nth receive antenna
+is
+r(n)
+k =
+Nt∑
+m=1
+h(m,n)c(m)
+k eȷ(θ(m)
+t,k +θ(n)
+r,k ) + w(n)
+k
+,
+Nt∑
+m=1
+c(m,n)
+h,k eȷθ(m,n)
+k + w(n)
+k , (1)
+where perfect timing and frequency synchronization is as-
+sumed [8]. In (1), c(m)
+k ∈ M is the symbol transmitted from
+the mth transmit antenna at the kth time instant and drawn
+equiprobably from an M -ary signal constellation set M, h(m,n)
+represents the known (or estimated) channel realization between
+the mth transmit and nth receive antenna, c(m,n)
+h,k , c(m)
+k h(m,n),
+and w(n)
+k ∼ CN (0, N0) denotes the zero-mean additive white
+Gaussian noise (AWGN) at the nth receive antenna. The phase
+noise in the (m, n)th link, θ(m,n)
+k , is deﬁned as the sum of
+the discrete Wiener phase noise process from the oscillators
+connected to the mth transmit and the nth receive antenna,
+respectively, at time instant k, i.e., θ(m,n)
+k , θ(m)
+t,k + θ(n)
+r,k , where
+θ(m)
+t,k = θ(m)
+t,k−1 + ∆(m)
+t,k
+θ(n)
+r,k = θ(n)
+r,k−1 + ∆(n)
+r,k .
+(2)
+In (2), ∆(m)
+t,k ∼ N (0, σ2
+t ), ∆(n)
+r,k ∼ N (0, σ2
+r ), and θ(m)
+t,0 and θ(n)
+r,0
+are uniformly distributed in [0, 2π). We remark that the values
+of σ2
+t and σ2
+r determine the quality of the oscillators used at the
+transmitter and the receiver, respectively.
+Based on the received signal model in (1) and (2), we deﬁne
+the following vectors: k , [θ(1)
+t,k , . . . , θ(Nt)
+t,k , θ(1)
+r,k , . . . , θ(Nr)
+r,k ]T ,
+ , [1, . . . ,L]T , ck , [c(1)
+k , . . . , c(Nt)
+k ]T ,  c ,
+[c1, . . . ,cL]T , rk , [r(1)
+k , . . . , r(Nr)
+k ]T ,  r, [r1, . . . ,rL]T ,
+h , [h(1,1), . . . , h(Nt,Nr)]T , and wk , [w(1)
+k , . . . , w(Nr)
+k ]T .
+III. MAP S YMBOL DETECTOR
+In this section, we derive the MAP symbol detector. Based
+on the received signal model in (1), the optimum receiver is
+=== PDF PAGE 4 ===
+3
+obtained as
+ˆck = arg max
+ck
+∑
+ c\{ck}
+P ( c| r, h) (3)
+= arg max
+ck
+P (ck| r, h) (4)
+∝ arg max
+ck
+P (ck)p( r|ck, h) (5)
+= arg max
+ck
+∫
+k
+P (ck)p( r|ck, k, h)p(k|ck, h)dk
+= arg max
+ck
+∫
+k
+P (ck)p(rk|ck, k,  rk, h)p( rk|ck, k, h)
+· p(k|ck, h)dk (6)
+= arg max
+ck
+∫
+k
+P (ck)p(rk|ck, k, h)p( rk|ck, h)
+· p(k|ck,  rk, h)dk (7)
+∝ arg max
+ck
+∫
+k
+P (ck)p(rk|ck, k, h)p(k| rk)dk. (8)
+In (3), we express the MAP symbol detector for the symbols
+transmitted in the kth time instant as the marginalization of the
+a posteriori pmf of  cwith respect to all the symbols but ck. In
+(5), P (ck) represents the a priori probability of the transmitted
+symbols in the kth time instant, and we apply that h is indepen-
+dent of ck. We deﬁne  rk , [r1, . . . ,rk−1, rk+1, . . . ,rL] in (6).
+In (7), it is applied that, given ck, h and k,  rk is independent of
+rk. It is assumed in (8) that ck and  rk are independent of each
+other, which holds in the case of uncoded data transmission,
+implying that we can omit p( rk|ck, h) = p( rk|h). Furthermore,
+we apply that ck, h and k are independent of each other.
+The detector obtained in (8) is a vector extension of the MAP
+symbol detector derived by Kam et al. in [12] – it detects ck
+based on the conditional pdf of k, p(k| rk), which is com-
+puted using all received signals outside the kth time instant. The
+integral in (8) represents the a posteriori pmf of the transmitted
+symbols that is obtained after the marginalization of the phase
+noise. In uncoded systems, the transmitted symbols are detected
+based on (8). For the Wiener phase noise process, determining
+p(k| rk) is analytically intractable, which also makes the MAP
+detector intractable and unimplementable in practice [12].
+The MAP detector presented in (8) can also be obtained by
+applying the SPA based on the factor graph framework [21].
+This analysis forms the basis of the algorithm that is presented
+in Section IV. In order to derive the MAP detector using the
+SPA, we rewrite (3) as
+ˆck = arg max
+ck
+∑
+ c\{ck}
+P ( c| r, h)
+= arg max
+ck
+∑
+ c\{ck}
+∫
+
+P ( c, | r, h)d , (9)
+Factorizing the integrand, we obtain
+P ( c, | r, h) ∝ P ( c)p( | c)p( r| c, , h),
+= P (0)
+L∏
+k=1
+P (ck) p(k|k−1)| {z }
+p∆(k−k−1)
+p(rk|k, ck, h).
+(10)
+To factorize the function in (10) we exploit the fact that k is a
+discrete Wiener process as in (2). Furthermore, in the sequel, we
+refrain from conditioning with respect to h since it is known,.
+The FG associated with (10) is drawn in Fig. 1. With reference
+to the messages in the ﬁgure, we have
+P (c)
+d (ck) = P (ck) (11)
+p(θ)
+d (k) =
+∑
+ck
+P (c)
+d (ck)p(rk|ck, k) (12)
+p(θ)
+f (k) =
+∫
+k−1
+p(θ)
+f (k−1)p(θ)
+d (k−1)
+· p∆(k − k−1)dk−1 (13)
+p(θ)
+b (k) =
+∫
+k+1
+p(θ)
+b (k+1)p(θ)
+d (k+1)
+· p∆(k+1 − k)dk+1 (14)
+P (c)
+u (ck) =
+∫
+k
+p(θ)
+f (k)p(θ)
+b (k)p(rk|ck, k)dk. (15)
+Note that in the case of uncoded transmission the FG in Fig.
+1 is a tree, and thus applying the SPA on this graph renders the
+exact MAP symbol detector (8). In this view, p(θ)
+b (k)p(θ)
+f (k)
+is equal to the a posteriori pdf p(k| rk) in (8). Thus, the detector
+in (8) can be expressed in terms of P (c)
+u (ck) as
+ˆck = arg max
+ck
+P (c)
+u (ck)P (c)
+d (ck)
+∝ arg max
+ck
+P (c)
+u (ck), (16)
+where (16) simpliﬁes since P (ck) is uniform in an uncoded
+transmission. In coded systems, the same messages in (11)-(15)
+will be used, but now the message P (c)
+d (ck) is not the a priori
+pmf P (ck), but rather the extrinsic symbol pmf provided by
+the decoder. Also, the message P (c)
+u (ck) in (15) is used for
+computing the bit log-likelihood ratios (LLRs) for soft decoding
+[10].
+The messages in (11)-(15) form the core of the SPA for the
+implementation of the MAP detector. The implementation of the
+exact SPA is impractical because it involves the computation of
+the continuous pdfs of k in (11)-(14), which are analytically
+intractable. The intractability of the exact MAP symbol detector
+in (8) and (16) motivates the need to explore practical, low
+complexity receiver algorithms. In the sequel, we present three
+receiver algorithms that are approximations of the exact MAP
+detector presented in (4), (8) and (16).
+IV. M ULTIVARIATE TIKHONOV -PARAMETERIZATION BASED
+SUM-P RODUCT ALGORITHM FOR APPROXIMATE MAP
+DETECTION
+In the following, we derive a low-complexity SPA for the
+approximate implementation of the MAP symbol detector based
+on the canonical distribution approach suggested in [11]. This
+approach involves constraining the messages on the FG to a
+speciﬁc family of pdfs that can compactly and completely be
+described by a ﬁnite number of parameters. Thus, the task of
+computing the exact pdf is reduced to computing the parameters
+of the pdf. More speciﬁcally, we adopt the Tikhonov canonical
+distribution approach introduced by Colavolpe et al. in [8]; we
+constrain p(θ)
+f (k) and p(θ)
+b (k) to be multivariate Tikhonov
+pdfs in order to obtain a practical algorithm with good perfor-
+mance.
+=== PDF PAGE 5 ===
+4
+Fig. 1: Factor Graph and the SPA messages based on (10)
+Without loss of generality we consider the case where Nt = 2
+and Nr = 1 , hence k = [ θ(1)
+t,k , θ(2)
+t,k , θ(1)
+r,k ] and ck = [ c(1)
+k , c(2)
+k ].
+The generalization of the algorithm to arbitrary values of Nt
+and Nr is straightforward and is presented in Section IV -D. The
+received signal model in the kth time instant is
+r(1)
+k = c(1,1)
+h,k ej(θ(1)
+t,k +θ(1)
+r,k ) + c(2,1)
+h,k ej(θ(2)
+t,k +θ(1)
+r,k ) + w(1)
+k . (17)
+Then (10) can be expressed as
+P ( c, | r) ∝ P ( c)p(θ(1)
+t,0 , θ(2)
+t,0 , θ(1)
+r,0 )
+∏
+k
+p∆(k − k−1)
+∏
+k
+p(r(1)
+k |c(1)
+k , c(2)
+k , θ(1)
+t,k , θ(2)
+t,k , θ(1)
+r,k ), (18)
+where
+p(r(1)
+k |c(1)
+k , c(2)
+k , θ(1)
+t,k , θ(2)
+t,k , θ(1)
+r,k )
+∝ exp
+
+
+
+−
+r(1)
+k − c(1)
+h,keȷ(θ(1)
+t,k +θ(1)
+r,k ) − c(2)
+h,keȷ(θ(2)
+t,k +θ(1)
+r,k )
+
+2
+N0
+
+
+
+. (19)
+We ﬁrst seek to determine the functional form of the message
+p(θ)
+d (k) which is used to determine the messages p(θ)
+f (k) and
+p(θ)
+b (k). From (12),
+p(θ)
+d (k)=
+∑
+c(1)
+k
+∑
+c(2)
+k
+P (c)
+d (c(1)
+k , c(2)
+k )p(r(1)
+k |c(1)
+k , c(2)
+k , θ(1)
+t,k , θ(2)
+t,k , θ(1)
+r,k )
+=p(rk|θ(1)
+t,k , θ(2)
+t,k , θ(1)
+r,k ). (20)
+As we shall see in the sequel, p(θ)
+d (k) is a mixture of
+Tikhonov pdfs in θ(m)
+t,k , θ(n)
+r,k , or a mixture of Gaussian pdfs in
+r(1)
+k when the transmitted symbol is unknown to the receiver.
+Deriving a low complexity algorithm mandates the approxima-
+tion of this mixture. As in [8], [19], we approximate p(θ)
+d (k)
+as a single mode pdf in r(1)
+k . Speciﬁcally, we approximate
+p(rk|θ(1)
+t,k , θ(2)
+t,k , θ(1)
+r,k ) by the Gaussian pdf that is closest in
+terms of the Kullback Leibler (KL) divergence measure. This is
+achieved by moment matching, since the Gaussian pdf belongs to
+the exponential family of distributions [22]. The meaningfulness
+of this approximation stems from the fact that in many interesting
+scenarios, the sum of Gaussians constituting p(θ)
+d (k) has a
+dominant term. This is particularly true when the a priori
+information about the transmitted symbols is reliable as in coded
+systems [23]. In this case, p(θ)
+d (k) can have a pronounced mode
+or peak. However, as the size of the constellation is increased
+or the pilot density is reduced, this approximation can be lossy
+[24].
+The mean and variance of the closest Gaussian pdf are
+E{r(1)
+k |θ(1)
+t,k , θ(2)
+t,k , θ(1)
+r,k } = α(1,1)
+k eȷ(θ(1)
+t,k +θ(1)
+r,k ) + α(2,1)
+k eȷ(θ(2)
+t,k +θ(1)
+r,k )
+Var{r(1)
+k |θ(1)
+t,k , θ(2)
+t,k , θ(1)
+r,k } = β(1,1)
+k + β(2,1)
+k + N0 −
+α(1,1)
+k
+
+2
+−
+α(2,1)
+k
+
+2
+, γ(1)
+k , (21)
+respectively, having deﬁned
+α(m,1)
+k =
+∑
+c(m)
+k ∈C
+c(m,1)
+h,k P (c)
+d (c(m)
+k ) (22)
+β(m,1)
+k =
+∑
+c(m)
+k ∈C
+c(m,1)
+h,k
+
+2
+P (c)
+d (c(m)
+k ), for m = {1, 2}. (23)
+Therefore,
+p(θ)
+d (k)
+≈ N (r(1)
+k ; E{r(1)
+k |θ(1)
+t,k , θ(2)
+t,k , θ(1)
+r,k }, γ(1)
+k ) (24)
+∝ exp
+
+
+
+−
+r(1)
+k − α(1,1)
+k eȷ(θ(1)
+t,k +θ(1)
+r,k ) − α(2,1)
+k eȷ(θ(2)
+t,k +θ(1)
+r,k )
+
+2
+γ(1)
+k
+
+
+
+∝ exp
+{
+2ℜ
+γ(1)
+k
+[
+r(1)
+k α(1,1)
+k
+∗
+e−ȷ(θ(1)
+t,k +θ(1)
+r,k ) + r(1)
+k α(2,1)
+k
+∗
+e−ȷ(θ(2)
+t,k +θ(1)
+r,k )
+− | α(2,1)
+k α(1,1)
+k
+∗
+|eȷ(\α(2,1)
+k α(1,1)
+k
+∗
++θ(2)
+t,k −θ(1)
+t,k )
+]}
+= exp
+{
+2ℜ
+γ(1)
+k
+[
+r(1)
+k α(1,1)
+k
+∗
+e−ȷ(θ(1)
+t,k +θ(1)
+r,k ) + r(1)
+k α(2,1)
+k
+∗
+e−ȷ(θ(2)
+t,k +θ(1)
+r,k )
+− | α(2,1)
+k α(1,1)
+k
+∗
+|eȷ(\r(1)
+k α(1,1)
+k
+∗
+−\r(1)
+k α(2,1)
+k
+∗
++θ(2)
+t,k −θ(1)
+t,k )
+]}
+(25)
+, exp
+{
+ℜ
+[
+(x(1)
+k e−ȷθ(1)
+t,k + x(2)
+k e−ȷθ(2)
+t,k )e−ȷθ(1)
+r,k
+− x(3)
+k e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+]}
+(26)
+= exp
+{
+ℜ
+[
+x(1)
+k e−ȷθ(1,1)
+k + x(2)
+k e−ȷθ(2,1)
+k
+− x(3)
+k e−ȷ(θ(1,1)
+k −θ(2,1)
+k )
+]}
+. (27)
+In (25), we exploit that \α(2,1)
+k α(1,1)
+k
+∗
+= \r(1)
+k α(1,1)
+k
+∗
+−
+\r(1)
+k α(2,1)
+k
+∗
+, and in (26) we deﬁne
+x(1)
+k , 2
+γ(1)
+k
+r(1)
+k α(1,1)
+k
+∗ eȷ\r(1)
+k α(1,1)
+k
+∗
+x(2)
+k , 2
+γ(1)
+k
+r(1)
+k α(2,1)
+k
+∗ eȷ\r(1)
+k α(2,1)
+k
+∗
+x(3)
+k , 2
+γ(1)
+k
+α(2,1)
+k α(1,1)
+k
+∗ eȷ(\r(1)
+k α(1,1)
+k
+∗
+−\r(1)
+k α(2,1)
+k
+∗
+). (28)
+=== PDF PAGE 6 ===
+5
+In (27), the message p(θ)
+d (k) is re-expressed as the cosine
+variant of the unnormalized bivariate Tikhonov distribution of
+θ(1,1)
+k , θ(2,1)
+k [25]. The distribution is completely characterized by
+x(1)
+k , x(2)
+k , x(3)
+k and its parameters are the following. \x(1)
+k and
+1/|x(1)
+k | are the mean and variance of θ(1,1)
+k , respectively, \x(2)
+k
+and 1/|x(2)
+k | are the mean and variance of θ(2,1)
+k , respectively, and
+x(3)
+k is related to the correlation between θ(1,1)
+k and θ(2,1)
+k , which
+can have an arbitrary magnitude and has to satisfy the constraint
+\x(3)
+k = \x(1)
+k − \x(2)
+k . The estimates of θ(1,1)
+k , θ(2,1)
+k and their
+covariance mentioned are based on the received signal r(1)
+k . In
+our algorithm, we exploit the functional form of p(θ)
+d (k) in
+(26) to determine the other messages.
+A. F orward Recursion
+In the sequel, based on p(θ)
+d (k) and motivated by the
+choice of the cannonical pdf in [8], we determine the message
+p(θ)
+f (k), which is constrained to be a bivariate Tikhonov pdf.
+Computation of the parameters of p(θ)
+f (k) renders the estimates
+of θ(1,1)
+k , θ(2,1)
+k and their covariance based on the received signals
+[r(1)
+1 , . . . , r(1)
+L ] in the forward direction – this is referred to as
+the forward recursion. The message is evaluated as
+p(θ)
+f (k) =
+∫
+k−1
+p(θ)
+f (k−1)p(θ)
+d (k−1)p∆(k − k−1)dk−1.
+(29)
+Assume that p(θ)
+f (k−1) is the cosine variant of the bivariate
+Tikhonov distribution and is given as
+p(θ)
+f (k−1) ∝ exp
+{
+ℜ
+[
+(a(1,1)
+f,k−1e−ȷθ(1)
+t,k−1 + a(2,1)
+f,k−1e−ȷθ(2)
+t,k−1 )
+· e−ȷθ(1)
+r,k−1 − ˜a(1,2)
+f,k−1e−ȷ(θ(1)
+t,k−1−θ(2)
+t,k−1)
+]}
+,
+(30)
+where \˜a(1,2)
+f,k−1 = \a(1,1)
+f,k−1 − \a(2,1)
+f,k−1. In (30), \a(1)
+f,k−1, \a(2)
+f,k−1
+and 1/|a(1)
+f,k−1|, 1/|a(2)
+f,k−1| correspond to the predicted estimates
+and the variances of θ(1,1)
+k−1 , θ(2,1)
+k−1 , respectively, based on the
+received signals [r(1)
+1 , . . . , r(1)
+k−1], and ℜ{˜a(1,2)
+f,k } is the predicted
+correlation between θ(1,1)
+k−1 , θ(2,1)
+k−1 .
+From the bivariate Tikhonov pdf-based approximation en-
+forced as \˜a(1,2)
+f,k−1 = \a(1,1)
+f,k−1 − \a(2,1)
+f,k−1, we have that the corre-
+lation, ℜ{˜a(1,2)
+f,k−1}, changes with \a(1,1)
+f,k−1 − \a(2,1)
+f,k−1. Intuitively,
+this makes sense for the problem setup that we have: consider
+that the phase noise at the transmitter is very small compared to
+the receiver phase noise, i.e., θ(2,1)
+k−1 = θ(2)
+t,k−1 + θ(1)
+r,k−1 ≈ θ(1)
+r,k−1,
+θ(1,1)
+k−1 = θ(1)
+t,k−1 +θ(1)
+r,k−1 ≈ θ(1)
+r,k−1 . Then, \a(1,1)
+f,k−1 −\a(2,1)
+f,k−1 ≈ 0,
+and the correlation between θ(1,1)
+k−1 and θ(2,1)
+k−1 is maximized.
+However, as the phase noise at the transmitter becomes more
+severe, \a(1,1)
+f,k−1 − \a(2,1)
+f,k−1 becomes more divergent, and the
+correlation between θ(1,1)
+k−1 and θ(2,1)
+k−1 reduces.
+Now compute the product p(θ)
+f (k−1)p(θ)
+d (k−1) in (29) as
+p(θ)
+f (k−1)p(θ)
+d (k−1)
+= exp
+{
+ℜ
+[
+((x(1)
+k−1 + a(1,1)
+f,k−1)e−ȷθ(1)
+t,k−1 + (x(2)
+k−1 + a(2,1)
+f,k−1)e−ȷθ(2)
+t,k−1 )
+· e−ȷθ(1)
+r,k−1 − (x(3)
+k−1 + ˜a(1,2)
+f,k−1)e−ȷ(θ(1)
+t,k−1−θ(2)
+t,k−1)
+]}
+, exp
+{
+ℜ
+[
+(y(1)
+k−1e−ȷθ(1)
+t,k−1 + y(2)
+k−1e−ȷθ(2)
+t,k−1)e−ȷθ(1)
+r,k−1
+− y(3)
+k−1e−ȷ(θ(1)
+t,k−1−θ(2)
+t,k−1)
+]}
+. (31)
+In (31), \y(1)
+k−1, \y(2)
+k−1 and 1/|y(1)
+k−1|, 1/|y(2)
+k−1| correspond
+to the predicted estimates and the variances of θ(1,1)
+k−1 , θ(2,1)
+k−1 ,
+respectively, based on the received signals [r(1)
+1 , . . . , r(1)
+k ], and
+y(3)
+k−1 gives a measure of the predicted correlation between θ(1,1)
+k−1 ,
+θ(2,1)
+k−1 .
+Note that bivariate Tikhonov distributions are not closed under
+the product operation [26], i.e., the product of two bivariate
+Tikhonov distributions is not another bivariate Tikhonov distri-
+bution. However in [26], it was conjectured that the product is
+approximately another bivariate Tikhonov pdf. The quality of this
+approximation cannot be assessed analytically. As we shall see
+in Section VIII, the performance of the SPA-based receiver that
+is developed in this section is better than the other algorithms
+available in literature, implying that the approximations made are
+meaningful. This pragmatic approach of motivating the quality
+of the approximations by performance analysis of the algorithm
+is a common and well-accepted method in the Bayesian ﬁltering
+literature [27]–[29]
+Based on the conjecture in [26], we approximate the product in
+(31) as a bivariate Tikhonov distribution, where we impose that
+\y(3)
+k−1 ≈ \y(1)
+k−1 − \y(2)
+k−1, as required for a bivariate Tikhonov
+distribution. Using this assumption, we compute p(θ)
+f (k) in (29)
+as
+p(θ)
+f (k)
+=
+∫ 2π
+0
+∫ 2π
+0
+∫ 2π
+0
+exp
+{
+ℜ
+[
+(y(1)
+k−1e−ȷθ(1)
+t,k−1 + y(2)
+k−1e−ȷθ(2)
+t,k−1 )
+· e−ȷθ(1)
+r,k−1 − y(3)
+k−1e−ȷ(θ(1)
+t,k−1−θ(2)
+t,k−1)
+]}
+· p∆(θ(1)
+t,k − θ(1)
+t,k−1)p∆(θ(2)
+t,k − θ(2)
+t,k−1)
+· p∆(θ(1)
+r,k − θ(1)
+r,k−1)dθ(1)
+t,k−1dθ(2)
+t,k−1dθ(1)
+r,k−1. (32)
+For the discrete Wiener phase noise process considered, we
+show in Appendix A that p(θ)
+f (k) is approximately a bivariate
+Tikhonov distribution given by
+p(θ)
+f (k) ∝ exp
+{
+ℜ
+[
+(a(1,1)
+f,k e−ȷθ(1)
+t,k + a(2,1)
+f,k e−ȷθ(2)
+t,k )e−ȷθ(1)
+r,k
+− ˜a(1,2)
+f,k e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+]}
+, (33)
+where it is assumed that \˜a(1,2)
+f,k = \a(1,1)
+f,k − \a(2,1)
+f,k . The
+parameters a(1,1)
+f,k , a(2,1)
+f,k , ˜a(1,2)
+f,k are recursively updated in the
+=== PDF PAGE 7 ===
+6
+forward direction as
+a(m,1)
+f,k =
+¯¯a(m,1)
+f,k
+1 + σ2
+t
+
+¯¯a(m,1)
+f,k
+ −
+˜˜a(1,2)
+f,k
+
+
+, m ∈ {1, 2}
+˜a(1,2)
+f,k =
+˜˜a(1,2)
+f,k
+2∏
+m=1
+(
+1 + σ2
+t
+
+¯¯a(m,1)
+f,k
+ −
+˜˜a(1,2)
+f,k
+
+
+), (34)
+where
+¯¯a(m,1)
+f,k =
+¯a(m,1)
+f,k
+1 + σ2r
+
+¯a(1,1)
+f,k
+ +
+¯a(2,1)
+f,k
+
+
+.
+¯a(m,1)
+f,k = a(m,1)
+f,k−1 + 2
+γ(1)
+k−1
+r(1)
+k−1α(m,1)
+k−1
+∗
+˜˜a(1,2)
+f,k = ˜a(1,2)
+f,k−1 + 2
+γ(1)
+k−1
+α(2,1)
+k−1 α(1,1)
+k−1
+∗
+(35)
+B. Backward Recursion
+The parameters of p(θ)
+b (k) are computed based on the
+received signals [r(1)
+L , . . . , r(1)
+1 ] in the backward direction. The
+message p(θ)
+b (k) in (14) is evaluated as
+p(θ)
+b (k) ∝ exp
+{
+ℜ
+[
+(a(1,1)
+b,k e−ȷθ(1)
+t,k + a(2,1)
+b,k e−ȷθ(2)
+t,k )e−ȷθ(1)
+r,k
+− ˜a(1,2)
+b,k e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+]}
+, (36)
+where it is assumed that \˜a(1,2)
+b,k = \a(1,1)
+b,k − \a(2,1)
+b,k . The
+parameters of p(θ)
+b (k) are recursively updated in the backward
+direction as
+a(m,1)
+b,k =
+¯¯a(m,1)
+b,k
+1 + σ2
+t
+
+¯¯a(m,1)
+b,k
+ −
+˜˜a(1,2)
+b,k
+
+
+, m ∈ {1, 2}
+˜a(1,2)
+b,k =
+˜˜a(1,2)
+b,k
+2∏
+m=1
+(
+1 + σ2
+t
+
+¯¯a(m,1)
+b,k
+ −
+˜˜a(1,2)
+b,k
+
+
+), (37)
+where
+¯¯a(m,1)
+b,k =
+¯a(m,1)
+b,k
+1 + σ2r
+
+¯a(1,1)
+b,k
+ +
+¯a(2,1)
+b,k
+
+
+¯a(m,1)
+b,k = a(m,1)
+b,k+1 + 2
+γ(1)
+k+1
+r(1)
+k+1α(m,1)
+k+1
+∗
+˜˜a(1,2)
+b,k = ˜a(1,2)
+b,k+1 + 2
+γ(1)
+k+1
+α(2,1)
+k+1 α(1,1)
+k+1
+∗
+. (38)
+C. Computation of P (c)
+u (ck)
+Based on the messages p(θ)
+f (k) and p(θ)
+b (k), we compute
+P (c)
+u (ck) in (15) as
+P (c)
+u (ck) =
+∫
+k
+p(θ)
+f (k)p(θ)
+b (k)p(rk|ck, k)dk
+∝ exp
+(
+−
+|c(1,1)
+h,k |2 + |c(2,1)
+h,k |2
+N0
+)
+·
+∫
+k
+exp
+{
+ℜ
+[
+(z(1,1)
+k e−ȷθ(1)
+t,k + z(2,1)
+k e−ȷθ(2)
+t,k )e−ȷθ(1)
+r,k
+− ˜z(1,2)
+k e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+]}
+dk
+∝ exp
+(
+−
+|c(1,1)
+h,k |2 + |c(2,1)
+h,k |2
+N0
+)
+I0
+(z(1,1)
+k
+ +
+z(2,1)
+k
+
+)
+· I0
+(˜z(1,2)
+k
+
+)
+, (39)
+where I0(·) is the zeroth order modiﬁed Bessel function, and we
+deﬁne
+z(m,1)
+k , a(m,1)
+f,k + a(m,1)
+b,k + 2
+N0
+r(1)
+k c(m,1)
+h,k
+∗
+, m ∈ {1, 2}
+˜z(1,2)
+k , ˜a(1,2)
+f,k + ˜a(1,2)
+b,k + 2
+N0
+c(2,1)
+h,k c(1,1)
+h,k
+∗
+. (40)
+D. Generalization to Arbitrary Nt and Nr values
+Based on (34), we can generalize the forward recursions for
+the case of arbitrary Nt and Nr values as
+a(m,n)
+f,k =
+¯¯a(m,n)
+f,k
+1 + σ2
+t
+
+Nr∑
+n=1
+¯¯a(m,n)
+f,k
+ −
+Nt∑
+l=1
+l̸=m
+˜˜a(m,l)
+f,k
+
+
+˜a(m,l)
+f,k =
+˜˜a(m,l)
+f,k
+Nt∏
+m=1
+
+1 + σ2
+t
+
+Nr∑
+n=1
+¯¯a(m,n)
+f,k
+ −
+Nt∑
+l=1
+l̸=m
+˜˜a(m,l)
+f,k
+
+
+
+
+, (41)
+where m, l ∈ {1, . . . , Nt} and n ∈ {1, . . . , Nr} and
+¯¯a(m,n)
+f,k =
+¯a(m,n)
+f,k
+1 + σ2r
+Nt∑
+m=1
+¯a(m,n)
+f,k
+
+¯a(m,n)
+f,k = a(m,n)
+f,k−1 + 2
+γ(n)
+k−1
+r(n)
+k−1α(m,n)
+k−1
+∗
+˜˜a(m,l)
+f,k = ˜a(m,l)
+f,k−1 + 2Nr
+γ(n)
+k−1
+α(l,n)
+k−1 α(m,n)
+k−1
+∗
+. (42)
+Similarly, we can generalize the backward recursion as
+a(m,n)
+b,k =
+¯¯a(m,n)
+b,k
+1 + σ2
+t
+
+Nr∑
+n=1
+¯¯a(m,n)
+b,k
+ −
+Nt∑
+l=1
+l̸=m
+˜˜a(m,l)
+b,k
+
+
+˜a(m,l)
+b,k =
+˜˜a(m,l)
+b,k
+Nt∏
+m=1
+
+1 + σ2
+t
+
+Nr∑
+n=1
+¯¯a(m,n)
+b,k
+ −
+Nt∑
+l=1
+l̸=m
+˜˜a(m,l)
+b,k
+
+
+
+
+, (43)
+=== PDF PAGE 8 ===
+7
+where
+¯¯a(m,n)
+b,k =
+¯a(m,n)
+b,k
+1 + σ2r
+Nt∑
+m=1
+¯a(m,n)
+b,k
+
+¯a(m,n)
+b,k = a(m,n)
+b,k+1 + 2
+γ(n)
+k+1
+r(n)
+k+1α(m,n)
+k+1
+∗
+˜˜a(m,l)
+b,k = ˜a(m,l)
+f,k+1 + 2Nr
+γ(n)
+k+1
+α(l,n)
+k+1 α(m,n)
+k+1
+∗
+. (44)
+Note that the MAP estimate of phase noise
+processes at each time instant k is given as
+arg maxk p(θ)
+f (k)p(θ)
+b (k)p(θ)
+d (k), and is not used
+in the receiver algorithm explicitly. The generalization of
+P (c)
+u (ck) is given as
+P (c)
+u (ck) ∝ exp
+(
+−Nr
+Nt∑
+m=1
+|c(m,n)
+h,k |2
+N0
+) Nr∏
+n=1
+I0
+( Nt∑
+m=1
+z(m,n)
+k
+
+)
+Nt∏
+m=1,
+l>m
+I0
+(˜z(m,l)
+k
+
+)
+, (45)
+where
+z(m,n)
+k , a(m,n)
+f,k + a(m,n)
+b,k +
+Nr∑
+n=1
+2
+N0
+r(n)
+k c(m,n)
+h,k
+∗
+˜z(m,l)
+k , ˜a(m,l)
+f,k + ˜a(m,l)
+b,k +
+Nr∑
+n=1
+2
+N0
+c(l,n)
+h,k c(m,n)
+h,k
+∗
+. (46)
+For future reference, we refer to the SPA-based algorithm
+for approximate MAP detection as SPA-MAP . This algorithm
+is a generalization of the algorithm presented for single-antenna
+systems in [8]. We summarize one iteration of the SPA-MAP
+algorithm as follows.
+Step 1) Evaluate the coefﬁcients α(m,n)
+k , β(m,n)
+k in (22) using
+the a priori probabilities P (c)
+d (ck) of the transmitted symbols
+c(i)
+k ∀ k ∈ {1, . . . , L} and m ∈ {1, . . . , Nt}, n ∈ {1, . . . , Nr}.
+Step 2) Recursively update the parameters in (41)
+in the forward direction using the received signals
+[r(n)
+1 , . . . , r(n)
+L ]∀ n ∈ {1, . . . , Nr}.
+Step 3) Recursively update the parameters in (43) in
+the backward direction using the received signals
+[r(n)
+L , . . . , r(n)
+1 ]∀ n ∈ {1, . . . , Nr}.
+Step 4) Evaluate P (c)
+u (ck) in (45) ∀ k ∈ {1, . . . , L}.
+Step 5) Update P (c)
+d (ck) using P (c)
+u (ck), if a soft-input soft-
+output decoder is used ∀ k ∈ {1, . . . , L}.
+V. A PPROXIMATE MAP D ETECTION BASED ON THE
+SMOOTHER -D ETECTOR STRUCTURE
+In this section, we present a receiver algorithm that uses the
+smoother-detector structure, as in [10], to approximate the MAP
+symbol detector. As required by this structure, a smoother like
+the EKS is used to track the discrete Wiener phase noise process.
+Then the a posteriori pdf from the smoother is used for deriving
+the approximate MAP detector in (8). Speciﬁcally, let p(k| r)
+denote the a posteriori phase noise pdf provided by the smoother.
+We approximate p(k| r) by constraining it to a speciﬁc family
+of pdfs that renders the integral in (8) tractable.
+We ﬁrst consider the case where Nt = 2 and Nr = 1, and, with
+a slight abuse of notation, we let k = [θ(1,1)
+k , θ(2,1)
+k ] and ck =
+[c(1)
+k , c(2)
+k ]. The pdf p(k| r) is modeled as a bivariate Gaussian
+pdf, i.e., p(k| r) = N (k; bk, Pk,n), where ˆθ(m,n)
+k ∈ bk and
+P (m,l)
+k,n ∈ Pk, with
+ˆθ(m,n)
+k = Ep(k| r){θ(m,n)
+k },
+P (m,l)
+k,n = Ep(k| r){(θ(m,n)
+k − ˆθ(m,n)
+k )(θ(l,n)
+k − ˆθ(l,n)
+k )}.
+for n = 1 and m, l ∈ {1, 2} (47)
+Thus, the approximate MAP detector is written as
+ˆck = arg max
+ck∈C
+∫
+k
+p(rk|ck, k)p(k|ck,  rk)dk, (48)
+≈ arg max
+ck∈C
+∫
+k
+p(rk|ck, k)p(k| r)dk (49)
+= arg max
+ck∈C
+∫
+k
+p(rk|ck, k)N (k; bk, ^Pk)dk (50)
+≈ arg max
+ck∈C
+exp
+{
+−
+|c(1,1)
+h,k |2 + |c(2,1)
+h,k |2
+N0
+}
+· I0
+(
+|u(1,1)
+k | + |u(2,1)
+k | − | ˜u(1,2)
+k |
+)
+. (51)
+We refer the reader to Appendix B for the derivation of the result
+in (51). In (50), we deﬁne
+u(m,1)
+k , 2
+N0
+r(1)
+k c(m,n)
+h,k
+∗
++ eȷˆθ(m,1)
+k
+P (m,1)
+k,1
+, m ∈ {1, 2}
+˜u(1,2)
+k , 2
+N0
+c(2,1)
+h,k c(1,1)
+h,k
+∗
++
+˜˜u(1,2)
+k
+ eȷ(ˆθ(1,1)
+k −ˆθ(2,1)
+k ), (52)
+where
+˜˜u(1,2)
+k
+ is obtained by solving [25]
+P 1,2
+k,1 = −|˜˜u(1,2)
+k |√(
+P (1,1)
+k,1
+−1
+− |˜˜u(1,2)
+k |
+) (
+P (2,2)
+k,1
+−1
+− |˜˜u(1,2)
+k |
+). (53)
+The generalization of the approximate MAP detector in (51)
+to arbitrary Nt and Nr values is given as
+ˆck = arg max
+ck
+exp
+(
+−Nr
+Nt∑
+m=1
+|c(m,n)
+h,k |2
+N0
+)
+Nr∏
+n=1
+I0
+
+
+Nt∑
+m=1
+|u(m,n)
+k | −
+Nt∑
+m=1,
+l>m
+|˜u(m,l)
+k |
+
+ . (54)
+For future reference, we refer to the smoother-detector al-
+gorithm for approximate MAP detection in (51) based on the
+Gaussian pdf assumption for phase noise as Gauss-MAP . When
+the a posteriori pdf p(k| rk) is considered to be a Dirac Delta
+function, δ(k − bk), then the symbol detector in (50) reduces
+to the Euclidean distance-based detector that treats the phase
+noise estimate as the true value of the phase noise at the kth
+time instant, i.e.,
+ˆck = arg max
+ck∈C
+∫
+k
+p(rk|ck, k)δ(k − bk)dk
+= arg max
+ck∈C
+p(rk|ck, bk). (55)
+=== PDF PAGE 9 ===
+8
+In the sequel, we refer to the symbol-by-symbol detector com-
+prising the smoother and the Euclidean distance-based detector
+in (55) as EUC-MAP .
+For implementing the Gauss-MAP and the EUC-MAP , the
+EKS [32] is used to compute the estimate of the phase noise
+in each link and its respective variance as in (47). It is known
+from [13], that in a MIMO setup, the EKS achieves the Cram ´er-
+Rao lower bound (CRLB) in the data-aided estimation setup. In
+order to determine the linearized state space model for deriving
+the EKS, we model the symbol transmitted by the mth transmit
+antenna in the kth time instant as
+c(m)
+k = c(m)
+k + w(m)
+c,k , (56)
+where c(m)
+k is the symbol average from the detector and w(m)
+c,k
+is the error associated with it, which is assumed to be Gaussian
+distributed, i.e., w(m)
+c,k ∼ N (0, σ2
+c ) [33], [34]. Deﬁne an Nr ×
+NtNr matrix Ck as
+Ck =
+
+
+ck 01×Nt . . . 01×Nt
+01×Nt ck . . . 01×Nt
+... . . . . . . ...
+01×Nt 01×Nt . . . ck
+
+ , (57)
+ck = [c(1)
+k . . . c(Nt)
+k ]. (58)
+Thus the observation and the state space model considering
+the received signal at the nth receive antenna and the kth time
+instant for Nt transmit and Nr receive antennas is given as
+r(n)
+k =
+Nt∑
+m=1
+eȷθ(m,n)
+k (c(m)
+k + w(m)
+c,k )h(m,n) + w(n)
+k
+≈
+Nt∑
+m=1
+eȷˆθ(m,n)
+k (1 + ȷ(θ(m,n)
+k − ˆθ(m,n)
+k ))c(m,n)
+h,k + ˜w(n)
+k
+θ(m,n)
+k = θ(m,n)
+k−1 + ∆(m)
+t,k + ∆(n)
+r,k ,
+, θ(m,n)
+k−1 + ∆(m,n)
+k , (59)
+where c(m,n)
+h,k , c(m)
+k h(m,n), ˜w(n)
+k ∼ N (0, N0 + σ2
+c ). The
+unknown state vector is k and its estimate is bk, the state
+noise vector is [∆(1,1)
+k , . . . ,∆(Nt,1)
+k , . . . ,∆(Nt,Nr)
+k ], all of which
+are of size NtNr × 1. The state noise covariance matrix, denoted
+as Q, is an NtNr × NtNr matrix, which is written as
+Q =
+
+
+Q1,1 . . . Q1,Nr
+... . . . ...
+QNr,1 . . . QNr,Nr
+
+ ,
+Qa,b =
+{
+σ2
+r 1Nt×Nt + σ2
+t INt×Nt , if a = b
+σ2
+t INt×Nt, otherwise.
+Let W = σ2
+t INr×Nr. Deﬁne the Jacobian matrix of size Nr ×
+NtNr for the observation model in (59) as
+H( bk) =
+
+
+h1 01×Nt . . . 01×Nt
+01×Nt h2 . . . 01×Nt
+... . . . . . . ...
+01×Nt 01×Nt . . . hNr
+
+ , (60)
+hn = [ȷc(1,n)
+h,k eȷˆθ(1,n)
+k . . . ȷc(Nt,n)
+h,k eȷˆθ(Nt ,n)
+k ]. (61)
+Then the EKS equations are given in (62)-(67). Kk is the
+NtNr × Nr Kalman gain in the kth time instant. In the forward
+recursion, b
+f
+k and Pf
+k denote the estimate of the mean and
+covariance of k, respectively, based on the received signals
+[r1, . . . ,rL]. These are used in the backward recursion to obtain
+the smoothed estimate of the mean and covariance of k,
+denoted as bk and Pk, respectively.
+VI. VB F RAMEWORK -BASED ALGORITHM FOR
+APPROXIMATE MAP D ETECTION
+In this section, we develop a receiver algorithm for approxi-
+mating the MAP symbol detector based on the VB framework
+as in [9] (see [30] for a nice tutorial on the VB framework).
+We consider arbitrary Nt and Nr, and with a slight abuse
+of notation, we deﬁne k = [ θ(1,1)
+k , . . . , θ(m,n)
+k , . . . , θ(Nt,Nr)
+k ]
+and ck = [ c(1)
+k , . . . , c(Nt)
+k ]. Based on this framework, we ﬁrst
+compute the log likelihood of  ras
+log p( r) = log
+∑
+ c
+∫
+
+p( c, ,  r)d 
+= log
+∑
+ c
+∫
+
+Q( c, ) p( c, ,  r)
+Q( c, ) d 
+(a)
+≥
+∑
+ c
+∫
+
+Q( c, ) log p( c, ,  r)
+Q( c, ) d . (68)
+In (68), the Jensen’s inequality is applied to lower bound the log
+likelihood; so when Q( c, ) is set to P ( c, | r), the lower bound
+is achieved. Thus, our objective is to search over the various pdfs
+Q( c, ) can assume, such that the bound in (68) is as tight as
+possible. This procedure helps to approximate the MAP detector
+presented in (4) and (5). In order to reduce the search space,
+as in [9], [30], we constrain Q( c, ) to a family of factorized
+pdfs, i.e., we assume that Q( c, ) = qc( c)q( ). This also
+corresponds to the assumption that  cand  are independent of
+each other given  r. On one hand, some structure of the original
+problem is lost with this assumption. On the other hand, the
+optimization space is tremendously simpliﬁed thereby enabling
+to search for a pdf that would minimize the KL divergence
+measure with respect to P ( c, | r). Note that it is difﬁcult to
+provide a rigorous mathematical analysis on the quality of this
+approximation. However, the VB framework has been used in
+many prior works in order to design efﬁcient receivers [9], [31].
+The lower bound in (68) is rewritten as
+log p( r) ≥
+∑
+ c
+∫
+
+qc( c)q( ) log p( c, ,  r)
+qc( c)q( ) d 
+, H(qc( c), q( ),  r), (69)
+where H(qc( c), q( ),  r) is referred to as the variational free
+energy – its maximization results in the minimization of the KL
+divergence between qc( c)q( ) and p( c, | r). To determine the
+factorized pdf, qc( c) and q( ), that maximize H, a coordinate
+ascent routine is used that maximizes with respect to one pdf
+while keeping the other ﬁxed, in an alternating manner. Based
+on the functional derivatives of H with respect to the factorized
+pdf [9], the coordinate ascent routine involves the iterative
+=== PDF PAGE 10 ===
+9
+Kk = (Pf
+k−1 + Q)H∗( b
+f
+k−1)
+(
+H( b
+f
+k−1)(Pf
+k−1 + Q)H∗( b
+f
+k−1) + W
+)−1
+(62)
+b
+f
+k = b
+f
+k−1 + ℜ
+{
+Kk
+[
+rk−1 − Ckeȷ b
+f
+k−1
+]}
+(63)
+Pf
+k = ℜ
+{
+(Pf
+k−1 + Q) − KkH∗( b
+f
+k−1)(Pf
+k−1 + Q)
+}
+(64)
+Jk = Pf
+kINrNt×NrNt(Pf
+k + Q)−1 (65)
+bk = b
+f
+k + Jk( bk+1 − b
+f
+k) (66)
+Pk = Pf
+k + Jk(Pk+1 − (Pk + Q))J∗
+k (67)
+computation of
+q( ) ∝ p( )e
+∑
+ c
+qc( c) log P ( r| c, )
+qc( c) ∝ P ( c)e
+∫
+ q ( ) log P ( r| c, )d . (70)
+The coordinate ascent routine is ensured to converge to a ﬁxed
+point [30], but global optimality is not guaranteed.
+We can immediately see that the coordinate ascent routine
+results in a receiver algorithm that iteratively computes the a
+posteriori phase noise pdf and the symbol pmf as given in
+(70). To derive their respective functional forms, we consider
+the received signal model in (1). Based on (70), the factorized
+pdf of  is derived as
+q( ) ≈ p( | r, c), where,
+Eqc {ck} = ck, c = [c1, . . . ,cL], Varqc {ck} ≈ 0, (71)
+where c denotes the sequence of symbol averages transmitted by
+all transmit antennas and is used for computing the factorized
+pdf q( ). Furthermore, these symbol averages are treated as the
+true transmitted symbols as imposed by the variance constraint.
+We refer the reader to Appendix C for the proof of this result.
+The factorized pmf of  cis given by
+qc( c) = Cc
+L∏
+k=1
+P (ck) exp{C (1)
+temp}
+C (1)
+temp = − 1
+N0
+
+
+
+Nr∑
+n=1
+r(n)
+k −
+Nt∑
+m=1
+c(m,n)
+h,k eȷˆθ(m,n)
+k
+
+2
+−
+Nt∑
+m=1
+c(m,n)
+h,k
+
+2
+·P (m,m)
+k,n −
+Nt∑
+m=1
+Nt∑
+l=1
+l̸=m
+c(m,n)
+h,k c(l,n)
+h,k
+∗
+P (m,l)
+k,n eȷ(ˆθ(m,n)
+k −ȷˆθ(l,n)
+k )
+
+
+
+. (72)
+In (72), we assume that the a priori symbol sequence proba-
+bility factorizes fully, under the assumption that the symbols
+are independent as in an uncoded transmission. The constant
+Cc normalizes the pmf and is independent of the transmitted
+symbols. The estimates of the phase noise in each link and the
+covariance matrix Pk,n are obtained by using an EKS [32].
+Thus, the approximate MAP detector based on the VB frame-
+work is
+ˆck = arg max
+ck
+P (ck) exp{C (1)
+temp} (73)
+where qc( c) corresponds to the symbol pmf to which the
+coordinate ascent routine in (70) converges. For future reference,
+we refer to the approximate MAP detector that is derived based
+on the VB framework as VB-MAP .
+6 8 10 12 14 1610
+−6
+10
+−5
+10
+−4
+10
+−3
+10
+−2
+10
+−1
+10
+0
+Eb/N0 dB
+BER
+ 
+ 
+EUC-MAP
+VB-MAP
+Gauss-MAP
+SPA-MAP
+No Phase Noise
+2 x 2 MIMO
+4 x 4 MIMO
+Fig. 2: BER performance for uncoded data transmission in different MIMO
+systems using the different receiver algorithms for t = r = 4 ◦.
+VII. C OMPLEXITY ANALYSIS
+In this section, we analyze the computational complexity of
+the proposed algorithms, namely the SPA-MAP (39), Gauss-
+MAP (51) and VB-MAP (72). The computational complexity of
+the algorithms is evaluated as the total number of additions and
+multiplications required to form the a posteriori symbol pmf, i.e.,
+(45), (54) and (72), for all possible combination of the transmit
+symbols, plus the computations involved in the decoder (in the
+presence of a channel code).
+Let the number of iterations between the decoder and the
+detector be denoted as LDet, and let the number of iterations
+within the LDPC decoder be denoted as LDec. Furthermore,
+let the total number of addition and multiplication operations
+involved in the mapping and demapping functions and in the
+computation of the soft symbol for the detector be denoted as
+κ(T)
+map. Consider that an LDPC code is used for coded trans-
+mission, and let κ(T)
+dec represent the total number of operations
+involved in one iteration within the LDPC decoder. Assume that
+the exponential function, the Bessel function, and the square
+root operations are implemented by means of a lookup table.
+For the SPA-MAP , denote the number of multiplications and
+additions involved as κ(M)
+spa and κ(A)
+spa , respectively. Then, the total
+computational complexity for the SPA-based receiver is written
+as [36], [37] κ(T)
+spa = LDet
+(
+κ(M)
+spa + κ(A)
+spa + LDecκ(T)
+dec + κ(T)
+map
+)
+,
+=== PDF PAGE 11 ===
+10
+where1
+κ(M)
+spa = 2N 3
+t + 2N 2
+r Nt + 8N 2
+t + 12NtNr| {z }
+(41),(42),(43),(44)
++ M Nt
+
+2N 2
+r Nt + 2NtN 2
+r + Nt + Nr + 1| {z }
+(45),(46)
+
+ (74)
+κ(A)
+spa = 8N 2
+t + 4NrNt + 2NrN 2
+t + 2N 3
+t + 4N 2
+t Nr + 2N 2
+r Nt| {z }
+(41),(42),(43),(44)
++ M Nt
+
+2N 2
+r Nt + 2NrN 2
+t + NrNt + 2Nt| {z }
+(45),(46)
+
+ (75)
+κ(T)
+map = M Nt
+(M
+2 log2 M + M
+2 − 1 + Nt
+)
+(76)
+κ(T)
+dec = (2wc + 3wr − 3wrrc + 1) log2 M Nt , (77)
+where wc, wr are the column and row weights of the LDPC
+parity check matrix, and rc is the rate of the LDPC code.
+The total computational complexity for the
+Gauss-MAP receiver is written as κ(T)
+gauss =
+LDet
+(
+κ(M)
+gauss + κ(A)
+gauss + LDecκ(T)
+dec + κ(T)
+map
+)
+, where the number
+of multiplication operations κ(M)
+gauss and addition operations
+κ(A)
+gauss are determined as
+κ(M)
+gauss = 2NtNr| {z }
+(60)
++ 2N 2
+r Nt(NtNr + Nr) + N 3
+r| {z }
+(62)
++ 2NtN 2
+r| {z }
+(63)
++ N 3
+r N 2
+t (1 + Nt)| {z }
+(64)
++ 3N 3
+r N 3
+t| {z }
+(65)
++ N 2
+r N 2
+t| {z }
+(66)
++ 2N 3
+r N 3
+t| {z }
+(67)
++M Nt
+
+Nr + 4N 2
+t + 4NrNt| {z }
+(54)
+
+
+(78)
+κ(A)
+gauss = N 2
+t N 2
+r + Nr(NrNt − 1)(2NrNt + Nr)| {z }
+(62)
++ N 2
+r (1 + Nt(Nr − 1)) + N 3
+r| {z }
+(62)
++ 4Nr(NtNr − 1) + 2Nr + NrNt| {z }
+(63)
++ N 2
+r N 2
+t (Nr(Nt − 1) − 1)| {z }
+(64)
++ N 3
+r N 3
+t + N 2
+r N 2
+t + 2N 2
+r N 2
+t (NrNt − 1)| {z }
+(65)
++ 2NrNt + NrNt(NrNt − 1)| {z }
+(66)
++ 2N 2
+r N 2
+t + 2N 2
+r N 2
+t (NrNt − 1)| {z }
+(67)
++ M Nt
+
+2N 2
+t + 2NrNt + Nt − 2Nr − 1| {z }
+(54)
+
+ (79)
+1Each term indicates the equations from which the computations arise.
+6 8 10 12 14 16 1810
+−3
+10
+−2
+10
+−1
+10
+0
+Eb/N0 dB
+FER
+ 
+ 
+EUC-MAP
+VB-MAP
+Gauss-MAP
+SPA-MAP
+No Phase Noise
+Fig. 3: FER performance of a 2  1 system using different receiver algorithms
+for code rate = 1=2, t = r = 4 ◦.
+The computational complexity due to the EKS in the VB-
+MAP algorithm is the same as that in Gauss-MAP . Thus the total
+computational complexity for the VB-MAP receiver is κ(T)
+vb =
+LDet
+(
+κ(M)
+v + κ(A)
+vb + LDecκ(T)
+dec + κ(T)
+map
+)
+, where
+κ(M)
+vb = 2NtNr| {z }
+(60)
++ 2N 2
+r Nt(NtNr + Nr) + N 3
+r| {z }
+(62)
++ 2NtN 2
+r| {z }
+(63)
++ N 3
+r N 2
+t (1 + Nt)| {z }
+(64)
++ 3N 3
+r N 3
+t| {z }
+(65)
++ N 2
+r N 2
+t| {z }
+(66)
++ 2N 3
+r N 3
+t| {z }
+(67)
++M Nt
+
+2N 2
+t Nr + 4NrNt| {z }
+(72)
+
+ (80)
+κ(A)
+vb = N 2
+t N 2
+r + Nr(NrNt − 1)(2NrNt + Nr)| {z }
+(62)
++ N 2
+r (1 + Nt(Nr − 1)) + N 3
+r| {z }
+(62)
++ 4Nr(NtNr − 1) + 2Nr + NrNt| {z }
+(63)
++ N 2
+r N 2
+t (Nr(Nt − 1) − 1)| {z }
+(64)
++ N 3
+r N 3
+t + N 2
+r N 2
+t + 2N 2
+r N 2
+t (NrNt − 1)| {z }
+(65)
++ 2NrNt + NrNt(NrNt − 1)| {z }
+(66)
++ 2N 2
+r N 2
+t + 2N 2
+r N 2
+t (NrNt − 1)| {z }
+(67)
++ M Nt
+
+4NrNt + 2NrN 2
+t| {z }
+(72)
+
+ (81)
+VIII. S IMULATION RESULTS
+In this section we study the performance of the receiver
+algorithms proposed in the previous sections, namely the SPA-
+MAP (39), Gauss-MAP (51) and VB-MAP (72), and those from
+=== PDF PAGE 12 ===
+11
+4 6 8 10 12 14 16 18 2010
+−3
+10
+−2
+10
+−1
+10
+0
+Eb/N0 dB
+FER
+ 
+ 
+EUC-MAP
+VB-MAP
+Gauss-MAP
+SPA-MAP
+No Phase Noise
+Fig. 4: FER performance of a 2  1 system using different receiver algorithms
+for code rate = 3=4 and t = r = 4 ◦.
+prior work, namely the EUC-MAP (55). The error performance
+curve corresponding to the case of no phase noise is used as the
+benchmark.
+For implementing the Gauss-MAP , VB-MAP and EUC-MAP ,
+the EKS is used to compute the estimate of the phase noise
+in each link and its respective variance. These estimates and
+their variances are used by the detector to compute the a
+posteriori symbol pmf, which we denote as Pc(ck). For the
+Gauss-MAP , EUC-MAP and VB-MAP , Pc(ck) is computed
+using (51), (55) and (72), respectively. In uncoded transmission,
+the detector computes the symbol average and its variance as
+EPc {ck} = ck, VarPc {ck} = σ2
+c . These symbol statistics are
+conveyed back to the EKS, and we perform 2 iterations between
+the smoother and the detector. The transmitted symbols are
+decided as ˆck = arg max ck Pc(ck). In coded transmission, the
+symbol pmf computed by the detector is used by the decoder
+for computing the bit LLRs, and in all, LDet = 2 global
+iterations are performed between the detector and the decoder.
+After the maximum number of iterations is reached, Pc(ck) is
+used by the decoder to make hard decisions on the information
+bits. The number of decoder iterations per global iteration is
+set to LDec = 30 . In coded transmissions, the EUC-SPA
+corresponds to the turbo-synchronization algorithm for MIMO
+systems proposed in [15], [35].
+We consider data transmission in a strong phase noise scenario
+that corresponds to σt = σr = 4 ◦ [8]. The channel is considered
+to be Rayleigh fading, and is assumed to be known (estimated)
+and constant over a data frame. Different channel realizations are
+generated for each data frame. In uncoded data transmission, the
+length of a data frame is L = 10000 symbols, and we consider
+the transmission of binary phase-shift keying (BPSK) symbols
+unless otherwise stated. In coded data transmission, we consider
+that the information bits are encoded with rate- 1/2 and rate-
+3/4 LDPC code of length L = 4000 , and the coded symbols
+are distributed over all the transmit antennas – i.e., the coded
+symbols at odd and even positions in the codeword (or the
+frame) are demultiplexed into different transmit antennas. For
+both transmission modes, we place 10 consecutive pilot symbols
+at the beginning of each frame, and 1 pilot symbol every 20 data
+symbols yielding a pilot density of around 5.1%.
+5 10 15 20 25
+10
+−3
+10
+−2
+10
+−1
+10
+0
+Eb/N0 dB
+SER
+ 
+ 
+EUC-MAP
+VB-MAP
+Gauss-MAP
+SPA-MAP
+No Phase Noise
+Fig. 5: SER performance of a 2  1 system for 16-QAM transmission using
+different receiver algorithms for t = r = 4 ◦.
+First, we investigate the performances of the proposed algo-
+rithms for different values of Nt and Nr. In Fig. 2, the bit error
+probability (BER) performance of the proposed algorithms is
+illustrated for 2 × 2 and 4 × 4 systems for uncoded transmission.
+For the 2×2 system, we note that all the proposed algorithms out-
+perform the EUC-MAP for all values of SNR per bit ( Eb/N0).
+We observe that the SPA-MAP performs better than the Gauss-
+MAP and the VB-MAP especially for low values of Eb/N0 by
+around 1 dB. For high Eb/N0 values, it can be seen that the
+Gauss-MAP and SP-MAP render almost similar performance.
+As both Nt and Nr are increased to 4, the gap between the
+proposed algorithms and the EUC-MAP widens. Furthermore,
+we observe that the gap in the performance between the bench-
+mark algorithm, the proposed algorithms and the EUC-MAP also
+increases. In particular, the gap between the proposed algorithms
+and the EUC-SPA is around 2 dB for high values of Eb/N0. This
+can be attributed to higher amplitude distortions due to phase
+noise experienced by the transmitted symbols as the number
+of antennas increases [16]. The superior performance of SPA-
+MAP conﬁrms that the approximations made in Sec. IV are
+meaningful.
+Next, in Fig. 3, we investigate the frame error rate (FER)
+performance of the proposed algorithms for the coded trans-
+mission mode considering rate- 1/2 LDPC code and a 2 × 1
+system. We observe that the SPA-MAP performs better than all
+the other algorithms. Speciﬁcally, we observe that the SPA-MAP
+outperforms the second-best algorithm (Gauss-MAP) by 0.8 dB.
+In Fig. 4, we evaluate the FER performance of all algorithms
+for rate- 3/4 LDPC code considering a 2 × 1 system in order to
+study the dependence of the performance of the algorithms on
+the code rate. We observe that the SPA-MAP outperforms the
+second-best algorithm (Gauss-MAP) by around 0.4 dB, and the
+gap in the performance between SPA-MAP and the EKS-based
+detectors decreases with increasing code rate (as compared to
+Fig. 3). This is because the pilot symbols have higher energy
+when the code rate is higher and are thus more reliable resulting
+in a better performance of the EKS.
+We now analyze the performance of the algorithms for differ-
+ent constellation sizes. The symbol error rate (SER) performance
+=== PDF PAGE 13 ===
+12
+12 14 16 18 20 22 24 26 28 30 3210
+−3
+10
+−2
+10
+−1
+10
+0
+Eb/N0 dB
+FER
+ 
+ 
+EUC-MAP
+VB-MAP
+Gauss-MAP
+SPA-MAP
+No Phase Noise
+Fig. 6: FER performance of a 2  1 system for 16-QAM transmission, for code
+rate = 3=4 using different receiver algorithms for t = r = 4 ◦.
+TABLE I: Computational Complexity of the Receivers for Nt = 2 ; Nr =
+1; M = 2; rc = :5; wc = 3; wr = 6.
+Ldet; Ldec SPA-MAP Gauss-MAP VB-MAP EUC-MAP
+10,1 3314 3491 3406 3382
+15,1 4825 4980 4923 4902
+2,30 3376 3538 3475 3424
+6 8 10 12 14 16 1810
+−3
+10
+−2
+10
+−1
+10
+0
+Eb/N0 dB
+FER
+ 
+ 
+Gauss-MAP, LDet = 10 , LDec = 1
+Gauss-MAP, LDet = 15 , LDec = 1
+Gauss-MAP
+SPA-MAP, LDet = 10 , LDec = 1
+SPA-MAP, LDet = 15 , LDec = 1
+SPA-MAP, LDet = 2 , LDec = 30
+No Phase Noise
+Fig. 7: FER performance of a 2  1 system using SPA-MAP and Gauss-MAP
+for rc = 1=2, t = r = 4 ◦ for different Ldet; Ldec values.
+of the algorithms is presented in Fig. 5 for uncoded 16-QAM
+transmission. We observe that the Gauss-MAP and the VB-MAP
+outperform the SPA-MAP signiﬁcantly. This owes to the approx-
+imation of the Tikhonov mixture to a single mode Tikhonov pdf
+in (24) using uniform a priori information for the transmitted
+symbols in P (c)
+d (ck). As stated before, this approximation can
+be highly erroneous for large non-equal energy constellations
+particularly when reliable a priori information of the transmitted
+symbols is not available to the detector. However, for the case of
+coded transmission considering rate- 3/4 LDPC code in Fig. 6,
+the FER performance of the SPA-MAP algorithm is seen to be
+superior to all the other algorithms. This is because the LDPC
+decoder provides a more reliable a priori information in P (c)
+d (ck)
+of the transmitted symbols rendering the single mode Gaussian
+pdf approximation more accurate.
+Finally, in order analyze the complexity of the receivers, we
+study the case where we iterate between the detector and the
+decoder by setting LDec = 1 for rate- 1/2 LDPC code of length
+L = 4000, σt = σr = 4 ◦ and a pilot density of around 5.1%. For
+the SNRs considered, we observe that Ldet ≈ 15 iterations are
+required for convergence for the EKF-based detectors and SPA-
+MAP . We compare the computational complexity of the receivers
+in Table I for different values of LDec, LDet such that similar
+FER performances are attained. For the purpose of clarity, in
+Fig. 7 we only demonstrate the performance of the SPA-MAP
+and Gauss-MAP for different values of Ldec and Ldet. We can
+see that when Ldec = 1 , Ldet = 15 , the performance of the
+receiver is the same as that when Ldec = 30 , Ldet = 2 , but the
+complexity is higher in the former case. However, with a small
+loss in performance, choosing Ldec = 1 , Ldet = 10 gives an
+advantage in terms of complexity with respect to the case where
+Ldec = 30 , Ldet = 2 . Clearly, the optimal choice of Ldec, Ldet
+(in terms of complexity) depends on Nt, Nr, M, rc, wc, wr.
+IX. C ONCLUSIONS
+In this paper, we derived the optimum MAP symbol detector
+that involves the joint estimation of the a posteriori phase noise
+pdf and data detection. The optimum receiver structure is seen
+to be intractable and unimplementable in practice. In this regard,
+we proposed three suboptimal, low-complexity algorithms that
+were observed to outperform the other algorithms available in
+the literature, which are considered in this work. In particular,
+the receiver based on the sum-product algorithm, SPA-MAP ,
+was found to perform better than all the other algorithms for
+both uncoded and coded transmission of BPSK symbols. For
+higher-order constellations (16-QAM), the algorithms based on
+the smoother-detector structure, Gauss-MAP , and the variational
+Bayesian framework, VB-MAP , were observed to perform the
+best in the case of uncoded transmission. However, for coded
+16-QAM transmission, the SPA-MAP algorithm was seen to be
+superior to all the other algorithms considered.
+APPENDIX A
+DERIVATION OF THE SPA M ESSAGES AND COMPUTATION OF
+THEIR PARAMETERS
+The message p(θ)
+f (k) is derived for the case of the Wiener
+phase noise process by evaluating (32) using the approximation
+[8, eq. (42)]
+1√
+2πσ 2
+∫ 2π
+0
+eℜ[ze−ȷφ]e
+−(φ−ϕ)2
+2σ2 dφ
+∼
+∝ exp
+{
+ℜ
+[ ze−ȷϕ
+1 + |z|σ2
+]}
+(82)
+for z ∈ C, σ 2 ∈ R+, and φ, ϕ ∈ R. We ﬁrst evaluate
+A(1)
+temp
+=
+∫ 2π
+0
+exp
+{
+ℜ
+[
+(y(1)
+k−1e−ȷθ(1)
+t,k−1 + y(2)
+k−1e−ȷθ(2)
+t,k−1)e−ȷθ(1)
+r,k−1
+− y(3)
+k−1e−ȷ(θ(1)
+t,k−1−θ(2)
+t,k−1)
+]}
+· p∆(θ(1)
+r,k − θ(1)
+r,k−1)dθ(1)
+r,k−1 (83)
+= exp
+{
+−ℜ
+[
+y(3)
+k−1e−ȷ(θ(1)
+t,k−1−θ(2)
+t,k−1)
+]}
+·
+∫ 2π
+0
+exp
+{
+ℜ
+[(
+y(1)
+k−1e−ȷθ(1)
+t,k−1 + y(2)
+k−1e−ȷθ(2)
+t,k−1
+)
+e−ȷθ(1)
+r,k−1
+]}
+=== PDF PAGE 14 ===
+13
+· p∆(θ(1)
+r,k − θ(1)
+r,k−1)dθ(1)
+r,k−1
+∝ exp
+{
+−ℜ
+[
+y(3)
+k−1e−ȷ(θ(1)
+t,k−1−θ(2)
+t,k−1)
+]}
+· exp
+
+
+ℜ
+
+
+(
+y(1)
+k−1e−ȷθ(1)
+t,k−1 + y(2)
+k−1e−ȷθ(2)
+t,k−1
+)
+e−ȷθ(1)
+r,k
+1 + σ2r
+y(1)
+k−1e−ȷθ(1)
+t,k−1 + y(2)
+k−1e−ȷθ(2)
+t,k−1
+
+
+
+
+
+ (84)
+≈ exp
+{
+−ℜ
+[
+y(3)
+k−1e−ȷ(θ(1)
+t,k−1−θ(2)
+t,k−1)
+]}
+· exp
+
+
+ℜ
+
+
+(
+y(1)
+k−1e−ȷθ(1)
+t,k−1 + y(2)
+k−1e−ȷθ(2)
+t,k−1
+)
+1 + σ2r
+(
+|y(1)
+k−1| + |y(2)
+k−1|
+) e−ȷθ(1)
+r,k
+
+
+
+
+ . (85)
+In (84), we used the approximation in (82), and to obtain the
+result in (85) we applied the approximation
+y(1)
+k−1e−ȷθ(1)
+t,k−1 + y(2)
+k−1e−ȷθ(2)
+t,k−1
+
+=
+
+y(1)
+k−1
+ eȷ(\y(1)
+k−1−θ(1)
+t,k−1−θ(1)
+r,k−1)
++
+y(2)
+k−1
+ eȷ(\y(2)
+k−1−θ(1)
+r,k−1−θ(2)
+t,k−1)
+ (86)
+≈
+y(1)
+k−1
+ +
+y(2)
+k−1
+ , (87)
+where it is assumed that \y(2)
+k−1 − θ(1)
+r,k−1 − θ(2)
+t,k−1 and \y(1)
+k−1 −
+θ(1)
+r,k−1 −θ(1)
+t,k−1 are very small, i.e., we assume that the difference
+between the phase noise in each link and its (predicted and
+updated) estimate is small. Now, deﬁne
+˜y(1)
+k−1 , y(1)
+k−1e−ȷθ(1)
+r,k
+1 + σ2r
+(
+|y(1)
+k−1| + |y(2)
+k−1|
+)
+˜y(2)
+k−1 , y(2)
+k−1e−ȷθ(1)
+r,k
+1 + σ2r
+(
+|y(1)
+k−1| + |y(2)
+k−1|
+). (88)
+Then compute
+A(2)
+temp ,
+∫ 2π
+0
+A(1)
+temp p∆(θ(1)
+t,k − θ(1)
+t,k−1)dθ(1)
+t,k−1
+=
+∫ 2π
+0
+exp
+{
+ℜ
+[
+˜y(1)
+k−1e−ȷθ(1)
+t,k−1 + ˜y(2)
+k−1e−ȷθ(2)
+t,k−1
+− y(3)
+k−1e−ȷ(θ(1)
+t,k−1−θ(2)
+t,k−1)
+]}
+· p∆(θ(1)
+t,k − θ(1)
+t,k−1)dθ(1)
+t,k−1
+= exp
+{
+ℜ
+[
+˜y(2)
+k−1e−ȷθ(2)
+t,k−1
+]}
+·
+∫
+exp
+{
+ℜ
+[(
+˜y(1)
+k−1 − y(3)
+k−1eȷθ(2)
+t,k−1
+)
+e−ȷθ(1)
+t,k−1
+]}
+· p∆(θ(1)
+t,k − θ(1)
+t,k−1)dθ(1)
+t,k−1
+∝ exp
+{
+ℜ
+[
+˜y(2)
+k−1e−ȷθ(2)
+t,k−1
+]}
+· exp
+
+
+ℜ
+
+
+(
+˜y(1)
+k−1 − y(3)
+k−1eȷθ(2)
+t,k−1
+)
+e−ȷθ(1)
+t,k
+1 + σ2
+t
+˜y(1)
+k−1 − y(3)
+k−1eȷθ(2)
+t,k−1
+
+
+
+
+
+ (89)
+≈ exp
+{
+ℜ
+[
+˜y(2)
+k−1e−ȷθ(2)
+t,k−1
+]}
+· exp
+
+
+ℜ
+
+
+(
+˜y(1)
+k−1 − y(3)
+k−1eȷθ(2)
+t,k−1
+)
+e−ȷθ(1)
+t,k
+1 + σ2
+t
+
+˜y(1)
+k−1
+ −
+y(3)
+k−1
+
+
+
+
+
+
+ , (90)
+where in (89), the approximation from (82) is used. In (90), we
+apply
+˜y(1)
+k−1 − y(3)
+k−1eȷθ(2)
+t,k−1
+
+=
+
+˜y(1)
+k−1
+ eȷ\˜y(1)
+k−1 −
+y(3)
+k−1
+ eȷ\y(3)
+k−1 eȷθ(2)
+t,k−1
+
+≃
+
+˜y(1)
+k−1
+ eȷ\˜y(1)
+k−1 −
+y(3)
+k−1
+ eȷ(\y(1)
+k−1−\y(2)
+k−1+θ(2)
+t,k−1)
+
+=
+
+˜y(1)
+k−1
+ eȷ\˜y(1)
+k−1 −
+y(3)
+k−1
+ eȷ(\˜y(1)
+k−1−\y(2)
+k−1+θ(1)
+r,k +θ(2)
+t,k−1)
+
+≈
+
+˜y(1)
+k−1
+ eȷ\˜y(1)
+k−1 −
+y(3)
+k−1
+ eȷ\˜y(1)
+k−1
+ =
+
+˜y(1)
+k−1
+ −
+y(3)
+k−1
+
+ ,
+(91)
+where in (91), it is considered that θ(1)
+r,k + θ(2)
+t,k−1 − \y(2)
+k−1 is
+very small 2. This is reasonable, since practically strong phase
+noise refers to scenarios where σ2
+∆ ≈ 10−3 − 10−2 rad2 or
+σ∆ ≈ 2 − 6◦ and weak-to-moderate scenarios correspond to
+σ2
+∆ ≈ 10−5 − 10−4 rad2 or σ∆ ≈ 0.18 − 0.6◦.
+Finally, we compute
+A(3)
+temp ,
+∫ 2π
+0
+A(2)
+temp p∆(θ(2)
+t,k − θ(2)
+t,k−1)dθ(2)
+t,k−1
+=
+∫ 2π
+0
+exp
+{
+ℜ
+[
+˜y(2)
+k−1e−ȷθ(2)
+t,k−1
+]}
+· exp
+
+
+ℜ
+
+
+(
+˜y(1)
+k−1 − y(3)
+k−1eȷθ(2)
+t,k−1
+)
+1 + σ2
+t
+
+˜y(1)
+k−1
+ −
+y(3)
+k−1
+
+
+e−ȷθ(1)
+t,k
+
+
+
+
+
+· p∆(θ(2)
+t,k − θ(2)
+t,k−1)dθ(2)
+t,k−1
+= exp
+
+
+ℜ
+
+ ˜y(1)
+k−1e−ȷθ(1)
+t,k
+1 + σ2
+t
+
+˜y(1)
+k−1
+ −
+y(3)
+k−1
+
+
+
+
+
+
+
+·
+∫ 2π
+0
+exp
+{
+ℜ
+[
+˜˜y(2)
+k−1e−ȷθ(2)
+t,k−1
+]}
+p∆(θ(2)
+t,k − θ(2)
+t,k−1)dθ(2)
+t,k−1
+∝ exp
+
+
+ℜ
+
+ ˜y(1)
+k−1e−ȷθ(1)
+t,k
+1 + σ2
+t
+
+˜y(1)
+k−1
+ −
+y(3)
+k−1
+
+
++
+˜˜y(2)
+k−1e−ȷθ(2)
+t,k
+1 + σ2
+t
+˜˜y(2)
+k−1
+
+
+
+
+
+
+≈ exp
+
+
+ℜ
+
+ ˜y(1)
+k−1e−ȷθ(1)
+t,k
+1 + σ2
+t
+
+˜y(1)
+k−1
+ −
+y(3)
+k−1
+
+
++
+˜˜y(2)
+k−1e−ȷθ(2)
+t,k
+1 + σ2
+t
+
+˜y(2)
+k−1
+ −
+y(3)
+k−1
+
+
+
+
+
+
+ , where (92)
+˜˜y(2)
+k−1 , ˜y(2)
+k−1 − y(3)
+k−1
+∗
+eȷθ(1)
+t,k
+1 + σ2
+t
+
+˜y(1)
+k−1
+ −
+y(3)
+k−1
+
+
+.
+To obtain (92), we apply the approximation from (82), and
+further we apply an approximation similar to that used in (91).
+2Here, we assume that the difference between the phase noise in each link
+and its (predicted and updated) estimate is small in the sense that we expect
+the phase noise to be tracked by the algorithm with reasonable accuracy. This
+assumption works well in the phase noise context. Note that a similar assumption
+is used to perform linearization about a phase noise estimate in an EKS
+=== PDF PAGE 15 ===
+14
+Observe that the message p(θ)
+f (k) = A(3)
+temp, and hence
+p(θ)
+f (k)
+≈ exp
+
+
+ℜ
+
+ ˜y(1)
+k−1e−ȷθ(1)
+t,k
+1 + σ2
+t
+
+˜y(1)
+k−1
+ −
+y(3)
+k−1
+
+
++ ˜y(2)
+k−1e−ȷθ(2)
+t,k
+1 + σ2
+t
+
+˜y(2)
+k−1
+ −
+y(3)
+k−1
+
+
+− y(3)
+k−1e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+(
+1 + σ2
+t
+
+˜y(2)
+k−1
+ −
+y(3)
+k−1
+
+
+) (
+1 + σ2
+t
+
+˜y(1)
+k−1
+ −
+y(3)
+k−1
+
+
+)
+
+
+
+
+
+, exp
+{
+ℜ
+[
+(a(1,1)
+f,k e−ȷθ(1)
+t,k + a(2,1)
+f,k e−ȷθ(2)
+t,k )e−ȷθ(1)
+r,k − ˜a(1,2)
+f,k
+· e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+]}
+. (93)
+From the result in (93), we arrive at the forward recursions
+presented in (34). Computation of the message p(θ)
+b (k) to
+determine the backward parameter update equations in (37)
+proceeds similarly.
+For computing the message P (c)
+u (ck) in (39), deﬁne
+A(4)
+temp ,
+∫
+exp
+{
+ℜ
+[
+(z(1,1)
+k e−ȷθ(1)
+t,k + z(2,1)
+k e−ȷθ(2)
+t,k )e−ȷθ(1)
+r,k
+− ˜z(1,2)
+k e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+]}
+dk. (94)
+The integral in (94) is evaluated as
+A(4)
+temp =
+∫ 2π
+0
+∫ 2π
+0
+∫ 2π
+0
+exp
+{
+ℜ
+[
+(z(1,1)
+k e−ȷθ(1)
+t,k + z(2,1)
+k e−ȷθ(2)
+t,k )
+·e−ȷθ(1)
+r,k − ˜z(1,2)
+k e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+]}
+dθ(1)
+r,k dθ(2)
+t,k dθ(1)
+t,k
+=
+∫ 2π
+0
+∫ 2π
+0
+exp
+{
+−ℜ
+[
+˜z(1,2)
+k e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+]}
+·
+∫ 2π
+0
+exp
+{
+ℜ
+[(
+z(1,1)
+k e−ȷθ(1)
+t,k + z(2,1)
+k e−ȷθ(2)
+t,k
+)
+e−ȷθ(1)
+r,k
+]}
+dθ(1)
+r,k dθ(2)
+t,k dθ(1)
+t,k
+∝
+∫ 2π
+0
+∫ 2π
+0
+exp
+{
+−ℜ
+[
+˜z(1,2)
+k e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+]}
+·I0
+(z(1,1)
+k e−ȷθ(1)
+t,k + z(2,1)
+k e−ȷθ(2)
+t,k
+
+)
+dθ(2)
+t,k dθ(1)
+t,k (95)
+≈
+∫ 2π
+0
+∫ 2π
+0
+exp
+{
+−ℜ
+[
+˜z(1,2)
+k e−ȷ(θ(1)
+t,k −θ(2)
+t,k )
+]}
+·I0
+(
+z(1,1)
+k
+ +
+z(2,1)
+k
+
+
+)
+dθ(2)
+t,k dθ(1)
+t,k (96)
+∝ I0
+(˜z(1,2)
+k
+
+)
+I0
+(
+z(1,1)
+k
+ +
+z(2,1)
+k
+
+
+)
+, (97)
+where in (95) the result follows from (82), and the result in
+(96) is obtained by applying the approximation in (86). Further,
+applying the Tikhonov normalization constant, the result in (97)
+is obtained. The result in (97) is used in (94) to yield P (c)
+u (ck)
+in (39).
+The generalizations presented in (41) and (43) are obtained
+by ﬁrst identifying that p(θ)
+d (k) fully factorizes in terms of the
+receive antenna index. Further, the Gaussian pdf that minimizes
+the KL divergence with respect to p(θ)
+d (k) is obtained by
+performing moment matching with each of its factors [22]. Fol-
+lowing this, the remaining steps proceed similarly as presented
+in (83)-(97).
+APPENDIX B
+DERIVATION OF THE APPROXIMATE MAP D ETECTOR BASED
+ON THE SMOOTHER –D ETECTOR STRUCTURE
+The approximate MAP detector based on the smoother-
+detector structure in (50) is rewritten as
+ˆck ∝ arg max
+ck
+exp
+{
+−
+|c(1,1)
+h,k |2 + |c(2,1)
+h,k |2
+N0
+}
+∫
+k
+exp
+{
+ℜ
+[ 2
+N0
+r(1)
+k c(1,1)
+h,k
+∗
+e−ȷθ(1,1)
+k + 2
+N0
+r(2)
+k c(2,1)
+h,k
+∗
+·e−ȷθ(2,1)
+k − 2
+N0
+c(2,1)
+h,k c(1,1)
+h,k
+∗
+e−ȷ(θ(1,1)
+k −θ(2,1)
+k )
+]}
+N (k; bk, ^Pk)dk (98)
+≈ arg max
+ck
+exp
+{
+−
+|c(1,1)
+h,k |2 + |c(2,1)
+h,k |2
+N0
+}
+∫
+k
+exp
+{
+ℜ
+[ 2
+N0
+r(1)
+k c(1,1)
+h,k
+∗
+e−ȷθ(1,1)
+k + 2
+N0
+r(2)
+k c(2,1)
+h,k
+∗
+·e−ȷθ(2,1)
+k − 2
+N0
+c(2,1)
+h,k c(1,1)
+h,k
+∗
+e−ȷ(θ(1,1)
+k −θ(2,1)
+k )
+]}
+· exp
+{
+ℜ
+[
+eȷˆθ(1,1)
+k
+P (1,1)
+k,1
+e−ȷθ(1,1)
+k + eȷˆθ(2,1)
+k
+P (2,1)
+k,1
+e−ȷθ(2,1)
+k
+−
+˜˜u(1,2)
+k
+ e−ȷ(θ(1,1)
+k −θ(2,1)
+k )
+]}
+dk (99)
+≈ arg max
+ck
+B(1)
+temp, (100)
+where, in (99), we approximate the bivariate Gaussian pdf as
+a bivariate Tikhonov distribution [25]. This is a reasonable ap-
+proximation for variances of around 10−1 or smaller associated
+with θ(1,1)
+k , θ(2,1)
+k [25], which encompass practical scenarios of
+weak-to-strong phase noise. Note that a similar approximation
+holds in the case of univariate Gaussian and Tikhonov pdfs and
+has been widely used in the literature [10].
+We simplify B(1)
+temp as
+B(1)
+temp
+, exp
+{
+−
+|c(1,1)
+h,k |2 + |c(2,1)
+h,k |2
+N0
+}
+exp
+{
+ℜ
+[
+u(2,1)
+k e−ȷθ(2,1)
+k
+]}
+·
+∫
+k
+exp
+{
+ℜ
+[
+u(1,1)
+k e−ȷθ(1,1)
+k − ˜u(1,2)
+k e−ȷ(θ(1,1)
+k −θ(2,1)
+k )
+]}
+dk (101)
+∝ exp
+{
+−
+|c(1,1)
+h,k |2 + |c(2,1)
+h,k |2
+N0
+}
+I0
+(
+|u(1,1)
+k − ˜u(1,2)
+k e−ȷθ(2,1)
+k |
+)
+·
+∫
+k
+exp
+{
+ℜ
+[
+u(2,1)
+k e−ȷθ(2,1)
+k
+]}
+dk (102)
+≈ exp
+{
+−
+|c(1,1)
+h,k |2 + |c(2,1)
+h,k |2
+N0
+}
+I0
+(
+||u(1,1)
+k | − | ˜u(1,2)
+k ||
+)
+· I0
+(
+|u(2,1)
+k |
+)
+(103)
+≈ exp
+{
+−
+|c(1,1)
+h,k |2 + |c(2,1)
+h,k |2
+N0
+}
+I0
+(
+|u(1,1)
+k | + |u(2,1)
+k | − | ˜u(1,2)
+k |
+)
+,
+(104)
+=== PDF PAGE 16 ===
+15
+where we use the deﬁnitions from (52) in (101) and the Tikhonov
+pdf normalization constant in (102). In (103), we use the
+approximation from (91) where it is assumed that the difference
+between the predicted and updated estimates and the states is
+very small. Finally, in (104) we approximate I 0(x) ≈ ex for large
+x and assume |u(1,1)
+k |−| ˜u(1,2)
+k | > 0. The generalization presented
+in (54) is a straightforward extension of the computations from
+(98)-(104) for arbitrary values of Nt and Nr.
+APPENDIX C
+DERIVATION OF THE FACTORIZED PDFS FOR THE VB
+FRAMEWORK
+From (70), the factorized pdf of  is derived as
+q( ) = Cp( )
+L∏
+k=1
+exp
+{
+C (2)
+temp
+}
+, where
+C (2)
+temp , Eqc {log p(rk|ck, k)}
+= Eqc
+{
+log
+Nr∏
+n=1
+p(r(n)
+k |ck, k)
+}
+,
+= − 1
+N0
+Nr∑
+n=1
+Eqc
+(
+r(n)
+k r(n)
+k
+∗
+−
+Nt∑
+m=1
+
+
+c(m,n)
+h,k
+
+2
++
+Nt∑
+l=1
+l̸=m
+c(m,n)
+h,k c(l,n)
+h,k
+∗
+e
+ȷ
+(
+θ(m,n)
+k −θ(l,n)
+k
+)
+
+
+−r(n)
+k
+∗ Nt∑
+m=1
+c(m,n)
+h,k eȷθ(m,n)
+k − r(n)
+k
+Nt∑
+m=1
+c(m,n)
+h,k
+∗
+e−ȷθ(m,n)
+k
+)
+= − 1
+N0
+Nr∑
+n=1
+(
+r(n)
+k r(n)
+k
+∗
++
+Nt∑
+m=1
+(c(m,n)
+h,k
+
+2
++
+Nt∑
+l=1
+l̸=m
+c(l,n)
+h,k c(m,n)
+h,k
+∗
+e
+ȷ
+(
+θ(m,n)
+k −θ(m,n)
+k
+)
+
+ − r(n)
+k
+∗ Nt∑
+m=1
+c(m,n)
+h,k
+·eȷθ(m,n)
+k − r(n)
+k
+Nt∑
+m=1
+c(m,n)
+h,k
+∗
+e−ȷθ(m,n)
+k −
+Nt∑
+m=1
+Varqc c(m,n)
+h,k
+)
+.
+(105)
+= Cp( )
+L∏
+k=1
+exp
+
+
+
+Nr∑
+n=1
+−
+r(n)
+k −
+Nt∑
+m=1
+c(m,n)
+h,k eȷθ(m,n)
+k
+
+2
+N0
+
+
+
+= CP ( )
+L∏
+k=1
+p(rk|k, ck), (106)
+= Cp( r, |c). (107)
+In (105), c(m,n)
+h,k is deﬁned as in (71), and for obtaining the
+result in (106) we apply the approximation that Varqc =
+Eqc
+{
+c(m,n)
+h,k c(m,n)
+h,k
+∗
+− c(m,n)
+h,k c(m,n)
+h,k
+∗}
+is very small. This implies
+that the estimation algorithm assumes that the a posteriori pmf
+of the transmitted symbols has a prominent peak. The quality
+of this approximation depends on the reliability of the a priori
+information available about the transmitted symbols. In particu-
+lar, this approximation can be conjectured to be fairly accurate
+in coded systems. The constant C is the pdf normalizing factor
+such that q integrates to unity. Its value can be determined as
+C = 1
+p( r|c) .
+Plugging C in (107), the factorized pdf of  is obtained as
+q = p( | r, c). (108)
+From (70), the factorized pmf of  cis derived as
+qc = Cc
+L∏
+k=1
+P (ck) exp
+{
+C (3)
+temp
+}
+, where (109)
+C (3)
+temp ,
+∫
+
+q log P (rk|ck, k)dk
+= Eq log
+Nr∏
+n=1
+p(r(n)
+k |ck, k)
+= − 1
+N0
+Nr∑
+n=1
+Eq
+r(n)
+k −
+Nt∑
+m=1
+c(m,n)
+h,k eȷθ(k)
+k
+
+2
+= − 1
+N0
+Nr∑
+n=1
+{
+r(n)
+k r(n)
+k
+∗
+(c(m,n)
+h,k
+
+2
++
+Nt∑
+m=1
+(
+1 + Eq (θ(m,n)
+k − ˆθ(m,n)
+k )2
+)
++
+Nt∑
+l=1
+l̸=m
+c(m,n)
+h,k c(l,n)
+h,k
+∗
+·eȷ(ˆθ(m,n)
+k −ˆθ(l,n)
+k )(1 + Eq (θ(m,n)
+k − ˆθ(m,n)
+k )(θ(l,n)
+k − ˆθ(l,n)
+k ))
+−r(n)
+k
+∗ Nt∑
+m=1
+c(m,n)
+h,k (n)eȷˆθ(m,n)
+k − r(n)
+k
+Nt∑
+m=1
+c(m,n)
+h,k
+∗
+e−ȷˆθ(m,n)
+k
+}
+,
+= − 1
+N0
+
+
+
+Nr∑
+n=1
+r(n)
+k −
+Nt∑
+m=1
+c(m,n)
+h,k eȷˆθ(m,n)
+k
+
+2
+−
+Nt∑
+m=1
+c(m,n)
+h,k
+
+2
+·P (m,m)
+k,n −
+Nt∑
+m=1
+Nt∑
+l=1
+l̸=m
+c(m,n)
+h,k c(l,n)
+h,k
+∗
+P (m,l)
+k,n eȷ(ˆθ(m,n)
+k −ȷˆθ(l,n)
+k )
+
+
+
+.
+(110)
+Upon plugging the result from (110) into (109) we obtain the
+result in (72).
+REFERENCES
+[1] A. Paulraj, R. Nabar, and D. Gore, Introduction to Space-Time Wireless
+Communications, Cambridge, U.K.: Cambridge Univ. Press, 2003.
+[2] D. S. Baum, and H. B ¨olcskei, “Information-theoretic analysis of MIMO
+channel sounding,” IEEE Trans. Inf. Theory , vol. 57, no. 11, pp. 7555-
+7577, Nov. 2011.
+[3] N. Hadaschik, M. Dorpinghaus, A. Senst, O. Harmjanz, U. Kaufer, G.
+Ascheid, and H. Meyr, “Improving MIMO phase noise estimation by
+exploiting spatial correlations,” Proc. IEEE Int. Conf. Acoustics, Speech,
+and Signal Process. , vol. 3, pp. 833-836, Mar. 2005.
+[4] F. Bohagen, P . Orten, and G. E. Oien, “Design of capacity-optimal high-
+rank line-of-sight MIMO channels,” IEEE Trans. Wireless Commun. , vol.
+4, no. 6, pp. 790-804, Apr. 2007.
+[5] T. L. Marzetta, “Noncooperative cellular wireless with unlimited numbers
+of base station antennas,” IEEE Trans. Wireless Commun. , vol. 9, no. 11,
+pp. 3590-3600, Nov. 2010.
+[6] R. Krishnan, M. R. Khanzadi, N. Krishnan, Y . Wu, A. Graell i Amat, T.
+Eriksson, and R. Schober, “Linear Massive MIMO Precoders in the Pres-
+ence of Phase Noise – A Large-Scale Analysis,” IEEE Trans. V eh. Tech., ac-
+cepted for publication. [Online]. Available: http://arxiv.org/abs/1501.05461
+=== PDF PAGE 17 ===
+16
+[7] N. Noels, V . Lottici, A. Dejonghe, H. Steendam, M. Moeneclaey, M.
+Luise, and L. V andendorpe, “A theoretical framework for soft information
+based synchronization in iterative (turbo) receivers,” EURASIP J. Wireless
+Commun. Netw., vol. 2005, pp. 117-125, Apr. 2005.
+[8] G. Colavolpe, A. Barbieri, and G. Caire, “Algorithms for iterative decoding
+in the presence of strong phase noise,” IEEE J. Sel. Areas Commun. , vol.
+23, no. 9, pp. 1748-1757, Sept. 2005.
+[9] M. Nissila, and S. Pasupathy, “Adaptive iterative detectors for phase-
+uncertain channels via variational bounding,” IEEE Trans. Commun. , vol.
+57, no. 3, pp. 716-725, Mar. 2009.
+[10] R. Krishnan, M. R. Khanzadi, T. Eriksson, and T. Svensson, “Soft metrics
+and their performance analysis for optimal data detection in the presence
+of strong oscillator phase noise,” IEEE Trans. Commun. , vol. 61, no. 6, pp.
+2385-2395, Jun. 2013.
+[11] P . Worthen, and W. E Stark, “Uniﬁed design of iterative receivers using
+factor graphs,” IEEE Trans. Inf. Theory , vol. 47, no. 2, pp. 843-849, Feb.
+2001.
+[12] P . Y . Kam, S. S. Ng, and T. S. Ng, “Optimum symbol-by-symbol detection
+of uncoded digital data over the Gaussian channel with unknown carrier
+phase,” IEEE Trans. Commun. , vol. 42, no. 8, pp. 2543-2552, Aug. 1994.
+[13] H. Mehrpouyan, A. A. Nasir, S. D. Blostein, T. Eriksson, G. Karagiannidis,
+and T. Svensson, “Joint estimation of channel and oscillator phase noise
+in MIMO systems,” IEEE Trans. Signal Process. , vol. 60, no. 9, pp. 4790-
+4807, Sep. 2012.
+[14] P . Almers, S. Wyne, F. Tufvesson, and A. F. Molisch, “Effect of random
+walk phase noise on MIMO measurements,” IEEE 61st VTC 2005-Spring ,
+pp. 141-145, 30 May-Jun. 2005.
+[15] A. A. Nasir, H. Mehrpouyan, R. Schober, and Y . Hua, “Phase noise in
+MIMO Systems: Bayesian Cramer Rao bounds and soft-input estimation,”
+IEEE Trans. Signal Process. , vol. 61, no. 10, pp. 2675-2692, May 2013.
+[16] R. Krishnan, M. R. Khanzadi, L. Svensson, T. Eriksson, and T. Svensson,
+“V ariational Bayesian framework for receiver design in the presence of
+phase noise in MIMO systems,” IEEE Wireless Commun. Netw. Conf.
+(WCNC), pp. 347-352, Apr. 2012.
+[17] A. L. Swindlehurst, E. Ayanoglu, P . Heydari, P ., and F. Capolino,
+“Millimeter-wave massive MIMO: the next wireless revolution?,” IEEE
+Commun. Mag. , vol. 52, no. 9, pp. 56-62, Sep. 2014.
+[18] A. Demir, A. Mehrotra, and J. Roychowdhury, “Phase noise in oscillators: a
+unifying theory and numerical methods for characterization,” IEEE Trans.
+Circ. Sys. I: Fundamental Theory and Applications , vol. 47, no. 5, pp.
+655-674, May 2000.
+[19] F. Simoens and M. Moeneclaey, “Code-aided estimation and detection
+on time-varying correlated MIMO channels: A factor graph approach,”
+EURASIP J. Applied Signal Processing , vol. 2006, no. 1, pp. 1-11, 2006.
+[20] K. Huber, and S. Haykin, “Improved Bayesian MIMO channel tracking for
+wireless communications: incorporating a dynamical model,” IEEE Trans.
+Wireless Commun., vol. 5, no. 9, pp. 2458-2466, Sep. 2006.
+[21] F. R. Kschischang, B. J. Frey, and H. A. Loeliger, “Factor graphs and
+the sum-product algorithm,” IEEE Trans. Inf. Theory , vol. 47, no. 2, pp.
+498-519, Feb. 2001.
+[22] T. P . Minka, “Expectation propagation for approximate Bayesian inference,”
+Tech. Rep. , Microsoft Research Cambridge, 2005, MSR-TR-2005-173
+(2005).
+[23] J.J. Boutros, A. Guillen i Fabregas, E. Biglieri, and G. Zemor, “Low-
+Density Parity-check Codes for Nonergodic Block-Fading Channels,” IEEE
+Trans. Inf. Theory , vol. 56, no. 9, pp. 4286-4300, Sep. 2010.
+[24] Y . Zhu, D. Guo, and M. L. Honig, “A message-passing approach for joint
+channel estimation, interference mitigation, and decoding,” IEEE Wireless
+Commun.,, vol. 8, no. 12, pp. 6008-6018, Dec. 2009.
+[25] K. V . Mardia, C. C. Taylor, and G. K. Subramaniam, “Protein bioinfor-
+matics and mixtures of bivariate V on Mises distributions for angular Data,”
+Biometrics vol. 63, no. 2, 505-512, 2007.
+[26] K. V . Mardia, J. T. Kent, G. Hughes, and C. C. Taylor, “Maximum
+likelihood estimation using composite likelihoods for closed exponential
+families,” Biometrika, vol. 96, no. 4, pp. 975-982, 2009.
+[27] H. J. Kushner, “Approximations to optimal nonlinear ﬁlters,” IEEE Trans.
+Automatic Control, vol. 12, no. 5, pp. 546-556, Oct. 1967.
+[28] H. J. Kushner, “Numerical approximations to optimal nonlinear ﬁlters,” in
+the Oxford Handbook of Nonlinear Filtering , D. Crisan and B. Rozovski,
+Eds. Oxford, 2011, ch. 28.
+[29] N. Gordon, D. Salmond, and A. F. M. Smith, “Novel approach to nonlinear
+and non-Gaussian Bayesian state estimation,” Proc. Inst. Elect. Eng., F , vol.
+140, pp. 107-113, 1993.
+[30] M. J. Beal, “V ariational algorithms for approximate Bayesian inference,”
+Ph.D. dissertation, Univ. Coll. London, 1998.
+[31] L. D. Darryl and T. J. Lim, “The V ariational Inference Approach to Joint
+Data Detection and Phase Noise Estimation in OFDM,” IEEE Trans. Signal
+Process., vol. 55, no. 5, pp. 1862–1874, May 2007.
+[32] S. M. Kay, Fundamentals of Statistical Signal Processing, Estimation
+Theory, vol. 1, Englewood Cliffs, NJ: Prentice-Hall, 1993.
+[33] M. R. Khanzadi, R. Krishnan, and T. Eriksson, “Estimation of phase noise
+in oscillators with colored noise sources,” IEEE Commun. Lett. , vol. 17,
+no. 11, pp. 2160-2163, Nov. 2013.
+[34] S. Song, A. C. Singer, and K. M. Sung, “Soft input channel estimation
+for turbo equalization,” IEEE Trans. Signal Process. , vol. 52, no. 10, pp.
+2885-2894, Oct. 2004.
+[35] A. Tarable, G. Montorsi, S. Benedetto, and S. Chinnici, “An EM-based
+phase-noise estimator for MIMO systems,” IEEE Int. Conf. Commun., 2013.
+ICC ’13. , pp. 1-5, 8-13 Jun. 2013.
+[36] A. O. Isikman, H. Mehrpouyan, A. Nasir, A. G. Amat, R. Kennedy, “Joint
+phase noise estimation and data detection in coded multi-inputmulti-output
+systems,” IET Commun. , vol.8, no.7, pp. 981-989, May 2014.
+[37] N. Noels, J. Bhatti, H. Bruneel, M. Moeneclaey, “Block-Processing soft-
+input soft-output demodulator for coded PSK using DCT-based phase noise
+estimation,” IEEE Trans. Commun. , vol.62, no.8, pp. 2939-2950, Aug.
+2014.

@@ -1,0 +1,29 @@
+{
+  "created_local": "2026-11-05T02:51:00.238198+08:00",
+  "status": "TRAINING",
+  "base_configuration": "src/configs/training/colored_activity_20261025.json",
+  "base_configuration_sha256": "138e5affae794823de3971490b19259f7b14b3dfa0560eb563a92d584820bd80",
+  "configuration": "src/configs/training/white_activity_matched_20261104.json",
+  "configuration_sha256": "2a65aa4593cfc6614830ba82cc0013f80355ba7188905bcf16447cfbc96675b5",
+  "first_checkpoint_sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+  "first_training_record_sha256": "6b71af29467551d7939cae196df7c22739c0c236976df77e76454b6fbb7449f1",
+  "first_completion_check": "result/channel_denoising/data/white_preconditioned_matched_20261104/DENOISER_COMPLETION_CHECK.json",
+  "epochs": 100,
+  "optimizer_steps": 156300,
+  "scientific_classifier_settings_match_base": true,
+  "formal_starts_from_random_initialization": true,
+  "automatic_retry": false,
+  "run_directory": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_classifier_matched_20261104\\runs\\20261105T074426",
+  "commands": [
+    "prepare",
+    "preflight",
+    "train"
+  ],
+  "stage": "CLASSIFIER_RUNNING",
+  "failure_record": "FAILED_prepare.json",
+  "repair_proposal": "repair_proposal/REPAIR.json",
+  "formal_training_started": true,
+  "recovery_record": "RECOVERY.json",
+  "launch_record": "LAUNCH.json",
+  "startup_check": "STARTUP_CHECK.json"
+}

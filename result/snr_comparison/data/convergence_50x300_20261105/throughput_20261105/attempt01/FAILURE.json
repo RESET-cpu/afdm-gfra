@@ -1,0 +1,29 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\src\\evaluation\\throughput_20261105\\convergence_queue.py\", line 160, in coordinate\n    write_json(OUT/'STATUS.json', dict(stage=stage, pid=os.getpid(), updated_unix=time.time(),\n    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        completed=len(complete), total=plan['planned_inferences'], active_workers=len(active),\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        workers=[r for _, r in active], gpu_workers=sum(r['backend']=='gpu' for _, r in active),\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        cpu_workers=sum(r['backend']=='cpu' for _, r in active), failed=len(failed),\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        runtime_override=str(TUNE/'RUNTIME.json')))\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\utils.py\", line 42, in write_json\n    temp.replace(path)\n    ~~~~~~~~~~~~^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 780, in replace\n    os.replace(self, target)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nPermissionError: [WinError 5] 拒绝访问。: 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\convergence_50x300_20261105\\\\STATUS.json.136196.tmp' -> 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\convergence_50x300_20261105\\\\STATUS.json'\n",
+  "active_workers": [
+    {
+      "method": "Off-grid SBL (25)",
+      "scene": 3,
+      "backend": "cpu",
+      "pid": 36836,
+      "created_unix": 1793887470.59345,
+      "started_unix": 1793887470.5971587,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\afdm-gfra\\run_experiments.py",
+        "convergence",
+        "worker",
+        "--output",
+        "D:\\afdm-gfra\\result\\snr_comparison\\data\\convergence_50x300_20261105",
+        "--method",
+        "Off-grid SBL (25)",
+        "--scene",
+        "3"
+      ]
+    }
+  ],
+  "automatic_retry": false
+}

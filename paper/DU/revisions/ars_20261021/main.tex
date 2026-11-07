@@ -1,0 +1,88 @@
+% TWC working draft: compile from paper/TWC/.
+% Two-column IEEE Transactions journal layout.
+\documentclass[10pt,journal]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,bm,booktabs,array}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\graphicspath{{figures/}}
+\allowdisplaybreaks
+
+\newcommand{\CN}{\mathcal{CN}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\vect}{\operatorname{vec}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\logit}{\operatorname{logit}}
+\newcommand{\sigmoid}{\operatorname{sigmoid}}
+\newcommand{\clip}{\operatorname{clip}}
+\newcommand{\relu}{\operatorname{Re}}
+\newcommand{\imag}{\operatorname{Im}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+\title{Generative-Model-Aided Grant-Free Random Access for GNSS-Independent MIMO-AFDM Satellite IoT Systems}
+% TODO: Add the author list and affiliations.
+\author{}
+
+\begin{document}
+\maketitle
+\begin{center}
+\small\textit{TWC working draft --- October 21, 2026}
+\end{center}
+\begin{abstract}
+Grant-free random access in low Earth orbit satellite Internet-of-Things
+systems must accommodate large differential delays and Doppler shifts
+when terminals operate without global navigation satellite system
+assistance. These offsets complicate joint activity detection and
+channel estimation (JADCE), particularly when fractional delays and
+Doppler shifts spread each path's energy across multiple delay--Doppler
+grid coefficients. We propose a multi-frame affine frequency division multiplexing
+(AFDM) transmission scheme and a deep-unfolded message-passing (MP)
+receiver for multiuser multiple-input multiple-output access. We derive
+the input--output relationship with integer and fractional offsets and
+separate the Doppler-induced phase evolution across frames, allowing
+the received pilots to share one effective-channel matrix. We incorporate
+a prior learned from multiantenna AFDM channel samples through denoising
+score matching into the MP receiver. In each
+layer, a channel denoiser and an activity classifier produce the
+conditional channel estimate and activity probability, whose product
+determines the feedback for subsequent multiuser estimation.
+Progressive training and joint fine-tuning optimize the denoisers,
+classifiers, and message parameters using received pilots and their
+channel and activity labels. This training adapts each layer
+to its receiver inputs and to the effects of its estimates on subsequent
+interference suppression.
+\end{abstract}
+% Numerical findings will be added after evaluation of the new receiver.
+\begin{IEEEkeywords}
+Affine frequency division multiplexing, satellite Internet of Things,
+grant-free random access, joint activity detection and channel estimation,
+score-based generative models, deep unfolding.
+\end{IEEEkeywords}
+
+\input{sections/01_introduction}
+
+\noindent\textit{Notation:} $\CN(\bm\mu,\bm\Sigma)$ denotes a proper complex Gaussian law.
+$\|\cdot\|_F$ denotes the Euclidean norm of all matrix or tensor entries;
+$(\cdot)^{\mathsf H}$ and $\tr(\cdot)$ denote conjugate transpose and trace.
+
+\input{sections/02_system_model}
+\input{sections/03_bayesian_receiver_design}
+\input{sections/04_receiver_training}
+\input{sections/05_unfolded_algorithm}
+% \input{sections/06_simulation_results}
+% \input{sections/07_conclusion}
+
+\appendices
+\numberwithin{equation}{section}
+\input{sections/appendix_parameter_estimation}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}
+

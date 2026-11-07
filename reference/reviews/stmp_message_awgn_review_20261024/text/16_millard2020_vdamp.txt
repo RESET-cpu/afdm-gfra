@@ -1,0 +1,1658 @@
+=== PDF PAGE 1 ===
+1
+Approximate Message Passing with a Colored Aliasing Model for
+Variable Density Fourier Sampled Images
+Charles Millard, Student Member , IEEE, Aaron T Hess, Boris Mailh ´e and Jared Tanner, Member , IEEE
+The Approximate Message Passing (AMP) algorithm efﬁciently reconstructs signals which have been sampled with large i.i.d.
+sub-Gaussian sensing matrices. Central to AMP is its “state evolution”, which guarantees that the difference between the current
+estimate and ground truth (the “aliasing”) at every iteration obeys a Gaussian distribution that can be fully characterized by a
+scalar. However, when Fourier coefﬁcients of a signal with non-uniform spectral density are sampled, such as in Magnetic Resonance
+Imaging (MRI), the aliasing is intrinsically colored, AMP’s scalar state evolution is no longer accurate and the algorithm encounters
+convergence problems. In response, we propose the Variable Density Approximate Message Passing (VDAMP) algorithm, which uses
+the wavelet domain to model the colored aliasing. We present empirical evidence that VDAMP obeys a “colored state evolution”,
+where the aliasing obeys a Gaussian distribution that can be fully characterized with one scalar per wavelet subband. A beneﬁt of
+state evolution is that Stein’s Unbiased Risk Estimate (SURE) can be effectively implemented, yielding an algorithm with subband-
+dependent thresholding that has no free parameters. We empirically evaluate the effectiveness of VDAMP on three variations of
+Fast Iterative Shrinkage-Thresholding (FISTA) and ﬁnd that it converges in around 10 times fewer iterations on average than the
+next-fastest method, and to a comparable mean-squared-error.
+Index Terms—Approximate Message Passing, Compressed Sensing, Magnetic Resonance Imaging (MRI), Stein’s Unbiased Risk
+Estimate, Variable Density Sampling
+I. I NTRODUCTION
+W
+E consider a complex data vector y∈ CN formed of
+noisy Fourier coefﬁcients of a deterministic signal of
+interestx0∈ CN :
+y =MΩ(Fx 0 +ε), (1)
+where F is a multi-dimensional discrete Fourier transform
+and MΩ ∈ RN×N is a diagonal undersampling mask with
+1 on the jth diagonal entry if j ∈ Ω and 0 otherwise,
+where Ω is a sampling set with |Ω| = n for n < N. Here,
+ε ∽CN (0,σ 2
+ε 1N) where 1N is the N×N identity matrix
+andCN (µ, Σ2) denotes the distribution with independent real
+and imaginary parts that are normally distributed with mean
+µ and covariance matrix Σ2/2. A well-studied approach is to
+seek a solution of
+ˆx = argmin
+x∈CN
+1
+2∥y−MΩFx∥2
+2 +f(x) (2)
+where f(x) is a model-based penalty function. Compressed
+sensing [2], [3] concerns the reconstruction of signals of
+interest from underdetermined measurements, where sparsity
+in ˆx is promoted by solving (2) with f(x) = λ∥Ψx∥1 for
+sparse weighting λ> 0 and sparsifying transform Ψ.
+Manuscript submitted for review on 13th March 2020. A preliminary
+form of this manuscript was submitted to the IEEE International Confer-
+ence on Image Processing 2020: see [1]. This work was supported by an
+EPSRC Industrial CASE studentship with Siemens Healthineers, voucher
+number 17000051, and by The Alan Turing Institute under the EPSRC grant
+EP/N510129/1. The concepts and information presented in this paper are based
+on research results that are not commercially available.
+Charles Millard and Jared Tanner are with the Mathematical Insti-
+tute at the University of Oxford, Oxford, OX2 6GG, UK (e-mail: mil-
+lard@maths.ox.ac.uk; tanner@maths.ox.ac.uk)
+Aaron T Hess is with the Oxford Centre for Clinical Magnetic Res-
+onance at the University of Oxford, Oxford, OX3 9DU, UK (e-mail:
+aaron.hess@cardiov.ox.ac.uk)
+Boris Mailh ´e is with Siemens Healthineers, 755 College Rd E, Princeton,
+NJ 08540, USA (e-mail: boris.mailhe@siemens-healthineers.com)
+A prominent success of compressed sensing with Fourier
+measurements is accelerated Magnetic Resonance Imaging
+(MRI) [4]–[8]. Images of interest typically have a highly
+non-uniform spectral density that is concentrated at low fre-
+quencies. Accordingly, it is well-known that better image
+restoration is possible if the sampling set Ω is generated
+with variable density, so that there is a higher probability
+of sampling low frequencies [9]–[13]. This work considers
+an Ω with elements drawn independently from a Bernoulli
+distribution with generic non-uniform probability, so that
+Prob(j∈ Ω) =pj∈ [0, 1].
+A. Approximate Message Passing
+The Approximate Message Passing (AMP) algorithm [14]
+is an iterative method that, for certain sensing matrices
+Φ∈ Rn×N , efﬁciently estimatesx0 in problems of the form
+y = Φx0 +ε. At iteration k, AMP implements a denoiser
+g(rk;τk) on rk with mean-squared error estimate τk, which
+can be, for instance, the proximal operator associated with
+penalty function f(x):
+g(rk;τk) = argmin
+x∈CN
+1
+2τk
+∥rk−x∥2
+2 +f(x), (3)
+which is equal to soft thresholding in the case of f(x) =
+λ∥Ψx∥1 and orthogonal Ψ. Under certain circumstances [14],
+AMP with proximal denoising shares a ﬁxed point with
+optimization problems of the form of (2). Further, for certain
+sensing matrices and given mild conditions on f(x), AMP
+obeys a state evolution , which guarantees that in the large
+system limit n,N →∞ , n/N→δ∈ (0, 1), vector rk is the
+original signal corrupted by zero-mean Gaussian noise with a
+covariance matrix that is proportional to the identity:
+rk =x0 +N (0,σ 2
+k1N), (4)
+whereσk is a scalar iteration-dependent standard deviation. In
+this work, the term aliasing is used to refer to the difference
+arXiv:2003.02701v3  [eess.SP]  7 Sep 2020
+
+=== PDF PAGE 2 ===
+2
+Algorithm 1 OAMP [21]
+Require: Matrix Φ, measurements y, denoiser g(rk;τk),
+number of iterations Kit.
+1: Set ˜r0 = 0
+2: fork = 0, 1,...,K it− 1 do
+3: zk =y− Φ˜rk
+4: rk =˜rk + ΦHzk
+5: Update τk
+6: ˆxk =g(rk;τk)
+7: αk =⟨g′(rk;τk)⟩
+8: Update ck, e.g. ck = 1, 2 or 3
+9: ˜rk+1 =ck· (ˆxk−αkrk)
+10: end for
+11: return ˆxk
+between a given estimate and the ground truth. For instance,
+the aliasing ofrk isrk−x0. Also, when the covariance matrix
+is proportional to the identity, as in (4), the aliasing and state
+evolution are referred to as white.
+AMP was originally constructed for real, zero-mean, i.i.d.
+Gaussian measurements, and its white state evolution was
+proven for this case in [15] and subsequently proven for
+i.i.d. sub-Gaussian measurements in [16]. It has also been
+shown empirically that it holds for uniformly undersampled
+Fourier measurements of an artiﬁcial i.i.d. signal [14]. When
+state evolution holds, AMP is known to exhibit very fast
+convergence. However, for generic Φ, the behavior of AMP
+is not well understood and it has been noted by a number of
+authors [17]–[20] that it can encounter convergence problems.
+The recent Orthogonal AMP (OAMP) [21] and related Vector
+Approximate Message Passing (V AMP) [22] algorithm obey
+a white state evolution for a broader class of measurement
+matrices Φ, and were found to perform very well on certain
+reconstruction tasks. For V AMP, white state evolution was
+proven for sensing matrices that are “right-orthogonally in-
+variant”: see [22] for details.
+The matched ﬁlter variation of the OAMP algorithm [21],
+which forms the basis of the algorithm presented in this work,
+is stated in Algorithm 1. Here, ⟨·⟩ is the empirical averaging
+operator and g′(rk;τk) is the diagonal of the Jacobian of
+g(rk;τk) with respect to rk. The scalar τk estimates the
+variance σ2
+k from (4): see Eqn. (31) of [21] for details of
+the update formula. The relationship between OAMP and
+the well-known Iterative Shrinkage-Thresholding Algorithm
+(ISTA) [23] can be seen by considering lines 6-9 as a single
+function:
+˜g(rk;τk) =ck· (g(rk;τk)−αkrk). (5)
+Then OAMP is equivalent to ISTA with ˜g(rk;τk) in place
+of the usual shrinkage step. The αkrk subtraction, known as
+the Onsager correction [14], causes the function ˜g(rk;τk) for
+large N to be approximately divergence-free [21], deﬁned as
+⟨˜g′(rk;τk)⟩≈ 0. (6)
+The divergence-free property of ˜g(rk;τk) is the vital aspect
+of OAMP that leads to the white state evolution of (4) [21].
+Although any divergence-free function can be employed in
+place of lines 6-9 of Algorithm 1, and is not required to take
+the form of (5), this work focuses on a ˜g(rk;τk) of the form
+of (5) with g(rk;τk) as the soft thresholding operator.
+Any choice of ck update in line 8 of Algorithm 1 is
+consistent with the divergence-free requirement of (6). For soft
+thresholding, OAMP [21] gives no explicit suggestions for ck
+in practice. Instead, OAMP demonstrates the generality of its
+state evolution using three arbitrary chosen valuesck = 1, 2, 3.
+For the algorithm presented in this work, two ck updates are
+suggested, stated in (24) and (26), which are motivated by
+V AMP [22] and computed by Stein’s Unbiased Risk Estimate
+(SURE) [24], [25] respectively.
+B. Colored aliasing
+AMP, OAMP and V AMP assume that the sensing matrix
+is sufﬁciently random to ensure that the aliasing is white.
+However, when an image is sampled in the Fourier domain, the
+aliasing is innately colored. To see this, consider the natural
+initialization for an approximate message passing algorithm:
+the unbiased estimator ˜x =FHP−1y, where P is the diag-
+onal matrix formed from sampling probabilities pj. Denoting
+y0 =Fx 0, the power spectrum of the aliasing of ˜x is shown
+in Appendix A to be
+EΩ,ε{|y0−P−1y|2} = (P−1− 1N)|y0|2 +σ2
+εP−11N
+(7)
+where|·| is the entry-wise absolute value and 1N is the N-
+dimensional vector of ones. Equation (7) depends on P and
+|y0|2, which are non-uniform and anisotropic in general. Note
+that although the speciﬁc casepj = (σ2
+ε +|y0,j|2)/(α+|y0,j|2)
+for constant α does lead to white aliasing, it requires knowl-
+edge of the ground truth spectral density |y0|2 so is not a
+feasible sampling scheme in practice.
+A visual example of colored aliasing is shown in the top row
+of Fig. 1. Here, the unbiased estimate of a 512x512 synthetic
+Shepp-Logan uniformly sampled with pj = 1/2 for all j is
+shown, withσε = 0. By (7), the power spectrum of the aliasing
+of ˜x in this case is EΩ,ε{|y0−P−1y|2} =|y0|2. Since|y0|2
+is tightly concentrated at low frequencies, the aliasing has
+strong low-frequency components, which is manifest in Fig.
+1c as local correlations. In this example, uniform sampling
+was chosen to exaggerate the colored aliasing property. In
+practice, when variable density sampling is used, the sampling
+distribution partially compensates for the power spectrum of
+the signal, so the aliasing is still colored, but less strongly.
+The intrinsically colored aliasing of variable density sam-
+pling from a non-uniform spectral density implies that the
+white state evolution of AMP, OAMP, and V AMP, (4), cannot
+be relied upon. The primary development of this work is
+based on the use of the Discrete Wavelet Transform (DWT)
+to compute a multiresolution decomposition of the power
+spectrum of the aliasing, as used for colored noise analysis
+in [26]–[28]. In the wavelet domain, colored aliasing has a
+structure that resembles a state evolution. To illustrate this,
+consider again the unbiased initialization˜x. The corresponding
+estimator in the wavelet domain is
+r0 = Ψ˜x. (8)
+
+=== PDF PAGE 3 ===
+3
+(a) x0
+ (b) ˜x
+ (c)|x0− ˜x|
+(d) w0
+ (e) r0
+ (f)|r0− w0|
+Fig. 1: The ground truth, unbiased estimate and entry-wise
+absolute error for a uniformly sampled Shepp-Logan with
+pj = 1/2, where the colorbars are given as a proportion of the
+maximum of x0. The top row shows the image domain and
+the bottom shows the wavelet domain. The colored aliasing
+evident in Fig. 1c illustrates the infeasibility of white state
+evolution for Fourier sampling of signals with non-uniform
+spectral density. The anisotropy of the spectral density of x0
+causes the horizontal, vertical and diagonal variances to differ,
+even at the same scale.
+The bottom row of Fig. 1 showsw0 = Ψx0,r0 and the entry-
+wise absolute difference |w0−r0| for the same image and
+sampling set as the top row, where Ψ is a Haar DWT with 4
+decomposition scales. Qualitatively, Fig. 1f suggests that the
+power spectrum given by (7) has a simple structure in the
+wavelet domain; in particular, it suggests that the per-subband
+aliasing within each subband is approximately uniform. In
+Section III we show that, in fact, the aliasing within each
+subband is quantitatively consistent with a white Gaussian
+distribution, see Fig. 6. Further, Table III presents evidence
+that the Gaussianity holds for a variety of image types and
+undersampling factors.
+C. Colored state evolution
+Herein we present a new method for undersampled signal
+reconstruction that we term the Variable Density Approxi-
+mate Message Passing (VDAMP) algorithm, see Algorithm
+2. We present empirical evidence that VDAMP preserves the
+subband-dependent noise structure illustrated in Fig. 1f for all
+iterations. Explicitly, the rk of VDAMP behaves as
+rk =w0 +CN (0, Σ2
+k), (9)
+where Ψ is an orthogonal DWT and the covariance matrix Σ2
+k
+is diagonal so that for a Ψ with s decomposition scales,
+Σ2
+k =
+
+
+σ2
+k,11N1 0 ... 0
+0 σ2
+k,21N2 ... 0
+... ... ... ...
+0 0 ... σ 2
+k,1+3s1N1+3s
+
+, (10)
+Algorithm 2 VDAMP
+Require: Sampling set Ω, wavelet transform Ψ, probability
+matrix P , measurements y, denoiser g(rk;τk), number of
+iterations Kit.
+1: Set ˜r0 = 0 and compute S =|F ΨH|2
+2: fork = 0, 1,...,K it− 1 do
+3: zk =y−MΩF ΨH˜rk
+4: rk =˜rk + ΨFHP−1zk
+5: τk =SHMΩP−1[(P−1− 1N)|zk|2 +σ2
+ε1N]
+6: ˆwk =g(rk;τk)
+7: αk =⟨∂(g(rk;τk))⟩sband
+8: Updateck
+9: ˜rk+1 =ck⊙ ( ˆwk−αk⊙rk)
+10: end for
+11: return ˆx = ΨH ˆwk +FH(y−MΩF ΨH ˆwk)
+where σ2
+k,b and Nb refer to the variance and dimension of
+the bth subband respectively. We refer to (9) and (10) as the
+colored state evolution of VDAMP and the aliasing of rk as
+the effective noise of VDAMP.
+The joint space-frequency localization provided by the
+wavelet transform decomposes the color of the effective noise
+while retaining incoherence. The algorithm presented in this
+work considers a sparse model on wavelet coefﬁcients, how-
+ever, we emphasize that the wavelet transform is primarily
+used as a tool for decomposing the aliasing, and is not
+necessarily constrained to model wavelet coefﬁcients directly
+[25], [29].
+V AMP for Image Recovery (V AMPire) [30] is an adaption
+of V AMP for variable density Fourier sampled images that
+uses wavelets to decompose the effective noise in to frequency
+bands that are subsequently “whitened” by a hand-tuned
+prediction of the per-subband energy. As in OAMP, Algorithm
+1, the effective noise model of V AMPire is represented by
+a scalar τk. In contrast, we propose making the necessary
+algorithmic adaptions to allow the aliasing to be colored ,
+and to model the color with a vector τk. To our knowledge,
+VDAMP is the ﬁrst algorithm for variable density Fourier
+sampling of images where a state evolution has been observed.
+II. D ESCRIPTION OF ALGORITHM
+The VDAMP algorithm, Algorithm 2, adapts OAMP, Al-
+gorithm 1, to a colored aliasing model. VDAMP’s colored
+aliasing model is updated in line 5, where the scalar τk∈ R
+of OAMP is replaced by a vector τk ∈ RN that models
+the diagonal of Σ2
+k. In line 6, OAMP’s denoiser g(rk;τk)
+is replaced by the denoiser g(rk;τk), which takes the vector
+τk as its input. Lines 7-9 of Algorithm 2 is the Onsager
+correction from lines 7-9 of Algorithm 1 adapted to a subband-
+wise aliasing model. Here, the notation ∂(g(rk;τk)) in line 7
+replaces OAMP’sg′(rk;τk), deﬁned as the function with jth
+entry
+∂j(g(rk;τk)) = 1
+2
+(∂ℜ[gj(rk;τk)]
+∂ℜ[rj] + ∂ℑ[gj(rk;τk)]
+∂ℑ[rj]
+)
+(11)
+
+=== PDF PAGE 4 ===
+4
+whereℜ[·] andℑ[·] are the real and imaginary parts respec-
+tively. The form of (11) is justiﬁed in section II-D. Also in line
+7, the notation⟨·⟩sband is an operator that empirically averages
+entries within subbands, so that αk has the structure
+αk =
+
+
+αk,11N1
+αk,21N2
+...
+αk,1+3s1N1+3s
+
+ (12)
+with
+αk,b = 1
+Nb
+∑
+j∈Jb
+∂j(g(rk;τk)), (13)
+where Jb is the set of indices associated with subband b and
+Nb =|Jb|. In line 8 of Algorithm 2, ck is a vector with the
+piecewise-constant structure of (12), and in line 9 the notation
+⊙ refers to entry-wise multiplication. The remainder of this
+section works through Algorithm 2 in detail, line-by-line.
+A. Density compensated gradient descent, lines 3-4
+To ensure thatrk is an unbiased estimate of x0, the sensing
+matrix must be correctly normalized. In VDAMP this is man-
+ifest in the gradient step of lines 3-4, which features a crucial
+weighting by P−1 that is absent in previous applications of
+AMP to variable density sampling [30]–[32], where a state
+evolution was not observed. This provides the correct normal-
+ization in expectation over Ω: EΩ{ΨFHP−1MΩF ΨH} =
+1N . Note that VDAMP’s r0 is the unbiased estimator from
+(8). Such a rescaling is referred to as density compensation
+in the MRI literature [33], [34], and was used in the original
+compressed sensing MRI paper with zero-ﬁlling to generate
+a unregularized, non-iterative baseline [4]. However, to our
+knowledge, VDAMP is the ﬁrst iterative method that employs
+density compensated gradient descent. Density compensation
+also arises in recovery guarantees for variable density Fourier
+measurements in [9], [11], although it was considered an
+artifact of the proof and was not used in the numerical
+evaluations of these works. The connection of VDAMP to
+these theoretical results is beyond the scope of this paper and
+is left as future work.
+Density compensation increases the variance of the mea-
+surement noise at frequencies sampled with low probability,
+and its inclusion in the gradient step will lead to a rk
+with higher mean-squared error than an unweighted gradient
+step. However, as shown in Section III, a careful choice of
+denoiser g(rk;τk) that leverages VDAMP’s state evolution
+can cause lines 6-9 to be very effective, leading to faster
+overall convergence than competing methods.
+The ﬁnal step of VDAMP, line 11, is a gradient step without
+aP−1 weighting, which generates a biased image estimate ˆx
+with high data ﬁdelity.
+B. Colored effective noise model, line 5
+Line 5 of Algorithm 2 computes an estimate of the colored
+effective noise covariance matrix Σ2
+k from (9). Through a
+similar derivation to that for (7), shown in Appendix A, the
+power spectrum of the aliasing of rk is
+EΩ,ε{|F ΨHrk−y0|2} = (P−1− 1N)|F ΨH˜rk−y0|2
++σ2
+εP−11N. (14)
+Eqn. (14) depends on the ground truth y0, so is of limited
+practical use. An estimate of (14) that does not require
+knowledge of y0 is
+τy
+k =MΩP−1[(P−1− 1N)|zk|2 +σ2
+ε1N]. (15)
+Estimating properties of a distribution using samples from
+another is known as importance sampling in the statistics
+literature [35], [36]. Eqn. (15) uses importance sampling with
+P as the importance distribution which, as proven in Appendix
+B, is an unbiased estimator of (14). We assume the estimator
+τy
+k concentrates around its expectation, and leave the study of
+how this depends on the importance distribution P for future
+works.
+The computation of τk in line 5 of Algorithm 2 is a linear
+transform of τy
+k to the wavelet domain: τk = |ΨFH|2τy
+k ,
+which, as shown in Appendix C, is a unbiased estimate of
+|rk−w0|2 when rk has unbiased independent entries, as
+expected by state evolution. |ΨFH|2 is the power spectrum
+of Ψ, so has 1 + 3s unique rows; line 5 therefore requires
+1 + 3s inner products. For ﬁxeds the complexity of VDAMP
+is therefore governed by Ψ andF , whose fast implementations
+have complexity O(N) and O(N logN) respectively.
+C. Complex soft threshold tuning with SURE, line 6
+Selecting appropriate regularisation parameters such as λ is
+a notable challenge in real-world compressed sensing applica-
+tions. We present an approach to parameter-free compressed
+sensing reconstruction that leverages VDAMP’s state evolution
+by applying Stein’s Unbiased Risk Estimate (SURE) [24],
+building on work on AMP in [19], [37], [38].
+A strength of automatic parameter tuning via SURE is that
+it is possible to have a richer regularizer than would usually
+be feasible for a hand-tuned f(x). In this work, the denoiser
+g(rk;τk) was the complex soft thresholding operator with
+a subband-dependent threshold that is tuned automatically
+with SURE. In other words, SURE with an effective noise
+model given by rk = w0 +CN (0, Diag(τk)) was used to
+approximately solve
+g(rk;τk)≈ argmin
+w∈CN
+min
+λ∈RN
+1
+2∥(w−rk)⊘√τk∥2
+2 +∥λ⊙w∥1,
+(16)
+where⊘ denotes entry-wise division, √τk is the entry-wise
+square root of τk andλ has the piecewise-constant structure
+of (12). The possibility of using a scale-dependent thresholds
+is well known, such as in [23]. We emphasize that (16)
+is subband-dependent rather than scale-dependent, enabling
+higher order, anisotropic signal modeling [39], [40].
+Equation (16) was solved using a procedure related to
+SureShrink [41] but for Gaussian noise that is complex and
+colored [28]. Consider a vector v0 ∈ CNv corrupted by
+white complex Gaussian noise: v =v0 +CN (0,τv1Nv). Let
+
+=== PDF PAGE 5 ===
+5
+d(v) =v +h(v) be an estimator of v0. SURE [24] adapted
+to complex variables is
+cSURE (d(v)) =∥h(v)∥2
+2 +Nvτv[2⟨∂(d(v))⟩− 1]. (17)
+cSURE is of interest to denoising problems because, as
+shown in Appendix D, it is an unbiased estimate of the risk
+E{∥d(v)−v0∥2
+2}. The optimal parameters of the denoiser
+d(v) can therefore be estimated by minimizing cSURE as a
+proxy for the true risk. Consider the case where d(v) is the
+complex soft thresholding operator η(v;t) with threshold t,
+which acts component-wise as
+ηj(vj;t) :=vj
+(
+1− min
+{ t
+|vj|, 1
+})
+. (18)
+The jth entry of ∂(η(v;t)) is
+∂j(ηj(vj;t)) =
+{
+0, if |vj|≤ t
+1− t
+2|vj|, otherwise. (19)
+By (17), an unbiased estimate of the risk of soft thresholding
+is therefore [41]
+cSURE (η(v;t)) = (t2 + 2τv)· #{j :|vj|>t}− Nvτv
++
+Nv∑
+j:|vj|≤t
+|vj|2−
+Nv∑
+j:|vj|>t
+tτv/|vj|. (20)
+The optimal threshold for each subband can be estimated with
+ˆt = argmin
+t
+(cSURE (η(v;t))) (21)
+by evaluating (20) for trial thresholds t =|v1|,|v2|,..., |vNv|.
+For large dimension Nv one would expect by the law of
+large numbers that cSURE is close to the true risk, and for
+the threshold to be almost optimal. Since a larger number of
+decomposition scales s give subbands with lower dimension,
+there is a trade-off between the size of s and the quality of
+threshold selection with cSURE.
+SURE has previously been employed for parameter-free
+compressed sensing MRI in [42], where FISTA was used with
+(16) in place of the usual shrinkage step. This algorithm is
+herein referred to as SURE-IT, and is discussed in detail in
+Section III-A.
+D. Complex, colored Onsager correction, lines 7-9
+Lines 7-9 of Algorithm 2 can be understood intuitively
+as follows: since lines 7-9 of Algorithm 1 apply to white
+noise, and the effective noise of VDAMP is white within each
+subband, the Onsager correction must be applied subband-by-
+subband. For soft thresholding, the use of ⟨∂(g(rk;τk))⟩sband
+in place of OAMP’s⟨g′(rk;τk)⟩ leads the function formed by
+merging lines 7-9,
+˜g(rk;τk) =ck⊙ (g(rk;τk)−αk⊙rk), (22)
+to obey, for all subbands b,
+1
+Nb
+∑
+j∈Jb
+∂ℜ[˜gj(rk;τk)]
+∂ℜ[rj] ≈ 1
+Nb
+∑
+j∈Jb
+∂ℑ[˜gj(rk;τk)]
+∂ℑ[rj] ≈ 0,
+(23)
+which is a colored aliasing version of OAMP’s divergence-free
+condition, (6), applied to both real and imaginary parts. The
+Onsager correction employed here is not the only choice that
+leads to a ˜g(rk;τk) that satisﬁes (23) [43], however, we have
+found that this particular choice performs well.
+Like the scalar ck in Algorithm 1, the ck updated in line
+8 of Algorithm 2 is not constrained by (23), except to have
+the piecewise-constant structure of (12). In the experiments in
+this work, two possibilities for the ck update are considered.
+First,
+cα
+k = 1N⊘ (1N−αk). (24)
+In this case, lines 6-9 of Algorithm 2 are a colored version
+of the ‘denoising’ phase of V AMP when written in LMMSE
+form (see [22], Algorithm 3). VDAMP with ck updated with
+(24) is herein referred to as VDAMP- α.
+Secondly, as in [25], we suggest using cSURE for a second
+time to estimate the ck that minimizes the mean squared error
+of ˜rk:
+cSURE
+k ≈ arg min
+c
+∥˜g(rk,τk)−w0∥2
+2. (25)
+Since by (23) ⟨∂(˜g(rk;τk))⟩sband ≈ 0, optimizing (17)
+reduces to a series of ℓ2 minimization problems with a closed-
+form solution, so that for the bth subband
+cSURE
+k,b = arg min
+c
+∥c(gb(rk;τk)−αk,brk,b)−rk,b∥2
+2 (26a)
+=
+rH
+k,b(gb(rk;τk)−αk,brk,b)
+∥gb(rk;τk)−αk,brk,b∥2
+2
+. (26b)
+VectorcSURE
+k is formed from the cSURE
+k,b so that it has the
+structure of (12). VDAMP with ck updated with cSURE
+k is
+herein referred to as VDAMP-S.
+As for OAMP [21], we do not claim that the either of the
+twock updates suggested here are necessarily optimal. Instead,
+we show in Section III that both updates lead to aliasing
+consistent with state evolution, and empirically evaluate their
+performance, which we observe to converge to a similar or
+lower NMSE as other algorithms, but with approximately a
+tenth the time to convergence.
+III. N UMERICAL EXPERIMENTS
+This section illustrates the performance of VDAMP- α
+and VDAMP-S compared with the Fast Iterative Shrinking-
+Thresholding Algorithm (FISTA) algorithm [23], [44], and two
+FISTA-based methods wth subband-dependent thresholding
+[40], [42]. We also present empirical evidence for VDAMP’s
+state evolution. All experiments were conducted in MATLAB
+9.4 and can be reproduced with code online, available at
+https://github.com/charlesmillard/VDAMP.
+A. Description of comparative FISTA-based algorithms
+The three versions of FISTA [40], [42], [44] considered in
+this work are summarized in Algorithm 3. In line 7,g(rk;τk1)
+refers to the subband-dependent thresholding function with
+thresholds tuned by cSURE, stated in (16), with a scalar
+aliasing modelτk. In line 9,η(rk;τkλΛ−11) is the soft thresh-
+olding function from (18) with entry-wise thresholdτkλΛ−11.
+
+=== PDF PAGE 6 ===
+6
+Algorithm 3 FISTA [44], S-FISTA [40] and SURE-IT [42]
+for Fourier sampled images
+Require: Sampling set Ω, wavelet transform Ψ, per-subband
+weighting W set to W = 1N for FISTA and SURE-IT
+or calculated with (27) for S-FISTA, sparse weighting λ for
+FISTA and S-FISTA, measurements y, number of iterations
+Kit.
+1: Set ˜r0 = 0, ˆw−1 = 0 and h−1 = 1
+2: fork = 0, 1,...,K it− 1 do
+3: zk =y−F ΨH˜rk
+4: rk =˜rk +W−1ΨFHMΩzk
+5: Update τk
+6: if SURE-IT then
+7: ˆwk =g(rk;τk1)
+8: else
+9: ˆwk =η(rk;τkλW−11)
+10: end if
+11: hk = (1 +
+√
+1 + 4h2
+k−1)/2
+12: ˜rk+1 = ˆwk + (hk−1− 1)( ˆwk− ˆwk−1)/hk
+13: end for
+14: return ˆx = ΨH ˆwk +FH(y−MΩF ΨH ˆwk)
+As in (3), the threshold employed here is weighted by the
+variance estimate τk, causing the threshold to decrease over
+iterations, which, as in [45], was found to signiﬁcantly reduce
+the time to convergence. Line 14 is an unweighted gradient
+descent step, as in line 11 of Algorithm 2, which outputs
+an estimate ˆx with high data ﬁdelity. This was suggested in
+[45], and we found that this output had a lower reconstruction
+error than ΨH ˆwk. The variations described in Algorithm 3,
+discussed in detail below, are referred to in this work asFISTA,
+S-FISTA [40] and SURE-IT [42].
+FISTA refers to Algorithm 3 with W = 1N , so that
+a global threshold λτk is applied in line 9. Despite not
+discriminating between subbands, this version of FISTA was
+considered because it is widely-used in MRI, and we found
+that it performed well compared with the subband-dependent
+algorithms, so is an instructive baseline. FISTA with a hand-
+tuned subband-dependent λ was not considered as it is not
+feasible in practice.
+S-FISTA refers to Algorithm 3 with a diagonal weight matrix
+W that has one unique entry per wavelet subband, so that
+diag(W ) has the piecewise-constant structure of (12). In [40],
+a method was suggested for selecting the weight for the bth
+subband, which we denote as wb. Let Φb be the block of
+MΩF ΨH corresponding to the bth subband. In [40], it is
+shown that a choice of wb that satisﬁes
+1
+wb
+>
+3s+1∑
+b′=1
+√
+λmax(ΦH
+b′ ΦbΦH
+b Φb′), (27)
+where λmax(·) is the largest eigenvalue, ensures that W−
+ΦHΦ is a positive operator, and therefore guarantees that the
+algorithm converges: see [40] for details. Following [46], we
+computed the wb by calculating λmax once per Ω for all b and
+b′ using the power iteration method. In contrast with VDAMP,
+S-FISTA’s per-subband weighting is ﬁxed across all iterations,
+(a) 256× 256 Brain
+ (b) 208× 416 Cardiac
+Fig. 2: MRI images used to evaluate the performance of
+VDAMP.
+and depends only on the sensing matrix and wavelet family,
+and not on the per-iteration signal estimate.
+SURE-IT refers to Algorithm 3 with W = 1N and a
+subband-dependent, automatically tuned denoiser g(rk;τk1),
+as in [42]. Although SURE-IT’s thresholding is iteration-
+dependent, the aliasing of its rk is highly non-Gaussian, so
+deviates from a proper theoretical basis for using SURE and
+does not give near-optimal threshold selection. Further, unlike
+VDAMP, the aliasing of SURE-IT is modeled by a scalar τk.
+In the following experiments, the scalar sparse weighting λ
+of FISTA and S-FISTA was tuned with an exhaustive search
+so that the mean-squared error was minimized at k = 100 .
+Since the threshold was weighted byτk, we tunedλ separately
+for FISTA and S-FISTA. The variance estimate τk on line 5
+of Algorithm 3 was updated using the ground truth: τk =
+∥rk−w0∥2
+2/N.
+B. Experimental method
+We considered the reconstruction of 8 test images: the
+Shepp-Logan shown in Fig. 1a, a brain and a cardiac MRI
+image, shown in Fig. 2, and 5 standard test images: Barbara,
+Boat, Cameraman, House and Peppers, downloaded from [47].
+In all cases the undersampled data was artiﬁcially corrupted
+with complex Gaussian noise so that ∥x0∥2
+2/Nσ2
+ε = 40dB .
+We assumed that σ2
+ε was known a priori. For simplicity Ψ
+was chosen as the Haar wavelet with s=4 scales.
+A variety of variable density sampling schemes for MRI
+have been suggested [4], [10], [12], [45], [48], [49], including
+some with recovery guarantees [11], [13]. In the experiments
+presented in this section, we generated Ω using the variable
+density sampling function from the Sparse MRI package 1. The
+focus of this work is on the reconstruction algorithm, not on
+the sampling scheme, and we do not claim that this scheme is
+necessarily the best choice, only that it an instructive example
+because it common in MRI and known to perform well in
+practice [4]. The Ω generated with this package for theN/n =
+4 cardiac image is shown in Fig. 4f. We chose variable density
+schemesP with EΩ{|Ω|} =n so that the acceleration factors
+N/n = 4, 6, 8 were used, except for the Shepp-Logan, where
+we used an increased acceleration of N/n = 8, 10, 12. All
+algorithms were initialized with a vector of zeros and run for
+Kit = 500 iterations, except for the Shepp-Logan, which was
+found to require more iterations, so was run until Kit = 1000.
+1available at https://people.eecs.berkeley.edu/~mlustig/Software.html
+
+=== PDF PAGE 7 ===
+7
+Image SHEPP -LOGAN BRAIN CARDIAC BARBARA
+n/N 8 10 12 4 6 8 4 6 8 4 6 8
+FISTA 57.99 69.55 76.64 1.40 1.53 1.68 3.37 3.45 3.20 1.01 1.65 3.18
+S-FISTA 79.91 80.62 81.13 4.22 4.93 4.79 10.41 8.53 9.66 6.00 6.78 10.10
+SURE-IT 8.60 4.45 5.25 0.91 0.90 1.08 1.84 20.77 1.67 1.05 1.15 4.50
+VDAMP-α 2.99 4.41 0.96 0.16 0.13 0.14 0.39 0.38 0.24 0.18 0.19 0.43
+VDAMP-S 2.21 2.37 4.70 0.28 0.13 0.11 0.43 0.26 1.28 0.56 0.33 0.31
+Image BOAT CAMERAMAN HOUSE PEPPERS
+n/N 4 6 8 4 6 8 4 6 8 4 6 8
+FISTA 2.80 4.06 3.08 1.56 1.58 1.22 1.52 1.97 1.94 1.43 1.66 1.94
+S-FISTA 10.44 11.71 8.13 5.15 4.94 4.20 4.44 5.08 4.44 5.24 5.29 5.57
+SURE-IT 2.31 2.73 2.36 1.15 0.94 0.81 2.27 2.09 3.03 0.73 0.19 0.15
+VDAMP-α 0.44 0.42 0.31 0.19 0.13 0.73 0.17 0.17 0.14 0.14 0.09 0.09
+VDAMP-S 0.70 3.62 2.23 0.99 0.68 0.06 0.14 0.09 0.09 0.10 0.10 0.09
+TABLE I: Convergence time in seconds. The shortest time is highlighted in bold.
+Image SHEPP -L OGAN BRAIN CARDIAC BARBARA
+n/N 8 10 12 4 6 8 4 6 8 4 6 8
+FISTA -36.2 -31.9 -25.7 -20.4 -18.2 -17.1 -17.9 -14.5 -13.0 -17.5 -16.3 -15.5
+S-FISTA -33.2 -28.1 -23.5 -20.3 -18.1 -17.1 -17.7 -14.3 -12.7 -17.5 -16.3 -15.5
+SURE-IT -18.7 -13.3 -13.1 -18.9 -17.3 -16.6 -14.9 -12.9 -10.5 -17.0 -16.1 -15.5
+VDAMP-α -35.1 -29.4 -20.5 -20.7 -18.5 -17.5 -17.9 -14.5 -12.9 -17.5 -16.3 -15.6
+VDAMP-S -38.1 -34.9 -30.8 -20.6 -18.4 -17.4 -18.0 -14.3 -12.4 -16.8 -15.4 -14.1
+Image BOAT CAMERAMAN HOUSE PEPPERS
+n/N 4 6 8 4 6 8 4 6 8 4 6 8
+FISTA -21.4 -19.6 -18.6 -20.9 -18.4 -17.1 -25.4 -22.8 -21.6 -20.0 -17.5 -16.2
+S-FISTA -21.4 -19.5 -18.5 -20.7 -18.3 -17.0 -25.3 -22.7 -21.4 -19.9 -17.5 -16.1
+SURE-IT -20.3 -18.9 -18.3 -18.7 -16.7 -15.9 -23.3 -21.4 -20.6 -18.5 -16.0 -15.3
+VDAMP-α -21.6 -19.9 -18.9 -20.8 -18.2 -16.0 -25.4 -22.9 -21.5 -19.9 -17.7 -16.7
+VDAMP-S -19.5 -16.7 -15.6 -18.7 -16.1 -15.5 -21.5 -18.8 -17.8 -18.0 -15.7 -14.3
+TABLE II: Reconstruction NMSE in dB at Kit for all 8 test images at different undersampling factors. The lowest NMSE is
+highlighted in bold.
+Image SHEPP -L OGAN BRAIN CARDIAC BARBARA
+n/N 8 10 12 4 6 8 4 6 8 4 6 8
+FISTA 27.99 32.57 38.01 2.86 4.43 5.76 3.94 6.35 9.55 2.10 2.75 3.09
+S-FISTA 43.69 45.63 46.83 9.58 11.35 11.97 20.46 23.56 25.42 3.80 4.35 4.55
+SURE-IT 39.27 49.64 51.08 4.57 7.32 8.76 6.82 13.92 21.99 2.38 2.88 3.21
+VDAMP-α 0.06 0.05 0.13 -0.06 -0.02 -0.03 -0.06 -0.05 -0.09 0.04 0.00 0.00
+VDAMP-S 0.10 0.07 0.01 -0.03 -0.01 0.06 0.20 0.07 0.11 0.03 0.10 0.04
+Image BOAT CAMERAMAN HOUSE PEPPERS
+n/N 4 6 8 4 6 8 4 6 8 4 6 8
+FISTA 2.17 3.35 4.20 3.70 5.33 7.25 3.01 5.23 6.96 2.90 5.13 7.19
+S-FISTA 4.79 5.53 5.96 7.26 8.24 8.92 6.14 7.54 8.45 10.04 11.49 12.17
+SURE-IT 3.30 4.74 5.27 5.68 8.09 8.92 5.26 7.55 8.45 5.21 10.01 11.30
+VDAMP-α 0.02 0.09 0.05 -0.06 -0.04 0.07 -0.05 -0.01 -0.01 0.00 0.07 0.03
+VDAMP-S 0.01 0.02 0.01 -0.08 0.13 -0.09 -0.06 -0.04 -0.07 -0.07 0.00 -0.06
+TABLE III: Test for Gaussianity using the mean excess kurtosis Kurt{ℜ[rk−w0]} atKit. An exact Gaussian has zero mean
+excess Kurtosis. The smallest absolute values are highlighted in bold.
+
+=== PDF PAGE 8 ===
+8
+0 500 1000
+Iteration k
+-40
+-35
+-30
+-25
+-20
+-15
+-10NMSE (dB)
+(a) Shepp-Logan, N/n = 10
+0 100 200
+Iteration k
+-20
+-18
+-16
+-14
+-12
+-10
+-8
+NMSE (dB)
+FISTA
+S-FISTA
+SURE-IT
+VDAMP-
+VDAMP-S (b) Cardiac, N/n = 4
+Fig. 3: NMSE of FISTA, S-FISTA, SURE-IT, VDAMP-α and
+VDAMP-S of a Shepp-Logan undersampled at N/n = 10
+and the cardiac image undersampled at N/n = 4. The NMSE
+at k = 0 differs between algorithms as the image estimate at
+k = 0 is deﬁned to be the after the ﬁrst thresholding is applied.
+The cardiac example is shown up to k = 200, not Kit = 500,
+so that the behavior of VDAMP can clearly be seen.
+C. Time to converge
+Table I shows the time to converge for each algorithm,
+deﬁned as the time taken until the NMSE is within 0.1dB of its
+value atKit. In all test cases, both variations of VDAMP con-
+verge considerably more rapidly than the competing FISTA-
+based methods. Across all experiments, convergence time
+compared with FISTA was 14.0 times shorter for VDAMP-
+α and 11.8 times shorter for VDAMP-S on average, corre-
+sponding to a 16.5 and 15.2 times reduction in the required
+number of iterations respectively. Of the three FISTA-based
+algorithms, SURE-IT had the shortest time to convergence, but
+still required 10.7 and 10.0 times more iterations on average
+than VDAMP-α and VDAMP-S respectively. Note that the
+times listed in Table I do not include the time required to tune
+λ for FISTA and S-FISTA, nor the time to calculate S-FISTA’s
+subband-weighting wb.
+The NMSE vs iteration for the Shepp-Logan undersampled
+atN/n = 10 and the cardiac image undersampled at N/n = 4
+are shown up toKit andk = 200 respectively in Fig. 3, which
+visualizes VDAMP’s comparative rapidity of convergence. In
+Fig. 4, the cardiac image is shown at k = 10, where VDAMP-
+α and VDAMP-S had converged, demonstrating a visible
+reduction in blocking artifacts for VDAMP.
+D. NMSE comparison
+Table II shows the normalized mean-squared error (NMSE)
+∥ˆx−x0∥2
+2/∥x0∥2
+2 of the reconstructed image for each algo-
+rithm. The NMSE of FISTA, S-FISTA and VDAMP are gener-
+ally comparable. Given that VDAMP has 13 model parameters
+while FISTA has one, one might expect the NMSE of VDAMP
+would consistently be lower. However, for the Cameraman, the
+cardiac image at N/n = 8, House at N/n = 4 and Peppers at
+N/n = 4 FISTA’s NMSE was found to be lower. This is due to
+density compensation in the gradient step, line 4 of Algorithm
+2, which effectively increases the measurement noise for
+coefﬁcients sampled with low probability. Note that FISTA’s
+NMSE advantage in these instances may not necessarily arise
+in realistic, prospectively undersampled reconstruction tasks,
+as the ground truth cannot be used to hand-tune FISTA’s sparse
+weighting λ to a near optimal value, as in the experiments
+here. Also note that VDAMP-S and VDAMP- α both perform
+comparatively well on the MRI images, which are of primary
+importance for the algorithm’s intended application.
+Despite employing subband-dependent thesholding, S-
+FISTA’s NMSE atKit was often slightly higher than FISTA.
+Fig. 5 showsk = 1, 2, 3 of VDAMP’s wavelet-domain aliasing
+for the N/n = 12 Shepp-Logan, which demonstrates that the
+ratio of the aliasing between subbands may not be constant
+over iterations. For instance, at k = 1 , the coarse level has
+greater variance than the ﬁne levels, but at k = 3 the coarse
+variance is visibly lower than the ﬁne levels. This is poorly
+reﬂected by S-FISTA’s threshold weighting, which is ﬁxed
+over iterations and not dependent on the current estimate.
+Further, [40] notes that while (27) is sufﬁcient to ensure
+convergence, the inequality is not tight so may lead to weights
+that are smaller than necessary, which slows convergence. In
+[46], which uses different sampling schemes to that employed
+here, it was found that S-FISTA performed slightly better than
+FISTA, suggesting that S-FISTA’s relative performance may be
+particularly dependent on the sampling scheme employed. The
+comparatively poor performance of SURE-IT highlights the
+need for zero-mean Gaussian aliasing for effective automatic
+parameter tuning with SURE.
+E. Empirical evidence of state evolution
+This section presents empirical evidence that VDAMP obeys
+the colored state evolution given by (9) using kurtosis and
+quantile-quantile plots. The excess kurtosis of a real random
+variableX is deﬁned as Kurt{X} =µ4/σ4− 3, where µ4 is
+the fourth central moment and σ is the standard deviation. The
+Gaussianity of the aliasing of rk was tested by calculating the
+mean of per-subband empirical kurtosis of the real part,
+Kurt{ℜ[rk−w0]} = 1
+3s + 1
+3s+1∑
+b=1
+Kurt{ℜ[rk,b−w0,b]},
+and comparing to zero, which is the kurtosis of a white
+Gaussian distribution. Table III shows the mean kurtosis for
+all images and sampling factors at k =Kit. The proximity to
+zero is consistent with a colored state evolution for all image
+types and undersampling factors, and for both VDAMP- α
+and VDAMP-S, conﬁrming that the difference in performance
+between the algorithms is not due to a breakdown in state
+evolution. The imaginary part, which is not included here for
+conciseness, was found to have a similarly small mean excess
+kurtosis.
+Using the example of the Shepp-Logan undersampled with
+N/n = 12 , Fig. 5 shows VDAMP-S’s |rk−w0| for k =
+1, 2, 3, visualizing the preservation of the unbiased subband-
+dependent aliasing structure shown for uniform sampling in
+Fig. 1. For k = 0, 5, 20, Fig. 6 shows quantile-quantile plots
+against a Gaussian of the three illustrative subbands of rk−
+w0: the diagonal detail at scale 1, the horizontal detail at scale
+
+=== PDF PAGE 9 ===
+9
+(a) FISTA, NMSE -14.2dB
+ (b) S-FISTA, NMSE -11.3dB
+ (c) SURE-IT, NMSE -12.2dB
+(d) VDAMP- α, NMSE -17.9dB
+ (e) VDAMP-S, NMSE -18.0dB
+ (f) N/n = 4 sampling set Ω
+Fig. 4: Reconstructions of the Cardiac image undersampled at N/n = 4, shown at k = 10.
+2 and the vertical detail at scale 4, where scale 1 is the ﬁnest
+and scale 4 is the coarsest. The linearity of the blue points
+provides strong evidence that the per-subband effective noise
+is Gaussian.
+The efﬁcacy of automatic threshold selection with cSURE
+depends on how accurately the diagonal of Σ2
+k is modeled
+by τk. For k = 0, 1,..., 20, Fig. 7 shows the ground truth
+subband NMSE∥rk,b−w0,b∥2
+2/∥w0,b∥2
+2 at all four scales and
+the prediction of VDAMP, where the NMSE is per subband.
+The true NMSE is closely tracked by τk at all scales, which
+implies that parameter selection with SURE is truly near-
+optimal. Since, by Appendix C, τk is unbiased when the
+aliasing of rk is zero mean and i.i.d., Fig. 7 also provides
+further veriﬁcation of colored state evolution.
+IV. C ONCLUSIONS
+Based on the observation that Fourier sampling from a non-
+uniform spectral density leads to colored aliasing, we propose
+VDAMP, an algorithm based on OAMP that obeys a colored
+state evolution. State evolution provides an effective way to
+tune model parameters via cSURE, implying that a single
+algorithm can be used for arbitrary variable density scheme
+(a)|r1− w0|
+ (b)|r2− w0|
+ (c)|r3− w0|
+Fig. 5: The magnitude of the effective noise for VDAMP-S for
+a Shepp-Logan undersampled with N/n = 12 for iterations
+k = 1, 2, 3, where the colorbar shows the proportion of the
+maximum of x0.
+-5 0 5
+Standard normal quantiles
+-1
+-0.5
+0
+0.5
+1
+Quantiles of input sample
+Diagonal, scale 1, k=0
+-5 0 5
+Standard normal quantiles
+-1
+-0.5
+0
+0.5
+1
+Quantiles of input sample
+Diagonal, scale 1, k=5
+-5 0 5
+Standard normal quantiles
+-1
+-0.5
+0
+0.5
+1
+Quantiles of input sample
+Diagonal, scale 1, k=20
+-5 0 5
+Standard normal quantiles
+-1
+-0.5
+0
+0.5
+1
+Quantiles of input sample
+Horizonal, scale 2, k=0
+-5 0 5
+Standard normal quantiles
+-1
+-0.5
+0
+0.5
+1
+Quantiles of input sample
+Horizonal, scale 2, k=5
+-5 0 5
+Standard normal quantiles
+-1
+-0.5
+0
+0.5
+1
+Quantiles of input sample
+Horizonal, scale 2, k=20
+-5 0 5
+Standard normal quantiles
+-1
+-0.5
+0
+0.5
+1
+Quantiles of input sample
+Vertical, scale 4, k=0
+-5 0 5
+Standard normal quantiles
+-1
+-0.5
+0
+0.5
+1
+Quantiles of input sample
+Vertical, scale 4, k=5
+-5 0 5
+Standard normal quantiles
+-1
+-0.5
+0
+0.5
+1
+Quantiles of input sample
+Vertical, scale 4, k=20
+Fig. 6: Normalized quantile-quantile plots against a Gaussian
+for three subbands of VDAMP-S’s rk−w0 at k = 0, 5, 20
+for the Shepp-Logan sampled with N/n = 12 in blue, and
+points along a straight line in red. The real part is plotted in
+the top and bottom rows and the imaginary is plotted in the
+middle row. Linearity of the blue points indicates that that the
+data comes from a Gaussian distribution, and the decreasing
+gradient shows that the variance decreases with increasing k.
+Finite dimensional effects causing small deviations from an
+exact Gaussian are more apparent at coarse scales, where the
+dimension is smaller.
+
+=== PDF PAGE 10 ===
+10
+Horizontal: true
+Horizontal: model
+Vertical: true
+Vertical: model
+Diagonal: true
+Diagonal: model
+Coarse: true
+Coarse: model
+0 10 20
+Iteration
+10
+15
+20
+25NMSE (dB)
+Scale 1
+0 10 20
+Iteration
+-5
+0
+5
+10
+15
+20
+25NMSE (dB)
+Scale 2
+0 10 20
+Iteration
+-15
+-10
+-5
+0
+5
+10
+15NMSE (dB)
+Scale 3
+0 10 20
+Iteration
+-40
+-30
+-20
+-10
+0
+10NMSE (dB)
+Scale 4
+Fig. 7: Per subband NMSE ∥rk,b−w0,b∥2
+2/∥w0,b∥2
+2 versus iteration index k for a N/n = 12 undersampled Shepp-Logan
+reconstructed with VDAMP-S. Lines show the actual NMSE and crosses show the predictions from τk.
+and image type without the need for manual adjustment. More
+degrees of freedom are feasibly allowed in the model, enabling
+higher order prior information such as anisotropy, variability
+across scales and structured sparsity, without the need to
+estimate the structure a priori [50].
+VDAMP was motivated by the application of compressed
+sensing to accelerated MRI. Developments are required for
+VDAMP to be applicable to MRI data acquired across multiple
+coils that possess a sensitivity proﬁle [34], [51], and for
+VDAMP to be applicable to Fourier sampling with 1D readout
+curves, where elements of Ω are generated dependently.
+It is known that the state evolution of OAMP holds for a
+wide range of denoisersg(rk;τk) [25], [29]. In [52], a number
+of standard compressed sensing algorithms that leverage image
+denoisers designed for Gaussian noise were shown to perform
+well on MRI reconstruction tasks, despite the mismatch be-
+tween the aliasing and its model. A sophisticated denoiser
+equipped to deal with wavelet coefﬁcients corrupted with
+known colored Gaussian noise would be expected to perform
+well in conjunction with VDAMP. There has also been interest
+in algorithms that leverage the statistical modeling capabilities
+of neural networks [52]–[55]. VDAMP with a neural network
+denoiserg(rk;τk) could accommodate ground-truth free train-
+ing by using cSURE as the loss, as shown for AMP in [56],
+[57].
+APPENDIX A
+THE POWER SPECTRUM OF THE ALIASING OF ˜x
+This appendix proves that the magnitude of the entry-wise
+difference between y0 and the unbiased estimate P−1y is
+EΩ,ε{|y0−P−1y|2} = (P−1− 1N)|y0|2 +σ2
+εP−11N
+(28)
+Proof: Since the entries of y are independent and P−1 is
+diagonal, we can consider (28) as N distinct one-dimensional
+expressions. The ith entry of (28) is
+Emi,εi
+{⏐⏐⏐⏐y0,i− yi
+pi
+⏐⏐⏐⏐
+2}
+=Emi,εi
+{⏐⏐⏐⏐y0,i− mi
+pi
+(y0,i +εi)
+⏐⏐⏐⏐
+2}
+=Emi,εi
+{⏐⏐⏐⏐
+(
+1− mi
+pi
+)
+y0,i− mi
+pi
+εi
+⏐⏐⏐⏐
+2}
+, (29)
+where mi is the ith diagonal of MΩ. By assumption,
+mi is distributed according to a Bernoulli distribution with
+Emi{mi} = pi. The expectation over mi can therefore be
+found by resolving (29) at mi = 1 and mi = 0 and summing
+with weights pi and 1−pi respectively:
+Emi,εi
+{⏐⏐⏐⏐
+(
+1− mi
+pi
+)
+y0,i− mi
+pi
+εi
+⏐⏐⏐⏐
+2}
+= Eεi
+{
+pi
+⏐⏐⏐⏐
+(1−pi
+pi
+)
+y0,i− εi
+pi
+⏐⏐⏐⏐
+2
++ (1−pi)|y0,i|2
+}
+.
+Expanding the ﬁrst term, and noting that Eεi{εi} = 0 and
+Eεi{|εi|2} =σ2
+ε,
+Eεi
+{
+pi
+⏐⏐⏐⏐
+(1−pi
+pi
+)
+y0,i− εi
+pi
+⏐⏐⏐⏐
+2
++ (1−pi)|y0,i|2
+}
+= Eεi
+{
+pi
+⏐⏐⏐⏐
+(1−pi
+pi
+)
+y0,i
+⏐⏐⏐⏐
+2
++pi
+⏐⏐⏐⏐
+εi
+pi
+⏐⏐⏐⏐
+2
+−
+(1−pi
+pi
+)
+(y∗
+0,iεi +y0,iε∗
+i ) + (1−pi)|y0,i|2
+}
+=(1−pi)2
+pi
+|y0,i|2 + σ2
+ε
+pi
++ (1−pi)|y0,i|2
+=
+(1−pi
+pi
+)
+|y0,i|2 + σ2
+ε
+pi
+which is the ith entry of the right-hand-side of (28). This
+completes the proof.
+
+=== PDF PAGE 11 ===
+11
+APPENDIX B
+PROOF THAT τy
+k IS UNBIASED
+This appendix shows that theτy
+k update, (15), is an unbiased
+estimate of the power spectrum of the aliasing of rk, (14):
+E{MΩP−1[(P−1− 1N)|zk|2 +σ2
+ε1N]}
+= (P−1− 1N)|F ΨH˜rk−y0|2 +σ2
+εP−11N (30)
+Proof: Deﬁning˜yk = F ΨH˜rk, the ith entry of the left-
+hand-side of (30) in terms of y0 is
+Emi,εi
+{mi
+pi
+[(1−pi
+pi
+)
+|yi−mi˜yk,i|2 +σ2
+ε
+]}
+= Emi,εi
+{mi
+pi
+[(1−pi
+pi
+)
+|mi(y0,i +εi)−mi˜yk,i|2 +σ2
+ε
+]}
+The expectation over mi is
+Emi,εi
+{mi
+pi
+[(1−pi
+pi
+)
+|mi(y0,i +εi)−mi˜yk,i|2 +σ2
+ε
+]}
+= Eεi
+{(1−pi
+pi
+)
+|y0,i +εi−˜yk,i|2 +σ2
+ε
+}
+Since Eεi{εi} = 0 and Eεi{|εi|2} =σ2
+ε,
+Eεi
+{(1−pi
+pi
+)
+|y0,i +εi−˜yk,i|2 +σ2
+ε
+}
+=
+(1−pi
+pi
+)
+(|y0,i−˜yk,i|2 +σ2
+ε) +σ2
+ε
+=
+(1−pi
+pi
+)
+|y0,i−˜yk,i|2 + σ2
+ε
+pi
+which is the ith entry of the right-hand-side of (30). This
+completes the proof.
+APPENDIX C
+TRANSFORMING τy
+k TO THE WAVELET DOMAIN
+This appendix proves that when E{rk} = w0, and the
+entries of rk are independent,
+E{|rk−w0|2} =|ΨFH|2E{τy
+k} (31)
+whereτy
+k is deﬁned in (15).
+Proof: Let the wavelet-domain error be rk−w0 = Au,
+whereu =F ΨHrk−y0 is the Fourier-domain residual, and
+A = ΨFH, where the iteration index k has been removed to
+simplify notation. The ith entry of |Au|2 is
+|
+∑
+j
+Aijuj|2 = (
+∑
+j
+Aijuj)(
+∑
+l
+A∗
+ilu∗
+l )
+=
+∑
+j
+(AijA∗
+ijuju∗
+j +
+∑
+l̸=j
+AijA∗
+iluju∗
+l )
+Since, by assumption, rk is unbiased and independent, the
+l̸=j terms are zero in expectation. Therefore
+E{|
+∑
+j
+Aijuj|2} = E{
+∑
+j
+AijA∗
+ijuju∗
+j}
+=
+∑
+j
+|Aij|2E{|uj|2}.
+Since, by Appendix B, E{|u|2} = E{τy
+k}, we have
+E{|Au|2} =|A|2E{|u|2} =|ΨFH|2E{τy
+k}
+This completes the proof.
+APPENDIX D
+SURE FOR COMPLEX VARIABLES
+This appendix proves that cSURE, deﬁned in (17), is an
+unbiased estimate of the risk, so that
+E{∥d(v)−v0∥2
+2} = E{cSURE (d(v))} (32)
+where the expectation is over v = v0 +CN (0,τv1Nv) and
+d(v) =v +h(v) is a denoiser. The proof in this appendix is
+a complex noise variation on the standard proof of SURE, as
+found in [24], [58].
+Proof: The Euclidean distance between the ground truth v0
+and the denoised vector d(v) can be expanded as
+E{∥d(v)−v0∥2
+2} = E{∥h(v)∥2
+2 +∥v−v0∥2
+2
+− 2(ℜ[h(v)]Hℜ[v−v0] +ℑ[h(v)]Hℑ[v−v0])} (33)
+By the noise model of v, the second term on the right hand
+side is
+E{∥v−v0∥2
+2} =Nvτv (34)
+By Stein’s lemma [24] (see also (6) of [58]), and recalling that
+CN (0,τv1Nv) is deﬁned such that the variance of the real and
+imaginary parts is τv/2, the ﬁnal term of the right-hand-side
+of (33) is
+E{ℜ[h(v)]Hℜ[v−v0]} = τv
+2 E
+
+
+
+∑
+j
+∂ℜ[hj(v)]
+∂ℜ[vj]
+
+
+
+= τv
+2
+
+Nv− E
+
+
+
+∑
+j
+∂ℜ[dj(v)]
+∂ℜ[vj]
+
+
+
+
+
+and similarly for the imaginary part. Overall, (33) is therefore
+E{∥d(v)−v0∥2
+2}
+=E
+{
+∥h(v)∥2
+2−Nvτv +τv
+∑
+j
+(∂ℜ[dj(v)]
+∂ℜ[vj] + ∂ℑ[dj(v)]
+∂ℑ[vj]
+)}
+=E{∥h(v)∥2
+2 +Nvτv[2⟨∂(d(v))⟩− 1]}
+which is the expectation of cSURE, given in (17). This
+completes the proof.
+REFERENCES
+[1] C. Millard, A. T. Hess, B. Mailh ´e, and J. Tanner, “An Approximate
+Message Passing Algorithm for Rapid Parameter-Free Compressed
+Sensing MRI,” no. 4, 2019. [Online]. Available: http://arxiv.org/abs/
+1911.01234
+[2] D. L. Donoho, “Compressed sensing,” IEEE Transactions on
+Information Theory , vol. 52, no. 4, pp. 1289–1306, apr 2006. [Online].
+Available: http://ieeexplore.ieee.org/document/1614066/
+[3] E. Candes, J. Romberg, and T. Tao, “Robust uncertainty principles: exact
+signal reconstruction from highly incomplete frequency information,”
+IEEE Transactions on Information Theory , vol. 52, no. 2, pp. 489–
+509, feb 2006. [Online]. Available: http://ieeexplore.ieee.org/document/
+1580791/
+
+=== PDF PAGE 12 ===
+12
+[4] M. Lustig, D. Donoho, and J. M. Pauly, “Sparse MRI: The application
+of compressed sensing for rapid MR imaging,” Magnetic Resonance in
+Medicine, vol. 58, no. 6, pp. 1182–1195, dec 2007. [Online]. Available:
+http://doi.wiley.com/10.1002/mrm.21391
+[5] R. Otazo, D. Kim, L. Axel, and D. K. Sodickson, “Combination
+of compressed sensing and parallel imaging for highly accelerated
+ﬁrst-pass cardiac perfusion MRI,” Magnetic Resonance in Medicine ,
+vol. 64, no. 3, pp. 767–776, sep 2010. [Online]. Available:
+http://www.ncbi.nlm.nih.gov/pubmed/20535813
+[6] O. N. Jaspan, R. Fleysher, and M. L. Lipton, “Compressed sensing
+MRI: a review of the clinical literature,” The British Journal of
+Radiology, vol. 88, no. 1056, p. 20150487, dec 2015. [Online].
+Available: http://www.birpublications.org/doi/10.1259/bjr.20150487
+[7] J. C. Ye, “Compressed sensing MRI: a review from signal processing
+perspective,” BMC Biomedical Engineering , vol. 1, no. 1, p. 8, dec
+2019. [Online]. Available: https://bmcbiomedeng.biomedcentral.com/
+articles/10.1186/s42490-019-0006-z
+[8] D. Donoho, “How High-Dimensional Geometry is Transforming the
+MRI Industry,” 2017. [Online]. Available: https://vimeo.com/225634059
+[9] G. Puy, P. Vandergheynst, and Y . Wiaux, “On Variable Density
+Compressive Sampling,” IEEE Signal Processing Letters , vol. 18,
+no. 10, pp. 595–598, oct 2011. [Online]. Available: http://ieeexplore.
+ieee.org/document/5976374/
+[10] Z. Wang and G. R. Arce, “Variable Density Compressed Image Sam-
+pling,” IEEE Transactions on Image Processing , vol. 19, no. 1, pp. 264–
+270, jan 2010.
+[11] F. Krahmer and R. Ward, “Stable and robust sampling strategies for
+compressive imaging,” IEEE Transactions on Image Processing , vol. 23,
+no. 2, pp. 612–622, 2014.
+[12] N. Chauffert, P. Ciuciu, and P. Weiss, “Variable density compressed sens-
+ing in MRI. Theoretical vs heuristic sampling strategies,” Proceedings
+- International Symposium on Biomedical Imaging , pp. 298–301, 2013.
+[13] B. Adcock, A. C. Hansen, C. Poon, and B. Roman, “Breaking
+the coherence barrier: a new theory for compressed sensing,”
+F orum of Mathematics, Sigma , vol. 5, p. e4, feb 2017.
+[Online]. Available: https://www.cambridge.org/core/product/identiﬁer/
+S2050509416000323/type/journal article
+[14] D. L. Donoho, A. Maleki, and A. Montanari, “Message Passing
+Algorithms for Compressed Sensing,” jul 2009. [Online]. Available:
+http://dx.doi.org/10.1073/pnas.0909892106
+[15] M. Bayati and A. Montanari, “The Dynamics of Message Passing
+on Dense Graphs, with Applications to Compressed Sensing,” IEEE
+Transactions on Information Theory , vol. 57, no. 2, pp. 764–785, feb
+2011. [Online]. Available: http://ieeexplore.ieee.org/document/5695122/
+[16] M. Bayati, M. Lelarge, and A. Montanari, “Universality in polytope
+phase transitions and message passing algorithms,” The Annals of
+Applied Probability , vol. 25, no. 2, pp. 753–822, apr 2015. [Online].
+Available: http://projecteuclid.org/euclid.aoap/1424355130
+[17] S. Rangan, P. Schniter, and A. Fletcher, “On the convergence of
+approximate message passing with arbitrary matrices,” in 2014 IEEE
+International Symposium on Information Theory . IEEE, jun 2014, pp.
+236–240. [Online]. Available: http://ieeexplore.ieee.org/lpdocs/epic03/
+wrapper.htm?arnumber=6874830
+[18] F. Caltagirone, L. Zdeborova, and F. Krzakala, “On convergence
+of approximate message passing,” in 2014 IEEE International
+Symposium on Information Theory . IEEE, jun 2014, pp. 1812–1816.
+[Online]. Available: http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.
+htm?arnumber=6875146
+[19] C. Guo and M. E. Davies, “Near Optimal Compressed Sensing Without
+Priors: Parametric SURE Approximate Message Passing,” IEEE
+Transactions on Signal Processing , vol. 63, no. 8, pp. 2130–2141, apr
+2015. [Online]. Available: http://ieeexplore.ieee.org/document/7054509/
+[20] S. Rangan, P. Schniter, E. Riegler, A. K. Fletcher, and V . Cevher,
+“Fixed Points of Generalized Approximate Message Passing With
+Arbitrary Matrices,” IEEE Transactions on Information Theory ,
+vol. 62, no. 12, pp. 7464–7474, dec 2016. [Online]. Available:
+http://ieeexplore.ieee.org/document/7600404/
+[21] J. Ma and L. Ping, “Orthogonal AMP,” IEEE Access , vol. 5,
+pp. 2020–2033, 2017. [Online]. Available: http://ieeexplore.ieee.org/
+document/7817805/
+[22] S. Rangan, P. Schniter, and A. K. Fletcher, “Vector Approximate
+Message Passing,” IEEE Transactions on Information Theory , pp.
+1–1, 2019. [Online]. Available: https://ieeexplore.ieee.org/document/
+8713501/
+[23] I. Daubechies, M. Defrise, and C. De Mol, “An iterative thresholding
+algorithm for linear inverse problems with a sparsity constraint,”
+Communications on Pure and Applied Mathematics , vol. 57, no. 11,
+pp. 1413–1457, nov 2004. [Online]. Available: http://doi.wiley.com/10.
+1002/cpa.20042
+[24] C. M. Stein, “Estimation of the Mean of a Multivariate Normal
+Distribution,” The Annals of Statistics , vol. 9, no. 6, pp. 1135–
+1151, nov 1981. [Online]. Available: http://projecteuclid.org/euclid.aos/
+1176345632
+[25] Z. Xue, J. Ma, and X. Yuan, “D-OAMP: A denoising-based signal
+recovery algorithm for compressed sensing,” in 2016 IEEE Global
+Conference on Signal and Information Processing (GlobalSIP) . IEEE,
+dec 2016, pp. 267–271. [Online]. Available: http://ieeexplore.ieee.org/
+document/7905845/
+[26] B. Goossens, J. Aelterman, H. Luong, A. Pizurica, and W. Philips,
+“Wavelet-Based Analysis and Estimation of Colored Noise,” in Discrete
+Wavelet Transforms - Algorithms and Applications , H. Olkkonen, Ed.
+Intech, 2011, ch. 15, pp. 255–280.
+[27] T. Li, M. Wang, and W. Xiong, “A novel method for ﬁltering of Gaussian
+colored noise in images with wavelet transform,” ICEIE 2010 - 2010
+International Conference on Electronics and Information Engineering,
+Proceedings, vol. 1, no. Iceie, pp. 184–189, 2010.
+[28] I. M. Johnstone and B. W. Silverman, “Wavelet threshold estimators
+for data with correlated noise,” Journal of the Royal Statistical Society.
+Series B: Statistical Methodology , vol. 59, no. 2, pp. 319–351, 1997.
+[29] C. A. Metzler, A. Maleki, and R. G. Baraniuk, “From Denoising
+to Compressed Sensing,” IEEE Transactions on Information Theory ,
+vol. 62, no. 9, pp. 5117–5144, 2016.
+[30] P. Schniter, S. Rangan, and A. Fletcher, “Plug-and-play Image Recovery
+using Vector AMP.” BASP Frontiers Workshop 2017, 2017. [Online].
+Available: http://www2.ece.ohio-state.edu/ ∼schniter/pdf/basp17 poster.
+pdf
+[31] K. Sung, B. L. Daniel, and B. A. Hargreaves, “Location Constrained
+Approximate Message Passing for Compressed Sensing MRI,” Magnetic
+Resonance in Medicine , vol. 70, pp. 370–381, 2013. [Online]. Available:
+https://onlinelibrary.wiley.com/doi/pdf/10.1002/mrm.24468
+[32] E. M. Eksioglu and A. K. Tanc, “Denoising AMP for MRI
+Reconstruction: BM3D-AMP-MRI,” SIAM Journal on Imaging
+Sciences, vol. 11, no. 3, pp. 2090–2109, jan 2018. [Online].
+Available: https://epubs.siam.org/doi/10.1137/18M1169655
+[33] J. G. Pipe and P. Menon, “Sampling density compensation in MRI:
+Rationale and an iterative numerical solution,” Magnetic Resonance in
+Medicine, vol. 41, no. 1, pp. 179–186, jan 1999. [Online]. Available:
+http://doi.wiley.com/10.1002/%28SICI%291522-2594%28199901%
+2941%3A1%3C179%3A%3AAID-MRM25%3E3.0.CO%3B2-V
+[34] K. P. Pruessmann, M. Weiger, P. B ¨ornert, and P. Boesiger, “Advances
+in sensitivity encoding with arbitrary k-space trajectories,” Magnetic
+Resonance in Medicine , vol. 46, no. 4, pp. 638–651, oct 2001. [Online].
+Available: http://www.ncbi.nlm.nih.gov/pubmed/11590639
+[35] D. Gamerman and H. F. Lopes, Markov chain Monte Carlo: stochastic
+simulation for Bayesian inference . CRC Press, 2006.
+[36] S. Chatterjee, P. Diaconis, and Others, “The sample size required in
+importance sampling,” The Annals of Applied Probability , vol. 28, no. 2,
+pp. 1099–1135, 2018.
+[37] A. Mousavi, A. Maleki, and R. G. Baraniuk, “Parameterless
+Optimal Approximate Message Passing,” oct 2013. [Online]. Available:
+http://arxiv.org/abs/1311.0035
+[38] M. Bayati, M. A. Erdogdu, and A. Montanari, “Estimating LASSO risk
+and noise level,” Advances in Neural Information Processing Systems ,
+pp. 1–9, 2013.
+[39] C. V onesch and M. Unser, “A fast thresholded landweber algorithm
+for wavelet-regularized multidimensional deconvolution,” IEEE Trans-
+actions on Image Processing , vol. 17, no. 4, pp. 539–549, 2008.
+[40] I. Bayram and I. W. Selesnick, “A subband adaptive iterative shrink-
+age/thresholding algorithm,” IEEE Transactions on Signal Processing ,
+vol. 58, no. 3 PART 1, pp. 1131–1143, 2010.
+[41] D. L. Donoho and I. M. Johnstone, “Adapting to Unknown
+Smoothness via Wavelet Shrinkage,” Journal of the American
+Statistical Association , vol. 90, no. 432, p. 1200, dec 1995. [Online].
+Available: https://www.jstor.org/stable/2291512?origin=crossref
+[42] K. Khare, C. J. Hardy, K. F. King, P. A. Turski, and L. Marinelli,
+“Accelerated MR imaging using compressive sensing with no free
+parameters,” Magnetic Resonance in Medicine , vol. 68, no. 5, pp.
+1450–1457, nov 2012. [Online]. Available: http://www.ncbi.nlm.nih.
+gov/pubmed/22266597
+[43] A. Maleki, L. Anitori, Z. Yang, and R. G. Baraniuk, “Asymptotic
+analysis of complex LASSO via complex approximate message passing
+(CAMP),” IEEE Transactions on Information Theory , vol. 59, no. 7, pp.
+4290–4308, 2013.
+
+=== PDF PAGE 13 ===
+13
+[44] A. Beck and M. Teboulle, “A Fast Iterative Shrinkage-Thresholding
+Algorithm for Linear Inverse Problems,” SIAM Journal on Imaging
+Sciences, vol. 2, no. 1, pp. 183–202, jan 2009. [Online]. Available:
+http://epubs.siam.org/doi/10.1137/080716542
+[45] S. S. Vasanawala, M. J. Murphy, M. T. Alley, P. Lai, K. Keutzer,
+J. M. Pauly, and M. Lustig, “Practical parallel imaging compressed
+sensing MRI: Summary of two years of experience in accelerating body
+MRI of pediatric patients,” Proceedings - International Symposium on
+Biomedical Imaging , pp. 1039–1043, 2011.
+[46] M. Guerquin-Kern, M. Haberlin, K. P. Pruessmann, and M. Unser,
+“A fast wavelet-based reconstruction method for magnetic resonance
+imaging,” IEEE Transactions on Medical Imaging , vol. 30, no. 9, pp.
+1649–1660, 2011.
+[47] Y . M¨akinen, L. Azzari, E. S ´anchez-Monge, M. Maggioni, A. Danielyan,
+K. Dabov, A. Foi, V . Katkovnik, and K. Egiazarian, “Image and
+video denoising by sparse 3D transform-domain collaborative ﬁltering,”
+2020. [Online]. Available: http://www.cs.tut.ﬁ/ ∼foi/GCF-BM3D/index.
+html#ref results
+[48] C. M. Tsai and D. G. Nishimura, “Reduced aliasing artifacts using
+variable-density k-space sampling trajectories,” Magnetic Resonance in
+Medicine, vol. 43, no. 3, pp. 452–458, 2000.
+[49] C. Lazarus, P. Weiss, N. Chauffert, F. Mauconduit, L. El Gueddari,
+C. Destrieux, I. Zemmoura, A. Vignaud, and P. Ciuciu, “SPARKLING:
+variable-density k-space ﬁlling curves for accelerated T2*-weighted
+MRI,” Magnetic Resonance in Medicine , vol. 81, no. 6, pp. 3643–3661,
+2019.
+[50] R. G. Baraniuk, V . Cevher, M. F. Duarte, and C. Hegde, “Model-Based
+Compressive Sensing,” IEEE Transactions on Information Theory ,
+vol. 56, no. 4, pp. 1982–2001, apr 2010. [Online]. Available:
+http://ieeexplore.ieee.org/document/5437428/
+[51] D. Liang, B. Liu, J. Wang, and L. Ying, “Accelerating SENSE using
+compressed sensing,” Magnetic Resonance in Medicine , vol. 62, no. 6,
+pp. 1574–1584, dec 2009. [Online]. Available: http://www.ncbi.nlm.
+nih.gov/pubmed/19785017
+[52] R. Ahmad, C. A. Bouman, G. T. Buzzard, S. Chan, S. Liu, E. T.
+Reehorst, and P. Schniter, “Plug-and-Play Methods for Magnetic Res-
+onance Imaging: Using Denoisers for Image Recovery,” IEEE Signal
+Processing Magazine, vol. 37, no. 1, pp. 105–116, jan 2020.
+[53] K. Gregor and Y . LeCun, “Learning Fast Approximations of Sparse
+Coding,” in Proceedings of the 27th International Conference on Inter-
+national Conference on Machine Learning , ser. ICML’10. Madison,
+WI, USA: Omnipress, 2010, pp. 399–406.
+[54] C. Metzler, A. Mousavi, and R. Baraniuk, “Learned D-AMP: Principled
+Neural Network based Compressive Image Recovery,” in Advances in
+Neural Information Processing Systems 30 , I. Guyon, U. V . Luxburg,
+S. Bengio, H. Wallach, R. Fergus, S. Vishwanathan, and R. Garnett,
+Eds. Curran Associates, Inc., pp. 1772–1783.
+[55] D. Ito, S. Takabe, and T. Wadayama, “Trainable ISTA for sparse signal
+recovery,” IEEE Transactions on Signal Processing , vol. 67, no. 12, pp.
+3113–3125, 2019.
+[56] C. A. Metzler, A. Mousavi, R. Heckel, and R. G. Baraniuk,
+“Unsupervised Learning with Stein’s Unbiased Risk Estimator,” 2018.
+[Online]. Available: http://arxiv.org/abs/1805.10531
+[57] M. Zhussip, S. Soltanayev, and S. Y . Chun, “Training deep learn-
+ing based image denoisers from undersampled measurements without
+ground truth and without image prior,” Proceedings of the IEEE Com-
+puter Society Conference on Computer Vision and Pattern Recognition ,
+vol. 2019-June, pp. 10 247–10 256, 2019.
+[58] F. Luisier, T. Blu, and M. Unser, “A new SURE approach to image
+denoising: Interscale orthonormal wavelet thresholding,” IEEE Transac-
+tions on Image Processing , vol. 16, no. 3, pp. 593–606, 2007.

@@ -1,0 +1,262 @@
+{
+  "status": "PASS_SAVED_OUTPUT_REPLAY",
+  "created_utc": "2026-10-23T13:31:34.342841+00:00",
+  "scope": "Ding equation with historical project fixed threshold; not author eta or an original-training reproduction",
+  "scene_count": 800,
+  "snr_db": [
+    -4,
+    -2,
+    0,
+    2,
+    4,
+    6
+  ],
+  "user_decisions_per_snr": 32000,
+  "threshold": 0.0878782570362091,
+  "original": {
+    "misses": [
+      160,
+      102,
+      67,
+      53,
+      48,
+      33
+    ],
+    "false_alarms": [
+      11,
+      6,
+      7,
+      7,
+      6,
+      17
+    ],
+    "errors": [
+      171,
+      108,
+      74,
+      60,
+      54,
+      50
+    ],
+    "aer_percent": [
+      0.534375,
+      0.3375,
+      0.23124999999999998,
+      0.1875,
+      0.16875,
+      0.15625
+    ],
+    "pmd_percent": [
+      4.87656202377324,
+      3.1088082901554404,
+      2.0420603474550445,
+      1.6153611703748856,
+      1.462968607131972,
+      1.005790917403231
+    ],
+    "pfa_percent": [
+      0.03830216929558829,
+      0.020892092343048157,
+      0.024374107733556184,
+      0.024374107733556184,
+      0.020892092343048157,
+      0.05919426163863644
+    ]
+  },
+  "fixed_eta": {
+    "misses": [
+      243,
+      180,
+      143,
+      113,
+      96,
+      90
+    ],
+    "false_alarms": [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "errors": [
+      243,
+      181,
+      143,
+      113,
+      96,
+      90
+    ],
+    "aer_percent": [
+      0.759375,
+      0.5656249999999999,
+      0.44687499999999997,
+      0.353125,
+      0.3,
+      0.28125
+    ],
+    "pmd_percent": [
+      7.406278573605609,
+      5.486132276744895,
+      4.358427308747333,
+      3.4440719292898505,
+      2.925937214263944,
+      2.7430661383724475
+    ],
+    "pfa_percent": [
+      0.0,
+      0.003482015390508026,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "comparison": [
+    {
+      "snr_db": -4,
+      "original_errors": 171,
+      "fixed_eta_errors": 243,
+      "original_aer_percent": 0.534375,
+      "fixed_eta_aer_percent": 0.759375,
+      "original_misses": 160,
+      "fixed_eta_misses": 243,
+      "original_false_alarms": 11,
+      "fixed_eta_false_alarms": 0,
+      "delta_aer_percentage_points": 0.225,
+      "pointwise_95ci_low": 0.16875,
+      "pointwise_95ci_high": 0.284375
+    },
+    {
+      "snr_db": -2,
+      "original_errors": 108,
+      "fixed_eta_errors": 181,
+      "original_aer_percent": 0.3375,
+      "fixed_eta_aer_percent": 0.5656249999999999,
+      "original_misses": 102,
+      "fixed_eta_misses": 180,
+      "original_false_alarms": 6,
+      "fixed_eta_false_alarms": 1,
+      "delta_aer_percentage_points": 0.228125,
+      "pointwise_95ci_low": 0.171875,
+      "pointwise_95ci_high": 0.28445312499999886
+    },
+    {
+      "snr_db": 0,
+      "original_errors": 74,
+      "fixed_eta_errors": 143,
+      "original_aer_percent": 0.23124999999999998,
+      "fixed_eta_aer_percent": 0.44687499999999997,
+      "original_misses": 67,
+      "fixed_eta_misses": 143,
+      "original_false_alarms": 7,
+      "fixed_eta_false_alarms": 0,
+      "delta_aer_percentage_points": 0.215625,
+      "pointwise_95ci_low": 0.159375,
+      "pointwise_95ci_high": 0.271875
+    },
+    {
+      "snr_db": 2,
+      "original_errors": 60,
+      "fixed_eta_errors": 113,
+      "original_aer_percent": 0.1875,
+      "fixed_eta_aer_percent": 0.353125,
+      "original_misses": 53,
+      "fixed_eta_misses": 113,
+      "original_false_alarms": 7,
+      "fixed_eta_false_alarms": 0,
+      "delta_aer_percentage_points": 0.165625,
+      "pointwise_95ci_low": 0.1125,
+      "pointwise_95ci_high": 0.21875
+    },
+    {
+      "snr_db": 4,
+      "original_errors": 54,
+      "fixed_eta_errors": 96,
+      "original_aer_percent": 0.16875,
+      "fixed_eta_aer_percent": 0.3,
+      "original_misses": 48,
+      "fixed_eta_misses": 96,
+      "original_false_alarms": 6,
+      "fixed_eta_false_alarms": 0,
+      "delta_aer_percentage_points": 0.13125,
+      "pointwise_95ci_low": 0.084375,
+      "pointwise_95ci_high": 0.178125
+    },
+    {
+      "snr_db": 6,
+      "original_errors": 50,
+      "fixed_eta_errors": 90,
+      "original_aer_percent": 0.15625,
+      "fixed_eta_aer_percent": 0.28125,
+      "original_misses": 33,
+      "fixed_eta_misses": 90,
+      "original_false_alarms": 17,
+      "fixed_eta_false_alarms": 0,
+      "delta_aer_percentage_points": 0.125,
+      "pointwise_95ci_low": 0.071875,
+      "pointwise_95ci_high": 0.18125
+    }
+  ],
+  "changed_decisions": [
+    94,
+    83,
+    83,
+    67,
+    54,
+    74
+  ],
+  "original_errors_fixed": [
+    11,
+    5,
+    7,
+    7,
+    6,
+    17
+  ],
+  "new_errors_introduced": [
+    83,
+    78,
+    76,
+    60,
+    48,
+    57
+  ],
+  "total_errors_original": 517,
+  "total_errors_fixed_eta": 866,
+  "max_formula_score_difference": 0.0,
+  "equation_comparator_checked_cases": 4800,
+  "nmse_changed": false,
+  "model_changed": false,
+  "threshold_fitted": false,
+  "main_experiment_changed": false,
+  "bootstrap": {
+    "unit": "paired physical scene across all SNR",
+    "replicates": 10000,
+    "seed": 20261023027,
+    "interval": "pointwise percentile 95%; no simultaneous significance claim"
+  },
+  "historical_checkpoint_sha256": "d7772245a99b41424f6aeda2e0a465292f6eab113114992b34b21515c6f131ea",
+  "current_checkpoint_sha256": "a09f07dd6af6c8390a68d10b892f64fec316b4e7cd031350817e7ad679fa3f4e",
+  "input_sha256": "49999218cbf301c8acd80d2a37c8485369632d55ba9ea087b0ce66dfff01e9a9",
+  "plan_sha256": "5f15fa18a717640415c03fa4c461dd8a124fcc6f44f8514e4cf48b4f1854b985",
+  "main_plan_sha256": "254c0f8f72c779dd9253bdbbb787eae2b986c1d6f5fac5bcba83619e401d92a7",
+  "certificate_sha256": "fadcf6a1dbfc5140cbef30fab806b6a72709ff2eaf55d4dced8d47b04c79a948",
+  "code_sha256": "aa62e48f0d4ad573a101420bbb0b838f326a85b93a4954fdd463a3a66f18511c",
+  "decisions_sha256": "ff5639e156e9c16d3dd9a571439612bf4d521fa4fce5189f6fe95ee96b44925b",
+  "statistical_checks": {
+    "coverage": "11/11 reviewed",
+    "simpson": "Per-SNR and aggregate reported",
+    "ecological": "No user-specific inference from aggregate",
+    "selection": "Fixed first 800 complete paired scenes; no performance filtering",
+    "collider": "No conditioning on errors",
+    "base_rate": "Miss and false alarm counts plus conditional rates retained",
+    "regression_to_mean": "All fixed scenes, not selected failures",
+    "survivorship": "All 4800 cases from audited 800 scene panel retained",
+    "look_elsewhere": "One historical eta selected before this replay; no search",
+    "forking_paths": "PLAN.json fixes eta and scope; prior 0.1 diagnostic retained separately",
+    "causal": "Only deterministic readout intervention on identical recovered outputs; no general receiver causality claim",
+    "reverse_causality": "No parameter chosen from evaluation outcomes"
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "status": "PASS",
+  "source_hashes": {
+    "result/snr_comparison/figures/full_grid_final_20261026/PLOT_DATA.json": "af17137c35e7635d8c21cdb2b7cb5bd4a23778c0e03ea1b4781b66d3f910ef40",
+    "result/snr_comparison/data/c_stmp_phase_frontend_marginal_1000_20261104/SUMMARY.json": "6163b40a0921c93865db8912fb2c31e8a6f20c30317293e1800127598b987b53",
+    "result/snr_comparison/data/c_stmp_phase_frontend_marginal_1000_20261104/COMPLETION.json": "f3e7893fb174b7dab70bbc2081b4542e22b3537a72f1039d980016ed2398eea5",
+    "result/snr_comparison/data/c_stmp_phase_frontend_marginal_1000_20261104/per_case.csv": "954a62ad3ce163e0bcffcf17899c22bb86f501aa4288cf56ef03b21949ec483e",
+    "result/snr_comparison/data/c_stmp_phase_frontend_marginal_1000_20261104/PLAN.json": "4e190d01eef1bc4288e89ef554a32401f520995cb5f15c1c3bc3214564199ff1"
+  },
+  "per_case_rows_verified": 12000,
+  "old_36_rows_unchanged": true,
+  "original_72_points_unchanged": true,
+  "added_points": 12,
+  "total_snr_points": 84,
+  "retained_phase_nonconverged": 2,
+  "phase_updates_during_receiver": 0,
+  "paired_conditions": [
+    {
+      "variant": "frontend_phase",
+      "snr_db": -4,
+      "scenes": 1000,
+      "nmse_db": -9.550972068136792,
+      "aer": 0.004925,
+      "nonconverged": 1
+    },
+    {
+      "variant": "known_phase",
+      "snr_db": -4,
+      "scenes": 1000,
+      "nmse_db": -9.855029239153849,
+      "aer": 0.00455,
+      "nonconverged": 3
+    },
+    {
+      "variant": "frontend_phase",
+      "snr_db": -2,
+      "scenes": 1000,
+      "nmse_db": -11.22609659429285,
+      "aer": 0.002225,
+      "nonconverged": 1
+    },
+    {
+      "variant": "known_phase",
+      "snr_db": -2,
+      "scenes": 1000,
+      "nmse_db": -11.548157440941377,
+      "aer": 0.0021,
+      "nonconverged": 0
+    },
+    {
+      "variant": "frontend_phase",
+      "snr_db": 0,
+      "scenes": 1000,
+      "nmse_db": -12.669664603031281,
+      "aer": 0.00115,
+      "nonconverged": 0
+    },
+    {
+      "variant": "known_phase",
+      "snr_db": 0,
+      "scenes": 1000,
+      "nmse_db": -13.012667746209841,
+      "aer": 0.001075,
+      "nonconverged": 0
+    },
+    {
+      "variant": "frontend_phase",
+      "snr_db": 2,
+      "scenes": 1000,
+      "nmse_db": -13.876183765645713,
+      "aer": 0.0006,
+      "nonconverged": 0
+    },
+    {
+      "variant": "known_phase",
+      "snr_db": 2,
+      "scenes": 1000,
+      "nmse_db": -14.281259758375654,
+      "aer": 0.000575,
+      "nonconverged": 0
+    },
+    {
+      "variant": "frontend_phase",
+      "snr_db": 4,
+      "scenes": 1000,
+      "nmse_db": -14.921644351949993,
+      "aer": 0.0003,
+      "nonconverged": 0
+    },
+    {
+      "variant": "known_phase",
+      "snr_db": 4,
+      "scenes": 1000,
+      "nmse_db": -15.419115254460031,
+      "aer": 0.0003,
+      "nonconverged": 0
+    },
+    {
+      "variant": "frontend_phase",
+      "snr_db": 6,
+      "scenes": 1000,
+      "nmse_db": -15.870199556576331,
+      "aer": 0.00025,
+      "nonconverged": 0
+    },
+    {
+      "variant": "known_phase",
+      "snr_db": 6,
+      "scenes": 1000,
+      "nmse_db": -16.47702771360318,
+      "aer": 0.000225,
+      "nonconverged": 0
+    }
+  ],
+  "inference_started": false,
+  "training_started": false
+}

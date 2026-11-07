@@ -1,0 +1,25 @@
+{
+  "mode": "user_requested_one_agent_per_paragraph",
+  "shared_baseline": "snapshot/02_system_model.tex",
+  "paragraph_count": 14,
+  "parallel_worker_limit": 3,
+  "root_role": "cross-paragraph source, logic, granularity and recurrence synthesis",
+  "agents": [
+    {"paragraph": "P01", "agent": "/root/review_p01", "fork_turns": "all"},
+    {"paragraph": "P02", "agent": "/root/review_p02", "fork_turns": "all"},
+    {"paragraph": "P03", "agent": "/root/review_p03", "fork_turns": "all"},
+    {"paragraph": "P04", "agent": "/root/review_p04", "fork_turns": "all"},
+    {"paragraph": "P05", "agent": "/root/review_p05", "fork_turns": "none"},
+    {"paragraph": "P06", "agent": "/root/review_p06", "fork_turns": "none"},
+    {"paragraph": "P07", "agent": "/root/review_p07", "fork_turns": "none"},
+    {"paragraph": "P08", "agent": "/root/review_p08", "fork_turns": "none"},
+    {"paragraph": "P09", "agent": "/root/review_p09", "fork_turns": "none"},
+    {"paragraph": "P10", "agent": "/root/review_p10", "fork_turns": "none"},
+    {"paragraph": "P11", "agent": "/root/review_p11", "fork_turns": "none"},
+    {"paragraph": "P12", "agent": "/root/review_p12", "fork_turns": "none"},
+    {"paragraph": "P13", "agent": "/root/review_p13", "fork_turns": "none"},
+    {"paragraph": "P14", "agent": "/root/review_p14", "fork_turns": "none"}
+  ],
+  "not_yet_dispatched": [],
+  "limitations": "All agents use the parent model family and one common task brief. Separate paragraph tasks are not evidence of statistically independent errors or calibrated reviewer accuracy. No external-model/API transmission was used."
+}

@@ -1,0 +1,127 @@
+{
+  "status": "PASS",
+  "source_files_unchanged": 153,
+  "completed_record_json_hashes_checked": 7668,
+  "stopping_counters_reconstructed": 1704,
+  "no_inference": true,
+  "no_gpu": true,
+  "no_parameter_changes": true,
+  "no_process_signals": true,
+  "peak_rss_mib": 177.421875,
+  "elapsed_seconds": 64.76768589019775,
+  "status_before": {
+    "stage": "RUNNING",
+    "pid": 115548,
+    "started_unix": 1793201763.6093514,
+    "updated_unix": 1793236453.491826,
+    "planned": 18000,
+    "completed": 8402,
+    "reused": 73,
+    "completed_by_variant_and_snr": {
+      "gaussian_prior": {
+        "-4": 1000,
+        "-2": 1000,
+        "0": 1000,
+        "2": 1000,
+        "4": 1000,
+        "6": 1000
+      },
+      "gaussian_evidence": {
+        "-4": 142,
+        "-2": 142,
+        "0": 142,
+        "2": 142,
+        "4": 142,
+        "6": 142
+      },
+      "estimated_phase": {
+        "-4": 259,
+        "-2": 259,
+        "0": 258,
+        "2": 258,
+        "4": 258,
+        "6": 258
+      }
+    },
+    "nonconverged": {
+      "gaussian_prior": 841,
+      "gaussian_evidence": 295,
+      "estimated_phase": 15
+    },
+    "failed": 0,
+    "pending": 6,
+    "active_cpu_workers": 0,
+    "active_gpu_workers": 6,
+    "elapsed_seconds": 34689.88255190849,
+    "resource_override": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\acceleration_20261028",
+    "resources": {
+      "created_unix": 1793236448.4761062,
+      "gpu_used_mib": 8462.0,
+      "gpu_total_mib": 16303.0,
+      "gpu_free_mib": 7841.0,
+      "gpu_utilization_percent": 89.0,
+      "power_watts": 229.72,
+      "available_ram_gib": 5.5342864990234375
+    },
+    "stop_reason": null
+  },
+  "status_after": {
+    "stage": "RUNNING",
+    "pid": 115548,
+    "started_unix": 1793201763.6093514,
+    "updated_unix": 1793236521.5557604,
+    "planned": 18000,
+    "completed": 8406,
+    "reused": 73,
+    "completed_by_variant_and_snr": {
+      "gaussian_prior": {
+        "-4": 1000,
+        "-2": 1000,
+        "0": 1000,
+        "2": 1000,
+        "4": 1000,
+        "6": 1000
+      },
+      "gaussian_evidence": {
+        "-4": 142,
+        "-2": 142,
+        "0": 143,
+        "2": 142,
+        "4": 142,
+        "6": 142
+      },
+      "estimated_phase": {
+        "-4": 259,
+        "-2": 259,
+        "0": 259,
+        "2": 259,
+        "4": 259,
+        "6": 258
+      }
+    },
+    "nonconverged": {
+      "gaussian_prior": 841,
+      "gaussian_evidence": 295,
+      "estimated_phase": 15
+    },
+    "failed": 0,
+    "pending": 5,
+    "active_cpu_workers": 0,
+    "active_gpu_workers": 6,
+    "elapsed_seconds": 34757.946432352066,
+    "resource_override": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\acceleration_20261028",
+    "resources": {
+      "created_unix": 1793236517.3947816,
+      "gpu_used_mib": 8461.0,
+      "gpu_total_mib": 16303.0,
+      "gpu_free_mib": 7842.0,
+      "gpu_utilization_percent": 89.0,
+      "power_watts": 228.24,
+      "available_ram_gib": 5.621967315673828
+    },
+    "stop_reason": null
+  },
+  "same_parent_process": true,
+  "analysis_low_priority": true,
+  "limitation": "Small sequential reads and one idle CPU process minimize competition but do not prove exactly zero throughput impact."
+}

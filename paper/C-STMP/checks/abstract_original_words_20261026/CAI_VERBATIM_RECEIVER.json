@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "source": "Cai2026 abstract",
+  "pdf": "reference/literature/cai2026.pdf",
+  "pdf_page": 1,
+  "pdf_sha256": "78854ee24bd4a67a2ce574855a1205cdf4484eb6ff4b0568fe8479d4ea69bc68",
+  "text": "paper\\C-STMP\\checks\\abstract_sources_20261026\\cai2026.txt",
+  "text_sha256": "65a2b1e1931eb0a3f466f2c3c03319d96c3d02f3a754b15292d754a99e43daf5",
+  "normalization": "Unicode NFKC to expand typographic ligatures; whitespace collapsed. No word substitution, case change, clause splicing or punctuation changes.",
+  "selection": "Two noncontiguous complete sentences from the abstract; each sentence is preserved intact.",
+  "sentences": [
+    {
+      "text": "We propose to incorporate a more accurate channel prior learned by score-based generative models (a.k.a. diffusion models) into message passing, so as to push towards the performance limit of JADCE.",
+      "exact_match": true,
+      "normalized_page_start": 1117
+    },
+    {
+      "text": "This design enables the seamless integration of score-based generative models as a minimum mean-squared error (MMSE) denoiser.",
+      "exact_match": true,
+      "normalized_page_start": 1483
+    }
+  ],
+  "not_copied": [
+    "The novel TMP-framework claim is not adopted as a new contribution of this manuscript.",
+    "The sentence about learning denoiser variance is omitted to avoid suggesting Cai's separately trained second-order score network."
+  ]
+}

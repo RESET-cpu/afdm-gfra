@@ -1,0 +1,145 @@
+{
+  "status": "RUNNING",
+  "checked_at": "2026-11-07T01:20:47+08:00",
+  "checked_unix": 1793985647.3588388,
+  "completed": 5026,
+  "planned": 6000,
+  "coordinator": {
+    "pid": 103312,
+    "created_unix": 1793982309.0433996,
+    "command": [
+      "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "evaluation.white_phase_pool_stateio_20261107.run",
+      "coordinate"
+    ],
+    "started_unix": 1793933714.6107712,
+    "resumed_unix": 1793982314.8113508,
+    "session": "1793982314807331900",
+    "execution_module": "evaluation.white_phase_pool_stateio_20261107.run",
+    "plan_sha256": "dd02a7ae8ace3339e23b4e364e32a36304d9ede5c99ac56a35ca8b9b6f3f5140"
+  },
+  "workers": [
+    {
+      "pid": 138316,
+      "created_unix": 1793982507.0529056,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_stateio_20261107.run",
+        "worker",
+        "--session",
+        "1793982314807331900",
+        "--slot",
+        "0"
+      ],
+      "identity": "PASS",
+      "slot": 0,
+      "stage": "BUSY",
+      "position": 5027,
+      "rss_gib": 1.8175468444824219
+    },
+    {
+      "pid": 96480,
+      "created_unix": 1793982515.7986295,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_stateio_20261107.run",
+        "worker",
+        "--session",
+        "1793982314807331900",
+        "--slot",
+        "1"
+      ],
+      "identity": "PASS",
+      "slot": 1,
+      "stage": "BUSY",
+      "position": 5026,
+      "rss_gib": 1.8179779052734375
+    },
+    {
+      "pid": 48704,
+      "created_unix": 1793982523.6040232,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_stateio_20261107.run",
+        "worker",
+        "--session",
+        "1793982314807331900",
+        "--slot",
+        "2"
+      ],
+      "identity": "PASS",
+      "slot": 2,
+      "stage": "BUSY",
+      "position": 5028,
+      "rss_gib": 1.9298324584960938
+    }
+  ],
+  "active_workers": 3,
+  "entrypoint": "evaluation.white_phase_pool_stateio_20261107.run",
+  "worker_entrypoint": "evaluation.white_phase_pool_stateio_20261107.run",
+  "io_repair_amendment_sha256": "ad1077c20d66ab15f7a61327413ef1db194fbc198418767ec2308a01c6c02e94",
+  "resolved_state_io_incidents": 2,
+  "session": "1793982314807331900",
+  "per_snr": {
+    "-4": 838,
+    "-2": 838,
+    "0": 838,
+    "2": 838,
+    "4": 837,
+    "6": 837
+  },
+  "complete_paired_scenes": 837,
+  "gpu_preflight": "PASS",
+  "persistent_worker_numerical_validation": "PASS",
+  "runtime_amendment_sha256": "c03dfd0aa316fd1dc6055b6e42afa043db0accde8fbe0d53967bc3b9fbad6b2c",
+  "saved_result_receipts_and_protocol_checked": 5026,
+  "iteration_limit_count": 0,
+  "dependencies": {
+    "status": "PASS",
+    "checked_unix": 1793985638.6140275,
+    "reasons": [],
+    "receipts": {
+      "white_known_phase": {
+        "completion_sha256": "9288b71f9447d0176e2ad74edad42e717df53a621174dd704e3b2c68f7f01cb8",
+        "summary_sha256": "5bd9f97c02754e00d29f0cc95633a84031a06dc5907748a0c37e8bd03f8869f9",
+        "paired_sha256": "1fd9a313ec093b5af9aa1922f293261bb0511b4d13d0e5e9a2be3e3e36443b00"
+      },
+      "ablation": {
+        "completion_sha256": "7a9e88158b594530ada2ce541912f5cf0972b31579b6a75c1fc668007eb48600",
+        "summary_sha256": "f5c6fa2195f9812599219232044ae801c1f967911f4f751fa055674ba729ef9d",
+        "paired_sha256": "f43f74efdcfde06262ff9b97c211d1d289f7c540ffb4b4d78a5f1c9c88bd32a9",
+        "source_hashes_sha256": "7d992a0081b1daf51d7b4aa2bafdbe62e0f474c9b206ce3bd88ef35c95b7fed6",
+        "adopted_scenes_per_snr": 100,
+        "new_inferences": 1200,
+        "reused_inferences": 1200
+      }
+    },
+    "live_processes": [],
+    "amendment_sha256": "e2a010cdd156d154c759c2ad3fed63838c451e2c4a69bc1b56dadd40a6e1590d"
+  },
+  "new_failures": 0,
+  "nonempty_stderr": [],
+  "available_ram_gib": 3.1728897094726562,
+  "previous_progress": {
+    "checked_at": "2026-11-07T00:53:23+08:00",
+    "completed": 4737
+  },
+  "observed_inputs_per_hour_since_previous": 632.7086128970436,
+  "verification_scope": "Routine progress check: live PID/create-time/command and lock identity, prerequisite completion hashes, frozen assets, result receipts and protocol metadata. Full saved-array rescoring remains the final completion step; earlier cutover verification is preserved separately."
+}

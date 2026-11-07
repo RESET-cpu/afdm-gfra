@@ -1,0 +1,36 @@
+{
+  "status": "PREPARATION_PASSED_EXECUTION_PAUSED",
+  "checked_utc": "2026-10-23T15:19:35.633029+00:00",
+  "plan_sha256": "b74b8cabbd96223ad481be6309ceaddba6fb2950cae710c5de538bd10efb0bb2",
+  "source_plan_sha256": "254c0f8f72c779dd9253bdbbb787eae2b986c1d6f5fac5bcba83619e401d92a7",
+  "frozen_assets_verified": 209,
+  "source_assets_verified": 204,
+  "handoff_tests_passed": 9,
+  "test_file_sha256": "e8483cd0cbd6e99239bbca1cefee0b9fa480a912f7cb4d4efa91994373a35eee",
+  "all_new_scripts_parse": true,
+  "real_stmp_and_cpu_result_identity_verified": true,
+  "negative_cases": [
+    "wrong seed/method/runtime/algorithm/device/repeats/input/mode",
+    "changed physical condition",
+    "corrupt result receipt",
+    "running/failed/stopped source",
+    "source process still alive",
+    "duplicate launch reservation"
+  ],
+  "copied_results": 7193,
+  "copied_by_method": {
+    "STMP": 1185,
+    "offgrid_sbl": 1502,
+    "gnn": 1502,
+    "gamp": 1502,
+    "somp": 1502
+  },
+  "copied_files_all_rehashed": true,
+  "import_manifest_sha256": "19ac9c1391c9705b4a93faaa7a95acd4fa9b6d0f3de37a0d32fc25b6b4d3c0d2",
+  "inference_started": false,
+  "source_state": "STOPPED_BY_USER",
+  "automation_id": "snr",
+  "automation_state": "PAUSED",
+  "review": "Additional read-only review found no major normal-path handoff or reuse issues; PID-only liveness can rarely delay on PID reuse.",
+  "limits": "No pilot receiver inference was run during preparation. Results use existing uncalibrated decisions; future calibration adoption requires a separate preserved plan."
+}

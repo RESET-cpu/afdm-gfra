@@ -1,0 +1,20 @@
+{
+  "schema": "colored-first-score-candidate-v2",
+  "description": "One conditional proper complex Gaussian noise family; independent denoising development candidate",
+  "noise_family": "C = v Ra tensor I_output tensor Rc; both factors sampled independently, without categorical mixture",
+  "base_config": "src/configs/final/STMP.json",
+  "noise": {
+    "snr_db": [-20.0, 30.0],
+    "max_strength": 0.5,
+    "rank": 4
+  },
+  "seed": 2026102401,
+  "validation_seed": 2026102402,
+  "batch_size": 8,
+  "learning_rate": 0.00001,
+  "pilot_steps": 1000,
+  "evaluation_snr_db": [-10.0, 0.0, 10.0, 20.0],
+  "evaluation_scenes": 1000,
+  "evaluation_channel_selection": "First stored candidate in each of 1000 distinct validation scenes; all were sampled independently of activity/channel power",
+  "evaluation_scope": "Reused development validation; pretrained checkpoint already saw this validation bank for selection. Not an untouched test set."
+}

@@ -1,0 +1,1877 @@
+=== PDF PAGE 1 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Solving Inverse Problems using Diffusion with Iterative Col-
+ored Renoising
+Matthew C. Bendel bendel.8@buckeyemail.osu.edu
+Dept. Electrical and Computer Engineering, The Ohio State University, Columbus, OH, USA
+Saurav K. Shastri shastri.19@buckeyemail.osu.edu
+Dept. Electrical and Computer Engineering, The Ohio State University, Columbus, OH, USA
+Rizwan Ahmad rizwan.ahmad@osumc.edu
+Dept. Biomedical Engineering, The Ohio State University, Columbus, OH, USA
+Philip Schniter schniter.1@osu.edu
+Dept. Electrical and Computer Engineering, The Ohio State University, Columbus, OH, USA
+Reviewed on OpenReview: https: // openreview. net/ forum? id= RZv8FcQDPW
+Abstract
+Imaging inverse problems can be solved in an unsupervised manner using pre-trained dif-
+fusion models, but doing so requires approximating the gradient of the measurement-
+conditional score function in the diffusion reverse process. We show that the approximations
+produced by existing methods are relatively poor, especially early in the reverse process, and
+so we propose a new approach that iteratively reestimates and “renoises” the estimate sev-
+eral times per diffusion step. This iterative approach, which we call Fast Iterative REnoising
+(FIRE), injects colored noise that is shaped to ensure that the pre-trained diffusion model
+always sees white noise, in accordance with how it was trained. We then embed FIRE
+into the DDIM reverse process and show that the resulting “DDfire” offers state-of-the-art
+accuracy and runtime on several linear inverse problems, as well as phase retrieval. Our
+implementation is available athttps://github.com/matt-bendel/DDfire.
+1 Introduction
+Diffusion has emerged as a powerful approach to generate samples from a complex distributionp0 (Sohl-
+Dickstein et al., 2015; Song & Ermon, 2019; Ho et al., 2020; Song et al., 2021b;a). Recently, diffusion has
+also been used to solve inverse problems (Daras et al., 2024), where the goal is to recoverx0∼p0 from
+incomplete, distorted, and/or noisy measurementsy in an unsupervised manner. There, a diffusion model
+is trained to generate samples fromp0 and, at test time, the reverse process is modified to incorporate
+knowledge of the measurementsy, with the goal of sampling from the posterior distributionp(x0|y).
+When implementing the reverse process, the main challenge is approximating the conditional score function
+∇x lnpt(xt|y) at each stept, wherext is an additive-white-Gaussian-noise (AWGN) corrupted and scaled
+version ofx0∈Rd, andy∈Rm is treated as a draw from a likelihood functionp(y|x0). (See Sec. 2 for
+more details.) Many existing approaches fall into one of two categories. The first uses Bayes rule to write
+∇x lnpt(xt|y) =∇x lnpt(xt) +∇x lnpt(y|xt), where an approximation of∇x lnpt(xt) is readily available
+from thep0-trained diffusion model, and then approximates∇x lnpt(y|xt) (e.g., Chung et al. (2023a); Song
+1
+arXiv:2501.17468v4  [cs.CV]  27 Aug 2025
+
+=== PDF PAGE 2 ===
+Published in Transactions on Machine Learning Research (08/2025)
+et al. (2023)). The second approach uses Tweedie’s formula (Efron, 2011) to write
+∇x lnpt(xt|y) = E{x0|xt,y}−xt
+σ2
+t
+(1)
+and then approximates the conditional denoiserE{x0|xt,y}(e.g., Kawar et al. (2022a); Wang et al. (2023);
+Zhu et al. (2023); Chung et al. (2024a)).
+A key shortcoming of the aforementioned approaches is that their conditional-score approximations are not
+very accurate, especially early in the reverse process. For the methods that approximateE{x0|xt,y}, we
+can assess the approximation quality both visually and via mean-square error (MSE) or PSNR, since the
+exact E{x0|xt,y}minimizes MSE givenxt and y. For the methods that approximate∇x lnpt(xt|y), we
+can compute their equivalent conditional-denoiser approximations using
+E{x0|xt,y}=xt +σ2
+t∇x lnpt(xt|y), (2)
+which follows from (1). Figure 1 showsE{x0|xt,y}-approximations from the DDRM (Kawar et al., 2022a),
+DiffPIR (Zhu et al., 2023), DPS (Chung et al., 2023a), and DAPS Zhang et al. (2025) solvers at times 25%,
+50%, and 75% through their reverse processes for noisy box inpainting withσy = 0.05. The approximations
+show unwanted artifacts, especially early in the reverse process.
+x0yFIRE
+25% NFEs50% NFEs75% NFEs
+DDRM DiffPIR DPS DAPS DDfire
+Figure 1: Left column: Truex0, noisy box inpaintingy, and 50-iteration FIRE approximation ofE{x0|y}.
+Other columns: Approximations of E{x0|xt,y}at differentt (as measured by % NFEs). Note the over-
+smoothing with DDRM and DPS. Additionally, note the cut-and-paste artifacts of DiffPIR and DAPS.
+In this paper, we aim to improve the approximation ofE{x0|xt,y}at each stept. Since we have observed
+that methods using a single neural function evaluation (NFE) to approximateE{x0|xt,y}or∇x lnpt(xt|y)
+perform poorly, we consider using several NFEs. In particular, we propose an iterative approach to ap-
+proximating E{x0|xt,y}that we call Fast Iterative REnoising (FIRE). FIRE is like a plug-and-play (PnP)
+algorithm (see the PnP survey Ahmad et al. (2020)) in that it iterates unconditional denoising with linear
+estimation fromxt andy. But unlike traditional PnP algorithms, which aim to minimize an implicit loss
+function, FIRE is based oncolored renoising, where carefully designed colored Gaussian noise is added to
+the linear-estimation output so that the denoiser’s input error approximates AWGN. Since the denoiser is
+trained to remove AWGN, renoising aims to minimize the distribution shift experienced during inference.
+Figure 1 shows the 50-iteration FIRE approximation toE{x0|xT,y}= E{x0|y}for noisy box inpainting,
+which is relatively free of artifacts. We propose two versions of FIRE: one that handles AWGN-corrupted
+linear measurement models like (6), and one that handles generalized-linear inverse problems such as phase
+retrieval (Shechtman et al., 2015), Poisson regression (Figueiredo & Bioucas-Dias, 2010), and dequantization
+(Zymnis et al., 2010). The latter is based on expectation propagation (EP) (Minka, 2001; Bishop, 2007).
+2
+
+=== PDF PAGE 3 ===
+Published in Transactions on Machine Learning Research (08/2025)
+We then embed FIRE into the DDIM diffusion reverse process (Song et al., 2021a), yielding the “DDfire”
+posterior sampler. Figure 1 shows examples of DDfire’sE{x0|xt,y}approximation when run on noisy box
+inpainting. DDfire’sE{x0|xt,y}approximations have fewer structural artifacts and higher PSNR than its
+competitors.
+The contributions of this work are as follows:
+1. We propose linear FIRE, an iterative approach to solving AWGN-corrupted linear inverse problems
+that injects carefully designed colored Gaussian noise in order to whiten the denoiser’s input error.
+2. We theoretically analyze the convergence of linear FIRE.
+3. We use expectation propagation (EP) to extend linear FIRE to generalized-linear inverse problems.
+4. Combining FIRE and DDIM, we propose the DDfire diffusion posterior sampler.
+5. We demonstrate the excellent accuracy of DDfire on several imaging inverse problems: box inpaint-
+ing, Gaussian and motion blur, super-resolution, and phase retrieval.
+2 Background
+Given training data drawn from distributionp0, diffusion models corrupt the data with ever-increasing
+amounts of noise and then learn to reverse that process in a way that can generate new samples fromp0. In
+the main text, we assume the variance-exploding (VE) diffusion formulation (Song et al., 2021b), whereas
+Appendix A provides details on the variance-preserving (VP) formulation, including DDPM (Ho et al., 2020)
+and DDIM (Song et al., 2021a).
+The VE diffusion forward process can be written as a stochastic differential equation (SDE) dx =√
+d[σ2(t)]/ dt dw overtfrom 0toT, whereσ2(t)isa variance schedule anddw isthe standardWienerprocess
+(SWP) (Song et al., 2021b). The corresponding reverse process runs the SDEdx =−σ2(t)∇x lnpt(x) dt +√
+d[σ2(t)]/ dt dw backwards overt fromT to 0, wherept(·) is the marginal distribution ofx att and dw is
+the SWP run backwards. The “score function”∇x lnpt(x) can be approximated using a deep neural network
+(DNN)sθ(x,t ) trained via denoising score matching (Hyvärinen, 2005).
+In practice, time is discretized tot∈{0, 1,...,T}, yielding the SMLD from Song & Ermon (2019), whose
+forward process,xt+1 =xt +
+√
+σ2
+t+1−σ2
+twt, with i.i.d{wt}∼N(0,I) and σ2
+0 = 0, implies that
+xt =x0 +σtϵt, ϵt∼N(0,I) (3)
+for allt∈{0, 1,...,T}. The SMLD reverse process then uses i.i.d{nt}∼N(0,I) in
+xt =xt+1 + (σ2
+t+1−σ2
+t )∇x lnpt+1(xt+1) +
+√
+σ2
+t (σ2
+t+1−σ2
+t )
+σ2
+t+1
+nt+1. (4)
+To exploit side information aboutx0, such as the measurementsy in an inverse problem, one can simply
+replace pt(·) with pt(·|y) in the above equations (Song et al., 2021b). However, most works aim to avoid
+training ay-dependent approximation of the conditional score function∇x lnpt(xt|y). Rather, they take an
+“unsupervised” approach, wheresθ(xt,t )≈∇x lnpt(xt) is learned during training buty is presented only
+at inference (Daras et al., 2024). In this case, approximating∇x lnpt(xt|y) is the key technical challenge.
+There are two major approaches to approximate∇x lnpt(xt|y). The first uses the Bayes rule to write
+∇x lnpt(xt|y) =∇x lnpt(xt) +∇x lnpt(y|xt) and then replaces∇x lnpt(xt) with the score approximation
+sθ(xt,t ). But the remaining term,∇x lnpt(y|xt), is intractable becausept(y|xt) =
+∫
+p(y|x0)p(x0|xt) dx0
+with unknown p(x0|xt), and so several approximations have been proposed. For example, DPS (Chung
+et al., 2023a) usesp(x0|xt)≈δ(x0−ˆx0|t), where ˆx0|t is the approximation ofE{x0|xt}computed from
+sθ(xt,t ) using Tweedie’s formula:
+ˆx0|t =xt +σ2
+tsθ(xt,t ). (5)
+3
+
+=== PDF PAGE 4 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Similarly, ΠGDM (Song et al., 2023) usesp(x0|xt)≈N(x0; ˆx0|t,ζtI) with someζt. However, a drawback to
+both approaches is that they require backpropagation throughsθ(·,t ), which increases the cost of generating
+a single sample. In Fig. 4, we show that DDfire offers a1.5×speedup over DPS at an equal number of NFEs.
+The second major approach to approximating∇x lnpt(xt|y) uses (1) withE{x0|xt,y}approximated by a
+quantity that we’ll refer to asˆx0|t,y. For example, with AWGN-corrupted linear measurements
+y =Ax0 +σyw∈Rm, w∼N(0,I), (6)
+DDNM (Wang et al., 2023) approximatesE{x0|xt,y}by first computingˆx0|t from (5) and then performing
+the hard data-consistency step ˆx0|t,y = A+y + (I−A+A)ˆx0|t, where (·)+ is the pseudo-inverse. DDS
+(Chung et al., 2024a) and DiffPIR (Zhu et al., 2023) instead use the soft data-consistency stepˆx0|t,y =
+arg minx∥y−Ax∥2 +γt∥x−ˆx0|t∥2 with someγt > 0. DDRM (Kawar et al., 2022a) is a related technique
+that requires a singular value decomposition (SVD), which is prohibitive in many applications.
+There are other ways to design posterior samplers. For example, Laumont et al. (2022) and Jalal et al. (2021)
+use Langevin dynamics. RED-diff (Mardani et al., 2024) and SNORE (Renaud et al., 2024) inject white
+noise into the RED algorithm (Romano et al., 2017), whose regularizer’s gradient equals the score function
+(Reehorst & Schniter, 2019). Bouman & Buzzard (2023); Coeurdoux et al. (2024); Wu et al. (2024); Xu &
+Chi (2024); Zhang et al. (2025) use Markov-chain Monte Carlo (MCMC) in the diffusion reverse process.
+3 Approach
+We aim to accurately approximate the conditional denoiserE{x0|xt,y}at each step of the diffusion reverse
+process. We treat the standard linear model (SLM) (6) first and the generalized linear model (GLM) later.
+3.1 Fast iterative renoising (FIRE) for the SLM
+In this section, we describe the FIRE algorithm, which approximatesE{x0|rinit,y}assumingy from (6) and
+rinit =x0 +σinitϵwithϵ∼N(0,I) and someσinit > 0. FIRE performs half-quadratic splitting (HQS) PnP
+with a scheduled denoising varianceσ2, similar to DPIR from Zhang et al. (2021), but injects colored noise
+c to ensure that the error in the denoiser inputr remains white. It is beneficial for the denoiser to see white
+input error during inference, because it is trained to remove white input error. The basic FIRE algorithm
+iterates the following stepsN≥1 times, after initializingr←rinit and σ←σinit:
+S1) Denoiser assuming AWGN of varianceσ2, givingx.
+S2) MMSE estimatex0 giveny from (6) and the priorx0∼N(x,νI) with someν >0, giving ˆx.
+S3) Update the denoising varianceσ2 via σ2←σ2/ρwith someρ>1,
+S4) Updater←ˆx +c using colored Gaussian noisec created to ensureCov{r−x0}=σ2I.
+S1)-S3) are essentially DPIR with regularization strength controlled byνand a geometric denoising schedule
+with rate controlled byρ, while S4) injects colored noise. In contrast, other renoising PnP approaches like
+SNORE (Renaud et al., 2024) inject white noise. Section 4.1 examines the effect of removingc or replacing
+it with white noise. Next we provide details and enhancements of the basic FIRE algorithm.
+In the sequel, we use “dθ(x,σ)” to denote a neural-net approximation of the conditional-mean denoiser
+E{x0|x}ofx =x0 +σϵwithϵ∼N(0,I). Given a score function approximationsθ(x,t )≈∇x lnpt(x) as
+discussed in Sec. 2, the denoiser can be constructed via (5) as
+dθ(x,σ) =x +σ2sθ(x,t ) with t such thatσt =σ. (7)
+When FIRE estimates x0 from the measurementsy and the denoiser outputx, it employs a Gaussian
+approximation of the formx0∼N(x,νI), similar to DDS, DiffPIR, and prox-based PnP algorithms. But
+it differs in thatνis explicitly estimated. The Gaussian approximationx0∼N(x,νI) is equivalent to
+x0 =x +√νe, e∼N(0,I). (8)
+4
+
+=== PDF PAGE 5 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Supposex0 =x +√ν0e withe∼N(0,I), whereν0 denotes the true error variance. Then (6) and (8) imply
+E{∥y−Ax∥2}= E{∥Ax0 +σyw−Ax0 +√ν0Ae∥2}= E{∥σyw +√ν0Ae∥2}=mσ2
+y +ν0∥A∥2
+F, (9)
+assuming independence betweene andw. Consequently, an unbiased estimate ofν0 can be constructed as
+(
+∥y−Ax∥2−mσ2
+y
+)
+/∥A∥2
+F ≜ν. (10)
+Figure 12 shows that, in practice, the estimate (10) accurately tracks the true error variance∥x0−x∥2/d.
+Under (6) and (8), the MMSE estimate ofx0 fromy andx can be written as (Poor, 1994)
+ˆx ≜ arg min
+x
+{ 1
+2σ2y
+∥y−Ax∥2 + 1
+2ν∥x−x∥2
+}
+=
+(
+ATA + σ2
+y
+νI
+)−1(
+ATy + σ2
+y
+νx
+)
+. (11)
+Equation (11) can be computed using conjugate gradients (CG) or, if practical, the SVDA =USV T via
+ˆx =V
+(
+STS + σ2
+y
+νI
+)−1(
+STU Ty + σ2
+y
+νV Tx
+)
+. (12)
+In any case, from (8) and (11), the error inˆx can be written as
+ˆx−x0 =
+(
+ATA+σ2
+y
+νI
+)−1(
+AT[Ax0 +σyw] +σ2
+y
+ν[x0−√νe]
+)
+−x0 =
+(
+ATA+σ2
+y
+νI
+)−1(
+σyATw−σ2
+y√νe
+)
+,
+(13)
+and so the covariance of the error inˆx can be written as
+Cov{ˆx−x0}=
+(
+ATA + σ2
+y
+νI
+)−1(
+σ2
+yATA + σ4
+y
+νI
+)(
+ATA + σ2
+y
+νI
+)−1
+=
+( 1
+σ2y
+ATA + 1
+νI
+)−1
+≜C. (14)
+From (14) we see that the error inˆx can be strongly colored. For example, in the case of inpainting, where
+A is formed from rows of the identity matrix, the error variance in the masked pixels equalsν, while the
+error variance in the unmasked pixels equals(1/σ2
+y + 1/ν)−1≤σ2
+y. These two values may differ by many
+orders of magnitude. Since most denoisers are trained to remove white noise with a specified variance ofσ2,
+direct denoising ofˆx performs poorly, as we show in Sec. 4.1.
+To circumvent the issues that arise from colored denoiser-input error, we propose to add “complementary”
+colored Gaussian noisec∼N(0, Σ ) to ˆx so that the resultingr = ˆx +c has an error covariance ofσ2I, i.e.,
+white error. This requires that
+Σ =σ2I−C =σ2I−
+( 1
+σ2y
+VS TSV T + 1
+νI
+)−1
+=V Diag(λ)V T for λi =σ2− 1
+s2
+i/σ2y + 1/ν (15)
+fors2
+i ≜ [STS]i,i. By settingσ2≥ν, we ensure thatλi≥0∀i, needed forΣ to be a valid covariance matrix.
+In the case that the SVD is practical to implement, we can generatec using
+c =V Diag(λ)1/2ε, ε∼N(0,I). (16)
+In the absence of an SVD, we propose to approximateΣ by
+ˆΣ ≜ (σ2−ν)I +ξATA (17)
+with someξ≥0. Note that ˆΣ agrees withΣ in the nullspace ofA (i.e., whensn = 0) for anyξ. By choosing
+ξ= 1
+s2max
+(
+ν− 1
+s2max/σ2y + 1/ν
+)
+, (18)
+5
+
+=== PDF PAGE 6 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Algorithm 1FIRE for the SLM:ˆx = FIRESLM(y,A,σy,rinit,σinit,N,ρ)
+Require: dθ(·,·),y,A,s max,σy,N,ρ> 1,rinit,σinit. AlsoA =U Diag(s)V T if using SVD.
+1: r =rinit and σ=σinit ▷Initialize
+2: for n = 1,...,N do
+3: x←dθ(r,σ) +
+√
+ˆνϕ(σ)v, v∼N(0,I) ▷Stochastic denoising
+4: ν←(∥y−Ax∥2−σ2
+ym)/∥A∥2
+F ▷Error variance ofx
+5: ˆx←arg min
+x
+∥y−Ax∥2/σ2
+y +∥x−x∥2/ν ▷ Estimatex0∼N(x,νI) fromy∼N(Ax0,σ2
+yI)
+6: σ2←max{σ2/ρ,ν} ▷Decrease target variance
+7: if have SVDthen
+8: λi←σ2−(s2
+i/σ2
+y + 1/ν)−1, i = 1,...,d
+9: c←V Diag(λ)1/2ε, ε∼N(0,I) ▷Colored Gaussian noise
+10: else
+11: ξ←
+(
+ν−(s2
+max/σ2
+y + 1/ν)−1)
+/s2
+max
+12: c←
+[√
+σ2−νI √ξAT]
+ε, ε∼N(0,I) ▷Colored Gaussian noise
+13: r←ˆx +c ▷Renoise so thatCov{r−x0}=σ2I
+14: return ˆx
+ˆΣ will also agree withΣ in the strongest measured subspace (i.e., whensn =smax). Without an SVD,smax
+can be computed using the power iteration (Parlett, 1998). Finally,c∼N(0, ˆΣ ) can be generated via
+c =
+[√
+σ2−νI √ξAT]
+ε, ε∼N(0,I)∈Rd+m. (19)
+Figure 6 shows a close agreement between the ideal and approximate renoised error spectra in practice.
+Next, we provide the main theoretical result on FIRE.
+Theorem 1 Suppose that, for any inputr =x0 +σϵwith ϵ∼N(0,I), the denoiser outputdθ(r,σ) has
+white Gaussian error with known varianceν <σ2 and independent of the noisew in (6). Then if initialized
+usingrinit =x0 +σinitϵwith arbitrarily large but finiteσinit andϵ∼N(0,I), there exists aρ>1 under which
+the FIRE iteration S1)-S4) converges to the truex0.
+Appendix E provides a proof. Note that a key assumption of Theorem 1 is that the denoiser output error
+is white and Gaussian. Because this may not hold in practice, we propose to replace S1) with a “stochastic
+denoising” step (21), in which AWGN is explicitly added to the denoiser output. As the AWGN variance
+increases, the denoiser output becomes closer to white and Gaussian but its signal-to-noise ratio (SNR)
+degrades. To balance these competing objectives, we propose to add AWGN with variance approximately
+equal to that of the raw-denoiser output error. We estimate the latter quantity from the denoiser input
+varianceσ2 by training a predictor of the form
+ˆνϕ(σ)≈E{∥dθ(x0 +σϵ,σ)−x0∥2/d}, (20)
+where the expectation is overϵ∼N(0,I) and validation imagesx0∼p0. Recall thatd is the dimension of
+x0. In our experiments,ˆνϕ(·) is implemented using a lookup table. The stochastic denoising step is then
+x =dθ(x,σ) +
+√
+ˆνϕ(σ)v, v∼N(0,I). (21)
+Algorithm 1 summarizes the FIRE algorithm for the SLM (6). In App. D, we describe a minor enhancement
+to Alg. 1 that speeds up the MMSE estimation step when CG is used.
+3.2 DDfire for the GLM
+We now propose to extend the SLM-FIRE from Sec. 3.1 to the generalized linear model (GLM)
+y∼p(y|z0) =
+m∏
+j=1
+py|z(yj|z0,j) with z0 ≜Ax0 (22)
+6
+
+=== PDF PAGE 7 ===
+Published in Transactions on Machine Learning Research (08/2025)
+MMSE inference
+of z0,j ∼ N(zj,νz)
+from yj ∼py|z(·|z0,j)
+SLM-FIRE
+withy = Ax0 +σyw
+andw ∼ N(0,I)
+y, σy
+z, νz
+y ˆx
+Figure 2: High-level overview of GLM-FIRE, which uses EP-style iterations between SLM-FIRE and an
+MMSE inference stage that involves the scalar measurement channelpy|z.
+where py|z is some scalar “measurement channel.” Examples includepy|z(y|z) = N (y;|z|,σ2
+y ) for phase
+retrieval,py|z(y|z) =zye−z/y! for Poisson regression, andpy|z(y|z) =
+∫τy+1
+τy
+N (τ;z,σ2
+y ) dτfor dequantization.
+Our extension is inspired by expectation propagation (EP) (Minka, 2001; Bishop, 2007) and its application
+to GLMs (Schniter et al., 2016; Meng et al., 2018). The idea is to iterate between i) constructing “pseudo-
+measurements”y = Ax0 +w with w∼N(0,σ2
+yI) using py|z and an SLM-FIRE-constructed belief that
+z0∼N(z0,νzI), and then ii) running SLM-FIRE with those pseudo-measurements and updating its belief
+onz0. Figure 2 shows a high-level summary. Details are given below.
+To construct the belief onz0, we use the SLM-FIRE denoiser output modelx0∼N(x,νI) from (8). Because
+z0 =Ax0, we see thatz0∼N(z,νAAT), wherez ≜Ax. For simplicity, however, we use the white-noise
+approximation z0∼N(z,νzI), where νz ≜ ν∥A∥2
+F/m. Using the scalar belief z0,j ∼N(zj,νz) and the
+likelihood modelyj∼py|z(·|z0,j), EP suggests to first compute the posterior meanE{z0,j|yj;zj,νz}≜ ˆzj and
+variance 1
+m
+∑m
+j=1 var{z0,j|yj;zj,νz}≜ ˆνz, and then pass the “extrinsic” versions of those quantities:
+σ2
+y ≜ [1/ˆνz−1/νz]−1, y ≜σ2
+y(ˆz/ˆνz−z/νz) (23)
+back to SLM-FIRE, where they are used to construct the pseudo-measurement model
+y =Ax0 +σyw, w∼N(0,I). (24)
+In Fig. 13, we show that GLM-FIRE’sσ2
+y accurately tracks the true noise power iny, i.e.,∥y−Ax0∥2/m.
+The GLM-FIRE algorithm is summarized as Alg. 3. Whenpy|z(y|z) =N (y;z,σ2
+y ), is it straightforward to
+show thaty =y and σ2
+y =σ2
+y for anyz and νz, in which case GLM-FIRE reduces to SLM-FIRE.
+3.3 Putting FIRE into diffusion
+Sections 3.1 and 3.2 detailed the FIRE algorithms for the SLM (6) and the GLM (22), respectively. In both
+cases, the FIRE algorithm approximates E{x0|r,y}given the measurementsy and the side-information
+r =x0 +σϵ, whereϵ∼N(0,I). Thus, recalling the discussion in Sec. 2, FIRE can be used in the SMLD
+reverse process as an approximation ofE{x0|xt,y}by settingr =xt and σ=σt.
+Instead of using SMLD for the diffusion reverse process, however, we use DDIM from Song et al. (2021a),
+which can be considered as a generalization of SMLD. In the sequel, we distinguish the DDIM quantities by
+writing them with subscriptk. As detailed in App. C, DDIM is based on the model
+xk =x0 +σkϵk, ϵk∼N(0,I), (25)
+for k = 1,...,K, where{σ2
+k}K
+k=1 is a specified sequence of variances. The DDIM reverse process iterates
+xk−1 =hkxk +gk E{x0|xk,y}+ςknk (26)
+ςk =ηddim
+√
+σ2
+k−1(σ2
+k−σ2
+k−1)
+σ2
+k
+, hk =
+√
+σ2
+k−1−ς2
+k
+σ2
+k
+, gk = 1−hk (27)
+over k = K,..., 2, 1, starting fromxK∼N(0,σ2
+KI), using i.i.d{nk}K
+k=1∼N(0,I) and someηddim≥0.
+When ηddim = 1 and K =T, DDIM reduces to SMLD. But whenηddim = 0, the DDIM reverse process (26)
+7
+
+=== PDF PAGE 8 ===
+Published in Transactions on Machine Learning Research (08/2025)
+is deterministic and can be considered as a discretization of the probability-flow ODE Song et al. (2021a),
+which can outperform SMLD when the number of discretization stepsK is small (Chen et al., 2023).
+For a specified numberK of DDIM steps (which we treat as a tuning parameter), we set the DDIM variances
+{σ2
+k}K
+k=1 as the geometric sequence
+σ2
+k =σ2
+min
+(σ2
+max
+σ2
+min
+)k−1
+K−1
+, k = 1,...,K (28)
+for someσ2
+min andσ2
+max that are typically chosen to match the minimum and maximum variances used to train
+the denoiserdθ(·,·) or score approximationsθ(·,·). So for example, ifsθ(·,·) was trained over the DDPM
+steps t∈{1,...,T}for T = 1000, then we would setσ2
+min = (1−α1)/α1 and σ2
+max = (1−α1000)/α1000 with
+αt; see (37) for additional details.
+Next we discuss how we set the FIRE iteration schedule{Nk}K
+k=1 and variance-decrease-factorρ >1. In
+doing so, we have two main goals:
+G1) Ensure that, at every DDIM stepk, the denoiser’s output-error variance is at mostνthresh at the
+final FIRE iteration, whereνthresh is some value to be determined.
+G2) Meet a fixed budget ofNtot ≜ ∑K
+k=1Nk total NFEs.
+Note that, because the denoiser’s output-error variance increases monotonically with its input-error variance,
+we can rephrase G1) as
+G1*) Ensure that, at every DDIM stepk, the denoiser’s input-error variance is at mostσ2
+thresh at the final
+FIRE iteration, whereσ2
+thresh is some value to be determined.
+Although σ2
+thresh could be tuned directly, it’s not the most convenient option because a good search range
+can be difficult to construct. Instead, we tune the fractionδ∈[0, 1) of DDIM stepsk that use a single FIRE
+iteration (i.e., that useNk = 1) and we setσ2
+thresh at the DDIM varianceσ2
+k of the first reverse-process step
+k that uses a single FIRE iteration, i.e.,1 +⌊(K−1)δ⌋≜ kthresh. (Note that kthresh = 1 when δ= 0 and
+kthresh = K−1 for δ≈1.) All subsequent1 DDIM stepsk < kthresh will then automatically satisfy G1*)
+because σ2
+k decreases withk.
+To ensure that the earlier DDIM stepsk >kthresh also satisfy G1*), we need thatσ2
+k/ρNk−1≤σ2
+thresh, since
+σ2
+k is the denoiser input-error variance at the first FIRE iteration andσ2
+k/ρNk−1 is the denoiser input-error
+variance at the last FIRE iteration. For a fixedρ>1, we can rewrite this inequality as
+Nk≥lnσ2
+k−lnσ2
+thresh
+lnρ + 1 ≜Nk. (29)
+Because Nk is a positive integer, it suffices to choose
+Nk =⌈max{1,N k}⌉∀k. (30)
+Finally,ρis chosen as the smallest value that meets the NFE budget G2) under (30). We find this value
+using bisection search. For a givenkthresh, a lower bound on the total NFEs iskthresh·1+(K−kthresh)·2. The
+definition ofkthresh then implies thatNtot≥K(2−δ) +δ−1 and thusK≤(Ntot + 1−δ)/(2−δ) ≜Kmin.
+In summary, for a budget ofNtot total NFEs, we treat the number of DDIM stepsK ∈ {1,...,K min}
+and the fraction of single-FIRE-iteration stepsδ∈[0, 1) as tuning parameters and, from them, compute
+{σ2
+k}K
+k=1,{Nk}K
+k=1, andρ. Figure 3 shows an example. The pair(K,δ) can be tuned using cross-validation.
+Algorithm 2 details DDIM with the FIRE approximation ofE{x0|xk,y}, which we refer to as “DDfire.”
+3.4 Relation to other methods
+To solve inverse problems, a number of algorithms have been proposed that iterate denoising (possibly
+score-based), data-consistency (hard or soft), and renoising. Such approaches are referred to as either plug-
+and-play, Langevin, or diffusion methods. (Recall the discussion in Sections 1-2.) While existing approaches
+use white renoising, the proposed DDfire uses colored renoising that whitens the denoiser input error.
+1Recall that the reverse process counts backwards, i.e., k = K, K− 1, . . . ,2,1.
+8
+
+=== PDF PAGE 9 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Figure 3: For an FFHQ denoiser: the geometric DDIM variances{σ2
+k}K
+k=1 versus DDIM stepk for K = 10,
+the σ2
+thresh corresponding to aδ= 0.4 fraction of single-FIRE-iteration DDIM steps, and the denoiser input
+varianceσ2 at each FIRE iteration of each DDIM step, forNtot =25 total NFEs.
+Algorithm 2DDfire
+Require: y,A,σy or py|z,ρ,{σk}K
+k=1,{Nk}K
+k=1,ηddim≥0
+1: xK∼N(0,σ2
+KI)
+2: for k =K,K−1,..., 1 do
+3: ˆx0|k = FIRE(y,A,∗,xk,σk,Nk,ρ) ▷FIRE via Alg. 1 or Alg. 3
+4: ςk =ηddim
+√
+σ2
+k−1(σ2
+k−σ2
+k−1)
+σ2
+k
+5: xk−1 =
+√
+σ2
+k−1−ς2
+k
+σ2
+k
+xk +
+(
+1−
+√
+σ2
+k−1−ς2
+k
+σ2
+k
+)
+ˆx0|k +ςknk, nk∼N(0,I) ▷DDIM update
+6: return ˆx0|k
+When estimatingx0 from the measurementsy of (6), methods such as DDS, DiffPIR, DAPS, and SNORE
+use a Gaussian prior approximation of the formx0 ∼ N(x,νI). But while they control νwith tuning
+parameters, DDfire explicitly estimatesνvia (10). See App. G for a detailed comparison of DDfire to DDS,
+DiffPIR, and SNORE.
+Although we are unaware of prior work combining EP with diffusion, there is a paper by? that ap-
+plies EP to the annealed Langevin dynamics approach from Song & Ermon (2020), although for the spe-
+cific task of dequantization. Like with DPS and ΠGDM, Bayes rule is used to write∇x lnpt(xt|y) =
+∇x lnpt(xt)+∇x lnpt(y|xt) and the first term is approximated bysθ(xt,t ) (recall Sec. 2). The second term
+is approximated with multiple EP iterations, each of which solves a linear system using an SVD. DDfire
+differs in using colored renoising, an SVD-free option, and DDIM diffusion, which allows far fewer NFEs.
+4 Numerical experiments
+We use 256×256 FFHQ (Karras et al., 2019) and ImageNet (Deng et al., 2009) datasets with pretrained
+diffusion models from Chung et al. (2023a) and Dhariwal & Nichol (2021), respectively. As linear inverse
+problems, we consider box inpainting with a128×128 mask, Gaussian deblurring using a61×61 blur kernel
+with 3-pixel standard deviation, motion deblurring using a61×61 blur kernel generated using Borodenko
+(2020) with intensity0.5, and 4×bicubic super-resolution. We compare to DDRM (Kawar et al., 2022a),
+9
+
+=== PDF PAGE 10 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Table 1: DDfire ablation results for noisy FFHQ box inpainting withσy = 0.05 at 1000 NFEs.
+Method PSNR ↑LPIPS↓Runtime
+DDfire 24.31 0.1127 34.37s
+DDfire w/o renoising 18.48 0.2349 34.37s
+DDfire w/o colored renoising 23.64 0.1553 34.37s
+DDfire w/ stochastic denoising 24.30 0.1143 34.37s
+DDfire w/o estimatingν 23.02 0.1755 34.37s
+DDfire w/o CG early stopping 24.31 0.1127 52.12s
+DDfire w/ SVD 24.31 0.1124 30.97s
+DiffPIR (Zhu et al., 2023),ΠGDM (Song et al., 2023), DDS Chung et al. (2024a), DPS (Chung et al., 2023a),
+RED-diff (Mardani et al., 2024), and DAPS (Zhang et al., 2025).
+We also consider phase retrieval with the shot-noise corruption mechanism from Metzler et al. (2018) for both
+oversampled Fourier (OSF) and coded diffraction pattern (CDP) (Candès et al., 2015)A at 4×oversampling
+withαshot = 8 and 45, respectively. Here,αshot is the shot-noise strength, as detailed in App. H. We compare
+to prDeep (Metzler et al., 2018), DOLPH (Shoushtari et al., 2023), DPS, RED-diff, DAPS, and the classical
+hybrid input-output (HIO) algorithm (Fienup, 1982), usingpy|z(y|z) =N (y;|z|,σ2
+y ) for all algorithms that
+accept a likelihood function.
+Unless specified otherwise, DDfire was configured as follows. For the linear inverse problems, CG is used
+(no SVD), 1000 NFEs are used without stochastic denoising, and the(K,δ) hyperparameters are tuned to
+minimize LPIPS (Zhang et al., 2018) on a 100-sample validation set (see Table 5). For phase retrieval, we set
+NFEs to 800 for OSF to fairly compare to prDeep, while only 100 NFEs were used for CDP as further steps
+offered no improvement. Stochastic damping was applied in both cases, and(K,δ) were the hand-tuned
+values in Table 6. Neither CG nor SVD are needed since (11) can be solved in analytically. Appendix H
+contains additional details on the implementation of DDfire and the competing methods.
+4.1 Ablation study
+We first perform an ablation study on the SLM-DDfire design choices in Sec. 3 using noisy FFHQ box
+inpainting and a 100-image validation set. The results are summarized in Table 1. We first see that both
+PSNR and LPIPS suffer significantly when FIRE is run without renoising (i.e.,c = 0 in line 13 in Alg. 1).
+Similarly, renoising using white noise (i.e.,c∼N(0,σ2I) in line 13 of Alg. 1) gives noticeably worse PSNR
+and LPIPS than the proposed colored noise. Using stochastic denoising gives nearly identical performance to
+plain denoising (i.e.,ˆνϕ(σ) = 0 in line 3 of Alg. 1), and so we use plain denoising by default with linear inverse
+problems. A more significant degradation results when the denoiser output-error varianceνis not adapted to
+x in line 4 of Alg. 1 but set at the data-average valueˆνϕ(σ). On the other hand, when CG doesn’t use early
+stopping (as described in App. D) the runtime increases without improving PSNR or LPIPS. Thus, we use
+early stopping by default. Finally, using an SVD instead of CG, which also avoids the noise approximation in
+(17), gives essentially identical PSNR and LPIPS but with a slightly faster runtime. Figure 4 shows another
+LPIPS/runtime comparison of the SVD and CG versions of DDfire.
+4.2 PSNR, LPIPS, and FID results
+For noisy linear inverse problems, Tables 2–3 show PSNR, LPIPS, and FID (Heusel et al., 2017) on a 1000-
+sample test set for FFHQ and ImageNet data, respectively. DDRM was not applied to motion deblurring
+due to the lack of an SVD. Tables 2–3 show that DDfire wins in most cases and otherwise performs well.
+Fig. 5 shows image examples for inpainting, motion deblurring, Gaussian deblurring, and 4×super-resolution
+on ImageNet. The zoomed regions show that DDfire did a better job recovering fine details. Additional
+examples can be found in Fig. 15.
+For OSF and CDP phase retrieval, Table 4 shows PSNR, LPIPS, and FID on a 1000-sample test set for
+FFHQ and ImageNet data. The table shows that DDfire outperformed the competitors in all cases. With
+10
+
+=== PDF PAGE 11 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Table 2: Noisy FFHQ results with measurement noise standard deviationσy = 0.05.
+Inpaint (box) Deblur (Gaussian) Deblur (Motion) 4 ×Super-resolution
+Model PSNR ↑LPIPS↓FID↓PSNR↑LPIPS↓FID↓PSNR↑LPIPS↓FID↓PSNR↑LPIPS↓FID↓
+DDRM 21.71 0.1551 40.61 25.35 0.2223 51.70 - - - 27.32 0.1864 45.82
+DiffPIR 22.43 0.1883 31.98 24.56 0.2394 34.82 26.91 0.1952 26.67 24.89 0.2486 32.33
+ΠGDM 21.41 0.2009 44.41 23.66 0.2525 45.34 25.14 0.2082 41.95 24.40 0.2520 51.41
+DDS 20.28 0.1481 30.23 26.74 0.1648 25.47 27.52 0.1503 27.59 26.71 0.1852 27.09
+DPS 22.54 0.1368 35.69 25.70 0.1774 25.18 26.74 0.1655 27.17 26.30 0.1850 27.38
+RED-diff 23.58 0.1883 48.86 26.99 0.2081 38.82 16.47 0.5074 128.68 25.61 0.3569 70.86
+DAPS 23.61 0.1415 31.51 26.97 0.1827 31.10 27.13 0.1718 30.74 26.91 0.1885 30.83
+DDfire 24.75 0.1101 25.26 27.10 0.1533 24.97 28.14 0.1374 26.12 27.13 0.1650 25.73
+Table 3: Noisy ImageNet results with measurement noise standard deviationσy = 0.05.
+Inpaint (box) Deblur (Gaussian) Deblur (Motion) 4 ×Super-resolution
+Model PSNR ↑LPIPS↓FID↓PSNR↑LPIPS↓FID↓PSNR↑LPIPS↓FID↓PSNR↑LPIPS↓FID↓
+DDRM 18.24 0.2423 67.47 22.56 0.3454 68.78 - - - 24.49 0.2777 64.68
+DiffPIR 18.03 0.2860 65.55 21.31 0.3683 56.35 24.36 0.2888 54.11 23.31 0.3383 63.48
+ΠGDM 17.69 0.3303 86.36 20.87 0.4191 75.43 22.15 0.3591 70.91 21.25 0.4149 78.57
+DDS 16.68 0.2222 63.07 23.14 0.2684 50.84 23.34 0.2674 50.08 23.03 0.3011 52.13
+DPS 18.23 0.2314 59.10 21.30 0.3393 50.46 21.77 0.3307 80.27 23.38 0.2904 49.86
+RED-diff 18.95 0.2909 108.88 23.45 0.3190 65.65 15.21 0.5647 198.74 22.99 0.3858 83.06
+DAPS 19.99 0.2199 61.53 23.91 0.2863 56.87 24.58 0.2722 54.83 24.04 0.2729 55.54
+DDfire 20.39 0.1915 55.54 23.71 0.2353 50.05 24.59 0.2314 49.25 23.58 0.2629 49.67
+Table 4: Noisy phase retrieval results
+FFHQ OSF FFHQ CDP ImageNet OSF ImageNet CDP
+Model PSNR ↑LPIPS↓FID↓PSNR↑LPIPS↓FID↓PSNR↑LPIPS↓FID↓PSNR↑LPIPS↓FID↓
+HIO 23.66 0.4706 130.6 17.59 0.5430 84.87 21.53 0.4584 111.5 17.65 0.4527 69.01
+DOLPH 14.73 0.7220 389.9 25.76 0.1686 32.93 14.33 0.6844 258.6 26.15 0.2256 48.26
+DPS 23.63 0.2908 53.91 29.19 0.1394 27.87 16.69 0.5314 140.2 27.21 0.1799 45.98
+RED-diff 25.47 0.2828 65.74 28.75 0.1734 28.87 18.41 0.4385 108.0 26.87 0.2173 48.12
+DAPS 24.10 0.2891 57.73 28.26 0.1927 34.97 17.62 0.4934 121.8 21.76 0.3332 54.17
+prDeep 30.90 0.1132 31.51 19.24 0.4183 59.44 26.16 0.1977 57.86 19.51 0.3934 59.34
+DDfire 33.56 0.0691 28.94 30.16 0.1186 23.30 29.93 0.1640 56.99 28.91 0.1377 44.35
+Figure 4: LPIPS vs. single image sampling time for noisy Gaussian deblurring on an A100 GPU. The
+evaluation used 1000 ImageNet images. Solid line: DDfire with CG for various numbers of NFEs. Dashed
+line: DDfire with SVD.
+11
+
+=== PDF PAGE 12 ===
+Published in Transactions on Machine Learning Research (08/2025)
+box inpainting
+y x0 DDRM DiffPIR ΠGDM DPS RED-diff DAPS DDfire
+motion deblurring
+y x0 DiffPIR ΠGDM DPS RED-diff DAPS DDfire
+4× super-resolution
+y x0 DDRM DiffPIR ΠGDM DPS RED-diff DAPS DDfire
+Gaussian deblurring
+y x0 DDRM DiffPIR ΠGDM DPS RED-diff DAPS DDfire
+Figure 5: Example recoveries from noisy linear inverse problems with ImageNet images.
+FFHQ OSF, for example, DDfire outperformed the best competitor (prDeep) by 2.6 dB and the second best
+(RED-diff) by 8.1 dB in PSNR. Example reconstructions can be found in Fig. 14.
+4.3 Runtime results
+Figure 4 shows LPIPS vs. average runtime (in seconds on an A100 GPU) to generate a single image for noisy
+Gaussian deblurring on the 1000-sample ImageNet test set. The figure shows that DDfire gives a better
+performance/complexity tradeoff than the competitors. It also shows that DDfire is approximately 1.5 times
+faster than DPS when both are run at 1000 NFEs, due to DPS’s use of backpropagation.
+Figure 11 shows LPIPS vs. runtime for noisy OSF phase retrieval on the 1000-sample FFHQ test set, showing
+that DDfire gives a significantly better performance/complexity tradeoff than all diffusion-based competitors.
+12
+
+=== PDF PAGE 13 ===
+Published in Transactions on Machine Learning Research (08/2025)
+5 Conclusion
+To solve linear inverse problems, we proposed the Fast Iterative Renoising (FIRE) algorithm, which can
+be interpreted as the HQS plug-and-play algorithm with a colored renoising step that aims to whiten the
+denoiser input error. We then extended the linear FIRE algorithm to the generalized-linear case using expec-
+tation propagation (EP). Since these FIRE algorithms approximate the measurement-conditional denoiser
+E{x0|xt,y}, or equivalently the measurement-conditional score∇x lnpt(xt|y), they can be readily combined
+with DDIM for diffusion posterior sampling, giving the “DDfire” algorithm. Experiments on box inpainting,
+Gaussian and motion deblurring, and 4×super-resolution with FFHQ and ImageNet images show DDfire
+outperforming DDRM, ΠGDM, DDS, DiffPIR, DPS, RED-diff, and DAPS in PSNR, LPIPS, and FID met-
+rics in nearly all cases. Experiments on noisy FFHQ and ImageNet phase retrieval (both OSF and CDP
+versions) show DDfire outperforming HIO, prDeep, DOLPH, DPS, RED-diff, and DAPS in all cases. Finally,
+DDfire offers fast inference, with better LPIPS-versus-runtime curves than the competitors.
+Acknowledgements
+This work was funded in part by the National Institutes of Health under grant R01-EB029957.
+References
+Rizwan Ahmad, Charles A. Bouman, Gregery T. Buzzard, Stanley Chan, Sizhou Liu, Edward T. Reehorst,
+and Philip Schniter. Plug and play methods for magnetic resonance imaging.IEEE Signal Process. Mag.,
+37(1):105–116, March 2020.
+Tamir Bendory, Robert Beinert, and Yonina C Eldar. Fourier phase retrieval: Uniqueness and algorithms.
+In MATHEONConf. Compressed Sensing and its Applications, pp. 55–91, 2015.
+Christopher M. Bishop.Pattern Recognition and Machine Learning. Springer, New York, 2007.
+Levi Borodenko. motionblur. Downloaded fromhttps://github.com/LeviBorodenko/motionblur, 2020.
+Charles A Bouman and Gregery T Buzzard. Generative plug and play: Posterior sampling for inverse
+problems. In Proc. Allerton Conf. Commun. Control Comput., pp. 1–7, 2023.
+Emmanuel Candès, Xiaodong Li, and Mahdi Soltanolkotabi. Phase retrieval from coded diffraction patterns.
+Appl. Comput. Harmonic Anal., 39(2):277–299, 2015.
+Sitan Chen, Sinho Chewi, Holden Lee, Yuanzhi Li, Jianfeng Lu, and Adil Salim. The probability flow ODE
+is provably fast. InProc. Neural Info. Process. Syst. Conf., volume 36, pp. 68552–68575, 2023.
+Hyungjin Chung, Jeongsol Kim, Michael T McCann, Marc L Klasky, and Jong Chul Ye. Diffusion posterior
+sampling for general noisy inverse problems. InProc. Intl. Conf. Learn. Rep., 2023a.
+Hyungjin Chung, Jeongsol Kim, Michael T McCann, Marc L Klasky, and Jong Chul Ye. diffusion-posterior-
+sampling. https://github.com/DPS2022/diffusion-posterior-sampling, March 2023b.
+Hyungjin Chung, Suhyeon Lee, and Jong Chul Ye. Decomposed diffusion sampler for accelerating large-scale
+inverse problems. InProc. Intl. Conf. Learn. Rep., 2024a.
+Hyungjin Chung, Suhyeon Lee, and Jong Chul Ye. DDS. https://github.com/hyungjin-chung/DDS,
+2024b.
+FlorentinCoeurdoux, Nicolas Dobigeon, andPierreChainais. Plug-and-playsplitGibbs sampler: Embedding
+deep generative priors in Bayesian inference.IEEE Trans.Image Process., 33:3496–3507, 2024.
+Giannis Daras, Hyungjin Chung, Chieh-Hsin Lai, Yuki Mitsufuji, Jong Chul Ye, Peyman Milanfar,
+Alexandros G Dimakis, and Mauricio Delbracio. A survey on diffusion models for inverse problems.
+arXiv:2410.00083, 2024.
+13
+
+=== PDF PAGE 14 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. Imagenet: A large-scale hierarchical
+image database. InProc. IEEE Conf. Comp. Vision Pattern Recog., pp. 248–255, 2009.
+Prafulla Dhariwal and Alex Nichol. Diffusion models beat GANs on image synthesis. InProc. Neural Info.
+Process. Syst. Conf., volume 34, pp. 8780–8794, 2021.
+Bradley Efron. Tweedie’s formula and selection bias.J. Am. Statist. Assoc., 106(496):1602–1614, 2011.
+James R. Fienup. Phase retrieval algorithms: A comparison.Appl. Optics, 21(15):2758–2769, August 1982.
+Mario A. T. Figueiredo and Jose M Bioucas-Dias. Restoration of Poissonian images using alternating
+direction optimization. IEEE Trans.Image Process., 19(12):3133–3145, 2010.
+Doeke Hekstra, Ian Hunt-Isaak, Jack Greisman, and John Russell. phase-retrieval.https://github.com/
+Hekstra-Lab/phase-retrieval, 2018.
+Martin Heusel, Hubert Ramsauer, Thomas Unterthiner, Bernhard Nessler, and Sepp Hochreiter. GANs
+trained by a two time-scale update rule converge to a local Nash equilibrium. In Proc. Neural Info.
+Process. Syst. Conf., volume 30, 2017.
+Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models. InProc. Neural Info.
+Process. Syst. Conf., volume 33, pp. 6840–6851, 2020.
+Aapo Hyvärinen. Estimation of non-normalized statistical models by score matching.J. Mach. Learn. Res.,
+6:695–709, 2005.
+AjilJalal, MariusArvinte, GiannisDaras, EricPrice, AlexDimakis, andJonathanTamir. Robustcompressed
+sensing MRI with deep generative priors. InProc. Neural Info. Process. Syst. Conf., 2021.
+Tero Karras, Samuli Laine, and Timo Aila. A style-based generator architecture for generative adversarial
+networks. InProc. IEEE Conf. Comp. Vision Pattern Recog., pp. 4396–4405, 2019.
+Bahjat Kawar, Michael Elad, Stefano Ermon, and Jiaming Song. Denoising diffusion restoration models. In
+Proc. Neural Info. Process. Syst. Conf., 2022a.
+Bahjat Kawar, Michael Elad, Stefano Ermon, and Jiaming Song. Denoising diffusion restoration models.
+Downloaded from https://github.com/bahjat-kawar/ddrm, May 2022b.
+Rémi Laumont, Valentin De Bortoli, Andrés Almansa, Julie Delon, Alain Durmus, and Marcelo Pereyra.
+Bayesian imaging using plug & play priors: When Langevin meets Tweedie.SIAM J. Imag. Sci., 15(2):
+701–737, 2022.
+David G Luenberger and Yinyu Ye.Linear and Nonlinear Programming. Springer, 2016.
+Morteza Mardani, Jiaming Song, Jan Kautz, and Arash Vahdat. A variational perspective on solving inverse
+problems with diffusion models. InProc. Intl. Conf. Learn. Rep., 2024.
+Xiangming Meng and Yoshiyuki Kabashima. QCS-GGM+: Improved quantized compressed sensing with
+score-based generative models. InProc. AAAI Conf. Artificial Intell., volume 38, pp. 14341–14349, 2024.
+Xiangming Meng, Sheng Wu, and Jiang Zhu. A unified Bayesian inference framework for generalized linear
+models. IEEE Signal Process. Lett., 25(3):398–402, 2018.
+C. A. Metzler. prDeep.https://github.com/ricedsp/prDeep/tree/master, 2018.
+Christopher A. Metzler, Philip Schniter, Ashok Veeraraghavan, and Richard G. Baraniuk. prDeep: Robust
+phase retrieval with flexible deep neural networks. InProc. Intl. Conf. Mach. Learn., pp. 3501–3510, 2018.
+Thomas Minka.A Familyof Approximate Algorithms for BayesianInference. PhD thesis, Dept. Comp. Sci.
+Eng., MIT, Cambridge, MA, USA, 2001.
+14
+
+=== PDF PAGE 15 ===
+Published in Transactions on Machine Learning Research (08/2025)
+NVlabs. RED-diff. Downloaded fromhttps://github.com/NVlabs/RED-diff, 2023.
+Beresford N. Parlett.The symmetric eigenvalueproblem. SIAM, 1998.
+H. Vincent Poor.An Introduction to Signal Detection and Estimation. Springer, New York, NY, USA, 2nd
+edition, 1994.
+Edward T. Reehorst and Philip Schniter. Regularization by denoising: Clarifications and new interpretations.
+IEEE Trans.Comput. Imag., 5(1):52–67, March 2019.
+Marien Renaud, Jean Prost, Arthur Leclaire, and Nicolas Papadakis. Plug-and-play image restoration with
+stochastic denoising regularization. InProc. Intl. Conf. Mach. Learn., 2024.
+Yaniv Romano, Michael Elad, and Peyman Milanfar. The little engine that could: Regularization by de-
+noising (RED). SIAM J. Imag. Sci., 10(4):1804–1844, 2017.
+Philip Schniter, Sundeep Rangan, and Alyson K Fletcher. Vector approximate message passing for the
+generalized linear model. InProc. Asilomar Conf. Signals Syst. Comput., pp. 1525–1529, 2016.
+Yoav Shechtman, Yonina C Eldar, Oren Cohen, Henry Nicholas Chapman, Jianwei Miao, and Mordechai
+Segev. Phase retrieval with application to optical imaging: A contemporary overview. IEEE Signal
+Process. Mag., 32(3):87–109, 2015.
+ShirinShoushtari, JiamingLiu, andUlugbekSKamilov. Diffusionmodelsforphaseretrievalincomputational
+imaging. In Proc. Asilomar Conf. Signals Syst. Comput., pp. 779–783, 2023.
+Jascha Sohl-Dickstein, Eric Weiss, Niru Maheswaranathan, and Surya Ganguli. Deep unsupervised learning
+using nonequilibrium thermodynamics. InProc. Intl. Conf. Mach. Learn., pp. 2256–2265, 2015.
+Jiaming Song, Chenlin Meng, and Stefano Ermon. Denoising diffusion implicit models. InProc. Intl. Conf.
+Learn. Rep., 2021a.
+Jiaming Song, Arash Vahdat, Morteza Mardani, and Jan Kautz. Pseudoinverse-guided diffusion models for
+inverse problems. InProc. Intl. Conf. Learn. Rep., 2023.
+Yang Song and Stefano Ermon. Generative modeling by estimating gradients of the data distribution. In
+Proc. Neural Info. Process. Syst. Conf., 2019.
+Yang Song and Stefano Ermon. Improved techniques for training score-based generative models. InProc.
+Neural Info. Process. Syst. Conf., 2020.
+Yang Song, Jascha Sohl-Dickstein, Diederik P Kingma, Abhishek Kumar, Stefano Ermon, and Ben Poole.
+Score-based generative modeling through stochastic differential equations. InProc. Intl.Conf. Learn. Rep.,
+2021b.
+Yinhuai Wang, Jiwen Yu, and Jian Zhang. Zero-shot image restoration using denoising diffusion null-space
+model. In Proc. Intl. Conf. Learn. Rep., 2023.
+Zihui Wu, Yu Sun, Yifan Chen, Bingliang Zhang, Yisong Yue, and Katherine Bouman. Principled proba-
+bilistic imaging using diffusion models as plug-and-play priors. InProc. Neural Info. Process. Syst. Conf.,
+2024.
+Xingyu Xu and Yuejie Chi. Provably robust score-based diffusion posterior sampling for plug-and-play image
+reconstruction. In Proc. Neural Info. Process. Syst. Conf., 2024.
+Bingliang Zhang, Wenda Chu, Julius Berner, Chenlin Meng, Anima Anandkumar, and Yang Song. Improving
+diffusion inverse problem solving with decoupled noise annealing. Downloaded fromhttps://github.com/
+zhangbingliang2019/DAPS, 2024.
+15
+
+=== PDF PAGE 16 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Bingliang Zhang, Wenda Chu, Julius Berner, Chenlin Meng, Anima Anandkumar, and Yang Song. Improving
+diffusion inverse problem solving with decoupled noise annealing. In Proc. IEEE Conf. Comp. Vision
+Pattern Recog., 2025.
+Kai Zhang, Yawei Li, Wangmeng Zuo, Lei Zhang, Luc Van Gool, and Radu Timofte. Plug-and-play image
+restoration with deep denoiser prior.IEEE Trans.Pattern Anal. Mach. Intell., 44(10):6360–6376, 2021.
+RichardZhang, PhillipIsola, AlexeiAEfros, EliShechtman, andOliverWang. Theunreasonableeffectiveness
+of deep features as a perceptual metric. InProc. IEEE Conf. Comp. Vision Pattern Recog., pp. 586–595,
+2018.
+Yuanzhi Zhu, Kai Zhang, Jingyun Liang, Jiezhang Cao, Bihan Wen, Radu Timofte, and Luc Van Gool.
+Denoising diffusion models for plug-and-play image restoration. InProc. IEEEConf.Comp.VisionPattern
+Recog., pp. 1219–1229, 2023.
+Yuanzhi Zhu, Kai Zhang, Jingyun Liang, Jiezhang Cao, Bihan Wen, Radu Timofte, and Luc Van Gool.
+Diffpir. Downloaded fromhttps://github.com/yuanzhi-zhu/DiffPIR, July 2024.
+A. Zymnis, S. Boyd, and E Candès. Compressed sensing with quantized measurements.IEEE Signal Process.
+Lett., 17(2):149–152, 2010.
+16
+
+=== PDF PAGE 17 ===
+Published in Transactions on Machine Learning Research (08/2025)
+A VP formulation
+In the main text, we describe DDfire for the VE SDE formulation from Song et al. (2021b) and the corre-
+sponding SMLD discretization from Song & Ermon (2019). Here, we describe it for the VP SDE from Song
+et al. (2021b) and the corresponding DDPM discretization from Ho et al. (2020).
+From Song et al. (2021b), the general SDE forward process can be written as
+dx =f(x,t ) dt +g(t) dw (31)
+for some choices off(·,·) and g(·), where dw is the standard Wiener process (i.e., Brownian motion). The
+reverse process can then be described by
+dx =
+(
+f(x,t )−g2(t)∇x lnpt(x)
+)
+dt +g(t) dw, (32)
+wherept(·)isthedistributionof xattime tand dw isthereverseWienerprocess. IntheVE-SDE, f(x,t ) = 0
+and g(t) =
+√
+d[σ2(t)]/ dt for some variance scheduleσ2(t), but in the VP-SDE,f(x,t ) = −1
+2β(t)x and
+g(t) =
+√
+β(t) for some variance scheduleβ(t). When discretized tot∈{0, 1,...,T}, the VP forward process
+becomes
+˜xt =
+√
+1−βt ˜xt−1 +
+√
+βt ˜wt−1 (33)
+with i.i.d.{˜wt}∼N(0,I), so that
+˜xt =√αtx0 +√1−αt˜ϵt (34)
+with αt ≜ 1−βt, αt = ∏t
+s=1αs, and ˜ϵt∼N(0,I). Throughout, we write the VP quantities with tildes to
+distinguish them from the VE quantities. The DDPM reverse process then takes the form
+˜xt−1 = 1√αt
+(˜xt +βt∇xt lnp(˜xt)
+)
++ Σt ˜nt with Σ 2
+t ≜ 1−αt−1
+1−αt
+βt (35)
+and is typically initialized at˜xT∼N(0,I). By rewriting (34) as
+1√αt
+˜xt =x0 +
+√
+1−αt
+αt
+˜ϵt (36)
+and comparing it to (3), we recognize the VP/VE relationships
+1√αt
+˜xt =xt and 1−αt
+αt
+=σ2
+t ⇔αt = 1
+1 +σ2
+t
+. (37)
+Furthermore, assuming thatαT ≪1, the VP initialization ˜xT ∼N(0,I) is well approximated by the VE
+initializationxT∼N(0,σ2
+TI).
+B DDIM details for VP
+The DDIM reverse process from Song et al. (2021a) provides an alternative to the DDPM reverse process
+that offers a flexible level of stochasticity. When describing VP DDIM, we will write the quantities as
+˜xk, ˜ϵk, ˜nk,αk to distinguish them from the corresponding VP DDPM quantities˜xt, ˜ϵt, ˜nt,αt, and we will
+write the total number of steps asK. Like (34), DDIM is built around the model
+˜xk =√αkx0 +√1−αk˜ϵk, ˜ϵk∼N(0,I). (38)
+Adapting the first two equations from Song et al. (2021a, App.D.3) to our notation, we have
+˜xk−1 =
+√
+αk−1
+( ˜xk−√1−αk E{˜ϵk|˜xk,y}√αk
+)
++
+√
+1−αk−1−˜ς2
+k E{˜ϵk|˜xk,y}+ ˜ςk ˜nk (39)
+˜ςk ≜ηddim
+√
+1−αk−1
+1−αk
+√
+1−αk
+αk−1
+(40)
+17
+
+=== PDF PAGE 18 ===
+Published in Transactions on Machine Learning Research (08/2025)
+with ˜nk∼N(0,I) and tunableηddim≥0. When ηddim = 1 and K = T, DDIM reduces to DDPM. But
+when ηddim = 0, the reverse process is deterministic. In fact, it can be considered a discretization of the
+probability flow ODE (Song et al., 2021a), which often works much better than the SDE when the number
+of discretization stepsK is small. We now write (39) in a simpler form. ApplyingE{·|˜xk,y}to both sides
+of (38) gives
+˜xk =√αk E{x0|˜xk,y}+√1−αk E{˜ϵk|˜xk,y} ⇔E{˜ϵk|˜xk,y}= ˜xk−√αk E{x0|˜xk,y}√1−αk
+, (41)
+and plugging (41) into (39) gives
+˜xk−1 =
+√
+αk−1 E{x0|˜xk,y}+ ˜ςk ˜nk +
+√
+1−αk−1−˜ς2
+k
+( ˜xk−√αk E{x0|˜xk,y}√1−αk
+)
+(42)
+=
+√
+αk−1 E{x0|˜xk,y}+ ˜ςk ˜nk + ˜hk
+(˜xk−√αk E{x0|˜xk,y}
+)
+(43)
+= ˜hk ˜xk + ˜gk E{x0|˜xk,y}+ ˜ςk ˜nk (44)
+for
+˜hk ≜
+√
+1−αk−1−˜ς2
+k
+1−αk
+and ˜gk ≜
+√
+αk−1−˜hk
+√αk. (45)
+Thus the VP DDIM reverse process can be described by (40), (44), and (45) with˜nk∼N(0,I)∀k and
+initialization ˜xK∼N(0,I).
+C DDIM details for VE
+We now provide the details for the VE version of DDIM. Starting with the VP DDIM reverse process (44),
+we can divide both sides by√αk−1 to get
+˜xk−1√αk−1
+=
+˜hk
+√αk√αk−1
+˜xk√αk
++ ˜gk√αk−1
+E{x0|˜xk,y}+ ˜ςk√αk−1
+˜nk (46)
+and leveraging the VP-to-VE relationship (37) to write
+xk−1 =hkxk +gk E{x0|xk,y}+ςknk with hk =
+˜hk
+√αk√αk−1
+, g k = ˜gk√αk−1
+, ςk = ˜ςk√αk−1
+(47)
+withnk∼N(0,I)∀k and initializationxK∼N(0,σ2
+KI). Plugging ˜gk from (45) into (47), we find
+gk =
+√αk−1−˜hk
+√αk√αk−1
+= 1−hk. (48)
+Then plugging (40) into (47), we find
+ςk = ηddim√αk−1
+√
+1−αk−1
+1−αk
+√
+1−αk
+αk−1
+=ηddim
+√
+1
+αk−1
+1−αk−1
+1−αk
+(
+1−αk
+αk−1
+)
+(49)
+=ηddim
+√
+1−αk−1
+αk−1
+αk
+1−αk
+( 1
+αk
+−1
+αk−1
+)
+=ηddim
+√
+σ2
+k−1
+σ2
+k
+(
+[1 +σ2
+k]−[1 +σ2
+k−1]
+)
+(50)
+=ηddim
+√
+σ2
+k−1(σ2
+k−σ2
+k−1)
+σ2
+k
+. (51)
+Finally, noting from (37), (47), and (51) that
+˜ς2
+k
+1−αk−1
+=ς2
+k
+αk−1
+1−αk−1
+= ς2
+k
+σ2
+k−1
+= η2
+ddim
+σ2
+k−1
+σ2
+k−1(σ2
+k−σ2
+k−1)
+σ2
+k
+=η2
+ddim
+(
+1−σ2
+k−1
+σ2
+k
+)
+, (52)
+18
+
+=== PDF PAGE 19 ===
+Published in Transactions on Machine Learning Research (08/2025)
+we plug ˜hk from (45) into (47) to find
+hk =
+√
+αk
+αk−1
+1−αk−1−˜ς2
+k
+1−αk
+=
+√
+αk
+1−αk
+1−αk−1−˜ς2
+k
+αk−1
+(53)
+=
+√
+αk
+1−αk
+1−αk−1
+αk−1
+(
+1− ˜ς2
+k
+1−αk−1
+)
+=
+√
+σ2
+k−1
+σ2
+k
+(
+1−η2
+ddim
+(
+1−σ2
+k−1
+σ2
+k
+))
+(54)
+=
+√
+σ2
+k−1
+σ2
+k
+(
+1−ς2
+k
+σ2
+k−1
+)
+=
+√
+σ2
+k−1
+σ2
+k
+−ς2
+k
+σ2
+k
+=
+√
+σ2
+k−1−ς2
+k
+σ2
+k
+. (55)
+The VE DDIM reverse process is summarized in (26)-(27).
+D Speeding up CG
+In this section, we describe a small modification to FIRE that can help to speed up the CG step. When
+CG is used to solve (11), its convergence speed is determined by the condition number ofATA + (σ2
+y/ν)I
+(Luenberger & Ye, 2016). Thus CG can converge slowly whenσ2
+y/νis small, which can happen in early
+DDfire iterations. To speed up CG, we propose to solve (11) usingˆσy in place ofσy, for someˆσy >σy. Since
+the condition number ofATA + (ˆσ2
+y/ν)I is at mostνs2
+max/ˆσ2
+y + 1, we can guarantee a conditional number of
+at most 10 001by setting
+ˆσ2
+y =νs2
+max max{10−4,σ2
+y/(νs2
+max)}. (56)
+Although using ˆσy > σy in (11) will degrade the MSE ofˆx, the degradation is partially offset by the fact
+that less noise will be added when renoisingr. In any case, the modified (11) can be written as
+ˆx = (ATA/ˆσ2
+y +I/ν)−1(ATy/ˆσ2
+y +x/ν) (57)
+= (ATA/ˆσ2
+y +I/ν)−1(AT[Ax0 +σyw]/ˆσ2
+y + [x0−√νe]/ν) (58)
+=x0 + (ATA/ˆσ2
+y +I/ν)−1(ATwσy/ˆσ2
+y−e/√ν), (59)
+in which caseˆx∼N(x0,C) with covariance
+C = (ATA/ˆσ2
+y +I/ν)−1(
+ATAσ2
+y/ˆσ4
+y +I/ν
+)
+(ATA/ˆσ2
+y +I/ν)−1 (60)
+=
+(
+VS TSV T/ˆσ2
+y +I/ν
+)−1(
+VS TSV Tσ2
+y/ˆσ4
+y +I/ν
+)(
+VS TSV T/ˆσ2
+y +I/ν
+)−1
+(61)
+=V Diag(γ)V T for γi = s2
+iσ2
+y/ˆσ4
+y + 1/ν
+[s2
+i/ˆσ2y + 1/ν]2. (62)
+The desired renoising variance then becomes
+Σ =σ2I−C =V Diag(λ)V T for λi =σ2−s2
+iσ2
+y/ˆσ4
+y + 1/ν
+[s2
+i/ˆσ2y + 1/ν]2 (63)
+and we can generate the colored noisec via (16) if the SVD is practical. If not, we approximateΣ by
+ˆΣ = (σ2−ν)I +ξATA with ξ= 1
+s2max
+(
+ν−s2
+maxσ2
+y/ˆσ4
+y + 1/ν
+[s2max/ˆσ2y + 1/ν]2
+)
+(64)
+and generate the colored noisec via (19). It is straightforward to show thatξ≥0 whenever ˆσy≥σy, in
+which case σ2 ≥νguarantees that ˆΣ is a valid covariance matrix. Figure 6 shows the close agreement
+between the ideal and approximateˆΣ-renoised error spectra both whenˆσy =σy and when ˆσy >σy.
+19
+
+=== PDF PAGE 20 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Figure 6: For FFHQ Gaussian deblurring, the left plot shows the eigenspectrum of the error covariance
+Cov{x−x0}with either ˆσ2
+y from (56) (if CG speedup) or ˆσ2
+y = σ2
+y (if no CG speedup), as well as the
+eigenspectrum of the target error covarianceσ2I to aim for when renoising. The right plot shows the
+eigenvalues of the renoised error covarianceCov{r−x0}for the ideal case whenΣ is used (possible with
+SVD) and the case whenˆΣ from (17) is used (if no SVD), with eitherˆσ2
+y or σ2
+y. Here we usedσ2
+y = 10−6,
+ν= 0.16 (corresponding to the first FIRE iteration of the first DDIM step), andρ= 35.7 (corresponding to
+the example in Fig. 3).
+E Proof of Theorem 1
+To prove Theorem 1, we begin by writing the key FIRE steps with explicit iteration indexn≥1:
+x[n] =dθ(r[n],σ[n]) (65)
+ˆx[n] =
+(
+ATA + σ2
+y
+ν[n]I
+)−1(
+ATy + σ2
+y
+ν[n]x[n]
+)
+(66)
+σ2[n+1] = max{σ2[n]/ρ,ν[n]} (67)
+λi[n] =σ2[n+1]−(s2
+i/σ2
+y + 1/ν[n])−1, i = 1,...,d (68)
+n[n] =V Diag(λ[n])1/2ε[n], ε[n]∼N(0,I) (69)
+r[n+1] = ˆx[n] +n[n] (70)
+Our proof uses induction. By the assumptions of the theorem, we know that there exists an iterationn
+(in particularn = 1) for whichr[n] = x0 +σ[n]ϵ[n] withϵ[n]∼N(0,I) and finiteσ[n]. Then due to the
+denoiser assumption, we know thatx[n] =x0−
+√
+ν[n]e[n] withe[n] =N (0,I) and knownν[n]<σ2[n]. We
+assume that this value ofν[n] is used in lines (66)-(68). Using these results and (6), we can rewrite (66) as
+ˆx[n] =
+(
+ATA + σ2
+y
+ν[n]I
+)−1(
+AT(
+Ax0 +σyw
+)
++ σ2
+y
+ν[n]
+(
+x0−
+√
+ν[n]e[n]
+))
+(71)
+=x0 +
+(
+ATA + σ2
+y
+ν[n]I
+)−1(
+σyATw−σ2
+y√
+ν[n]
+e[n]
+)
+∼N(x0,C[n]) (72)
+for
+C[n] ≜
+(
+ATA + σ2
+y
+ν[n]I
+)−1(
+σ2
+yATA + σ4
+y
+ν[n]I
+)(
+ATA + σ2
+y
+ν[n]I
+)−1
+=
+( 1
+σ2y
+ATA + 1
+ν[n]I
+)−1
+(73)
+by leveraging the independent-Gaussian assumption one[n]. From this and (68)-(69), we can then deduce
+n[n]∼N(0, Σ [n]) with Σ [n] ≜V Diag(λ[n])V T =σ2[n+1]I−C[n] (74)
+20
+
+=== PDF PAGE 21 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Algorithm 3FIRE for the GLM:ˆx = FIREGLM(y,A,p y|z,rinit,σinit,N,ρ).
+Require: y,A,s max,p y|z,N,ρ> 1,rinit,σinit. AlsoA =U Diag(s)V T if using SVD.
+1: r =rinit and σ=σinit ▷Initialize
+2: for n = 1,...,N do
+3: x←dθ(r,σ) +
+√
+ˆνϕ(σ)v, v∼N(0,I) ▷Stochastic denoising
+4: ν←2ˆνϕ(σ) ▷Error variance ofx
+5: z←Ax ▷Denoised version ofAx0
+6: νz←ν∥A∥2
+F/m ▷ Error variance ofz
+7: ˆzj←E{z0,j|yj;zj,νz}∀j = 1,...,m ▷ Estimate z0,j∼N(zj,νz) fromyj∼py|z(·|z0,j)
+8: ˆνz←1
+m
+∑m
+j=1 var{z0,j|yj;zj,νz} ▷Averaged posterior variance of{z0,j}
+9: σ2
+y←[1/ˆνz−1/νz]−1 ▷Extrinsic variance
+10: y←σ2
+y(ˆz/ˆνz−z/νz) ▷Extrinsic mean
+11: ν←(∥y−Ax∥2−σ2
+ym)/∥A∥2
+F ▷Error variance ofx
+12: ˆx←arg minx∥y−Ax∥2/σ2
+y +∥x−x∥2/ν ▷ Estimatex0∼N(x,νI) fromy∼N(Ax0;σ2
+yI)
+13: σ2←max{σ2/ρ,ν} ▷Decrease target variance
+14: if have SVDthen
+15: λi←σ2−(s2
+i/σ2
+y + 1/ν)−1, i = 1,...,d
+16: c←V Diag(λ)1/2ε, ε∼N(0,I) ▷Colored Gaussian noise
+17: else
+18: ξ←
+(
+ν−(s2
+max/σ2
+y + 1/ν)−1)
+/s2
+max
+19: c←
+[√
+σ2−νI √ξAT]
+ε, ε∼N(0,I) ▷Colored Gaussian noise
+20: r←ˆx +c ▷Renoise so thatCov{r−x0}=σ2I
+21: return ˆx
+so that, from (70),
+r[n+1]∼N(x0,C[n] + Σ [n]) =N (x0,σ2[n+1]I) (75)
+⇔r[n+1] =x0 +σ[n+1]ϵ[n+1], ϵ[n+1]∼N(0,I). (76)
+Thus, by induction, ifr[n] =x0 +σ[n]ϵ[n] withϵ[n]∼N(0,I) holds atn = 1, then it holds at alln> 1.
+Recall that the theorem also assumed thatν[n] < σ2[n] for all n. Thus, there exists a ρ >1 for which
+σ2[n]/ρ>ν[n] for alln, for which we can rewrite (67) as
+σ2[n+1] = σ2[n]/ρ∀n. (77)
+Consequently, for any iterationn≥1 we can write
+σ2[n] =σ2[1]/ρn−1 =σ2
+init/ρn−1. (78)
+Finally, because the error covariance onˆx[n] obeys
+C[n] =
+( 1
+σ2y
+ATA + 1
+ν[n]I
+)−1
+< ν[n]I < σ2[n]I = σ2
+init
+ρn−1I (79)
+we see that the error variance inˆx[n] decreases exponentially withn and thus ˆx[n] converges to the truex0.
+F GLM-FIRE algorithm
+The full algorithm for the GLM version of FIRE is given in Alg. 3. There, the dashed blue box indicates the
+lines used for the EP update; the remaining lines mirror those in SLM-FIRE, summarized as Alg. 1.
+21
+
+=== PDF PAGE 22 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Algorithm 4DDS (Chung et al., 2024a)
+Require: dθ(·,·),y,A,γdds,M cg,{σk}K
+k=1,ηddim≥0
+1: xK∼N(0,σ2
+KI)
+2: for k =K,K−1,..., 1 do
+3: xk =dθ(xk,σk) ▷Denoising
+4: ˆx0|k = CG(ATA +γddsI,ATy +γddsxk,xk,M cg)≈arg minx
+{
+∥y−Ax∥2 +γdds∥x−xk∥2}
+5: ςk =ηddim
+√
+σ2
+k−1(σ2
+k−σ2
+k−1)
+σ2
+k
+6: xk−1 =
+√
+σ2
+k−1−ς2
+k
+σ2
+k
+xk +
+(
+1−
+√
+σ2
+k−1−ς2
+k
+σ2
+k
+)
+ˆx0|k +ςknk, nk∼N(0,I) ▷DDIM update
+7: return ˆx0|k
+Algorithm 5DiffPIR (Zhu et al., 2023)
+Require: dθ(·,·),y,A,σy,λdiffpir,{σk}K
+k=1,ηdiffpir
+1: xK∼N(0,σ2
+KI)
+2: for k =K,K−1,..., 1 do
+3: xk =dθ(xk,σk) ▷Denoising
+4: ˆx0|k = arg min
+x
+{ 1
+2σ2y
+∥y−Ax∥2 + λdiffpir
+2σ2
+k
+∥x−xk∥2
+}
+▷Approximate MMSE estimation
+5: ϱk =
+√
+1−ηdiffpir
+σk−1
+σk
+6: xk−1 =ϱkxk + (1−ϱk)ˆx0|k +√ηdiffpirσk−1nk, nk∼N(0,I) ▷DDIM-like update
+7: return ˆx0|k
+G Comparison to other renoising proximal-data-fidelity PnP schemes
+In this section, we compare SLM-FIRE/DDfire to other renoising PnP schemes for the SLM that involve a
+proximal data-fidelity step or, equivalently, MMSE estimation ofx0 under the Gaussian prior assumption
+(8): DDS, DiffPIR, and SNORE, which are detailed in Alg. 4, Alg. 5, and Alg. 6, respectively.
+Comparing SLM-FIRE/DDfire (see Alg. 1 and Alg. 2) to DDS, we see that both approaches use CG for
+approximate MMSE estimation under a Gaussian prior approximation and both use a DDIM diffusion
+update. But DDS uses the hyperparametersγdds andMcg (the number CG iterations, which is usually small,
+such as four) to adjust the noise varianceνin the Gaussian prior approximation (8), while SLM-FIRE/DDfire
+estimatesνat each iteration. Also, SLM-FIRE/DDfire injects colored Gaussian noise to whiten the denoiser
+input error while DDS injects no noise outside of DDIM.
+Comparing SLM–IRE/DDfire to DiffPIR, we see that both perform MMSE estimation under a Gaussian
+prior approximation and both use a DDIM-like diffusion update. But DiffPIR uses the hyperparameter
+λdiffpir to adjust the noise varianceνin the Gaussian prior approximation (8), while SLM-FIRE/DDfire
+estimatesνat each iteration. Also, SLM-FIRE/DDfire injects colored Gaussian noise to whiten the denoiser
+input error while DiffPIR injects no noise outside of its DDIM-like step.
+Comparing SLM-FIRE to SNORE, we see that both perform MMSE estimation under a Gaussian prior
+approximation and both use renoising. But SNORE uses white renoising while SLM-FIRE uses colored
+renoising to whiten the denoiser input error. Also, SNORE uses the hyperparameterδsnore to adjust the
+noise varianceνin the Gaussian prior approximation (8), while SLM-FIRE estimates it at each iteration.
+Furthermore, since SNORE is based on the RED algorithm (Romano et al., 2017), its denoiser output is
+scaled and shifted. Finally, SNORE has many more tuning parameters than SLM-FIRE.
+22
+
+=== PDF PAGE 23 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Algorithm 6Annealed Proximal SNORE (Renaud et al., 2024)
+Require: dθ(·,·),y,A,σy,δsnore,M snore,{σi}Msnore
+i=1 ,{αi}Msnore
+i=1 ,{Ki}Msnore
+i=1 , ˆxinit
+1: ˆx0|KMsnore = ˆxinit
+2: for i =Msnore,M snore−1...,1 do
+3: for k =Ki,Ki−1,..., 1 do
+4: rk = ˆx0|k +σini,k, ni,k∼N(0,I) ▷Renoising
+5: xk =
+(
+1−δsnoreαi
+σ2
+i
+)
+ˆx0|k + δsnoreαi
+σ2
+i
+dθ(rk,σi) ▷RED update
+6: ˆx0|k−1 = arg min
+x
+{ 1
+2σ2y
+∥y−Ax∥2 + 1
+2δsnore
+∥x−xk∥2
+}
+▷Approximate MMSE estimation
+7: return ˆx0|k
+H Implementation details
+H.1 Inverse problems
+For the linear inverse problems, the measurements were generated as
+y =Ax0 +σyw, w∼N(0,I) (80)
+with appropriateA. For box inpainting, Gaussian deblurring, and super-resolution we used theA andAT
+implementations from Kawar et al. (2022b). For motion deblurring, we implemented our ownA and AT
+with reflect padding. All methods used these operators implementations except DiffPIR, which used the
+authors’ implementations. Motion-blur kernels were generated using Borodenko (2020).
+For phase retrieval, the measurements were generated using the method from Metzler et al. (2018):
+y2
+j =|z0,j|2 +wj, wj∼N(0,α2
+shot|z0,j|2), j = 1,...,m, (81)
+whereαshot controls the noise level andz0 =Ax0, with the values ofx0 scaled to lie in the range[0, 255]. This
+is an approximation of the Poisson shot-noise corruption model in that the intensityy2
+j/α2
+shot is approximately
+Poisson((|z0,j|/αshot)2) distributed for sufficiently small values ofαshot. We implemented the oversampled-
+FourierA by zero-padding the image by 2×in each direction and then passing the result through a unitary
+FFT. For CDP phase retrieval, we setA = [AT
+1,...,AT
+L]T for Al = L−1/2F Diag(cl), whereF is ad×d
+FFT andcl contain i.i.d. random entries uniformly distributed on the unit circle in the complex plane, and
+where L = 4. In both cases,ATA =I.
+H.2 Evaluation protocol
+For the linear inverse problems, we run each method once for each measurementy in the 1000-sample test
+set and compute average PSNR, average LPIPS, and FID from the resulting recoveries.
+For OSF phase retrieval, following Chung et al. (2023a), we run each algorithm four times and keep the
+reconstruction ˆx that minimizes the measurement residual∥y−|Aˆx|∥. Performance metrics are then evalu-
+ated after resolving the inherent spatial shift and conjugate flip ambiguities associated with phase retrieval
+(see, e.g., Bendory et al. (2015)). Note global phase ambiguity is not an issue due to the non-negativity
+of our images. For the CDP experiments, we run each algorithm only once and don’t perform ambiguity
+resolution, because it is unnecessary.
+H.3 Unconditional diffusion models
+For the FFHQ experiments, all methods used the pretrained model from Chung et al. (2023a). For the
+ImageNet experiments, all methods used the pretrained model from Dhariwal & Nichol (2021). In both
+cases, T = 1000.
+23
+
+=== PDF PAGE 24 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Table 5: Hyperparameter values used for DDfire.
+Inpaint (box) Deblur (Gaussian) Deblur (Motion) 4 ×Super-resolution
+Dataset σy K δ K δ K δ K δ
+FFHQ 0.05 100 0.50 650 0.60 500 0.20 650 0.60
+ImageNet 0.05 100 0.50 500 0.20 500 0.20 650 0.60
+Table 6: Hyperparameter values used for DDfire phase retrieval.
+Operator αshot K δ
+OSF 8 20 0.00
+CDP 45 10 0.00
+H.4 Recovery methods
+DDfire. Our Python/Pytorch codebase is a modification of the DPS codebase from Chung et al. (2023b)
+and is available athttps://github.com/matt-bendel/DDfire. For all but one row of the ablation study
+in Table 1 and the dashed line in Fig. 4, we ran DDfire without an SVD and thus with the approximate
+renoising in (19).
+For the linear inverse problems, unless noted otherwise, we ran DDfire for 1000 NFEs usingηddim = 1.5, and
+we did not use stochastic denoising (i.e.,ˆνϕ(σ) = 0∀σin Alg. 1), as suggested by our ablation study. We
+tuned the(K,δ) hyperparameters to minimize LPIPS on a 100-sample validation set, yielding the parameters
+in Table 5. For the runtime results in Fig. 4, we usedηddim = 1.0 forNtot∈{50, 100, 200, 500}andηddim = 0
+for Ntot = 20, and we usedK = NFE/2 and δ= 0.2 for all cases. For theν-estimation step in Alg. 1, we
+used∥A∥2
+F≈1
+L
+∑L
+l=1∥Awl∥2 with i.i.d.wl∼N(0,I) and L = 25.
+For phase retrieval, we ran DDfire using a default of 800 NFEs for OSF and 100 NFEs for CDP. We set
+ηddim = 0.85 and the hand-tuned(K,δ) values listed in Table 6. Also, we did use stochastic denoising, since it
+helped in all metrics. Since the likelihoodpy|z(y|z) =N (y;|z|,σ2
+y ) makes the conditional mean and variance
+in lines 8-7 of Alg. 3 intractable, we used the Laplace approximation (Bishop, 2007). For the special case of
+ImageNet OSF, we guided DDfire using the HIO estimate; in all other cases, DDfire received no guidance.
+Appendix H.5 details the guidance.
+DDRM. We ran DDRM for 20 NFEs using the authors’ implementation from Kawar et al. (2022b) with
+minor changes to work with our codebase.
+DiffPIR. We ran DiffPIR for 20 NFEs using the authors’ implementation from Zhu et al. (2024) without
+modification. Hyperparameters were set according to the reported values in Zhu et al. (2023).
+ΠGDM. We ran ΠGDM for 100 NFEs. Since the authors do not provide aΠGDM implementation for
+noisy inverse problems in NVlabs (2023), we codedΠGDM ourselves in Python/PyTorch. With problems
+for which an SVD is available, we computed(AAT +ζkI)−1 using the efficient SVD implementation ofA
+from the DDRM codebase Kawar et al. (2022b), and otherwise we used CG.
+DDS. We ran DDS for 100 NFEs. We leveraged the authors’ implementation in Chung et al. (2024b) to
+reimplement DDS in our codebase. We tuned the DDS regularization parameterγdds via grid search and
+used ηddim = 0.8 and 50 CG iterations.
+DPS. For the linear inverse problems, we ran DPS for 1000 NFEs using the authors’ implementation from
+Chung et al. (2023b) without modification, using the suggested tuning from Chung et al. (2023a, Sec. D.1).
+24
+
+=== PDF PAGE 25 ===
+Published in Transactions on Machine Learning Research (08/2025)
+For phase retrieval, we also used 1000 NFEs, but made minor adjustments to the DPS authors’ implemen-
+tation to accommodate the likelihoodpy|z(y|z) =N (y;|z|,σ2
+y ), which was used by all methods for fairness.
+We used grid-search tuning to minimize LPIPS on a 100-image validation set.
+RED-diff. We ran RED-diff for 1000 NFEs using the authors’ implementation from NVlabs (2023), with
+minor changes to work with our codebase. We tuned the RED-diff learning rate,λ, and data fidelity weightvt
+to minimize LPIPS with a 100-image validation set. For phase retrieval, we made similar code modifications
+to handle our likelihood as with DPS.
+DAPS. We ran DAPS for 1000 NFEs using the authors’ implementation from Zhang et al. (2024), with
+minor changes to work in our codebase. The tuning parameters were set as in Zhang et al. (2025). For phase
+retrieval, we made similar code modifications to handle our likelihood as with DPS.
+DOLPH. We ran DOLPH for 1000 NFEs. Since the DOLPH authors did not release an implementation,
+we implemented it ourselves in Python/PyTorch and used grid-search to find the step-size that minimized
+LPIPS on a 100-image validation set. For phase retrieval, we made similar code modifications to handle our
+likelihood as with DPS.
+HIO. We translated the MATLAB implementation of HIO from Metzler (2018) to Python and set the
+step-size parameter to0.9. We then followed the runtime procedure described in Metzler et al. (2018): For
+the OSF experiments, HIO is first run 50 times, for 50 iterations each, from a random initialization. The
+estimate ˆx with the lowest measurement residual∥y−|Aˆx|∥is then used to reinitialize HIO, after which
+it is run for 1000 more iterations. Finally, the second and third color channels in the result are shifted and
+flipped as needed to best match the first color channel. For the CDP experiments, HIO is run once for 200
+iterations from a random initialization.
+prDeep. WeusedthePythonimplementationfromHekstraetal.(2018). AsrecommendedinMetzleretal.
+(2018), we initialized prDeep with the HIO estimate for OSF experiments and with an all-ones initialization
+for CDP experiments (The HIO estimate was also used by DDfire for ImageNet OSF). We tunedλon a grid
+to minimize LPIPS on a 100-image validation set.
+H.5 DDfire with guidance
+Algorithm 7 details an extension of DDfire that takes guidance from an externally provided estimateˆxguide.
+The approach can be explained as follows. Recall from (38) and App. C that the iteration-k VE DDIM
+estimatexk is assumed to obey the model
+p(xk|x0) =N (xk;x0,σ2
+kI). (82)
+If we set ˜xguide = ˆxguide +σguidevk with vk∼N(0,I) and sufficiently largeσguide, then it is reasonable to
+model
+p(˜xguide|x0) =N (˜xguide;x0,σ2
+guideI). (83)
+Furthermore, ifvk is generated independently ofxk at each iterationk, then
+p(xk, ˜xguide|x0) =N (xk;x0,σ2
+kI)N (˜xguide;x0,σ2
+guideI) (84)
+=N (x0;xk,σ2
+kI)N (x0; ˜xguide,σ2
+guideI) (85)
+∝N(x0;rk,νkI) for
+
+
+
+rk =
+σ2
+guide
+σ2
+k +σ2
+guide
+xk + σ2
+k
+σ2
+k +σ2
+guide
+˜xguide
+νk =
+( 1
+σ2
+k
++ 1
+σ2
+guide
+)−1 (86)
+=N (rk;x0,νkI), (87)
+25
+
+=== PDF PAGE 26 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Algorithm 7DDfire with guidance
+Require: y,A,σy or py|z,ρ,{σk}K
+k=1,{Nk}K
+k=1,ηddim≥0, ˆxguide,σguide
+1: xK∼N(0,σ2
+KI)
+2: for k =K,K−1,..., 1 do
+3: ˜xguide = ˆxguide +σguidevk, vk∼N(0,I) ▷Randomized guidance
+4: rk =
+σ2
+guide
+σ2
+k +σ2
+guide
+xk + σ2
+k
+σ2
+k +σ2
+guide
+˜xguide ▷Guided estimate
+5: νk =
+( 1
+σ2
+k
++ 1
+σ2
+guide
+)−1
+▷Approximate error-variance ofrk
+6: ˆx0|k = FIRE(y,A,∗,rk,√νk,Nk,ρ) ▷FIRE via Alg. 1 or Alg. 3
+7: ςk =ηddim
+√
+σ2
+k−1(σ2
+k−σ2
+k−1)
+σ2
+k
+8: xk−1 =
+√
+σ2
+k−1−ς2
+k
+σ2
+k
+xk +
+(
+1−
+√
+σ2
+k−1−ς2
+k
+σ2
+k
+)
+ˆx0|k +ςknk, nk∼N(0,I) ▷DDIM update
+9: return ˆx0|k
+which means that i)rk is a sufficient statistic for the estimation ofx0 fromxk and ˜xguide (Poor, 1994) and
+ii) thatrk can be modeled as an AWGN-corrupted version ofx0 with AWGN varianceνk. Thus, whereas
+standard DDfire passes(xk,σ2
+k) to FIRE in iterationk, the guided version of DDfire instead passes(rk,νk)
+to FIRE at iterationk. Note that this necessitates thatσ2
+k be replaced byνk when computingNk in (29).
+Thus concludes the explanation of Alg. 7. As for the choice ofσ2
+guide, it should be large enough relative to
+the error variance inˆxguide for (83) to hold. Thus we suggest choosingσ2
+guide to be at least10×the error
+variance in ˆxguide, which can be estimated using (10). But asσ2
+guide grows larger, less guidance is provided.
+For example, ifσ2
+guide is large relative toσ2
+K, then essentially no guidance will be provided (sincerk≈xk
+and νk≈σ2
+k for allk∈{1,...,K}when σ2
+guide≫σ2
+K). For ImageNet OSF phase retrieval, we setσ2
+guide at
+50×the error variance ofˆxguide = ˆxHIO.
+H.6 Compute
+All experiments were run on a single NVIDIA A100 GPU with 80GB of memory. The runtime for each
+method on the GPU varies, as shown in Figure 4.
+I DDfire hyperparameter tuning curves
+Figures 7–10 show PSNR and LPIPS over the parameter gridsK ∈ {10, 20, 50, 100, 200, 500, 1000}and
+δ∈{0.05, 0.1, 0.2, 0.5, 0.75}for box inpainting, Gaussian deblurring, motion deblurring, and 4x super reso-
+lution, respectively, using 50 ImageNet validation images. While there are some noticeable trends, DDfire
+is relatively sensitive to hyperparemeter selection, particularly in cases where the degradation is not global
+(e.g., in inpainting).
+J Additional experimental results
+Figure 11 shows LPIPS vs. average runtime (in seconds on an A100 GPU) to generate a single image for noisy
+OSF phase retrieval on the 1000-sample FFHQ test set. The figure shows that DDfire gives a significantly
+better performance/complexity tradeoff than all diffusion-based competitors.
+Figure 12 shows SLM-FIRE’sσ2 versus iteration i, for comparison to the true denoiser input variance
+∥r−x0∥2
+2/d, and SLM-FIRE’sν, for comparison to the true denoiser output variance∥x0−x0∥2
+2/d, for
+25 FIRE iterations withρ= 1.5 for noisy 4×super-resolution att[k] = 1000. We see that the SLM-FIRE
+estimates σ2 and νtrack the true error variances quite closely.
+26
+
+=== PDF PAGE 27 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Figure 7: PSNR and LPIPS tuning results for box inpainting with 50 ImageNet validation images.
+Figure 8: PSNR and LPIPS tuning results for gaussian deblurring with 50 ImageNet validation images.
+Figure 9: PSNR and LPIPS tuning results for motion deblurring with 50 ImageNet validation images.
+27
+
+=== PDF PAGE 28 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Figure 10: PSNR and LPIPS tuning results for 4x super resolution with 50 ImageNet validation images.
+Figure 11: LPIPS vs. single image sampling time for noisy OSF phase retrieval on an A100 GPU. The
+evaluation used 1000 FFHQ images.
+Figure 13 shows a similar figure for GLM-FIRE. In particular, it shows GLM-FIRE’sσ2 versus iterationi,
+for comparison to the true denoiser input variance∥r−x0∥2
+2/d, GLM-FIRE’sν, for comparison to the true
+denoiser output variance∥x0−x0∥2
+2/d, and GLM-FIRE’sσ2
+y, for comparison to the true pseudo-measurement
+variance∥y−Ax0∥2/m for noisy FFHQ phase retrieval att[k] = 1000. We see that the GLM-FIRE estimates
+σ2, ν, andσ2
+y track the true variances quite closely.
+Example recoveries for noisy phase retrieval with FFHQ images are given in Figure 14.
+AdditionalexamplerecoveriesforthenoisylinearinverseproblemswithFFHQimagesareshowninFigure15.
+28
+
+=== PDF PAGE 29 ===
+Published in Transactions on Machine Learning Research (08/2025)
+Figure 12: SLM-FIREσ2, true denoiser input variance∥r−x0∥2
+2/d, SLM-FIREν, and true denoiser output
+variance∥x0−x0∥2
+2/d vs. SLM-FIRE iteration for noisy 4×super-resolution at t[k] = 1000 for a single
+validation samplex0.
+Figure 13: GLM-FIREσ2, true denoiser input variance∥r−x0∥2
+2/d, GLM-FIREν, and true denoiser output
+variance∥x0−x0∥2
+2/d, GLM-FIREσ2
+y, and noise variance∥y−Ax0∥2
+2/m vs. GLM-FIRE iteration for noisy
+CDP phase retrieval att[k] = 1000 for a single validation samplex0.
+29
+
+=== PDF PAGE 30 ===
+Published in Transactions on Machine Learning Research (08/2025)
+OSF
+y x0 HIO DOLPH DPS RED-diff DAPS prDeep DDfire
+CDP
+y x0 HIO DOLPH DPS RED-diff DAPS prDeep DDfire
+CDP
+y x0 HIO DOLPH DPS RED-diff DAPS prDeep DDfire
+OSF
+y x0 HIO DOLPH DPS RED-diff DAPS prDeep DDfire
+Figure 14: Example recoveries from noisy phase retrieval with FFHQ images.
+30
+
+=== PDF PAGE 31 ===
+Published in Transactions on Machine Learning Research (08/2025)
+box inpainting
+y x0 DDRM DiffPIR ΠGDM DPS RED-diff DAPS DDfire
+motion deblurring
+y x0 DiffPIR ΠGDM DPS RED-diff DAPS DDfire
+4× super-resolution
+y x0 DDRM DiffPIR ΠGDM DPS RED-diff DAPS DDfire
+Gaussian deblurring
+y x0 DDRM DiffPIR ΠGDM DPS RED-diff DAPS DDfire
+Figure 15: Example recoveries from noisy linear inverse problems with FFHQ images.
+31

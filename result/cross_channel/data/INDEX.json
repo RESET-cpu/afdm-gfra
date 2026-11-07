@@ -1,0 +1,120 @@
+{
+  "experiment": "cross_channel",
+  "label": "跨信道",
+  "generated_utc": "2026-10-23T12:19:10.266182+00:00",
+  "entries": [
+    {
+      "entry": "known_phase_1000_baselines_20261025",
+      "status": "COMPLETE",
+      "summary_available": true,
+      "plan_available": true,
+      "methods": [
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "channels": [
+        "D",
+        "A",
+        "B",
+        "C"
+      ],
+      "snr_db": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "evaluation_scenes": 1000,
+      "expected_results": 96000,
+      "reused_results": 24000,
+      "new_inferences": 72000,
+      "readout": "selected_readout_20261025",
+      "plan_sha256": "99cbe433cfe735878e520b4f648f294d43722e2bab57168c23fe7a7efb8e694c",
+      "application_sha256": "235ff4164e6216dc09a5db0b776187205935754021c75172233ed2a5299b9254",
+      "summary": "D:\\afdm-gfra\\result\\cross_channel\\data\\known_phase_1000_baselines_20261025\\selected_readout_20261025\\SUMMARY.json",
+      "report": "D:\\afdm-gfra\\result\\cross_channel\\data\\known_phase_1000_baselines_20261025\\selected_readout_20261025\\REPORT.md",
+      "completion_sha256": "03d57cb3ec0d474658d65db9d4110dda557e6ee0c009f3d1925869ad55bdb469",
+      "figures": "D:\\afdm-gfra\\result\\cross_channel\\figures\\baselines_selected_readout_20261027",
+      "figures_manifest_sha256": "4cc8e138da7cfc45f5b7df95e8f2002d5c5fec64aa71c1337da9173f886edb44",
+      "completed_utc": "2026-10-26T16:41:36.340789+00:00",
+      "independent_test": false
+    },
+    {
+      "entry": "history/final2000",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\final2000\\cross_channel",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\final2000\\cross_channel",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/lstmp_v3_formal2000_20261021",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\lstmp_v3_formal2000_20261021\\cross_channel",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\lstmp_v3_formal2000_20261021\\cross_channel",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_20261023",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_20261023\\cross_channel",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_20261023\\cross_channel",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "planned_2000_ten_layer",
+      "status": "PLANNED_NOT_STARTED",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_initialization_runtime_20261023\\cross_channel",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_initialization_runtime_20261023\\cross_channel",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_message_gem_20261022",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_message_gem_20261022\\cross_channel",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_message_gem_20261022\\cross_channel",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_runtime_20261023",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_runtime_20261023\\cross_channel",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_runtime_20261023\\cross_channel",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/new_models_paired_20261019",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\new_models_paired_20261019\\cross_channel",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\new_models_paired_20261019\\cross_channel",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/new_models_paired_20261019_v2",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\new_models_paired_20261019_v2\\cross_channel",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\new_models_paired_20261019_v2\\cross_channel",
+      "summary_available": false,
+      "plan_available": true
+    }
+  ],
+  "note": "Directory entries preserve source protocols; a stored plan or partial output is not a completed experiment.",
+  "current_active_batch": "known_phase_1000_baselines_20261025",
+  "updated_utc": "2026-10-26T16:45:30.472141+00:00",
+  "history": [
+    {
+      "utc": "2026-10-26T16:45:30.472141+00:00",
+      "event": "Cross-channel baseline inference, adopted scoring, independent verification and four channel plots complete; historical entries retained."
+    }
+  ]
+}

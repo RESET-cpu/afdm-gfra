@@ -1,0 +1,53 @@
+{
+  "status": "ANALYZED",
+  "created_utc": "2026-10-23T12:58:13.610492+00:00",
+  "scope": "Paper provenance and activity readout only; not a complete fresh solver reproduction.",
+  "main_experiment_modified": false,
+  "ding": {
+    "local_pdf": "D:\\afdm-gfra\\reference\\literature\\ding2026.pdf",
+    "sha256": "22dceda0036c892f44e961ce9ab6d094930e610befe0d51c18c3357aa1890ec5",
+    "locator": "Printed p.4 Eq.(27); p.5 Sec.IV-A",
+    "verified": "Normalized coefficient block energy compared with eta; no numerical eta, fitting recipe, or SNR-dependent threshold schedule specified in the inspected accepted manuscript. Per-SNR training is stated separately.",
+    "source": "https://openresearch.surrey.ac.uk/esploro/outputs/journalArticle/Learning-Sparsity-Pattern-An-Adaptive-Joint/991155194002346?institution=44SUR_INST"
+  },
+  "somp": {
+    "source": "https://tropp.caltech.edu/papers/TGS05-Algorithms-Simultaneous-I-preprint.pdf",
+    "locator": "Algorithm 3.1, PDF pp.6-7",
+    "verified": "Shared support and orthogonal residual; stopping criterion is input. This is not a device-block activity-threshold schedule."
+  },
+  "offgrid_sbl": {
+    "source": "https://arxiv.org/html/2101.05629v1",
+    "locator": "Sec.III-B, Sec.IV, Algorithm 1",
+    "verified": "OTFS off-grid channel estimation source; AFDM/MMV device-activity readout is project adaptation."
+  },
+  "gamp_sbl": {
+    "paper": "X. Zhang, P. Fan, L. Hao, X. Quan, Generalized Approximate Message Passing Based Bayesian Learning Detectors for Uplink Grant-Free NOMA, IEEE TVT 72(11), 15057-15061 (2023)",
+    "evidence": "Ding reference [8] rechecked; project historical audit locates Eqs.(3)-(19), Algorithm 1. Current MMV and Ding-style activity readout explicitly documented as adaptations.",
+    "limit": "Old local Zhang PDF reference does not resolve; original full text not freshly rechecked in this turn."
+  },
+  "history": [
+    {
+      "date": "2026-10-09",
+      "path": "paper/docs/BASELINE_ACTIVITY_READOUT.md",
+      "finding": "Historical document describes one threshold across SNR; document is stale for current dispatch."
+    },
+    {
+      "date": "2026-10-11",
+      "path": "paper/docs/history/results/proposed_baselines_40_20261011/READOUT_POLICY.json",
+      "finding": "Saved policy already has SNR-node threshold schedules."
+    },
+    {
+      "path": "src/configs/final/readout_policy.json",
+      "finding": "Current SOMP/GAMP/GNN policy preserves node dispatch; prior turn verified frozen plan hash and native records."
+    },
+    {
+      "path": "src/configs/final/offgrid_readout_policy.json",
+      "finding": "Separate project SBL calibration and node schedule."
+    }
+  ],
+  "conclusions": [
+    "All four baselines have identifiable paper sources; current implementations include project adaptations.",
+    "Per-SNR threshold schedules must not be attributed to the cited original algorithms.",
+    "An unspecified eta does not establish either a required fixed threshold or an author-prescribed SNR schedule."
+  ]
+}

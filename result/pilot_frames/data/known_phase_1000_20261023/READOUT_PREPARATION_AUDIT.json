@@ -1,0 +1,63 @@
+{
+  "status": "PREPARATION_PASSED_NO_FORMAL_FINALIZATION",
+  "checked_utc": "2026-10-23T16:02:20.761884+00:00",
+  "tests": {
+    "command": ".venv/Scripts/python.exe -B result/pilot_frames/data/known_phase_1000_20261023/test_finalize.py",
+    "tests": 11,
+    "passed": 11,
+    "exit_code": 0,
+    "real_STMP_scene_ids": [
+      0,
+      999
+    ],
+    "two_old_runtimes_verified": true,
+    "scope": "Synthetic readout and corruption checks plus real endpoint compact files for all five methods; no inference or threshold fitting",
+    "real_scene_ids": [
+      0,
+      999
+    ],
+    "real_methods": [
+      "STMP",
+      "offgrid_sbl",
+      "gnn",
+      "gamp",
+      "somp"
+    ],
+    "real_compact_cases": 10,
+    "baseline_real_compact_test_threshold": 0.2,
+    "baseline_real_compact_threshold_is_synthetic": true
+  },
+  "code_sha256": "ae56d290d7f08dacd368913194767cb6c3a2dcc7a87f7deb8a7d3baa9a5b47c1",
+  "test_sha256": "7584081775120f8284b342266ce4c3aa3177568b89efd256238a76368518e7a4",
+  "readout_sha256": "864a25c7cac57f3673d94ce2e3ad99b2d28690a37625db9f9a53d7d4c8efee6b",
+  "fit_source_schema_verified": {
+    "fields": [
+      "scene_count",
+      "cases",
+      "snr_dispatch"
+    ],
+    "formal_policy_not_yet_produced": true
+  },
+  "initial_real_data_check": "Detected int64 0/1 truth encoding; fixed by validating binary values before bool conversion; original frozen draft metadata retained.",
+  "real_incomplete_checks": [
+    {
+      "experiment": "pilot_frames",
+      "result": "REJECTED_INCOMPLETE_WITHOUT_FINAL_OUTPUT",
+      "reason": "Raw inference is incomplete; no final readout is allowed",
+      "raw_plan_sha256": "223691108876f3af4f20fddf238c4f8fd5c7d1ef84a4399f7e95470898c56d14",
+      "application_plan_sha256": "3af7a2aaedb6c6f564a1b2913ad99af9628d4d3f6d72064c8f8fcaa78ed74c61",
+      "external_plan_sha256": "38515a3266879104bf738c4443c35700824e972d17da47eb95bdf56abb38b576"
+    },
+    {
+      "experiment": "user_count",
+      "result": "REJECTED_INCOMPLETE_WITHOUT_FINAL_OUTPUT",
+      "reason": "Raw inference is incomplete; no final readout is allowed",
+      "raw_plan_sha256": "9c205a3899da0f6fb62a1a7d00430b41e5f1784971e09984421d5f41c6ab8a68",
+      "application_plan_sha256": "e85e87c58bacb7b021422a0ad3a359610acbf00e3516338b85ef953adec63116",
+      "external_plan_sha256": "38515a3266879104bf738c4443c35700824e972d17da47eb95bdf56abb38b576"
+    }
+  ],
+  "inference_run": false,
+  "thresholds_fitted": false,
+  "formal_completion_created": false
+}

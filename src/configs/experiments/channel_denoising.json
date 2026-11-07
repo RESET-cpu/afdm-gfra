@@ -1,0 +1,24 @@
+{
+  "schema": "afdm-experiment-v1",
+  "experiment": "channel_denoising",
+  "methods": [
+    "noisy",
+    "gaussian",
+    "genie_bound",
+    "pretrained_first",
+    "pretrained_white_first"
+  ],
+  "scenes": 500,
+  "timing_repeats": 1,
+  "reference_method": "pretrained_white_first",
+  "include_stmp": false,
+  "execution_status": "READY",
+  "values": [
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0
+  ]
+}

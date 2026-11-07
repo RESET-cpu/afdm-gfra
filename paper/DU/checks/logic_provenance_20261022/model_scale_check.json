@@ -1,0 +1,70 @@
+{
+  "kind": "analytic bounds and deterministic identity checks; no performance experiment",
+  "assumptions": [
+    "fixed ground terminal, circular orbit, fixed common reference delay within the block",
+    "constant excess path delays and gains remain assumptions of the manuscript",
+    "Doppler bound NU_MAX_HZ applies at the reference time; variation is bounded separately"
+  ],
+  "parameters": {
+    "N": 16,
+    "N_CPP": 336,
+    "sample_us": 2.0833333333333335,
+    "frame_ms": 0.7333333333333334,
+    "speed_m_s": 7561.733136872838,
+    "doppler_rate_bound_hz_s": 690.492393596021
+  },
+  "block_scales": [
+    {
+      "frames": 8,
+      "block_ms": 5.866666666666667,
+      "delay_change_bound_us": 0.12027260797010669,
+      "delay_change_bound_samples": 0.05773085182565121,
+      "doppler_change_bound_hz": 4.0508887090966565,
+      "constant_doppler_phase_error_bound_rad": 0.074660620959513
+    },
+    {
+      "frames": 16,
+      "block_ms": 11.733333333333334,
+      "delay_change_bound_us": 0.24055709854709337,
+      "delay_change_bound_samples": 0.11546740730260481,
+      "doppler_change_bound_hz": 8.101777418193313,
+      "constant_doppler_phase_error_bound_rad": 0.298642483838052
+    },
+    {
+      "frames": 24,
+      "block_ms": 17.6,
+      "delay_change_bound_us": 0.3608534717309601,
+      "delay_change_bound_samples": 0.17320966643086083,
+      "doppler_change_bound_hz": 12.15266612728997,
+      "constant_doppler_phase_error_bound_rad": 0.671945588635617
+    },
+    {
+      "frames": 32,
+      "block_ms": 23.46666666666667,
+      "delay_change_bound_us": 0.4811617275217068,
+      "delay_change_bound_samples": 0.23095762921041924,
+      "doppler_change_bound_hz": 16.203554836386626,
+      "constant_doppler_phase_error_bound_rad": 1.194569935352208
+    },
+    {
+      "frames": 40,
+      "block_ms": 29.333333333333332,
+      "delay_change_bound_us": 0.6014818659193336,
+      "delay_change_bound_samples": 0.2887112956412801,
+      "doppler_change_bound_hz": 20.25444354548328,
+      "constant_doppler_phase_error_bound_rad": 1.8665155239878248
+    },
+    {
+      "frames": 48,
+      "block_ms": 35.2,
+      "delay_change_bound_us": 0.7218138869238403,
+      "delay_change_bound_samples": 0.3464706657234433,
+      "doppler_change_bound_hz": 24.30533225457994,
+      "constant_doppler_phase_error_bound_rad": 2.687782354542468
+    }
+  ],
+  "max_doppler_derivative_check_error_hz_s": 4.2286728785256855e-08,
+  "pilot_gram_error": 3.2734930165201565e-14,
+  "effective_pilot_gram_identity_error": 8.188600426433447e-15,
+  "effective_pilot_max_normalized_offdiagonal": 0.37277174320264983
+}

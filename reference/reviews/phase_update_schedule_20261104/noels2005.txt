@@ -1,0 +1,1903 @@
+=== PDF PAGE 1 ===
+EURASIP Journal on Wireless Communications and Networking 2005:2, 117–129
+c⃝ 2005 Hindawi Publishing Corporation
+A Theoretical Framework for Soft-Information-Based
+Synchronization in Iterative (Turbo) Receivers
+Nele Noels,1 Vincenzo Lottici,2 Antoine Dejonghe,3 Heidi Steendam,1 Marc Moeneclaey,1
+Marco Luise,2 Luc Vandendorpe3
+1 Department of Telecommunications and Information Processing, Ghent University, 9000 Gent, Belgium
+Emails: nnoels@telin.ugent.be, hs@telin.ugent.be, mm@telin.ugent.be
+2 Department of Information Engineering, University of Pisa, 56122 Pisa, Italy
+Emails: v.lottici@iet.unipi.it, m.luise@iet.unipi.it
+3 Communications and Remote Sensing Laboratory, Universit´e Catholique de Louvain, 1348 Louvain-la-Neuve, Belgium
+Email: dejonghe@imec.be, vandendorpe@tele.ucl.ac
+Received 13 May 2004; Revised 29 September 2004
+This contribution considers turbo synchronization, that is to say, the use of soft data information to estimate parameters like
+carrier phase, frequency, or timing o ﬀsets of a modulated signal within an iterative data demodulator. In turbo synchronization,
+the receiver exploits the soft decisions computed at each turbo decoding iteration to provide a reliable estimate of some signal
+parameters. The aim of our paper is to show that such “turbo-estimation” approach can be regarded as a special case of the
+expectation-maximization (EM) algorithm. This leads to a general theoretical framework for turbo synchronization that allows to
+derive parameter estimation procedures for carrier phase and frequency o ﬀset, as well as for timing o ﬀset and signal amplitude.
+The proposed mathematical framework is illustrated by simulation results reported for the particular case of carrier phase and
+frequency oﬀsets estimation of a turbo-coded 16-QAM signal.
+Keywords and phrases: turbo synchronization, iterative detection, turbo codes, parameter estimation.
+1. INTRODUCTION
+The impressive performance of turbo codes [1]h a st r i g g e r e d
+in the last decade a lot of research addressing the applica-
+tion of this powerful coding technique to digital communi-
+cations [2]. More recently, the associated idea of iterative de-
+coding has been extended to other receiver functions. This
+led to the so-called turbo principle which enables to perform
+(sub)optimal joint detection and decoding through the iter-
+ative exchange of soft information between soft-input/soft-
+output (SISO) stages. See [ 3, 4] for a review of some existing
+turbo receivers.
+In addition to detection/decoding a receiver has also to
+perform signal synchronization, that is, to estimate a number
+of parameters like carrier phase o ﬀset, frequency oﬀset, tim-
+ing oﬀset, and so forth. Synchronization for turbo-encoded
+systems is a challenging task since the receiver usually
+This is an open access article distributed under the Creative Commons
+Attribution License, which permits unrestricted use, distribution, and
+reproduction in any medium, provided the original work is properly cited.
+operates at low SNR values (which can be deﬁned as the ratio
+between the mean bit energy and the noise spectral density).
+In the technical literature a great e ﬀort is thus being devoted
+to the development of eﬃ cient estimation techniques to per-
+form the above-mentioned synchronization functions within
+turbo receivers. W e outline here at least two categories of al-
+gorithms.
+(i) The ﬁrst category consists of algorithms that try to
+modify classical SISO iterative detection/decoding in order
+to embed parameter estimation. In [ 5, 6], for instance, com-
+bined iterative decoding and estimation is performed with
+modiﬁed forward and backward recursions in the SISO de-
+coders using a sort of per-survivor parameter estimation
+technique. In [ 7], the conventional turbo decoder structure
+is modiﬁed through the use of a simple phase estimation er-
+ror model. A di ﬀerent approach is pursued in [ 8] wherein a
+method (having only polynomial complexity in the sequence
+length) of generating soft-decision metrics is illustrated and
+speciﬁcally applied to the problem of adaptive iterative de-
+tection of LDPC codes in the presence of time-varying un-
+known carrier phase o ﬀset. Further, simpler approximate
+=== PDF PAGE 2 ===
+118 EURASIP Journal on Wireless Communications and Networking
+receivers are proposed in [9] based on the insertion into each
+transmitted coded block of a number of pilot symbols with
+the aim of helping the joint phase estimation and decoding
+process.
+(ii) The second category consists of algorithms that try
+to use the soft information provided at each iteration by
+a conventional turbo decoder. This approach will be re-
+ferred to as turbo synchronization in the sequel. In [ 10], a
+carrier phase recovery algorithm operating in conjunction
+with the SISO decoders and exploiting the extrinsic informa-
+tion generated at each iteration is proposed. Furthermore,
+in [ 11, 12], for instance, it is proposed to combine soft-
+decision-directed carrier phase estimation with turbo decod-
+ing. T entative decision-aided synchronization within a turbo
+decoder is reported in [ 13, 14].
+Algorithms in the latter category seem to be promis-
+ing but they often do not rely on any theoretical basis.
+The purpose of this paper is therefore to give a mathemat-
+ical interpretation of such turbo synchronization algorithms
+and to generalize them. This can be done by means of the
+expectation-maximization (EM) algorithm. Such an algo-
+rithm has been applied to various problems, as in [ 15], for
+instance, wherein it is used for channel and noise variance
+estimation in combination with optimal BCJR-based detec-
+tion. The same is done in [ 16] in combination with a subop-
+timal ﬁlter-based equalizer and in [17]f o rac o d e dC P Ms y s -
+tem. In [18], channel gain, and delay estimation is performed
+in an uncoded CDMA system with a hard-output iterative se-
+rial interference canceller. These ideas have been extended to
+turbo receivers in [ 19] (see also references therein) and [ 20]
+for channel and noise variance estimation in turbo-CDMA
+and turbo-MIMO contexts, respectively.
+In the present paper, we will focus on the speciﬁc prob-
+lem of synchronization. Section 2 will give a general formu-
+lation of iterative ML estimation of unknown parameters in
+the presence of nuisance parameters by means of the EM al-
+gorithm. The particular issue of synchronization (i.e., car-
+rier phase, frequency o ﬀset, channel gain, and timing esti-
+mation) for a digital data-modulated passband signal will
+then be addressed in Section 3. This implementation will
+then be extended to the turbo context by showing that the
+EM algorithm iterations (for parameter estimation) can be
+combined with those of a turbo receiver (for symbol detec-
+tion/decoding). This will lead to a general theoretical frame-
+work for turbo synchronization. In particular, it will turn out
+that algorithms introduced in an ad hoc fashion, such as the
+blind soft-decision-directed carrier phase turbo synchronizer
+recently proposed in [ 11], actually correspond to a particu-
+lar instance of the general scheme proposed here. In order
+to illustrate the mathematical considerations, in Section 4
+we consider as a case study the practical problem of carrier
+phase and frequency oﬀsets estimation for a turbo-coded 16-
+QAM system. The relevant simulation results show that the
+proposed scheme enables to perform blind reliable synchro-
+nization and almost ideal coherent detection at very low SNR
+as required in a turbo receiver. Section 5 considers the com-
+putational complexity of the proposed algorithm, whereas a
+concluding section eventually ends up the paper.
+2. ML ESTIMATION IN THE PRESENCE
+OF A NUISANCE VECTOR
+We d e n o te w i t hr a random vector obtained by expanding
+the received modulated signal r(t) onto a suitable basis, and
+we indicate with b a deterministic vector of parameters to
+be estimated from the observation of the received vector r.
+Assume that r also depends on a random nuisance parame-
+ter vector a independent of b and with a priori probability
+density function (pdf) p(a). The problem addressed in this
+section is to ﬁnd the ML estimate
+ˆb of b, that is to say, the
+solution of
+ˆb= argmax
+˜b
+{
+lnp
+(
+r|˜b
+)}
+. (1)
+The likelihood function to be maximized with respect to the
+trial value ˜b of b is obtained after elimination of the nuisance
+parameter vector a as follows:
+p
+(
+r|˜b
+)
+=
+∫
+a
+p(a)p
+(
+r|a, ˜b
+)
+da. (2)
+I no r d e rt os o l v e(1), we take the derivative of ln p(r|˜b)w i t h
+respect to ˜b and we equate it to zero, that is,
+∂
+∂˜b
+lnp
+(
+r|˜b
+)
+=
+∫
+a p(a)p
+(
+r|a, ˜b
+)(
+∂/∂˜b
+)
+lnp
+(
+r|a, ˜b
+)
+da
+∫
+a p(a)p
+(
+r|a, ˜b
+)
+da
+=
+∫
+a
+p(a)p
+(
+r|a, ˜b
+)
+p
+(
+r|˜b
+)
+∂
+∂˜b
+lnp
+(
+r|a, ˜b
+)
+da= 0.
+(3)
+Now, it is easily seen using Bayes’ rule that the ﬁrst factor in
+the integrand into ( 3) is nothing but the a posteriori condi-
+tional pdf p(a|r, ˜b) of the nuisance vector
+p(a)p
+(
+r|a, ˜b
+)
+p
+(
+r|˜b
+) = p
+(
+a|r, ˜b
+)
+. (4)
+Therefore, the ML estimation problem given by ( 1), (2), and
+(3) is turned into
+∂
+∂˜b
+lnp
+(
+r|˜b
+)
+=
+∫
+a
+p
+(
+a|r, ˜b
+) ∂
+∂˜b
+lnp
+(
+r|a, ˜b
+)
+da
+= Ea
+{ ∂
+∂˜b
+lnp
+(
+r|a, ˜b
+)⏐⏐r, ˜b
+}
+= 0.
+(5)
+In other words, the ML estimate ˆb of b is that value that nulls
+the conditional a posteriori expectation of the derivative with
+respect to ˜b of the conditional log-likelihood function (LLF)
+lnp(r|a, ˜b).
+Finding the solution of ( 5) is not trivial, since ˜b appears
+in both factors of the integrand. Thus, we try an iterative
+method that produces a sequence of values ˆb(n) hopefully
+converging to the desired solution. In particular, we use the
+previous sequence value ˆb(n−1) to resolve the conditioning
+on the ﬁrst factor of the integrand, and we ﬁnd the current
+=== PDF PAGE 3 ===
+General Framework for Synchronization in T urbo Receivers 119
+solution ˆb(n) by solving the resulting simpliﬁed equation that
+follows:
+∫
+a
+p
+(
+a|r, ˆb(n−1))[ ∂
+∂˜b
+lnp
+(
+r|a, ˜b
+)⏐⏐˜b=ˆb(n)
+]
+da= 0. (6)
+If the sequence of estimates ˆb(n) yielded by (6)c o n v e r g e st oa
+ﬁnite value, that value is a solution of ML equation ( 5)[ 21].
+Observe now that the ﬁrst factor of the integrand in ( 6)
+does not depend on ˆb(n). Therefore, we can bring the deriva-
+tive back out of the integral and obtain the equivalent equa-
+tion
+ˆb(n) : ∂
+∂˜b
+{∫
+a
+p
+(
+a|r, ˆb
+(n−1))
+lnp
+(
+r|a, ˜b
+)
+da
+}⏐⏐⏐
+⏐
+⏐
+˜b=ˆb(n)
+= 0,( 7 )
+that is, the estimate ˆb(n) maximizes the conditional a posteri-
+ori expectation of the conditional LLF ln p(r|a, ˜b):
+ˆb(n) = argmax
+˜b
+{
+Λ
+(˜b, ˆb(n−1))}
+,( 8 a )
+Λ
+(˜b, ˆb(n−1))
+= Ea
+{
+lnp
+(
+r|a, ˜b
+)
+|r, ˆb(n−1)}
+=
+∫
+a
+p
+(
+a|r, ˆb(n−1))
+lnp
+(
+r|a, ˜b
+)
+da.
+(8b)
+Formulation (8a)-(8b) of our iterative solution can also
+be derived by means of the EM algorithm [ 21, 22, 23]. Con-
+sider r as the “incomplete” observation and z
+△
+= (rT , aT )T
+as the “complete” observation. The EM algorithm states that
+the sequence ˆb(n) deﬁned by
+(i) expectation step (E-step):
+Q
+(˜b, ˆb(n−1))
+= Ea
+{
+lnp
+(
+z|˜b
+)
+|r, ˆb(n−1)}
+,( 9 a )
+(ii) maximization step (M-step):
+ˆb(n) = argmax
+˜b
+{
+Q
+(˜b, ˆb(n−1))}
+(9b)
+converges to the ML estimate under mild conditions [21, 22].
+To m a k e (9a)-(9b)e q u i v a l e n tt o(8a)-(8b), we observe that,
+by using the Bayes rule and considering that the distribu-
+tion of a does not depend on the parameter vector to be esti-
+mated,
+p
+(
+z|˜b
+)
+= p
+(
+r, a|˜b
+)
+= p
+(
+r|a, ˜b
+)
+p
+(
+a|˜b
+)
+= p
+(
+r|a, ˜b)p(a).
+(10)
+Therefore, substituting (10)i n( 9a), we get
+Q
+(˜b, ˆb(n−1))
+=
+∫
+a
+p
+(
+a|r, ˆb(n−1))
+lnp
+(
+r|a, ˜b
+)
+da
++
+∫
+a
+p
+(
+a|r, ˆb(n−1))
+lnp(a)da
+  
+ζ
+. (11)
+The second term ζin (11)d o e sn o td e p e n do n˜b,a n da sf a r
+as the M-step is concerned, it can be dropped. Consequently,
+the estimation procedure given by ( 8a)-(8b) and the EM al-
+gorithm, deﬁned by (9b)a n d(11), yield the same sequence of
+estimates. W e explicitly observe that the solution of ( 1)c a n
+be found iteratively by only using a posteriori probabilities
+p(a
+|r, ˆb(n−1)) and the LLF ln p(r|a, ˜b).
+3. APPLICATION TO SYNCHRONIZATION FOR
+SOFT-INFORMATION-BASED RECEIVERS
+3.1. EM-based synchronization
+In this section, we will show how to apply the general frame-
+work of the previous section to the estimation of the syn-
+chronization parameters for a digital data-modulated band-
+pass signal. In this context, the nuisance parameter vector
+a contains the values of the N unknown (hence random)
+transmitted symbols, that is, a
+T = (a0,... ,aN−1). Those
+s y m b o l st a k ev a l u e si na nM-point constellation A (such as
+M-PSK, M-QAM, etc.) according to some rule. Thus, the
+vector a has a probability mass function (pmf) P(a = µ),
+with µT = (µ0,... ,µN−1)a n d µ ∈AN .T h ev e c t o rb con-
+tains the synchronization parameters to be estimated, that
+is, b
+T = (A,τ, ν,ϑ)w h e r eA, τ, ν, ϑare the channel gain,
+symbol timing, carrier frequency, and phase o ﬀsets, respec-
+tively. Here, the synchronization parameters are assumed as
+constant within the received code block. This has the ad-
+vantage of simplifying notably the processing required by
+the estimation algorithm while inherently is the main lim-
+itation of the approach itself. However, a possible yet rea-
+sonable solution to handle a time-varying phase o ﬀset (due,
+e.g., to phase noise) is shown in [ 24]. The idea is quite sim-
+ple and consists in subdividing the entire block in a num-
+ber of subblocks within which the phase can be considered
+approximately as constant, and then in applying to each of
+them the soft-information-based estimation procedure pro-
+posed above. Further, yet again for the sake of simplicity, we
+will consider in the sequel an A WGN channel as well. Hence,
+putting all these facts together, the baseband received signal
+r(t)c a nb ew r i t t e na s
+r(t)
+= A
+N−1∑
+k=0
+akg(t−kT−τ)ej(2πνt+ϑ) +w(t), (12)
+where T is the symbol period, g(t) is a unit-energy (e.g.,
+square-root raised-cosine) pulse, andw(t) is complex-valued
+A WGN with power spectral density 2 N0 (assumed to be
+known).
+Neglecting irrelevant terms independent of a and b, the
+conditional LLF of ( 12)i s
+lnp
+(
+r|a, ˜b
+)
+=−2 ˜A Re
+
+
+
+N−1∑
+k=0
+a∗
+k zk
+(
+˜ν, ˜τ
+)
+e−j ˜ϑ
+
+
+
++ ˜A2
+N−1∑
+k=0
+⏐⏐ak
+⏐
+⏐
+2,
+(13)
+=== PDF PAGE 4 ===
+120 EURASIP Journal on Wireless Communications and Networking
+where
+zk
+(
+˜ν, ˜τ
+)△
+=
+∫∞
+−∞
+r(t)e−j2π˜νtg
+(
+t−kT−˜τ
+)
+dt
+=
+[
+r(t)e−j2π˜νt ]
+⊗g(−t)|t=kT +˜τ
+(14)
+is obtained by frequency precompensating the received sig-
+nal by the “trial” value −˜ν, then applying the result to the
+matched ﬁlter g(−t), and ﬁnally sampling the matched ﬁlter
+output at the “trial” instant kT + ˜τ. Substituting ( 13) into
+(8b) and dropping the terms which do not depend on ˜b,w e
+get
+Λ
+(˜b, ˆb(n−1))
+=−2 ˜A Re
+
+
+
+N−1∑
+k=0
+[∫
+a
+akp
+(
+a|r, ˆb
+(n−1))
+da
+]∗
+zk
+(
+˜ν, ˜τ
+)
+e−j ˜ϑ
+
+
+
++ ˜A2
+N−1∑
+k=0
+[∫
+a
+⏐⏐ak
+⏐
+⏐
+2p
+(
+a|r, ˆb
+(n−1))
+da
+]
+.
+(15)
+W e now deﬁne ηk (r, ˆb
+(n−1)
+)a n d ρk (r, ˆb
+(n−1)
+), the a posteri-
+ori mean and a posteriori mean square value of the channel
+symbola
+k ,r e s p e c t i v e l y ,a sf o l l o w s :
+ηk
+(
+r, ˆb
+(n−1))△
+=
+∫
+a
+akp
+(
+a|r, ˆb(n−1))
+da
+=
+∑
+αm∈A
+αmP
+(
+ak = αm|r, ˆb(n−1))
+,
+(16a)
+ρk
+(
+r, ˆb(n−1))△
+=
+∫
+a
+⏐⏐ak
+⏐
+⏐
+2p
+(
+a|r, ˆb(n−1))
+da
+=
+∑
+αm∈A
+⏐⏐αm
+⏐
+⏐
+2P
+(
+ak = αm|r, ˆb(n−1))
+.
+(16b)
+P(ak = αm|r, ˆb
+(n−1)
+) denotes the marginal a posteriori prob-
+ability (APP) of the kth channel symbol ak conditioned on
+the observation r and on the estimate ˆb(n−1) at the previous
+(n−1)th step, andαm theM possible values taken in the con-
+stellationA.E q u a t i o n(15) can then be rearranged as
+Λ
+(˜b, ˆb(n−1))
+=−2 ˜A Re
+
+
+
+N−1∑
+k=0
+η∗
+k
+(
+r, ˆb
+(n−1))
+zk
+(
+˜ν, ˜τ
+)
+e−j ˜ϑ
+
+
+
++ ˜A2
+N−1∑
+k=0
+ρk
+(
+r, ˆb
+(n−1))
+.
+(17)
+W e emphasize the similarity between (13)a n d(17): the latter
+is formally obtained from the former by simply replacing the
+terms a
+k and|ak|2 by their respective a posteriori expected
+valuesηk (r, ˆb
+(n−1)
+)a n dρk (r, ˆb
+(n−1)
+).
+The new estimate ˆb(n) at the nth step is then determined
+by applying ( 8a) and therefore by maximizing Λ(˜b, ˆb(n−1)),
+given by (17), with respect to ˜b. The corresponding result is
+[
+ˆv(n), ˆτ(n)]
+= argmax
+˜ν,˜τ
+
+
+
+⏐⏐⏐
+⏐⏐⏐
+N−1∑
+k=0
+η∗
+k
+(
+r, ˆb
+(n−1))
+zk
+(
+˜ν, ˜τ
+)
+⏐⏐⏐
+⏐⏐⏐
+
+
+
+,
+(18a)
+ˆϑ(n) = ∠
+
+
+
+N−1∑
+k=0
+η∗
+k
+(
+r, ˆb
+(n−1))
+zk
+[
+ˆv(n), ˆτ(n)]
+
+
+ , (18b)
+ˆA(n) =
+⏐⏐⏐∑N−1
+k=0 η∗
+k
+(
+r, ˆb
+(n−1))
+zk
+[
+ˆv(n), ˆτ(n)]⏐⏐⏐
+∑N−1
+k=0 ρk
+(
+r, ˆb
+(n−1)) . (18c)
+The obtained solution can be interpreted as an iter-
+ative synchronization procedure, which can be referred to
+as soft-decision-directed (SDD) synchronization. What we
+call here soft decisions are the a posteriori average values
+ηk (r, ˆb
+(n−1)
+)a n dρk (r, ˆb
+(n−1)
+) of each channel symbol. They
+are a sort of “weighted average” over all the constellation
+points according to the respective symbol APPs. Note that,
+thanks to ( 16a)a n d( 16b), these a posteriori average val-
+ues η
+k (r, ˆb
+(n−1)
+)a n dρk (r, ˆb
+(n−1)
+) can be computed from the
+marginals P(ak = αm|r, ˆb
+(n−1)
+) only. In other words, due to
+the particular structure of the digital data-modulated signal,
+the implementation of the iterative ML estimation algorithm
+only requires the evaluation of the marginal a posteriori sym-
+bol probabilitiesP(a
+k = αm|r, ˆb
+(n−1)
+).
+W e now concentrate on the evaluation of the marginal a
+posteriori symbol probabilities. Whereas for uncoded trans-
+mission the usual assumption is that data symbols are inde-
+pendent and equally likely (yielding P(a
+= µ)= M−N for all
+µ∈AN ), for a coded transmission with code rate λ,w eo n l y
+have a subset B⊂AN of all possible sequences correspond-
+ing to MλNlegitimate encoder output sequences. Therefore,
+taking into account that the APP of the symbol sequence a is
+given by
+P
+(
+a= µ|r, ˜b
+)
+= P
+(
+a= µ
+)
+p
+(
+r|a= µ, ˜b
+)
+∑
+ν∈B P
+(
+a= ν
+)
+p
+(
+r|a= ν, ˜b
+), (19)
+and assuming that
+P
+(
+a= µ
+)
+=
+
+
+
+M−λN, µ∈B,
+0, µ /∈B, (20)
+we get
+P
+(
+a= µ|r, ˜b
+)
+=
+
+
+
+p
+(
+r|a= µ, ˜b
+)
+∑
+ν∈B p
+(
+r|a= ν, ˜b
+), µ∈B,
+0, µ /∈B,
+(21)
+which relates the APP of the symbol sequence to the condi-
+tional likelihood function. Note that the result for uncoded
+transmission is obtained from ( 21) by taking B
+= AN .F i -
+nally, the marginal APP related to a symbol ak is obtained by
+summing the symbol sequence APPs (21) over all symbols ai
+withi̸= k.
+=== PDF PAGE 5 ===
+General Framework for Synchronization in T urbo Receivers 121
+Evaluation of the APPs according to ( 21)y i e l d sac o m -
+putational complexity that increases exponentially with the
+sequence length N, as all possible data sequences must be
+enumerated. However, in systems where the received sig-
+nal can be modeled as a Markov process, (i.e., transmis-
+sion over a frequency selective channel, coded systems,
+MIMO or CDMA systems, etc.), the marginal symbol APPs
+P(a
+k = αm|r, ˆb
+(n−1)
+)c a nb ee ﬃ ciently obtained using the
+BCJR algorithm [25], with a complexity that grows only lin-
+early with the sequence length N. Note however that the
+computations related to the BCJR algorithm must then be
+carried out once per iteration of the synchronizer.
+3.2. Turbo synchronization
+The EM-based synchronization procedure proposed in the
+previous subsection is intrinsically well suited to iterative
+(turbo) receivers that perform detection/decoding through
+extrinsic information exchange between SISO stages. Indeed,
+one usually assumes that such receivers provide, after con-
+vergence of the iterative process, soft information that equals
+channel symbol APPs. This makes synchronization via the
+EM algorithm and turbo receivers complementary since the
+symbol APPs needed by the ﬁrst one can be provided by the
+second one.
+As shown in the previous subsection, the estimation of
+the synchronization parameters needs at each EM iteration
+the knowledge of the marginal APPs P(a
+k = αm|r, ˆb
+(n−1)
+)
+in order to compute the a posteriori expected values
+ηk (r, ˆb
+(n−1)
+)a n d ρk (r, ˆb
+(n−1)
+) required for the evaluation
+of ( 18a), ( 18b), and ( 18c). In a strict implementation,
+this means that at each EM iteration the turbo receiver
+has to reinitialize the extrinsic information, and then has
+to iterate until the soft information reaches a steady-state
+value, in order to yield good approximations of the re-
+quired symbol APPs. It is clear that the main drawback
+of this approach is the considerable increase in com-
+plexity and latency in comparison with the correspond-
+ing ideal synchronized turbo receiver, since the turbo sys-
+t e mi sr e q u i r e dt oc o n v e r g ea te a c hE Mi t e r a t i o n .T o
+deal with such a trouble, an approximate implementation
+can be used: the turbo decoder is no longer reinitialized
+and at each EM iteration only one detection/decoding it-
+eration is performed. In other words, the synchroniza-
+tion iterations (EM algorithm) are merged with the detec-
+tion/decoding ones (turbo decoder). Note that this approx-
+imate “merged” procedure strictly di ﬀers from the EM al-
+gorithm in that performing only one detection/decoding it-
+eration at each EM iteration (especially in the ﬁrst ones)
+leads to poorer estimations of the required symbol APPs.
+T o investigate the potential performance degradation that
+the proposed simpliﬁed algorithm may imply, in [ 26] the
+BER performance of both the EM-based synchronizer and
+its approximate version are evaluated in the context of
+a BICM (bit-interleaved-coded modulation) 8-PSK trans-
+mission scheme. The di ﬀerence between the two di ﬀer-
+ent synchronization methods is that at each EM iteration
+in the former we make additionally 5 detection/decoding
+iterations whereas in the latter only 1 detection/decoding
+iteration is performed. In spite of this rough simpliﬁca-
+tion, the simulation results surprisingly indicate a negli-
+gible performance degradation at EM iteration 10, even
+though the EM-based method exhibits a faster convergence
+due to a more reliable symbol APPs estimates in the ﬁrst
+iterations.
+When applied to the speciﬁc case of carrier phase estima-
+tion for turbo-coded QAM transmission, the proposed ap-
+proximate implementation leads to the algorithm introduced
+earlier in an ad hoc fashion in [ 11, 27], wherein the symbol
+APPs computed at each turbo decoding iteration are prop-
+erly combined with the received samples in order to provide
+a reliable estimate necessary for coherent demodulation. This
+leads in this case to a sort of “bootstrapping e ﬀect, ” wherein
+decoding helps synchronization that in turn aids decoding
+and so forth. Therefore, more generally it can be concluded
+that the proposed mathematical framework provides a the-
+oretical justiﬁcation to the category of ad hoc algorithms
+which make use of the available soft decisions in a turbo re-
+ceiver for the purpose of iteratively estimating the synchro-
+nization parameters. Furthermore, if one has to deal with a
+parameter vector b for which more than one or two parame-
+ters have to be estimated at the same time, it may happen that
+the turbo receiver must be allowed to proceed for more iter-
+ations between the synchronization steps. In this more de-
+manding context, the number of needed detection/decoding
+iterations has to be selected considering the trade-o ﬀ be-
+tween the requirement on providing an accurate estimation
+of the APPs and the corresponding increase in complexity
+and latency.
+As far as the initial parameter estimate
+ˆb(0) is concerned,
+we have to point out that convergence of our iterative, EM-
+like, synchronization algorithm to the true ML estimate is
+not unconditional. Due to the highly nonlinear properties
+shown by the turbo decoding process, a good choice of
+ˆb(0) certainly aﬀects the system performance and is manda-
+tory in order to enable the convergence of the joint detec-
+tion and decoding scheme. However, ﬁnding a “good” ini-
+tial value and then reﬁning it through an iterative proce-
+dure looks like the acquisition/tracking approach. In our
+context, the issue of the initial acquisition may be solved in
+general by making a data-aided preliminary estimate based
+upon a preamble of pilot symbols. With respect to con-
+ventional methods, it is clear that by additionally exploit-
+ing the APP information, the length of the pilot sequence
+may be properly reduced, thereby increasing the spectral ef-
+ﬁciency of the transmission system. W e will also show in
+the next section that in some cases (e.g., phase estimation
+considering turbo-coded QAM transmission) no preamble
+is required, and acquisition (within a multiple of π/2) is
+accomplished as well, provided that the estimate is reﬁned
+block after block. W e will call this approach “time-recursive, ”
+and we will reserve the term “iterative” to successive esti-
+mation of a parameter on a single data block as described
+above.
+=== PDF PAGE 6 ===
+122 EURASIP Journal on Wireless Communications and Networking
+4. SIMULATION RESUL TS
+Theoretical analysis of the proposed algorithms proved to be
+extremely diﬃ cult. W e resorted therefore to simulation to de-
+rive performance results of the di ﬀerent iterative SDD turbo
+synchronization algorithms. As a case study, we consider a
+turbo-coded QAM-modulated transmission scheme. W e fo-
+cus here on the simple case where the channel gain A and the
+timing oﬀsetτare known to the receiver, so that only the car-
+rier frequency oﬀset ν and phase oﬀsetϑ,a s s u m e dt ob ec o n -
+stant within the received block, have to be estimated. T o be
+more speciﬁc, the corresponding joint SDD phase-frequency
+r e c o v e r yp r o c e d u r ei sb a s e do n(18a)-(18b), that is, assum-
+ing the estimates of A andτreplaced by their a priori known
+values can be written as
+ˆv(n) = argmax
+˜ν
+
+
+
+⏐⏐⏐⏐
+⏐
+⏐
+N−1∑
+k=0
+η∗
+k
+(
+r, ˆb
+(n−1))
+zk
+(
+˜ν,τ
+)
+⏐⏐⏐⏐
+⏐
+⏐
+
+
+
+, (22a)
+ˆϑ(n) = ∠
+
+
+
+N−1∑
+k=0
+η∗
+k
+(
+r, ˆb
+(n−1))
+zk
+[
+ˆv(n),τ
+]
+
+
+ . (22b)
+The required a posteriori average values ηk (r, ˆb
+(n−1)
+)g i v e n
+by (16a) are evaluated on the basis of the symbol APPs com-
+puted at the output of the turbo decoder (see Section 5 for
+more details). In the sequel, according to the discussion in
+Section 3.2, only one decoding iteration is performed at each
+synchronization iteration, in order to limit the overall com-
+plexity and latency. Therefore, at the nth iteration the esti-
+mate
+ˆv(n) is found according to ( 22a) and used to reevaluate
+the samples zk (˜ν,τ)b y frequency compensating the received
+signal by−ˆv(n) and sampling the matched ﬁlter output at the
+“exact” instantkT +τ. Then, the phase estimate ˆϑ(n) is com-
+puted by applying ( 22b) and eventually employed for phase
+compensating the matched ﬁlter output samples for the next
+decoding iteration. As initial estimates for the iterative syn-
+chronization procedure, we took (
+ˆv(0), ˆϑ(0))= (0, 0) in (22a)-
+(22b).
+W e consider the simple rate−λ= 3/4 turbo encoder that
+encompasses parallel concatenation of two identical binary
+16-state rate
+−1/2 recursive systematic convolutional (RSC)
+encoders with generators g1 = (31)8 and g2 = (33)8 [28],
+via a pseudorandom interleaver with block length L= 1500
+information bits, and an appropriate puncturing pattern so
+that the block at the turbo-encoder output comprises 2000
+coded bits. This binary turbo code is combined with con-
+ventional gray-mapped 16-QAM modulation (giving rise to
+a transmitted block of 500 symbols) adhering to the so-
+called suboptimum “pragmatic approach” wherein coding
+and modulation are performed separately, as illustrated in
+[29]. Simulation results are provided assuming that the car-
+rier frequency and phase o ﬀsets are time-invariant on the
+transmitted data block. In addition, the above o ﬀsets change
+from one block to the next only in the case of the single-
+block joint SDD carrier recovery approach, whereas they
+are considered invariant if the time-recursive algorithm is
+applied.
+The baseband-equivalent architecture of such a turbo-
+coded transmission system and the encoder schematic are
+d e p i c t e di nF i g u r e s1a and 1b, respectively. Note that, in con-
+trast with (14), frequency correction is applied after matched
+ﬁltering. Indeed, in the case of
+|νT|≪ 1, this modiﬁcation
+causes a negligible performance degradation and, more no-
+tably, enables a remarkable reduction in the receiver com-
+plexity. At the receiver, consistently to the encoding process,
+pragmatic disjoint demodulation and binary turbo decod-
+ing is performed. As for the latter, to decrease its computa-
+tional complexity we resort to a suboptimal solution given
+by the Max-Log-MAP algorithm [ 30]. Further, the symbol
+APPs required by the turbo synchronization algorithm can
+be obtained from the coded bits log-likelihood ratios (LLRs)
+made available at the output of the binary turbo decoder (see
+Section 5 for more details).
+The proposed synchronization algorithm’s performance
+will be assessed through evaluation of the mean estimated
+value (MEV) and the root-mean squared estimation error
+(RMSEE). W e will also investigate the overall BER perfor-
+mance of the coded system with carrier recovery as compared
+to ideal synchronization, taking as main design parameters
+the number of decoder iterationsI and the energy per bit-to-
+noise spectral density ratio E
+b/N0.
+4.1. MEV curves
+Figure 2 depicts the MEV curves (i.e., the average estimated
+value E{ˆϑ} as a function of the true phase o ﬀset ϑ) for the
+SDD phase recovery algorithm based on ( 22b)f o rd i ﬀer-
+ent numbers of decoder iterations I = 8, 10, 12, assuming
+an u l lf r e q u e n c yoﬀset and with Eb/N0 = 6 dB (roughly
+corresponding to BER = 10−4 with ideal carrier recovery).
+The diﬀerence between the MEV curves is not signiﬁcant for
+phase errors |ϑ|≤ 20◦, whatever the number of iterations,
+whereas with larger phase errors the bias of the algorithm is
+negligible only for I
+= 10, 12. For the particular transmis-
+sion scheme of Figure 1a, the rotational invariance is not de-
+stroyed and the usual π/2 estimation ambiguity due to the
+four-fold symmetry of the QAM constellation is apparent, as
+can be found in [ 11]. Note that, if one can a ﬀord an increase
+in complexity, the above problem can be easily handled by
+evaluating the average value of the absolute soft output of
+the decoder for di ﬀerent multiples of π/2, and choosing the
+phase oﬀset that provides the highest reliability according to
+the approach illustrated in [ 12].
+The MEV curves illustrated in Figure 2 suggest using this
+estimator as a sort of phase error detector in a time-recursive
+recovery scheme. This can be done on a block-by-block re-
+cursive basis as follows. W e denote with
+ˆϑm the time-recursive
+phase estimate related to the mth data block and with ˆϕ(I)
+m
+the phase error estimate after I decoding iterations as de-
+scribed above. After a prerotation of the received samples in
+the (m +1 ) t hd a t ab l o c kb y−ˆϑm and a new phase error esti-
+mate ˆϕ(I)
+m+1, the phase estimate for the (m +1 ) t hd a t ab l o c ki s
+computed as
+ˆϑm+1 = ˆϑm + ˆϕ(I)
+m+1 (23)
+=== PDF PAGE 7 ===
+General Framework for Synchronization in T urbo Receivers 123
+Input data Tu r b o
+encoder Mapper Shaping
+ﬁlter +
+Ci
+AWG N
+r(t) Matched
+ﬁlter tk = kT
+x[k]
+× Demapper Tu r b o
+decoder
+Carrier
+detector
+Output data
+e−j(2πˆνkT + ˆϑ)
+(a)
+Systematic bits
+RSC
+encoder1
+PuncturerL-bit
+interleaver
+RSC
+encoder2
+Parity bits
+(b)
+Figure 1: (a) T urbo-coded transmission system and (b) turbo-encoder schematic.
+assuming as starting condition ˆϑ0 = ˆϕ(I)
+0 .W ef o u n db ys i m -
+ulation that to accomplish an adequate acquisition only 3
+blocks are su ﬃ cient (i.e., just 3 updates on m in ( 23)). In
+doing so, the operating point of the phase error estimator is
+progressively brought back to the vicinity of the origin, that
+is, in a negligible-bias zone. Indeed, the results in Figure 3
+obtained for I
+= 10 iterations show the improvement of the
+recursive algorithm with respect to the one based on a single
+block.
+W e now tackle the additional issue of carrier frequency
+r e c o v e r y .W eh a v et oj o i n t l ys o l v e(22a) (where the timing oﬀ-
+set is considered perfectly known) and ( 22b). Figure 4 shows
+the MEV curves for the single-block estimation of the phase
+oﬀset, for the true values ( ϑ
+= 0◦,1 0◦,2 0◦,3 0◦), as a func-
+tion of the true normalized frequency o ﬀset νT. Results are
+provided for I = 12 decoder iterations and Eb/N0 = 6d B .
+The joint estimator works ﬁne up to |ϑ|≤ 20◦, but the
+operating interval for frequency recovery is quite narrow,
+that is,
+|νT| < 10−4, if compared with a conventional data-
+a i d e dm e t h o d[31]. This can be easily explained if we con-
+sider the following fact. For a given block length, the resid-
+ual frequency o ﬀset causes a phase rotation on the received
+signal samples leading to a considerable performance degra-
+dation for the constituent SISO decoders. Clearly, the larger
+the frequency oﬀset, the larger will also be the phase rotation
+on the block samples. Consequently, there exists a threshold
+value for the frequency o ﬀset, such that the overall phase ac-
+c u m u l a t e do nab l o c kw i l lb ea r o u n dπ, above which the re-
+liability of the decoded bits, even after a few decoding iter-
+ations, will stay small. This hinders joint convergence of the
+(blind) frequency estimator and data decoder.
+The time-recursive approach can be used to improve the
+performance of joint phase-frequency recovery as well. T o be
+more speciﬁc, the frequency and phase estimates are used
+to precorrect the received signal samples in the subsequent
+b l o c kb o t hi nf r e q u e n c ya n di np h a s ep r i o rt oan e wi t e r a t i v e
+estimation. Unfortunately, the improvement for frequency is
+not as dramatic as for phase estimation, as can be seen from
+Figure 5. The operating range for the carrier frequency esti-
+mator is now
+|νT| < 3· 10−4 for I = 12 decoder iterations
+andEb/N0 = 6 dB. The conclusion is that some form of “fre-
+quency sweeping” is required in order to perform initial fre-
+quency acquisition when the o ﬀset is larger than the value
+above. Further enlargement of this range can be alternatively
+obtained by partitioning the code block into shorter estima-
+tion windows, over which we can apply (time-recursive) joint
+estimation. With shorter windows, a larger frequency oper-
+ating range is obtained, but the phase estimation accuracy
+decreases, so that an optimum length will exist for a given
+E
+b/N0.
+=== PDF PAGE 8 ===
+124 EURASIP Journal on Wireless Communications and Networking
+60
+40
+20
+0
+−20
+−40
+−60
+−180 −120 −60 0 60 120 180
+Phase oﬀset (deg)
+Phase MEV (deg)
+I= 12
+I= 10
+I= 8
+Figure 2: MEV curves for single-block phase SDD recovery with
+diﬀerent iteration numbers, 16-QAM, λ= 3/4, L= 1500, Eb/N0 =
+6d B .
+60
+40
+20
+0
+−20
+−40
+−60
+−180 −120 −60 0 60 120 180
+Phase oﬀset (deg)
+Phase MEV (deg)
+Single block
+Time-recursive
+Figure 3: MEV curves for time-recursive and single-block SDD
+phase recovery, 16-QAM,λ= 3/4,L= 1500,Eb/N0 = 6d B .
+4.2. RMSEE curves
+Figure 6 shows the curves of RMSEE σθ(i.e.,
+√
+E{(ˆϑ−ϑ)2})
+of the phase SDD recovery algorithm as a function of
+E
+b/N0 for various values of the true o ﬀset ϑ.T h ec u r v e s
+are compared to the modiﬁed Cram ´er-Rao bound (MCRB)
+[31], and with ideal DA estimation that lies exactly on the
+MCRB. Conversely, the RMSEE performance of SDD gets
+approximately close to the bound for E
+b/N0 ≥6d B o n l y ,
+that is, in the interval where soft-data decisions are reli-
+able enough (as will be illustrated in the sequel). It is also
+noted that the RMSEE curve for conventional hard-decision-
+directed (HDD) phase estimation, that is, based on the de-
+cisions taken at the decoder input, is catastrophic. This is
+30
+20
+10
+0
+−10
+−20
+−30
+10−5 23 4 5 6 7 10−4 23 4 5 6 7 10−3 23 4 5 6 7 10−2
+Frequency oﬀset νT
+Phase MEV (deg)
+θ= 0◦
+θ= 10◦
+θ= 20◦
+θ= 30◦
+Figure 4: MEV phase curves for single-block joint SDD phase-
+frequency recovery with di ﬀerent true phase, 16-QAM, λ= 3/4,
+L= 1500,Eb/N0 = 6d B .
+6
+4
+2
+0
+−2
+−4
+−6
+×10−4
+−6 −4 −2 0246
+×10−4Frequency oﬀset νT
+Frequency MEV
+Single block
+Time-recursive
+Figure 5: MEV curves for time-recursive and single-block joint
+SDD phase-frequency recovery, 16-QAM, λ= 3/4, L = 1500,
+Eb/N0 = 6d B .
+easily explained by noting that the BER of hard-detected
+16-QAM in our SNR range is deﬁnitely poor, leading to
+an inaccurate phase estimate. On the other side, a di ﬀer-
+ent solution is based on applying the proposed iterative esti-
+mation algorithm ( 22b) using the hard-detected QAM sym-
+bols taken from the decoder output at each decoding iter-
+ation. This kind of scheme can be referred to as iterative
+hard-decision-directed (IHDD). As illustrated in Figure 6,
+the performance degradation with respect to SDD of IHDD
+is small as long as the phase error is |ϑ|≤ 10◦,b u t
+gets more important for larger values of initial phase o ﬀ-
+set.
+=== PDF PAGE 9 ===
+General Framework for Synchronization in T urbo Receivers 125
+109
+8
+7
+6
+5
+4
+3
+2
+19
+8
+7
+6
+5
+4
+3
+2
+0.1
+23456789 1 0
+Eb/N0 (dB)
+Phase RMSEE σθ(deg)
+SDDθ= 0◦
+SDDθ= 10◦
+HDDθ= 10◦
+IHDDθ= 10◦
+DA
+MCRB
+Figure 6: RMSEE curves for single-block SDD and IHDD, DA,
+HDD phase recovery, 16-QAM,λ= 3/4,L= 1500,I= 12.
+The curves for the frequency RMSEE σνT (i.e.,√
+E{(ˆν−ν)2T2})i n Figure 7 follow the same general
+pattern as those for the phase. As noted for SDD phase
+recovery, the frequency MCRB bound [ 31] is attained for
+E
+b/N0 ≥6 dB, and negligible performance degradation
+is observed both for the frequency o ﬀsets νT = 0a n d
+νT= 10−4.
+4.3. BER performance
+T o get a picture about the overall performance of the 16-
+QAM turbo receiver equipped with the proposed SDD car-
+rier synchronizer, the BER curves can be evaluated as a func-
+tion of the signal-to-noise ratioE
+b/N0.F o re a c hc u r v ea l ls i m -
+ulation runs were stopped upon the detection of 100 frame
+error events. Speciﬁcally, Figure 8 shows the BER curves with
+time-recursive SDD phase recovery and with I
+= 10 itera-
+t i o n s .T h ec u r v e sw i t hap h a s eoﬀset ϑ= 20◦,4 0◦exhibit a
+negligible performance degradation with respect to the one
+with ideal phase recovery. These curves motivate the depar-
+ture of the RMSEE curves of SDD synchronization from
+the MCRB. The “knee point” of the RMSEE curves, which
+roughly corresponds to E
+b/N0 = 6 dB, is in fact located in
+the so-called “waterfall region” (abrupt BER decrease). The
+associated BER is then su ﬃ ciently decreased and the syn-
+chronization algorithm performance tends to that of a DA
+synchronizer. Further, for the sake of completeness, is wor-
+thy to point out that a similar behavior is found even with
+al o w e rr a t e ,n a m e l y1/2, encoder combined with a 4-QAM
+modulation format, as shown in the results presented in
+[11, 27].
+10−4
+9
+8
+7
+6
+5
+4
+3
+2
+10−5
+9
+8
+7
+6
+5
+4
+3
+2
+10−6
+23456789 1 0
+Eb/N0 (dB)
+Phase RMSEE σνT
+SDD νT= 0
+SDD νT= 10−4
+MCRB
+Figure 7: RMSEE curves for single-block joint SDD phase-
+frequency recovery, 16-QAM,λ= 3/4,L= 1500,I= 12.
+The BER curves for joint SDD phase-frequency recov-
+ery are illustrated in Figures 9 and 10 in the case of single-
+block and time-recursive estimation, respectively. The main
+result which has to be pointed out is that the performance of
+single-block-based joint SDD phase-frequency recovery al-
+gorithm gets worse for increasing frequency oﬀsets to be esti-
+mated, while the time-recursive approach enables to achieve
+turbo decoding with a negligible degradation with respect
+to ideal synchronization for a frequency o ﬀset up to about
+νT
+= 3· 10−4. The increased robustness of the time-recursive
+version of the proposed synchronizer is coherent with what
+was already observed above in Section 4.1. Indeed, with the
+iteration of ( 23) the carrier o ﬀset estimation error is pro-
+gressively reduced despite a nonnegligible initial value due
+to, for instance, the choice of employing a shorter preamble
+to achieve a better eﬃ ciency.
+5. COMPUTATIONAL COMPLEXITY
+In this section we focus on the computational complexity of
+the turbo receiver (whose performance has been evaluated
+in Section 4) performing soft-decision-based iterative car-
+rier synchronization. In particular, we perform a comparison
+with the complexity of the turbo receiver with ideal synchro-
+nization.
+The computational load of both the iterative SDD
+and the ideal receiver is dominated by matched ﬁltering,
+turbo decoding, and carrier synchronization (for the latter
+only). Depending on the di ﬀerent arrangements for decod-
+ing/synchronization, the above functions contribute di ﬀer-
+ently to the overall complexity. For simplicity, we assume that
+=== PDF PAGE 10 ===
+126 EURASIP Journal on Wireless Communications and Networking
+100
+10−1
+10−2
+10−3
+10−4
+10−5
+234567
+Eb/N0 (dB)
+BER
+θ= 0◦
+θ= 20◦
+θ= 40◦
+Ideal synch.
+Figure 8: BER for time-recursive SDD phase recovery, 16-QAM,
+λ= 3/4,L= 1500,I= 10.
+(as adopted in Section 4) the SDD receiver performs at each
+EM iteration only 1 detection/decoding iteration, whereas
+for both receivers the matched ﬁltering is carried out only
+once before applying the decoding and synchronization pro-
+cedures. Our complexity evaluation is performed on the ba-
+sis of the number of required ﬂoating point (FP) operations,
+namely additions and multiplications, thereby leaving out (in
+a ﬁrst approximation) operations such as comparisons and
+table lookups.
+We d e n o te w i t hL the block length of information bits,
+withS the number of states of the rate
+−1/2R S Cc o m p o n e n t
+decoder and with N the number of transmitted 16-QAM
+symbols, respectively. The following basic operations have to
+be performed.
+(OP
+0) Matched ﬁltering is based on an FIR ﬁlter with an op-
+erating frequency equal to 2 /T ,w h e r eT is the signal-
+ing interval. T aking as impulse response a root cosine
+Nyquist function in the range (
+−5T,5T), which cor-
+responds to 20 samples, the relevant computational
+complexity amounts to C
+0 ∼= 80N.
+(OP1) Each SISO constituent decoder accomplishes MAP de-
+coding by evaluating the APPs for the systematic bits
+according to the BCJR algorithm [ 25]. Speciﬁcally,
+to limit the decoder complexity and avoid multipli-
+cations, we adopt the Max-Log-MAP approach illus-
+trated in [ 30]. This involves the computation of the
+metrics (related to the states transitions) α
+l(s), βl(s′),
+andγl(s,s′) through forward and backward recursions,
+withs ands′ enumerating the trellis states and 1≤l≤
+L. As for each decoding iteration two SISO decoders
+100
+10−1
+10−2
+10−3
+10−4
+10−5
+234567
+Eb/N0 (dB)
+BER
+νT= 0
+νT= 10−4
+νT= 1.5× 10−4
+νT= 2× 10−4
+Ideal synch.
+Figure 9: BER for single-block joint SDD phase-frequency recov-
+ery, 16-QAM,λ= 3/4,L= 1500,I= 10.
+100
+10−1
+10−2
+10−3
+10−4
+10−5
+2 345 67
+Eb/N0 (dB)
+BER
+νT= 0
+νT= 10−4
+νT= 2× 10−4
+νT= 3× 10−4
+Ideal synch.
+Figure 10: BER for time-recursive joint SDD phase-frequency re-
+covery, 16-QAM,λ= 3/4,L= 1500,I= 10.
+are employed, assuming a total ofI iterations, the com-
+plexity of this operation is approximately C1 = 24S·
+L·I.
+=== PDF PAGE 11 ===
+General Framework for Synchronization in T urbo Receivers 127
+(OP2) In the iterative synchronizer, the APPs for the parity
+bits are required as well. This means that additional
+calculations have to be carried out within the two con-
+stituent SISO decoders, for a total additional load of
+roughlyC
+2 = 12S·L·I operations.
+(OP3) The matched ﬁlter output samples after frequency and
+phase compensation are exploited to evaluate the ini-
+tial metrics required by the turbo decoder. Denoting
+with y
+k ,1 ≤k ≤N, the sequence at the decoder in-
+put, the metrics for the four bits associated to the kth
+transmitted symbol are computed as follows [ 28]:
+Γ(1)
+k = Re
+{
+yk
+}
+, Γ(2)
+k =
+⏐⏐Re
+{
+yk
+}⏐⏐−2,
+Γ(3)
+k = Im
+{
+yk
+}
+, Γ(4)
+k =
+⏐⏐Im
+{
+yk
+}⏐⏐−2.
+(24)
+According to ( 24), the relevant computational com-
+plexity can be regarded roughly negligible, that is,C3 =
+2N·I.
+(OP4) The APPs of both the systematic bits and the parity
+bits provided by the turbo decoder are required in
+the computation of the a posteriori mean value of the
+transmitted symbols deﬁned in (16a). After some alge-
+bra it can be proved that
+η
+k
+(
+r, ˆb
+(n−1))
+= tanh Ln
+(
+a(k)
+1
+)
+2
+[
+2+t a n hLn
+(
+a(k)
+2
+)
+2
+]
++ j tanh Ln
+(
+b(k)
+1
+)
+2
+[
+2+t a n hLn
+(
+b(k)
+2
+)
+2
+]
+,
+(25)
+where [a(k)
+1 ,a(k)
+2 ,b(k)
+1 ,b(k)
+2 ] are the four coded bits asso-
+ciated with the kth transmitted symbol, and Ln(a(k)
+1 ),
+Ln(a(k)
+2 ), Ln(b(k)
+1 ), and Ln(b(k)
+2 ) are the corresponding
+APPs at the nth decoding iteration, with 1 ≤n ≤I.
+Note that in ( 25) the evaluation of the hyperbolic
+tangent may be carried out via a proper lookup ta-
+ble, and consequently the complexity of this operation
+amounts toC
+4 = 4N·I.
+(OP5) Using the a posteriori averages ηk (r, ˆb
+(n−1)
+), the fre-
+quency and phase estimates are updated according to
+(22). The maximization can be carried out through an
+exhaustive grid search on a small number Ng of trial
+values (since the operating range of the estimator is
+narrow), so that the corresponding complexity equals
+C
+5 = 6N·I·Ng .
+The complexity concerning (OP0), (OP3), (OP4), and (OP5)
+is proportional to the block length N, but not to the number
+of states S. This is the reason why the overall complexity is
+dominated by (OP 1)a n d( O P2). T o sum up, the complexity
+of the SDD receiver is given by
+CSDD =
+5∑
+i=0
+Ci ∼= 80N +3 6S·L·I +6N·I +6N·I·Ng.
+(26)
+When synchronization is known a priori, (OP 2), (OP4),
+and (OP5) do not apply since they are needed for SDD syn-
+chronization. The metrics calculation (OP 3) is carried out
+only once, and the matched ﬁltering (OP 0) is clearly the
+same. Therefore, the overall complexity of the ideal receiver
+is
+C
+ideal =
+5∑
+i=0
+Ci = 80N +2 4S·L·I +2N·I, (27)
+and the additional complexity introduced by the SDD itera-
+tive receiver is
+∆C= CSDD−Cideal
+Cideal
+· 100
+≈
+12S·L·I +4N·I +6N·I·Ng
+80N +2 4S·L·I +2N·I · 100≈50%.
+(28)
+Summing up, the complexity of the receiver with itera-
+tive synchronization is greater, namely around 50%,than that
+of the receiver with ideal synchronization, because the addi-
+tional complexity is due mainly to the evaluation of the APPs
+of the parity bits (OP
+2). This price to be paid can be avoided
+whether one accepts to evaluate them only once at the de-
+coder input. This approximate solution entails a negligible
+performance degradation in the case of high code rate, that
+is, when the parity bits are substantially less in number than
+the information bits, as is shown by the performance results
+illustrated in Section 4.H o w e v e r ,i th a st ob er e m a r k e dt h a t
+for other channel coding schemes also suited to iterative de-
+coding, such as SCCC (serially-concatenated convolutional
+codes) and LDPC (low-density parity check), at each itera-
+tion APPs are available for both systematic and parity bits
+in a code block, and consequently the incremental complex-
+ity due to synchronization is relatively smaller than the com-
+plexity of the whole iterative decoder.
+6. CONCLUSIONS
+The main conclusion of the paper is that ad hoc iterative
+schemes adopted in the context of joint synchronization and
+decoding can be justiﬁed in a theoretical framework based
+on the well-known EM algorithm. The resulting estimation
+procedure can also be easily interpreted as a form of iterative
+soft-decision-directed synchronization, as opposed to conven-
+tional hard-decision-directed estimation that fails in a con-
+dition of low signal-to-noise ratio. Iterative synchronization
+comes natural in the context of decoding of channels codes
+s u i t e dt oi t e r a t i v ed e t e c t i o n ,s u c ha st u r b oc o d e sw i t hp a r a l -
+lel and serial concatenation, and LDPC codes. This fully jus-
+tiﬁes the formulation of the so-called turbo synchronization
+concept, that is, soft-decision-directed synchronization and
+parameter estimation within a turbo (iterative) receiver. As a
+case study, we demonstrated the application of the proposed
+mathematical formulation to the particular case of joint car-
+rier phase and frequency o ﬀsets estimation in a turbo-coded
+16-QAM system. W e showed negligible performance degra-
+dation with respect to the ideal coherent system down to low
+signal-to-noise ratios.
+=== PDF PAGE 12 ===
+128 EURASIP Journal on Wireless Communications and Networking
+ACKNOWLEDGMENTS
+This work has been supported by the Interuniversity At-
+traction Poles (IAP) Program P5/11, Belgian Science Pol-
+icy, Fedral O ﬃ ce for Scientiﬁc, T echnical, and Cultural Af-
+fairs, Belgium, EU 6FP IST Network of Excellence in Wire-
+less COMmunications (NEWCOM), a project funded by Eu-
+ropean Community, and FIRB project PRIMO funded by
+MIUR (Italian Ministry of Education and Research). A. De-
+jonghe thanks the Belgian “FNRS” for its ﬁnancial sup-
+port.
+REFERENCES
+[1] C. Berrou and A. Glavieux, “Near optimum error correcting
+coding and decoding: turbo codes, ” IEEE Trans. Commun. ,
+vol. 44, no. 10, pp. 1261–1271, 1996.
+[2] J. Hagenauer, “The turbo principle: tutorial introduction and
+state of the art, ” in Proc. Int. Symposium on T urbo Codes and
+Related Topics, pp. 1–11, Brest, France, September 1997.
+[3] “The turbo principle: from theory to practice. I, ” IEEE J. Se-
+lect. Areas Commun., vol. 19, no. 5, 2001.
+[4] “The turbo principle: from theory to practice. II, ” IEEE J.
+Select. Areas Commun., vol. 19, no. 9, 2001.
+[5] A. Anastasopoulos and K. M. Chugg, “ Adaptive iterative de-
+tection for phase tracking in turbo-coded systems, ” IEEE
+Trans. Commun., vol. 49, no. 12, pp. 2135–2144, 2001.
+[6] G. Colavolpe, G. Ferrari, and R. Raheli, “Noncoherent itera-
+tive (turbo) decoding, ” IEEE Trans. Commun., vol. 48, no. 9,
+pp. 1488–1498, 2000.
+[7] B. Mielczarek and A. Svensson, “Phase o ﬀset estimation using
+enhanced turbo decoders, ” in Proc. IEEE International Con-
+ference on Communications (ICC ’02) , vol. 3, pp. 1536–1540,
+New Y ork, NY , USA, April 2002.
+[8] I. Motedayen-Aval and A. Anastasopoulos, “Polynomial-
+complexity noncoherent symbol-by-symbol detection with
+application to adaptive iterative decoding of turbo-like
+codes, ” IEEE Trans. Commun. , vol. 51, no. 2, pp. 197–207,
+2003.
+[9] R. Nuriyev and A. Anastasopoulos, “Pilot-symbol-assisted
+coded transmission over the block-noncoherent A WGN chan-
+nel, ” IEEE Trans. Commun. , vol. 51, no. 6, pp. 953–963,
+2003.
+[10] W . Oh and K. Cheun, “Joint decoding and carrier phase re-
+covery algorithm for turbo codes, ” IEEE Commun. Lett. , vol.
+5, no. 9, pp. 375–377, 2001.
+[11] V . Lottici and M. Luise, “Embedding carrier phase recov-
+ery into iterative decoding of turbo-coded linear modula-
+tions, ” IEEE Trans. Commun. , vol. 52, no. 4, pp. 661–669,
+2004.
+[12] A. Burr and L. Zhang, “ A novel carrier phase recovery method
+for turbo-coded QPSK system, ” in Proc. European Wireless
+(EW ’02), pp. 817–821, Florence, Italy, February 2002.
+[ 1 3 ] C .M o r l e t ,I .B u r e t ,a n dM . - L .B o u c h e r e t , “ Ac a r r i e rp h a s ee s -
+timator for multi-media satellite payloads suited to RSC cod-
+ing schemes, ” inP r o c .I E E EI n t e r n a t i o n a lC o n f e r e n c eo nC o m -
+munications (ICC ’00) , vol. 1, pp. 455–459, New Orleans, La,
+USA, June 2000.
+[14] C. Langlais and M. Helard, “Phase carrier for turbo codes over
+a satellite link with the help of tentative decisions, ” in 2nd
+International Symposium on T urbo Codes and Related Topics ,
+vol. 5, pp. 439–442, Brest, France, September 2000.
+[15] G. K. Kaleh and R. V allet, “Joint parameter estimation and
+symbol detection for linear or nonlinear unknown channels, ”
+IEEE Trans. Commun., vol. 42, no. 7, pp. 2406–2413, 1994.
+[16] R. R. Lopes and J. R. Barry, “Blind iterative channel identiﬁca-
+tion and equalization, ” in Proc. IEEE International Conference
+on Communications (ICC ’01), vol. 7, pp. 2256–2260, Helsinki,
+Finland, June 2001.
+[ 1 7 ] C .B r u t e l ,J .B o u t r o s ,a n dP .M`ege, “Iterative joint estimation
+and detection of coded CPM, ” in 2000 International Zurich
+Seminar on Broadband Communications, pp. 287–292, Zurich,
+Switzerland, February 2000.
+[18] M. Guenach and L. V andendorpe, “Performance analysis
+of joint EM/SAGE estimation and multistage detection in
+UTRA-WCDMA uplink, ” in Proc. IEEE International Confer-
+ence on Communications (ICC ’00) , vol. 1, pp. 638–640, New
+Orleans, La, USA, June 2000.
+[19] M. Kobayashi, J. Boutros, and G. Caire, “Successive interfer-
+ence cancellation with SISO decoding and EM channel esti-
+mation, ” IEEE J. Select. Areas Commun. ,v o l .1 9 ,n o .8 ,p p .
+1450–1460, 2001.
+[ 2 0 ]C .L a m y ,F .B o i x a d e r a ,a n dJ .B o u t r o s , “ I t e r a t i v eA P Pd e -
+coding and channel estimation for multiple-input multiple-
+output channels, ” submitted to IEEE Trans. on Communica-
+tions.
+[21] T. Moon, “The expectation-maximization algorithm, ” IEEE
+Signal Processing Mag., vol. 13, no. 6, pp. 47–60, 1996.
+[22] A. P . Dempster, N. M. Laird, and D. B. Rubin, “Maximum
+likelihood from incomplete data via the EM algorithm, ” J.
+Roy. Statist. Soc. Ser. B, vol. 39, no. 1, pp. 1–38, 1977.
+[23] C. Georghiades and J. C. Han, “Sequence estimation in the
+presence of random parameters via the EM algorithm, ” IEEE
+Trans. Commun., vol. 45, no. 3, pp. 300–308, 1997.
+[24] L. Benvenuti, L. Giugno, V . Lottici, and M. Luise, “Code-
+aware carrier phase noise compensation on turbo-coded
+spectrally-eﬃ cient high-order modulations, ” in 8th Interna-
+tional Workshop on Signal Processing for Space Communica-
+tions (SPSC ’03), vol. 1, pp. 177–184, Catania, Italy, September
+2003.
+[25] L.R. Bahl, J. Cocke, F . Jelinek, and J. Raviv, “Optimal de-
+coding of linear codes for minimizing symbol error rate, ”
+IEEE Trans. Inform. Theory , vol. 20, no. 2, pp. 284–287,
+1974.
+[26] N. Noels, C. Herzet, A. Dejonghe, et al., “T urbo-
+synchronization: an EM interpretation, ” in Proc. IEEE Inter-
+national Conference on Communications (ICC ’03) , Anchor-
+age, Alaska, USA, May 2003.
+[27] L. Giugno, V . Lottici, and M. Luise, “ Another “turbo-
+something”: Carrier synchronization, ” in 14th European Sig-
+nal Processing Conference (EUSIPCO ’02), vol. 1, pp. 127–131,
+T oulouse, France, September 2002.
+[28] W . E. Ryan, “ A turbo code tutorial, ” on http://www.ece.
+arizona.edu/
+∼ryan, 1998.
+[29] S. Le Go ﬀ, A. Glavieux, and C. Berrou, “T urbo codes and high
+spectral e ﬃ ciency modulation, ” in Proc. IEEE International
+Conference on Communications (ICC ’94) , pp. 645–649, New
+Orleans, La, USA, May 1994.
+[30] P . Robertson, P . Hoeher, and E. Villebrun, “Optimal and
+sub-optimal maximum a posteriori algorithms suitable for
+turbo decoding, ” European Trans. on Telecomm. , vol. 8, no.
+March/April, pp. 119–125, 1997.
+[31] U. Mengali and A. N. D’Andrea, Synchronization Tech-
+niques for Digital Receivers , Plenum, New Y ork, NY , USA,
+1997.
+=== PDF PAGE 13 ===
+General Framework for Synchronization in T urbo Receivers 129
+Nele Noels received the Diploma of Elec-
+trical Engineering from Ghent University,
+Gent, Belgium, in 2001. She is currently
+a Ph.D. student at the Department of
+T elecommunications and Information Pro-
+cessing, Ghent University. Her main re-
+search interests are in carrier and symbol
+synchronization. She is the author of several
+papers in international journals and confer-
+ence proceedings.
+Vincenzo Lottici received the Dr.-Ing. de-
+gree (cum laude) in electronic engineering
+and the Best Thesis SIP Award from the
+University of Pisa in 1985 and 1986, respec-
+tively. From 1987 to 1993 he worked in the
+design and development of sonar digital sig-
+nal processing systems. Since 1993 he has
+been with the Department of Information
+Engineering at the University of Pisa, where
+he is currently a Research Fellow and As-
+sistant Professor in telecommunications. His research interests in-
+clude the area of wireless multicarrier and UWB systems, with par-
+ticular emphasis on synchronization and channel estimation tech-
+niques.
+Antoine Dejonghe was born in Ottignies,
+Belgium, in 1977. He received the Electri-
+cal Engineering degree in 2000 from the
+Universit´e Catholique de Louvain (UCL),
+Louvain-la-Neuve, Belgium. He is currently
+pursuing the Ph.D. degree in electrical en-
+gineering at the Communications and Re-
+mote Sensing Laboratory of UCL. Since
+2000, he has been a Research Fellow at the
+Belgian National Fund for Scientiﬁc Re-
+search (FNRS). His research interests are in the ﬁeld of digital com-
+munication systems relying on the so-called turbo principle.
+Heidi Steendam received the Diploma of
+Electrical Engineering and the Ph.D. degree
+in electrical engineering from Ghent Uni-
+versity, Gent, Belgium, in 1995 and 2000,
+respectively. She is Professor at the Depart-
+ment of T elecommunications and Informa-
+tion Processing, Ghent University. Her main
+research interests are in statistical commu-
+nication theory, carrier and symbol syn-
+chronization, bandwidth-e ﬃ cient modula-
+tion and coding, spread-spectrum (multicarrier spread-spectrum),
+and satellite and mobile communications. She is the author of more
+than 50 scientiﬁc papers in international journals and conference
+proceedings.
+Marc Moeneclaey received the Diploma of
+Electrical Engineering and the Ph.D. degree
+in electrical engineering from Ghent Uni-
+versity, Ghent, Belgium, in 1978 and 1983,
+respectively. He is a Professor at the Depart-
+ment of T elecommunications and Informa-
+tion Processing (TELIN), Ghent University.
+His main research interests are in statistical
+communication theory, carrier and symbol
+synchronization, bandwidth-eﬃ cient mod-
+ulation and coding, spread-spectrum, and satellite and mobile
+communications. He is the author of more than 250 scientiﬁc
+papers in international journals and conference proceedings. T o-
+gether with Professor H. Meyr (RWTH Aachen) and Dr. S. Fech-
+t e l( S i e m e n sA G ) ,h ec o a u t h o r st h eb o o kDigital Communication
+Receivers—Synchronization, Channel Estimation, and Signal Pro-
+cessing (J. Wiley, 1998). He is the corecipient of the Mannesmann
+Innovations Prize 2000. During the period 1992–1994, he was the
+Editor for Synchronization, for the IEEE T ransactions on Commu-
+nications. He served as a Coguest Editor for special issues of the
+Wireless Personal Communications Journal (on equalization and
+synchronization in wireless communications) and the IEEE Journal
+on Selected Areas in Communications (on signal synchronization
+in digital transmission systems) in 1998 and 2001, respectively.
+Marco Luise is a Full Professor of telecom-
+munications at the University of Pisa, Italy.
+He received the M.S. (cum Laude) and
+Ph.D. degrees from the University of Pisa,
+Italy. In the past, he was a Research Fel-
+low of the European Space Agency, a Re-
+search Scientist of the Italian National Re-
+search Council, and an Associate Professor
+at the University of Pisa. He chaired the V ,
+VI, VII, and IX editions of the Tyrrhenian
+International W orkshop on Digital Communications, and in 1998
+he was the General Chairman of the URSI Symposium ISSSE’98.
+He was the T echnical Cochairman of the 7th International W ork-
+shop on DSP T echniques for Space Communications, and of the
+Conference European Wireless 2002. Professor Luise is a Senior
+Member of the IEEE, was an Editor of the IEEE T ransactions on
+Communications, and has served as the Coeditor of the Special Is-
+sue on Signal Processing in T elecommunications of the European
+T ransactions on T elecommunications (ETT). He has also been the
+Coeditor of the IEEE JSAC Special Issue on Signal Synchroniza-
+tion in Digital T ransmission Systems and Editor for Communica-
+tion Theory of ETT. His main research interests lie in the area of
+wireless communications, with particular emphasis on mobile and
+satellite communication and positioning systems.
+Luc Vandendorpe was born in Mouscron,
+Belgium, in 1962. He received the Electri-
+cal Engineering degree (summa cum laude)
+and the Ph.D. degree from the Universit ´e
+Catholique de Louvain (UCL), Louvain-la-
+Neuve, Belgium, in 1985 and 1991, respec-
+tively. Since 1985, Dr. V andendorpe is with
+the Communications and Remote Sensing
+Laboratory of UCL. In 1992, he was a Re-
+search Fellow at the Delft T echnical Univer-
+sity. From 1992 to 1997, Dr. V andendorpe was a Senior Research
+Associate of the Belgian NSF at UCL. Presently he is a Professor.
+He is mainly interested in digital communication systems : equal-
+ization, joint detection/synchronization for CDMA, OFDM (mul-
+ticarrier), MIMO and turbo-based communications systems, and
+joint source/channel (de-)coding. In 1990, he was a corecipient of
+the Biennal Alcatel-Bell Award. In 2000, he was a corecipient of the
+Biennal Siemen. Dr. V andendorpe is or has been a TPC Member
+for IEEE VTC Fall 1999, IEEE Globecom 2003 Communications
+Theory Symposium, the 2003 T urbo Symposium, IEEE VTC Fall
+2003, and IEEE SPA WC 2005. He is a Cotechnical Chair (with P .
+Duhamel) for IEEE ICASSP 2006. He is the Associate Editor of the
+IEEE T ransactions on Wireless Communications, Associate Editor
+of the IEEE T ransactions on Signal Processing, and a Member of
+the Signal Processing Committee for Communications.

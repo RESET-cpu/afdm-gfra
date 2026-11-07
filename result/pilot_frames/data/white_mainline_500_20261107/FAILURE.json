@@ -1,0 +1,25 @@
+{
+  "pid": 100616,
+  "created_unix": 1794004906.2413907,
+  "command": [
+    "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "-m",
+    "evaluation.white_followup_20261107.receivers",
+    "worker",
+    "--stage",
+    "pilot_frames",
+    "--session",
+    "1794004737201053500",
+    "--slot",
+    "0",
+    "--method",
+    "GP_MP"
+  ],
+  "status": "FAILED",
+  "method": "GP_MP",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\src\\evaluation\\white_followup_20261107\\receivers.py\", line 477, in worker\n    position = read_json(job)['task_position']\n               ~~~~~~~~~^^^^^\n  File \"D:\\afdm-gfra\\src\\utils.py\", line 27, in read_json\n    return json.loads(path.read_text(encoding='utf-8-sig'))\n                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 546, in read_text\n    return PathBase.read_text(self, encoding, errors, newline)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_abc.py\", line 632, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 13] Permission denied: 'D:\\\\afdm-gfra\\\\result\\\\pilot_frames\\\\data\\\\white_mainline_500_20261107\\\\sessions\\\\1794004737201053500\\\\GP_MP_worker0\\\\job000906.json'\n",
+  "automatic_retry": false
+}

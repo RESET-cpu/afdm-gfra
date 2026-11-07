@@ -1,0 +1,33 @@
+{
+  "schema": "afdm-shen-phase-pilot-v1",
+  "purpose": "Validate cross-frame phase without delay/Doppler path search before any full-run adoption",
+  "base_seed": 202610229300001,
+  "scene_count": 20,
+  "warmup_seed": 202610229399999,
+  "conditions": [
+    {"users":40,"frames":16,"activity_probability":0.1,"snr_db":0,"channel_model":"D","pilot":"dft"},
+    {"users":40,"frames":16,"activity_probability":0.1,"snr_db":-4,"channel_model":"D","pilot":"dft"},
+    {"users":40,"frames":16,"activity_probability":0.1,"snr_db":6,"channel_model":"D","pilot":"dft"},
+    {"users":40,"frames":8,"activity_probability":0.1,"snr_db":0,"channel_model":"D","pilot":"dft"}
+  ],
+  "candidates": ["shen_frame", "shen_slope"],
+  "controls": {"outer_updates":10,"slope_grid":256,"slope_refinement_iterations":50},
+  "primary_candidate": "shen_slope",
+  "full_run_gate": {
+    "all_conditions_required": true,
+    "active_cross_frame_phase_mse_max": 0.1,
+    "phase_mse_reference_ratio_max": 1.1,
+    "phase_mse_reference_floor": 0.05,
+    "paired_nmse_db_upper95_max": 0.5,
+    "paired_aer_upper95_max": 0.005,
+    "paired_miss_rate_upper95_max": 0.05,
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 202610229400001
+  },
+  "selection_rule": "Use the final tenth phase update; never select a round or threshold using truth. Primary candidate fixed before running; frame version is a diagnostic comparison only.",
+  "noise": "Observation-only spatial MDL, identical frozen implementation",
+  "variance": "Calibrated feedback variance is a disclosed isotropic proxy, not a verified posterior covariance",
+  "oracle": "Known phase used only as a separately labeled diagnostic; noise remains estimated",
+  "frozen_model": "Current FINAL epoch 1 depth 10; no retraining, threshold change, or physical phase initialization",
+  "launch": "Launch a separate 2000-scene main-run plan only after the primary candidate passes every gate; retain old plan and results"
+}

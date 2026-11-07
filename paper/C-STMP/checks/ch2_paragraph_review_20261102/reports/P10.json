@@ -1,0 +1,107 @@
+{
+  "paragraph_id": "P10",
+  "source_line_range": [171, 184],
+  "sentence_counts": {"A": 0, "B": 1, "C": 1, "D": 0},
+  "sentence_count_basis": "按两个完整英语句子计数：S1=171–182，含公式与where从句，主要技术内容为本文推导，计C；S2=183–184，由Shen不同位置句子重组，计B。S1a引出句本身有B类句式依据；各公式证据单元不重复计为句子。分类不是自然程度或原创度评分。",
+  "overall_source_verdict": "跨帧标量关系和wrapped beta是本文共同Doppler及块内参数近似不变模型下的推导；Shen提供推导引出句框架及跨帧相位、参考信道准静态的表达背景，不能作为本文公式的直接原式。末句为跨句重组，遗漏了原段性质到更多观测的作用说明。未发现确定数学错误。",
+  "findings": [
+    {
+      "id": "P10-F01",
+      "severity": "medium",
+      "lines": [183, 184],
+      "issue": "段末只列相位累积与参考信道近似不变，没有明确它们如何支持对同一参考信道形成多帧观测。",
+      "evidence": "Shen引用PDF pp.4–5 §II-B在remains approximately constant之后立即说明allows the proposed scheme to gather more observations。当前段末省去这层作用。P11 203–207定义X_k=alpha_k H_k和A_qkn=P_qkn exp(jq beta_k)，P12 215与P13 221–237才在公式中实现共同未知量。",
+      "reason": "作为Transmission Scheme结尾，读者需要跨过设备活动定义才可从公式补出多帧传输用途；但后文已补足数学模型，因此是局部叙述缺环而非公式或模型缺失。",
+      "minimal_action": "保留主公式及approximately，在段末增加或整合一个作用分句，说明把设备相位计入帧相关导频后，可联合Q帧观测同一参考有效信道；不提前展开活动先验、算法、全部矩阵索引，不暗示未知相位已经获得真值。"
+    }
+  ],
+  "strengths": [
+    "g_q与g_0正确保留CPP偏移，首帧相位已包含在H_k内。",
+    "共同Doppler假设在前文已声明，允许对所有路径提出同一标量；分数时延不破坏这一步。",
+    "wrapped beta与整数帧索引下的原相位精确等价，区间端点与floor一致。",
+    "模型内等号与物理参数近似冻结不矛盾，不应机械改成近似号或删掉approximately。",
+    "详细推导已在附录，正文粒度适当；Based on和while均有实际关系。",
+    "未移植Shen的逐delay-tap相位、忽略分数时延或其数值有效范围。"
+  ],
+  "recurrence": {
+    "property_without_purpose": "部分复现，见P10-F01；后文公式补足数学关系。",
+    "auxiliary_detail_overload": "未发现。",
+    "mechanical_definitions": "未发现。",
+    "unsupported_connectives": "未发现确定问题。",
+    "meaningless_repetition": "multiple frames与Q consecutive frames略有可压缩空间，但不单独报错。",
+    "assumption_transplant": "未发现；需要持续区分本文共同Doppler模型和Shen逐路径相位。",
+    "defensive_prose": "未发现；不建议新增有效范围长段或实验。"
+  },
+  "granularity": {
+    "current": "一条跨帧关系、一条beta定义、范围说明及一句性质对照，主体粒度合适。",
+    "reference": "Shen pp.4–5分别给完整输入输出命题、准静态性到更多观测的作用、其数值例子及相位处理提示。",
+    "recommended": "只补性质到共同观测的短作用说明；保留附录推导，不复制Shen数值例子或其OTFS特有困难。"
+  },
+  "mathematical_checks": [
+    "D(nu_k,g_q)=exp(j2pi nu_k q T_frame) D(nu_k,N_CPP)。",
+    "共同nu_k使相位从路径求和外提出，得到H_k^(q)=exp(j2pi nu_k q T_frame)H_k。",
+    "m=floor(nu_k T_frame+1/2)为整数且q为整数，所以exp(jq beta_k)=exp(j2pi q nu_k T_frame)。",
+    "等号为块内固定参数模型的代数关系；实际近似由前文58–59行参数假设承担。"
+  ],
+  "sources_read": [
+    {
+      "key": "shen",
+      "path": "reference/literature/shen2025.pdf",
+      "version": "首页标记arXiv:2412.20806v1, 2024-12-30；以SOURCES.json的SHA256锁定",
+      "sha256": "49ba5402794cb29bdbd39c10ed5146e10291e15d2db222e4e57f8b13ae3f7abd",
+      "pages": [4, 5],
+      "sections": "II-B、Proposition 1式(8)–(10)、II-C式(14)–(15)",
+      "read_method": "本轮PDF提取全文及两页直接渲染图像，核对跨页与双栏句序。"
+    },
+    {
+      "key": "huang",
+      "path": "reference/literature/huang2026.pdf",
+      "version": "WCL vol.15 (2026)引用版本",
+      "pages": [2],
+      "sections": "II式(1)–(3)附近，共同Doppler假设原段",
+      "support": "模型假设背景，不是跨帧公式母本。"
+    },
+    {
+      "key": "cai",
+      "path": "reference/literature/cai2026.pdf",
+      "version": "JSAC vol.44 (2026)引用版本，未使用cai_v2",
+      "pages": [3, 4],
+      "sections": "II-A，式(3)–(4)及邻段",
+      "support": "共同信道多符号观测的组织对照，非跨帧相位依据。"
+    },
+    {
+      "key": "ding",
+      "path": "reference/literature/ding2026.pdf",
+      "version": "仓库引用版本",
+      "pages": [2],
+      "sections": "II与III-A起始段",
+      "support": "Doppler分解及AFDM算子对象对照，所读范围未给本文g_q跨帧关系。"
+    },
+    {
+      "key": "wei",
+      "path": "reference/literature/wei_yuan_2026_lstmp_v1.pdf",
+      "version": "preprint v1",
+      "pages": [2],
+      "sections": "II-A/B",
+      "support": "空间压缩观测对照，非P10母本。"
+    },
+    {
+      "key": "xu",
+      "path": "paper/C-STMP/checks/ch2_paragraph_review_20261102/sources/xu_web_excerpt.txt",
+      "version": "机构托管作者接受稿在线节选；非完整本地PDF",
+      "pages": "印刷3–4／含封面PDF4–5，所给§II节选中的Doppler分解和系统模型内容",
+      "support": "所读节选未核得本文完整跨帧原式；列间文本有交错，不据此宣称完整句序或全文已读。"
+    },
+    {
+      "key": "manuscript",
+      "path": "paper/C-STMP/checks/ch2_paragraph_review_20261102/snapshot/02_system_model.tex",
+      "sections": "第二章，重点P3/P9/P10/P11/P12/P13；另读当前摘要、引言、附录appendix_afdm_channel_model.tex和WRITING_GUIDE.md",
+      "support": "模型条件、公式推导和上下文衔接核查。"
+    }
+  ],
+  "limitations": [
+    "这是针对P10的独立单段审查，未读取其他段报告，未运行实验或训练。",
+    "没有评定具体Q、传输时长或轨道参数下物理近似误差的数值大小。",
+    "来源范围限于明确列出的实际阅读材料，不宣称遍历全部文献。"
+  ]
+}

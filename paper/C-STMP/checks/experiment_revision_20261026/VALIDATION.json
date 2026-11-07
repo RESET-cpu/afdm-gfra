@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-26",
+  "status": "PASS_CONCISE_EXPERIMENT_REVISION",
+  "original_manuscripts_unchanged": {
+    "STMP": true,
+    "DU": true
+  },
+  "system_byte_identical_to_DU": true,
+  "STMP_method_prose_and_math_tokens_identical": {
+    "03_bayesian_receiver_design.tex": true,
+    "04_generative_priors.tex": true,
+    "05_overall_algorithm.tex": true
+  },
+  "STMP_second_order_appendix_byte_identical": true,
+  "four_figures_byte_identical": {
+    "figures/channel_denoising.pdf": true,
+    "figures/convergence.pdf": true,
+    "figures/snr_comparison.pdf": true,
+    "figures/pilot_frames.pdf": true
+  },
+  "missing_labels": [],
+  "duplicate_labels": [],
+  "missing_citation_keys": [],
+  "overfull_box_count": 0,
+  "compiler": "Tectonic 0.17.0; cached resources; desktop compilation also successful",
+  "pdf_pages": 13,
+  "pdf_sha256": "792289569badb01f4e95f36c181313285afd053a317948c2912902c763f1f7c0",
+  "visual_check": {
+    "pages_inspected": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "section_V_and_VI_on_same_page": 9,
+    "figure_pages": [
+      10,
+      11
+    ],
+    "table_page": 9,
+    "no_clipping_overlap_or_forced_gap": true
+  },
+  "acronym_check": {
+    "abstract": "complete, no findings",
+    "body": "partial; advisory findings retained in acronyms_body.json; copied source not rewritten"
+  },
+  "scope_limit": "Copy-based assembly. STMP method content has not been rewritten to match the current C-STMP implementation.",
+  "output_pdf": "D:\\afdm-gfra\\paper\\C-STMP\\main.pdf",
+  "existing_main_pdf_locked": false,
+  "protected_files_unchanged": {
+    "sections\\00_abstract_zh.md": true,
+    "sections\\01_introduction.tex": true,
+    "sections\\01_introduction_zh.md": true,
+    "sections\\02_system_model.tex": true,
+    "sections\\03_bayesian_receiver_design.tex": true,
+    "sections\\04_generative_priors.tex": true,
+    "sections\\05_overall_algorithm.tex": true,
+    "sections\\07_conclusion.tex": true,
+    "sections\\appendix_parameter_estimation.tex": true,
+    "sections\\appendix_second_order_training.tex": true,
+    "figures\\channel_denoising.pdf": true,
+    "figures\\convergence.pdf": true,
+    "figures\\pilot_frames.pdf": true,
+    "figures\\snr_comparison.pdf": true
+  },
+  "existing_STMP_intro_and_parameter_table_copied_exactly": true,
+  "first_eight_pages_text_unchanged": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "quantitative_source_check": "experiment_revision_20261026/QUANTITATIVE_CHECK.json",
+  "section_words_before_compression": 2070,
+  "section_words_after_compression": 1528,
+  "analysis_style": "One focused paragraph per experiment: trend, selected quantitative comparison, explanation. Detailed counts retained in audit files.",
+  "new_training_or_inference_runs": 0,
+  "pdf_rename_verified": true
+}

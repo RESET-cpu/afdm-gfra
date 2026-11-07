@@ -1,0 +1,77 @@
+PDF PAGE 7
+                                                                                   Dt            D  l ul, ,¢                            D  l ul, ,¢
+                                                                                      (    )¢-       +l l      uMMi jh,                     i jw,
+
+
+
+                                                                     l ul, ,,¢                                       l,u,li,j¢
+                                                                 Dhi j                                          Δw
+                                                                     l uli j, ,,¢                                   l,u,li,j¢
+                                          TSE                      JCESD                     DDAIe                 g
+
+                                     l           lp    |                        l  p         l       l                                                         Y
+                                   e     H  S:  (     )                       g     W  H t:  (        , )̮                    f     Y  Wl  p:  (       )̮l        l
+                                        and      ( )Sp              el uli j, ,,¢     and       ()tp               gl,u,li,j¢
+                                                                 Dhl ul, ,,¢                                    Δ    l,u,li,jw¢
+                                                                     i j
+                                                Fig.  3.  The  block  diagram  of  the  inter-module  communications.
+
+
+and ∆t(l−  l′)M+uM    for  transmitted  symbols t.  Simultaneously,                                 ofhl,u,l   ′i,j           in  (17),  the  message  from  check  node el   to  variable
+the     approximated    MMSE    estimations    for  H     and  W     are                            node Su,l ′   is  the  Bernoulli  distribution,  given  as∫
+obtained  as   the   means  of   their   respective  estimated   posterior                                                             (                    )
+                                                                                                              i,j                                                   i,j
+distributions.  Then,  the  active  devices  are  identiﬁed  using  the                                  ∆el,u,l′su,l′               p    hl,u,l   ′i,j |su,l ′i,j∆gl,u,l′hl,u,l′
+energy  detector,  given  by                                                                                  i,j ∝      (∼ su,l′i,j     )                          i,j(            )
+                                   {M− 1∑                         }                                       =ρl,u,l   ′       su,l ′          +(1−ρl,u,l   ′             su,l ′          ,             (24)
+                        ˆλu = I              ∥Wl,u∥2F>T               ,                                       (21)i,j δ       i,j− 1                      i,j    )δ      i,j   +1
+
+                                       l=0                                                          whereρl,u,l   ′                            i,j
+where I{·} is   the   indicator   function   andT     is   the   empirical                                      i,j     =                           ρAl,u,l′CN(0|ˆrwl,u,l′
+                                                                                                                                      i,j        ,τ  wl,u,l′i,j        )+ρAl,u,l′i,j            ,  and  the  auxiliary
+predeﬁned   threshold.   Moreover,   the   transmitted   symbols   are                              variableρAl,u,l′i,j               is  deﬁned  as
+detected   separately   using ∆t(l−  l′)M+uM     based   on   the   MAP                                                K∑    ∑|A|
+rule.    In    the    following    subsection,    we    will    derive    the    soft                 ρAl,u,l′                     ωuk←−p l,u,l   ′
+messages  within  the  receiver  in  detail.                                                            i,j       =                         m,i,j×
+                                                                                                                      k=1(  m=1
+                                                                                                                  CN       0|ˆrwl,u,l′i,j −µukam,τ wl,u,l′i,j        +ηuk|am|2).       (25)
+B.   Message  Scheduling                                                                            With   the   inputs ∆el,u,l′i,j
+                                                                                                                                 su,l′      i,j  ),   we   are   now  ready  to   describe
+                                                                                                                                  i,j   (su,l ′
+   In  this  subsection,  we  assume  that  the  phase  rotation  caused                            the   messages   involved   in   the   TSE   module.   To   clearly   char-
+by  fractional  Doppler,  the  noise  variance,  and  the  parameters                               acterize   the   relative   position,   the   left,   right,   top,   and   bottom
+of  BGM  are  known,  which  will  be  updated  later.  In  addition,                               neighbors   ofsu,l ′i,j         are    reindexed   by{su,l ′i,j   L,s u,l ′i,j   R,s u,l ′i,j   T,s u,l ′i,j   B}
+∆xx′   and ∆x′x     are  denoted  as  the  message  passed  from  nodex                             corresponding  toDu,l ′
+tox′   andx′   tox,   respectively.   Now,   we   describe   how   the                                                            i,j     .  The  left,  right,  top,  and  bottom  input
+messages    iterate    among   the    three   modules   to    get    the    ﬁnal                    messages  ofsu,l ′i,j     ,  denoted  as ΩLu,l′i,j        , ΩRu,l′i,j        ,ΩTu,l′i,j        ,  and ΩBu,l′i,j        ,
+estimation.   Firstly,   the   DDAI   module   aims   to   estimate Wl                              are  Bernoulli  distributions. ΩLu,l′i,j           is  given  by
+in   the   linear   model,   and   hence   the   output   message   can   be                        ΩLu,l′
+approximated  by  the  GAMP  [37],  given  as                                                        ∫i,j ∝
+                                                                                                                M− 1∏
+                     i,j                                                                                                    i,j
+                ∆wl,u,l′gl,u,l′            i,j |ˆrwl,u,l′i,j  ,τ wl,u,l′i,j       ),                       (22)         ∆el,u,l′      i,j  )     ∏         Ωpu,l′i,j   Lγ(su,l ′i,j   L)ψ(su,l ′i,j ,s u,l ′i,j   L)
+                    i,j     =CN(wl,u,l   ′                                                             ∼ su,l′             su,l′i,j   (su,l ′
+                                                                                                          i,j    l=0                         p∈{  L,  T,  B}
+where  the  mean ˆrwl,u,l′i,j                and  the  varianceτwl,u,l′i,j                 are  updated             (              )                          (               )
+iteratively   by    GAMP    (see    line    9    and    10    of   Algorithm   1).                   =ξLu,l′i,j δ     su,l ′i,j− 1    +(1−ξLu,l′i,j    )δ        su,l ′i,j   +1  ,                          (26)
+Next,  we  focus  on  the  messages  scheduling  of  the  JCESD  and                                whereξLu,l′
+the  TSE  module.  Combined  with  the  output  of  DDAI  module                                                i,j           is  given  in  (27).  The  input  messages  ofsu,l ′i,j       from
+and   the   message   from  variable  node t  to   check  node gl,   the                            right,  top,  and  bottom  have  a  similar  form  to ΩLu,l′i,j        .  Then,  the
+message  from gl   to Hl   will  be  a  BGM  distribution,  given  as∫                              output  message  fromsu,l ′i,j        is  given  by
+
+             i,j                                                 i,j                                                                                       ∏
+        ∆gl,u,l′                       ∆t(l−  l′)M+uM                                                  ∆su,l′i,j                          ∆el,u,l′i,j                 Ωpu,l′
+            hl,u,l′i,j ∝   ∼ hl,u,l′      gl,u,l′i,j             ∆wl,u,l′gl,u,l′i,j ×                     el,u,l′            i,j  )∏         su,l′                       i,j
+                               i,j                                                                          i,j ∝γ(su,l ′           ˆl̸=l     i,j    p∈{  L,  R,  T,  B}
+                                       δ(wl,u,l   ′i,j −hl,u,l   ′i,j t(l− l′)M+uM)                                        (               )                          (               )
+               |A|                                                                                          =ζl,u,l   ′i,j δ  su,l ′i,j− 1    +(1−ζl,u,l   ′i,j     )δ   su,l ′i,j   +1  ,         (28)
+              ∑      ←−p l,u,l   ′
+          =              m,i,jCN(hl,u,l   ′i,j am|ˆrwl,u,l′i,j  ,τ wl,u,l′i,j       ),                (23)whereζl,u,l   ′i,j            is  given in  (29).  The  reﬁned messages  of Hl  after
+              m=1                                                                                   exploiting   sparsity   will   be   fed   back   to   the   JCESD   module,
+where ∆t(l−  l′)M+uM                      m=1←−p l,u,l   ′m,i,jδ(t(l− l′)M+uM−am)                   given  as       ∫
+              gl,u,l′i,j               =  ∑|A|
+is   initialized   as   the   uniform  distribution   overA   and   updated                         ∆el,u,l′i,j              ∆su,l′i,j
+                                                                                                       hl,u,l′                   el,u,l′      i,j |su,l ′i,j  )
+                                i,j             i,j                                                      i,j ∝         su,l′i,j   i,j p(hl,u,l   ′
+later.  Combining ∆hl,u,l′el,u,l′             hl,u,l′
+                               i,j     = ∆gl,u,l′i,j          with  the  conditional  PDF

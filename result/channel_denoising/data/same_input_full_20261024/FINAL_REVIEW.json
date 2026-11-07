@@ -1,0 +1,1206 @@
+{
+  "status": "PASS",
+  "checked_at_unix": 1792848696.5152411,
+  "verification_status": "REPRODUCED CPU single-scene aggregation and saved-mean replay scoring; ANALYZED interpretation",
+  "sources_sha256": {
+    "PLAN.json": "e9f9b9dbbf7a37855861bc3b95a51f4c12bd1b5d34a43fb938289959a53abf9b",
+    "SELECTION.json": "c24a0d08ea9d16131fb112a0ea950529d48528abd8bfaab7e89a59c450e6f186",
+    "SCOPED_COMPLETE.json": "7d514f5398a57ae8fb378cb08000bfc4565f55abe2855bb987153ab39ce8f613",
+    "RESULT.json": "eb9a385fcf3a839e19e3aa7db393c5b4228a89cba804a05557e704b74f24f25c",
+    "run.py": "d3f3fd9a06d4396e8b808e9a9f04e1cf4990392b9cc1cf04908b1a3f3978af0e",
+    "analyze.py": "7f941349cd1581699314b72da75912b8538eb71708dc24d9c407abdef1f1e480",
+    "review_final.py": "88209ceda17f64a22687d7d47bc9fe079b3a80660bed9b791a3b6738bbc4784e"
+  },
+  "issues": [],
+  "maximum_numeric_difference": 0.0,
+  "runs": 6,
+  "query_rows": 720,
+  "failed_runs": 0,
+  "unreported_preserved_runs": [
+    {
+      "key": "scene0021_snr-4_new_C",
+      "sha256": "66807f0427f16b6372f5f88a44d9e36a379eb9a73ce0b020ea09a8211e707ff1"
+    },
+    {
+      "key": "scene0021_snr-4_new_I",
+      "sha256": "b6a058c4434a1ba7eeacba727bffbb3f2a1ecfb327120b80e05f94bd73c86222"
+    },
+    {
+      "key": "scene0021_snr-4_old",
+      "sha256": "e34f22a780567ac4176adf4d004aa6cec55dac83e689acfeebd7fc9cc0ba38ce"
+    },
+    {
+      "key": "scene0021_snr0_new_C",
+      "sha256": "ef95b623824becc89efc6ace3db1f8238a225003f955fa22023beab55f4fafcc"
+    },
+    {
+      "key": "scene0021_snr0_new_I",
+      "sha256": "10c4bf13ac8aa0df9bb1c6a37bed1760fea08110b2941a6d1825bc81cf1d9483"
+    },
+    {
+      "key": "scene0021_snr0_old",
+      "sha256": "edfccac1ce45125c5153c8cb80742319b1f2a8042b21deb1d43588c1ccb22279"
+    }
+  ],
+  "owner_isolation": {
+    "hash_matches": {
+      "query_sha256": 120,
+      "variance_sha256": 120,
+      "C_sha256": 120
+    },
+    "non_timing_trace_mismatches": []
+  },
+  "statistical_scope": "Exactly one preselected reused scene at two SNR values; no bootstrap, confidence bands, population inference, or receiver-speed conclusion.",
+  "first_input_checks": [
+    {
+      "scene": 14,
+      "snr_db": -4,
+      "available_owners": 3,
+      "query_sha256": true,
+      "variance_sha256": true,
+      "C_sha256": true
+    },
+    {
+      "scene": 14,
+      "snr_db": 0,
+      "available_owners": 3,
+      "query_sha256": true,
+      "variance_sha256": true,
+      "C_sha256": true
+    }
+  ],
+  "missing_counts": [
+    {
+      "owner": "old",
+      "snr_db": -4,
+      "missing_scene_iteration_counts": {
+        "query": 0,
+        "old": 0,
+        "new_I": 0,
+        "new_C": 0
+      }
+    },
+    {
+      "owner": "old",
+      "snr_db": 0,
+      "missing_scene_iteration_counts": {
+        "query": 0,
+        "old": 0,
+        "new_I": 0,
+        "new_C": 0
+      }
+    },
+    {
+      "owner": "new_I",
+      "snr_db": -4,
+      "missing_scene_iteration_counts": {
+        "query": 0,
+        "old": 0,
+        "new_I": 0,
+        "new_C": 0
+      }
+    },
+    {
+      "owner": "new_I",
+      "snr_db": 0,
+      "missing_scene_iteration_counts": {
+        "query": 0,
+        "old": 0,
+        "new_I": 0,
+        "new_C": 0
+      }
+    },
+    {
+      "owner": "new_C",
+      "snr_db": -4,
+      "missing_scene_iteration_counts": {
+        "query": 0,
+        "old": 0,
+        "new_I": 0,
+        "new_C": 0
+      }
+    },
+    {
+      "owner": "new_C",
+      "snr_db": 0,
+      "missing_scene_iteration_counts": {
+        "query": 0,
+        "old": 0,
+        "new_I": 0,
+        "new_C": 0
+      }
+    }
+  ],
+  "old_mean_replay_scoring": [
+    {
+      "key": "scene0014_snr-4_old",
+      "stage": "iteration001",
+      "iteration": 1,
+      "independent_active_nmse_change_db": 0.0
+    },
+    {
+      "key": "scene0014_snr-4_old",
+      "stage": "iteration020",
+      "iteration": 20,
+      "independent_active_nmse_change_db": 2.276182074058003e-06
+    },
+    {
+      "key": "scene0014_snr-4_old",
+      "stage": "final",
+      "iteration": 80,
+      "independent_active_nmse_change_db": 4.895786325509982e-06
+    },
+    {
+      "key": "scene0014_snr0_old",
+      "stage": "iteration001",
+      "iteration": 1,
+      "independent_active_nmse_change_db": -1.9286549331065747e-15
+    },
+    {
+      "key": "scene0014_snr0_old",
+      "stage": "iteration020",
+      "iteration": 20,
+      "independent_active_nmse_change_db": 9.64327466553287e-16
+    },
+    {
+      "key": "scene0014_snr0_old",
+      "stage": "final",
+      "iteration": 90,
+      "independent_active_nmse_change_db": -2.410818666383218e-15
+    }
+  ],
+  "checkpoints": [
+    {
+      "owner": "old",
+      "snr_db": -4,
+      "iteration": 1,
+      "methods": {
+        "query": {
+          "nmse_db": 10.06004242022948,
+          "delta_db": 10.066032173281458,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -0.005989753051978205,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -5.668709955304259,
+          "delta_db": -5.662720202252281,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -5.219691222005801,
+          "delta_db": -5.213701468953823,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "old",
+      "snr_db": -4,
+      "iteration": 20,
+      "methods": {
+        "query": {
+          "nmse_db": 9.62696252175066,
+          "delta_db": 15.661754409946012,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -6.034791888195352,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -6.657044585833272,
+          "delta_db": -0.6222526976379193,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -5.918634621718724,
+          "delta_db": 0.11615726647662876,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "old",
+      "snr_db": -4,
+      "iteration": 60,
+      "methods": {
+        "query": {
+          "nmse_db": 8.803410332495735,
+          "delta_db": 18.677660162756617,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -9.874249830260881,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -11.009373938454598,
+          "delta_db": -1.1351241081937173,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -10.364909665527273,
+          "delta_db": -0.4906598352663921,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "old",
+      "snr_db": -4,
+      "iteration": 120,
+      "methods": {
+        "query": {
+          "nmse_db": 8.801997533417468,
+          "delta_db": 18.750323726375168,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -9.9483261929577,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -11.101071621685794,
+          "delta_db": -1.1527454287280945,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -10.445428527575233,
+          "delta_db": -0.4971023346175333,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "old",
+      "snr_db": 0,
+      "iteration": 1,
+      "methods": {
+        "query": {
+          "nmse_db": 7.516973541207354,
+          "delta_db": 6.406308775749343,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": 1.1106647654580108,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -5.378253755245078,
+          "delta_db": -6.488918520703089,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -4.690406824832461,
+          "delta_db": -5.801071590290473,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "old",
+      "snr_db": 0,
+      "iteration": 20,
+      "methods": {
+        "query": {
+          "nmse_db": 5.393145973416029,
+          "delta_db": 9.204730038357981,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -3.8115840649419512,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -4.257423074679308,
+          "delta_db": -0.4458390097373569,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -3.740743792215163,
+          "delta_db": 0.07084027272678783,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "old",
+      "snr_db": 0,
+      "iteration": 60,
+      "methods": {
+        "query": {
+          "nmse_db": 4.841959431555622,
+          "delta_db": 17.93633442734013,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -13.094374995784513,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -13.126823818662054,
+          "delta_db": -0.03244882287754333,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -11.484010538257795,
+          "delta_db": 1.610364457526716,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "old",
+      "snr_db": 0,
+      "iteration": 120,
+      "methods": {
+        "query": {
+          "nmse_db": 4.835087208278221,
+          "delta_db": 18.091631360609487,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -13.256544152331266,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -13.301802208055843,
+          "delta_db": -0.04525805572457693,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -11.616960877696956,
+          "delta_db": 1.6395832746343095,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_I",
+      "snr_db": -4,
+      "iteration": 1,
+      "methods": {
+        "query": {
+          "nmse_db": 10.06004242022948,
+          "delta_db": 10.066032173281458,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -0.005989753051978205,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -5.668709955304259,
+          "delta_db": -5.662720202252281,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -5.219691222005801,
+          "delta_db": -5.213701468953823,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_I",
+      "snr_db": -4,
+      "iteration": 20,
+      "methods": {
+        "query": {
+          "nmse_db": 9.185544419409062,
+          "delta_db": 18.623378868902304,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -9.437834449493238,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -11.03471545667022,
+          "delta_db": -1.5968810071769821,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -10.496605903312837,
+          "delta_db": -1.0587714538195967,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_I",
+      "snr_db": -4,
+      "iteration": 60,
+      "methods": {
+        "query": {
+          "nmse_db": 9.170812041318918,
+          "delta_db": 18.64897955189963,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -9.478167510580713,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -11.099842331745311,
+          "delta_db": -1.6216748211645993,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -10.519119816276675,
+          "delta_db": -1.0409523056959618,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_I",
+      "snr_db": -4,
+      "iteration": 120,
+      "methods": {
+        "query": {
+          "nmse_db": 9.170824549644419,
+          "delta_db": 18.648982669134085,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -9.478158119489667,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -11.099813571406315,
+          "delta_db": -1.6216554519166486,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -10.51906595532731,
+          "delta_db": -1.0409078358376413,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_I",
+      "snr_db": 0,
+      "iteration": 1,
+      "methods": {
+        "query": {
+          "nmse_db": 7.516973541207354,
+          "delta_db": 6.406308775749343,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": 1.1106647654580108,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -5.378253755245078,
+          "delta_db": -6.488918520703089,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -4.690406824832461,
+          "delta_db": -5.801071590290473,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_I",
+      "snr_db": 0,
+      "iteration": 20,
+      "methods": {
+        "query": {
+          "nmse_db": 5.394810616745894,
+          "delta_db": 17.80609042553246,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -12.411279808786567,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -12.927263490492438,
+          "delta_db": -0.5159836817058726,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -11.301372606210458,
+          "delta_db": 1.1099072025761085,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_I",
+      "snr_db": 0,
+      "iteration": 60,
+      "methods": {
+        "query": {
+          "nmse_db": 5.327957979938733,
+          "delta_db": 18.059135680533647,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -12.731177700594912,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -13.166189781300258,
+          "delta_db": -0.4350120807053438,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -11.490019870031887,
+          "delta_db": 1.2411578305630275,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_I",
+      "snr_db": 0,
+      "iteration": 120,
+      "methods": {
+        "query": {
+          "nmse_db": 5.327972679305968,
+          "delta_db": 18.05904756087115,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -12.731074881565183,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -13.166009987503296,
+          "delta_db": -0.43493510593811113,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -11.48977502757344,
+          "delta_db": 1.2412998539917433,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_C",
+      "snr_db": -4,
+      "iteration": 1,
+      "methods": {
+        "query": {
+          "nmse_db": 10.06004242022948,
+          "delta_db": 10.066032173281458,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -0.005989753051978205,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -5.668709955304259,
+          "delta_db": -5.662720202252281,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -5.219691222005801,
+          "delta_db": -5.213701468953823,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_C",
+      "snr_db": -4,
+      "iteration": 20,
+      "methods": {
+        "query": {
+          "nmse_db": 9.525914246999953,
+          "delta_db": 16.906722588349794,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -7.380808341349839,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -10.163514388255736,
+          "delta_db": -2.782706046905897,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -10.160659979614683,
+          "delta_db": -2.7798516382648444,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_C",
+      "snr_db": -4,
+      "iteration": 60,
+      "methods": {
+        "query": {
+          "nmse_db": 9.543868452329411,
+          "delta_db": 16.88595641775439,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -7.342087965424979,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -10.173753795331347,
+          "delta_db": -2.831665829906367,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -9.927539839840344,
+          "delta_db": -2.585451874415365,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_C",
+      "snr_db": -4,
+      "iteration": 120,
+      "methods": {
+        "query": {
+          "nmse_db": 9.544226204381598,
+          "delta_db": 16.885271640991796,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -7.341045436610195,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -10.171587334021677,
+          "delta_db": -2.8305418974114813,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -9.918398089325803,
+          "delta_db": -2.5773526527156063,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_C",
+      "snr_db": 0,
+      "iteration": 1,
+      "methods": {
+        "query": {
+          "nmse_db": 7.516973541207354,
+          "delta_db": 6.406308775749343,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": 1.1106647654580108,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -5.378253755245078,
+          "delta_db": -6.488918520703089,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -4.690406824832461,
+          "delta_db": -5.801071590290473,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_C",
+      "snr_db": 0,
+      "iteration": 20,
+      "methods": {
+        "query": {
+          "nmse_db": 6.231011593139689,
+          "delta_db": 14.429976517215346,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -8.198964924075657,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -11.626915069656468,
+          "delta_db": -3.4279501455808115,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -10.82392607761447,
+          "delta_db": -2.624961153538812,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_C",
+      "snr_db": 0,
+      "iteration": 60,
+      "methods": {
+        "query": {
+          "nmse_db": 6.338795418666468,
+          "delta_db": 14.161762272060109,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -7.822966853393643,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -11.082504555820776,
+          "delta_db": -3.2595377024271337,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -10.33871735103693,
+          "delta_db": -2.5157504976432876,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    },
+    {
+      "owner": "new_C",
+      "snr_db": 0,
+      "iteration": 120,
+      "methods": {
+        "query": {
+          "nmse_db": 6.342167001438756,
+          "delta_db": 14.15495383250973,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "old": {
+          "nmse_db": -7.812786831070974,
+          "delta_db": 0.0,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_I": {
+          "nmse_db": -11.063913913766477,
+          "delta_db": -3.2511270826955037,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        },
+        "new_C": {
+          "nmse_db": -10.314067647456522,
+          "delta_db": -2.5012808163855476,
+          "ci95": [
+            null,
+            null
+          ],
+          "missing_scenes": 0
+        }
+      }
+    }
+  ]
+}

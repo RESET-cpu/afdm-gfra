@@ -1,101 +1,84 @@
-# AFDM-GFRA 云端工作副本
+# AFDM-GFRA
 
-**Generative-Model-Aided Grant-Free Random Access for GNSS-Independent MIMO-AFDM Satellite IoT Systems**
+GitHub 保存代码、配置、论文、正式图表与精选小型汇总；权重和原始数据保留在本地。详见 [GitHub 内容与复现范围](GITHUB_CONTENTS.md)。
 
-私有仓库：[RESET-cpu/afdm-gfra](https://github.com/RESET-cpu/afdm-gfra)。
+2026-11-07 后续：白噪声去噪 12000 个查询已核验，图 4 和图 3 示例已采用，两版工作稿同步。[采用记录](paper/C-STMP/checks/white_denoising_adopted_20261107/README.md)。导频数阶段已启动，完整核验及图稿采用后才进入用户数阶段；[进度](result/pilot_frames/data/white_mainline_500_20261107/STATUS.json)与[本项说明](result/pilot_frames/data/white_mainline_500_20261107/README.md)。
 
-这是 2026-10-18 从本地研究项目导出的独立工作副本，用于 Codex Cloud 中的代码修改、论文修订和小规模 CPU 验证。
-算法源码、配置、当前冻结推断权重和论文正文均按原文件复制；导出清单及源文件 SHA-256 见 [EXPORT_MANIFEST.json](cloud/EXPORT_MANIFEST.json)。
-云端说明、Git 配置与 AGENTS.md 第 8 条适配了这个独立副本。项目安装分发名为 `afdm-gfra`；Python 导入路径 `afdm_jadcedd` 沿用冻结实现的路径。
+2026-11-07：代码主线已整理为独立白噪声 `algorithm.GP_MP`，默认登记为 `GP_MP` / `GP_MP_EP`，旧 `C_STMP` 标识仅兼容指向白噪声版本。旧有色实现、登记及全部数据原位保留供复现。作者已授权按去噪、导频数、用户数、活动概率、跨信道的顺序补跑，每项核验并替换图稿后再开始下一项；状态见 [后续实验请求](result/white_followup_20261107/REQUEST.json)。
 
-## 文件与研究状态
+2026-11-07：白噪声网络主 SNR 的已知相位与估计相位结果均已完整核验并采用，每档 1000 场景。主图及两版工作稿同步，其他待替换曲线仍保留阶段说明。[采用与核验](paper/C-STMP/checks/white_snr_adopted_20261107/README.md)。
 
-- `src/`：物理模型和接收机；`configs/`：当前冻结配置。
-- `experiment/`：八项实验入口，详见 [实验说明](experiment/README.md)。
-- `data/proposed/`：50,000 个训练信道、5,000 个验证信道及身份、矩统计和先验定义；数组使用 Git LFS。
-- `models/initialization/`：默认三阶段训练配方绑定的三份初始化权重；使用 Git LFS。
-- `models/proposed/`：一阶、二阶及活动分类器冻结权重；`models/gnn/`：GNN 基线权重。通过 Git LFS 保存。
-- `paper/main.tex`、`paper/main.pdf`：当前论文；第 I–V 章及附录已有稿件，实验章节待正式结果齐备后撰写。
-- `docs/`：推导、术语依据、主线与来源记录；第三方代码归属见 [ATTRIBUTION.md](docs/ATTRIBUTION.md)。
-- `results/baseline_comparison_500_20261018/`：已完成的比较报告、图与汇总表。
+2026-11-06：当前 GP-MP 稿的训练说明与附录已统一为白噪声形式；尚未替换的历史实验曲线在工作稿第六章集中注明，图表数据保持。[修订与核验](paper/C-STMP/checks/white_noise_wording_20261106/README.md)。
 
-除下述 5,000 样本运行外，其余 `runs/`、旧归档、历史逐场景原始结果和论文历次构建记录保留在本地。
-部分历史文档中的链接因而只适用于完整本地项目；`MAINLINE.json` 保留原始溯源信息。
-当前推断沿用冻结权重。5,000/50,000 样本配对训练尚未完成；50,000 样本版本计划在 Windows 上开始新的独立训练运行。
-**正式密度比消融等待新网络完成后运行。** 本副本的检查不产生论文性能结论。
+2026-11-04：完整相位估计结果已加入主 SNR 图，展示名 **CGP-MP-EP**；每档 1000 场景，两版论文已同步。[结果与核验](paper/C-STMP/checks/snr_estimated_phase_1000_20261104/README.md)。下文旧 500 场景批次状态为历史快照。
 
-## Codex Cloud 环境
+当前论文绘图已统一：[十图生成与复现说明](src/evaluation/plots/manuscript/README.md)；[现行图目录](paper/C-STMP/figures/README.md)。历史绘图脚本和重复图已归档，默认生成入口为 `src/evaluation/plots/render_paper.py`。
 
-连接本私有 GitHub 仓库，在环境准备阶段运行：
+MIMO-AFDM 卫星物联网免授权随机接入研究：系统模型、接收算法、实验与三份论文稿件。
 
-```sh
-bash cloud/setup.sh
+## 常用入口
+
+| 要找的内容 | 入口 |
+|---|---|
+| 当前算法稿与阅读 PDF | [C-STMP 稿件](paper/C-STMP/README.md) · [main.pdf](paper/C-STMP/main.pdf) · [写作与修订规范](paper/C-STMP/docs/WRITING_GUIDE.md) |
+| 再次预审前必读：已讨论问题与剩余事项 | [预审讨论记录](paper/C-STMP/docs/REVIEW_DECISIONS.md) |
+| 实验数据、状态与论文用图 | [实验索引](result/README.md) |
+| 代码、配置与检查 | [代码导读](src/README.md) · [实验用法](src/evaluation/README.md) |
+| 文献原文与阅读记录 | [参考资料](reference/README.md) |
+| 历史记录、旧路径及整理清单 | [归档索引](archive/README.md) |
+
+## 当前状态
+
+2026-11-07 核对：
+
+- 当前算法稿展示名为 **GP-MP**，估计相位版为 **GP-MP-EP**；`C-STMP` / `C_STMP` 仍是目录和历史实验标识。当前稿采用白噪声训练表述，图表替换状态见[稿件说明](paper/C-STMP/README.md)。
+- 论文当前编入三幅方法图与七幅实验图，矢量 PDF 统一在 [paper/C-STMP/figures/](paper/C-STMP/figures/)。不含评估协议附录的版本为 `main.tex` / `main.pdf`，包含该附录的完整版本为 `main_full.tex` / `main_full.pdf`；两版共享正文。2026-11-04 精简后，原信道推导附录移至内部文档，完整稿中的评估协议附录由 C 顺延为 B。
+- 白噪声主 SNR 两种相位各 6000 份已完成、核验并采用；收敛图采用 30 场景，活动证据消融采用 100 场景，均不继续原预算。
+- 当前默认绑定见 [FINAL.json](FINAL.json) 和[算法登记](src/configs/algorithms.json)。有色版本退出当前入口，旧批次的冻结配置和源码保持；历史登记位于 [归档登记](src/configs/historical/algorithms_colored_20261107.json)。
+
+批次参数、样本范围和执行状态分别查对应的 `PLAN.json`、`README.md`、`STATUS.json` 与完成记录。历次启动、暂停、修订及不利结果说明完整保存在[整理前项目说明](archive/project_cleanup_20261030/ROOT_HISTORY.md)。
+
+## 项目目录
+
+```text
+src/          算法、物理模型、网络、训练、实验、配置与测试
+result/       八类实验入口，以及保留的共享资源和兼容路径
+paper/        STMP、C-STMP、DU 三份完整稿件及各自研究文档
+reference/    文献原文、专题阅读及写作资料
+archive/      历史记录、目录映射及已归档的检查预览
 ```
 
-需要 Python 3.10–3.13、Git LFS，以及访问 GitHub LFS、PyPI 和 PyTorch CPU 包索引的网络。
-安装脚本使用 CPU PyTorch 2.7.1、NumPy 2.2.1、SciPy 1.15.1，加载 LFS 权重并检查核心流程。
-如果 Git LFS 未预装，先通过环境的包管理器安装 `git-lfs`，再重跑脚本。
-完成准备后保存并发布云端环境。后续检查：
+根目录保留统一入口 `run_experiments.py`、项目配置、代理约定和版本记录。`.venv/` 是本项目 Python 环境，`.git/` 是已有版本管理目录。
 
-```sh
-python cloud/check.py
+## 使用
+
+在项目根目录运行以下只读入口：
+
+```powershell
+# 列出实验与默认方法，不执行推断
+& .\.venv\Scripts\python.exe -B run_experiments.py list
+
+# 查看指定实验的参数
+& .\.venv\Scripts\python.exe -B run_experiments.py snr_comparison --help
+
+# 查看逐项替换队列，不执行推断
+& .\.venv\Scripts\python.exe -B run_experiments.py white_followup inspect
 ```
 
-检查包括完整训练资产及初始化绑定、三网络推断权重绑定、两个合成输入的实际网络前向计算、7 项核心测试，以及单场景消融计划生成；不启动完整接收机批量实验。
-运行记录写入忽略提交的 `cloud/VALIDATION.local.json`。
+实验实现位于 `src/evaluation/experiments/`，配置位于 `src/configs/experiments/`，算法登记位于 `src/configs/algorithms.json`。新实验须显式创建独立输出计划；已有计划按其中保存的配置执行。执行、检查和重绘用法见[实验说明](src/evaluation/README.md)、[测试说明](src/tests/README.md)及[绘图说明](src/configs/plots/README.md)。
 
-## 下载与检查训练数据
+## 论文目录
 
-克隆仓库或更新到最新 `main` 后，运行 `git lfs install` 和 `git lfs pull` 获取完整数组与权重。
-新增训练资产约 1.93 GiB；身份清单见 [TRAINING_ASSETS.json](cloud/TRAINING_ASSETS.json)。
-在安装好依赖的环境中运行：
+| 稿件 | 内容 |
+|---|---|
+| [C-STMP](paper/C-STMP/README.md) | 当前 GP-MP 算法工作稿、七幅实验图和研究依据 |
+| [STMP](paper/STMP/README.md) | 三网络 STMP 稿件及研究文档 |
+| [DU](paper/DU/README.md) | 十层深度展开稿件及训练、推导记录 |
 
-```sh
-python scripts/train_proposed.py --inspect --check-assets --device cpu
-```
+各稿件的正文、图片、参考文献、术语出处和检查记录均在其自身目录维护。
 
-该命令读取并校验训练/验证数组、默认初始化权重及教师记录，不进行优化更新。
-当前 5,000/50,000 样本配对训练入口从完整库确定性选择嵌套场景子集，并自行生成随机初始化；默认三阶段入口使用随仓库提供的历史初始化。两种训练协议见 [scripts/README.md](scripts/README.md)。
-设备与算力由实际运行环境决定；当前训练入口支持 `cpu` 和 `mps`，Windows GPU 配置需另行适配。
+## 版本与历史
 
-## 5,000 样本训练资产
+当前执行和模型绑定从 [FINAL.json](FINAL.json)、[算法登记](src/configs/algorithms.json)及具体批次计划核对；[MAINLINE.json](MAINLINE.json) 是保留原文的历史主线记录。候选修改使用独立的实现、配置、权重和结果路径，冻结资产不随日常整理移动。
 
-`runs/proposed_sample_sizes_20261018/` 已保留这一组的原始相对路径：
-
-- `data/n5000/`：5,000 个训练信道、样本身份、抽样行号、矩统计及先验定义。
-- `n5000/first/`：一阶网络的最佳/最终权重、训练断点、200 轮训练记录及完成凭据；`n5000/first_receiver.json` 用于一阶网络评估。
-- `initialization/`、`configs/n5000.json` 和 `PLAN.json`：原随机初始化、训练配方及配对计划。计划中引用的另一训练组不随此目录导出。
-
-这一组目前完成了一阶网络（200 轮、15,800 次优化更新）；二阶网络和活动分类器尚未训练。
-验证集共用已上传的 `data/proposed/validation_channel.npy`。原有 `models/proposed/` 完整三网络保持原样。
-新增资产约 1.13 GiB，逐文件大小及 SHA-256 见 [SAMPLE_5000_ASSETS.json](cloud/SAMPLE_5000_ASSETS.json)。
-运行 `python cloud/check_5000.py` 校验该组数据、初始化、权重与完成记录，并执行一次合成输入前向计算；不启动训练。
-原始配方和训练记录保留生成时内容；在 Windows 开始新运行时需指定设备、独立输出目录和匹配的教师权重。
-
-## 小规模实验
-
-由于云端没有历史逐场景结果，创建计划时显式使用 `--fresh`，并使用新输出目录：
-
-```sh
-python experiment/density_ratio_ablation.py plan --output results/cloud_smoke --scenes 1 --values 0 --device cpu --fresh
-# 如需执行这个单场景检查，再运行：
-python experiment/density_ratio_ablation.py run --output results/cloud_smoke
-```
-
-单场景只能检查流程。正式对照必须绑定同一版本的三网络、固定协议并保留全部计划场景。
-数据可用于新建训练运行；5,000 样本的已有训练资产见下文。
-
-## 论文
-
-编辑 `paper/sections/` 与 `paper/references.bib`。环境有 Tectonic 时可运行：
-
-```sh
-cd paper
-tectonic main.tex
-```
-
-已附当前阅读版 PDF。论文中的术语及出处统一维护于 `docs/TERMINOLOGY.md`。
-
-## 9900X CPU baseline 实验
-
-用户数与跨信道的代码、配置、固定测试输入下载和 Linux/WSL2 运行步骤见 [9900X 实验交接](runs/cpu_9900x_20261018/README.md)。其余 baseline 在 Mac 继续执行。
+旧路径通过[结果映射](result/layout_20261021/MAPPING.json)、[论文映射](archive/paper_layout_20261026/MAPPING.json)和[参考资料映射](archive/reference_layout_20261026/MAPPING.json)查找。`src/history/` 仅用于溯源。新增阶段记录写入对应批次或稿件文档，本页保留稳定导航和简短状态。

@@ -1,0 +1,99 @@
+{
+  "schema": "white-preconditioned-matched-training-followup-v1",
+  "created_local": "2026-11-04T20:53:41+08:00",
+  "status_at_creation": "WAITING_FOR_PHASE_EXPERIMENT",
+  "authorization": {
+    "training": "用户明确要求：可以，请你开始训练。此前已确认同结构白噪声去噪器及其配套分类器。",
+    "latest_order": "相位已完成；去噪器200轮 → 配套分类器100轮 → 两者完成核验并退出后，自动运行同一主SNR的场景0–999与六档SNR，共6000次白噪声GP-MP推断。",
+    "receiver_batch_evaluation_started": false,
+    "receiver_batch_evaluation_authorized": true,
+    "receiver_batch_evaluation_authorized_local": "2026-11-05T00:02:06.204816+08:00"
+  },
+  "prerequisite": {
+    "directory": "result/snr_comparison/data/c_stmp_phase_frontend_marginal_1000_20261104",
+    "status_file": "STATUS.json",
+    "required_stage": "COMPLETE",
+    "required_completed": 6000,
+    "required_failed": 0,
+    "required_active_workers": 0,
+    "completion_file": "COMPLETION.json",
+    "required_completion_status": "PASS",
+    "require_coordinator_and_workers_exited": true,
+    "on_failed_or_stopped": "Notify the author and retain the queue; do not start training or alter the phase experiment."
+  },
+  "denoiser": {
+    "configuration": "src/configs/training/white_preconditioned_matched_20261104.json",
+    "output": "result/channel_denoising/data/white_preconditioned_matched_20261104",
+    "module": "training.colored_preconditioned_20261024.formal",
+    "command": "train",
+    "epochs": 200,
+    "optimizer_steps": 156400,
+    "preflight": "PREFLIGHT.json",
+    "preflight_status": "PASS",
+    "preflight_saved_training_steps": 0,
+    "specification_sha256": "327e85315a7b6845500e13c090699ac2f63a9ab11db67e6c6378d740d8e42d03",
+    "initialization": "Recovered initializer is byte-identical to the colored run's historical random initializer; see INITIALIZATION_RECOVERY.json.",
+    "only_scientific_training_change": "noise.max_strength: 0.5 -> 0.0, retaining covariance-conditioned architecture, preconditioning, clean data, noise powers, random streams, optimizer, EMA, training budget and selection rule."
+  },
+  "classifier": {
+    "start_after": "Denoiser completes all 200 epochs and its process exits; verify complete.json and selected weight hash.",
+    "base_configuration": "src/configs/training/colored_activity_20261025.json",
+    "new_configuration": "src/configs/training/white_activity_matched_20261104.json",
+    "output": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104",
+    "module": "training.colored_activity_20261025.run",
+    "commands": [
+      "prepare",
+      "preflight",
+      "train"
+    ],
+    "epochs": 100,
+    "optimizer_steps": 156300,
+    "first_checkpoint": "result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt",
+    "first_training_record": "result/channel_denoising/data/white_preconditioned_matched_20261104/complete.json",
+    "binding": "After denoiser completion, copy the base configuration to the independent new configuration. Replace output, first checkpoint/record paths and their actual SHA256 values. Update objective/scope/differences to identify the frozen white-preconditioned teacher. Preserve all classifier scientific settings, random initialization, data, seeds, balanced BCE, noise support, C=vI queries and checkpoint selection. Retain and verify existing protected assets. The selected denoiser is frozen.",
+    "execution": "Reuse the supported configurable original trainer; the existing colored classifier later used a validated prefetch continuation. Do not change mathematical batches, precision or optimization to obtain speed."
+  },
+  "launch_and_monitor": {
+    "python": ".venv/Scripts/python.exe",
+    "pythonpath": "src",
+    "windows_window_style": "Hidden",
+    "check_existing_processes_and_records_before_launch": true,
+    "separate_stdout_and_stderr_logs": true,
+    "record_launch_time_pid_command_and_configuration_hash": true,
+    "on_training_failure_or_pause": "Preserve checkpoint/logs; report once; no automatic retry, budget changes or early-stop rule changes.",
+    "frozen_mainline_unchanged": true,
+    "no_upload": true
+  },
+  "interpretation": {
+    "do_not_compare_different_training_noise_validation_losses_as_gain": true,
+    "required_comparison": "GP-MP (matched white) versus CGP-MP (colored): same evaluation inputs and C=vI queries, architecture, variance-estimation rule, classifier-training procedure and receiver settings. Independent denoising isolates the training intervention. Recomputed derivative variance and matched classifier training are downstream effects of the denoiser intervention.",
+    "null_gain": "No observed CGP-MP advantage over matched white GP-MP does not assign all STMP-to-CGP-MP gains to neural architecture. STMP differs in denoiser parameterization, variance-estimation method, damping and query-variance update. The main SNR comparison shares basic minimum/maximum iterations and tolerance, while CGP-MP additionally checks the variance-update residual. Account for paired uncertainty and retain unfavorable results."
+  },
+  "display_names": {
+    "baseline_three_network": "STMP",
+    "matched_white_ablation": "GP-MP",
+    "colored_receiver": "CGP-MP",
+    "decision_date": "2026-11-04",
+    "internal_ids_and_scientific_settings_unchanged": true
+  },
+  "evaluation": {
+    "plan": "EVALUATION_PLAN.json",
+    "automatic_start_after_verified_training": true,
+    "display_name": "GP-MP",
+    "inputs": 6000,
+    "scenes_per_snr": 1000,
+    "snrs_db": [
+      -4,
+      -2,
+      0,
+      2,
+      4,
+      6
+    ],
+    "phase_mode": "known",
+    "noise_mode": "estimated",
+    "output": "result/snr_comparison/data/white_preconditioned_matched_1000_snr_20261104",
+    "reuse_saved_comparator_results": true,
+    "disable_followup_after": "White evaluation verified and independent SBL CPU branch completed or failure/pause notified."
+  }
+}

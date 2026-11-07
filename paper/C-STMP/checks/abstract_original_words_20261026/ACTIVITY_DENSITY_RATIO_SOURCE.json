@@ -1,0 +1,10 @@
+{
+  "phrase": "density ratio estimator",
+  "source": "Menon and Ong (2016), Linking losses for density ratio and class-probability estimation",
+  "url": "https://proceedings.mlr.press/v48/menon16.pdf",
+  "location": "Section4.2, equation17, PDF p.3 / printed p.306.",
+  "verification": "Official PDF read this turn: exact phrase density ratio estimator immediately before eq17; logistic link and balanced-prior exponential readout immediately after eq17.",
+  "not_attested_as_contiguous_phrase_in_four_core_sources": true,
+  "individual_words_attested_in_four_core_sources": true,
+  "application_boundary": "Uses denoiser query/input and frozen mean/output, plus noise level. Raw logit estimates log ratio under balanced training; prior correction yields activity probability. No new estimator or feature-benefit claim."
+}

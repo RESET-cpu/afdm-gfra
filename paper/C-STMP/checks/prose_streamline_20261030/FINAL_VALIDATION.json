@@ -1,0 +1,99 @@
+{
+  "status": "PASS",
+  "generated_utc": "2026-10-30T07:38:19.085373+00:00",
+  "pdf": {
+    "path": "D:\\afdm-gfra\\paper\\C-STMP\\main.pdf",
+    "sha256": "e9e66d317e32022575dd31ed2811249e288e70440bb5702f6293b2996bfe23cc",
+    "pages": 15
+  },
+  "source_bindings": [
+    {
+      "path": "main.tex",
+      "sha256": "a4707469289199671fca672d1d644467c2593282b9abaa410407bec608756d93"
+    },
+    {
+      "path": "sections/01_introduction.tex",
+      "sha256": "903fda9ea5cae9064ee211dba8b5eac3a499ba0cd574ecd22747b31857885933"
+    },
+    {
+      "path": "sections/02_system_model.tex",
+      "sha256": "94a99c98c0460c689285ea211827fb07974f935d79a8602cf0edc5b846c8e37a"
+    },
+    {
+      "path": "sections/03_bayesian_receiver_design.tex",
+      "sha256": "c91d06265fa8203b8395b6863342d3f3e460d9dfbf411f1a67ad97a0346b0bc4"
+    },
+    {
+      "path": "sections/04_generative_priors.tex",
+      "sha256": "685a92878f3fac68ce550bd4bb5a7c574bbde4bb3b06b0ef063a2908e4250f03"
+    },
+    {
+      "path": "sections/05_overall_algorithm.tex",
+      "sha256": "6b509f142ac2d11ad5e9a0e0d5777426d2b110c87808e5fdee44131e7072125d"
+    },
+    {
+      "path": "sections/06_simulation_results.tex",
+      "sha256": "c71e8eb09a58415a9a8e57e5e263cdd863c1a626f59686affc1012adda7ca21f"
+    },
+    {
+      "path": "sections/appendix_parameter_estimation.tex",
+      "sha256": "8db63bf99b6057d641b5deda700e9e63cb69b278549d0a31bdb278707ea0f132"
+    },
+    {
+      "path": "sections/appendix_afdm_channel_model.tex",
+      "sha256": "b0c1eb365f4ffe92a10d3ec53c453fe87a65adda05ad5bfac23e53447a88da2a"
+    },
+    {
+      "path": "sections/appendix_evaluation_protocol.tex",
+      "sha256": "4198145d6204a5ec1efa97c74a10abbeb99f139d4e330d7daf92cf45d153f236"
+    },
+    {
+      "path": "sections/appendix_implementation.tex",
+      "sha256": "58d6c0ad11367a271204c99521704ec21b307416fc610c7e9163d4efc631aa36"
+    }
+  ],
+  "checks": {
+    "static": 20,
+    "numerical": 97,
+    "display_math_environments_preserved": 52,
+    "source_hashes_still_match_reviews": true,
+    "compile": "Tectonic 0.17.0 exit code 0",
+    "unresolved_references_duplicate_labels_missing_glyphs_overfull": [],
+    "underfull_warnings": "Retained; affected pages visually checked.",
+    "visual_review": {
+      "2-5": "trim_review_ch23",
+      "6-8": "trim_review_ch45",
+      "9-11": "trim_review_ch6",
+      "12-15": "root",
+      "result": "Actual rendered images inspected; no clipping or overlap found.",
+      "page_1": "Unchanged opening material; not rerendered in this operation."
+    },
+    "acronyms": "Advisory partial prose check; existing findings retained."
+  },
+  "preview_sha256": {
+    "2": "a15378ce3e0fa9c7662bd3f6d03ac9339e32ecbd8713955eefda6daef58aad39",
+    "3": "a6d57bab6f62371b51cd7f51d3f06378de1686966e6935b73f1aae2d710261a1",
+    "4": "4b2889447d9812694d1a5645882e411cca516863ad359b4a4a0232b1f2a35307",
+    "5": "fc31164f82f0a8a88846f5cf6fc14116e9867e3fd45a7e2b9732e2064fc43256",
+    "6": "46ce21eab8576f1a5f0cec1b05998f25380b433683cb992c9c41ea011483d031",
+    "7": "d6ca47cf3574ed94820a2ae59c6f95f8239fdd52c899fb3784fb416072496f96",
+    "8": "a8742d51157c0de7cdb53d3763841a12a103e42b6448ef9a7f4ec0139f88b029",
+    "9": "48b72f0c342ce1bdffe7876918fcad89d5d3932e0b87a6f57d8d66efb9e55753",
+    "10": "ef43ce08e61aed98f4ad86b8ca1c15e09a1b16bb946e4b338ee4fcd7c49e1bcd",
+    "11": "ed9fc0e67c2aa34c08cc4aef9216a6cc16940ee9eafccf45a9aa0c42a1bb77db",
+    "12": "b3a94112f4bbcb4539ed8c5349cd6644467d86b4f75ab05e7c093e16e936e959",
+    "13": "13b616678193fc94756038359b2e7417db900ecbe18e9b830647d2e3f23ba41a",
+    "14": "4fa1c84c8ea7f5b8691a7806e6c87c7b45b4221fb6948695cf89cf4ec0dc4315",
+    "15": "b3b7452d0fc1a74fafa7377725c4aa522ec3ba9608bc4a25f2305023b2a59e8a"
+  },
+  "report_sha256": {
+    "CH23_REVIEW.md": "02d6e116f5b19ea410834baf281cf6ec54bd1b1f7a1a4191eb8437bd36bf666f",
+    "IMPLEMENTATION_REVIEW.md": "ba93e4fd0247fd14a6f79efa12853a0f0c4553413799b132aa4256d66e6ef1ec",
+    "VI_PROSE_REVIEW.md": "15ed3d96a8a9be63f9e4886197cfb2dba7049b0d5134bc0cd6ce37654f85375a",
+    "STATIC_VALIDATION.json": "aa8bfd37e3fae4fafa07bfcd858be5c65627b887130c9b46c379b5cbc2ed9804",
+    "NUMERICAL_VERIFICATION.json": "a3a5f70694607efd990afbde3f8baf2592f42bb9ff64fbe569d5b774d0189533",
+    "acronym_report.md": "c3303f9b355cd844cb69f9c738dc41a244f73e7d73601c0d83ae75e6835ab8d1",
+    "REVISION_NOTES.md": "0e0837d8659242382547622a9fe447b113fee592df0b9f2d20be0b6064cc771a"
+  },
+  "training_or_inference_run": false
+}

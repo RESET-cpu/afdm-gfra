@@ -1,0 +1,72 @@
+{
+  "status": "PASS",
+  "equations_before": 45,
+  "equations_after": 59,
+  "page_counts": {
+    "main": 13,
+    "main_full": 14
+  },
+  "math_token_inventory_preserved": {
+    "01_introduction.tex": true,
+    "02_system_model.tex": true,
+    "03_bayesian_receiver_design.tex": true,
+    "04_generative_priors.tex": true,
+    "05_overall_algorithm.tex": true,
+    "06_simulation_results.tex": true,
+    "07_conclusion.tex": true,
+    "appendix_evaluation_protocol.tex": true,
+    "appendix_second_order_training.tex": true
+  },
+  "algorithm_operations_unchanged": true,
+  "tables_unchanged": true,
+  "changed_source_files": [
+    "paper/C-STMP/sections/02_system_model.tex",
+    "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "paper/C-STMP/sections/04_generative_priors.tex",
+    "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "paper/C-STMP/sections/06_simulation_results.tex"
+  ],
+  "logs": {
+    "main": {
+      "errors": [],
+      "underfull": [
+        "Underfull \\hbox (badness 1472) in paragraph at lines 159--162",
+        "Underfull \\hbox (badness 1371) in paragraph at lines 268--275"
+      ]
+    },
+    "main_full": {
+      "errors": [],
+      "underfull": [
+        "Underfull \\hbox (badness 1472) in paragraph at lines 159--162",
+        "Underfull \\hbox (badness 1371) in paragraph at lines 268--275"
+      ]
+    }
+  },
+  "final_pdf_sha256": {
+    "main": "e5f8a1876231ea6c7540152533e1aff2327a23c4952f43953537dd768fe8629b",
+    "main_full": "5d3941785913623559e72614b8c524c3cdc3f5005b2e5fc663811c8f4a4a8c46"
+  },
+  "visual_review_passed": true,
+  "figure_unchanged_outside_equation_reference_labels": true,
+  "figure_reference_labels": {
+    "variance": "(34)",
+    "site": "(39)–(42)",
+    "activity": "(38)",
+    "mixture": "(22)–(24)",
+    "extrinsic": "(25)–(26)"
+  },
+  "changed_files": [
+    "paper/C-STMP/main.pdf",
+    "paper/C-STMP/main_full.pdf",
+    "paper/C-STMP/main.aux",
+    "paper/C-STMP/main_full.aux",
+    "paper/C-STMP/sections/02_system_model.tex",
+    "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "paper/C-STMP/sections/04_generative_priors.tex",
+    "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "paper/C-STMP/sections/06_simulation_results.tex",
+    "paper/C-STMP/figures/learned_receiver.pdf",
+    "src/evaluation/plots/manuscript/receiver.py"
+  ],
+  "unexpected_changes": []
+}

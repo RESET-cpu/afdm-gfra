@@ -1,0 +1,2091 @@
+=== PDF PAGE 1 ===
+1
+Denoising Generalized Expectation-Consistent
+Approximation for MR Image Recovery
+Saurav K. Shastri, Rizwan Ahmad, Christopher A. Metzler, and Philip Schniter
+Abstract
+To solve inverse problems, plug-and-play (PnP) methods replace the proximal step in a convex optimization algo-
+rithm with a call to an application-speciﬁc denoiser, often implemented using a deep neural network (DNN). Although
+such methods yield accurate solutions, they can be improved. For example, denoisers are usually designed/trained to
+remove white Gaussian noise, but the denoiser input error in PnP algorithms is usually far from white or Gaussian.
+Approximate message passing (AMP) methods provide white and Gaussian denoiser input error, but only when the
+forward operator is sufﬁciently random. In this work, for Fourier-based forward operators, we propose a PnP algorithm
+based on generalized expectation-consistent (GEC) approximation—a close cousin of AMP—that offers predictable
+error statistics at each iteration, as well as a new DNN denoiser that leverages those statistics. We apply our approach
+to magnetic resonance (MR) image recovery and demonstrate its advantages over existing PnP and AMP methods.
+I. I NTRODUCTION
+When solving a linear inverse problem, we aim to recover a signal x0 ∈ CN from measurements y ∈ CP of the
+form
+y =Ax0 +w, (1)
+whereA is a known linear operator and w is unknown noise. Well-known examples of linear inverse problems
+include deblurring [1]; super-resolution [2], [3]; inpainting [4]; image recovery in magnetic resonance imaging
+(MRI) [5]; computed tomography [6]; holography [7]; and decoding in communications [8]. Importantly, when A is
+not full column rank (e.g., when P <N ), the measurements y can be explained well by many different hypotheses
+ofx0. In such cases, it is essential to harness prior knowledge of x0 when solving the inverse problem.
+The traditional approach [9] to recovering x0 fromy in (1) is to solve an optimization problem like
+ˆx = arg min
+x
+{
+g1(x) +g2(x)
+}
+, (2)
+where g1(x) promotes measurement ﬁdelity and the regularization g2(x) encourages consistency with the prior
+information about x0. For example, if w is white Gaussian noise (WGN) with precision (i.e., inverse variance)
+S. K. Shastri and P. Schniter are with the Dept. of Electrical and Computer Engineering, The Ohio State University, Columbus, OH 43201,
+USA, Email: {shastri.19,schniter.1}@osu.edu.
+R. Ahmad is with the Dept. of Biomedical Engineering, The Ohio State University, Columbus, OH 43201, USA, Email: ahmad.46@osu.edu
+C. A. Metzler is with the Dept. of Computer Science, The University of Maryland, College Park, MD 20742, USA, Email: metzler@umd.edu.
+arXiv:2206.05049v2  [eess.IV]  7 Sep 2022
+
+=== PDF PAGE 2 ===
+2
+γw, then g1(x) = γw
+2 ∥y −Ax∥2 is an appropriate choice. Choosing a good regularizer g2 is much more difﬁcult.
+A common choice is to construct g2 so that x0 is sparse in some transform domain, i.e., g2(x) = λ∥Ψx∥1 for
+λ> 0 and a suitable linear operator Ψ. A famous example of this choice is total variation regularization [10] and
+in particular its anisotropic variant (e.g., [11]). However, the intricacies of many real-world signal classes (e.g.,
+natural images) are not well captured by sparse models like these. Even so, these traditional methods provide useful
+building blocks for contemporary methods, as we describe below. We will discuss the algorithmic aspects of solving
+(2) in Sec. II.
+More recently, there has been a focus on training deep neural networks (DNNs) for image recovery given a
+sufﬁciently large set of examples {(xi,yi)} to train those networks. These DNN-based approaches come in many
+forms, including dealiasing approaches [12], [13], which use a convolutional DNN to recover x0 fromAHy or
+A+y, where (·)+ denotes the pseudo-inverse; unrolled approaches [14], [15], which unroll the iterations of an
+optimization algorithm into a neural network and then learn the network parameters that yield the best result after a
+ﬁxed number of iterations; and inverse GAN approaches [16], [17], which ﬁrst use a generative adversarial network
+(GAN) formulation to train a DNN to turn random code vectors z into realistic signal samples x, and then search
+for the speciﬁcz that yields the ˆx for which ∥Aˆx −y∥ is minimal. Good overviews of these methods can be found
+in [18]–[20]. Although the aforementioned DNN-based methods have shown promise, they require large training
+datasets, which may be unavailable in some applications. Also, models trained under particular assumptions about
+A and/or statistics of w may not generalize well to test scenarios with different A and/orw.
+So-called “plug-and-play” (PnP) approaches [21] give a middle-ground between traditional algorithmic approaches
+and the DNN-based approaches discussed above. In PnP, a DNN is ﬁrst trained as a signal denoiser, and later that
+denoiser is used to replace the proximal step in an iterative optimization algorithm (see Sec. II-B). One advantage of
+this approach is that the denoiser can be trained with relatively few examples of {xi} (e.g., using only signal patches
+rather than the full signal) and no examples of {yi}. Also, because the denoiser is trained on signal examples alone,
+PnP methods have no trouble generalizing to an arbitrary A and/orw at test time. The regularization-by-denoising
+(RED) [22], [23] framework yields a related class of algorithms with similar properties. See [24] for a comprehensive
+overview of PnP and RED.
+With a well-designed DNN denoiser, PnP and RED signiﬁcantly outperform sparsity-based approaches, as well
+as end-to-end DNNs in limited-data and mismatched- A scenarios (see, e.g., [24]). However, there is room for
+improvement. For example, while the denoisers used in PnP and RED are typically trained to remove the effects of
+additive WGN (AWGN), PnP and RED algorithms yield estimation errors that are not white nor Gaussian at each
+iteration. As a result, AWGN-trained denoisers will be mismatched at every iteration, thus requiring more iterations
+and compromising performance at the ﬁxed point. Although recent work [25] has shown that deep equilibrium
+methods can be used to train the denoiser at the algorithm’s ﬁxed point, the denoiser may still remain mismatched
+for the many iterations that it takes to reach that ﬁxed point, and the ﬁnal design will be dependent on the A and
+noise statistics used during training.
+These shortcomings of PnP algorithms motivate the following two questions:
+1) Is it possible to construct a PnP-style algorithm that presents the denoiser with predictable error statistics at
+
+=== PDF PAGE 3 ===
+3
+every iteration?
+2) Is it possible to construct a DNN denoiser that can efﬁciently leverage those error statistics?
+WhenA is a large unitarily invariant random matrix, the answers are well-known to be “yes": approximate message
+passing (AMP) algorithms [26] yield AWGN errors at each iteration with a known variance, which facilitates the use
+of WGN-trained DNN denoisers like DnCNN [27] (see Sec. II-B for more on AMP algorithms). In many inverse
+problems, however, A is either non-random or drawn from a distribution under which AMP algorithms do not
+behave as intended. So, the above two questions still stand.
+In this paper, we answer both of the above questions in the afﬁrmative for Fourier-based A. Using the framework
+of generalized expectation-consistent (GEC) approximation [28] in the wavelet domain [29], we propose a PnP
+algorithm that yields an AWGN error in each wavelet subband, with a predictable variance, at each iteration. We
+then propose a new DNN denoiser design that can exploit knowledge of the wavelet-domain error spectrum. For
+recovery of MR images from the fastMRI [30] and Stanford 2D FSE [31] datasets, we present experimental results
+that show the advantages of our proposed approach over existing PnP and AMP-based approaches. This paper builds
+on our recent conference publication [32] but adds our new denoiser design, much more background material and
+detailed explanations, and many new experimental results.
+II. B ACKGROUND
+A. Magnetic resonance imaging
+We now detail the version of the system model (1) that manifests in C-coil MRI. There, x0 ∈ CN is a vectorized
+version of the N-pixel image that we wish to recover, y ∈ CCM are the so-called “k-space” measurements, and
+A =
+
+
+MF Diag(s1)...
+MF Diag(sC)
+
+. (3)
+In (3), F ∈ CN×N is a unitary 2D discrete Fourier transform (DFT), M ∈ RM×N is a sampling mask formed
+from M rows of the identity matrix I ∈ RN×N , and sc ∈ CN is the cth coil-sensitivity map. In the special case of
+single-coil MRI, we have C = 1 ands1 = 1, where 1 denotes the all-ones vector. In MRI, the ratio R ≜N/M is
+known as the “acceleration rate.” When R> 1, the matrix A can be column-rank deﬁcient and/or poorly conditioned
+even when C ≥R, and so prior knowledge of x0 must be exploited for accurate recovery.
+In practical MRI, physical constraints govern the construction of the sampling mask M. For example, samples
+are always collected along lines or curves in k-space. In clinical practice, it is most common to sample along
+lines parallel to one dimension of k-space, as illustrated in Figs. 1(c)-(d) for 2D sampling. We will refer to this
+approach as “2D line sampling.” In this case, one dimension of k-space is fully sampled and the other dimension
+is subsampled. For the subsampled dimension, it is common to sample pseudorandomly or randomly, but with
+a higher density near the k-space origin, as shown in Figs. 1(c)-(d). Also, when using ESPIRiT to estimate the
+coil-sensitivity maps {sc}, one must include a fully-sampled “autocalibration” region centered at the origin, as
+shown in Figs. 1(b)-(d).
+
+=== PDF PAGE 4 ===
+4
+Fig. 1: Examples of sampling masks M: (a) 2D point sampling at R = 4 , (b) 2D point sampling at R = 8
+with a 24 × 24 fully sampled central autocalibration region, (c) 2D line sampling at R = 4 with a 24-wide fully
+sampled central autocalibration region, and (d) 2D line sampling at R = 8 with a 24-wide fully sampled central
+autocalibration region.
+2D line sampling, while attractive from an implementation standpoint, poses challenges for signal reconstruction
+due to high levels of coherence [33] in the resulting A matrix. This has led some algorithm designers to consider
+“2D point sampling” masks such as those shown in Fig. 1(a)-(b), since they yield A with much lower coherence
+[34]. But such masks are rarely encountered in practical 2D MR imaging. It is, however, possible to encounter a 2D
+point mask as a byproduct of the following 3D acquisition process: i) acquire a 3D k-space volume using 3D line
+sampling, ii) perform an inverse DFT along the fully sampled dimension, and iii) slice along that dimension to
+obtain a stack of 2D k-space acquisitions. The location of each line in 3D k-space determines the location of the
+respective point sample in 2D k-space, and these locations can be freely chosen. But 3D acquisition is uncommon
+because it is susceptible to motion; in 2D acquisition, the patient must lie still for the acquisition of a single slice,
+whereas in 3D acquisition the patient must lie still for the acquisition of an entire volume. We include experiments
+with 2D point masks only to compare with the VDAMP family of algorithms [35]–[38] discussed in the sequel,
+since these algorithms are all designed around the use of 2D point masks.
+Although our paper focuses on MRI, the methods we propose apply to any application where the goal is to
+recover a signal from undersampled Fourier measurements.
+B. Plug-and-play recovery
+Many algorithms have been proposed to solve the optimization problem (2) (see, e.g., [9]). The typical assumptions
+are that g1 is convex and differentiable, ∇g1 is Lipschitz with constant L > 0, and g2 is convex but possibly
+not differentiable, which allows sparsity-inducing regularizations like g2(x) = λ∥Ψx∥1. One of the most popular
+approaches is ADMM [39], summarized by the iterations
+x1 ← proxγ−1g1 (x2 −u) (4a)
+x2 ← proxγ−1g2 (x1 +u) (4b)
+u ←u + (x1 −x2), (4c)
+
+=== PDF PAGE 5 ===
+5
+where γ is a tunable parameter 1 that affects convergence speed but not the ﬁxed point, and
+proxρ(r) ≜ arg min
+x
+{
+ρ(x) + 1
+2 ∥x −r∥2}
+. (5)
+For example, when g1(x) = γw
+2 ∥Ax −y∥2, we get
+proxγ−1g1 (r) =
+(
+γwAHA +γI
+)−1(
+γwAHy +γr
+)
+. (6)
+Based on the prox deﬁnition in (5), ADMM step (4b) can be interpreted as MAP estimation [40] of x0 with prior
+p(x0) ∝ e−g2(x0) from an observation r = x0 +e of the true signal corrupted by γ-precision AWGN e, i.e.,
+MAP denoising. This observation led Venkatakrishnan et al. [21] to propose that the prox in (4b) be replaced by a
+high-performance image denoiser f2 : RN → RN like BM3D [41], giving rise to PnP-ADMM. It was later proposed
+to use a DNN-based denoiser in PnP [42], such as DnCNN [27]. Note that when (4b) is replaced with a denoising
+step of the form “ x2 ←f2(x1 +u),” the parameter γ does affect the ﬁxed-point and thus must be tuned to obtain
+the best recovery accuracy.
+The PnP framework was later extended to other algorithms, such as primal-dual splitting (PDS) in [42], [43] and
+proximal gradient descent (PGD) in [42], [44]. For use in the sequel, we write the PGD algorithm as
+x1 ←x2 −µ∇g1(x2) (7a)
+x2 ← proxµg2 (x1), (7b)
+where µ ∈ (0, 1/L) and L is the Lipschitz constant of ∇g1. For example, when g1(x) = 1
+2 ∥Ax −y∥2, we get
+∇g1(x) = AH(Ax −y). For all of these PnP incarnations, the prox step in the original optimization algorithm
+is replaced by a high-performance denoiser f2. As shown in the recent overview [24], PnP methods have been
+shown to signiﬁcantly outperform sparsity-based approaches in MRI, as well as end-to-end DNNs in limited-data
+and mismatched-A scenarios.
+Although PnP algorithms work well for MRI, there is room for improvement. For example, while image denoisers
+are typically designed/trained to remove the effects of AWGN, PnP algorithms do not provide the denoiser with an
+AWGN-corrupted input at each iteration. Rather, the denoiser’s input error has iteration-dependent statistics that are
+difﬁcult to analyze or predict.
+C. Approximate message passing
+For the model (1) with w ∼ N (0,τwI), the AMP algorithm 2 [26], [46] manifests as the following iteration over
+t = 0, 1, 2,... :
+vt+1 =β ·
+(
+y −Axt)
++ 1
+Mvt tr{∇ft
+2(xt−1 +βAHvt)} (8a)
+τt+1 = 1
+M ∥vt+1∥2 (8b)
+xt+1 =ft+1
+2 (xt +βAHvt+1) (8c)
+1The parameter γ arises from the augmented Lagrangian used by ADMM: g1(x1) +g2(x2) + Re{uH(x1− x2)} + γ
+2∥x1− x2∥2.
+2For generalized linear models, one would instead use the Generalized AMP algorithm from [45].
+
+=== PDF PAGE 6 ===
+6
+initialized asv0 = 0 =x0, whereft
+2(·) is the iteration-t denoising function (which may depend on τt), tr{∇ft
+2(r)}
+is the trace of the Jacobian of ft
+2 atr, and β =
+√
+N/ ∥A∥F . The last term in (8a), known as the “Onsager correction,”
+is a key component of the AMP algorithm. Without it, (8) would reduce to the PnP version of the PGD algorithm
+(7) with µ =β2.
+The goal of Onsager correction is to make the denoiser input error
+et+1 ≜xt +βAHvt+1 −x0 (9)
+behave like a realization of WGN with variance τt+1, where τt+1 is given in (8b). Note that if
+et+1 ∼ N (0,τ t+1I) (10)
+did hold, it would be straightforward to design the denoiser ft+1
+2 for MAP or MMSE optimality. For example, in (2),
+if we interpret g1(x) as the log-likelihood and g2(x) as the log-prior, then g1(x) +g2(x) becomes the log-posterior
+(up to a constant) and so ˆx in (2) becomes the MAP estimate [47]. Thus, for the case of MAP estimation, we would
+use the MAP denoiser ft
+2(r) = proxτ tg2 (r), andxt would approach the MAP estimate as t → ∞ [26]. On the other
+hand, for the case of MMSE estimation, where we would like to compute the conditional mean ˆxmmse ≜ E{x|y},
+we would use the MMSE denoiser ft
+2(r) = E{x |r} forr =x0 +e withe ∼ N (0,τ tI) [46].
+Importantly, when the forward operator A ∈ RP×N is i.i.d. sub-Gaussian, the dimensions P,N → ∞ with a ﬁxed
+ratio P/N , and ft
+2 is Lipschitz, [48], [49] established that the WGN property (10) does indeed hold. Furthermore,
+deﬁning the MSE Et ≜ 1
+N ∥xt −x0∥2, [48], [49] established that AMP obeys the following scalar state-evolution
+overt = 0, 1, 2,... :
+τt =τw + N
+P Et (11a)
+Et+1 = 1
+N E{∥ft
+2(x0 + N (0,τ tI)) −x0∥2}. (11b)
+Remarkably, the AMP state evolution shows that, in the large-system limit, the trajectory of the mean-squared
+recovery error can be predicted in advance knowing only the dimensions of i.i.d. sub-Gaussian A (not the values
+inA) and the MSE behavior of the denoiser ft
+2(·) when faced with the task of removing white Gaussian noise.
+Moreover, whenft
+2 is the MMSE denoiser and the state-evolution has a unique ﬁxed point, [48], [49] established
+that AMP provably converges to the MMSE-optimal estimate ˆxmmse. These theoretical results were ﬁrst established
+for separable denoisers f2 in [48] and later extended to non-separable denoisers in [49]. By “separable” we mean
+thatf2 takes the form f2(x) = [f2(x1),...,f 2(xN )]T for some scalar denoiser f2 : R → R.
+For practical image recovery problems, [50] proposed to approximate the MMSE denoiser by a high-performance
+image denoiser like BM3D or a DNN, and called it “denoising-AMP” (D-AMP). Since these image denoisers are
+non-separable and high-dimensional, the trace-Jacobian term in (8a) (known as the “divergence”) is difﬁcult to
+compute, and so D-AMP uses the Monte-Carlo approximation [51]
+tr{∇ft
+2(r)} ≈ δ−1qH[
+ft
+2(r +δq) −ft
+2(r)
+]
+, (12)
+whereq is a ﬁxed realization of N (0,I) and δ is a small positive number. D-AMP performs very well with large
+i.i.d. sub-Gaussian A, but can diverge with non-random A, such as those encountered in MRI (recall (3)).
+
+=== PDF PAGE 7 ===
+7
+D. Expectation-consistent approximation and VAMP
+Expectation-consistent (EC) approximation [52] is an inference framework with close connections to both PnP-
+ADMM and AMP. In EC, one is assumed to have access to the prior density px(x) on x0 and the likelihood
+function ℓ(x;y), and the goal is to approximate the mean of the posterior px|y(x|y), i.e., the MMSE estimate
+ˆxmmse = E{x|y}. Although Bayes rule says that px|y(x|y) = Z−1(y)px(x)ℓ(x;y) for Z(y) ≜
+∫
+px(x)ℓ(x;y) dx,
+this integral is usually too difﬁcult to compute in the high-dimensional case. But note that we can write
+px|y(x|y) = arg min
+q
+D
+(
+q(x)
+px|y(x|y)
+)
+(13)
+= arg min
+q
+D
+(
+q(x)
+ℓ(x;y)
+)
++D
+(
+q(x)
+px(x)
+)
++H
+(
+q(x)
+)
+(14)
+= arg min
+q1,q2,q3
+D
+(
+q1(x)
+ℓ(x;y)
+)
++D
+(
+q2(x)
+px(x)
+)
++H
+(
+q3(x)
+)
+  
+≜JGibbs(q1,q 2,q 3)
+such that q1 =q2 =q3, (15)
+where the minimizations are conducted over sets of probability densities, D(q1∥px) ≜
+∫
+q1(x) log q1(x)
+px(x) dx is the
+Kullback-Liebler (KL) divergence from px to q1, H(q3) ≜ −
+∫
+q3(x) logq3(x) dx is the differential entropy of q3,
+and JGibbs(q,q,q ) is known as the Gibbs free energy of q. So, if (15) could be solved, it would give a way to
+compute the posterior that avoids computing Z(y). However, (15) is generally too difﬁcult to solve, and so it was
+proposed in [52] to relax the equality constraints in (15) to moment-matching constraints, i.e.,
+arg min
+q1,q2,q3
+JGibbs(q1,q 2,q 3) such that
+
+
+
+E{x|q1} = E{x|q2} = E{x|q3}
+tr(Cov{x|q1}) = tr(Cov {x|q2}) = tr(Cov {x|q3}),
+(16)
+where E{x|qi} and Cov{x|qi} denote the mean and covariance of x underx ∼qi for i = 1, 2, 3, respectively. The
+authors of [52] then showed that the optimization problem (16) is solved by the densities
+q1(x;r1,γ 1) ∝ℓ(x;y)N (x;r1,I/γ1) (17)
+q2(x;r2,γ 2) ∝px(x)N (r2;x,I/γ2) (18)
+q3(x;ˆx,η ) = N (x;ˆx,I/η) (19)
+for the values of (r1,γ 1,r2,γ 2,ˆx,η ) that lead to the satisfaction of the constraints in (16). The resulting ˆx
+approximates the MMSE estimate ˆxmmse and η−1 approximates the resulting MMSE 1
+N tr(Cov{x|y}).
+Although there is generally no closed-form expression for the moment-matching values of (r1,γ 1,r2,γ 2,ˆx,η ),
+one can iteratively solve for them using the EC algorithm shown in Alg. 1 (a form of expectation propagation (EP)
+[53]) using the estimation functions
+f1(r1;γ1) = E{x|q1} =
+∫
+xq1(x;r1;γ1) dx (20)
+f2(r2;γ2) = E{x|q2} =
+∫
+xq2(x;r2;γ2) dx. (21)
+It is straightforward to show (see, e.g., [28]) that, at a ﬁxed point of Alg. 1, one obtains ˆx1 = ˆx2 = ˆx and
+η1 =η2 =η =γ1 +γ2.
+
+=== PDF PAGE 8 ===
+8
+Algorithm 1 EC / V AMP
+Require: f1(·; ·) andf2(·; ·).
+1: Select initial r1 ∈ RN,γ 1 > 0
+2: repeat
+3: // Measurement ﬁdelity
+4: ˆx1 ←f1(r1;γ1)
+5: η1 ←γ1N/ tr(∇f1(r1;γ1))
+6: γ2 ←η1 −γ1
+7: r2 ← (η1ˆx1 −γ1r1)/γ2
+8: // Denoising
+9: ˆx2 ←f2(r2;γ2)
+10: η2 ←γ2N/ tr(∇f2(r2;γ2))
+11: γ1 ←η2 −γ2
+12: r1 ← (η2ˆx2 −γ2r2)/γ1
+13: until Terminated
+14: return ˆx2
+For WGN-corrupted linear measurements y as in (1), the likelihood becomes ℓ(x;y) = N (y;Ax,I/γw) and so
+f1 in (20) manifests as
+f1(r1;γ1) =
+(
+γwAHA +γ1I
+)−1(
+γwAHy +γ1r1
+)
+. (22)
+Thisf1 can be interpreted as the MMSE estimator of x0 from the measurements y =Ax0 + N (0,I/γw) under
+the pseudo-prior x0 ∼ N (r1,I/γ1). Meanwhile f2 in (21) can be interpreted as the MMSE estimator of x0 from
+the pseudo-measurements r2 =x0 + N (0,I/γ2) under the prior x0 ∼px(x). In other words, f2 can be interpreted
+as the MMSE denoiser of r2. This pseudo-measurement model is exactly the same one that arises in AMP (recall
+(10)).
+For generic A, there are no guarantees on the quality of the EC estimate ˆx or even the convergence of Alg. 1.
+But when A is a right orthogonally invariant (ROI) random matrix, EC has a rigorous high-dimensional analysis.
+ROI matrices can be understood as those with singular value decompositions of the form USV T, for orthogonal U,
+diagonalS, and random V uniformly distributed over the set of orthogonal matrices; the ROI class includes the
+i.i.d. Gaussian class but is more general. In particular, [54], [55] showed that, for asymptotically large ROI matrices
+A, EC’s denoiser input error e2 =r2 −x0 obeys
+e2 ∼ N (0,I/γ2) (23)
+at every iteration, similar to AMP (recall (10)). Likewise, macroscopic statistical quantities like MSE E = 1
+N ∥ˆx−x0∥2
+obey a scalar state evolution. Importantly, these results hold not only for the MMSE denoising functions f2 speciﬁed
+by EC, but also for general Lipschitz f2 [55], [56]. Due to the tight connections with AMP, the EC algorithm with
+
+=== PDF PAGE 9 ===
+9
+general Lipschitz f2 was referred to as Vector AMP (V AMP) in [55], [56]. A similar rigorous analysis of EC with
+asymptotically large, right unitarily invariant (RUI) matrices A was given in [57]. For those matrices, the SVD of
+A takes the form USV H with random V uniformly distributed over the set of unitary matrices.
+Given that the EC/V AMP algorithm can be used with estimation functions other than the MMSE choices in
+(20)-(21), one might wonder whether it can be applied to solve optimization problems of the form (2), i.e., MAP
+estimation. This was answered afﬁrmatively in [28]. In particular, it sufﬁces to choose
+f1(r1,γ 1) = proxγ−1
+1 g1
+(r1) (24)
+f2(r2,γ 2) = proxγ−1
+2 g2
+(r2). (25)
+Furthermore, the resulting EC/V AMP algorithm can be recognized as a form of ADMM. If we ﬁx the values of γ1
+and γ2 over the iterations (which forces η1 =η2 =γ1 +γ2) and deﬁneu1 ≜γ1(ˆx2 −r1) andu2 ≜γ2(r2 −ˆx1),
+we can rewrite EC/V AMP from Alg. 1 as the recursion
+ˆx1 ← proxγ−1
+1 g1
+(ˆx2 −u1/γ1) (26a)
+u2 ←u1 +γ1(ˆx1 −ˆx2) (26b)
+ˆx2 ← proxγ−1
+2 g2
+(ˆx1 +u2/γ2) (26c)
+u1 ←u2 +γ2(ˆx1 −ˆx2) (26d)
+which is a generalization of ADMM in (4) to two dual updates and two penalty parameters. If we additionally
+constrain γ1 =γ2 ≜γ then (26) reduces to
+ˆx1 ← proxγ−1g1 (ˆx2 −u) (27a)
+u ←u + (ˆx1 −ˆx2) (27b)
+ˆx2 ← proxγ−1g2 (ˆx1 +u) (27c)
+u ←u + (ˆx1 −ˆx2), (27d)
+which is known as the Peaceman-Rachford or symmetric variant of ADMM, and which is said to converge faster
+than standard ADMM [58], [59]. The important point is that EC/V AMP can be understood as a generalization of
+ADMM that i) uses two penalty parameters and ii) adapts those penalty parameters with the iterations.
+Inspired by D-AMP [50], a “Denoising V AMP” (D-V AMP) was proposed in [60], which used V AMP with
+high-performance image denoisers and the Monte-Carlo approximation (12). Although D-V AMP was shown to work
+well with large ROI A, it can diverge with non-random A, such as those encountered in MRI. Some intuition
+behind the failure of V AMP with non-ROI A will be given in Sec. III-A
+E. AMP/VAMP for MRI
+The versions of A that manifest in linear inverse problems often do not have sufﬁcient randomness for the AMP
+and EC/V AMP algorithms to work as intended. If used without modiﬁcation, AMP and EC/V AMP algorithms may
+
+=== PDF PAGE 10 ===
+10
+simply diverge. This is deﬁnitely the case for MRI, where A is the Fourier-based matrix shown in (3). Consequently,
+modiﬁed AMP and V AMP algorithms have been proposed speciﬁcally for MRI image recovery.
+For example, [61] proposed to use D-AMP (8) with β ≪
+√
+N/ ∥A∥F , which helps to slow down the algorithm and
+help it converge, but at the cost of degrading its ﬁxed points, as we show in Sec. IV-E. The authors of [62] instead
+used damping to help D-V AMP converge without disturbing its ﬁxed points. In conjunction with a novel initialization
+based on Peaceman-Rachford ADMM, the latter scheme was competitive with PnP-ADMM for single-coil MRI.
+For the special case of 2D point-sampled MRI, the principle of density compensation [63] has also been
+exploited for the design of AMP-based algorithms. For applications where k-space is non-uniformly sampled, density
+compensation applies a gain to each k-space sample that is proportional to the inverse sampling density at that
+sample, changing y toGy in (1) with diagonal gain matrix G. When A uses a 2D point mask, the error in the
+density-compensated linear estimate ˆx = AHGy behaves much more like white Gaussian noise than does the
+error in the standard linear estimate ˆx =AHy (see, e.g., [64]). After observing the error to behave even more
+like white noise within wavelet subbands, Millard et al. [35] proposed a V AMP modiﬁcation that employs density
+compensation in the linear stage and wavelet thresholding in the denoising stage. The resulting “Variable-Density
+AMP” (VDAMP) algorithm was empirically observed to successfully track the error variance in each subband over
+the algorithm iterations. The authors then extended their work from single- to multicoil MRI in [37], calling their
+approach Parallel VDAMP (P-VDAMP).
+To improve on VDAMP, Metzler and Wetzstein [36] proposed a PnP extension of the algorithm, where the
+wavelet-thresholding denoiser was replaced by a novel DNN that accepts a vector of subband error variances at
+each iteration. The resulting Denoising VDAMP (D-VDAMP) showed a signiﬁcant boost in recovery accuracy over
+VDAMP for single-coil 2D point-sampled MRI [36]. Although D-VDAMP works relatively well, it requires early
+stopping for good performance (as we demonstrate in Sec. IV-E), which suggests that D-VDAMP has suboptimal
+ﬁxed points and hence can be improved. Most recently, a “Denoising P-VDAMP” (DP-VDAMP) was proposed
+[38], [65] that replaces the wavelet thresholding step in P-VDAMP with a DNN denoiser. A major shortcoming of
+VDAMP, P-VDAMP, D-VDAMP, and DP-VDAMP is that they are designed around the use of 2D point sampling
+masks, which are impractical and uncommon in clinical MRI. These shortcomings motivate our proposed approach,
+which is described in the next section.
+III. P ROPOSED APPROACH
+We now propose a new approach to MRI recovery that, like the VDAMP-based algorithms [35]–[38], formulates
+signal recovery in the wavelet domain, but, unlike the VDAMP-based algorithms, does not use density compensation
+and does not require the use of 2D point masks. Our approach is based on a PnP version of the generalized EC
+algorithm, which is described in Sec. III-A, in conjunction with a DNN denoiser that can handle parameterized
+colored noise, which is described in Sec. III-B.
+
+=== PDF PAGE 11 ===
+11
+Fig. 2: Approximate block-diagonality of 2D Fourier-wavelet matrices. Using abs(·) to denote the entry-wise
+magnitude operation, (a) shows abs(F ΨT) with rows sorted according to distance from the k-space origin, columns
+sorted according to wavelet subbands, and subband boundaries denoted by red lines. Meanwhile, (b) shows the matrix
+product abs(F ΨT)T abs(F ΨT) and (c) shows abs(G)T abs(G) for the multi-coil Fourier-wavelet matrix G deﬁned
+in (30). The approximate block-diagonality of (b) and (c) suggests that the columns of the 2D Fourier-wavelet
+matrices are well decoupled in the single- and multi-coil cases.
+A. Wavelet-domain denoising GEC algorithm
+To motivate wavelet-domain signal recovery, we ﬁrst present an intuitive explanation of the problems faced
+by EC/V AMP with non-ROIA. To start, one can show (see Appendix A) that EC/V AMP’s denoiser input error
+e2 ≜r2 −x0 can be written as
+e2 =VDV He1 +u, (28)
+whereV is the right singular vector matrix of A, the matrix D is diagonal with tr(D) = 0 ,e1 ≜r1 −x0 is the
+error on the input to f1, and u is a linear transformation of the measurement noise vector w from (1). When A is
+ROI or RUI, V is drawn uniformly from the group of orthogonal or unitary matrices, respectively. Appendix B
+shows for the orthogonal case that, if V ande1 are treated as independent up to the fourth moment and w ande1
+are uncorrelated, then, conditioned on e1, both VDV He1 ande2 are asymptotically white and zero-mean Gaussian.
+Importantly, this behavior occurs despite the tendency for e1 to be highly structured and non-Gaussian.
+When A is not a high-dimensional ROI or RUI matrix, however, there is no guarantee that VDV He1 will
+asymptotically be white and zero-mean Gaussian. For example, when A =MF as in single-coil MRI and x0 is a
+natural image, this desired property does not manifest because the x0 (and thus e1) has a high concentration of
+energy at low frequencies and V H =F focuses that error into a few dimensions of D.
+We now explain why using an AMP/EC algorithm to recover the wavelet coefﬁcients c0 ≜ Ψx0, rather than the
+image pixels x0, offers a path to circumvent these issues. For an orthogonal discrete wavelet transform (DWT) Ψ,
+we have x0 = ΨTc0 and so (1) implies the measurement model
+y =Bc0 +w with B ≜AΨT. (29)
+
+=== PDF PAGE 12 ===
+12
+In the case where A is a subsampled version of the Fourier matrix F , the matrix B is a subsampled Fourier-wavelet
+matrix F ΨT. The Fourier-wavelet matrix is known to be approximately block diagonal after appropriate row-
+sorting [66], where the blocks correspond to the wavelet subbands. This means that B in (29) primarily mixes the
+wavelet coefﬁcientsc0 within subbands rather than across subbands. Consequently, if that mixing has a sufﬁciently
+randomizing effect on each subband of e1, then—with an appropriate EC-style algorithm design—the subband error
+vectorse2 can be kept approximately i.i.d. Gaussian across the iterations, although with a possibly different variance
+in each subband. In Fig. 2(a), we plot abs(F ΨT) for the 2D case with the rows sorted according to the distance
+of their corresponding k-space sample to the origin. Although this row-sorting does not yield an approximately
+block-diagonal matrix, it should be clear from the discussion above that row-sorting is unimportant; it only matters
+that the columns of B for each given subband have a sufﬁciently randomizing effect on that subband and are
+approximately decoupled from the columns of other subbands. To illustrate the degree of column-decoupling in
+F ΨT, we plot abs(F ΨT)T abs(F ΨT) in Fig. 2(b). We plot this particular quantity because, if F ΨT =JD where
+J is a permutation matrix and D is a perfectly block-diagonal matrix, then abs(F ΨT)T abs(F ΨT) will be perfectly
+block-diagonal for any J, i.e., for any row-sorting. The fact that Fig. 2(b) looks approximately block-diagonal
+suggests that the column-blocks of F ΨT are signiﬁcantly decoupled.
+The discussion in the previous paragraph pertains to single-coil MRI. In the multi-coil case, the matrix A takes
+the form in (3) and so B from (29) manifests as
+B =
+
+
+M ...
+M
+
+G with G ≜
+
+
+F Diag(s1)ΨT
+...
+F Diag(sC)ΨT
+
+. (30)
+We would like that the multi-coil Fourier-wavelet matrix G has a sufﬁciently randomizing effect on each given
+subband in c0 and that the columns corresponding to that subband are decoupled from the columns of other
+subbands. To investigate the decoupling behavior of G, we plot abs(G)T abs(G) in Fig. 2(c) for the case of C = 8
+ESPIRiT-estimated coils and notice that, similar to the single-coil quantity abs(F ΨT)T abs(F ΨT) in Fig. 2(b), the
+multi-coil quantity abs(G)T abs(G) looks approximately block-diagonal.
+The ﬁrst AMP-based method that exploited the aforementioned Fourier-wavelet properties was the V AMPire
+algorithm from [67], where a normalization of the subband energies in c0 was used to equalize the subband error
+variances ine2, with the goal of tracking a single variance across the iterations (thus facilitating the use of D-V AMP).
+In other words, (29) was written as y =Bc0 +w withB =B Diag(g) andc0 = Diag(g)−1c0, for g such that
+diag(Cov(c0)) ≈ 1. But, because the variances of the subbands in e2 do change with the iterations, the scheme in
+[67] was far from optimal.
+In this work, we propose an EC-based PnP method that recovers the wavelet coefﬁcients c0 and tracks the
+variances of both e1 ande2 in each wavelet subband. Our approach leverages the Generalized EC (GEC) framework
+from [28], which is summarized in Alg. 2 and (31). GEC is a generalization of EC from Alg. 1 that averages the
+
+=== PDF PAGE 13 ===
+13
+Algorithm 2 Generalized EC (GEC)
+Require: f1(·; ·), f2(·; ·), and gdiag(·).
+1: Select initial r1,γ1
+2: repeat
+3: // Measurement ﬁdelity
+4: ˆx1 ←f1(r1,γ1)
+5: η1 ← Diag(gdiag(∇f1(r1,γ1)))−1γ1
+6: γ2 ←η1 −γ1
+7: r2 ← Diag(γ2)−1(Diag(η1)ˆx1 − Diag(γ1)r1)
+8: // Denoising
+9: ˆx2 ←f2(r2,γ2)
+10: η2 ← Diag(gdiag(∇f2(r2,γ2)))−1γ2
+11: γ1 ←η2 −γ2
+12: r1 ← Diag(γ1)−1(Diag(η2)ˆx2 − Diag(γ2)r2)
+13: until Terminated
+14: return ˆx2
+diagonal of the Jacobian ∇fi separately over L coefﬁcient subsets using the gdiag : RN×N → RN operator:
+gdiag(Q) ≜ [d11T
+N1,...,d L1T
+NL ]T (31a)
+dℓ = tr{Qℓℓ}
+Nℓ
+. (31b)
+In (31), Nℓ denotes the size of the ℓth subset and Qℓℓ ∈ RNℓ×Nℓ denotes the ℓth diagonal subblock of the matrix
+inputQ. When GEC is used to solve a convex optimization problem of the form (2), the functions fi take the form
+fi(r,γ) = gproxgi,γ (r) for gproxρ,γ (r) ≜ arg min
+x
+{
+ρ(x) + 1
+2 ∥x −r∥2
+γ
+}
+, (32)
+where ∥q∥γ ≜
+√
+qH Diag(γ)q. When L = 1, GEC reduces to EC/V AMP. In that case, γ = γ1 and gproxρ,γ =
+proxγ−1ρ.
+Our proposed wavelet-domain Denoising GEC (D-GEC) approach is outlined in Alg. 3. For the gdiag operator, we
+use (31) with the diagonalization subsets deﬁned by the L = 3D + 1 subbands of a depth-D dyadic 2D orthogonal
+DWT. Also, when computing gdiag(∇f1) and gdiag(∇f2) in lines 5 and 10, we approximate the tr{Qℓℓ} terms
+in (31b) using the Monte Carlo approach [51]
+tr{Qℓℓ} ≈ δ−1
+ℓ qH
+ℓ
+[
+fi(r +δℓqℓ,γ) −fi(r,γ)
+]
+, (33)
+where we use i.i.d. unit-variance Gaussian coefﬁcients for the ℓth coefﬁcient subset inqℓ and set all other coefﬁcients
+inqℓ to zero. As a result of the chosen diagonalization, the γi vectors (for i = 1, 2) are structured as
+γi = [γi,11T
+N1,...,γ i,L1T
+NL ]T, (34)
+
+=== PDF PAGE 14 ===
+14
+Algorithm 3 Denoising GEC operating in the wavelet domain
+Require: f1(·, ·), f2(·, ·), gdiag(·), and Ψ.
+1: Select initial r1,γ1
+2: repeat
+3: // Measurement ﬁdelity
+4: ˆc1 ←f1(r1,γ1)
+5: η1 ← Diag(gdiag(∇f1(r1,γ1)))−1γ1
+6: γ2 ←η1 −γ1
+7: r2 ← Diag(γ2)−1(Diag(η1)ˆc1 − Diag(γ1)r1)
+8: // Denoising
+9: ˆc2 ← Ψf2(ΨTr2,γ2)
+10: η2 ← Diag(gdiag(∇f2(r2,γ2)))−1γ2
+11: γ1 ←η2 −γ2
+12: r1 ← Diag(γ1)−1(Diag(η2)ˆc2 − Diag(γ2)r2)
+13: until Terminated
+14: return ˆx2 = ΨTˆc2
+and the ηi vectors have a similar structure. In (33) we used δℓ = min{
+√
+1/γℓ, ∥rℓ∥1/Nℓ} whererℓ denotes the ℓth
+coefﬁcient subset ofr.
+For the wavelet-measurement model (29) with WGN w, (32) implies that the f1 estimation function in line 4 of
+Alg. 3 manifests as
+f1(r1,γ1) =
+(
+γwBHB + Diag(γ1)
+)−1(
+γwBHy + Diag(γ1)r1
+)
+. (35)
+When numerically solving (35), we exploit the fact that B is a fast operator by using the conjugate gradient (CG)
+method [68].
+Forf2 in line 9 of Alg. 3, we use a pixel-domain DNN denoiser. As shown in line 9, we convert from the wavelet
+domain to the pixel domain and back when calling this denoiser. Note that the denoiser f2 is provided with the
+vectorγ2 of subband error precisions. The design of this denoiser will be discussed in Sec. III-B. The experiments
+in Sec. IV-B suggest that the denoiser input error e2 =r2 −c0 does indeed obey
+e2 ∼ N (0, Diag(γ2)−1) (36)
+for the γ2 vector computed in line 6 of Alg. 3, similar to other AMP, V AMP, EC, and GEC algorithms. Further work
+is needed to understand if this behavior can be predicted by a rigorous analysis. The error model (36) facilitates a
+principled way to train the DNN denoiser, as we discuss in the next section.
+We now discuss the initialization of D-GEC. For (36) to hold at all iterations, we need that the initial γ1 contains
+the precisions (i.e., inverse variances) of the subbands of the initial e1 =r1 −c0. But initializing γ1 is complicated
+
+=== PDF PAGE 15 ===
+15
+by the fact that c0 is unknown. In response, we suggest initializing γ1 at an average value such as
+ˆγ1 = Diag(gdiag( E{(r1 −c0)(r1 −c0)H}))−11, (37)
+where the expectation is approximated using a sample average over a training set (e.g., the dataset used to train the
+denoiser). But this approach could fail if the precision of the initial error falls far from ˆγ1, which can happen if r1
+is strongly dependent on y. Thus, we propose to initialize r1 =BHy +n, where n is Gaussian and white in each
+subband. The per-subband variance of n should be large enough to dominate the behavior of e1, which makes the
+subband precisions easy to predict, but not so large that the algorithm is initialized at a terribly bad state. For the
+experiments in Sec. IV-B, we set the per-subband variance of n at 10 times the per-subband variance of BHy −c0,
+and observed that (36) held at all iterations. Although a careful choice of initialization is important for (36) to hold
+at all iterations, we ﬁnd that the initialization has little effect on the ﬁxed points of D-GEC. So, for the experiments
+in Sections IV-C, IV-D, and IV-E, we set n = 0 to improve the accuracy of the initial r1 and thus speed D-GEC
+convergence.
+Computationally, the cost of D-GEC is driven by lines 4-5 and 9-10 of Alg. 3, which call f1 andf2, respectively,
+L + 1 times when implementing (33). The L + 1 calls to f1 can be performed in parallel (e.g., in a single minibatch
+on a GPU), as can the calls to f2. As described above, each call to f1 involves running several iterations of CG. For
+accurate D-GEC ﬁxed points, we ﬁnd that 10 CG iterations sufﬁce, and we use this setting in Sections IV-C, IV-D,
+and IV-E. For D-GEC error to match the state-evolution predictions at all iterations, we ﬁnd that 150 CG iterations
+sufﬁce, and we use this value in Sec. IV-B. Each call to f2 involves calling the DNN denoiser that is described in
+the next subsection.
+B. A DNN denoiser for correlated noise
+As suggested by (36), the denoiser f2 in Alg. 3 faces the task of denoising the pixel-domain signal ΨTr2, where
+r2 =c0 +n forn ∼N (0, Diag(γ2)−1) andc0 are the wavelet coefﬁcients of the true image x0. The denoiser
+input can thus be modeled as
+ΨTr2 =x0 +n forn ∼N (0, ΨT Diag(γ2)−1Ψ), (38)
+i.e., the true image corrupted by colored Gaussian noise with (known) covariance matrix ΨT Diag(γ2)−1Ψ. Here,
+theγ2 vector takes the form shown in (34).
+Although several DNNs have been proposed to tackle denoising with correlated noise (e.g., [69]–[71]), to our
+knowledge, the only one compatible with our denoising task is the DNN proposed by Metzler and Wetzstein in
+[36]. There, they built on the DnCNN network by providing every layer with L additional channels, where the
+ℓth channel contains the standard deviation (SD) of the noise in the ℓth wavelet subband (i.e.,
+√
+1/γ2,ℓ). Their
+approach can be interpreted as an extension of FFDNet [72], which provides one additional channel containing
+the SD of the assumed white corrupting noise, to multiple additional channels containing subband SDs. In our
+numerical experiments in Sec. IV, we ﬁnd that Metzler’s denoising approach works well in some cases but poorly
+in others. We believe that the observed poor performance may be the result of the fact that their DNN operates
+
+=== PDF PAGE 16 ===
+16
+in the pixel domain, while their SD side information is given in the wavelet domain and the network is given no
+information about the wavelet transform Ψ.
+We now propose a novel approach to DNN denoising that can handle colored Gaussian noise with an arbitrary
+known covariance matrix. Our approach starts with an arbitrary DNN denoiser (e.g., DnCNN [27], UNet [73], RNN
+[74], etc.) that normally accepts C input channels (e.g., 3 channels for color-image denoising or 2 channels for
+complex-image denoising). It then adds K ≥ 1 sets of C additional channels, where each set is fed an independently
+generated realization of noise with the same statistics as that corrupting the signal to be denoised. In other words, if
+u ∈ RCN denotes the (vectorized) noisy input signal, which obeys (recall (38))
+u =x0 +n forn ∼N (0, Σ) (39)
+with arbitrary known Σ, then the (vectorized) input to the kth additional channel-set would be
+nk ∼ N (0, Σ) ∀k = 1,...,K, (40)
+where {nk}K
+k=1 are mutually independent and independent of u. The hope is that, during training, the denoiser
+learns how to i) extract the relevant statistics from {nk}K
+k=1 and ii) use them productively for the denoising of
+u. Here, K is a design parameter; for our D-GEC application we ﬁnd that K = 1 sufﬁces. Because the denoiser
+accepts a signal corrupted by correlated noise plus additional realizations of correlated noise, we call our approach
+“corr+corr.”
+To train our corr+corr denoiser, we use the following approach. Suppose that we have access to a training set of
+clean signals {xi}, and that we would like to train the denoiser to handle γ2 vectors from some distribution pΓ.
+During training, we draw many γ2 ∼pΓ and, for each realization of γ2, we draw independent realizations of v
+and {nk}N
+k=1 from the distribution N (0, ΨT Diag(γ2)−1Ψ). The v vector is then used to form the noisy signal
+ui =xi +v and the denoiser is given access to N ≜ [n1,..., nK] when denoising ui. Concretely, if we denote
+the corr+corr denoiser as f2(ui,N ;θ), where θ contains the trainable denoiser parameters, then we train those
+parameters using
+ˆθ = arg min
+θ
+∑
+i
+E
+{
+L
+(
+xi,f2(xi +v,N ;θ)
+)}
+, (41)
+where L(·, ·) is a loss function that quantiﬁes the error between its two vector-valued arguments. Popular losses
+include [75] ℓ2,ℓ1, SSIM [76], or combinations thereof, and in our experiments we used ℓ2 loss. The expectation
+in (41) is taken over both v andN, which implicitly involves pΓ.
+In inference mode, we are given a noisy u and a single precision vector γ2. From the latter, we generate a
+single independent realization of N ∼ N (0, ΨT Diag(γ2)−1Ψ) and then compute the denoised pixel-domain image
+estimate via ˆx2 =f2(u,N ;ˆθ).
+In Sec. IV-A we show that our corr+corr denoiser performs better than Metzler’s DnCNN and nearly as well as a
+genie-aided denoiser that knows the distribution of the test noise v ∼ ΨT Diag(γ2)−1Ψ, with ﬁxedγ2, at training
+time.
+
+=== PDF PAGE 17 ===
+17
+Fig. 3: Test images from the Stanford 2D FSE MRI dataset [31].
+IV. N UMERICAL EXPERIMENTS
+In this section, we present numerical experiments demonstrating the performance of the proposed corr+corr
+denoiser as well as the proposed D-GEC method applied to both single-coil and multicoil MRI recovery.
+A. Denoising experiments
+In this subsection, we compare the corr+corr denoiser proposed in Sec. III-B to several existing denoisers. We
+test all denoisers on the 10 MRI images from the Stanford 2D FSE dataset [31] shown in Fig. 3, which ranged
+in size from 320 × 320 to 416 × 416. Noisy images were obtained by corrupting those test images by additive
+zero-mean Gaussian noise of covariance
+Σ = ΨT Diag(γ)−1Ψ, (42)
+with Ψ a 2D Haar wavelet transform of depth D = 1 . This wavelet transform has L = 4 subbands, and so the
+precision vector γ in (42) is structured as γ = [γ11T
+N/4,...,γ 41T
+N/4]T and thus parameterized by the four precisions
+[γ1,γ 2,γ 3,γ 4], or equivalently the four SDs
+[1√γ1
+, 1√γ2
+, 1√γ3
+, 1√γ4
+]
+. We test the denoisers under different assumptions
+on these SDs, as indicated by the rows in Table I. For some tests, we use a ﬁxed SD vector, while for other tests
+we average over a distribution of SD vectors.
+When training the denoisers, we used the 70 training MRI images from the Stanford 2D FSE dataset. We trained
+to minimize ℓ2 loss on a total of 44 000 patches of size 40 × 40 taken with stride 10 × 10. All denoisers used the
+bias-free version of DnCNN from [77], with the exception of Metzler’s DnCNN from [36], which used the publicly
+available code provided by the author. For both corr+corr and Metzler’s DnCNN, when training, we used random
+subband SDs {1/√γℓ}4
+ℓ=1 drawn independently from a uniform distribution over the interval [0, 50/255]. When
+interpreting the value “ 50/255,” note that the image pixel values were in [0, 1] for this dataset. As a baseline method,
+we trained bias-free DnCNN using white noise with a standard deviation distributed uniformly over the interval
+[0, 50/255]. We expect this “white DnCNN” to perform poorly with colored testing noise. As an upper bound on
+
+=== PDF PAGE 18 ===
+18
+TABLE I: Performance comparison of four different DnCNN denoisers for various cases of colored noise
+test standard deviations white DnCNN Metzler’s DnCNN corr+corr DnCNN genie DnCNN[ 1√γ1, 1√γ2, 1√γ3, 1√γ4
+] PSNR±SE SSIM ±SE PSNR±SE SSIM ±SE PSNR±SE SSIM ±SE PSNR±SE SSIM ±SE
+[ 48
+255, 47
+255, 6
+255, 19
+255
+] 25.36±0.02 0.7328±0.0013 31.23±0.03 0.8783±0.0006 31.69±0.03 0.8899±0.0005 32.12±0.04 0.9012±0.0005[ 10
+255, 40
+255, 23
+255, 14
+255
+] 32.44±0.03 0.9044±0.0006 34.87±0.04 0.9363±0.0004 35.24±0.04 0.9407±0.0004 35.54±0.04 0.9449±0.0004[ 13
+255, 7
+255, 8
+255, 10
+255
+] 36.50±0.03 0.9421±0.0003 31.03±0.03 0.9359±0.0003 37.02±0.03 0.9535±0.0003 37.41±0.03 0.9569±0.0003[ 10
+255, 10
+255, 10
+255, 10
+255
+] 37.41±0.03 0.9571±0.0003 31.94±0.02 0.9413±0.0003 37.31±0.03 0.9559±0.0003 37.63±0.03 0.9586±0.0003[0- 50
+255,0- 50
+255,0- 50
+255,0- 50
+255
+] 31.07±0.05 0.8597±0.0013 33.24±0.05 0.9132±0.0006 34.08±0.05 0.9213±0.0006 n/a n/a
+performance, we trained bias-free DnCNN using the same ﬁxed value of the SD vector
+[1√γ1
+, 1√γ2
+, 1√γ3
+, 1√γ4
+]
+that
+is used when testing. The resulting “genie DnCNN” is specialized to that particular SD vector, and thus not useful
+in practical situations where the test SD is unknown during training (e.g., in D-GEC).
+The results of our denoiser comparison are presented in Table I using the metrics of PSNR and SSIM [76]
+along with the respective standard errors (SE). In the ﬁrst four rows of the table, performance is evaluated for a
+ﬁxed value of the SD vector
+[1√γ1
+, 1√γ2
+, 1√γ3
+, 1√γ4
+]
+, while in the last row the results are averaged over subband
+SDs {1/√γℓ}4
+ℓ=1 drawn independently from a uniform distribution over the interval [0, 50/255]. The fourth row
+corresponds to white Gaussian noise with a ﬁxed standard deviation of 10, while all other rows correspond to
+colored noise. The ﬁfth row corresponds to noise that is non-Gaussian in general, but Gaussian when conditioned
+onγ. All results in the table represent the average over 500 different noise realizations. The results in Table I are
+summarized as follows.
+• As expected, white DnCNN performs relatively poorly for all test cases except that in the fourth row, where
+the testing noise was white, and that in the third row, where the testing noise was lightly colored. In the fourth
+row, white DnCNN performs slightly worse than genie DnCNN, which is expected because white DnCNN was
+trained using white noise with SDs in the range [0, 50/255], while genie DnCNN was trained using a white
+noise with a ﬁxed SD that exactly matches the test noise.
+• As expected, genie DnCNN is the best method in the ﬁrst four rows. In all of those cases, genie DnCNN is
+specialized to handle exactly the noise distribution used for the test, and thus is impractical. By deﬁnition,
+genie DnCNN is not applicable to the ﬁfth row.
+• Metzler’s DnCNN performs relatively well in the ﬁrst two rows, but relatively poorly in the second two rows.
+We believe that the inconsistency is the result of the fact that the DNN operates in the pixel domain, while the
+SD side information is given in the wavelet domain and the DNN is given no information about the wavelet
+transform itself.
+• The proposed corr+corr outperforms Metzler’s DnCNN in all cases and is only 0.3 to 0.5 dB away from the
+genie DnCNN. This is notable because genie DnCNN gives an (impractical) upper bound on the performance
+achievable with the chosen architecture and training method.
+Code for our corr+corr experiments can be found at https://github.com/Saurav-K-Shastri/corr-plus-corr.
+
+=== PDF PAGE 19 ===
+19
+Fig. 4: Example multicoil knee image recovery: True image magnitude |x0|, D-GEC’s recovered image magnitude
+|ˆx| at iteration 20, and the error magnitude |x0 −ˆx|, for R = 4 and measurement SNR = 40 dB.
+B. Example D-GEC behavior in multicoil MRI with a 2D line mask
+In this section, we demonstrate the typical behavior of D-GEC when applied to multicoil MRI image recovery
+with a 2D line mask; experiments with a 2D point mask will be presented in Sec. IV-C. The full details of our
+multicoil experimental setup are given in Appendix C-A. One of our main goals is to demonstrate that D-GEC’s
+denoiser input error behaves as in (36), i.e., that the error in each wavelet band is white and Gaussian with a
+predictable variance. For the experiments in this section, we used the corr+corr denoiser proposed in Sec. III-B, a
+signal-to-noise ratio (SNR) of 40 dB, and an acceleration of R = 4. Code for our D-GEC experiments can be found
+at https://github.com/Saurav-K-Shastri/D-GEC.
+Before discussing our results, there is one peculiarity to multicoil MRI that should be explained. In practice,
+both the coil-sensitivity maps {sc}C
+c=1 inA from (3) and the image x0 in (1) are unknown. The standard recovery
+approach is to ﬁrst use an algorithm like ESPIRiT [78] to estimate the coil maps {sc}C
+c=1, then plug the estimated
+maps into the A matrix, and ﬁnally solve the inverse problem with the estimated A to recoverx0. One complication
+with ESPIRiT is that, in pixel regions where the true image x0 is zero or nearly zero (e.g., the outer regions of
+many MRI images), the ESPIRiT-estimated coil maps can be uniformly zero-valued, depending on how ESPIRiT is
+conﬁgured. In other words, there may exist pixelsn such that [sc]n = 0 ∀c = 1...C , which causes the corresponding
+columns ofA to be zero. In our experiments, we use the default ESPIRiT parameters from the SigPy implementation 3
+and ﬁnd such zero-valued regions do occur. Although the presence of zero-valued columns in A might appear to
+make the inverse problem (1) more difﬁcult, the (known) coil-map estimates can be exploited as side-information to
+tell the algorithm which pixels in x0 are nearly zero-valued. Consequently, in our multicoil experiments, for all
+algorithms, we set those pixels of the recovered image ˆx to zero wherever the estimated coil maps are uniformly
+zero. In the sequel, we will refer to the pixel region with zero-valued coil map estimates as the “zero-coil region.”
+For a typical MRI knee image, Fig. 4 shows the magnitude |x0| of the true image, D-GEC’s recovery |ˆx| after
+3https://sigpy.readthedocs.io/en/latest/generated/sigpy.mri.app.EspiritCalib.html.
+
+=== PDF PAGE 20 ===
+20
+Fig. 5: Example multicoil knee image recovery: True wavelet coefﬁcient magnitude |c0|, D-GEC’s denoiser-input
+magnitude |r2| at iteration 10, and the error magnitude |c0 −r2|, for R = 4 and measurement SNR = 40 dB.
+20 iterations, and the error magnitude |ˆx −x0|. The error is exactly zero in the previously deﬁned zero-coil region
+because both x0 and ˆx are zero-valued there. The PSNR ≜ 10 log10[(N maxn |[x0]n|2)/∥ˆx −x0∥2] and SSIM [76]
+values for this example reconstruction were 36.87 dB and 0.9397, respectively.
+Fig. 5 shows the magnitude |c0| of the corresponding true wavelet coefﬁcients, the magnitude |r2| of the noisy
+signal entering the D-GEC denoiser at iteration 10, and the error magnitude |r2 −c0|. The wavelet subbands are
+visible as the image tiles in these plots. Here again, we see zero-valued error in the zero-coil region. As anticipated
+from (36), the error maps look like white noise outside the zero-coil region of each wavelet subband, with an error
+variance that varies across subbands.
+To verify the Gaussianity of the wavelet subband errors, Fig. 6 shows quantile-quantile (QQ) plots of the real and
+imaginary parts of the error c0 −r2 outside the zero-coil region of several wavelet subbands at iteration 1, and Fig. 7
+shows the same at iteration 10. These QQ-plots suggest that the subband errors are indeed Gaussian at all iterations.
+To show that the subband precisions γ2 predicted by D-GEC match the empirical subband precisions in the error
+vectore2, Fig. 8 plots the ℓth subband SD 1/√γℓ versus iteration, along with the SDs empirically estimated from
+c0 −r2, for several subbands ℓ and a typical run of the algorithm. It can be seen that the predicted SDs are in close
+agreement with the empirically estimated SDs.
+Finally, to verify that the errors c0 −r2 are zero-mean in each subband of each validation image, we performed
+a t-test [79] using a signiﬁcance level of α = 0.05 (i.e., if the errors were truly zero mean then the test would
+fail with probability α). At the ﬁrst iteration, we ran a total of 208 tests (one for each of the 13 subbands in each
+of the 16 knee validation images at R = 4 and SNR = 40 dB) and found that 11 tests rejected the zero-mean
+hypothesis, which is consistent with α = 0.05 since 11/208 = 0.0529 ≈ 0.05. At the 10th iteration, 12 tests rejected
+the zero-mean hypothesis, which is again consistent with α = 0.05.
+
+=== PDF PAGE 21 ===
+21
+2
+ 0 2
+3
+2
+1
+0
+1
+2
+3
+Quantiles of Input Sample
+Vertical, Scale 2, Real
+4
+ 2
+ 0 2 4
+4
+3
+2
+1
+0
+1
+2
+3
+4
+Vertical, Scale 2, Imaginary
+4
+ 2
+ 0 2 4
+4
+3
+2
+1
+0
+1
+2
+3
+4
+Quantiles of Input Sample
+Horizontal, Scale 1, Real
+2
+ 0 2
+Standard Normal Quantiles
+3
+2
+1
+0
+1
+2
+3
+Diagonal, Scale 3, Imaginary
+4
+ 2
+ 0 2
+Standard Normal Quantiles
+4
+3
+2
+1
+0
+1
+2
+3
+Quantiles of Input Sample
+Diagonal, Scale 3, Real
+4
+ 2
+ 0 2 4
+4
+2
+0
+2
+4
+Horizontal, Scale 1, Imaginary
+Fig. 6: QQ-plots of the real and imaginary parts of D-GEC’s subband errors c0 −r2 at iteration 1.
+C. Multicoil MRI algorithm comparison with a 2D point mask
+In this section, we compare the performance of D-GEC to two state-of-the-art algorithms for multicoil MRI image
+recovery: P-VDAMP [37] and PnP-PDS [43]. We use 2D point masks in this section out of fairness to P-VDAMP,
+which was designed around 2D point masks. Multicoil experiments with 2D line masks are presented in Sec. IV-D,
+and single-coil experiments are presented in Sec. IV-E. We examine two acceleration rates, R = 4 and R = 8, and
+several measurement SNRs between 20 and 45 dB. As before, we quantify recovery performance using PSNR and
+SSIM. For this section, we used both knee and brain fastMRI data. The details of the experimental setup are given
+in Appendix C-A.
+For P-VDAMP, we ran the authors’ code from [37] under its default settings. For PnP-PDS, we used a bias-free
+DnCNN [77] denoiser trained to minimize ℓ2 loss when removing WGN with an SD uniformly distributed in the
+interval [0, 55/255]. This bias-free network is known to perform very well over a wide SD range, and so there is no
+advantage in training multiple denoisers over different SNR ranges [77]. Because PnP-PDS performance strongly
+depends on the chosen penalty parameter and number of PDS iterations, we separately tuned these parameters for
+every combination of measurement SNR and acceleration rate to maximize PSNR on the training set. For D-GEC,
+
+=== PDF PAGE 22 ===
+22
+4
+ 2
+ 0 2 4
+4
+3
+2
+1
+0
+1
+2
+3
+4
+Quantiles of Input Sample
+Vertical, Scale 2, Real
+4
+ 2
+ 0 2 4
+4
+3
+2
+1
+0
+1
+2
+3
+4
+Vertical, Scale 2, Imaginary
+4
+ 2
+ 0 2 4
+4
+2
+0
+2
+4
+Quantiles of Input Sample
+Horizontal, Scale 1, Real
+2
+ 0 2
+Standard Normal Quantiles
+3
+2
+1
+0
+1
+2
+3
+Diagonal, Scale 3, Imaginary
+2
+ 0 2
+Standard Normal Quantiles
+3
+2
+1
+0
+1
+2
+3
+Quantiles of Input Sample
+Diagonal, Scale 3, Real
+4
+ 2
+ 0 2 4
+4
+3
+2
+1
+0
+1
+2
+3
+4
+Horizontal, Scale 1, Imaginary
+Fig. 7: QQ-plots of the real and imaginary parts of D-GEC’s subband errors c0 −r2 at iteration 10.
+we used a Haar wavelet transform of depth D = 4 , which yields L = 13 subbands, and a corr+corr bias-free
+DnCNN denoiser; see Appendix C-A for additional details. For all algorithms, we set the image estimate to zero in
+the zero-coil region.
+For each acceleration rate R and SNR under test, we ran all three algorithms on all images in the brain and
+knee testing sets. We then computed the average PSNR and SSIM values across those images and summarized the
+results in Fig. 9, using error bars to show plus/minus one standard error. The ﬁgure shows that D-GEC signiﬁcantly
+outperformed the other algorithms in all metrics at all combinations of R and measurement SNR.
+Figure 10 shows image recoveries and error images for a typical fastMRI brain image at acceleration R = 4 and
+measurement SNR = 35 dB. In this case, D-GEC outperformed the P-VDAMP and PnP-PDS algorithms in PSNR
+by 2.6 and 0.76 dB, respectively. Furthermore, D-GEC’s error image looks the least structured. Looking at the
+details of the zoomed plots, we see that D-GEC is able to reconstruct certain ﬁne details better than its competitors.
+Figure 11 shows PSNR versus iteration for the three algorithms at R = 4 and SNR = 20 dB. The PSNR values
+shown are the average over all 16 test images from the brain MRI dataset. The plot shows P-VDAMP, D-GEC,
+and PnP-PDS taking about 7, 8, and 25 iterations to converge, respectively. If we measure the number of iterations
+
+=== PDF PAGE 23 ===
+23
+0 5 10 15 20
+Iteration
+0.1
+0.2
+0.3
+0.4Standard Deviation
+Scale 4
+0 5 10 15 20
+Iteration
+0.1
+0.2
+0.3
+0.4
+Scale 3
+0 5 10 15 20
+Iteration
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+Scale 2
+0 5 10 15 20
+Iteration
+0.1
+0.2
+0.3
+0.4
+0.5
+Scale 1
+True Coarse
+Predicted Coarse
+ True Horizontal
+Predicted Horizontal
+ True Vertical
+Predicted Vertical
+ True Diagonal
+Predicted Diagonal
+Fig. 8: Evolution of D-GEC’s predicted subband SDs ( 1/√γℓ) and empirically estimated subband SDs (from c0 −r2)
+for several subbands ℓ over 20 iterations.
+Fig. 9: Average PSNR and SSIM versus measurement SNR for P-VDAMP, PnP-PDS, and D-GEC.
+taken to reach 35 dB SNR, then D-GEC, PnP-PDS, and P-VDAMP take about 3, 5, and 7 iterations, respectively.
+D. Multicoil MRI algorithm comparison with a 2D line mask
+In this section, we compare the performance of D-GEC to that of P-VDAMP [37] and PnP-PDS [43] when using
+a 2D line mask. We examine acceleration rates R = 4 and R = 8 , and a measurement SNR of 40 dB, on the
+fastMRI brain and knee datasets. With the exception of the sampling mask, the experimental setup was identical
+to that in Sec. IV-C. Although [37] states that P-VDAMP is not intended to be used for “purely 2D acquisitions”
+like that associated with a 2D line mask, we show P-VDAMP performance for completeness. To run P-VDAMP,
+
+=== PDF PAGE 24 ===
+24
+Fig. 10: Example multicoil MRI image recoveries and error images at R = 4 and SNR = 35 dB. The number
+printed on each recovered image shows its PSNR. The bottom row is a zoomed in version of the green square in
+the top row. This ﬁgure is best viewed in electronic form.
+TABLE II: Multicoil 2D line-mask results at SNR = 40 dB averaged over all test images.
+Knee Brain
+R = 4 R = 8 R = 4 R = 8
+method PSNR± SE SSIM ± SE PSNR± SE SSIM ± SE PSNR± SE SSIM ± SE PSNR± SE SSIM ± SE
+P-VDAMP [37] 33.84± 0.40 0.9018± 0.0036 20.34± 0.46 0.5614± 0.0051 30.30± 0.16 0.8847± 0.0021 13.51± 0.26 0.4763± 0.0069
+PnP-PDS [43] 36.28± 0.38 0.9204± 0.0028 32.34± 0.32 0.8556± 0.0040 38.07± 0.23 0.9501± 0.0016 28.97± 0.13 0.8269± 0.0031
+D-GEC (proposed)38.82± 0.50 0.9504± 0.0023 33.66± 0.28 0.8893± 0.0028 39.04± 0.29 0.9631± 0.0013 30.61± 0.19 0.9015± 0.0031
+we gave it a 2D sampling density that was uniform along the fully sampled dimension and proportional to the 1D
+sampling density along the subsampled dimension (recall Figs. 1(c)-(d)).
+Table II shows PSNR and SSIM averaged over the test images with the corresponding standard errors. There it
+can be seen that D-GEC signiﬁcantly outperformed the other techniques on both datasets at both acceleration rates.
+For example, D-GEC outperformed its closest competitor, PnP-PDS, by 2.54 and 1.32 dB at R = 4 and R = 8,
+respectively, on the knee data.
+
+=== PDF PAGE 25 ===
+25
+100 101 102
+Iteration
+28
+30
+32
+34
+36
+38
+40PSNR
+P-VDAMP
+PnP-PDS
+D-GEC
+Fig. 11: PSNR versus iterations for multicoil brain MRI recovery at R = 4 and SNR = 20 dB. PSNR was averaged
+over the 16 test images.
+E. Single-coil MRI algorithm comparison with a 2D point mask
+In this section we compare the performance of D-GEC to several other recently proposed algorithms for single-coil
+MRI recovery using a 2D point mask. We examine two acceleration rates, R = 4 and R = 8, and a measurement
+SNR of 45 dB. For this section, we used the Stanford 2D FSE dataset [31] with the test images in Fig. 3. The
+details of the experimental setup are reported in Appendix C-B.
+We compared our proposed D-GEC algorithm to D-AMP-MRI [61], VDAMP [35], D-VDAMP [36], and PnP-PDS
+[43]. We used a 2D point mask out of fairness to VDAMP and D-VDAMP, which were designed around 2D point
+masks. For VDAMP and D-VDAMP, we ran the authors’ implementations at their default settings. For D-AMP-MRI
+and PnP-PDS, we used a bias-free DnCNN [77] denoiser trained to minimize the ℓ2 loss when removing WGN with
+SDs uniformly distributed in the interval [0, 55/255]. This bias-free network is known to perform very well over a
+wide SD range, and so there is no advantage in training multiple denoisers over different SNR ranges [77]. We ran
+the D-AMP-MRI and PnP-PDS algorithms for 50 and 300 iterations, respectively. Because the PnP ﬁxed-points
+strongly depend on the chosen penalty parameter, we carefully tuned the PnP-PDS parameter at each acceleration
+rate R to maximize PSNR on the validation set. For D-GEC, we used a Haar wavelet transform of depth D = 4,
+which yields L = 13 subbands, and a corr+corr bias-free DnCNN denoiser; see Appendix C-B for additional details.
+Table III shows PSNR and SSIM averaged over the 10 test images with the corresponding standard errors. There it
+can be seen that D-GEC signiﬁcantly outperformed the other techniques at both tested acceleration rates. For example,
+D-GEC outperformed its closest competitor, PnP-PDS, by 1.81 and 0.87 dB at R = 4 and R = 8, respectively.
+Figure 12 shows PSNR versus iteration for several algorithms at R = 4 and SNR = 45 dB. The PSNR value
+shown is the average over all 10 test images in Fig. 3. Two versions of D-VDAMP are shown in Fig. 12: the
+standard version from [36], which includes early stopping, and a modiﬁed version without early stopping. The
+importance of early stopping is clear from the ﬁgure. The ﬁgure also shows that, for this single-coil dataset, D-GEC
+took more iterations to converge than the other algorithms but yielded a larger value of PSNR at convergence. In
+the multicoil case in Fig. 11, D-GEC took an order-of-magnitude fewer iterations to converge.
+
+=== PDF PAGE 26 ===
+26
+TABLE III: Single-coil image recovery results averaged over the ten test images.
+R = 4 R = 8
+method PSNR ± SE SSIM ± SE PSNR ± SE SSIM ± SE
+D-AMP-MRI [61] 33.28 ± 4.62 0.7789 ± 0.0900 25.83 ± 4.33 0.7252 ± 0.1214
+VDAMP [35] 33.10 ± 1.30 0.8650 ± 0.0243 28.47 ± 0.96 0.7378 ± 0.0313
+D-VDAMP [36] 42.57 ± 1.48 0.9731 ± 0.0089 35.18 ± 1.93 0.9023 ± 0.0248
+PnP-PDS [43] 43.36 ± 1.60 0.9787 ± 0.0076 38.10 ± 1.75 0.9527 ± 0.0158
+D-GEC (proposed) 45.17 ± 1.62 0.9824 ± 0.0066 38.97 ± 1.76 0.9570 ± 0.0132
+100 101 102
+Iteration
+0
+10
+20
+30
+40
+50PSNR D-AMP-MRI
+VDAMP
+D-VDAMP
+D-VDAMP-no-stop
+PnP-PDS
+D-GEC
+Fig. 12: PSNR versus iterations for single-coil MRI recovery at R = 4 and SNR = 45 dB. PSNR was averaged
+over the 10 test images in Fig. 3.
+Figure 13 shows image recoveries for a typical Stanford 2D FSE MRI image at R = 4 and measurement SNR
+= 45 dB. For this experiment, D-GEC signiﬁcantly outperformed the competing algorithms in PSNR, and its error
+image looks the least structured. Also, the zoomed subplots show that D-GEC recovered ﬁne details in the true
+image that are missed by its competitors.
+V. C ONCLUSION
+PnP algorithms require relatively few training images and are insensitive to deviations in the forward model A
+and measurement noise statistics between training and test. However, PnP can be improved, because the denoisers
+typically used for PnP are trained to remove white Gaussian noise, whereas the denoiser input errors encountered in
+PnP are typically non-white and non-Gaussian. In this paper, we proposed a new PnP algorithm, called Denoising
+Generalized Expectation-Consistent (D-GEC) approximation, to address this shortcoming for Fourier-structured
+A and Gaussian measurement noise. In particular, D-GEC is designed to make the denoiser input error white
+and Gaussian within each wavelet subband with a predictable variance. We then proposed a new DNN denoiser
+that is capable of exploiting the knowledge of those subband error variances. Our “corr+corr” denoiser takes in a
+signal corrupted by correlated Gaussian noise, as well as independent realization(s) of the same correlated noise. It
+then learns how to extract the statistics of the provided noise and then use them productively for denoising the
+
+=== PDF PAGE 27 ===
+27
+Fig. 13: Example single-coil MRI image recoveries and error images at R = 4 and SNR = 45 dB. The number printed on each recovered image shows its PSNR.
+The bottom row is a zoomed in version of the green square in the top row. This ﬁgure is best viewed in electronic form.
+
+=== PDF PAGE 28 ===
+28
+signal. Numerical experiments with single- and multicoil MRI image recovery demonstrate that D-GEC does indeed
+provide the denoiser with subband errors that are white and Gaussian with a predictable variance. Furthermore,
+the experiments demonstrate improved recovery accuracy relative to existing state-of-the-art PnP methods for MRI,
+especially with practical 2D line sampling masks. More work is needed to understand the theoretical properties of
+the proposed D-GEC and corr+corr denoisers.
+
+=== PDF PAGE 29 ===
+29
+REFERENCES
+[1] R. Wang and D. Tao, “Recent progress in image deblurring,” arXiv:1409.6838, 2014.
+[2] S. C. Park, M. K. Park, and M. G. Kang, “Super-resolution image reconstruction: A technical overview,” IEEE Signal Process. Mag. ,
+vol. 20, no. 3, pp. 21–36, 2003.
+[3] W. Yang, X. Zhang, Y . Tian, W. Wang, J.-H. Xue, and Q. Liao, “Deep learning for single image super-resolution: A brief review,” IEEE
+Trans. Multimedia, vol. 21, no. 12, pp. 3106–3121, 2019.
+[4] C. Guillemot and O. Le Meur, “Image inpainting: Overview and recent advances,” IEEE Signal Process. Mag. , vol. 31, no. 1, pp. 127–144,
+2013.
+[5] F. Knoll, K. Hammernik, C. Zhang, S. Moeller, T. Pock, D. K. Sodickson, and M. Akcakaya, “Deep-learning methods for parallel magnetic
+resonance imaging reconstruction: A survey of the current approaches, trends, and issues,” IEEE Signal Process. Mag. , vol. 37, no. 1, pp.
+128–140, 2020.
+[6] M. Unser and M. T. McCann, “Biomedical image reconstruction: From the foundations to deep neural networks,” Found. Trends Signal
+Process., vol. 13, pp. 280–359, 2019.
+[7] F. Soulez, L. Denis, É. Thiébaut, C. Fournier, and C. Goepfert, “Inverse problem approach in particle digital holography: Out-of-ﬁeld
+particle detection made possible,” J. Optical Soc. America A , vol. 24, no. 12, pp. 3708–3716, 2007.
+[8] R. Venkataramanan, S. Tatikonda, and A. Barron, “Sparse regression codes,” Found. Trends Commun. Info. Thy., vol. 15, no. 1-2, pp. 1–195,
+2019.
+[9] J. A. Fessler, “Optimization methods for magnetic resonance image reconstruction,” IEEE Signal Process. Mag. , vol. 37, no. 1, pp. 33–40,
+2020.
+[10] L. I. Rudin, S. Osher, and E. Fatemi, “Nonlinear total variation based noise removal algorithms,” Physica D, vol. 60, pp. 259–268, 1992.
+[11] Y . Shi and Q. Chang, “Efﬁcient algorithm for isotropic and anisotropic total variation deblurring and denoising,” Journal of Applied
+Mathematics, vol. 2013, 2013.
+[12] K. H. Jin, M. T. McCann, E. Froustey, and M. Unser, “Deep convolutional neural network for inverse problems in imaging,” IEEE Trans.
+Image Process., vol. 26, no. 9, pp. 4509–4522, 2017.
+[13] G. Yang, S. Yu, H. Dong, G. Slabaugh, P. L. Dragotti, X. Ye, F. Liu et al., “DAGAN: Deep de-aliasing generative adversarial networks for
+fast compressed sensing MRI reconstruction,” IEEE Trans. Med. Imag. , vol. 37, no. 6, pp. 1310–1321, 2017.
+[14] K. Hammernik, T. Klatzer, E. Kobler, M. P. Recht, D. K. Sodickson, T. Pock, and F. Knoll, “Learning a variational network for reconstruction
+of accelerated MRI data,” Magnetic Resonance Med. , vol. 79, no. 6, pp. 3055–3071, 2018.
+[15] V . Monga, Y . Li, and Y . C. Eldar, “Algorithm unrolling: Interpretable, efﬁcient deep learning for signal and image processing,” IEEE Signal
+Process. Mag., vol. 38, no. 2, pp. 18–44, 2021.
+[16] A. Bora, A. Jalal, E. Price, and A. G. Dimakis, “Compressed sensing using generative models,” in Proc. Int. Conf. Mach. Learning , 2017,
+pp. 537–546.
+[17] P. Hand and V . V oroninski, “Global guarantees for enforcing deep generative priors by empirical risk,” in Proc. Conf. Learning Thy. , 2018,
+pp. 970–978.
+[18] S. Arridge, P. Maass, O. Öktem, and C.-B. Schönlieb, “Solving inverse problems using data-driven models,” Acta Numerica, vol. 28, pp.
+1–174, 2019.
+[19] G. Ongie, A. Jalal, C. A. Metzler, R. G. Baraniuk, A. G. Dimakis, and R. Willett, “Deep learning techniques for inverse problems in
+imaging,” IEEE J. Sel. Areas Info. Thy. , vol. 1, pp. 39–56, 2020.
+[20] K. Hammernik, T. Küstner, B. Yaman, Z. Huang, D. Rueckert, F. Knoll, and M. Akçakaya, “Physics-driven deep learning for computational
+magnetic resonance imaging,” arXiv:2203.12215, 2022.
+[21] S. V . Venkatakrishnan, C. A. Bouman, and B. Wohlberg, “Plug-and-play priors for model based reconstruction,” in Proc. IEEE Global
+Conf. Signal Info. Process. , 2013, pp. 945–948.
+[22] Y . Romano, M. Elad, and P. Milanfar, “The little engine that could: Regularization by denoising (RED),” SIAM J. Imag. Sci. , vol. 10, no. 4,
+pp. 1804–1844, 2017.
+[23] E. T. Reehorst and P. Schniter, “Regularization by denoising: Clariﬁcations and new interpretations,” IEEE Trans. Comp. Imag. , vol. 5,
+no. 1, pp. 52–67, Mar. 2019.
+[24] R. Ahmad, C. A. Bouman, G. T. Buzzard, S. Chan, S. Liu, E. T. Reehorst, and P. Schniter, “Plug and play methods for magnetic resonance
+imaging,” IEEE Signal Process. Mag. , vol. 37, no. 1, pp. 105–116, 2020.
+
+=== PDF PAGE 30 ===
+30
+[25] D. Gilton, G. Ongie, and R. Willett, “Deep equilibrium architectures for inverse problems in imaging,” IEEE Trans. Comp. Imag. , vol. 7,
+pp. 1123–1133, 2021.
+[26] D. L. Donoho, A. Maleki, and A. Montanari, “Message passing algorithms for compressed sensing,” Proc. Nat. Acad. Sci. , vol. 106, no. 45,
+pp. 18 914–18 919, Nov. 2009.
+[27] K. Zhang, W. Zuo, Y . Chen, D. Meng, and L. Zhang, “Beyond a Gaussian denoiser: Residual learning of deep CNN for image denoising,”
+IEEE Trans. Image Process. , vol. 26, no. 7, pp. 3142–3155, 2017.
+[28] A. K. Fletcher, M. Sahraee-Ardakan, S. Rangan, and P. Schniter, “Expectation consistent approximate inference: Generalizations and
+convergence,” in Proc. IEEE Int. Symp. Inform. Thy. , 2016, pp. 190–194.
+[29] S. Mallat, A Wavelet Tour of Signal Processing: The Sparse Way , 3rd ed. San Diego, CA: Academic Press, 2008.
+[30] J. Zbontar, F. Knoll, A. Sriram, M. J. Muckley, M. Bruno, A. Defazio, M. Parente et al., “fastMRI: An open dataset and benchmarks for
+accelerated MRI,” arXiv:1811.08839, 2018.
+[31] F. Ong, S. Amin, S. Vasanawala, and M. Lustig, “Mridata.org: An open archive for sharing MRI raw data,” in Proc. Ann. Mtg. ISMRM ,
+vol. 26, no. 1, 2018.
+[32] S. K. Shastri, R. Ahmad, C. A. Metzler, and P. Schniter, “Expectation consistent plug-and-play for MRI,” in Proc. IEEE Int. Conf. Acoust.
+Speech & Signal Process. , 2022, pp. 8667–8671, (see also https://arxiv.org/pdf/2202.05820.pdf).
+[33] S. Foucart and H. Rauhut, A Mathematical Introduction to Compressive Sensing . New York: Birkhäuser, 2013.
+[34] M. Lustig, D. Donoho, and J. M. Pauly, “Sparse MRI: The application of compressed sensing for rapid MR imaging,” Magnetic Resonance
+Med., vol. 58, no. 6, pp. 1182–1195, 2007.
+[35] C. Millard, A. T. Hess, B. Mailhé, and J. Tanner, “Approximate message passing with a colored aliasing model for variable density Fourier
+sampled images,” IEEE Open J. Signal Process. , vol. 1, pp. 146–158, 2020.
+[36] C. A. Metzler and G. Wetzstein, “D-VDAMP: Denoising-based approximate message passing for compressive MRI,” in Proc. IEEE Int.
+Conf. Acoust. Speech & Signal Process. , 2021, pp. 1410–1414.
+[37] C. Millard, M. Chiew, J. Tanner, A. T. Hess, and B. Mailhe, “Tuning-free multi-coil compressed sensing MRI with parallel variable density
+approximate message passing (P-VDAMP),” arXiv:2203.04180, 2022.
+[38] C. Millard, A. Hess, J. Tanner, and B. Mailhe, “Deep plug-and-play multi-coil compressed sensing MRI with matched aliasing: The
+denoising-P-VDAMP algorithm,” in Proc. Ann. Mtg. ISMRM , 2022.
+[39] S. Boyd, N. Parikh, E. Chu, B. Peleato, and J. Eckstein, “Distributed optimization and statistical learning via the alternating direction
+method of multipliers,” Found. Trends Mach. Learn., vol. 3, no. 1, pp. 1–122, 2011.
+[40] H. V . Poor, An Introduction to Signal Detection and Estimation , 2nd ed. New York: Springer, 1994.
+[41] K. Dabov, A. Foi, V . Katkovnik, and K. Egiazarian, “Image denoising by sparse 3-D transform-domain collaborative ﬁltering,” IEEE Trans.
+Image Process., vol. 16, no. 8, pp. 2080–2095, 2007.
+[42] T. Meinhardt, M. Möller, C. Hazirbas, and D. Cremers, “Learning proximal operators: Using denoising networks for regularizing inverse
+imaging problems,” in Proc. IEEE Int. Conf. Comput. Vis. , 2017, pp. 1781–1790.
+[43] S. Ono, “Primal-dual plug-and-play image restoration,” IEEE Signal Process. Lett. , vol. 24, no. 8, pp. 1108–1112, 2017.
+[44] U. Kamilov, H. Mansour, and B. Wohlberg, “A plug-and-play priors approach for solving nonlinear imaging inverse problems,” IEEE
+Signal Process. Lett. , vol. 24, no. 12, pp. 1872–1876, May 2017.
+[45] S. Rangan, “Generalized approximate message passing for estimation with random linear mixing,” in Proc. IEEE Int. Symp. Inform. Thy. ,
+Aug. 2011, pp. 2168–2172, (full version at arXiv:1010.5141).
+[46] D. L. Donoho, A. Maleki, and A. Montanari, “Message passing algorithms for compressed sensing: I. Motivation and construction,” in
+Proc. Inform. Theory Workshop , Cairo, Egypt, Jan. 2010, pp. 1–5.
+[47] H. V . Poor and G. W. Wornell, Eds., Wireless Communications: Signal Processing Perspectives . Upper Saddle River, NJ: Prentice-Hall,
+1998.
+[48] M. Bayati and A. Montanari, “The dynamics of message passing on dense graphs, with applications to compressed sensing,” IEEE Trans.
+Inform. Theory, vol. 57, no. 2, pp. 764–785, Feb. 2011.
+[49] R. Berthier, A. Montanari, and P.-M. Nguyen, “State evolution for approximate message passing with non-separable functions,” Inform.
+Inference, 2019.
+[50] C. A. Metzler, A. Maleki, and R. G. Baraniuk, “BM3D-AMP: A new image recovery algorithm based on BM3D denoising,” in Proc. IEEE
+Int. Conf. Image Process. , 2015, pp. 3116–3120.
+
+=== PDF PAGE 31 ===
+31
+[51] S. Ramani, T. Blu, and M. Unser, “Monte-Carlo SURE: A black-box optimization of regularization parameters for general denoising
+algorithms,” IEEE Trans. Image Process. , vol. 17, no. 9, pp. 1540–1554, 2008.
+[52] M. Opper and O. Winther, “Expectation consistent free energies for approximate inference,” in Proc. Neural Inform. Process. Syst. Conf. ,
+2005, pp. 1001–1008.
+[53] T. Minka, “A family of approximate algorithms for Bayesian inference,” Ph.D. dissertation, Dept. Comp. Sci. Eng., MIT, Cambridge, MA,
+Jan. 2001.
+[54] S. Rangan, P. Schniter, and A. K. Fletcher, “Vector approximate message passing,” in Proc. IEEE Int. Symp. Inform. Thy. , 2017, pp.
+1588–1592.
+[55] ——, “Vector approximate message passing,” IEEE Trans. Inform. Theory , pp. 6664–6684, 2019.
+[56] A. K. Fletcher, P. Pandit, S. Rangan, S. Sarkar, and P. Schniter, “Plug-in estimation in high-dimensional linear inverse problems: A rigorous
+analysis,” in Proc. Neural Inform. Process. Syst. Conf. , 2018, pp. 7440–7449.
+[57] K. Takeuchi, “Rigorous dynamics of expectation-propagation-based signal recovery from unitarily invariant measurements,” in Proc. IEEE
+Int. Symp. Inform. Thy. , 2017, pp. 501–505.
+[58] B. He, H. Liu, Z. Wang, and X. Yuan, “A strictly contractive Peaceman-Rachford splitting method for convex programming,” SIAM J.
+Optim., vol. 24, no. 3, pp. 1011–1040, 2014.
+[59] B. He, F. Ma, and X. Yuan, “Convergence study on the symmetric version of ADMM with larger step sizes,” SIAM J. Imag. Sci. , vol. 9,
+no. 3, pp. 1467–1501, 2016.
+[60] P. Schniter, S. Rangan, and A. K. Fletcher, “Denoising-based vector approximate message passing,” in Proc. Intl. Biomed. Astronom. Signal
+Process. (BASP) Frontiers Workshop, 2017, p. 77.
+[61] E. M. Eksioglu and A. K. Tanc, “Denoising AMP for MRI reconstruction: BM3D-AMP-MRI,” SIAM J. Imag. Sci. , vol. 11, no. 3, pp.
+2090–2109, 2018.
+[62] S. Sarkar, R. Ahmad, and P. Schniter, “MRI image recovery using damped denoising vector AMP,” in Proc. IEEE Int. Conf. Acoust. Speech
+& Signal Process. , 2021, pp. 8108–8112.
+[63] J. G. Pipe and P. Menon, “Sampling density compensation in MRI: Rationale and an iterative numerical solution,” Magnetic Resonance
+Med., vol. 41, no. 1, pp. 179–186, 1999.
+[64] V . Edupuganti, M. Mardani, S. Vasanawala, and J. Pauly, “Uncertainty quantiﬁcation in deep MRI reconstruction,” IEEE Trans. Med. Imag. ,
+vol. 40, no. 1, pp. 239–250, 2020.
+[65] C. Millard, “Approximate message passing for compressed sensing magnetic resonance imaging,” Ph.D. dissertation, Oxford University,
+Oxford, England, 2021.
+[66] B. Adcock, A. C. Hansen, C. Poon, and B. Roman, “Breaking the coherence barrier: A new theory for compressed sensing,” Forum of
+Mathematics, Sigma, vol. 5, no. E4, doi:10.1017/fms.2016.32.
+[67] P. Schniter, S. Rangan, and A. K. Fletcher, “Plug-and-play image recovery using vector AMP,” presented at the Intl. Biomedical
+and Astronomical Signal Processing (BASP) Frontiers Workshop, Villars-sur-Ollon, Switzerland, Jan. 2017. [Online]. Available:
+http://www2.ece.ohio-state.edu/~schniter/pdf/basp17_poster.pdf
+[68] G. H. Golub and C. F. Van Loan, Matrix Computations, 3rd ed. Baltimore, MD: John Hopkins University Press, 1996.
+[69] A. Ahmadzadegan, P. Simidzija, M. Li, and A. Kempf, “Neural networks can learn to utilize correlated auxiliary noise,” Scientiﬁc Reports,
+vol. 11, no. 1, pp. 1–8, 2021.
+[70] Y . Chang, L. Yan, M. Chen, H. Fang, and S. Zhong, “Two-stage convolutional neural network for medical noise removal via image
+decomposition,” IEEE Trans. Instrum. Meas. , vol. 69, no. 6, pp. 2707–2721, 2019.
+[71] J. Tiirola, “A learning based approach to additive, correlated noise removal,” J. Visual Commun. Image Represent. , vol. 62, pp. 286–294,
+2019.
+[72] K. Zhang, W. Zuo, and L. Zhang, “FFDNet: Toward a fast and ﬂexible solution for CNN-based image denoising,” IEEE Trans. Image
+Process., vol. 27, no. 9, pp. 4608–4622, 2018.
+[73] O. Ronneberger, P. Fischer, and T. Brox, “U-Net: Convolutional networks for biomedical image segmentation,” in Intl. Conf. Med. Image
+Comput. & Computer-Assisted Intervention , 2015, pp. 234–241.
+[74] X. Zhang, Y . Lu, J. Liu, and B. Dong, “Dynamically unfolding recurrent restorer: A moving endpoint control method for image restoration,”
+in Proc. Internat. Conf. on Learning Repres. , 2019.
+[75] H. Zhao, O. Gallo, I. Frosio, and J. Kautz, “Loss functions for image restoration with neural networks,” IEEE Trans. Comp. Imag. , vol. 3,
+no. 1, pp. 47–57, 2016.
+
+=== PDF PAGE 32 ===
+32
+[76] Z. Wang, A. C. Bovik, H. R. Sheikh, and E. P. Simoncelli, “Image quality assessment: From error visibility to structural similarity,” IEEE
+Trans. Image Process., vol. 13, no. 4, pp. 600–612, 2004.
+[77] S. Mohan, Z. Kadkhodaie, E. P. Simoncelli, and C. Fernandez-Granda, “Robust and interpretable blind image denoising via bias-free
+convolutional neural networks,” in Proc. Internat. Conf. on Learning Repres. , 2020.
+[78] M. Uecker, P. Lai, M. J. Murphy, P. Virtue, M. Elad, J. M. Pauly, S. S. Vasanawala et al., “ESPIRiT–an eigenvalue approach to autocalibrating
+parallel MRI: Where SENSE meets GRAPPA,” Magnetic Resonance Med. , vol. 71, no. 3, pp. 990–1001, 2014.
+[79] R. E. Walpole, R. H. Myers, S. L. Myers, and K. Ye, Probability and Statistics for Engineers and Scientists , 9th ed. New York: Macmillan,
+2016.
+[80] B. Collins and S. Matsumoto, “On some properties of orthogonal Weingarten functions,” J. Math. Phys. , vol. 50, no. 11, p. 113516, 2009.
+[81] M. Buehrer, K. P. Pruessmann, P. Boesiger, and S. Kozerke, “Array compression for MRI with large coil arrays,” Magnetic Resonance
+Med., vol. 57, no. 6, pp. 1131–1139, 2007.
+[82] T. Zhang, J. M. Pauly, S. S. Vasanawala, and M. Lustig, “Coil compression for accelerated imaging with Cartesian sampling,” Magnetic
+Resonance Med., vol. 69, no. 2, pp. 571–582, 2013.
+[83] A. K. Fletcher, M. Sahraee-Ardakan, S. Rangan, and P. Schniter, “Rigorous dynamics and consistent estimation in arbitrarily conditioned
+linear systems,” in Proc. Neural Inform. Process. Syst. Conf. , 2017, pp. 2542–2551.
+APPENDIX A
+EC/VAMP ERROR RECURSION
+In this appendix, we establish the error iteration
+e2 =VDV He1 +u. (43)
+To begin, we write the estimation function f1 from (22) as
+f1(r1;γ1) =
+(
+γwAHA +γ1I
+)−1(
+γwAHy +γ1r1
+)
+(44)
+=r1 +
+(
+γwAHA +γ1IN
+)−1(
+γwAHy −γwAHAr1
+)
+(45)
+=r1 +γw (C +γ1IN )−1AH(y −Ar1) (46)
+for
+C ≜γwAHA =V ΛV H. (47)
+The right side of (47) is an eigendecomposition where VV H = V HV = I and Λ = Diag([λ1,...,λ N ]) is
+real-valued. Note also that V is the right singular vector matrix of A. Using this eigendecomposition, we can write
+tr(∇f1(r1;γ1)) = tr(I − (C +γ1IN )−1C) (48)
+= tr(I − (V ΛV H +γ1IN )−1V ΛV H) (49)
+= tr(I − (Λ +γ1IN )−1Λ) (50)
+=N −
+N∑
+n=1
+λn
+λn +γ1
+(51)
+=N (1 −α) for α ≜ 1
+N
+N∑
+n=1
+λn
+λn +γ1
+. (52)
+
+=== PDF PAGE 33 ===
+33
+Thus, lines 4-5 of Alg. 1 can be written as
+ˆx1 =r1 +γw (C +γ1IN )−1AH(y −Ar1) (53)
+η1 = γ1N
+tr(∇f1(r1;γ1)) = γ1
+1 −α (54)
+and lines 7–6 as
+γ2 =η1 −γ1 =γ1
+( 1
+1 −α − 1
+)
+=γ1
+α
+1 −α (55)
+r2 = η1ˆx1 −γ1r1
+γ2
+= 1
+αˆx1 − 1 −α
+α r1. (56)
+Plugging (53) into (56), we get
+r2 =r1 + γw
+α (C +γ1IN )−1AH(y −Ar1). (57)
+Next, we express (57) in terms of the error vectors ei ≜ri −x0 for i = 1, 2. Subtracting x0 from both sides of
+(57) and applying y =Ax0 +w from (1) and the deﬁnition of C from (47), we get
+e2 =e1 + γw
+α (C +γ1IN )−1AH(Ax0 +w −Ar1)
+=e1 − 1
+α (C +γ1IN )−1Ce1 +u (58)
+=e1 − 1
+αV (Λ +γ1IN )−1 ΛV He1 +u (59)
+=VDV He1 +u, (60)
+where
+u ≜ γw
+α
+(
+C +γ1IN
+)−1
+AHw (61)
+D ≜IN − 1
+α (Λ +γ1IN )−1 Λ (62)
+Notice that tr(D) = 0 due to the deﬁnition of α in (52).
+APPENDIX B
+EC/VAMP ERROR ANALYSIS
+We start with the fact [80] that, for any N ≥ 2, the elements vnj of uniformly distributed orthogonal V ∈ RN×N
+obey
+E(vnj) = 0 (63a)
+E(vnjvmk) = 1
+Nδn−mδj−k (63b)
+E(v2
+njv2
+mk) =
+
+
+
+3
+N(N+2) n =m & j =k
+1
+N(N+2) n =m & j ̸=k
+1
+N(N+2) n ̸=m & j =k
+N+1
+N(N+2)(N−1) n ̸=m & j ̸=k
+, (63c)
+
+=== PDF PAGE 34 ===
+34
+whereδn is the Kronecker delta (i.e., δ0 = 1 andδn
+⏐⏐
+n̸=0 = 0). Equations (63) will be used to establish the following
+lemma.
+Lemma 1. Suppose that f =V Diag(d)V Te ∈ RN whered is deterministic with elements obeying ∑N
+j=1dj = 0
+and D ≜ limN→∞ 1
+N
+∑N
+j=1d2
+j < ∞; e is random with elements of ﬁnite mean and variance obeying ε ≜
+limN→∞ 1
+N
+∑N
+j=1e2
+j < ∞; and V is uniformly distributed over the set of orthogonal matrices and independent of
+e up to the fourth moment, i.e., E(vnjvmkvn′j′vm′k′|e) = E(vnjvmkvn′j′vm′k′). Then, as N → ∞,
+E(f |e) = 0 (64)
+Cov(f |e) = εDIN. (65)
+Proof. Writing the nth element of f as
+fn =
+N∑
+j=1
+vnjdj
+N∑
+k=1
+vkjek (66)
+we can establish (64) via
+E(fn|e) =
+N∑
+j=1
+N∑
+k=1
+djek E(vnjvkj |e) (67)
+(a)
+=
+N∑
+j=1
+N∑
+k=1
+djekδn−k
+1
+N (68)
+=en
+1
+N
+N∑
+j=1
+dj
+(b)
+= 0 ∀n, (69)
+where (a) used (63b) and the assumed independence of V ande and (b) used ∑
+jdj = 0.
+To establish (65), we begin by using (66) and the assumed independence of V ande to write
+E(f2
+n|e) =
+∑
+j
+∑
+k
+∑
+j′
+∑
+k′
+djdj′ekek′ E(vnjvkjvnj′vk′j′). (70)
+When k =n, the expectation will vanish unless k′ =n, and when k ̸=n, the expectation will vanish unless k′ =k
+
+=== PDF PAGE 35 ===
+35
+and j′ =j. Thus we have
+E(f2
+n|e)
+=e2
+n
+∑
+j
+∑
+j′
+djdj′ E(v2
+njv2
+nj′) +
+∑
+k̸=n
+∑
+j
+d2
+jk2 E(v2
+njv2
+kj ) (71)
+=e2
+n
+∑
+j
+d2
+j E(v4
+nj) +e2
+n
+∑
+j
+∑
+j′̸=j
+djdj′ E(v2
+njv2
+nj′)
++
+∑
+k̸=n
+∑
+j
+d2
+je2
+k E(v2
+njv2
+kj ) (72)
+(a)
+= 3e2
+n
+N (N + 2)
+∑
+j
+d2
+j + e2
+n
+N (N + 2)
+∑
+j
+dj
+∑
+j′̸=j
+dj′
++ 1
+N (N + 2)
+∑
+j
+d2
+j
+∑
+k̸=n
+e2
+k (73)
+(b)
+= e2
+n
+N + 2
+(1
+N
+∑
+j
+d2
+j
+)
++ N
+N + 2
+(1
+N
+∑
+j
+d2
+j
+)(1
+N
+∑
+k
+e2
+k
+)
+(74)
+N→∞
+= Dε, (75)
+where (a) used (63c) and where (b) used ∑
+j′̸=jdj′ = (∑
+j′dj′) −dj = −dj and∑
+k̸=ne2
+k = ∥e∥2 −e2
+n. The limit
+as N → ∞ follows from the deﬁnitions of D and ε, and the fact that limN→∞e2
+n/N = 0 due to the ﬁnite mean
+and variance of en. Thus we have established the diagonal terms in (65).
+The off-diagonal terms in (65) follow from analyzing
+E(fnfm|e)
+⏐⏐
+n̸=m
+=
+∑
+j
+∑
+k
+∑
+j′
+∑
+k′
+djdj′ekek′ E(vnjvkjvmj′vk′j′). (76)
+In this case, the expectation will vanish unless k =n or k =m. When k =n, we also need k′ =m, and when
+k =m, we also need k′ =n and j =j′. Thus we can write
+E(fnfm|e)
+⏐⏐
+n̸=m
+=enem
+∑
+j
+∑
+j′
+djdj′ E(v2
+njv2
+mj′) +enem
+∑
+j
+d2
+j E(v2
+njv2
+mj) (77)
+= 2enem
+∑
+j
+d2
+j E(v2
+njv2
+mj) +enem
+∑
+j
+∑
+j′̸=j
+djdj′ E(v2
+njv2
+mj′) (78)
+(a)
+= 2enem
+N (N + 2)
+∑
+j
+d2
+j + enem(N + 1)
+N (N + 2)(N − 1)
+∑
+j
+dj
+∑
+j′̸=j
+dj′ (79)
+(b)
+= N − 3
+(N + 2)(N − 1)enem
+1
+N
+∑
+j
+d2
+j (80)
+(c)
+= O(1/N)
+N→∞
+= 0 , (81)
+where (a) used (63c), (b) used ∑
+j′̸=jdj′ = (∑
+j′dj′)−dj = −dj, and (c) used 1
+N
+∑
+jd2
+j =O(1) from the deﬁnition
+of D andenem =O(1) from the ﬁnite mean and variance of en. This establishes the off-diagonal terms in (65).
+
+=== PDF PAGE 36 ===
+36
+Lemma 1 will now be used to establish
+E(e2|e1)
+N→∞
+= 0 (82)
+Cov(e2|e1)
+N→∞
+= ε2I (83)
+for some ε2 > 0. To simplify the derivation, we ﬁrst write (28) as
+e2 =f +u for f ≜VDV Te1, (84)
+and recall that tr(D) = 0 . For the mean of e2|e1, we immediately have that
+E(e2|e1) = E(f |e1) + E(u|e1) = 0 (85)
+since E(f |e1) = 0 due to (64). Also, E(u|e1) = 0 from deﬁnition (61) and E(w|e2) = 0. This establishes (82).
+To characterize the covariance of e2|e1, we write
+Cov(e2|e1) = Cov(f ) + E
+[
+fu T⏐⏐e1
+]
++ E
+[
+uf T⏐⏐e1
+]
++ Cov(u|e1) (86)
+and investigate each term separately. For the ﬁrst term in (86), equation (65) and deﬁnition (84) imply that
+Cov(f |e1)
+N→∞
+= ε1
+N tr
+[
+D2]
+IN, (87)
+for ε1 ≜ limn→∞ 1
+N
+∑N
+n=1e2
+1n. For the second and third terms in (86), equation (64) and deﬁnition (84) imply
+E
+[
+fu T⏐⏐e1,u
+]N→∞
+= 0. (88)
+For the last term in (86), we can use (47) and Cov(w|e1) =IM/γw to obtain
+Cov(u|V,e1)
+= 1
+α
+(
+C +γ1IN
+)−1
+C
+(
+C +γ1IN
+)−1 1
+α (89)
+= 1
+αV
+(
+Λ +γ1IN
+)−1
+Λ
+(
+Λ +γ1IN
+)−1
+V T 1
+α (90)
+=V ΣΛ−1ΣV T (91)
+for
+Σ ≜ 1
+α
+(
+Λ +γ1IN
+)−1
+Λ =IN −D. (92)
+Then we take the expectation of (91) over V to obtain
+[Cov(u|e1)]n,m
+=
+N∑
+j=1
+(σj)2
+λj
+E(vnjvmj|e1)
+(a)
+= δn−m
+1
+N
+N∑
+j=1
+(σj)2
+λj
+, (93)
+where σj ≜ [Σ]jj and where (a) follows from (63b) and the assumed independence of V ande1. Consequently,
+Cov(u|e1) = 1
+N tr
+[
+ΣΛ−1Σ
+]
+IN. (94)
+
+=== PDF PAGE 37 ===
+37
+Combining (86)–(94), we have
+Cov(e2|e1) = ε2IN (95)
+for
+ε2 ≜ ε1
+N tr
+[
+(IN − Σ)2]
++ 1
+N tr
+[
+ΣΛ−1Σ
+]
+. (96)
+The expression for ε2 can be simpliﬁed as follows.
+ε2 = (ε1 − 1/γ1)
+N tr
+[
+(IN − Σ)2]
++ 1
+γ1N tr
+[
+(IN − Σ)2 +γ1ΣΛ−1Σ
+]
+(97)
+= (ε1 − 1/γ1)
+N
+N∑
+n=1
+(
+1 − λn/α
+λn +γ1
+)2
++ 1
+γ1N tr
+[
+IN − 2Σ + Σ
+(
+IN +γ1Λ−1)
+Σ
+]
+. (98)
+Leveraging (92) to simplify the last term, we get
+ε2 = (ε1 − 1/γ1)
+N
+N∑
+n=1
+(λn(1 − 1/α) +γ1
+λn +γ1
+)2
++ 1
+γ1N tr
+[
+IN + (1/α − 2)Σ
+]
+(99)
+(a)
+= (ε1 − 1/γ1)
+N
+N∑
+n=1
+(λn(1 − 1/α) +γ1
+λn +γ1
+)2
++ 1
+γ1
+( 1
+α − 1
+)
+(100)
+(b)
+= (ε1 − 1/γ1)
+N
+N∑
+n=1
+(1 −λn/γ2
+1 +λn/γ1
+)2
++ 1
+γ2
+, (101)
+where (a) used the fact that tr(Σ) = N and (b) used (52).
+Finally, notice that the elements of e2 come from a sum of the form
+e2n =un +
+N∑
+j=1
+ξnjej for ξnj = [VDV T]nj, (102)
+where, for any ﬁxed e1, the elements {ξnj}N
+j=1 are zero mean, O(1/N) variance, and uncorrelated. Because un are
+Gaussian, it can be argued using the central limit theorem that the elements of e2 become Gaussian as N → ∞.
+Combining this result with (82)–(83), we have that, given e1, as N → ∞ , the elements of e2 are marginally
+zero-mean Gaussian and uncorrelated.
+APPENDIX C
+EXPERIMENTAL SETUP
+A. Multicoil MRI experiments
+In this section we detail the experimental setup for the multicoil experiments in Sections IV-B, IV-C, and IV-D.
+
+=== PDF PAGE 38 ===
+38
+1) Data: For our multicoil experiments, we used 3T knee and brain data from fastMRI [30]. For knee training
+data, we randomly picked 28 volumes and used the middle 8 slices from each volume, while for knee testing
+data we randomly picked 4 other volumes and used the middle 4 slices from each. Only non-fat-suppressed knee
+data was used. For brain training data, we randomly picked 28 volumes and used the bottom 8 slices from each
+volume, while for brain testing data we randomly picked 4 other brain volumes and used the bottom 4 slides from
+each. Only axial T2-weighted brain data was used. Starting with the raw fastMRI data, we ﬁrst applied a standard
+PCA-based coil-compression technique [81], [82] to reduce the number of coils from C = 15 to C = 8 . Then
+we Fourier-transformed each fully-sampled coil measurement to the pixel domain, center-cropped down to size
+368 × 368 so that all images had the same size, and Fourier-transformed back to k-space, yielding fully sampled
+multicoil k-space measurement vectors yfull ∈ CNC with N = 3682 = 135424 entries.
+2) Ground-truth extraction: To extract the ground-truth image x0 fromyfull, we ﬁrst estimated the coil sensitivity
+maps {sc}C
+c=1 from the central 24 ×24 region of k-space using ESPIRiT 4 [78]. We then modeled yfull ≈Afullx0,
+where according to the deﬁnition of A we have
+Afull ≜
+
+
+F Diag(s1)...
+F Diag(sC)
+
+ = (IC ⊗F )S for S ≜
+
+
+Diag(s1)...
+Diag(sC)
+
+, (103)
+and we used least-squares to extract the ground-truth images as follows:
+x0 ≜ (AH
+fullAfull)+AH
+fullyfull (104)
+= (SHS)+SH(Ic ⊗F H)yfull (105)
+(a)
+= SH(Ic ⊗F H)yfull (106)
+=AH
+fullyfull, (107)
+where (a) holds because ESPIRiT guarantees that, for each index pixel index n, the coil maps are either all zero
+(i.e., [sc]n = 0 ∀c) or they have a sum-squared value of one (i.e., ∑C
+c=1 |[sc]n|2 = 1).
+3) Noisy, subsampled, k-space measurements: To create the noisy subsampled k-space measurements, we started
+with the fully sampled fastMRI yfull from above, applied a sampling mask M of acceleration rate R, and added
+circularly symmetric complex-valued WGN w to obtain y. The sampling densities that generated the 2D point and
+2D line masks were obtained from the genPDF function of the SparseMRI package 5 with the same settings used in
+the VDAMP code 6, except that the 2D line masks used a 1D sampling density while the 2D point masks used a 2D
+sampling density. The variance on the noise was adjusted to reach a desired signal-to-noise ratio (SNR), where
+SNR ≜ ∥y −w∥2/∥w∥2. With multicoil data, we used masks with a fully sampled central 24 × 24 autocalibration
+region, as in Fig. 1(b)-(c), to facilitate the use of ESPIRiT for coil estimation.
+4We used the default ESPIRiT settings from https://sigpy.readthedocs.io/en/latest/generated/sigpy.mri.app.EspiritCalib.html.
+5http://people.eecs.berkeley.edu/~mlustig/Software.html
+6https://github.com/charlesmillard/VDAMP
+
+=== PDF PAGE 39 ===
+39
+4) Algorithm details: For D-GEC, we used the 2D Haar wavelet transform of depth D = 4 , giving L = 13
+wavelet subbands. When evaluating f1, we use 150 CG iterations in Sec. IV-B and 10 in Sections IV-C and IV-D.
+Also, we use the damping scheme from [62] with a damping factor of 0.3 and run the D-GEC algorithm for 20
+iterations. For the experiments in Sec. IV-B, we used the auto-tuning scheme from [83] to adjust γ1 andγ2.
+5) Denoiser details: As described in Sec. IV-A, our corr+corr denoiser was built on bias-free DnCNN [77]. For
+the multicoil experiments, the images were complex-valued and so DnCNN used two input and output channels:
+one for the real part and one for the imaginary part. When extending DnCNN to corr+corr, we added a single noise
+channel, since we assumed that the real and imaginary parts of the noise had the same noise statistics. Prior to
+training, each ground-truth image was scaled so that the 98th percentile of its pixel magnitudes equaled 1. While
+training, we used standard deviations {1/√γℓ}L
+ℓ=1 drawn independently from a uniform distribution over a speciﬁed
+interval [SDmin, SDmax]. Despite the use of a bias-free DNN, we found that it did not work well to train a single
+denoiser over a very wide range of SDs, and so we trained ﬁve different denoisers, each over a different range
+of subband SDs: [0, 10/255], [10/255, 20/255], [20/255, 50/255], [50/255, 120/255], and [120/255, 500/255]. In
+each case, we used the training procedure described in Sec. IV-A, with ℓ2 loss, 20 epochs, a minibatch size of 128,
+the Adam optimizer, and a learning rate that started at 10−3 and was reduced by a factor of 2 at the 8th, 12th, 14th,
+16th, 18th, and 19th epochs. The denoisers were trained using 64 × 64 image patches, of which we obtained 645 792
+from the training images using a stride of 10 × 10 and standard data-augmentation techniques like rotation and
+ﬂipping. Although we cannot guarantee that the test images will be scaled in the same way, this is not a problem
+because bias-free DnCNN obeys f2(αu,αN ) = αf2(u,N ) for all α> 0. It took approximately 24 hours to train
+each denoiser on a workstation with a single NVIDIA RTX-A6000 GPU.
+B. Single-coil MRI experiments
+In this section we detail the experimental setup for the single-coil experiments used in Sec. IV-E.
+1) Data: For our single-coil experiments, we used MRI images from the Stanford 2D FSE dataset [31]. We used
+the same train/test/validation split from [36]: for testing, we used the 10 images shown in Fig. 3, for training we
+used 70 other images, and for validation we used 8 remaining images. All images were real-valued and 352 × 352.
+For each ground-truth image, the fully sampled k-space data was created via yfull =Fx 0 using 2D discrete Fourier
+transformF .
+2) Noisy, subsampled, k-space measurements: To create the noisy subsampled k-space measurements, we started
+with the full sampled Stanford yfull from above, applied a 2D point sampling mask M of acceleration rate R, and
+added circularly symmetric complex-valued WGN to obtain y. The variance on the noise was adjusted to reach an
+SNR of 45 dB. With single-coil data, we do not need a fully sampled central autocalibration region and so we use
+masks similar to that shown in Fig. 1(a).
+3) Algorithm details: For D-GEC, we used the 2D Haar wavelet transform of depth D = 4 , giving L = 13
+wavelet subbands. When evaluating f1, we used 10 CG iterations. Also, we used the auto-tuning scheme from [83]
+to adjust γ1 and the damping scheme from [62] with a damping factor of 0.5. We ran the D-GEC algorithm for a
+maximum of 200 iterations.
+
+=== PDF PAGE 40 ===
+40
+4) Denoiser details: As described in Sec. IV-A, our corr+corr denoiser was built on bias-free DnCNN [77]. For
+the single-coil experiments, the images were real-valued and so the standard DnCNN uses one input and output
+channel. When extending that DnCNN to corr+corr, we added a single noise channel. The training of the denoiser
+was identical to that used in the multicoil case, described in Appendix C-A.

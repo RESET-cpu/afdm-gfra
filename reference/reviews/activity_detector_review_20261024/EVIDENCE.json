@@ -1,0 +1,132 @@
+{
+  "created_utc": "2026-10-24T00:41:45.089901+00:00",
+  "scope": "Targeted research and independent read-only implementation check; not systematic review or new receiver validation",
+  "sources": [
+    {
+      "id": "zhou2023",
+      "authors": "Xingyu Zhou et al.",
+      "title": "Active Terminal Identification, Channel Estimation, and Signal Detection for Grant-Free NOMA-OTFS in LEO Satellite Internet-of-Things",
+      "url": "https://arxiv.org/pdf/2201.02084v2",
+      "local_path": "reference/baseline_gfra_audit_20261023/zhou2023_somp_gfra.pdf",
+      "location": "PDF p.10, IV-C, Eq.(27), footnote 3",
+      "verified_finding": "Fixed normalized-energy factor beta=0.1; absolute threshold scales with the maximum recovered user energy.",
+      "applicability_limit": "Direct GFRA/SOMP; does not establish transfer-optimal value in AFDM.",
+      "sha256": "9a13675e19f86e70bb6a5fa7b4b66f5affff897326a7f6be1e87cea630b0129d",
+      "hash_verified": true
+    },
+    {
+      "id": "zhang2019",
+      "authors": "Zhaoji Zhang et al.",
+      "title": "DNN-Aided Block Sparse Bayesian Learning for User Activity Detection and Channel Estimation in Grant-Free Non-Orthogonal Random Access",
+      "url": "https://arxiv.org/pdf/1910.02953v1",
+      "local_path": "reference/baseline_gfra_audit_20261023/zhang2019_mp_bsbl.pdf",
+      "location": "II-B, III-D; PDF p.10 Table IV",
+      "verified_finding": "User variance (inverse precision) compared to threshold 0.1; noise precision learned.",
+      "applicability_limit": "Threshold statistic differs from normalized coefficient energy.",
+      "sha256": "1f5ad779320c40f36fc3f92ed46e250c9efb8b6a1c1bee8da2c01e71967a498f",
+      "hash_verified": true
+    },
+    {
+      "id": "ke2020",
+      "authors": "Malong Ke et al.",
+      "title": "Compressive Sensing-Based Adaptive Active User Detection and Channel Estimation: Massive Access Meets Massive MIMO",
+      "url": "https://arxiv.org/pdf/1906.09867v4",
+      "local_path": "reference/baseline_gfra_audit_20261023/ke2020_gmmv_amp.pdf",
+      "location": "III-B, PDF p.7, Eqs.(39)-(41), footnote 3",
+      "verified_finding": "Spatial BI-AD uses per-coefficient probability cutoff 0.5 and vote proportion 0.9.",
+      "applicability_limit": "Structured user model and domain matter; neither generic coefficient averaging nor equal AER error costs alone implies equal conditional miss and false-alarm rates.",
+      "sha256": "d51e7c2575cd1b35720c7e55e8b5d9ae555ccb148b800f1f3757c5306d5cdbde",
+      "hash_verified": true
+    },
+    {
+      "id": "liu2018",
+      "authors": "Liang Liu and Wei Yu",
+      "title": "Massive Connectivity With Massive MIMO鈥擯art I: Device Activity Detection and Channel Estimation",
+      "url": "https://arxiv.org/pdf/1706.06438v2",
+      "local_path": "reference/activity_threshold_review_20261023/liu2018_amp.pdf",
+      "location": "PDF p.6, III-E Definition 1, Eq.(30) and following threshold; Eqs.(27)-(28)",
+      "verified_finding": "Analytic user/iteration-specific energy threshold depends on effective noise variance tau_t^2 and beta_n.",
+      "applicability_limit": "This is a fixed analytic rule, not SNR-bin calibration; effective AMP noise is not physical noise alone. HTML numbering differs from PDF.",
+      "sha256": "66d3cded3d7b2efb108e56d1615855c3546005baab7dfda8e7779ee40d53cfe9",
+      "hash_verified": true
+    },
+    {
+      "id": "shen2025",
+      "authors": "Boxiao Shen et al.",
+      "title": "LEO Satellite-Enabled Random Access With Large Differential Delay and Doppler Shift",
+      "url": "https://arxiv.org/pdf/2412.20806v1",
+      "local_path": "reference/baseline_gfra_audit_20261023/shen2025_mrf_mp_gamp.pdf",
+      "location": "PDF p.7, III-A Eq.(21)",
+      "verified_finding": "User aggregate energy compared to an empirical predefined threshold.",
+      "applicability_limit": "No reproduced numerical threshold schedule or calibration protocol found; a single symbol does not prove a common value across every SNR.",
+      "sha256": "49ba5402794cb29bdbd39c10ed5146e10291e15d2db222e4e57f8b13ae3f7abd",
+      "hash_verified": true
+    },
+    {
+      "id": "ding2026",
+      "authors": "Chao Ding et al.",
+      "title": "Learning Sparsity Pattern: An Adaptive Joint Detection for AFDM Grant-Free System in LEO Satellites Communication",
+      "url": "https://openresearch.surrey.ac.uk/esploro/outputs/journalArticle/Learning-Sparsity-Pattern-An-Adaptive-Joint/991155194002346?institution=44SUR_INST",
+      "local_path": "reference/literature/ding2026.pdf",
+      "location": "PDF p.4 Eq.(27); p.5 IV-A",
+      "verified_finding": "Normalized coefficient-block energy compared to eta; per-SNR network training is separately described.",
+      "applicability_limit": "Numerical eta, SNR schedule and calibration protocol not specified; historical project eta is not author eta.",
+      "sha256": "22dceda0036c892f44e961ce9ab6d094930e610befe0d51c18c3357aa1890ec5",
+      "hash_verified": true
+    },
+    {
+      "id": "cai2026",
+      "authors": "Chang Cai, Wenjun Jiang, Xiaojun Yuan, Ying-Jun Angela Zhang",
+      "title": "Joint Activity Detection and Channel Estimation for Massive Connectivity: Where Message Passing Meets Score-Based Generative Priors",
+      "url": "https://arxiv.org/html/2506.00581v2",
+      "local_path": "reference/literature/cai2026.pdf",
+      "location": "Local PDF p.7, III-B2, Eqs.(29)-(31)",
+      "verified_finding": "Threshold applied to user posterior activity probability, including prior and effective Gaussian message variances.",
+      "applicability_limit": "Do not identify posterior probability with max-normalized energy; numerical cutoff is not established by this excerpt.",
+      "sha256": "78854ee24bd4a67a2ce574855a1205cdf4484eb6ff4b0568fe8479d4ea69bc68",
+      "hash_verified": true
+    },
+    {
+      "id": "zhang2020",
+      "url": "https://arxiv.org/html/2005.09826",
+      "location": "III-A2-A3 Eqs.(15)-(19); PDF pp.6-7",
+      "finding": "Prior-corrected user Bernoulli messages and CE evidence; final log odds compared to zero. CE evidence uses an explicit Gaussian approximation.",
+      "local_path": "reference/activity_detector_review_20261024/zhang2020_br_mp.pdf",
+      "sha256": "1b13bc3e52e5a36b18528ca14faf324cf26e5a1b89d32feb42c05ea1971c15b4",
+      "read_scope": "sections; page 6 visually checked"
+    },
+    {
+      "id": "zhao2025",
+      "url": "https://eprints.soton.ac.uk/505524/",
+      "doi": "10.1109/OJVT.2025.3603690",
+      "location": "V-B Eqs.(24)-(31) as exposed by primary-PDF search extraction",
+      "finding": "EM-BSBL user activity weights modeled conditionally with Gamma distributions; Neyman-Pearson threshold for a prescribed false-alarm probability.",
+      "read_scope": "institutional metadata/abstract and search-exposed primary section; full PDF unavailable HTTP403",
+      "local_path": null
+    }
+  ],
+  "search_families": [
+    "grant-free activity detection likelihood ratio",
+    "massive MIMO AMP effective noise threshold",
+    "block sparse Bayesian learning threshold optimization",
+    "Ding Shen Cai native activity decision"
+  ],
+  "report": "paper/docs/ACTIVITY_DETECTOR_REVIEW_20261024.md",
+  "report_sha256": "4fe135285a33ec676e86756b4dbbc36e0106be9db9eeb3ceea55655f778d2e66",
+  "gaussian_llr_algebra_check": {
+    "cases": 24,
+    "maximum_absolute_error": 6.661338147750939e-15,
+    "scope": "density identity only, not AFDM distribution validation"
+  },
+  "inference_started": false,
+  "training_started": false,
+  "threshold_fit_performed": false,
+  "frozen_configuration_changed": false,
+  "conclusions": [
+    "Use true user-level posterior with prior for equal-cost AER when meaningful; finite approximation needs calibration checks.",
+    "Do not force all algorithms to expose the same statistic.",
+    "Keep native reference readouts and label any calibrated postprocessor as an adaptation.",
+    "Physical noise is not effective estimation-error covariance.",
+    "Current cached data can support limited offline energy readout comparison; not arbitrary posterior or block-SBL reconstruction."
+  ]
+}

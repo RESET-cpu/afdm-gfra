@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "checked_utc": "2026-10-25T00:30:56.407611+00:00",
+  "launch_sha256": "93f04276122ecb1f39eabe03502ae09372c7678119dbdda5872eef359b8423ff",
+  "plan_sha256": "9e35de9d24bbbe511410586bd6e0785852f242f1d9575b7797168baf35524f0c",
+  "actual_process": {
+    "pid": 87848,
+    "create_time": 1792888185.2363777,
+    "command_line": [
+      "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-u",
+      "D:\\afdm-gfra\\result\\user_count\\data\\known_phase_1000_baselines_20261025\\parallel_run.py",
+      "--plan",
+      "D:\\afdm-gfra\\result\\user_count\\data\\known_phase_1000_baselines_20261025\\PLAN.json"
+    ]
+  },
+  "workers": [
+    {
+      "status": {
+        "pid": 41672,
+        "stage": "RUNNING",
+        "updated_unix": 1792888253.9879189,
+        "scene": 1,
+        "condition": 3,
+        "method": "gamp",
+        "device": "cpu"
+      },
+      "pid": 41672,
+      "create_time": 1792888187.3997145,
+      "command_line": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=87848, pipe_handle=1236)",
+        "--multiprocessing-fork"
+      ]
+    }
+  ],
+  "stage": "RUNNING",
+  "elapsed_seconds": 71.17417335510254,
+  "snapshot_pointer_count": 4026,
+  "snapshot_pointer_count_by_method": {
+    "gamp": 1006,
+    "gnn": 1007,
+    "offgrid_sbl": 1007,
+    "somp": 1006
+  },
+  "reused_results": 4000,
+  "new_result_pointer_count": 26,
+  "first_new_condition_all_four_methods_verified": true,
+  "STMP_result_count": 0,
+  "stderr_bytes": 0,
+  "old_stop_sha256": "2a27eeacd80e9d58abc7cabf5d98349ea836d40ec42c097f56ec38faeb0fbb07",
+  "old_five_method_batch_unlaunched": true,
+  "single_official_launch": true,
+  "no_automatic_retry": true
+}

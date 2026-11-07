@@ -1,0 +1,10 @@
+{
+  "receiver_configuration": "src/configs/candidates/C_STMP_variance_em_20261025.json",
+  "receiver_configuration_sha256": "044d906052bf9150b9dbc09a64efaa545af6f70972cd96fd18f75a8e840f23b8",
+  "phase_configuration": "src/configs/final/phase.json",
+  "phase_configuration_sha256": "351fe661bc20f6c49a311d324e062b6731bcd496a8f3483dbf1e20e19ed81672",
+  "schema": "c-stmp-marginal-phase-frontend-20261104-v1",
+  "initializer_source": "src/algorithm/C_STMP_phase_init_marginal_20261104/initialization.py",
+  "initializer_source_sha256": "4236557cce326f90141f656154c2eaea3729a31361acd4dbddf6b0130483404f",
+  "phase_policy": "Estimate once with frozen marginal initialization; hold fixed throughout conditional receiver"
+}

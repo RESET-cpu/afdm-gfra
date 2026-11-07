@@ -1,0 +1,37 @@
+{
+  "stage": "INFERENCE_COMPLETE",
+  "pid": 80572,
+  "started_unix": 1792796296.3898094,
+  "updated_unix": 1792838326.4935942,
+  "elapsed_seconds": 42030.103785037994,
+  "completed": 30000,
+  "planned": 30000,
+  "completed_by_method": {
+    "STMP": 6000,
+    "offgrid_sbl": 6000,
+    "gnn": 6000,
+    "gamp": 6000,
+    "somp": 6000
+  },
+  "prepared_inputs": 6000,
+  "total_inputs": 6000,
+  "dispatched_tasks": {
+    "gpu": 6000,
+    "cpu": 24000
+  },
+  "pending": 0,
+  "execution": {
+    "gpu_workers": 4,
+    "cpu_workers": 1,
+    "threads_per_worker": 4,
+    "driver": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_1000_20261023\\parallel_run.py",
+    "driver_sha256": "835d7193909f6ba8c1a5e88a94adb06760c9a60ef742da0991fad35b0fcb015c",
+    "hard_timeout_seconds": 604800,
+    "process_model": "spawn; persistent models; one writer for inputs; independent CPU/GPU queues",
+    "timing": "Concurrent throughput experiment, not isolated method latency",
+    "environment": {
+      "KMP_BLOCKTIME": "0",
+      "OMP_WAIT_POLICY": "PASSIVE"
+    }
+  }
+}

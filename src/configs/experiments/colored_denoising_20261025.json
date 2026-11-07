@@ -1,0 +1,20 @@
+{
+  "schema": "paired-colored-denoising-v1",
+  "scenes": 1000,
+  "base_seed": 202610180500001,
+  "users": 40,
+  "candidates": 4,
+  "snr_db": [-20, -10, 0, 10, 20, 30],
+  "strengths": [0.0, 0.25, 0.5],
+  "rank": 4,
+  "shape_seed": 2026102507,
+  "batch_size": 4,
+  "receiver_batch_size": 40,
+  "receiver_cases": 48,
+  "hard_timeout_seconds": 14400,
+  "first_checkpoint": "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt",
+  "first_checkpoint_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+  "binding": "src/configs/final/STMP.json",
+  "covariance": "C=v Ra (x) I_output (x) Rc; Ra,Rc=(1-alpha)I+alpha*m*GG^H/tr(GG^H), G complex Gaussian rank 4. Both axes use the stated alpha; normalized traces equal dimension.",
+  "scope": "Synthetic known-C first-mean comparison, then saved receiver queries using estimated column shape at the same scalar power for all three networks. No feedback or training changes."
+}

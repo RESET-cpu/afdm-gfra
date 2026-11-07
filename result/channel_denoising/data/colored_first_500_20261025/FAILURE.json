@@ -1,0 +1,4 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\src\\evaluation\\append_colored_denoising_20261025.py\", line 129, in run\n    write_json(out/'STATUS.json', status)\n    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\utils.py\", line 42, in write_json\n    temp.replace(path)\n    ~~~~~~~~~~~~^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 780, in replace\n    os.replace(self, target)\n    ~~~~~~~~~~^^^^^^^^^^^^^^\nPermissionError: [WinError 5] 拒绝访问。: 'D:\\\\afdm-gfra\\\\result\\\\channel_denoising\\\\data\\\\colored_first_500_20261025\\\\STATUS.json.46684.tmp' -> 'D:\\\\afdm-gfra\\\\result\\\\channel_denoising\\\\data\\\\colored_first_500_20261025\\\\STATUS.json'\n",
+  "elapsed_seconds": 142.24396950000664
+}

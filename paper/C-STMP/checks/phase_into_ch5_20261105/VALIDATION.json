@@ -1,0 +1,86 @@
+{
+  "status": "PASS",
+  "protected_files_unchanged": [
+    "FINAL.json",
+    "MAINLINE.json",
+    "src/configs/final/phase.json",
+    "src/configs/plots/manuscript.json",
+    "paper/C-STMP/figures/activity_probability.pdf",
+    "paper/C-STMP/figures/channel_denoising.pdf",
+    "paper/C-STMP/figures/convergence.pdf",
+    "paper/C-STMP/figures/cross_channel.pdf",
+    "paper/C-STMP/figures/factor_graph.pdf",
+    "paper/C-STMP/figures/learned_receiver.pdf",
+    "paper/C-STMP/figures/pilot_frames.pdf",
+    "paper/C-STMP/figures/snr_comparison.pdf",
+    "paper/C-STMP/figures/system_multiframe.pdf",
+    "paper/C-STMP/figures/user_count.pdf",
+    "paper/C-STMP/main_full.tex",
+    "paper/C-STMP/references.bib",
+    "paper/C-STMP/sections/00_abstract_zh.md",
+    "paper/C-STMP/sections/01_introduction.tex",
+    "paper/C-STMP/sections/02_system_model.tex",
+    "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "paper/C-STMP/sections/04_generative_priors.tex",
+    "paper/C-STMP/sections/07_conclusion.tex"
+  ],
+  "original_appendix_preserved_verbatim": true,
+  "existing_ch5_equations_unchanged": [
+    "eq:site-update",
+    "eq:conditional-moments",
+    "eq:noise-estimation",
+    "eq:query-variance-target",
+    "eq:input-damping",
+    "eq:output-damping",
+    "eq:linear-fraction"
+  ],
+  "phase_equations_relocated_unchanged": 2,
+  "algorithm_operations_unchanged": true,
+  "experiment_results_unchanged": true,
+  "experiment_figures_tables_unchanged": true,
+  "existing_ch6_prose_unchanged": true,
+  "figure_equation_references_correct": {
+    "eq:derivative-trace": "29",
+    "eq:site-update": "34",
+    "eq:conditional-moments": "35",
+    "eq:activity-probability": "33",
+    "eq:mixture": "19",
+    "eq:joint-spatial-covariance": "20",
+    "eq:joint-average-variance": "21",
+    "eq:nonlinear-extrinsic": "22"
+  },
+  "full_protocol_appendix": "A",
+  "compiled_pdfs": {
+    "main": {
+      "pages": 13,
+      "phase_method_pages": [
+        7
+      ],
+      "last_figure_page": 12,
+      "references_start_page": 12,
+      "bibliography_entries": 43,
+      "sha256": "d82d32f48dda37f3ed11ee5a9164a0f3f977ea077c610b64e7c265ebc5c5f61b"
+    },
+    "main_full": {
+      "pages": 14,
+      "phase_method_pages": [
+        7
+      ],
+      "last_figure_page": 12,
+      "references_start_page": 14,
+      "bibliography_entries": 43,
+      "sha256": "7f424dd64ca2072a5856553ed972963bf1465cc0b1c6a86a7b50fc7d3e44fa35"
+    }
+  },
+  "visual_inspection": {
+    "status": "PASS",
+    "phase_formulas_and_algorithm": "main page 7",
+    "settings_and_figure_flow": "main pages 9-12",
+    "full_version": "pages 6-14 contact sheet",
+    "checks": [
+      "No overlap or clipping",
+      "Final figure precedes conclusion and references",
+      "Appendix A is present only in the full version"
+    ]
+  }
+}

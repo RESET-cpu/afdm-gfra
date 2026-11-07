@@ -1,0 +1,47 @@
+{
+  "status": "PASS_SOURCE_ONLY_COMPILE_DEFERRED",
+  "date": "2026-10-26",
+  "english_abstract": "This paper investigates grant-free random access in low Earth orbit satellite Internet-of-Things systems without global navigation satellite system (GNSS) assistance. We firstly propose a multi-frame transmission scheme with affine frequency division multiplexing (AFDM) to handle the large differential delay and Doppler shift at the satellite receiver, and derive the input-output relationship. Subsequently, we learn a score-based generative channel prior directly on the AFDM effective channel with fractional delay and Doppler, without restrictive sparse or grid-aligned channel assumptions. The training uses colored Gaussian noise to account for correlations in the denoiser input error. The learned prior is then incorporated into a message passing (MP) receiver for joint activity detection and channel estimation (JADCE). Within this receiver, the learned prior is used for minimum mean-squared error (MMSE) channel denoising, while a neural network uses the denoiser input and output to estimate the density ratio for activity detection. Numerical simulations demonstrate that the proposed receiver outperforms the baseline receiver in terms of activity detection and channel estimation.",
+  "receiver_description": "The learned prior is then incorporated into a message passing (MP) receiver for joint activity detection and channel estimation (JADCE). Within this receiver, the learned prior is used for minimum mean-squared error (MMSE) channel denoising, while a neural network uses the denoiser input and output to estimate the density ratio for activity detection.",
+  "english_word_count": 164,
+  "sentence_word_counts": [
+    20,
+    31,
+    26,
+    15,
+    20,
+    33,
+    19
+  ],
+  "receiver_words": 53,
+  "receiver_sentences": [
+    5,
+    6
+  ],
+  "result_sentence": 7,
+  "source_words_missing": [],
+  "technical_phrases_checked": 27,
+  "expressions_missing": [],
+  "additional_direct_term_sources": [
+    {
+      "phrase": "density ratio",
+      "source": "Menon and Ong (2016), Linking losses for density ratio and class-probability estimation",
+      "url": "https://proceedings.mlr.press/v48/menon16.html",
+      "location": "Title and abstract, PMLR 48:304-313; existing manuscript reference menon2016. Detailed equations documented in TERMINOLOGY.md: section3 eqs6-8, section4.2 eqs16-17.",
+      "verification": "Official PMLR title and abstract read this turn; density ratio p/q and relation to class-probability losses confirmed.",
+      "not_attested_as_contiguous_phrase_in_four_core_sources": true,
+      "individual_words_attested_in_four_core_sources": true,
+      "application_boundary": "Uses denoiser query/input and frozen mean/output, plus noise level. Raw logit estimates log ratio under balanced training; prior correction yields activity probability. No new estimator or feature-benefit claim."
+    }
+  ],
+  "all_sentences_verbatim_from_papers": false,
+  "all_technical_phrases_from_four_core_sources": false,
+  "main_tex_outside_abstract_unchanged": true,
+  "bilingual_synchronized": true,
+  "compile_performed": false,
+  "main_pdf_updated": false,
+  "pdf_matches_current_source": false,
+  "retained_pdf_sha256": "3504ef292b140724792b607e26427acc5d4658ee54436c450c318b861b9913bb",
+  "main_tex_sha256": "91ec8db3f51600aaec76aeca1a63de46bbc281f08c999bbf26fe412bd0a11548",
+  "new_training_or_inference": false
+}

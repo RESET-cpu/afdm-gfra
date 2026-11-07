@@ -1,0 +1,51 @@
+# Shen numerical-results review and proposed discussion
+
+Scope: review only; no canonical manuscript, figure, result, configuration, or model edits. Read `reference/literature/shen2025.pdf` pp. 12–14 and the current `sections/06_simulation_results.tex`. Page numbers below are physical PDF pages and match printed pages. All proposed numbers were recomputed/read from the three current `PLOT_DATA.json` files listed below.
+
+## What Shen actually does
+
+- **Convergence, Fig. 5, pp. 12–13:** Introduces the controlled quantity (BGM mixture count), summarizes convergence and the nonmonotonic benefit of increasing model order, offers overfitting as a *tentative* explanation, then chooses the mixture count and iteration budget used later. The experiment supports a configuration decision, not simply a ranking. Its speculative overfitting explanation is not evidence for our receiver.
+- **Frame count, Fig. 6, p. 13:** Starts from the failure of a single frame; separates on-grid improvement from off-grid reversal after about 12 frames; gives one representative NMSE/SER comparison; explains the reversal through additional unknown phase rotations; connects the resulting tradeoff to the practical choice of 8 frames. This is the strongest example of a result paragraph forming an argument. Our plotted Q sweep has no such reversal, so we should use the observed diminishing gain/pilot saving and not transplant Shen's mechanism.
+- **SNR, Fig. 7, pp. 13–14:** Selects an operating point for vertical NMSE gaps and a target SER for horizontal SNR savings. Distinguishes a persistent baseline floor from the proposed joint design, then discusses whether the off-grid version still exceeds the on-grid references. Numbers serve comparisons and system-level meaning; they are not an exhaustive catalog.
+- **Activity, Fig. 8, p. 14:** Frames the point as more active-device access; compares the relevant regime above activity 0.1; explains common deterioration through fixed array resources and more difficult spatial separation. The present model permits a cautious explanation using more simultaneously active channels and fixed pilot/array resources. It does not establish spatial separation as the quantitatively dominant cause.
+- **Activity detection, Fig. 9, p. 14:** Brief final corroboration: ranks the curves and identifies a relevant regime. Shen does not attach an extended causal explanation to every curve.
+
+The transferable structure is **scientific question -> main pattern/regime -> explanation grounded in model -> one representative comparison -> consequence for the system/design**. It is not a quota that every paragraph must mechanically satisfy. Shen's reasoning is concise because trial bookkeeping lives in settings rather than interrupting every result paragraph.
+
+## Problems specific to the current draft
+
+1. User-count and activity experiments currently repeat almost the same statement. They test different things: increasing K expands the candidate-channel estimation problem and increases the active population at fixed p; increasing p leaves the candidate set/dimension fixed and makes its activity pattern less sparse. This distinction gives both experiments a reason to exist.
+2. The current user-count analysis says the learned prior remains useful, but both the plotted STMP and proposed receiver use a learned prior. That sentence does not explain their difference. The plots compare complete receivers; do not attribute the gap specifically to CCD, DRE, or variance updating without an ablation.
+3. Run counts, discarded historic settings, scene IDs, prior conditioning, and development/evaluation overlap overwhelm the results narrative. Preserve their substance, but consolidate them in Evaluation Protocol or an appendix/footnote referenced once. Do not hide the retrospective adjustments or omit finite failures from the statistics.
+4. The cross-channel paragraph is a list of numbers and exceptions. Its scientific question is whether the fixed D-trained prior remains useful under different saved delay/fading profiles, and whether the gain over STMP persists as observations become more informative. Discuss the broad retained advantage over sparse baselines and the specific reversal at high SNR together.
+5. Avoid unproven explanations: lower variance-estimation bias, better calibrated activity probabilities, covariance mismatch mitigation inside the receiver, overfitting, or stronger spatial separation have not been isolated by these plots. A model-grounded explanation of increasing load is supported; a causal assignment of our gain is not.
+
+## Proposed English result paragraphs
+
+These replace the scientific discussion, with protocol bookkeeping retained elsewhere. Use the exact figure labels already present. The first paragraph can follow its existing figure and setup sentence; no extra section is needed.
+
+### User count
+
+Increasing the candidate population tests whether the receiver can accommodate more terminals without increasing the pilot budget. At fixed activity probability, a larger $K$ increases both the number of candidate channels and the number of simultaneously active terminals. Channel estimation therefore becomes more demanding even though the activity fraction is unchanged. In Fig.~\ref{fig:cstmp-users}, all methods incur a higher NMSE as $K$ increases, while GP-CCD-MP-DRE retains the lowest NMSE over the evaluated range. Its advantage over STMP grows from $1.14$~dB at $K=20$ to $3.23$~dB at $K=100$. At the latter point, it also outperforms off-grid SBL by $2.53$~dB. The widening gap to STMP indicates that the benefit of the proposed receiver is more pronounced when more channels must be recovered from the same observations. This comparison uses the user-count-specific damping settings stated in the evaluation protocol.
+
+Notes: last scientific sentence is an observed interaction between receiver choice and load, not a component-level causal claim. Do not say 'higher connectivity supported at a fixed target NMSE' unless a target and actual grid crossing are reported. The 3.23 dB is 3.2260259228522443 dB. The user-count caveat can alternatively be made a footnote if centralized protocol already gives its detail.
+
+### Activity probability
+
+The activity-probability sweep increases the simultaneous transmission load while keeping the candidate set fixed. As $p$ increases, more channel blocks are active, and the receiver has less activity sparsity to exploit with the same pilot and antenna resources. Figure~\ref{fig:cstmp-activity} consequently shows increasing NMSE for all methods. Nevertheless, the proposed receiver remains the most accurate, and its gain over STMP increases from $1.07$~dB at $p=0.05$ to $2.25$~dB at $p=0.25$. At $p=0.25$, off-grid SBL slightly surpasses STMP, whereas GP-CCD-MP-DRE retains a $2.15$~dB advantage over off-grid SBL. Together with the user-count sweep, this result shows that the proposed receiver maintains its advantage both when the candidate population expands and when a larger fraction of a fixed population becomes active.
+
+Notes: this paragraph does not introduce AER. It does not equate p with the exact mean active fraction under the nonempty-conditioned sampling. The final cross-experiment synthesis is more informative than a repeated isolated ranking. Wording 'consequently' attributes common degradation to model load, not exact proof of dominant physical cause; 'consistent with this increase in load' is a more conservative substitute if desired.
+
+### Cross-channel comparison
+
+The preceding comparisons use the channel profile represented in training. Figure~\ref{fig:cstmp-cross} examines how the fixed receivers perform when the tabulated power-delay and fading profiles change. GP-CCD-MP-DRE maintains a substantial NMSE advantage over all four sparse-recovery baselines on every evaluated profile. Its advantage over STMP, however, depends on both the channel profile and SNR. At $0$~dB, the gains over STMP are $1.57$, $1.04$, $1.02$, and $1.60$~dB for D, A, B, and C, respectively. As SNR increases, these gaps narrow: the proposed receiver remains better on D and C, whereas STMP becomes slightly better on A and B. At $6$~dB, STMP's advantages are $0.39$ and $0.58$~dB on A and B, respectively. Thus, the gain extends beyond the training profile, but is most consistent at low-to-moderate SNR; a uniform high-SNR advantage over STMP is not supported across channel profiles.
+
+Notes: fixed cross-profile configurations are verified in `result/cross_channel/data/stmp_c_stmp_500_20261026/PLAN.json`, one configuration per method for all conditions; `PLOT_DATA.json` records zero training runs. The 4 dB B reversal is only 0.0030134371594296994 dB, so avoid overstating its significance. If reporting every reversal, say 'nearly coincide on B at 4 dB, with STMP lower by 0.58 dB at 6 dB.' The broad phrase 'arbitrary channel dynamics' is unnecessary in the scientific paragraph; retain the actual evaluation scope once in protocol. Do not diagnose the high-SNR reversal as overfitting, poor variance calibration, or distribution shift alone without an ablation.
+
+## Exact data sources and checked values
+
+- `result/user_count/figures/redraw_beta01_500_20261028/PLOT_DATA.json`: proposed NMSE [-14.72537777,-12.98428531,-11.6645,-10.2606,-8.8409] dB over K=[20,40,60,80,100]; STMP [-13.5815,-11.4182,-9.8118,-8.1444,-5.6149]. Proposed vs STMP gains approximately [1.1439,1.5661,1.8527,2.1162,3.2260] dB; off-grid at K100 -6.3140 dB.
+- `result/activity_probability/figures/stmp_c_stmp_500_20261026/PLOT_DATA.json`: p=.05 proposed -14.78178659 and STMP -13.7129; p=.25 proposed -9.2638, STMP -7.0113, off-grid -7.1090. Endpoint gains approximately 1.0689,2.2525 dB; proposed vs off-grid at .25 approximately2.1548 dB.
+- `result/cross_channel/figures/full_500_paper_20261028/PLOT_DATA.json`: C_STMP at 0dB D/A/B/C [-12.9843,-11.9619,-12.1369,-13.2788], STMP [-11.4182,-10.9236,-11.1148,-11.6817]. Gains [1.5661,1.0383,1.0221,1.5971] dB. A at6dB: proposed -14.9180 vs STMP -15.3033; B at6dB proposed -14.9224 vs STMP -15.5026. Round differences from full precision, not individually rounded endpoints.
+
+No wording in these drafts is copied from Shen. No new terminology or acronym is introduced.

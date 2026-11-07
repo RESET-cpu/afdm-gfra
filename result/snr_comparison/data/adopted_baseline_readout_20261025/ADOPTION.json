@@ -1,0 +1,97 @@
+{
+  "status": "ADOPTED_BY_USER",
+  "adopted_utc": "2026-10-25T03:30:53.373932+00:00",
+  "user_request": "对我说的就是这版，后续baseline都按照这个来",
+  "reference_figure": "D:\\afdm-gfra\\result\\snr_comparison\\figures\\calibrated_first1000_20261023\\snr_comparison_aer_preview.png",
+  "reference_figure_sha256": "d8d09d30134a4b0ea846270c6fede2f6f813a8bff38301f336ab4f8ec37b7da7",
+  "reference_attachment_sha256": "cfbc3f1fa148d3a52dc82a89adcef41543d26eb8527f3e432eec1c12d068d4a6",
+  "policy_source": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_calibration_reuse1000_20261023\\FROZEN_READOUT.json",
+  "policy_sha256": "6962b3f99e72532b1962a69dc2a0fabb933da4b59fd280c2e0b900211f89b4bb",
+  "active_policy": "D:\\afdm-gfra\\result\\snr_comparison\\data\\adopted_baseline_readout_20261025\\POLICY.json",
+  "methods": {
+    "somp": {
+      "policy": "estimated_snr_binned",
+      "statistic": "normalized_coefficient_energy",
+      "comparator": ">=",
+      "arithmetic": "float64_on_saved_native_scores",
+      "threshold": null,
+      "thresholds": [
+        0.13556134384129515,
+        0.12548178797321435,
+        0.12263444909760307,
+        0.13697721037863195,
+        0.12934757123666224,
+        0.12201713102013244
+      ],
+      "snr_nodes_db": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "algorithm_spec_sha256": "9c282324e7591eb4a5f5f044d082a4c2b3364243be4eb4bc1cfabcef9484a5d5"
+    },
+    "gamp": {
+      "policy": "fixed",
+      "statistic": "normalized_coefficient_energy",
+      "comparator": ">=",
+      "arithmetic": "float64_on_saved_native_scores",
+      "threshold": 0.06753045555230983,
+      "thresholds": null,
+      "snr_nodes_db": null,
+      "algorithm_spec_sha256": "debbeab84d0eaa3b85506ac4da3876c19909dcdae87fb793fecc857ecec0f5e0"
+    },
+    "gnn": {
+      "policy": "fixed",
+      "statistic": "normalized_coefficient_energy",
+      "comparator": ">=",
+      "arithmetic": "float64_on_saved_native_scores",
+      "threshold": 0.027625354006886486,
+      "thresholds": null,
+      "snr_nodes_db": null,
+      "algorithm_spec_sha256": "be3df3822797b9d411401ab3a9a3799b825e9fb1228fed0ddc3df78cd99956a3"
+    },
+    "offgrid_sbl": {
+      "policy": "estimated_snr_binned",
+      "statistic": "normalized_channel_energy",
+      "comparator": ">=",
+      "arithmetic": "float64_on_saved_native_scores",
+      "threshold": null,
+      "thresholds": [
+        0.08038516746965862,
+        0.06691358536349831,
+        0.029999978304126155,
+        0.02707026715713882,
+        0.021743026867395807,
+        0.010726862493117441
+      ],
+      "snr_nodes_db": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "algorithm_spec_sha256": "821526a2b5d232fa89974d6eab310a6a07481c8cde50b6137fc790e0c8f802ca"
+    }
+  },
+  "fit_scene_ids": [
+    0,
+    499
+  ],
+  "selection_scene_ids": [
+    500,
+    999
+  ],
+  "rule": "Receiver-estimated SNR nearest-node dispatch; midpoint ties lower; beyond range uses endpoint; float64 >=; zero user-energy vector is inactive.",
+  "scope": "Default future reporting/plots for these same four frozen baseline solvers, including current baseline-only user-count run; no new inference authorization.",
+  "supersedes_for_future_reporting": "All-fixed readout from calibration scene IDs 1000-1999; preserve its immutable assets and prior results.",
+  "immutable_raw_assets_preserved": true,
+  "new_threshold_fit": false,
+  "independent_test": false,
+  "user_count_raw_plan_sha256": "9e35de9d24bbbe511410586bd6e0785852f242f1d9575b7797168baf35524f0c",
+  "new_user_count_output": "D:\\afdm-gfra\\result\\user_count\\data\\known_phase_1000_baselines_20261025\\selected_readout_20261025"
+}

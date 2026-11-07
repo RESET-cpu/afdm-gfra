@@ -1,0 +1,295 @@
+{
+  "status": "COMPLETE",
+  "material_passport": {
+    "origin_skill": "academic-research-suite / experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-10-24",
+    "verification_status": "VERIFIED",
+    "version_label": "baseline_budget_v1"
+  },
+  "verification_scope": "Original-budget outputs reproduced; candidate extensions evaluated on fixed seen scenes. No population-level superiority claim.",
+  "scene_ids": [
+    0,
+    64,
+    128,
+    192,
+    256,
+    320,
+    384,
+    448,
+    512,
+    576,
+    640,
+    704,
+    768,
+    832,
+    896,
+    960
+  ],
+  "rows": [
+    {
+      "method": "somp",
+      "snr_db": 0,
+      "budget": 64,
+      "scenes": 16,
+      "full_error": 8180.819063853747,
+      "signal_energy": 20404.97678879591,
+      "misses": 4,
+      "false_alarms": 1,
+      "active": 71,
+      "inactive": 569,
+      "nmse_db": -3.9693931766313324,
+      "aer": 0.0078125,
+      "stop_counts": {
+        "NOISE_DISCREPANCY": 16
+      },
+      "median_iterations": 27.5
+    },
+    {
+      "method": "somp",
+      "snr_db": 0,
+      "budget": 128,
+      "scenes": 16,
+      "full_error": 8180.819063853747,
+      "signal_energy": 20404.97678879591,
+      "misses": 4,
+      "false_alarms": 1,
+      "active": 71,
+      "inactive": 569,
+      "nmse_db": -3.9693931766313324,
+      "aer": 0.0078125,
+      "stop_counts": {
+        "NOISE_DISCREPANCY": 16
+      },
+      "median_iterations": 27.5
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 0,
+      "budget": 120,
+      "scenes": 16,
+      "full_error": 2620.2608726779963,
+      "signal_energy": 20404.97678879591,
+      "misses": 0,
+      "false_alarms": 0,
+      "active": 71,
+      "inactive": 569,
+      "nmse_db": -8.913915733390954,
+      "aer": 0.0,
+      "stop_counts": {
+        "MAX_ITERATIONS": 16
+      },
+      "median_iterations": 120.0,
+      "median_linearization_relative_error": 0.27030541275709424,
+      "linearized_output_nmse_db": -10.643065827288067
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 0,
+      "budget": 600,
+      "scenes": 16,
+      "full_error": 2572.2479995644767,
+      "signal_energy": 20404.97678879591,
+      "misses": 0,
+      "false_alarms": 0,
+      "active": 71,
+      "inactive": 569,
+      "nmse_db": -8.994232669439057,
+      "aer": 0.0,
+      "stop_counts": {
+        "MAX_ITERATIONS": 2,
+        "HYPERPARAMETER_CHANGE": 14
+      },
+      "median_iterations": 366.0,
+      "median_linearization_relative_error": 0.2851535680195812,
+      "linearized_output_nmse_db": -10.680313842643708
+    },
+    {
+      "method": "somp",
+      "snr_db": 10,
+      "budget": 64,
+      "scenes": 16,
+      "full_error": 7648.648393496586,
+      "signal_energy": 20404.97678879591,
+      "misses": 3,
+      "false_alarms": 1,
+      "active": 71,
+      "inactive": 569,
+      "nmse_db": -4.2615140811842025,
+      "aer": 0.00625,
+      "stop_counts": {
+        "MAX_ATOMS": 14,
+        "NOISE_DISCREPANCY": 2
+      },
+      "median_iterations": 64.0
+    },
+    {
+      "method": "somp",
+      "snr_db": 10,
+      "budget": 128,
+      "scenes": 16,
+      "full_error": 8616.662469322731,
+      "signal_energy": 20404.97678879591,
+      "misses": 3,
+      "false_alarms": 2,
+      "active": 71,
+      "inactive": 569,
+      "nmse_db": -3.74397023930982,
+      "aer": 0.0078125,
+      "stop_counts": {
+        "NOISE_DISCREPANCY": 16
+      },
+      "median_iterations": 76.5
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 10,
+      "budget": 120,
+      "scenes": 16,
+      "full_error": 1291.4661953800487,
+      "signal_energy": 20404.97678879591,
+      "misses": 0,
+      "false_alarms": 0,
+      "active": 71,
+      "inactive": 569,
+      "nmse_db": -11.98653062253539,
+      "aer": 0.0,
+      "stop_counts": {
+        "MAX_ITERATIONS": 16
+      },
+      "median_iterations": 120.0,
+      "median_linearization_relative_error": 0.26696656613214576,
+      "linearized_output_nmse_db": -18.411300643988923
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 10,
+      "budget": 600,
+      "scenes": 16,
+      "full_error": 1371.3344510141537,
+      "signal_energy": 20404.97678879591,
+      "misses": 0,
+      "false_alarms": 0,
+      "active": 71,
+      "inactive": 569,
+      "nmse_db": -11.72592718485156,
+      "aer": 0.0,
+      "stop_counts": {
+        "HYPERPARAMETER_CHANGE": 12,
+        "MAX_ITERATIONS": 4
+      },
+      "median_iterations": 443.5,
+      "median_linearization_relative_error": 0.28016491957723244,
+      "linearized_output_nmse_db": -18.476575654648155
+    }
+  ],
+  "paired_changes": [
+    {
+      "method": "somp",
+      "snr_db": 0,
+      "per_scene_nmse_delta_db": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "improved": 0,
+      "worsened": 0,
+      "decision_flips": 0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 0,
+      "per_scene_nmse_delta_db": [
+        -0.1330451941919124,
+        -0.16016138548374315,
+        -0.07034955743222326,
+        -0.045418198514470376,
+        -0.13638055960653617,
+        -0.14870670624352123,
+        0.4032327463466583,
+        -0.16789089926913014,
+        -0.11703914139201288,
+        -0.06176536774670005,
+        -0.08625013547998073,
+        -0.08483269098972723,
+        0.07395680759001788,
+        -0.06935022619169295,
+        -0.1317293833301889,
+        -0.19875194856319744
+      ],
+      "improved": 14,
+      "worsened": 2,
+      "decision_flips": 0
+    },
+    {
+      "method": "somp",
+      "snr_db": 10,
+      "per_scene_nmse_delta_db": [
+        0.41135209133134687,
+        0.622929853622531,
+        0.2580182008516383,
+        0.7264304645930006,
+        0.0,
+        0.5915944668350845,
+        0.9426502786231792,
+        0.7377237130052694,
+        0.479469619357511,
+        0.361496866272931,
+        0.695799411146637,
+        0.4407311545526169,
+        0.45104774122152325,
+        0.34809695739591406,
+        0.45010728641760345,
+        0.0
+      ],
+      "improved": 0,
+      "worsened": 14,
+      "decision_flips": 1
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 10,
+      "per_scene_nmse_delta_db": [
+        1.060914849827161,
+        0.18838165659938966,
+        0.30555184622996023,
+        0.7772206044468071,
+        -0.037368077730656424,
+        -0.2240948696391989,
+        -0.4309554572463501,
+        0.41000578646450236,
+        0.003379862611810225,
+        0.015533990512320628,
+        -0.15769595144521276,
+        0.638107370937206,
+        0.06819578729889209,
+        0.1297098137811652,
+        0.25576419344252166,
+        -0.09671672485735883
+      ],
+      "improved": 5,
+      "worsened": 11,
+      "decision_flips": 0
+    }
+  ],
+  "unchanged_assets": 46,
+  "regression_passed_cases": 32,
+  "offgrid_120_iteration_prefix_exact": true,
+  "somp_support_prefix_exact": true,
+  "limitations": "Small sample for per-scene numerical effects; insufficient to establish rare-event AER improvement. Evaluation scenes were already viewed.",
+  "timing": "Concurrent with pre-existing project jobs; no speed ranking.",
+  "warnings": []
+}

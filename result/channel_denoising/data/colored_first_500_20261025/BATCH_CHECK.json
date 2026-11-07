@@ -1,0 +1,20 @@
+{
+  "selected_batch_size": 4,
+  "explored_batch_size": 24,
+  "batch4_vs_batch24_relative_l2": 6.728636864248806e-06,
+  "max_abs_difference": 6.66144240639291e-05,
+  "batch24_minus_batch4_nmse_db": [
+    5.316884932130333e-08,
+    3.2580193872533e-06,
+    -2.7477247378195863e-06,
+    -3.852135882519229e-06,
+    -1.0356761223835891e-06,
+    6.168882526102662e-06
+  ],
+  "elementwise_check": {
+    "rtol": 1e-05,
+    "atol": 1e-05,
+    "passed": false
+  },
+  "action": "Use the already integrated batch size 4. Do not loosen the failed elementwise comparison to claim equivalence."
+}

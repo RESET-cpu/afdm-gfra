@@ -1,0 +1,69 @@
+\section{Phase Estimation}
+\label{app:frontend}
+\label{app:phase-estimation}
+
+When phases are unavailable, stack the transposed frame observations as
+$\mathbf Y_{\rm s}=[\mathbf Y_0,\ldots,\mathbf Y_{Q-1}]^{\mathsf T}
+\in\mathbb C^{QN\times M}$. Approximate each device by one dominant path.
+Absorbing the common scalar phase
+into the gain gives
+\begin{equation}
+ \begin{aligned}
+ \mathbf G_0(d,\nu)&=e^{-\mathrm j2\pi c_1d^2}\mathbf G(d,\nu;0),\\
+ [\mathbf h_k^{\rm p}(d,\nu)]_{qN+r}
+ &=e^{\mathrm j2\pi\nu qT_{\rm frame}}
+ [\mathbf G_0(d,\nu)\mathbf p_{qk}]_r.
+ \end{aligned}
+ \label{frontend:eq:phase-atom}
+\end{equation}
+Search $d\in[0,N)$ and $|\nu|\leq\nu_{\max}$, using the channel model's
+Doppler bound. Since $2Nc_1\in\mathbb N_+$,
+adding integer multiples of $N$ to $d$ changes the operator only by a
+scalar phase absorbed by the gains.
+
+With $\mathbf h_k^{\rm p}=\mathbf h_k^{\rm p}(d_k,\nu_k)$, use
+$\mathbf Y_{\rm s}\approx\sum_k\mathbf h_k^{\rm p}\mathbf b_k^{\mathsf T}
++\mathbf W_{\rm s}$ and independent gain priors
+$\mathbf b_k\sim\CN(\mathbf0,\gamma_k\I_M)$, $\gamma_k\geq0$.
+Integrating out the gains under this working approximation yields
+the Gaussian marginal-likelihood objective
+\cite[Sec.~2.1]{tipping2003}, extended here to complex observations with
+$M$ antenna columns:
+\begin{equation}
+ \begin{aligned}
+ \mathbf S&=\widehat\sigma^2\I_{QN}
+ +\sum_k\gamma_k\mathbf h_k^{\rm p}\mathbf h_k^{{\rm p},\mathsf H},\\
+ \mathcal L&=\log\det\mathbf S+
+ \frac1M\tr(\mathbf Y_{\rm s}^{\mathsf H}\mathbf S^{-1}\mathbf Y_{\rm s}).
+ \end{aligned}
+ \label{frontend:eq:marginal-objective}
+\end{equation}
+Use $\widehat\sigma^2$ from \eqref{eq:noise-estimation} and minimize
+$\mathcal L$ by coordinate updates. For device $k$, fix the others and define
+$\mathbf W_k=(\widehat\sigma^2\I_{QN}
++\sum_{j\ne k}\gamma_j\mathbf h_j^{\rm p}\mathbf h_j^{{\rm p},\mathsf H})^{-1}$,
+$s_k=\mathbf h_k^{{\rm p},\mathsf H}\mathbf W_k\mathbf h_k^{\rm p}$, and
+$t_k=\|\mathbf h_k^{{\rm p},\mathsf H}\mathbf W_k\mathbf Y_{\rm s}\|^2$.
+For a given $(d_k,\nu_k)$, the minimizing power is
+\begin{equation}
+ \gamma_k^\star=\max\left\{0,\frac{t_k/(Ms_k)-1}{s_k}\right\}.
+ \label{frontend:eq:marginal-power}
+\end{equation}
+With \eqref{frontend:eq:marginal-power}, maximizing $t_k/s_k$ minimizes
+the coordinate objective.
+
+Pilot correlations on $128$ phase bins provide three coarse candidates.
+Doppler shifts yielding the same frame phase $\beta$ are
+$\nu_j=(\beta+2\pi j)/(2\pi T_{\rm frame})$, $j\in\mathbb Z$,
+within the search range. Rank these candidates by $t_k/s_k$ and refine
+the best $12$ using L-BFGS-B \cite{zhu1997}, with at most $25$ local
+iterations per candidate within a differentiable interval of the waveform.
+Initialize powers to zero and perform two sweeps in descending order of
+initial pilot-correlation scores. Retaining the current parameters among
+the candidates ensures a non-increasing objective up to numerical tolerance.
+
+The estimated Doppler gives $\widehat\beta_k$ and $\widehat{\mathbf A}$
+through \eqref{eq:twc-frame-channel}--\eqref{eq:effective-pilot}.
+Pass only the phases to Algorithm~\ref{alg:gp-mp-ccd} and keep them fixed
+during MP. The receiver uses the learned prior in Section~\ref{sec:learning};
+the single-path approximation is confined to phase estimation.

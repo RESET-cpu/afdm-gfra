@@ -1,0 +1,100 @@
+[
+  {
+    "id": "P01",
+    "start": 4,
+    "end": 14,
+    "title": "系统场景",
+    "text": "We consider a LEO satellite-enabled grant-free random access system,\nwhere AFDM is adopted to mitigate the doubly dispersive effect inherent\nin terrestrial-satellite links (TSLs) \\cite{shen2025,huang2026}.\nThe system comprises $K$ single-antenna terrestrial devices that\ncommunicate with a LEO satellite equipped with a uniform planar array\n(UPA) consisting of $M=M_yM_z$ antennas.\nDuring each transmission block, active devices share the same resources\nfor pilot transmission to the satellite.\nAdditionally, we assume that these terrestrial devices operate without\nGNSS capabilities and do not pre-compensate for delay and Doppler shifts\n\\cite{shen2025}.\n"
+  },
+  {
+    "id": "P02",
+    "start": 18,
+    "end": 44,
+    "title": "物理信道与差分时延",
+    "text": "The TSLs experience fast variations due to the high mobility of the\nLEO satellite. Hence, this time variation and multipath propagation\nrequire a doubly dispersive channel model \\cite{shen2025}.\nMoreover, we assume that the terrestrial devices are stationary and\nall paths from the $k$th device have a common Doppler shift $\\nu_k$\n\\cite{huang2026}.\nAfter delay compensation for $\\tau_c$ at the satellite receiver, the\nchannel impulse response from the $k$th device to the satellite at\ntime instant $t_{\\rm c}$ can be represented as\n\n\\begin{equation}\n \\mathbf h_k(t_{\\rm c},\\tau)\n =\\mathbf a_k\\sum_{\\ell=1}^{L_k}g_{k\\ell}\n e^{j2\\pi\\nu_k t_{\\rm c}}\\delta(\\tau-\\tau_{k\\ell}),\n \\label{eq:physical-channel}\n\\end{equation}\nwhere $k=1,\\ldots,K$, $L_k$ is the number of physical paths,\n$g_{k\\ell}$ is the path gain of the $\\ell$th path, and\n$\\delta(\\cdot)$ is the Dirac delta function.\nWe set $t_{\\rm c}=0$ at the beginning of the transmission block.\nHere $\\tau_{k\\ell}=\\widetilde\\tau_{k\\ell}-\\tau_c$ represents the\ndifferential delay for the $\\ell$th path from the $k$th device to the\nsatellite, where $\\widetilde\\tau_{k\\ell}$ and $\\tau_c$ are denoted as\npropagation delay and common delay, respectively.\nThe common delay corresponds to the\npropagation time between the satellite and the closest point on Earth\nwithin the beam coverage \\cite{shen2025}.\n"
+  },
+  {
+    "id": "P03",
+    "start": 46,
+    "end": 59,
+    "title": "阵列响应与块内恒定",
+    "text": "The array response vector $\\mathbf a_k$ at the satellite side can\nbe written as \\cite{shen2025,li2023}\n\\begin{equation}\n [\\mathbf a_k]_{n_z+M_zn_y}\n =e^{j2\\pi(d_yn_y\\mu_{y,k}+d_zn_z\\mu_{z,k})/\\lambda},\n \\label{eq:upa}\n\\end{equation}\nwhere $n_z=0,\\ldots,M_z-1$, $n_y=0,\\ldots,M_y-1$,\n$\\lambda$ is the wavelength, and $d_v$ is the spacing between\nadjacent antennas along the $v$-axis with $v\\in\\{y,z\\}$.\nHere $\\mu_{z,k}$ and $\\mu_{y,k}$ are the directional cosines along\nthe z-axis and y-axis, respectively.\nWe assume that the path gains, delays, Doppler shifts, and angles of\narrival remain approximately constant within a transmission block.\n"
+  },
+  {
+    "id": "P04",
+    "start": 63,
+    "end": 74,
+    "title": "多帧导频与矩阵",
+    "text": "A total of $N$ chirp subcarriers are shared among the devices for\npilot transmission \\cite{cai2026,huang2026}.\nAssume that $Q$ AFDM frames are allocated for pilot transmission.\nLet $P_{qkn}\\in\\mathbb C$ be the pilot symbol transmitted by\nthe $k$-th device during the $q$-th AFDM frame on the $n$-th\nchirp subcarrier. We construct a pilot vector as\n$\\mathbf p_{qk}=[P_{qk0},\\ldots,P_{qk,N-1}]^{\\mathsf T}\n\\in\\mathbb C^N$, $k=1,\\ldots,K$, $q=0,\\ldots,Q-1$.\nThe pilot symbols are known at the satellite receiver.\nLet $\\mathbf P\\in\\mathbb C^{Q\\times KN}$ denote the pilot matrix,\nwith entries\n$[\\mathbf P]_{q,(k-1)N+n}=P_{qkn}$.\n"
+  },
+  {
+    "id": "P05",
+    "start": 76,
+    "end": 81,
+    "title": "导频约束",
+    "text": "For simplicity, we impose the condition that\n$\\mathbf P\\mathbf P^{\\mathsf H}=KE_p\\I_Q$, where\n$\\|\\mathbf p_{qk}\\|^2=E_p$ for all $k$ and $q$\n\\cite{cai2026}.\nThe design of $\\mathbf P$ is deferred to\nSection~\\ref{sec:simulation-settings}.\n"
+  },
+  {
+    "id": "P06",
+    "start": 83,
+    "end": 110,
+    "title": "IDAFT与DAFT",
+    "text": "The time-domain transmitted signal is generated through the inverse\ndiscrete affine Fourier transform (IDAFT) applied to $\\mathbf p_{qk}$,\nmathematically formulated as \\cite{ding2026}\n\n\\begin{equation}\n s_{qk}[t]=\\frac{1}{\\sqrt N}\\sum_{n=0}^{N-1}\n P_{qkn}e^{j2\\pi(c_1t^2+c_2n^2+nt/N)},\n \\label{eq:afdm-time-signal}\n\\end{equation}\nwhere $t=0,\\ldots,N-1$, and $c_1$ and $c_2$ are AFDM modulation\nparameters.\nHere $T_s=1/(N\\Delta f)$ gives the sampling interval, with\n$\\Delta f$ denoting the subcarrier spacing.\nThe signal in \\eqref{eq:afdm-time-signal} can be represented in matrix\nform as \\cite{ding2026}\n\\[\n \\mathbf s_{qk}=\\mathbf F_{\\rm A}^{\\mathsf H}\\mathbf p_{qk},\n\\]\nwhere\n\\begin{equation}\n \\begin{gathered}\n \\mathbf F_{\\rm A}\n =\\left[\\frac{1}{\\sqrt N}e^{-j2\\pi(c_2r^2+rt/N+c_1t^2)}\n \\right]_{r,t=0}^{N-1}\n \\end{gathered}\n \\label{eq:daft}\n\\end{equation}\ndenotes the discrete affine Fourier transform (DAFT) matrix.\n"
+  },
+  {
+    "id": "P07",
+    "start": 112,
+    "end": 126,
+    "title": "CPP与帧长",
+    "text": "Assume that the chirp-periodic prefix (CPP) length is greater than\nor equal to the maximum differential delay, i.e.,\n$N_{\\rm CPP}T_s\\geq\\max_{k,\\ell}\\tau_{k\\ell}$.\nThe CPP is given by \\cite{bemani2022}\n\\begin{equation}\n \\begin{gathered}\n s_{qk}[t]=e^{j2\\pi c_1(t^2-\\langle t\\rangle_N^2)}\n s_{qk}[\\langle t\\rangle_N],\\\\\n -N_{\\rm CPP}\\leq t<0,\n \\end{gathered}\n \\label{eq:cpp}\n\\end{equation}\nwhere $\\langle x\\rangle_N=x-N\\lfloor x/N\\rfloor$ and\n$2Nc_1\\in\\mathbb N_+$.\nEach AFDM frame spans a duration of $T_{\\rm frame}=(N+N_{\\rm CPP})T_s$.\n"
+  },
+  {
+    "id": "P08",
+    "start": 128,
+    "end": 139,
+    "title": "连续波形",
+    "text": "The transmit waveform for the $n$th chirp subcarrier at time\n$\\xi T_s$ can be written as \\cite{bemani2022}\n\\begin{equation}\n \\varphi_n(\\xi)=\\frac{1}{\\sqrt N}\n e^{j2\\pi[c_2n^2+c_1\\xi^2+nw_\\xi/N-\\zeta_n(w_\\xi)w_\\xi]},\n \\label{eq:continuous-waveform}\n\\end{equation}\nwhere $w_\\xi=\\langle\\xi\\rangle_N$ and\n$\\zeta_n(w)=\\lfloor2c_1w+n/N\\rfloor$.\nNote that $\\varphi_n(t)=[\\mathbf F_{\\rm A}^{\\mathsf H}]_{tn}$ for\n$t=0,\\ldots,N-1$, while $\\varphi_n(\\xi)$ satisfies\n\\eqref{eq:cpp} for $\\xi<0$.\n"
+  },
+  {
+    "id": "P09",
+    "start": 141,
+    "end": 169,
+    "title": "有效信道与单路径矩阵",
+    "text": "Denote by $H_k^{(q)}\\in\\mathbb C^{M\\times N\\times N}$ the effective\nchannel from the $k$th device to the satellite during the $q$th AFDM\nframe, after removing the CPP and applying the DAFT.\nFor $q=0$, the effective channel $H_k=H_k^{(0)}$ can be expressed as\n\\begin{equation}\n H_{kmrn}\n =[\\mathbf a_k]_m\\sum_{\\ell=1}^{L_k}g_{k\\ell}\n [\\mathbf G(\\tau_{k\\ell}/T_s,\\nu_k;N_{\\rm CPP})]_{rn},\n \\label{eq:channel}\n\\end{equation}\nwhere $n$ and $r$ correspond to the transmitted and received\nsymbols, respectively, and $m=0,\\ldots,M-1$.\nFor a path with gain $1$, delay $dT_s$, and Doppler shift $\\nu$,\nthe channel response can be expressed in a matrix form as\n\n\\begin{equation}\n \\begin{gathered}\n \\mathbf G(d,\\nu;g)=\\mathbf F_{\\rm A}\\mathbf D_{\\nu,g}\\mathbf B_d,\\\\\n \\mathbf D_{\\nu,g}=\\diag\\{e^{j2\\pi\\nu T_s(g+t)}\\}_{t=0}^{N-1},\\\\\n [\\mathbf B_d]_{tn}=\\varphi_n(t-d),\n \\end{gathered}\n \\label{eq:path-operator-system}\n\\end{equation}\nwhere $t_{\\rm c}=(g+t)T_s$ for $t=0,\\ldots,N-1$ after removing\nthe CPP, and $g=N_{\\rm CPP}$ for frame $0$.\nPlease refer to Appendix~\\ref{app:afdm-model} for the detailed\nderivation and the expression for integer $d$.\nPower leakage arises from fractional delays and Doppler shifts,\nwhich can weaken the sparsity of $H_k$ \\cite{huang2026}.\n"
+  },
+  {
+    "id": "P10",
+    "start": 171,
+    "end": 184,
+    "title": "跨帧相位关系",
+    "text": "Based on \\eqref{eq:path-operator-system} with\n$g=g_q=N_{\\rm CPP}+q(N+N_{\\rm CPP})$, we can derive the effective\nchannel in the $q$th AFDM frame as\n\\begin{equation}\n \\begin{gathered}\n H_k^{(q)}=e^{jq\\beta_k}H_k,\\\\\n \\beta_k=2\\pi\\!\\left(\\nu_kT_{\\rm frame}\n -\\left\\lfloor\\nu_kT_{\\rm frame}+\\frac12\\right\\rfloor\\right),\n \\end{gathered}\n \\label{eq:twc-frame-channel}\n\\end{equation}\nwhere $\\beta_k\\in[-\\pi,\\pi)$.\nThe phase rotation $e^{jq\\beta_k}$ accumulates across multiple frames,\nwhile $H_k$ remains approximately constant over $Q$ consecutive frames.\n"
+  },
+  {
+    "id": "P11",
+    "start": 188,
+    "end": 208,
+    "title": "设备活动与相位导频",
+    "text": "Each device determines whether to access the channel in an independent\nand identically distributed (i.i.d.) manner.\nAs a result, only a small subset of the devices is active in any given\ntransmission block.\nWe use an indicator function $\\alpha_k$ to model the device activity as\n\\cite{cai2026}\n\\[\n \\alpha_k=\\begin{cases}\n 1,&\\text{if the $k$th device is active},\\\\\n 0,&\\text{otherwise}.\n \\end{cases}\n\\]\nLet $\\rho$ represent the probability of a device being active, i.e.,\n$\\Pr(\\alpha_k=1)=\\rho$, where $\\rho\\ll1$. The activity states are\nassumed to remain constant during one block transmission.\nLet $X_k=\\alpha_kH_k$.\nThe pilot symbols including the phase rotation are given by\n\\begin{equation}\n A_{qkn}=P_{qkn}e^{jq\\beta_k}.\n \\label{eq:effective-pilot}\n\\end{equation}\n"
+  },
+  {
+    "id": "P12",
+    "start": 210,
+    "end": 219,
+    "title": "单帧接收模型",
+    "text": "After removing the CPP and applying the DAFT, the received signal\n$\\mathbf Y_q\\in\\mathbb C^{M\\times N}$ during the $q$th AFDM\nframe is given by \\cite{cai2026}\n\\begin{equation}\n Y_{qmr}=[\\mathbf Y_q]_{mr}\n =\\sum_{k=1}^K\\sum_{n=0}^{N-1}A_{qkn}X_{kmrn}+W_{qmr},\n \\label{eq:observation-tensor}\n\\end{equation}\nwhere $\\mathbf W_q=[W_{qmr}]_{m,r}\\in\\mathbb C^{M\\times N}$ is an\nAWGN matrix with the elements i.i.d. drawn from $\\CN(0,\\sigma^2)$.\n"
+  },
+  {
+    "id": "P13",
+    "start": 221,
+    "end": 245,
+    "title": "MMV与块稀疏性",
+    "text": "We express the received signal $\\mathbf Y$ over the $Q$ AFDM frames\nin a more compact form as\n\\begin{equation}\n \\mathbf Y=\\mathbf A\\mathbf X+\\mathbf W,\n \\label{eq:mmv}\n\\end{equation}\nwhere $\\mathbf Y,\\mathbf W\\in\\mathbb C^{Q\\times MN}$,\n$\\mathbf A\\in\\mathbb C^{Q\\times KN}$, and\n$\\mathbf X\\in\\mathbb C^{KN\\times MN}$.\nThe matrices $\\mathbf Y$, $\\mathbf W$, $\\mathbf A$, and $\\mathbf X$\nhave the following entries:\n\\begin{equation}\n \\begin{aligned}\n [\\mathbf Y]_{q,mN+r}&=Y_{qmr},\\\\\n [\\mathbf W]_{q,mN+r}&=W_{qmr},\\\\\n [\\mathbf A]_{q,(k-1)N+n}&=A_{qkn},\\\\\n [\\mathbf X]_{(k-1)N+n,mN+r}&=X_{kmrn}.\n \\end{aligned}\n \\label{eq:mmv-indexing}\n\\end{equation}\nDue to the sporadic access of the devices, $\\mathbf X$ exhibits a\nblock-sparsity structure.\nSpecifically, if the $k$th device is inactive, we have\n$X_k=\\alpha_kH_k=\\mathbf0$ \\cite{cai2026}.\nSince $Q<KN$, the inverse problem in \\eqref{eq:mmv} is underdetermined.\n"
+  },
+  {
+    "id": "P14",
+    "start": 247,
+    "end": 287,
+    "title": "贝叶斯问题与估计目标",
+    "text": "In this paper, we aim to simultaneously detect the active devices and\nestimate the corresponding channels based on the observation $\\mathbf Y$\nunder a Bayesian inference framework \\cite{cai2026}.\nWe estimate the full $H_k$ without imposing channel sparsity\n\\cite{huang2026}.\nWe model the entire $H_k$ using the channel prior $q_{\\rm tr}(H_k)$\nfor training, rather than factorizing this prior element-wise.\nWe assume that $H_k$ and $\\alpha_k$ are independent for different\nvalues of $k$, and that $H_k$ is independent of $\\alpha_k$.\nWith $\\widehat{\\mathbf A}$ and $\\widehat\\sigma^2$ fixed as in\nSection~\\ref{sec:frontend}, we factorize the joint posterior\ndistribution according to Bayes'\ntheorem and the conditional independence relationships among the\nvariables, expressed as \\cite{cai2026}\n\n\\begin{equation}\n \\begin{aligned}\n &q(\\mathbf X,\\{H_k\\}_{k=1}^{K},\\{\\alpha_k\\}_{k=1}^{K}\\mid\\mathbf Y)\\\\\n &\\quad\\propto\\prod_{j=1}^{MN}p(\\mathbf y_j\\mid\\mathbf x_j)\\\\\n &\\qquad\\times\\prod_{k=1}^{K}\n p(X_k\\mid H_k,\\alpha_k)q_{\\rm tr}(H_k)p(\\alpha_k),\n \\end{aligned}\n \\label{eq:working-posterior}\n\\end{equation}\nwhere $\\mathbf x_j\\in\\mathbb C^{KN}$ and $\\mathbf y_j\\in\\mathbb C^Q$\ndenote the $j$th column of $\\mathbf X$ and $\\mathbf Y$, respectively.\nHere\n$p(\\mathbf y_j\\mid\\mathbf x_j)=\\CN(\\mathbf y_j;\n\\widehat{\\mathbf A}\\mathbf x_j,\\widehat\\sigma^2\\I_Q)$,\n$p(X_k\\mid H_k,\\alpha_k)$ enforces $X_k=\\alpha_kH_k$, and\n$p(\\alpha_k)=\\rho^{\\alpha_k}(1-\\rho)^{1-\\alpha_k}$.\nThe MMSE estimate and the posterior probability of activity for the\n$k$th device are given by\n\n\\begin{equation}\n \\begin{aligned}\n X_k^{\\rm MMSE}&=\\E_q[X_k\\mid\\mathbf Y],\\\\\n p_k^{\\rm Bayes}&=q(\\alpha_k=1\\mid\\mathbf Y).\n \\end{aligned}\n \\label{eq:targets}\n\\end{equation}\n"
+  }
+]

@@ -1,0 +1,2494 @@
+=== PDF PAGE 1 ===
+1
+Orthogonal AMP
+Junjie Ma and Li Ping, Fellow, IEEE
+Abstract—Approximate message passing (AMP) is a low-cost
+iterative signal recovery algorithm for linear system models.
+When the system transform matrix has independent identically
+distributed (IID) Gaussian entries, the performance of AMP can
+be asymptotically characterized by a simple scalar recursion
+called state evolution (SE). However, SE may become unreliable
+for other matrix ensembles, especially for ill-conditioned ones.
+This imposes limits on the applications of AMP.
+In this paper, we propose an orthogonal AMP (OAMP)
+algorithm based on de-correlated linear estimation (LE) and
+divergence-free non-linear estimation (NLE). The Onsager term
+in standard AMP vanishes as a result of the divergence-free
+constraint on NLE. We develop an SE procedure for OAMP and
+show numerically that the SE for OAMP is accurate for general
+unitarily-invariant matrices, including IID Gaussian matrices and
+partial orthogonal matrices. We further derive optimized options
+for OAMP and show that the corresponding SE ﬁxed point
+coincides with the optimal performance obtained via the replica
+method. Our numerical results demonstrate that OAMP can be
+advantageous over AMP, especially for ill-conditioned matrices.
+Index Terms—Compressed sensing, approximate message pass-
+ing (AMP), replica method, state evolution, unitarily-invariant,
+IID Gaussian, partial orthogonal matrix.
+I. I NTRODUCTION
+Consider the signal recovery problem for the following
+linear model:
+y =Ax +n, (1a)
+xj∼ PX(x), ∀j, (1b)
+where A∈ RM×N (M≤ N) is a channel matrix (for com-
+munication applications) or a sensing matrix (for compressed
+sensing),x∈ RN×1 the signal to be recovered andn∈ RM×1
+is a vector of additive white Gaussian noise (AWGN) samples
+with zero mean and variance σ2, and PX(x) a probability
+distribution with E{xj} = 0 and E{x2
+j} = 1. We assume that
+{xj} are independent identically distributed (IID). Our focus
+is on systems with large M and N.
+Except when PX(x) is Gaussian or for very small M
+and N, ﬁnding the optimal solution to (1) (under, e.g., the
+minimum mean-squared error (MMSE) criterion [1]) can be
+computationally prohibitive. Approximate message passing
+(AMP) [2] offers a computationally tractable option. AMP
+involves the iteration between two modules: one for linear
+estimation (LE) based on (1a) and the other for symbol-
+by-symbol non-linear estimation (NLE) based on (1b). An
+Onsager term is introduced to regulate the correlation problem
+during iterative processing.
+When A contains zero-mean IID Gaussian (or sub-
+Gaussian) entries, the dynamical behavior of AMP can be
+The work described in this paper was jointly supported by grants from
+University Grants Committee of the Hong Kong Special Administrative
+Region, China (Project numbers AoE/E-02/08, CityU 11217515 and CityU
+11280216).
+characterized by a simple scalar recursion, referred to as state
+evolution (SE) [2]–[4]. The latter bears similarity to density
+evolution [5] (including EXIT analysis [6]) for message pass-
+ing decoding algorithms. However, the underlying assumptions
+are different: density evolution requires sparsity inA [5] while
+SE does not [3]. When A is IID Gaussian, it is shown in [7]
+that the ﬁxed-point equation of the SE for AMP coincides
+with that of the MMSE performance for a large system. (The
+latter can be obtained using the replica method [8]–[11].) This
+implies that, when A is IID Gaussian, AMP is Bayes-optimal
+provided that the ﬁxed-point of SE is unique.
+The SE framework of AMP works with any PX(x). Such
+PX(x) can be the distribution of, e.g., amplitude or phase
+modulation that is widely used signal transmission. For this
+reason, AMP is also suitable for communication applications
+such as massive MIMO detection [12], [13], and millimeter
+wave channel estimation [14] (in whichA represents a channel
+matrix). AMP has also been investigated for decoding sparse
+regression codes [15], [16], which have theoretically capacity
+approaching performances.
+The IID assumption for A is crucial to the SE of AMP [3],
+[4]. WhenA is not IID (especially whenA is ill-conditioned),
+the accuracy of SE is not warranted and AMP may perform
+poorly [17]. Various algorithms have been proposed to handle
+more general matrices [17]–[23], but most of the existing
+algorithms lack accurate SE characterization. An exception is
+the work in [24], which considers a closely related problem
+and uses a method different from this paper.
+The work in this paper is motivated by our observation that,
+the SE for AMP is still relatively reliable for a wider family
+of matrices other than IID Gaussian ones when the Onsager
+term is small. Our contributions are summarized below.
+• We propose a modiﬁed AMP algorithm comprising of a
+de-correlated LE and a divergence-free NLE 1. The pro-
+posed algorithm allows LE structures beyond MF, such
+as pseudo-inverse (PINV) and linear MMSE (LMMSE).
+OAMP extends and provides new interpretations of our
+previous work in [26], [27].
+• We derive an SE procedure for OAMP, which is accurate
+if the errors are independent during the iterative process.
+Independency, however, is a tricky condition. We will
+show that the use of a de-correlated LE and a divergence-
+free NLE makes the errors statistically orthogonal, hence
+the name orthogonal AMP (OAMP). Intuitively, such
+orthogonality partially satisﬁes the independency require-
+ment. Our numerical results indicate that the SE pre-
+dictions are reliable for various matrix ensembles (e.g.,
+IID Gaussian, partial orthogonal and some ill-conditioned
+1The name is from [25], although the discussions therein are irrelevant to
+this paper.
+arXiv:1602.06509v3  [cs.IT]  24 Jan 2017
+
+=== PDF PAGE 2 ===
+2
+ones for which AMP does not work well) and also for
+various LE structures as mentioned above. Thus OAMP
+may have wider applications than AMP.
+• We derive optimal choices within the OAMP framework.
+We ﬁnd that the ﬁxed-point characterization of the SE is
+consistent with that of the optimal MMSE performance
+obtained by the replica method. This implies the potential
+optimality of OAMP. Compared with AMP, our result
+holds for the more general unitarily-invariant matrix
+ensemble.
+We will provide numerical results to show that, compared
+with AMP, OAMP can achieve better MSE performance as
+well as faster convergence speed for ill-conditioned matrices.
+We will demonstrate the excellent performance of OAMP in
+communication systems with non-sparse binary phase shift
+keying (BPSK) signals as well as conventional sparse signals.
+After we posted the preprint of this work [28], a proof was
+given for the state evolution of an OAMP related algorithm in
+systems involving unitarily-invariant matrices [29].
+Part of the results in this paper have been published in [30].
+In this paper, we provide more detailed analysis and numerical
+results.
+Notations: Boldface lowercase letters represent vectors and
+boldface uppercase symbols denote matrices. 0 for a matrix
+or a vector with all-zero entries, I for the identity matrix with
+a proper size, aT for the conjugate of a,∥a∥ for the ℓ2-norm
+of the vector a, tr(A) for the trace of A, (η (a))j≡ η (aj) .
+diag{A} for the diagonal part of A,N (µ,C) for Gaussian
+distribution with mean µ and covariance C, E{·} for the
+expectation operation over all random variables involved in the
+brackets, except when otherwise speciﬁed. E{a|b} for the ex-
+pectation of a conditional on b, var{a} for E
+{
+(a− E{a})2
+}
+,
+var{a|b} for E
+{
+(a− E{a|b})2|b
+}
+.
+II. AMP
+A. AMP Algorithm
+Following the convention in [2], assume that A is column
+normalized, i.e., E{∥A:,j∥2 ≈ 1} for each j. Approximate
+message passing (AMP) [2] refers to the following iterative
+process (initialized with s0 =r0
+Onsager = 0)2:
+LE: rt =st+AT (
+y−Ast)
++rt
+Onsager (2a)
+NLE: st+1 = ηt
+(
+rt)
+, (2b)
+where ηt is a component-wise Lipschitz continuous function
+ofrt andrt
+Onsager an “Onsager term” [2] deﬁned by
+rt
+Onsager = N
+M·
+( 1
+N
+N∑
+j=1
+η′
+t−1(rt−1
+j )
+)
+·
+(
+rt−1−st−1)
+. (2c)
+The ﬁnal estimate is st+1.
+The use of the Onsager term is the key to AMP. It reg-
+ulates correlation during iterative processing and ensures the
+accuracy of SE when A has IID entries [2], [3].
+2The formulation here is different to the standard form in [2], but they can
+be shown to be equivalent.
+B. State Evolution for AMP
+Deﬁne
+qt≡st−x andht≡rt−x. (3a)
+After some manipulations, (2) can be rewritten as [3,
+Eqn. (3.3)] (with initialization q0 =−x andh0
+Onsager = 0):
+LE: ht =
+(
+I−ATA
+)
+qt +ATn +ht
+Onsager, (4a)
+NLE: qt+1 = ηt
+(
+x +ht)
+−x, (4b)
+where
+ht
+Onsager = N
+M·
+(
+1
+N
+N∑
+j=1
+η′
+t−1
+(
+xj + ht−1
+j
+)
+)
+·
+(
+ht−1−qt−1)
+,
+(4c)
+Strictly speaking, (4) is not an algorithm since it involves x
+that is to be estimated. Nevertheless, (4) is convenient for the
+analysis of AMP discussed below.
+The SE for AMP refers to the following recursion:
+LE: τ 2
+t = N
+M· v2
+t + σ2, (5a)
+NLE: v2
+t+1 = E
+{
+[ηt (X + τtZ)− X]2
+}
+, (5b)
+where Z∼N (0, 1) is independent of X∼ PX(x), and v2
+0 =
+E{X 2}.
+When A has IID Gaussian entries, SE can accurately
+characterize AMP, as shown in Theorem 1 [3] below.
+Theorem 1: [3, Theorem 2] Let ψ : R2↦→ R be a pseudo-
+Lipschitz function 3. For each iteration, the following holds
+almost surely when M, N→∞ with a ﬁxed ratio
+1
+N
+N∑
+j=1
+ψ
+(
+ht
+j, xj
+)
+→ E{ψ (τtZ, X)} , (6)
+where τt is given in (5).
+To see the implication of Theorem 1, let ψ(h, x) ≡
+[ηt(x + h)− x]2 in (6). Then, Theorem 1 says that the empir-
+ical mean square error (MSE) of AMP deﬁned by
+1
+N
+ηt
+(
+x +ht)
+−x
+2
+(7)
+converges to the predicted MSE (where τt is obtained using
+SE) deﬁned by
+E
+{
+[ηt (X + τtZ)− X]2
+}
+. (8)
+C. Limitation of AMP
+The assumption that A contains IID entries is crucial to
+theorem 1. For other matrix ensembles, SE may become in-
+accurate. Here is an example. Consider the following function
+for the NLE in AMP 4
+ηt
+(
+rt)
+= ˆηt
+(
+rt)
+− (1− β)·
+( 1
+N
+N∑
+j=1
+ˆη′
+t
+(
+rt
+j
+))
+·rt, (9)
+3The function ψ is said to be pseudo-Lipschitz (or order two) [3] if there
+exists a constant L > 0 such that for all x, y,|ψ(x)− ψ(y)|≤ L(1 +∥x∥ +
+∥y∥)∥x− y∥.
+4Strictly speaking, ηt in (9) is not a component-wise function as required
+in AMP. However, if Theorem 1 holds, ∑N
+j=1 ˆη′
+t(rt
+j )/N will converge to a
+constant independent of each individual rt
+j. In this case, ηt is an approximate
+component-wise function and ∑N
+j=1 η′
+t(rt
+j )/N≈ β· ∑N
+j=1 ˆη′
+t(rt
+j )/N.
+
+=== PDF PAGE 3 ===
+3
+where ˆηt is the thresholding function (which is commonly used
+in sparse signal recovery algorithms [31]) given in (47) with
+γt = 1. A family of ηt is obtained by changing β. In particular,
+ηt reduces to the soft-thresholding function ˆηt when β = 1.
+We deﬁne a measure of the SE accuracy (after a sufﬁcient
+number of iterations) as
+E≡|M SEsim− M SESE|
+M SEsim
+, (10)
+where M SEsim and M SESE are the simulated and predicted
+MSEs in (7) and (8). Here, as the empirical MSE is still
+random for large but ﬁnite M and N, we average it over
+multiple realizations.
+DCT with SE in (5)
+IID with SE in (5)DCT with SE in (11)
+0 0.2 0.4 0.6 0.8 1
+0
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9relative SE prediction error
+Fig. 1. State evolution prediction error for AMP with a partial DCT matrix.
+N = 8192. M = 5734(≈ 0.7N ). SN R = 50 dB. ρ = 0.4. (See the signal
+model in Section V.) The simulated MSE is averaged over 100 independent
+realizations. The number of iterations is 50.
+By changing β from 0 to 1, we obtain a family of ηt. The
+solid line in Fig. 1 shows E deﬁned in (10) against β for
+A being IID Gaussian. We can see that SE is quite accurate
+in the whole range of β shown (with E < 10−2), which is
+consistent with the result in Theorem 1.
+However, as shown by the dashed line, SE is not reliable
+whenA is a partial DCT matrix. The partial DCT matrix can
+be obtained by uniformly randomly selecting the rows of a
+discrete cosine transform (DCT) matrix, and it is a widely
+used in compressed sensing. To see the problem, let us ignore
+the Onsager term. Suppose that qt consists of IID entries with
+E
+{
+(qt
+j)2}
+= v2
+t , and qt is independent of A andn. It can be
+veriﬁed that
+τ 2
+t ≡ 1
+N E
+{
+∥ht∥2}
+= N− M
+M · v2
+t + σ2. (11)
+Clearly, this is inconsistent with the SE in (5a). The problem
+is caused by the discrepancy in eigenvalue distributions: (11)
+above is derived from the eigenvalue distribution of a partial
+DCT matrix while (5a) from that of an IID Gaussian A.
+How about replacing (5a) by (11) for the partial DCT
+matrix? This is shown by the solid line with triangle markers
+in Fig. 1. We can see that E is still large for β > 0, which
+can be explained by the fact the Onsager term was ignored
+above. Interestingly, we can see that E is very small at β = 0,
+where the Onsager term vanishes for the related ηt in (9). This
+observation motivates the work presented below.
+III. O RTHOGONAL AMP
+In this section, we ﬁrst introduce the concepts for de-
+correlated and divergence-free structures for the LE and NLE.
+We then discuss the OAMP algorithm and its properties.
+A. De-correlated Linear Estimator
+Return to (1a): y =Ax +n. Let s be an estimate of x.
+Assume that s has IID entries with E{(sj− xj)2} = v2.
+Consider the linear estimation (LE) structure below [1] for x
+r =s +W (y−As), (12)
+which is speciﬁed byW . Let the singular value decomposition
+(SVD) ofA beA =V ΣU T. Throughput this paper, we will
+focus on the following structure for W
+W =UGV T. (13)
+Deﬁnition 1 (Unitarily-invariant matrix): A = V ΣU T is
+said unitarily-invarint [32] if U, V and Σ are mutually
+independent, andU,V are Haar-distributed (i.e., isotropically
+random orthogonal). 5
+Assume that A is unitarily-invariant. We will say that the
+LE (orW in (13)) is a de-correlated one if tr(I−WA ) = 0.
+Given an arbitrary ˆW that satisﬁes (13), we can construct W
+with tr(I−WA ) = 0 as follows
+W = N
+tr( ˆWA )
+ˆW . (14)
+The following are some common examples [1] of such ˆW
+matched ﬁlter (MF):
+ˆW MF =AT, (15a)
+pseudo-inverse (PINV)6:
+ˆW PINV =
+{
+AT(AAT)−1 if M < N(
+ATA
+)−1
+AT if M > N, (15b)
+linear MMSE (LMMSE):
+ˆW LMMSE = v2AT(v2AAT + σ2I)−1. (15c)
+We will discuss the properties of de-correlated LE in Section
+III-F later.
+5It turns out that the distribution of V does not affect the average
+performance of OAMP. The reason is that OAMP implicitly estimates x based
+on V Ty, and V Tn has the same distribution as n for an arbitrary orthogonal
+matrix V due to the unitary-invariance of Gaussian distribution [32].
+6We assume that A has full rank.
+
+=== PDF PAGE 4 ===
+4
+B. Divergence-free Estimator
+Consider signal estimation from an observation corrupted
+by additive Gaussian noise
+R = X + τ Z, (16)
+where X ∼ PX(x) is the signal to be estimated and is
+independent of Z∼N (0, 1). For this additive Gaussian noise
+model, we deﬁne divergence-free estimator (or a divergence-
+free function of R) as follows.
+Deﬁnition 2 (Divergence-free Estimator): We say η : R↦→
+R is divergence-free (DF) if
+E{η′ (R)} = 0. (17)
+A divergence-free function η can be constructed as
+η (r) = C·
+(
+ˆη (r)− E
+R
+{ˆη′ (R)}· r
+)
+, (18)
+where ˆη is an arbitrary function and C an arbitrary constant.
+C. OAMP Algorithm
+Starting with s0 = 0, OAMP proceeds as
+LE: rt =st +Wt
+(
+y−Ast)
+, (19a)
+NLE: st+1 = ηt
+(
+rt)
+, (19b)
+where Wt is de-correlated and ηt is divergence-free. In the
+ﬁnal stage, the output is
+(
+st+1)out
+= ηout
+t
+(
+rt)
+, (20)
+where ηout
+t is not necessarily divergence-free.
+OAMP is different from the standard AMP in the following
+aspects:
+• In (19a), Wt is restricted to be de-correlated, but it still
+has more choices than its counterpart AT in (2a) 7.
+• In (19a), the function ηt is restricted to be divergence-
+free. Consequently, the Onsager term vanishes.
+• A different estimation function ηout
+t (not necessarily
+divergence-free) is used to produce a ﬁnal estimate.
+We will show that, under certain assumptions, restricting Wt
+to be de-correlated and ηt to be divergence-fee ensure the
+orthogonality between the input and output “error” terms for
+both LE and NLE. The name “orthogonal AMP” comes from
+this fact.
+D. OAMP Error Recursion and SE
+Similar to (3), deﬁne the error terms as ht≡rt−x and
+qt ≡ st−x. We can write an error recursion for OAMP
+(similar to that for AMP in (4)) as
+LE: ht =Btqt +Wtn (21a)
+NLE: qt+1 = ηt(x +ht)−x, (21b)
+7When the entries of A are IID with zero mean and variance 1/M (as
+considered in [2]), N/tr(ATA) ≈ 1, and so Wt = AT satisﬁes the
+condition in (13) and (14).
+whereBt≡I−WtA. Two error measures are introduced:
+τ 2
+t ≡ 1
+N· E
+{
+∥ht∥2}
+, (22a)
+v2
+t+1≡ 1
+N· E
+{
+∥qt+1∥2}
+. (22b)
+The SE for OAMP is deﬁned by the following recursion
+LE: τt
+t = 1
+N E
+{
+tr(BtBT
+t )
+}
+v2
+t + 1
+N E
+{
+tr(WtW T
+t )
+}
+σ2
+(23a)
+NLE: v2
+t+1 = E
+{
+[ηt(X + τtZ)− X]2
+}
+, (23b)
+where X∼ PX(x) is independent of Z∼N (0, 1). Also, at
+the ﬁnal stage, the MSE is predicted as
+E
+{[
+ηout
+t (X + τtZ)− X
+]2}
+. (24)
+E. Rationales for OAMP
+It is straightforward to verify that the SE in (23) is consistent
+with the error recursion in (21), provided that the following
+two assumptions hold for every t.
+Assumption 1: ht in (21a) consists of IID zero-mean Gaus-
+sian entries independent of x.
+Assumption 2: qt+1 in (21b) consists of IID entries inde-
+pendent of A andn.
+According to our earlier assumption below (1), x is IID and
+independent ofA andn. In OAMP,q0 =−x, so Assumption
+2 holds for t =−1. Thus the two Assumptions will hold if we
+can prove that they imply each other in the iterative process.
+Unfortunately, so far, we cannot.
+Assumptions 1 and 2 are only sufﬁcient conditions for the
+SE. Even if they do not hold exactly, the SE may still be
+valid. In Section V, we will show that the SE for OAMP is
+accurate for a wide range of sensing matrices using simulation
+results. In the following two subsections, we will see that, with
+a de-correlated Wt and a divergence-free ηt, Assumptions 1
+and 2 can partially imply each other. We emphasize that the
+discussions below are to provide intuitions for OAMP, which
+are by no means rigorous.
+F . Intuitions for the LE Structure
+Eqn. (19a) performs linear estimation of x fromy based on
+Assumption 2 (forqt). We ﬁrst consider ensuring Assumption
+1 based on Assumption 2. The independence requirements
+in Assumption 1 are difﬁcult to handle. We reduce our goal
+to remove the correlation among the variables involved. This
+is achieved by restricting Wt to be de-correlated, as shown
+below.
+Proposition 1: Suppose that Assumption 2 holds and A is
+unitarily-invariant. If Wt is de-correlated, then the entries of
+ht are uncorrelated with those of x. Furthermore, the entries
+ofht in (21a) are mutually uncorrelated with zero-mean and
+identical variances.
+Proof: See Appendix A.
+Some comments are in order.
+(i) The name “de-correlated” LE comes from Proposition 1.
+
+=== PDF PAGE 5 ===
+5
+(ii) Under the same conditions as Proposition 1, the input
+and output error vectors for LE are uncorrelated, namely,
+E
+{
+ht (qt)T
+}
+= 0.
+(iii) A key condition to Proposition 1 is that the sensing
+matrix A is unitarily invariant. Examples of such A
+include the IID Gaussian matrix ensemble and the partial
+orthogonal ensemble [10]. Note that there is no restric-
+tion on the eigenvalues ofA. Thus, OAMP is potentially
+applicable to a wider range of A than AMP.
+(iv) We can meet the de-correlated constraint using (14),
+in which ˆWt can be chosen from those in (15). Thus
+OAMP has more choices for the LE than AMP, which
+makes the former potentially more efﬁcient.
+G. Intuitions for the NLE Structure
+We next consider ensuring Assumption 2 based on Assump-
+tion 1. From (21), if qt+1 is independent of ht, then it is also
+independent ofA andn, which can be seen from the Markov
+chainA,n→ht→qt+1. Thus it is sufﬁcient to ensure the
+independency betweenqt+1 andht. Similar to the discussion
+in Section III-F, we reduce our goal to ensuring orthogonality
+betweenqt+1 andht.
+Suppose that Assumption 1 holds, we can construct an
+approximate divergence-free function ηt according to (18):
+ηt
+(
+rt)
+= Ct·
+(
+ˆηt
+(
+rt)
+−
+( 1
+N
+N∑
+j=1
+ˆη′
+t
+(
+rt
+j
+))
+·rt
+)
+. (25)
+All the numerical results about OAMP shown in Section V
+are based on (19) and (25).
+There is an inherent orthogonality property associated with
+divergence-free functions.
+Proposition 2: If η is a divergence-free function, then
+E{τtZ· η (X + τtZ)} = 0. (26)
+Proof: From Stein’s Lemma [3], [33], we have
+E{Z· ϕ (Z)} = E{ϕ′ (Z)} , (27)
+for any ϕ : R↦→ R such that the expectations in (27) exist.
+Applying Stein’s lemma in (27) with ψ(Z)≡ ηt(X + τtZ),
+we have
+E{τtZ· ηt (X + τtZ)} (28a)
+= τt· E
+X
+{
+E
+Z|X
+{Z· ηt (X + τtZ)}
+}
+(28b)
+= τ 2
+t· E
+X
+{
+E
+Z|X
+{η′
+t (X + τtZ)}
+}
+(28c)
+= τ 2
+t· E{η′
+t (X + τtZ)} , (28d)
+where η′
+t(X + τtZ)≡ η′
+t(R)|R=X+τtZ. Combining (28) with
+Deﬁnition 2, we arrive at (26).
+Noting that E{ZX} = 0, (26) is equivalent to
+E
+{(
+Rt− X
+)
+·
+[
+ηt
+(
+Rt)
+− X
+]}
+= 0, (29)
+where Rt ≡ X + τtZ. In (29), Rt− X and ηt(Rt)− X
+represent, respectively, the error terms before and after the
+estimation. Eqn. (29) indicates that these two error terms are
+orthogonal. (They are also uncorrelated as Rt− X has zero
+mean.) Thus the divergence-free constrain on the NLE is to
+establish orthogonality between qt+1 andht.
+H. Brief Summary
+If the input and output errors of the LE and NLE are
+independent of each other, Assumptions 1 and 2 naturally hold.
+However, independency is generally a tricky issue. We thus
+turn to orthogonality instead. The name “orthogonal AMP”
+came from this fact. Propositions 1 and 2 are weaker than
+Assumptions 1 and 2. Nevertheless, our extensive numerical
+study (see Section V) indicates that the SE in (23) is indeed
+reliable for OAMP.
+Also note that each of Propositions 1 and 2 depends on
+one assumption, so they do not ensure orthogonality in the
+overall process. Nevertheless, we observed from numerical
+results that the orthogonality property is accurate for with
+unitarily-invariant matrices.
+I. MSE Estimation
+The MSEs v2
+t ≡ E{∥qt∥2}/N and τ 2
+t ≡ E{∥ht∥2}/N
+can be used as parameters of Wt and ηt. An example is the
+optimized Wt and ηt given in Lemma 1 in Section IV. We
+now discuss empirical estimators for v2
+t and τ 2
+t .
+We can adopt the following estimator [34, Eqn. (71)] for v2
+t
+ˆv2
+t =
+y−Ast 2− M· σ2
+tr (ATA) . (30)
+Note that ˆv2
+t in (30) can be negative. We may use max(ˆv2
+t , ϵ)
+as a practical estimator for v2
+t , where ϵ is a small positive
+constant. (Setting ϵ = 0 may cause a stability problem.)
+Given ˆv2
+t , τ 2
+t can be estimated using (23a):
+ˆτt
+t = 1
+N tr(BtBT
+t )· ˆv2
+t + 1
+N tr(WtW T
+t )· σ2. (31)
+In certain cases, Eqn. (31) can be simpliﬁed to more concise
+formulas. For example, (31) simpliﬁes to ˆτ 2
+t = (N− M) /M·
+ˆv2
+t + N/M 2· tr
+{(
+AAT
+)−1}
+· σ2 when Wt is given by
+the PINV estimator in (15b) together with (14). Also, simple
+closed-form asymptotic expression exists for (31) for certain
+matrix ensembles. For example, (23a) converges to (42a),
+(42b) and (42c) for IID Gaussian matrices with MF, PINV
+and LMMSE linear estimators, respectively.
+The numerical results presented in Section V are obtained
+based on approximations in (30) and (31).
+IV. O PTIMIZATION STRUCTURES FOR OAMP
+In this section, we derive the optimal LE and NLE structures
+for OAMP based on SE. We show that OAMP can potentially
+achieve optimal performance, provided that its SE is reliable.
+
+=== PDF PAGE 6 ===
+6
+A. Asymptotic Expression for SE
+Recall thatA =V ΣU T andB =I−WtA. From (13) and
+(14), we have Wt = N/tr( ˆWtA)· ˆWt and ˆWt =U ˆGtV T.
+With these deﬁnitions, we can rewrite the right hand side of
+(23a) as follows
+Φt(v2
+t )≡
+
+
+1
+N
+∑N
+i=1 ˆg2
+i λ2
+i
+(
+1
+N
+∑N
+i=1 ˆgiλi
+)2− 1
+
+ v2
+t +
+
+
+1
+N
+∑N
+i=1 ˆg2
+i
+(
+1
+N
+∑N
+i=1 ˆgiλi
+)2
+
+ σ2,
+(32)
+where λi and ˆgi (i = 1, . . . , M) denote the ith diagonal entries
+of Σ (M× N) and ˆGt (N× M), respectively. In (32), we
+deﬁne λi = ˆgi = 0 for i = M + 1, . . . , N).
+In (32), Φt(v2
+t ) is for ﬁxed{λi} and{ˆgi}. Now, following
+[35], assume that the empirical cumulative distribution func-
+tion (cdf) of {λ2
+1, . . . , λ2
+N}, denoted by
+ˆFATA(λ2) = 1
+N
+N∑
+i=1
+I(λ2
+i≥ λ2) (33)
+converges to a limiting distribution when M, N→∞ with a
+ﬁxed ratio. Furthermore, assume that ˆgi can be generated from
+λi as ˆgi = ˆgt(v2
+t , λi) with ˆgt a real-valued function. Then, (32)
+converges to
+Φt(v2
+t )→
+( E{ˆg2
+t λ2}
+(E{ˆgtλ})2− 1
+)
+· v2
+t + E{ˆg2
+t}
+(E{ˆgtλ})2· σ2, (34)
+where the expectations (assumed to exist) are taken over the
+asymptotic eigenvalue distribution ofATA (including the zero
+eigenvalues) and ˆgt stands for ˆgt(v2
+t , λ).
+We further deﬁne
+Ψt(τ 2
+t )≡ E
+{
+[ηt(X + τtZ)− X]2
+}
+, (35)
+where ηt(r)≡ Ct· [ˆηt(r)− E{ˆη′
+t(X + τtZ)}· r] and X is
+independent of Z∼N (0, 1). Then, from (32), (23b) and (35),
+the SE for OAMP is given by (with v2
+0 = E{X 2})
+LE: τ 2
+t = Φt(v2
+t ), (36a)
+NLE: v2
+t+1= Ψt(τ 2
+t ). (36b)
+The estimate for x in OAMP is generated by ηout
+t rather
+than ηt. Thus, the MSE performance of OAMP, measured by
+∥ηout
+t (rt)−x∥2/N, is predicted as
+Ψout
+t (τ 2
+t )≡ E
+{[
+ηout
+t (X + τtZ)− X
+]2}
+. (37)
+B. Optimal Structure of OAMP
+We now derive the optimal Wt, ηt and ηout
+t that minimize
+the MSE at the ﬁnal iteration.
+Let Φ⋆
+t , Ψ⋆
+t , and (Ψout
+t )⋆ be the minimums of Φt, Ψt, and
+Ψout
+t respectively (the minimizations are taken over Wt, ηt,
+and ηout
+t ). Lemmas 1 and 2 below will be useful to prove
+Theorem 2.
+Lemma 1: The optimal Wt and ηt that minimize Φt and
+Ψt in (32) and (35) are given by
+W⋆
+t = N
+tr( ˆW LMMSE
+t A)
+ˆW LMMSE
+t , (38a)
+η⋆
+t (Rt) = C⋆
+t·
+(
+ηMMSE
+t (Rt)− mmseB
+(
+τ 2
+t
+)
+τ 2
+t
+· Rt
+)
+, (38b)
+where
+C⋆
+t ≡ τ 2
+t
+τ 2
+t− mmseB (τ 2
+t ) , (38c)
+ηMMSE
+t (Rt) = E
+{
+X|Rt = X + τtZ
+}
+, (38d)
+mmseB
+(
+τ 2
+t
+)
+≡ E
+{(
+ηMMSE
+t − X
+)2}
+. (38e)
+Furthermore, the optimal (ηout
+t )⋆ that minimizes Ψout
+t is given
+by ηMMSE
+t .
+Proof: The optimality of (ηout
+t )⋆ is by deﬁnition. The
+optimality of W⋆
+t and η⋆
+t are not so straightforward, due to
+the de-correlated constraint on Wt and the divergence-free
+constraint on ηt. The details are given in Appendix B.
+Substituting W⋆
+t , η⋆
+t and (ηout
+t )⋆ into (32), (35) and (37),
+and after some manipulations, we obtain
+LE: Φ⋆(v2
+t ) =
+( 1
+mmseA(v2
+t )− 1
+v2
+t
+)−1
+, (39a)
+NLE: Ψ⋆(τ 2
+t ) =
+( 1
+mmseB(τ 2
+t )− 1
+τ 2
+t
+)−1
+, (39b)
+NLE:
+(
+Ψout)⋆
+(τ 2
+t ) = mmseB(τ 2
+t ), (39c)
+where mmseA(v2
+t )≡ 1
+N
+∑N
+i=1
+σ2·v2
+t
+v2
+t·λ2
+i +σ2 and mmseB(τ 2
+t ) is
+given in (38e). The derivations of (39a) are omitted, and the
+derivations for (39b) are shown in Appendix C-A. In (39),
+the subscript t has been omitted for the functions Φ⋆, Ψ⋆ and
+(Ψout)⋆ as they do not change across iterations.
+Lemma 2: The functions Φ⋆, Ψ⋆, and (Ψout)⋆ in (39) are
+monotonically increasing.
+Proof: The monotonicity of (Ψout)⋆ follows directly
+from the monotonicity of MMSE for additive Gaussian noise
+models [36]. The monotonicity of Φ⋆ and Ψ⋆ are proved in
+Appendix C-B.
+According to the state evolution process, the ﬁnal MSE can
+be expressed as
+Ψout
+t
+(
+Φt
+(
+Ψt−1
+(
+Φt−1
+(
+···
+(
+Φ0
+(
+v2
+0
+))
+···
+))))
+. (40)
+From Lemmas 1 and 2, replacing any function (i.e., {Φt′},
+{Ψt′}, and Ψout
+t ) in (40) by its local minimum reduces the
+ﬁnal MSE. This leads to the following theorem.
+Theorem 2: For the SE in (36), the ﬁnal MSE in (40) is
+minimized by {W⋆
+0 , . . . ,W⋆
+t}, {η⋆
+0, . . . , η⋆
+t−1} and (ηout
+t )⋆
+given in Lemma 1.
+Theorem 2 gives the optimal LE and NLE structures for the
+SE of OAMP. To compute η⋆
+t and (ηout
+t )⋆ in (38), we need to
+know the signal distribution PX(x). In practical applications,
+such prior information may be unavailable. To approach the
+optimal performance for OAMP, the EM learning framework
+[34] or the parametric SURE approach [37] developed for
+AMP could be applicable to OAMP as well [38].
+
+=== PDF PAGE 7 ===
+7
+C. Potential Optimality of OAMP
+Note that the de-correlated constraint on Wt and the
+divergence-free constraint on ηt are restrictive. We next show
+that, provided that the SE in (36) is valid, OAMP is potentially
+optimal when the optimalW⋆
+t , η⋆
+t and (ηout
+t )⋆ given in Lemma
+1 are used.
+Theorem 3: When the optimal {W⋆
+t} and{η⋆
+t} in Lemma
+1 are used, {v2
+t} and {τ 2
+t} are monotonically decreasing
+sequences. Furthermore, the stationary value of τ 2
+t , denoted
+by τ 2
+∞, satisﬁes the following equation
+1
+τ 2∞
+= 1
+σ2· RATA
+(
+− 1
+σ2· mmseB
+(
+τ 2
+∞
+))
+, (41)
+where RATA denotes the R-transform [32, pp. 48] w.r.t. the
+eigenvalue distribution of ATA.
+Proof: See Appendix D.
+Eqn. (41) is consistent with the ﬁxed-point equation char-
+acterization of the MMSE performance for (1) (with A being
+unitarily-invariant) via the replica method [10, Eqn. (17)]
+[21, Eqn. (30)]. This implies that OAMP can potentially
+achieve the optimal MSE performance. We can see that the
+de-correlated and divergence-free constraints on LE and NLE,
+though restrictive, do not affect the potential optimality of
+OAMP.
+V. N UMERICAL STUDY
+The following setups are assumed unless otherwise stated.
+The optimal W⋆
+t , η⋆
+t and (ηout
+t )⋆ given in Lemma 1
+are adopted for OAMP. Furthermore, the approximation
+mmseB(τ 2
+t )≈ ∑N
+j=1 var
+{
+xj|rt
+j
+}
+/N is used for (38e). Fol-
+lowing [17], we deﬁne SNR≡ E
+{
+∥Ax∥2}
+/E{∥n∥2}.
+A. IID Gaussian Matrix
+We start from an IID Gaussian matrix where Ai,j ∼
+N (0, 1/M). Fig. 2 compares simulated MSE with SE predic-
+tion for OAMP and AMP. We ﬁrst assume that the entries of
+x are independently BPSK modulated, sox is not sparse. This
+is a typical detection problem in massive MIMO applications.
+Fig. 2 compares simulated MSEs with SE prediction for
+OAMP and AMP. In Fig. 2, OAMP-MF, OAMP-PINV and
+OAMP-LMMSE refer to, respectively, OAMP algorithms with
+the MF, PINV and LMMSE estimators given in (15) and the
+normalization in (14). The asymptotic SE formula in (34)
+becomes, respectively,
+ΦMF
+t
+(
+v2
+t
+)
+= N
+M· v2
+t + σ2, (42a)
+ΦPINV
+t
+(
+v2
+t
+)
+=
+{
+N−M
+M · v2
+t + N
+N−M· σ2 if M < N
+M
+M−N· σ2 if M > N
+(42b)
+ΦLMMSE
+t
+(
+v2
+t
+)
+=
+σ2 + c· v2
+t +
+√
+(σ2 + c· v2
+t )2 + 4σ2v2
+t
+2 ,
+(42c)
+where c≡ (N− M)/M. Comparing (42a) and (42b), we see
+that OAMP-PINV has better interference cancellation property
+than OAMP-MF (but less robust to noise). This is consistent
+with the observation in Fig. 2 (which represents a high SNR
+scenario) that OAMP-PINV can outperform OAMP-MF.
+OAMP-MF
+OAMP-PINV
+AMP
+OAMP-LMMSE
+0 5 10 15 20
+Iteration
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+SE prediction
+simulation
+Fig. 2. Simulated and predicted MSEs for OAMP with an IID Gaussian
+matrix and BPSK signals. N = 8192 . M = 5324(≈ 0.65N ). SNR = 14
+dB. The simulated MSEs are averaged over 100 realizations.
+From Fig. 2, we observe good agreement between the
+simulated and predicted MSE for all curves. Furthermore,
+we see that AMP has the same convergent value as OAMP-
+LMMSE for IID Gaussian matrices, while the latter converges
+faster. Following the approach in [39], we can prove this
+observation but the details are omitted due to space limitation.
+B. General Unitarily-invariant Matrix
+We next turn our attention to more general sensing matrices.
+Following [17], let A = V ΣU T, where V and U are
+independent Haar-distributed matrices (or isotropically random
+orthogonal matrices [32]). The nonzero singular values are
+set to be [17] λi/λi+1 = κ1/M for i = 1 , . . . , M− 1, and∑M
+j=1 λi = N Here, κ≥ 1 is the condition number of A. We
+consider sparse signals, generated according to a Bernoulli-
+Gaussian distribution:
+PX(x) = ρ·N (x; 0, ρ−1) + (1− ρ)· δ(x), (43)
+where ρ∈ (0, 1] is s sparsity level and δ(·) is the Dirac delta
+function.
+Fig. 3 shows the simulated and predicted MSEs for OAMP
+for the above ill-conditioned sensing matrix. The SE of OAMP
+is based on the empirical form in (32) as {λi} are ﬁxed in this
+example. We can make the following observations.
+• The performances of AMP and OAMP-MF deteriorate in
+this case. The SE prediction for AMP is not shown in
+Fig. 3 since it is noticeably different from the simulation
+result. (See Fig. 1 for a similar issue.)
+• The performance of OAMP is strongly affected by the
+LE structure. OAMP-PINV and OAMP-LMMSE signiﬁ-
+cantly outperform OAMP-MF.
+• The most interesting point is that the SE in (36) can
+accurately predict the OAMP simulation results for all
+the LE structures in Fig. 3. We observed in simulations
+
+=== PDF PAGE 8 ===
+8
+OAMP-PINV
+OAMP-MF
+simulation
+SE prediction
+0 5 10 15 20 25 30 35
+10
+-6
+10
+-4
+10
+-2
+10
+0
+Iteration
+MSE
+AMP
+OAMP-LMMSE
+Fig. 3. Simulated and predicted MSEs for OAMP with general unitarily
+invariant matrices. ρ = 0 .2. N = 4000 . M = 2000 . The condition number
+κ is 5. SNR = 60 dB. The simulated MSEs are averaged over 100 realizations.
+that such good agreement also holds for LEs beyond the
+three options shown in Fig. 3.
+Fig. 4 compares the MSE performances of AMP, OAMP
+and genie-aided MMSE (where the positions of the non-zero
+entries are known) as the condition number of A varies. AMP
+with adaptive damping (AMP-damping) [17] (based on the
+Matlab code released by its authors 8 and the parameters used
+in [17, Fig. 1]) and GAMP-ADMM [19] are also shown. From
+Fig. 4, we can see that the performance of OAMP-LMMSE
+is signiﬁcantly better than those of AMP, AMP-damping and
+ADMM-GAMP for highly ill-conditioned scenarios. (ADMM-
+GAMP slightly outperforms OAMP-LMMSE for κ ≤ 100
+since the former involves more iterations in this example.)
+OAMP-PINV has worse performance than AMP when κ≥ 10
+but performs reasonably well for large κ. OAMP-MF does not
+work well and thus not included.
+For the schemes shown in Fig. 4, AMP have the lowest com-
+plexity. OAMP-PINV requires one additional matrix inversion,
+but it can be pre-computed as it remains unchanged during the
+iterations. Both OAMP-LMMSE and ADMM-GAMP require
+matrix inversions in each iteration. As pointed out in [19], it
+may be possible to replace the matrix inversion in ADMM-
+GAMP using an iterative method such as conjugate gradient
+[40]. Similar approximation should be possible for OAMP as
+well.
+C. Partial Orthogonal Matrix
+In the examples used above, matrix inversion is involved for
+ˆW PINV and ˆW LMMSE in (15b) and (15c), so their complexity
+per iteration can be higher than that of AMP. (Note that the
+overall complexity also depends on the convergence speed,
+for which AMP and OAMP behave differently as seen in
+Fig. 4.) In the following, we will consider partial orthogonal
+matrices characterized by AAT = N/M·I (here N/M is
+8Available at http://sourceforge.net/projects/gampmatlab/
+condition number
+OAMP-LMMSE
+10
+0
+10
+2
+10
+4
+10
+6
+10
+-6
+10
+-4
+10
+-2
+10
+0
+MSE
+AMP
+AMP-damping
+OAMP-PINV
+ADMM-GAMP
+genie
+Fig. 4. Comparison of OAMP and AMP for general unitarily invariant
+matrices. ρ = 0 .2. N = 500 . M = 250 . SNR = 60 dB. The number of
+iteration for OAMP is 50. The number of iterations for AMP and AMP-
+damping are 1000. For ADMM-GAMP, both the number of inner and outer
+iterations are set to be 50, and the damping parameter is selected to be 1. The
+simulated MSEs are averaged over 100 realizations. The MSEs above 1 are
+clipped [13].
+a normalization constant). Then inversion operation is not
+necessary. For example, in this case ˆW LMMSE is given by
+ˆW LMMSE = v2
+tAT (
+v2
+tAAT + σ2I
+)−1
+(44a)
+= v2
+t
+N/M· v2
+t + σ2·AT. (44b)
+Therefore, the complexity of OAMP-LMMSE is the same as
+AMP.
+Unitarily invariant matrices with the partial orthogonality
+constraint becomes partial Haar-distributed matrices (i.e., uni-
+formly distributed among all partial orthogonal matrices). We
+next consider the following partial orthogonal matrix
+A =
+√
+N
+MSU T, (45)
+whereS consists of M uniformly randomly selected rows of
+the identity matrix and U is an Haar-distributed orthogonal
+matrix. We will also consider deterministic orthogonal ma-
+trices, which are important in compressed sensing and found
+applications in, e.g., MRI [41]. For a partial orthogonal A, the
+three approaches in Fig. 2, i.e., OAMP-MF, OAMP-PINV and
+OAMP-LMMSE, become identical. The related complexity
+is the same as AMP. In this case, the SE equation in (32)
+becomes
+Φt
+(
+v2
+t
+)
+= N− M
+M · v2
+t + σ2. (46)
+Fig. 5 compares OAMP with AMP in recovering Bernoulli-
+Gaussian signals with a partial DCT matrix. Following [34],
+we will use the empirical phase transition curve (PTC) to
+characterize the sparsity-undersampling tradeoff. A recovery
+algorithm “succeeds” with high probability below the PTC and
+“fails” above it. The empirical PTCs are generated according
+
+=== PDF PAGE 9 ===
+9
+to [34, Section IV-A]. We see that OAMP considerably outper-
+forms AMP when both algorithms are ﬁxed to 50 iterations.
+Even when the number of iterations of AMP is increased to
+500, OAMP still slightly outperforms AMP at relatively high
+sparsity levels.
+AMP, 500 iterations
+AMP, 50 iterations
+OAMP
+ 50 and 500 iterations
+M/N
+K/M
+0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+Fig. 5. Noiseless empirical phase transition curves for Bernoulli-Gaussian
+signals with a partial DCT matrix. N = 8192 . The simulated MSEs are
+averaged over 100 realizations. Other settings follow those of [34, Fig. 3].
+Here, K≈ N· ρ is the average number of nonzero components in x.
+Fig. 6 shows the accuracy of SE for OAMP with partial
+orthogonal matrices. Three matrices are considered: a partial
+Haar matrix, a partial DCT matrix and a partial Hadamard ma-
+trix. From Fig. 6, we see that the simulated MSE performances
+agree well with state evolution predictions for all the three
+types of partial orthogonal matrices when N is sufﬁciently
+large ( N = 8192 in this case). It should be noted that, when
+M/N is larger, a smaller N will sufﬁce to guarantee good
+agreement between simulation and SE prediction.
+Iteration
+N = 128
+0 5 10 15 20 25
+10
+-6
+10
+-5
+10
+-4
+10
+-3
+10
+-2
+10
+-1
+10
+0
+MSE
+partial Hadamard
+partial DCT
+partial Haar
+SE prediction
+N = 8192
+N = 256
+N = 512
+Fig. 6. Simulated and predicted MSEs for OAMP with partial orthogonal
+matrices. ρ = 0.1. M = round(0.35 N ). SNR = 50 dB. The simulated MSEs
+are averaged over 2000 realizations.
+The NLEs used in Figs. 2-6 are based on the optimized
+structure given in Lemma 1. Fig. 7 shows the OAMP SE
+accuracy with the following soft-thresholding function [31]:
+ˆηt
+(
+rt)
+= max
+(⏐⏐rt⏐⏐− γt, 0
+)
+· sign
+(
+rt)
+, (47)
+where γt ≥ 0 is a threshold and sign(rt) is the sign of
+rt. According to (25), the divergence-free function ηt is
+constructed as
+ηt
+(
+rt)
+= Ct·
+(
+ˆηt
+(
+rt)
+−
+( 1
+N
+N∑
+j=1
+I
+(
+|rt
+j| > γt
+))
+·rt
+)
+,
+(48)
+where I(·) is the indicator function. Further, we set ηout
+t = ˆηt
+for simplicity. The function in (47) is not optimal under the
+MMSE sense in Lemma 1. However, it is near minimax for
+sparse signals [42] and widely studied in compressed sensing.
+The optimal Ct is different from that given in Lemma 1 in
+this case. We will not discuss details in optimizating Ct here.
+Rather, to demonstrate the accuracy of SE, three arbitrarily
+chosen values for Ct are used in Fig. 7. We see that simulation
+and SE predictions agree well for all cases. In particular, when
+Ct = 3, SE is able to predict the OAMP behavior even when
+iterative processing leads to worse MSE performance.
+Iteration
+0 5 10 15 20 2510
+-2
+10
+-1
+10
+0
+10
+1
+MSE
+simulation
+SE prediction Ct = 3
+Ct = 1
+Ct = 2
+Fig. 7. Simulated and predicted MSEs for OAMP with the soft-thresholding
+function. The threshold is set to be γt = τt. A partial DCT matrix is used.
+ρ = 0 .1. N = 8192 . M = 2867(≈ 0.35N ). The simulated MSEs are
+averaged over 1000 realizations.
+VI. C ONCLUSIONS
+AMP performs excellently for IID Gaussian transform ma-
+trices. The performance of AMP can be characterized by SE
+in this case. However, for other matrix ensembles, the SE for
+AMP is not directly applicable and its performance is not
+warranted.
+In this paper, we proposed an OAMP algorithm based on a
+de-correlated LE and a divergence-free NLE. Our numerical
+results indicate that OAMP could be characterized by SE
+for general unitarily-invariant matrices with much relaxed
+requirements on the eigenvalue distribution and LE structure.
+
+=== PDF PAGE 10 ===
+10
+This makes OAMP suitable for a wider range of applications
+than AMP, especially for applications with ill-conditioned
+transform matrices and partial orthogonal matrices. We also
+derived the optimal structures for OAMP and showed that
+the corresponding SE ﬁxed point potentially coincides with
+that of the Bayes-optimal performance obtained by the replica
+method.
+VII. A CKNOWLEDGEMENT
+The authors would like to thank Dr. Ulugbek Kamilov and
+Prof. Phil Schniter for generously sharing their Matlab code
+for ADMM-GAMP.
+APPENDIX A
+PROOF OF PROPOSITION 1
+It is seen from (21b) that qt generated by the NLE is
+generally correlated withx, which may lead to the correlation
+betweenx andht. We will see below that a de-correlated LE
+can suppress this correlation.
+FromA =V ΣU T,Wt =UGtV T andB =I−WtA =
+U(I−GtΣ)U T, so
+E
+U
+{(Bt)i,j} =
+N∑
+m=1
+E{Ui,mUj,m}· (1− gmλm), (49)
+where gm and λm denote the (m, m)th diagonal entries of
+Gt and Σ, respectively. (We deﬁne gm = λm = 0 for m =
+M +1, . . . , N). For a Haar distributed matrix U, we have [43,
+Lemma 1.1 and Proposition 1.2]
+E{Ui,mUj,m} =
+{
+0 if i̸= j,
+N−1 if i = j. (50)
+Therefore,
+E
+U
+{(Bt)i,j} =
+{
+0 if i̸= j,
+N−1tr(Bt) if i = j. (51)
+From the discussions in Section III-A, when Wt is de-
+correlated, tr(Bt) = tr(I −WtA) = 0. Together with (51),
+this further implies E{Bt} = 0.
+From Assumption 1, qt is independent of A (and so Bt).
+Then,
+E{ht} = E{Btqt} + E{Wtn} (52a)
+= E{Bt}E{qt} + E{Wt}E{n} (52b)
+= 0. (52c)
+From (21a), to prove x is uncorrelated with ht, we only
+need to prove x is uncorrelated with Btqt since Wtn is
+independent of x. This can be veriﬁed as
+E
+{
+BtqtxT}
+=E{Bt}E{qtxT} = 0. (53)
+Following similar procedures, we can also verify that (i) the
+entries in ht are uncorrelated, and (ii) the entries of ht have
+identical variances. We omit the details here.
+APPENDIX B
+PROOF OF LEMMA 1
+A. Optimality of W⋆
+t
+We can rewrite Φt(v2
+t ) in (32) as
+Φt
+(
+v2
+t
+)
+=
+
+
+1
+N
+∑N
+i=1 ˆg2
+i (v2
+t λ2
+i + σ2)
+(
+1
+N
+∑N
+i=1 ˆgiλi
+)2
+
+− v2
+t . (54)
+We now prove that W⋆
+t in Lemma 1 is optimal for (54). To
+this end, deﬁne ai≡ ˆgi
+√
+v2
+t λ2
+i + σ2, bi≡ λi/
+√
+v2
+t λ2
+i + σ2.
+Applying the Cauchy-Schwarz inequality
+1
+N
+∑N
+i=1 a2
+i
+(
+1
+N
+∑N
+i=1 aibi
+)2≥
+(
+1
+N
+N∑
+i=1
+b2
+i
+)−1
+(55)
+leads to
+1
+N
+∑N
+i=1 ˆg2
+i (v2
+t λ2
+i + σ2)
+(
+1
+N
+∑N
+i=1 ˆgiλi
+)2 ≥
+(
+1
+N
+N∑
+i=1
+λ2
+i
+v2
+t λ2
+i + σ2
+)−1
+, (56)
+where the right hand side of (56) is invariant to {ˆgi}. The
+minimum in (56) is reached when
+ˆg⋆
+i
+√
+v2
+t λ2
+i + σ2 = C
+√
+λ2
+i
+v2
+t λ2
+i + σ2 , (57)
+where C is an arbitrary constant. From (57),
+ˆg⋆
+i = C λi
+v2
+t λ2
+i + σ2 . (58)
+Recall that {λi} are the singular values of A. Setting C =
+v2
+t , we can see that {ˆg⋆
+i} obtained from (58) are the singular
+values of ˆW LMMSE
+t ≡ v2
+tAT(v2
+tAAT + σ2I)−1 in (15c).
+Therefore the optimal W⋆
+t can be obtained by substituting
+ˆW⋆
+t = ˆW LMMSE
+t into (14):
+W⋆
+t = N
+tr( ˆW LMMSE
+t A)
+ˆW LMMSE
+t . (59)
+B. Optimality of η⋆
+t
+The SE equation in (35) are obtained based on the following
+signal model
+Rt = X + τtZ. (60)
+The following identity is from [44, Eqn. (123)]
+dηMMSE
+t
+dRt = 1
+τ 2
+t
+· var
+{
+X|Rt}
+, (61)
+where ηMMSE
+t ≡ E{X|Rt} (see (38d)). Using (61) and noting
+mmseB(τ 2
+t ) = E{var{X|Rt}}, we can verify that η⋆
+t in (38b)
+is a divergence-free function (see (18)).
+Lemma 3 below is the key to prove the optimality of η⋆
+t .
+Lemma 3: The following holds for any divergence-free
+function ηt
+E
+{
+ηt·
+(
+ηMMSE
+t − η⋆
+t
+)}
+= 0. (62)
+Proof: We can rewrite (38b) as
+η⋆
+t = C⋆
+t· ηMMSE
+t + (1− C⋆
+t )· Rt. (63)
+
+=== PDF PAGE 11 ===
+11
+First,
+ηMMSE
+t − η⋆
+t = ηMMSE
+t −
+[
+C∗
+t· ηMMSE
+t + (1− C∗
+t )· Rt]
+(64a)
+= (1− C⋆
+t )·
+(
+ηMMSE
+t − Rt)
+. (64b)
+Therefore, to prove Lemma 3, we only need to prove
+E
+{
+ηt·
+(
+ηMMSE
+t − Rt)}
+= 0. (65)
+Substituting Rt = X + τtZ into (65) yields
+E
+{
+ηt·
+(
+ηMMSE
+t − X− τtZ
+)}
+= 0. (66)
+Since ηt is a divergence-free function of Rt, we have the
+following from (26)
+E{ηt· Z} = 0. (67)
+Substituting (67) into (66), proving Lemma 3 becomes proving
+E
+{
+ηt·
+(
+ηMMSE
+t − X
+)}
+= 0. (68)
+Note that ηt and ηMMSE
+t are deterministic functions of Rt.
+Then, conditional on Rt, we have
+E
+{
+ηt·
+(
+ηMMSE
+t − X
+)
+|Rt}
+= ηt·
+(
+ηMMSE
+t − E
+{
+X|Rt})
+(69a)
+= ηt·
+(
+ηMMSE
+t − ηMMSE
+t
+)
+(69b)
+= 0, (69c)
+where (69b) is from the deﬁnition of ηMMSE
+t in (38d). There-
+fore,
+E
+{
+ηt·
+(
+ηMMSE
+t − X
+)}
+= E
+Rt
+{
+E
+{
+ηt·
+(
+ηMMSE
+t − X
+)
+|Rt}}
+= 0,
+(70)
+which concludes the proof of Lemma 3.
+We next prove the optimality of η⋆
+t based on Lemma 3.
+Again, let ηt be an arbitrary divergence-free function of Rt.
+The estimation MSE of ηt reads
+Ψt(τ 2
+t )≡ E
+{
+(ηt− X)2
+}
+(71a)
+= E
+{(
+ηt− ηMMSE
+t + ηMMSE
+t − X
+)2}
+(71b)
+= E
+{(
+ηt− ηMMSE
+t
+)2}
++ E
+{(
+ηMMSE
+t − X
+)2}
+(71c)
+= E
+{(
+ηt− ηMMSE
+t
+)2}
++ mmseB
+(
+τ 2
+t
+)
+, (71d)
+where the cross terms in (71c) disappears due to the orthogo-
+nality property of MMSE estimation [1] (recall that ηMMSE
+t is
+the scaler MMSE estimator). We see from (71) that ﬁnding
+ηt that minimizes E
+{
+(ηt− X)2}
+is equivalent to ﬁnding
+ηt minimizing E
+{(
+ηt− ηMMSE
+t
+)2}
+. We can further rewrite
+E
+{(
+ηt− ηMMSE
+t
+)2}
+as
+E
+{(
+ηt− ηMMSE
+t
+)2}
+(72a)
+= E
+{(
+ηt− η⋆
+t + η⋆
+t− ηMMSE
+t
+)2}
+(72b)
+= E
+{
+(ηt− η⋆
+t )2
+}
++ E
+{(
+η⋆
+t− ηMMSE
+t
+)2}
+(72c)
++ 2· E
+{
+(ηt− η⋆
+t )
+(
+η⋆
+t− ηMMSE
+t
+)}
+.
+From Lemma 3, we have E
+{
+ηt·
+(
+η⋆
+t− ηMMSE
+t
+)}
+= 0 and
+E
+{
+η⋆
+t·
+(
+η⋆
+t− ηMMSE
+t
+)}
+= 0 (since η⋆
+t is itself a divergence-
+free function). Then, (72) becomes
+E
+{(
+ηt− ηMMSE
+t
+)2}
+(73a)
+= E
+{
+(ηt− η⋆
+t )2
+}
++ E
+{(
+η⋆
+t− ηMMSE
+t
+)2}
+. (73b)
+≥ E
+{(
+η⋆
+t− ηMMSE
+t
+)2}
+, (73c)
+where the equality is obtained when ηt = η⋆
+t , and the right
+hand side of (73c) is a constant invariant of ηt. Hence, ηt = η⋆
+t
+minimizes E
+{(
+ηt− ηMMSE
+t
+)2}
+and so Ψt≡ E
+{
+(ηt− X)2}
+.
+This completes the proof.
+APPENDIX C
+PROOF OF LEMMA 2
+A. Derivation of Ψ⋆ in (39b)
+Using (63), we have
+Ψ⋆ (
+τ 2
+t
+)
+(74a)
+=E
+{
+(η⋆
+t− X)2
+}
+(74b)
+=E
+{[
+C⋆
+t· ηMMSE
+t + (1− C⋆
+t )· Rt− X
+]2}
+(74c)
+= (C⋆
+t )2 E
+{(
+ηMMSE
+t − X
+)2}
++ (1− C⋆
+t )2 E
+{(
+Rt− X
+)2}
++ 2C⋆
+t (1− C⋆
+t ) E
+{(
+ηMMSE
+t − X
+)
+τtZ
+}
+(74d)
+= (C⋆
+t )2· mmseB
+(
+τ 2
+t
+)
++ (1− C⋆
+t )2· τ 2
+t
++ 2C⋆
+t (1− C⋆
+t )· mmseB
+(
+τ 2
+t
+)
+(74e)
+=
+( 1
+mmseB (τ 2
+t )− 1
+τ 2
+t
+)−1
+, (74f)
+where (74e) is from the fact that E{XZ} = 0, Stein’s lemma
+and (61), (74f) from the deﬁnition of C⋆
+t in (38).
+B. Monotonicity of Φ⋆ and Ψ⋆
+We ﬁrst verify the monotonicity ofΦ⋆. From (39a) and after
+some manipulations, we obtain
+dΦ⋆
+dv2
+t
+=
+(
+v2
+t
+)2
+·
+dmmseA(v2
+t)
+dv2
+t
+−
+[
+mmseA
+(
+v2
+t
+)]2
+[v2
+t− mmseA (v2
+t )]2 . (75)
+To show the monotonicity of Φ⋆, we only need to show that
+dmmseA
+(
+v2
+t
+)
+dv2
+t
+≥
+(
+mmseA
+(
+v2
+t
+)
+v2
+t
+)2
+. (76)
+The derivative of mmseA
+(
+v2
+t
+)
+can be computed based on the
+deﬁnition below (39). After some manipulations, the inequality
+in (76) becomes the inequality below
+1
+N
+N∑
+i=1
+( σ2
+v2
+t λ2
+i + σ2
+)2
+≥
+(
+1
+N
+N∑
+i=1
+σ2
+v2
+t λ2
+i + σ2
+)2
+, (77)
+which holds due to Jensen’s inequality.
+
+=== PDF PAGE 12 ===
+12
+The monotonicity of Ψ⋆ can be proved in a similar way.
+Again, we only need to prove that
+dmmseB
+(
+τ 2
+t
+)
+dτ 2
+t
+≥
+(
+mmseB
+(
+τ 2
+t
+)
+τ 2
+t
+)2
+. (78)
+Note that mmseB
+(
+τ 2
+t
+)
+= E
+{
+[X− E{X|Rt = X+τtZ}]2
+}
+.
+From [36, Proposition 9], we have
+dmmseB
+(
+τ 2
+t
+)
+dτ 2
+t
+=
+E
+{
+var{X|Rt}2
+}
+(τ 2
+t )2 . (79)
+Applying Jensen’s inequality, we have
+E
+{
+var
+{
+X|Rt}2}
+≥
+[
+E
+{
+var
+{
+X|Rt}}]2
+=
+[
+mmseB
+(
+τ 2
+t
+)]2
+,
+(80)
+which, together with (79), proves (78).
+APPENDIX D
+PROOF OF THEOREM 3
+A. Monotonicity of {v2
+t} and{τ 2
+t}
+We ﬁrst show that {v2
+t} decrease monotonically. From
+(39b),
+lim
+τ 2→∞
+Ψ⋆(τ 2) = lim
+τ 2→∞
+τ 2· mmseB(τ 2)
+τ 2− mmse(τ 2) (81a)
+= lim
+τ 2→∞
+mmseB(τ 2) (81b)
+= E{X 2} (81c)
+= v2
+0, (81d)
+where (81d) is from the initialization of the SE. Since
+Φ⋆(v2
+0) <∞ and Ψ⋆ is a monotonically increasing function,
+we have v2
+1 = Ψ⋆ (
+Φ⋆(v2
+0)
+)
+< v 2
+0.
+We now proceed by induction. Suppose that v2
+t < v 2
+t−1.
+Since both Φ⋆ and Ψ⋆ are monotonically increasing, we have
+Ψ⋆ (
+Φ⋆(v2
+t )
+)
+< Ψ⋆ (
+Φ⋆(v2
+t−1)
+)
+, which, together with the SE
+relationship v2
+t+1 = Ψ⋆ (
+Φ⋆(v2
+t )
+)
+, leads to v2
+t+1 < v 2
+t . Hence,
+{v2
+t} is a monotonically decreasing sequence.
+The monotonicity of the sequence {τ 2
+t} follows directly
+from the monotonicity of {v2
+t}, the SE τ 2
+t = Φ⋆(v2
+t ), and
+the fact that Φ⋆ is a monotonically increasing function.
+B. Fixed Point Equation of SE
+Similar to (34),
+mmseA
+(
+v2
+t
+)
+≡ 1
+N
+N∑
+i=1
+v2
+t· σ2
+v2
+t· λ2
+i + σ2→ E
+{ v2
+t· σ2
+v2
+t· λ2 + σ2
+}
+,
+(82)
+where the expectation is w.r.t. the asymptotic eigenvalue
+distribution of ATA. From the deﬁnition of the η-transform
+in [32, pp. 40], we can write
+v2
+t· ηATA
+( v2
+t
+σ2
+)
+= E
+{ v2
+t· σ2
+v2
+t· λ2 + σ2
+}
+, (83)
+where ηATA denotes the η-transform. For convenience, we
+further rewrite (83) as
+γ· ηATA (γ) = 1
+σ2· mmseA
+(
+v2
+t
+)
+. (84)
+where γ ≡ v2
+t /σ2. Note the following relationship between
+the η-transform and the R-transform [32, Eqn. (2.74)]
+RATA (−γ· ηATA (γ)) = 1
+γ· ηATA (γ)− 1
+γ . (85)
+Substituting (84) into (85) yields
+RATA
+(
+− 1
+σ2 mmseA
+(
+v2
+t
+))
+= σ2
+mmseA (v2
+t )− σ2
+v2
+t
+= σ2 1
+τ 2
+t
+,
+(86)
+where the second equality in (86) is from (36a) and (39a). We
+can rewrite the SE equations in (39a) and (39b) as follows
+mmseA
+(
+v2
+t
+)
+=
+( 1
+τ 2
+t
++ 1
+v2
+t
+)−1
+, (87a)
+mmseB
+(
+τ 2
+t
+)
+=
+( 1
+v2
+t+1
++ 1
+τ 2
+t
+)−1
+. (87b)
+At the stationary point, we have
+mmseA
+(
+v2
+∞
+)
+= mmseB
+(
+τ 2
+∞
+)
+. (88)
+Substituting (88) into (86), we get the desired ﬁxed point
+equation
+1
+τ 2∞
+= 1
+σ2· RATA
+(
+− 1
+σ2· mmseB
+(
+τ 2
+∞
+))
+. (89)
+REFERENCES
+[1] S. M. Kay, Fundamentals of statistical signal processing: estimation
+theory. NJ: Prentice-Hall PTR, 1993.
+[2] D. L. Donoho, A. Maleki, and A. Montanari, “Message-passing al-
+gorithms for compressed sensing,” in Proc. Nat. Acad. Sci. , vol. 106,
+no. 45, Nov. 2009.
+[3] M. Bayati and A. Montanari, “The dynamics of message passing on
+dense graphs, with applications to compressed sensing,” IEEE Trans.
+Inf. Theory, vol. 57, no. 2, pp. 764–785, Feb. 2011.
+[4] M. Bayati, M. Lelarge, A. Montanari et al. , “Universality in polytope
+phase transitions and message passing algorithms,” The Annals of
+Applied Probability, vol. 25, no. 2, pp. 753–822, 2015.
+[5] T. Richardson and R. Urbanke, “The capacity of low-density parity-
+check codes under message-passing decoding,” IEEE Trans. Inf. Theory,
+vol. 47, no. 2, pp. 599–618, Feb. 2001.
+[6] S. ten Brink, “Convergence behavior of iteratively decoded parallel
+concatenated codes,” IEEE Trans. Inf. Theory, vol. 49, no. 10, pp. 1727–
+1737, Oct 2001.
+[7] D. Donoho, A. Maleki, and A. Montanari, “Message passing algorithms
+for compressed sensing: I. motivation and construction,” in Information
+Theory (ITW 2010, Cairo), 2010 IEEE Information Theory Workshop
+on, Jan 2010, pp. 1–5.
+[8] D. Guo and S. Verdu, “Randomly spread CDMA: asymptotics via
+statistical physics,” IEEE Trans. Inf. Theory , vol. 51, no. 6, pp. 1983–
+2010, Jun. 2005.
+[9] S. Rangan, V . Goyal, and A. K. Fletcher, “Asymptotic analysis of MAP
+estimation via the replica method and compressed sensing,” in Advances
+in Neural Information Processing Systems , 2009, pp. 1545–1553.
+[10] A. Tulino, G. Caire, S. Verdu, and S. Shamai, “Support recovery
+with sparsely sampled free random matrices,” IEEE Trans. Inf. Theory ,
+vol. 59, no. 7, pp. 4243–4271, Jul. 2013.
+[11] C.-K. Wen and K.-K. Wong, “Analysis of compressed sensing with
+spatially-coupled orthogonal matrices,” arXiv preprint arXiv:1402.3215,
+2014.
+[12] S. Wu, L. Kuang, Z. Ni, J. Lu, D. Huang, and Q. Guo, “Low-complexity
+iterative detection for large-scale multiuser MIMO-OFDM systems using
+approximate message passing,” IEEE J. Sel. Topics Signal Process. ,
+vol. 8, no. 5, pp. 902–915, Oct 2014.
+[13] C. Jeon, R. Ghods, A. Maleki, and C. Studer, “Optimality of large MIMO
+detection via approximate message passing,” in Proc. IEEE Int. Symp.
+Inf. Theory (ISIT) , June 2015, pp. 1227–1231.
+
+=== PDF PAGE 13 ===
+13
+[14] C.-K. Wen, S. Jin, K.-K. Wong, C.-J. Wang, and G. Wu, “Joint channel
+and data estimation for large-MIMO systems with low-precision ADCs,”
+in Proc. IEEE Int. Symp. Inf. Theory (ISIT) , June 2015, pp. 1237–1241.
+[15] C. Rush, A. Greig, and R. Venkataramanan, “Capacity-achieving sparse
+regression codes via approximate message passing decoding,” in Proc.
+IEEE Int. Symp. Inf. Theory (ISIT) , June 2015, pp. 2016–2020.
+[16] J. Barbier and F. Krzakala, “Approximate message-passing decoder
+and capacity-achieving sparse superposition codes,” arXiv preprint
+arXiv:1503.08040, 2015.
+[17] J. Vila, P. Schniter, S. Rangan, F. Krzakala, and L. Zdeborov ´a, “Adaptive
+damping and mean removal for the generalized approximate mes-
+sage passing algorithm,” in Acoustics, Speech and Signal Processing
+(ICASSP), 2015 IEEE International Conference on , 2015, pp. 2021–
+2025.
+[18] A. Manoel, F. Krzakala, E. W. Tramel, and L. Zdeborov ´a, “Sparse
+estimation with the swept approximated message-passing algorithm,”
+arXiv preprint arXiv:1406.4311 , 2014.
+[19] S. Rangan, A. K. Fletcher, P. Schniter, and U. Kamilov, “Inference
+for generalized linear models via alternating directions and Bethe free
+energy minimization,” arXiv preprint arXiv:1501.01797 , 2015.
+[20] Y . Kabashima and M. Vehkapera, “Signal recovery using expectation
+consistent approximation for linear observations,” in Proc. IEEE Int.
+Symp. Inf. Theory (ISIT) , Jun. 2014, pp. 226–230.
+[21] B. Cakmak, O. Winther, and B. Fleury, “S-AMP: Approximate message
+passing for general matrix ensembles,” in Information Theory Workshop
+(ITW), 2014 IEEE , Nov. 2014, pp. 192–196.
+[22] Q. Guo and J. Xi, “Approximate message passing with unitary transfor-
+mation,” arXiv preprint arXiv:1504.04799 , 2015.
+[23] B. C ¸ akmak, M. Opper, B. H. Fleury, and O. Winther, “Self-averaging
+expectation propagation,” arXiv preprint arXiv:1608.06602 , 2016.
+[24] M. Opper, B. Cakmak, and O. Winther, “A theory of solving TAP
+equations for ising models with general invariant random matrices,”
+Journal of Physics A: Mathematical and Theoretical , vol. 49, no. 11, p.
+114002, 2016.
+[25] E. Bostan, M. Unser, and J. P. Ward, “Divergence-free wavelet frames,”
+IEEE Signal Process. Lett. , vol. 22, no. 8, pp. 1142–1146, 2015.
+[26] X. Yuan, J. Ma, and L. Ping, “Energy-spreading-transform based MIMO
+systems: Iterative equalization, evolution analysis, and precoder opti-
+mization,” IEEE Trans. Wireless Commun. , vol. 13, no. 9, pp. 5237–
+5250, Sept. 2014.
+[27] J. Ma, X. Yuan, and L. Ping, “Turbo compressed sensing with partial
+DFT sensing matrix,” IEEE Signal Process. Lett. , vol. 22, no. 2, pp.
+158–161, Feb. 2015.
+[28] J. Ma and L. Ping, “Orthogonal AMP,” arXiv preprint
+arXiv:1602.06509, 2016.
+[29] S. Rangan, P. Schniter, and A. Fletcher, “Vector approximate message
+passing,” arXiv preprint arXiv:1610.03082 , 2016.
+[30] J. Ma and L. Ping, “Orthogonal AMP for compressed sensing with
+unitarily-invariant matrices,” in 2016 IEEE Information Theory Work-
+shop (ITW), Sept 2016, pp. 280–284.
+[31] D. Donoho, “De-noising by soft-thresholding,” IEEE Trans. Inf. Theory,
+vol. 41, no. 3, pp. 613–627, May 1995.
+[32] A. M. Tulino and S. Verd ´u, Random matrix theory and wireless
+communications. Now Publishers Inc, 2004, vol. 1.
+[33] C. Stein, “A bound for the error in the normal approximation to the
+distribution,” in Proc. 6th Berkeley Symp. Math. Statist. Probab. , 1972.
+[34] J. Vila and P. Schniter, “Expectation-maximization Gaussian-mixture
+approximate message passing,” IEEE Trans. Signal Process. , vol. 61,
+no. 19, pp. 4658–4672, Oct. 2013.
+[35] M. Vehkapera, Y . Kabashima, and S. Chatterjee, “Analysis of regularized
+LS reconstruction and random matrix ensembles in compressed sensing,”
+in Proc. IEEE Int. Symp. Inf. Theory (ISIT) , Jun. 2014, pp. 3185–3189.
+[36] D. Guo, Y . Wu, S. Shamai, and S. Verdu, “Estimation in Gaussian noise:
+properties of the minimum mean-square error,” IEEE Trans. Inf. Theory,
+vol. 57, no. 4, pp. 2371–2385, Apr. 2011.
+[37] C. Guo and M. E. Davies, “Near optimal compressed sensing without
+priors: parametric SURE approximate message passing,” IEEE Trans.
+Signal Process., vol. 63, no. 8, pp. 2130–2141, 2015.
+[38] Z. Xue, J. Ma, and X. Yuan, “D-OAMP: A denoising-based sig-
+nal recovery algorithm for compressed sensing,” arXiv preprint
+arXiv:1610.05991, 2016.
+[39] J. Ma, X. Yuan, and L. Ping, “On the performance of turbo signal
+recovery with partial DFT sensing matrices,” IEEE Signal Process. Lett.,
+vol. 22, no. 10, pp. 1580–1584, Oct 2015.
+[40] H. A. Van der V orst, Iterative Krylov methods for large linear systems .
+Cambridge University Press, 2003, vol. 13.
+[41] M. Lustig, D. L. Donoho, J. M. Santos, and J. M. Pauly, “Compressed
+sensing MRI,” IEEE Signal Process. Mag. , vol. 25, no. 2, pp. 72–82,
+March 2008.
+[42] D. Donoho, I. Johnstone, and A. Montanari, “Accurate prediction of
+phase transitions in compressed sensing via a connection to minimax
+denoising,” IEEE Trans. Inf. Theory , vol. 59, no. 6, pp. 3396–3433,
+June 2013.
+[43] F. Hiai and D. Petz, Asymptotic freeness almost everywhere for random
+matrices. University of Aarhus. Centre for Mathematical Physics and
+Stochastics (MaPhySto)[MPS], 1999.
+[44] S. Rangan. Generalized approximate message passing for estimation
+with random linear mixing. Preprint, 2010. [Online]. Available:
+http://arxiv.org/abs/1010.5141.

@@ -1,0 +1,2040 @@
+=== PDF PAGE 1 ===
+1
+DNN-Aided Block Sparse Bayesian Learning for
+User Activity Detection and Channel Estimation in
+Grant-Free Non-Orthogonal Random Access
+Zhaoji Zhang, Ying Li, Member , IEEE, Chongwen Huang, Qinghua Guo, Senior Member , IEEE, Chau Yuen,
+Senior Member , IEEE, and Yong Liang Guan, Senior Member , IEEE
+Abstract—In the upcoming Internet-of-Things (IoT) era, the
+communication is often featured by massive connection, sporadic
+transmission, and small-sized data packets, which poses new
+requirements on the delay expectation and resource allocation
+efﬁciency of the Random Access (RA) mechanisms of the IoT
+communication stack. A grant-free non-orthogonal random ac-
+cess (NORA) system is considered in this paper, which could si-
+multaneously reduce the access delay and support more Machine
+Type Communication (MTC) devices with limited resources. In
+order to address the joint user activity detection (UAD) and
+channel estimation (CE) problem in the grant-free NORA system,
+we propose a deep neural network-aided message passing-based
+block sparse Bayesian learning (DNN-MP-BSBL) algorithm. In
+the DNN-MP-BSBL algorithm, the iterative message passing
+process is transferred from a factor graph to a deep neural
+network (DNN). Weights are imposed on the messages in the
+DNN and trained to minimize the estimation error. It is shown
+that the trained weights could alleviate the convergence problem
+of the MP-BSBL algorithm, especially on crowded RA scenarios.
+Simulation results show that the proposed DNN-MP-BSBL algo-
+rithm could improve the UAD and CE accuracy with a smaller
+number of iterations, indicating its advantages for low-latency
+grant-free NORA systems.
+Index Terms—deep neural network, sparse Bayesian learning,
+grant-free, user activity detection, channel estimation
+I. I NTRODUCTION
+P
+ROVIDING efﬁcient support for the Internet of Things
+(IoT) and Industry IoT (IIoT) [1] is one of the major
+objectives for the ﬁfth generation (5G) and the next-generation
+6G cellular wireless communication [2]. In order to realize the
+physical information exchange in IoT, Machine-to-Machine
+(M2M) communication is anticipated to support billions of
+Machine Type Communication (MTC) devices [3]. In addi-
+tion, for most IoT applications such as smart metering and
+intelligent transportation, the MTC devices are intermittently
+activated with a low probability, and the size of the data
+packets transmitted by active devices is relatively small [4],
+[5]. Therefore, the random access (RA) process for M2M
+communications in IoT is characterized by massive connection
+and sporadic transmission, as well as small-sized data packets.
+Confronted with the characteristics described above, con-
+ventional orthogonal multiple access (OMA) schemes, where
+orthogonal resource blocks (RBs) are assigned to each de-
+vice, becomes infeasible due to its extremely low resource
+efﬁciency. To address this problem, different RA schemes
+have been proposed, where activated devices can share or
+contend for the uplink resources, and these RA schemes can be
+generally categorized into two types: grant-based RA [6]–[12]
+and grant-free RA [13]–[28].
+A. Grant-Based Random Access
+In grant-based RA schemes, activated users contend for the
+RBs by transmitting a preamble sequence to BS. At the BS, a
+RB is assigned to the activated user, whose preamble sequence
+is received and accepted by the BS.
+One problem with the grant-based RA schemes is that the
+RB is wasted when more than one active device transmit the
+same preamble sequence. This problem is worsened with the
+massive connection in crowded RA scenarios. Some solutions
+were proposed to alleviate the RA congestion by reducing the
+collision probability, such as the Access Class Barring (ACB)
+scheme [6], delicate splitting of the RA preamble set [7],
+and automatic conﬁguration of the RA parameters [8]. Other
+works addressed the preamble shortage [9], [10] or the early
+preamble collision detection to avoid RB wastage [11], [12].
+However, the RB wastage cannot be fully avoided by grant-
+based RA schemes, especially in crowded RA scenarios, which
+results in low resource efﬁciency. Furthermore, a handshaking
+process is required between the BS and active devices to
+recognize the contention winner, which undermines the uplink
+transmission efﬁciency of small data packets.
+B. Grant-Free Random Access
+In grant-free RA schemes, activated users directly transmit
+data packets with encapsulated pilot sequences over shared
+uplink resources. Therefore, no grant is required from the
+BS for uplink transmission, which improves the transmission
+efﬁciency, especially for small-sized data packets. Note that
+in grant-based RA, the BS can acquire the ID of active users
+during the handshaking process, so that the activity of each
+user can be easily recognized. By contrast, in grant-free RA,
+the BS has no priori knowledge of each user’s activity before
+the transmission of data packets. Therefore, it is necessary to
+exploit encapsulated pilot sequences for user activity detection
+(UAD) and channel estimation (CE), so that the BS can
+identify each active user and further accomplish data decoding.
+Different grant-free RA schemes are explained as follows.
+1) Slotted ALOHA based grant-free RA Schemes: In slot-
+ted ALOHA based grant-free RA schemes, activated devices
+directly transmit data packets in randomly chosen slots while
+data packets experiencing no slot collision can be correctly
+arXiv:1910.02953v1  [cs.IT]  7 Oct 2019
+
+=== PDF PAGE 2 ===
+2
+decoded [13]. In order to improve the throughput of slotted
+ALOHA protocols, the contention resolution diversity slotted
+ALOHA (CRDSA) protocol [14] was proposed, where each
+activated device sends two replicas of the same data packet
+and successive interference cancellation (SIC) technique is
+employed to recover the collided replicas. The CRDSA pro-
+tocol introduced a (2,1) repetition code to the conventional
+slotted ALOHA protocol while the coded slotted ALOHA
+(CSA) protocol [15] further combined the general packet
+erasure codes with SIC. According to the analogy between the
+channel codes and the data packet replica, the frameless IRSA
+protocol [16] and the spatially coupled RA protocol [17] were
+proposed, corresponding to the rateless codes and the spatially
+coupled LDPC codes, respectively.
+Although different modiﬁcations have been proposed to
+improve the throughput of slotted ALOHA protocols, the
+severe slot collision always leads to the failure of SIC, which
+hinders the application of slotted ALOHA based protocols in
+crowded RA scenarios.
+2) Compressed sensing-based grant-free RA schemes: Due
+to the sporadic transmission feature of M2M communications,
+the RA process can be formulated as a sparse signal recovery
+problem. Therefore, different compressed sensing (CS) algo-
+rithms employ pilot sequences to accomplish the user activity
+detection (UAD) and/or channel estimation (CE) problem. For
+example, a block CS algorithm [18] was proposed for dis-
+tributed UAD and resource allocation, based on the clustering
+of devices. The joint UAD and CE problem was addressed
+by a modiﬁed Bayesian compressed sensing algorithm [19]
+for the cloud radio access network (C-RAN). In addition, the
+powerful approximate message passing (AMP) algorithm was
+employed for the joint UAD and CE problem when the BS
+is equipped either with a single antenna [20], [21] or with
+multiple antennas [22], [23].
+3) Sparse Bayesian learning-based grant-free RA schemes:
+Different from CS-based RA schemes, the sparse Bayesian
+learning (SBL) algorithm further considers the prior hyper-
+parameter of the sparse signal to address the joint UAD and
+CE problem. The Expectation Maximization (EM) method
+was employed by the AMP-SBL algorithm [24] to update
+the sparse signal and the hyper-parameter iteratively. A least
+square (LS)-based AMP-SBL (LS-AMP-SBL) algorithm [25]
+was proposed to recover the sparse signal in three steps, i.e.,
+the AMP-SBL ﬁrst provides a coarse estimate, followed by
+the derivation for the support of the sparse channel, while the
+ﬁnal estimate is derived by the support and the LS estimation.
+The joint UAD and data decoding task for a grant-free NOMA
+system was modeled and addressed by a deep auto-encoder in
+[26], which exploits the prior information of user activation
+probability and optimizes the choice of spreading signature.
+However, this auto-encoder is trained based on known channel
+state information at receiver and a sufﬁciently static channel,
+which impedes it application to the rapidly changing envi-
+ronment. Recently, a message-passing receiver design was
+proposed for the joint channel estimation and data decoding in
+uplink grant-free SCMA systems [27], exploiting variational
+Bayesian inference to extract the sparse signals. In addition, a
+message passing-based block sparse Bayesian learning (MP-
+TABLE I
+FREQUENTLY USED ABBREVIATIONS AND CORRESPONDING MEANING .
+Abbr. Meaning
+DNN Deep Neural Network
+RA Random Access
+NORA Non-Orthogonal Random Access
+UAD User Activity Detection
+CE Channel Estimation
+MP-BSBL [28] Message Passing-Based Block
+Sparse Bayesian Learning.
+DNN-MP-BSBL DNN-Aided MP-BSBL
+MF Mean Field
+LDS Low-Density Signature
+NMSE Normalized Mean Square Error
+BSBL) algorithm [28] was proposed for a grant-free NOMA
+system. In both [27] and [28], non-zero elements in the sparse
+signals are updated with Gaussian message passing [29]–[31]
+and the hyper-parameters are updated with mean-ﬁeld (MF)
+message passing [32].
+The Gaussian message passing [29]–[31] is constructed on
+a factor graph, and it is proven to be optimal on cycle-free
+graphs. However, this factor graph is densely-connected under
+crowded RA scenarios, which causes correlated messages and
+convergence problem for the Gaussian message passing in MP-
+BSBL algorithm [28]. As a result, the CE and UAD accuracy
+of the MP-BSBL algorithm is undermined under crowded
+RA scenarios. To address this problem, we impose weighting
+parameters on the Gaussian messages and MF message update
+in the MP-BSBL algorithm. In order to facilitate the training
+of these weighting parameters, the edge-type message passing
+process on the factor graph is transformed to a node-type
+one in the deep neural network (DNN) [33], [34]. Then these
+weights in the DNN can be trained in a data-driven manner to
+mitigate the message correlation and the convergence problem
+in the MP-BSBL algorithm. In this way, higher UAD and CE
+accuracy can be achieved for crowded RA scenarios.
+C. Contributions
+In this paper, we focus on an orthogonal frequency division
+multiplexing system with low-density signature (LDS-OFDM)
+[35], [36], where devices perform grant-free RA once they are
+activated. A deep neural network-aided message passing-based
+block sparse Bayesian learning (DNN-MP-BSBL) algorithm
+is proposed in this paper to perform joint UAD and CE for
+the grant-free RA procedure. The iterative message passing
+process of the MP-BSBL algorithm [28] is transferred from
+a factor graph to a neural network. Weights are imposed
+on the messages passing in the neural network and further
+trained to minimize the estimation error. It is shown that the
+trained weights could alleviate the convergence problem of
+the MP-BSBL algorithm, especially in crowded RA scenarios.
+As a result, the DNN-MP-BSBL algorithm could improve the
+UAD and CE accuracy with a smaller number of iterations.
+In addition, the training of the DNN is conducted ofﬂine,
+and negligible online computational complexity is additionally
+
+=== PDF PAGE 3 ===
+3
+Encoder
+&
+Symbol
+Mapper
+LDS
+Spreader
+LDS
+Spreader
+OFDM
+Modulator
+&
+CP Insertion CP Removal
+&
+OFDM
+De-modulator
+Multi-user 
+Detection
+Encoder
+&
+Symbol
+Mapper
+Received symbol matrix
+Decoder
+&
+Symbol
+De-mapper
+Decoder
+&
+Symbol
+De-mapper
+1
+ˆb
+ˆ
+Kb
+1b
+Kb
+Joint User Activity Detection 
+and Channel Estimation
+DNN-MP-BSBL
+KNH
+1c
+Kc
+1ˆc
+ˆKc
+Pilot
+Insertion
+[  ]T T T
+K K Kx p c
+1 1 1[  ]T T Tx p c
+user #1
+user #K
+sub-carrier #1
+sub-carrier #N
+1s
+Ks
+Pilot
+Insertion
+OFDM
+Modulator
+&
+CP Insertion
+LNY
+Separator
+Received pilot matrix
+t
+P
+LNY
+Received data matrix
+c
+c
+LNY
+DNN
+ˆh
+Joint UAD and CE result
+Pilot
+Matrix
+tLKP
+left degree
+cd
+rd
+right degree
+activity
+activity
+1
+K
+1x
+1x
+Kx
+Kx
+N sub-carriers
+spread on Dc sub-carriers
+cd
+x
+Encoder
+&
+Symbol
+Mapper
+LDS
+Spreader
+OFDM
+Modulator
+&
+CP Insertion
+CP Removal
+&
+OFDM
+De-modulator
+Encoder
+&
+Symbol
+Mapper
+Decoder
+&
+Symbol
+De-mapper
+Decoder
+&
+Symbol
+De-mapper
+1
+ˆb
+ˆ
+Kb
+1b
+Kb
+1c
+Kc
+1ˆc
+ˆKc
+Pilot
+Insertion
+[  ]T T T
+K K Kx p c
+1 1 1[  ]T T Tx p c
+Tx #1
+Tx #K
+1s
+Pilot
+Insertion
+OFDM
+Modulator
+&
+CP Insertion
+Received data matrix
+DNN
+ˆh
+Joint UAD and CE result
+activity
+activity
+1
+K
+1x
+1x
+Kx
+N sub-carriers
+spread on Dc sub-carriers
+cd
+x
+LDS
+Spreader
+Ks
+Kx
+n
+Rx
+L N L K K N N L   Y X H W
+c
+c
+LNY
+Multi-user 
+Detection
+Joint User Activity Detection 
+and Channel Estimation
+DNN-MP-BSBL Received pilot matrix
+t
+P
+LNY
+Separator
+Pilot
+Matrix
+tLKP
+LNY
+2y
+1y
+Ny
+3y
+LDS-OFDM
+Fig. 1. LDS-OFDM based grant-free NORA system model. The joint UAD and CE problem is sloved by the proposed DNN-MP-BSBL algorithm, which
+processes the ﬁrst Lt received signals of the pilot sequences, while the MUD module is employed to process the remaining Lc received signals to detect the
+data transmitted from active users.
+sacriﬁced for the performance improvement by the DNN.
+This guarantees the feasibility of the proposed DNN-MP-
+BSBL algorithm for crowded NORA systems with real-time
+implementation and low-latency requirement.
+The rest of this paper is organized as follows. The system
+model and the MP-BSBL algorithm are presented in Section
+II. The DNN structure for the DNN-MP-BSBL algorithm is
+illustrated in Section III, where the weighted message passing
+is explained in details. Simulation results are given in Section
+IV to verify the UAD and CE accuracy of the proposed DNN-
+MP-BSBL algorithm. Finally, Section V concludes this paper.
+For reading convenience, the frequently-used abbreviations in
+this paper are summarized in Table. I.
+II. J OINT UAD AND CE BY MP-BSBL
+A. System Model
+As shown in Fig. 1, a LDS-OFDM communication system
+is considered. It is assumed that there are N sub-carriers and
+K users, while each user is activated with probability Pa.
+For each active user k, its binary information sequence bk is
+encoded and further mapped into a QAM symbol sequence
+ck∈ CLc×1 with length Lc. One unique pilot sequence pk
+with lengthLt is allocated for userk, and pk is further inserted
+into the transmitted symbol sequence xk, i.e., xk = [pT
+k cT
+k ]T .
+Therefore, the length L of xk is L = Lt +Lc. Then each
+symbol in xk is spread onto dc sub-carriers, using a low-
+density spreading pattern sk, which is a sparse vector with
+length N and dc non-zero elements. In this way, the same
+sequence xk is transmitted on dc different sub-carriers.
+The LDS spreaders for all the K users are represented by
+an LDS spreading matrix S = [s1,..., sK], which is assumed
+known at the receiver. We consider a regular LDS spreading
+matrix, i.e., the column degree dc and the row degree dr in S
+are constant. According to the regular structure of S, each sub-
+carrier is shared by dr potential users, with dr = (K/N)dc.
+When multiple users are activated on the same sub-carrier,
+the grant-free RA procedure is conducted in a non-orthogonal
+multiple access (NOMA) manner. Therefore, the system model
+in Fig. 1 is termed a LDS-OFDM based grant-free non-
+orthogonal random access (NORA) system.
+Before transmission, the cyclic preﬁx (CP) is inserted after
+the OFDM modulator to avoid the inter-symbol interference
+(ISI). At the receiver, the CP is removed, and after the
+OFDM demodulator, we obtain the frequency-domain received
+signal matrix YL×N = [y1,..., yn,..., yN], where yn is the
+received signal vector representing the L received symbols on
+the n-th sub-carrier.
+Now we discuss the channel between the input and the
+output of this LDS-OFDM system. The transmitted sequences
+of all the K users are organized in an input matrix XL×K =
+[x1,..., xk,..., xK], while the user activity is equivalently
+incorporated in the channel matrix HK×N . Speciﬁcally, we
+consider the effective channel gain vector hk of user k to
+integrate the actual channel gain vector gk with the sparse
+
+=== PDF PAGE 4 ===
+4
+spreading pattern sk. That is,
+hk = [h1k,...,h nk,...,h Nk ]T
+= [g1ks1k,...,g nksnk,...,g NksNk ]T,
+(1)
+where then-th elementgnk of gk represents the actual channel
+gain of user k on the n-th sub-carrier, and the n-th element
+snk of sk is non-zero if and only if user k chooses to conduct
+transmission on the n-th sub-carrier. Therefore, the effective
+channel gain vector hk is a sparse vector with dc non-zero
+elements. Furthermore, we incorporate user activity in the
+channel matrix, i.e., HK×N = [α1h1,...,α KhK]T , where the
+activity indicator αk = 0 if user k is inactive. Otherwise,
+αk = 1. In this way, we can obtain
+YL×N = XL×KHK×N + WN×L, (2)
+whereL =Lt+Lc, the (l,n )-th entry of Y represents thel-th
+received symbol on the n-th sub-carrier, the (l,k )-th entry of
+X represents the l-th transmitted symbol of the k-th user. The
+entries in the additive white Gaussian noise (AWGN) matrix
+W are assumed i.i.d with noise variance σ2
+w.
+According to the composition of xk, Y can be decomposed
+as YL×N =
+[
+(YP
+Lt×N)T (Yc
+Lc×N)T ]T
+, where YP and Yc
+represent the received signal matrices with respect to (w.r.t.)
+the pilot sequences and the data sequences, respectively. After
+the separator, YP is further processed by the proposed DNN-
+MP-BSBL algorithm for the joint UAD and CE. According
+to the output of the DNN-MP-BSBL algorithm ˆhDNN, Yc is
+fed into the multi-user detection (MUD) module to detect and
+decode the information bits of active users.
+B. Problem F ormulation
+In this paper, we mainly consider the received pilot matrix
+YP and solve the joint UAD and CE problem. Analogous to
+(2), YP can be formulated as
+YP
+Lt×N = PLt×KHK×N + WN×Lt, (3)
+where the (l,n )-th entry of YP represents the l-th received
+signal on the n-th sub-carrier, and the (l,k )-th entry of P
+represents the l-th pilot symbol of the k-th user. The pilot
+matrix P is assumed known to the receiver. Then we perform
+vectorization on the transpose of YP as in [28],
+y =vec([YP ]T ) = (P⊗ IN)vec(HT ) + w
+=
+
+
+p1,1IN p1,2IN ··· p1,KIN
+p2,1IN p2,2IN ··· p2,KIN
+... ... ... ...
+pLt,1IN pLt,2IN ··· pLt,KIN
+
+
+  
+Ps
+
+
+α1h1
+α2h2
+...
+αKhK
+
+
+  
+hs
++w
+(a)
+= P
+
+
+α1h1
+α2h2
+...
+αKhK
+
+
+  
+h
++w,
+(4)
+where Ps = P⊗ IN ,⊗ represents the Kronecker product,
+hs = vec(HT ), and hk is the effective channel gain vector
+of user k on N sub-carriers. According to the LDS spreading
+matrix S, the transmitted sequence of each user is only spread
+onto dc sub-carriers. Therefore, as explained in (1), N−dc
+elements in hk are zero, and the positions of the zero elements
+are known to the BS. We further simplify hs by eliminating
+the zeros according to S. Accordingly, the columns in Ps
+corresponding to the zeros in hs are also removed. Finally,
+we obtain the simpliﬁed version of (3) in equation ( a) of
+(4), where P and hk are obtained from Ps and hk by zero
+elimination. According to (4), the joint UAD and CE problem
+is formulated as
+Solve: detect αk and estimate hk if αk is detected as 1,∀k
+Given: y and P
+(5)
+Remark 1: To enable this joint UAD and CE task, each
+active user transmits its unique pilot sequence before its data
+transmission. A common practice is to employ the Zadoff-
+Chu (ZC) sequences [37] as pilot sequences, which is also
+considered in this work. One ZC sequence with length Lt is
+generated as follows,
+zu(n) = exp{−iπun(n + 1)/Lt}, 0≤n<L t, (6)
+where i2 =−1, the sequence length Lt is a prime number,
+and u∈ [1,...,L t− 1] is the root of zu(n). When the root
+u is ﬁxed, we can generate Nu =⌊Lt/NSF⌋ different pilot
+sequences by cyclically shifting one existing sequence byNSF
+elements. Therefore, whenNSF is set to 1,Lt(Lt−1) different
+pilot sequences can be generated for the users.
+C. MP-BSBL Algorithm [28]
+The recovery of the block sparse signal h in (4) can be
+addressed by the MP-BSBL algorithm [28], which is based
+on two types of low-complexity message passing algorithms.
+The Gaussian message passing is employed for updating the
+estimated channel gain and the mean ﬁeld (MF) message
+passing is adopted to approximate the hyper-parameters related
+to the user activity. The assumptions employed by the MP-
+BSBL algorithm are detailed as follows.
+For user k, the distribution of the channel gains hk on dc
+sub-carriers is assumed conditioned on a hyper-parameter γk.
+Speciﬁcally, the channel gains are assumed independently and
+identically distributed (i.i.d) with complex Gaussian distribu-
+tion, i.e., hk(γk)∼CN (0,γ−1
+k Idc). In addition, the reciprocal
+of the estimated hyper-parameter is compared with a pre-
+deﬁned threshold γth to determine the user activity. If ˆγ−1
+k is
+smaller than γth, this user is detected as inactive. Otherwise,
+this user is detected as active. The hyper-parameter γk is
+assumed to follow a Gamma distribution [27], [28], [38]. The
+noise precision λ = 1/σ2
+w is unknown at the receiver but
+assumed with a priori probabilityp(λ). With these assumptions
+above, the joint a posterior probability is factorized as follows
+
+=== PDF PAGE 5 ===
+5
+1
+f
+k
+f
+K
+f
+
+1yf
+nyf
+LNtyf
+1
+f
+n
+f
+LNt
+f
+,1Kh
+, cKdh
+1,1h
+1, cdh
+, ckdh
+,1kh
+,Kd chf
+1,dchf
+1,1hf
+K,1hf
+,1khf
+,kd chf
+1
+k
+K
+f
+1z
+nz
+tLNz
+degree degree
+rd
+tL
+Fig. 2. Factor graph for the message passing in the MP-BSBL algorithm [28].
+p(h,γ,λ|y)∝p(y|h,λ )p(h|γ)p(λ)p(γ)
+=p(λ)
+LtN∏
+n=1
+p
+(
+yn|h,λ
+)K∏
+k=1
+dc∏
+d=1
+p(hk,d|γk)p(γk),
+(7)
+where p(λ) ∝ 1/λ, p(yn|h,λ ) = CN (yn; pT
+n h,λ−1),
+pT
+n is the n-th row of matrix P in (4), p(hk,d|γk) =
+CN (hk,d; 0,γ−1
+k ), p(γk) = Ga(γk;ak,bk), and p(γ) =∏dc
+k=1p(γk),CN (x;µ,σ 2) represents the complex Gaussian
+distribution probability density function (pdf) of x with mean
+µ and variance σ2, while Ga(x;a,b ) represents the Gamma
+distribution pdf of x with parameters a and b. According to
+the variational Bayesian inference theory [38], the parameters
+a and b are usually assumed in the order of 10−4. Further
+details are referred to [27], [28].
+Accoring to the factorization in (7), a factor graph can be
+established for the MP-BSBL algorithm, which is illustrated in
+Fig. 2. In Fig. 2, f(λ),fhk,d
+(hk,d,γk),fγk(γk) andfyn(h,λ )
+denote p(λ), p(hk,d|γk), p(γk), and p(yn|h,λ ), respectively.
+In addition, the extra variable zn = pT
+n h is introduced and the
+constraint δ(zn− pT
+n h) is represented by fδn. Then, fyn is a
+function ofzn andλ, i.e.,fyn(zn,λ ) =CN (yn;zn,λ−1). The
+MP-BSBL algorithm performed on the factor graph in Fig. 2
+is briefed as follows
+Denote l as the iteration index and Qk,d as the product of
+all the incoming messages from the neighboring nodes δn′ to
+hk,d, then according to Qk,d, the variance vQk,d and mean
+mQk,d of hk,d are derived as follows,
+vl
+Qk,d≈
+
+
+∑
+n′∈N(hk,d)
+⏐⏐Pn′,kd
+⏐⏐2
+(
+ˆλl−1
+)−1
++vl−1
+δn′→zn′
+
+
+−1
+(8)
+ml
+Qk,d≈vl
+Qk,d
+∑
+n′∈N(hk,d)
+P
+H
+n′,kd
+(
+yn′−ml−1
+δn′→zn′
+)
+(
+ˆλl−1
+)−1
++vl−1
+δn′→zn′
++ml−1
+hk,d
+(9)
+By considering the message ˆγl−1
+k passing fromfhk,d
+tohk,d,
+the variance vl
+hk,d
+and mean ml
+hk,d
+of hk,d are updated as
+vl
+hk,d
+= 1
+(
+vl
+Qk,d
+)−1
++ ˆγl−1
+k
+ml
+hk,d
+=
+ml
+Qk,d
+1 +vl
+Qk,d ˆγl−1
+k
+(10)
+The variance vδn→zn and mean mδn→zn passing from δn
+to zn are derived in (11).
+vl
+δn→zn≈
+∑
+{i,j}∈N (fδn )
+⏐⏐Pn,ij
+⏐⏐2
+vl
+hi,j
+ml
+δn→zn≈
+∑
+{i,j}∈N (fδn )
+Pn,ijml
+hi,j
+−vl
+δn→zn
+(
+yn−ml−1
+δn→zn
+)
+(
+ˆλl−1
+)−1
++vl−1
+δn→zn
+(11)
+Then the hyper-parameter ˆγl
+k for the variance of the channel
+gain is updated according to the MF message passing,
+ˆγl
+k = ak +dc + 1
+bk +
+dc∑
+d=1
+(⏐⏐⏐ml
+hk,d
+⏐⏐⏐
+2
++vl
+hk,d
+) (12)
+The variance vl
+zn and mean ml
+zn of zn are derived by
+vδn→zn, mδn→zn and the noise precision ˆλl−1,
+vl
+zn =
+(
+ˆλl−1 +
+(
+vl
+δn→zn
+)−1)−1
+ml
+zn =vl
+zn
+(
+ynˆλl−1 + ml
+δn→zn
+vl
+δn→zn
+) (13)
+Finally, the noise precision ˆλl is updated with the MF
+message passing,
+ˆλl = LtN
+LtN∑
+n=1
+[(
+mlzn−yn
+)2
++vlzn
+] (14)
+At the last iteration, if
+(
+ˆγl
+k
+)−1
+is smaller than a predeﬁned
+threshold γth, user k is regarded as inactive. Otherwise, this
+user is determined as active and {ml
+hk,d
+,d = 1,...,d c} is
+the estimated channel gain for user k. Further details of the
+derivations above are referred to [28].
+III. DNN-A IDED MP-BSBL A LGORITHM
+Two types of message passing are adopted by the MP-BSBL
+algorithm. The Gaussian message passing is employed for CE
+in (10), while the MF message passing is employed to update
+the hyper-parameters ˆγl
+k in (12) for UAD. According to the
+factor graph in Fig. 2, the variable nodes hk,d and sum nodes
+fδn are densely connected. That is, the connection between
+hk,d and fδn is characterized by many short cycles with girth
+4, which results in the correlation problem of the Gaussian
+messages [29]. Furthermore, in crowded NORA systems,
+where the number of sum nodes fδn is much smaller than
+the number of variable nodes hk,d, the correlated Gaussian
+messages further lead to the convergence problem for the
+
+=== PDF PAGE 6 ===
+6
+pilot symbol 
+group #1
+user group #1
+sub-carrier
+sub-group #1
+pilot symbol 
+group #l
+pilot symbol 
+group #Lt
+ Lt elements
+sub-carrier 
+sub-group #dc
+user group #K
+user group #1 user group #K
+user #1 user #k user #K
+(a) (b)
+1) layer organization for row vectors with length NLt 
+2) layer organization for row vectors with length Lt dc K
+3) layer organization for row vectors with length dc K
+4) layer organization for row vectors with length K
+5) weighting matrix from layer 4 to layer 5 
+1 0 1 1 0 1
+1 1 0 1 1 0
+0 1 1 0 1 1
+S
+
+ 
+
+Iteration block  l
+#1 #2 #3 #4 #5 #6 #7 #8 #9
+1,1
+2,1
+3,2
+4,2
+5,3
+6,3
+7,4
+8,4
+9,5
+10,5
+11,6
+12,6
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+0 0 0 0 0
+hv
+w
+w
+w
+w
+w
+w
+w
+w
+w
+w
+w
+w
+l
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+W
+ny
+,n kdP
+, , ,
+,{}l l l
+Q Q Qk d k d k d
+I m v 
+,
+1
+kd
+l
+hm 
+, , ,
+{ , }
+k d k d k d
+l l l
+h h hI m v 
+1 1 1 ,{}
+n n n n n n
+l l l
+z z zIv m  
+  
+  
+,{}
+n n n n n n
+l l l
+z z zIv m    
+1ˆl 
+ˆl
+1ˆl
+k 
+ˆl
+k
+,{}l l l
+n n nz z zIv m
+1 11
+{ , }vmA AA
+l l lO O O
+2 22
+{ , }vmA AA
+l l lO O O
+11y
+1ny
+1Ny
+1ly
+lny
+lNy
+1tLy
+tLny
+tLNy
+ Lt elements
+sub-carrier
+sub-group #1
+ Lt elements
+sub-carrier 
+sub-group #dc
+ Lt elements
+1,1Q
+lI
+1, cQ d
+lI
+, cQKd
+lI
+,1QK
+lI
+Fig. 3. DNN for the weighted message passing in DNN-MP-BSBL algorithm with ( N = 3, K = 6, Lt = 2, dc = 2) and layer organization.
+MP-BSBL algorithm. As a result, the convergence speed is
+deteriorated and the accuracy of the MP-BSBL algorithm fails
+to get improved as the signal-to-noise ratio (SNR) increases.
+On the other hand, the correlated Gaussian messages also lead
+to inaccuracy for the MF message update, which undermines
+the UAD performance.
+Confronted with the problems above, we propose a DNN-
+MP-BSBL algorithm, which imposes weights on the Gaussian
+messages on the factor graph in Fig. 2. Simultaneously,
+weights are also imposed on the MF message update in (12)
+and further trained to improve the UAD accuracy. To facilitate
+the training of the weights, we transfer the message passing
+process from the factor graph in Fig. 2 to a DNN structure. The
+back-and-forth message passing process on the factor graph
+is now transformed into a forward-propagation trellis in Fig.
+3(a), which resembles the structure of a neural network. It
+is assumed that there are N = 3 sub-carriers, K = 6 users,
+the length of pilot sequence is Lt = 2 , each user chooses
+dc = 2 sub-carriers to perform uplink data transmission,
+and the DNN-MP-BSBL algorithm is performed with Nit
+iterations. The regular LDS spreading matrix S is also shown
+in Fig. 3(a).
+As shown in Fig. 3(a), the trellis can be considered as a
+neural network. Each iteration of the MP-BSBL algorithm is
+now represented by one iteration block. Since the structure
+is identical for each iteration block, we only illustrate one
+iteration block in Fig. 3(a). However, it is noted that neighbor-
+ing iteration blocks are connected. For illustration simplicity,
+we include the nodes from the (l− 1)-th iteration block, e.g.
+Il−1
+δn→zn
+and ˆλl−1 as the input nodes in the l-th iteration block.
+In this way, the entire DNN is constructed by connecting
+Nit iteration blocks. Within each iteration block, one layer
+represents one particular message, i.e., each layer is deﬁned by
+its output message. Two auxiliary layersA1 andA2, i.e., Layer
+2 and Layer 6 are also added for the clarity of illustration.
+Therefore, according to equations (8) to (14), there are 9 layers
+within each iteration block. Detailed organization of each layer
+TABLE II
+INPUT AND OUTPUT FOR EACH LAYER OF THE DNN.
+Index Layer Input Layer Output Length
+1 None y, Il−1
+δ→z ={vl−1
+δ→z, ml−1
+δ→z} NLt
+2 y, Il−1
+δ→z, ˆλl−1, P O l
+A1 ={Ol
+Av
+1
+, Ol
+Am
+1
+} LtdcK
+3 ml−1
+h , Ol
+A1 Il
+Q ={vl
+Q, ml
+Q} dcK
+4 Il
+Q, ˆγl−1 Il
+h ={vl
+h, ml
+h} dcK
+5 Il
+h ˆγl K
+6 P, Il
+h Ol
+A2 ={Ol
+Av
+2
+, Ol
+Am
+2
+} LtdcK
+7 y, Il−1
+δ→z, ˆλl−1, Ol
+A2 Il
+δ→z ={vl
+δ→z, ml
+δ→z} NLt
+8 y, ˆλl−1, Il
+δ→z Il
+z ={vl
+z, ml
+z} NLt
+9 Il
+z, y ˆλl 1
+is illustrated in Fig. 3(b) and the weighted message passing
+process is explained as follows.
+A. Layer Organization and Weighting Matrix
+For notational simplicity, the nodes in each layer are placed
+in a row vector in Fig. 3(b), and the weighted message passing
+process is then equivalent to the input vector multiplying a
+weighting matrix. The input vectors, output vector, and the
+length of output vector for each layer are listed in Table
+II while the elements of different vectors are organized as
+follows.
+1) F or vectors with length NLt: The organization for the
+row vector y in Layer 1 is taken as an example in Fig. 3(b).
+Every N elements are grouped into a pilot symbol group
+according to the common pilot symbol they correspond to.
+
+=== PDF PAGE 7 ===
+7
+These Lt pilot symbol groups are organized according to the
+index of the pilot symbols. Within each pilot symbol group,
+the N elements are organized according to the sub-carrier
+index. For example, the n-th node yln in the l-th pilot symbol
+group represents the l-th received pilot signal on the n-th
+sub-carrier. In this way, the row vector y is organized as
+y = [y11,...,y 1N,...,y Lt1,...,y LtN].
+2) F or vectors with length LtdcK: The organization for
+the auxiliary row vector Ol
+A2 in Layer 6 is taken as an
+example. Every Ltdc elements are grouped into a user group,
+according to the common user they correspond to. Within
+each user group, every Lt elements are grouped into a sub-
+group according to the common sub-carrier they correspond
+to. Within each sub-carrier sub-group, the Lt elements are
+arranged according to the pilot symbol index.
+3) F or vectors with length dcK: The organization for
+the row vector Il
+Q in Layer 3 is taken as an exam-
+ple. Every dc elements are grouped together according to
+the common user they correspond to. Within each user
+group, the dc elements are organized according to the sub-
+carrier index. In this way, the row vector Il
+Q is organized
+as Il
+Q = [ Il
+Q1,1,...,I l
+Q1,dc
+,...,I l
+QK,1,...,I l
+QK,dc
+], where
+Il
+Qk,d ={ml
+Qk,d,vl
+Qk,d}.
+4) F or vectors with length K: The K elements in the row
+vector ˆγl are arranged according to the user index.
+5) Weighting matrix: Since input vectors and output vector
+of a layer are organized as row vectors, the weighted message
+update (i.e., the output vector) for every layer can be repre-
+sented by the input vector multiplied by a weighting matrix.
+The size of the weighting matrix is LI×LO where LI and
+LO are the length of the input vector and the output vector,
+respectively. According to Fig. 3(a), nodes in neighboring
+layers are not fully connected, i.e., the weighting matrix is
+deﬁned by the inter-layer connection. An example is shown in
+Fig. 3(b) for the weighting matrix deﬁned by the connection
+from Layer 4 to Layer 5 of Fig. 3(a). According to this
+example, the (i,j )-th entry of the weighting matrix is non-
+zero if and only if the i-th node in the input layer is connected
+to the j-th node in the output layer. Furthermore, only the
+non-zero weights in the weighting matrix are trained for the
+DNN-MP-BSBL algorithm.
+B. Weighted Message Passing
+The weighted message passing is explained as follows.
+Layer 1: Layer 1 serves as the input of the neural network
+within one iteration block and it is composed of two message
+vectors, y = {yn,∀n} and Il−1
+δ→z = {vl−1
+δ→z, ml−1
+δ→z} =
+{vl−1
+δn→zn
+,ml−1
+δn→zn
+,∀n}. The elements yn and Il−1
+δn→zn
+=
+{vl−1
+δn→zn
+,ml−1
+δn→zn
+} are grouped together in Fig. 3(a) since
+they share identical connection to the nodes in Layer 2.
+Layer 2: Layer 2 is the auxiliary layerAl
+1, and the output Ol
+A1
+is composed of two message vectors Ol
+Av
+1
+and Ol
+Am
+1
+, whose
+elements correspond to the terms in the cumulative summation
+of (8) and (9), respectively. The weighted message update of
+Layer 2 is derived as follows,
+Ol
+Av
+1
+= P2
+1
+ˆλl−1× Wl
+λ→Av
+1
++ vl−1
+δ→z× Wl
+vδ→Av
+1
+(15)
+Ol
+Am
+1
+=
+PH.∗
+(
+y× Wl
+y→Am
+1
+− ml−1
+δ→z× Wl
+mδ→Am
+1
+)
+1
+ˆλl−1× Wl
+λ→Am
+1
++ vl−1
+δ→z× Wl
+vδ→Am
+1
+(16)
+where P2 ={|Pn,kd|2,∀n,k,d} and PH ={P
+H
+n,kd,∀n,k,d}
+are row vectors with length LtdcK. Wl
+λ→Av
+1
+and Wl
+λ→Am
+1
+are two weighting matrices with size 1×LtdcK. Wl
+vδ→Av
+1
+,
+Wl
+y→Am
+1
+, Wl
+mδ→Am
+1
+, and Wl
+vδ→Am
+1
+are weighting matrices
+deﬁned by the connection from Layer 1 to Layer 2. In addition,
+the fraction and .∗ operations are the element-wise division
+and multiplication operations while the × operation refers to
+the matrix multiplication operation.
+Layer 3: The weighted output message vectors Il
+Q =
+{vl
+Q, ml
+Q} = {vl
+Qk,d,ml
+Qk,d,∀k,d} of Layer 3 are derived
+as follows,
+vl
+Q = 1
+Ol
+Av
+1
+× Wl
+Av
+1→vQ
+ml
+Q = vl
+Q.∗
+(
+Ol
+Am
+1
+× Wl
+Am
+1→mQ
+)
++ ml−1
+h × Wl
+h→Q
+(17)
+where Wl
+Av
+1→vQ and Wl
+Am
+1→mQ are weighting matrices de-
+ﬁned by the connection from Layer 2 to Layer 3. Wl
+h→Q is
+a diagonal weighting matrix with size dcK×dcK.
+Layer 4: The weighted output message vectors Il
+h =
+{vl
+h, ml
+h} ={vl
+hk,d
+,ml
+hk,d
+,∀k,d} of Layer 4 are derived as
+follows,
+vl
+h = 1
+1
+vl
+Q
++ (ˆγl−1 ⨂ 1dc)× Wlγ
+ml
+h =
+ml
+Q
+1dcK× Wone→h +
+(
+vl
+Q.∗ (ˆγl−1 ⨂ 1dc)
+)
+× Wl
+vγ→h
+(18)
+where ⨂ refers to the Kronecker product. 1dc and 1dcK are
+two all-one row vectors and their vector length are dc and
+dcK, respectively. Wl
+γ, Wone→h, and Wl
+vγ→h are diagonal
+weighting matrices with size dcK×dcK.
+Layer 5: The weighted output message vector ˆγl ={ˆγl
+k,∀k}
+is derived as follows,
+ˆγl = a +dc + 1
+b +|ml
+h|2× Wlmh→γ + vl
+h× Wlvh→γ
+(19)
+where a ={ak,∀k} and b ={bk,∀k} are row vectors with
+length K,|ml
+h|2 ={|ml
+hk,d
+|2,∀k,d}, Wl
+mh→γ and Wl
+vh→γ
+are weighting matrices deﬁned by the connection from Layer
+4 to Layer 5.
+Layer 6: Layer 6 is the auxiliary layer Al
+2 with weighted
+output message vectors Ol
+Av
+2
+and Ol
+Am
+2
+, whose elements
+correspond to the terms in the cumulative summation in (11).
+Ol
+Av
+2
+= P2.∗ vl
+h
+Ol
+Am
+2
+= P.∗ ml
+h
+(20)
+where P = {Pn,kd,∀n,k,d} is a row vector with length
+
+=== PDF PAGE 8 ===
+8
+LtdcK.
+Layer 7: The weighted output vectors Il
+δ→z =
+{vl
+δ→z, ml
+δ→z} = {vl
+δn→zn,ml
+δn→zn,∀n} of Layer 7
+are derived as follows,
+vl
+δ→z = Ol
+Av
+2
+× Wl
+Av
+2→vδ
+ml
+δ→z = Ol
+Am
+2
+× Wl
+Am
+2→mδ
+−
+vδ→z.∗
+(
+y× Wl
+y→δ− ml−1
+δ→z× Wl
+mδ→mδ
+)
+(
+ˆλl−1
+)−1
+× Wl
+λ→δ + vl−1
+δ→z× Wlvδ→mδ
+(21)
+where Wl
+Av
+2→vδ and Wl
+Am
+2→mδ are weighting matrices
+deﬁned by the connection from Layer 6 to Layer 7.
+Wl
+y→δ, Wl
+mδ→mδ and Wl
+vδ→mδ are diagonal weighting ma-
+trices with size NLt×NLt. Wl
+λ→δ is a weighting matrix
+with size 1×NLt.
+Layer 8: The weighted output vectors Il
+z = {vl
+z, ml
+z} =
+{vl
+zn,ml
+zn,∀n} of Layer 8 are derived as follows,
+vl
+z = 1
+ˆλl−1× Wl
+λ→z + 1
+vl
+δ→z
+× Wvδ→vz
+ml
+z = vl
+z.∗
+(
+(y.∗ ˆλl−1)× Wl
+yλ→z + ml
+δ→z
+vl
+δ→z
+× Wl
+mv→z
+)
+(22)
+where Wvδ→vz and Wl
+mv→z are weighting matrices deﬁned
+by the connection from Layer 7 to Layer 8. Wl
+yλ→z is a
+diagonal weighting matrix with size NLt×NLt, and Wl
+λ→z
+is a weighting matrix with size 1×NLt.
+Layer 9: The weighted output message ˆλl of Layer 9 is
+derived as follows,
+ˆλl = LtN
+(
+mlz×Wl
+mz→λ−y×Wl
+y→λ
+)2
+×1T
+NLt +vlz×Wl
+vz→λ
+(23)
+where Wl
+mz→λ and Wl
+y→λ are diagonal weighting matrices
+with size NLt×NLt, and 1T
+NLt is an all-one column vector
+with length NLt. Wl
+vz→λ is a weighting matrix with size
+NLt× 1.
+C. Loss Function
+The DNN-MP-BSBL algorithm is conducted in two periods:
+the training period and the testing period. In the training
+period, according to the given samples in the training set,
+the non-zero entries in the weighting matrices are trained
+to minimize the estimation error. In the testing period, the
+weighting matrices are ﬁxed. The UAD and CE accuracy of
+the DNN-MP-BSBL algorithm is evaluated by the samples in
+the test set.
+In order to train the non-zero entries in the weighting
+matrices, a loss function is employed during the training period
+to measure the estimation error. Then the weights are adjusted
+with the stochastic gradient descent (SGD) algorithm in a
+back-propagation manner to minimize the loss function. For
+the stability of the SGD algorithm, we employ the mean square
+error (MSE)∥ˆhDNN− h∥2
+2 as the loss function, where ˆhDNN is
+Algorithm 1 DNN-MP-BSBL algorithm
+Input: y, P, Nit, dc,
+trained weighting matrices in equations (15) to (23)
+Output: ˆhDNN, the index set of active user IDX
+Initialize:
+l = 0; ˆλl = 103; ˆγl = 1;
+vl
+δ→z = 1, ml
+δ→z = 0; ml
+h = 0.
+forl = 1 :Nit do
+1. With ˆλl−1, ml−1
+h , vl−1
+δ→z, and ml−1
+δ→z in the ( l− 1)-th
+iteration, update vl
+Q and ml
+Q by (15), (16), and (17).
+2. With vl
+Q, ml
+Q in thel-th iteration and ˆγl−1 in the (l−1)-
+th iteration, update vl
+h and ml
+h by (18).
+3. With vl
+h and ml
+h in thel-th iteration, update ˆγl by (19).
+4. With ˆλl−1, vl−1
+δ→z, ml−1
+δ→z in the (l− 1)-th iteration and
+vl
+h, ml
+h in the l-th iteration, update vl
+δ→z and ml
+δ→z by
+(20) and (21).
+5. With ˆλl−1 in the (l− 1)-th iteration and vl
+δ→z, ml
+δ→z
+in the l-th iteration, update vl
+z and ml
+z by (22).
+6. With vl
+z and ml
+z in the l-th iteration, update the noise
+precision ˆλl by (23).
+return:
+IDX=ﬁnd
+(
+{
+(
+ˆγl
+k
+)−1
+}>γ th
+)
+,
+ˆhDNN ={0,k /∈ IDX} ⋃{ml
+hk,d
+,k∈ IDX,d = 1,...,d c}.
+the estimated channel gain and h is the known channel gain
+in the training set. It is noted that, different from the training
+period, the Normalized MSE (NMSE) ∥ˆhDNN− h∥2
+2/∥h∥2
+2 is
+considered for the simulations in the testing period to measure
+the UAD and CE accuracy.
+D. Summary of the Proposed DNN-MP-BSBL Algorithm
+After the training period, all the weighting matrices are
+ﬁxed, and the proposed DNN-MP-BSBL algorithm is summa-
+rized in Algorithm 1. After Nit iterations, the UAD decision
+is made by comparing
+(
+ˆγNit
+k
+)−1
+with a threshold γth. If
+(
+ˆγNit
+k
+)−1
+≤ γth, user k is detected as inactive. Otherwise,
+this user is detected as active and{mNit
+hk,d
+,∀d} is the estimated
+channel gain for user k.
+E. Computational Complexity
+It is emphasized that the weighting matrices are trained
+off-line, so that we can neglect the training complexity in
+the training period. Instead, we only focus on the online
+computational complexity of the DNN-MP-BSBL algorithm
+in the testing period. In addition, if all the non-zero entries in
+the weighting matrices are ﬁxed as 1, the DNN-MP-BSBL
+algorithm is identical to the MP-BSBL algorithm, whose
+complexity was thoroughly investigated in [28]. Therefore, we
+ﬁrst present the computational complexity of the MP-BSBL
+algorithm as a benchmark.
+
+=== PDF PAGE 9 ===
+9
+TABLE III
+EXTRA NUMBER OF MULTIPLICATIONS ∆× CAUSED BY WEIGHTING
+MATRICES IN DNN-MP-BSBL ALGORITHM .
+Weighting Matrix Eqn ∆×
+Wl
+λ→Av
+1
+,Wl
+λ→Am
+1
+,Wl
+vδ→Av
+1
+,Wl
+vδ→Am
+1
+(15),(16) LtdcK
+Wl
+y→Am
+1
+, Wl
+mδ→Am
+1
+(16) 0
+Wl
+Av
+1→vQ, Wl
+Am
+1→mQ (17) 0
+Wl
+h→Q (17) 2dcK
+Wl
+γ, Wl
+vγ→h (18) dcK
+Wone→h (18) 0
+Wl
+mh→γ, Wl
+vh→γ (19) dcK
+Wl
+Av
+2→vδ, Wl
+Am
+2→mδ (21) 0
+Wl
+y→δ, Wl
+mδ→mδ, Wl
+vδ→mδ, Wl
+λ→δ (21) LtN
+Wl
+yλ→z, Wl
+mv→z, Wl
+λ→z, Wvδ→vz (22) LtN
+Wl
+mz→λ, Wl
+y→λ (23) 2LtN
+Wl
+vz→λ (23) LtN
+In each iteration of the MP-BSBL algorithm, a total number
+of (10Lt +10)Kdc +(7dr +14)LtN +K +2 multiplications
+are required. Speciﬁcally, (10Lt + 8)Kdc multiplications are
+required for the calculation of vl
+hk,d
+andml
+hk,d
+in (10), (7dr +
+4)LtN multiplications forvl
+δn→zn andml
+δn→zn in (11), (2dc+
+1)K multiplications for ˆγl
+k in (12), 8LtN multiplications for
+vl
+zn and ml
+zn in (13), and 2LtN + 2 multiplications for ˆλl in
+(14).
+Compared with the MP-BSBL algorithm, the DNN-MP-
+BSBL algorithm incurs extra computational complexity when
+multiplying the non-zero weights in the weighting matrices.
+Then we analyze the number of extra multiplications, denoted
+by ∆×, that is caused by each weighting matrix. Related
+results are listed in Table. III. Note that in Table. III, some
+weighting matrices will not lead to extra multiplications. For
+example, the weighting matrix Wl
+Av
+1→vQ imposed on Ol
+Av
+1
+in
+(17) is equivalently imposed on P2 in (15). Therefore, we
+can replace P2 with P2× Wl
+Av
+1→vQ in (15), and remove
+Wl
+Av
+1→vQ from (17). In this way, ∆× = 0 for Wl
+Av
+1→vQ, and
+we can have the same results for Wl
+y→Am
+1
+and Wl
+mδ→Am
+1
+in (16) and Wl
+Am
+1→mQ in (17), as well as Wl
+Av
+2→vδ and
+Wl
+Am
+2→mδ in (21). In addition, we have ∆× = 0 for Wone→h
+in (18) since it serves as an additive bias term in the DNN,
+instead of a multiplicative weighting term. Furthermore, the
+weighting matrices in the ﬁrst row of Table. III are imposed
+on the auxiliary layer Al
+1, which is far from the output of
+each iteration block. Therefore, the weights in these weighting
+matrices have negligible impacts on the ﬁnal output, and we
+can ﬁx these non-zero weights as 1 to reduce the computational
+complexity of the DNN-MP-BSBL algorithm.
+According to the analysis, the DNN-MP-BSBL algorithm
+incurs 6Kdc+13LtN extra multiplications compared with the
+MP-BSBL algorithm. That is, a total of (10Lt + 16)Kdc +
+(7dr + 27)LtN +K + 2 multiplications are required by the
+DNN-MP-BSBL algorithm in each iteration, which is only
+slightly larger than that of the low-complexity MP-BSBL al-
+gorithm. For example, according to the conﬁgurations in Table.
+IV, the DNN-MP-BSBL algorithm increases the computational
+complexity by only 4.3%, compared with the MP-BSBL
+algorithm. In addition, we also present the computational
+complexity of the BOMP estimator [28] and the LS-AMP-
+BSL estimator [25], which are investigated for comparison in
+Section IV-C. The overall number of multiplications in the
+BOMP estimator is K +LtdcK + (K++1)K+
+2 Ltdc(N + 1) +
+[(K++1)K+]2d3
+c
+4 , while that for the LS-AMP-BSL estimator is
+Nit((9Lt + 11)Kdc + (7dr + 4)LtN) +K +Ltdc(N + 1) +
+(K +dc)3, where K + is the number of active users. It is
+shown that the complexity of the BOMP estimator and the LS-
+AMP-BSL estimator increases with the square or cube of K +.
+By contrast, the complexity of the DNN-MP-BSBL algorithm
+only increases linearly with K.
+IV. S IMULATIONS
+For the simulations, we consider a crowded NORA system
+with low-latency requirement, which is a common scenario
+for ultra-reliable low-latency communication (URLLC) and
+massive MTC (mMTC) applications in 5G and IoT. The
+congestion degree of the NORA system is characterized by
+the number of active users on each sub-carrier, which is
+proportional to the ratio K
+N . Without loss of any generality, we
+assume a small number of available sub-carriers, i.e., N = 8
+to simulate the crowded RA scenarios with limited uplink
+resources. Other parameters related to the simulations and the
+DNN are listed in Table IV.
+In order to satisfy the low-latency requirement, we inves-
+tigate the UAD and CE accuracy of the DNN-MP-BSBL
+algorithm with a small number of iterations, i.e., Nit≤ 20.
+For comparison, the NMSE performances of the LS-AMP-
+SBL esimator [25], the BOMP estimator (with known active
+user number) [28] and the GA-MMSE estimator (with known
+user activity) are also provided. The NMSE performance of
+GA-MMSE estimator serves as the lower bound. It is shown
+that the proposed DNN-MP-BSBL algorithm could guarantee
+lower NMSE for CE and better UAD accuracy within a
+feasible number of iterations.
+A. Convergence
+The convergence performances of the proposed DNN-MP-
+BSBL algorithm and the MP-BSBL algorithm [28] are il-
+lustrated in Fig. 4, with different number of iterations and
+different SNR. Also included is the NMSE of the GA-MMSE
+estimator. It is shown in Fig. 4 that for a small number
+of iterations, the MP-BSBL algorithm converges slowly and
+exhibits limited improvement for higher SNR. By contrast,
+the proposed DNN-MP-BSBL algorithm exhibits better NMSE
+performance and faster convergence. For different SNR, the
+DNN-MP-BSBL algorithm with 10 iterations could achieve
+the same NMSE as the MP-BSBL algorithm with 20 itera-
+tions. With 20 iterations, the DNN-MP-BSBL algorithm could
+closely approach the lower bound, and the gaps to the bound
+
+=== PDF PAGE 10 ===
+10
+TABLE IV
+RELATED PARAMETERS FOR SIMULATIONS
+Parameter Symbol Value
+User number K 110
+Subcarrier number N 8
+Pilot length Lt 11
+Spreading factor dc 4
+Activation probability for each user Pa 0.1
+UAD threshold γth 0.1
+Size of training set 105
+Size of test set 105
+Size of mini-batch 200
+Epoch number 20
+Learning rate 10−3
+1 2 3 4 5 6 7 8 91011121314151617181920Number of Iteration Nit
+10-3
+10-2
+10-1
+100
+NMSE
+5dB MP-BSBL5dB DNN-MP-BSBL5dB GA-MMSE15dB MP-BSBL15dB DNN-MP-BSBL15dB GA-MMSE
+Fig. 4. Convergence with iteration for the proposed DNN-MP-BSBL algo-
+rithm and the MP-BSBL algorithm [28].
+are 1.3× 10−2 and 1.7× 10−3 for SNR =5dB and 15dB,
+respectively. In addition, the improvement by the DNN-MP-
+BSBL algorithm is more prominent with a higher SNR. For
+example, the DNN-MP-BSBL algorithm could improve the
+NMSE performance of the MP-BSBL algorithm by almost
+one magnitude order when SNR =15dB.
+B. CE and UAD Accuracy With Different Pa
+The NMSE performance of the proposed DNN-MP-BSBL
+algorithm is investigated with different activation probability
+Pa, and the simulation results are illustrated in Fig. 5. It is
+shown that when Pa increases, the NORA system is crowded
+with more active users. As a result, the NMSE performance
+deteriorates for both the DNN-MP-BSBL algorithm and the
+MP-BSBL algorithm. In addition, the NMSE performance of
+the MP-BSBL algorithm shows no improvement when SNR
+increases from 10dB to 16dB. By contrast, the proposed DNN-
+MP-BSBL algorithm could always guarantee improvement
+on the NMSE performance with different SNR and different
+Pa. Particularly, the improvement is more prominent with
+lowerPa and higher SNR. For example, the DNN-MP-BSBL
+0.05 0.07 0.09 0.11 0.13 0.15Activation Probability Pa
+10-3
+10-2
+10-1
+NMSE
+10dB MP-BSBL Nit=10
+10dB DNN-MP-BSBL Nit=10
+16dB MP-BSBL Nit=10
+16dB DNN-MP-BSBL Nit=10
+Fig. 5. NMSE performance for the proposed DNN-MP-BSBL algorithm and
+the MP-BSBL algorithm [28] with different activation probability Pa.
+0.05 0.07 0.09 0.11 0.13 0.15Activation Probability Pa
+10-5
+10-4
+10-3
+10-2
+10-1
+UAD Error Rate
+10dB MP-BSBL Nit=20
+10dB DNN-MP-BSBL Nit=20
+16dB MP-BSBL Nit=10
+16dB DNN-MP-BSBL Nit=10
+Fig. 6. UAD accuracy for the proposed DNN-MP-BSBL algorithm and the
+MP-BSBL algorithm [28] with different activation probability Pa.
+algorithm could improve the NMSE by almost one magnitude
+order when SNR=10dB and Pa is relatively low. Furthermore,
+the NMSE can be further lowered by the DNN-MP-BSBL
+algorithm when SNR increases to 16dB.
+In the DNN-MP-BSBL algorithm, weights are also imposed
+on the MF message update in (19) to alleviate the inﬂuence of
+correlated Gaussian messages and improve the UAD accuracy.
+We also investigate the UAD accuracy of the DNN-MP-
+BSBL algorithm with different Pa, and the results are shown
+in Fig. 6. It is shown that the proposed DNN-MP-BSBL
+algorithm could improve the UAD accuracy of the MP-BSBL
+algorithm for different Pa, SNR, and different number of
+iterations. Similarly, this improvement on UAD accuracy is
+more prominent when Pa is relatively low and SNR is high.
+For example, the DNN-MP-BSBL algorithm could improve
+the UAD error rate by two magnitude orders when SNR=16dB
+and Pa≤ 0.1.
+
+=== PDF PAGE 11 ===
+11
+5 7.5 10 12.5 15 17.5 20 22.5 25SNR(dB)
+10-3
+10-2
+10-1
+NMSE
+MP-BSBL Nit=20
+DNN-MP-BSBL Nit=20
+GA-MMSEBOMP with known active user numberLS-AMP-SBL Nit=50
+Fig. 7. NMSE performance for CE with different SNR.
+C. CE Accuracy With Different SNR
+Finally, we compare the proposed DNN-MP-BSBL algo-
+rithm with the LS-AMP-BSL estimator [25], the BOMP es-
+timator (with known active user number) [28], and the GA-
+MMSE estimator (with known user activity). The simulation
+results are illustrated in Fig. 7 and the NMSE performance of
+the GA-MMSE estimator serves as the lower bound.
+As shown in Fig. 7, in crowded NORA systems, both the
+MP-BSBL algorithm and the BOMP estimator diverge from
+the NMSE lower bound as SNR increases, and the LS-AMP-
+SBL algorithm fails to work even with 50 iterations. By con-
+trast, the DNN-MP-BSBL algorithm could closely approach
+the lower bound within a wide range of SNR. Therefore,
+the DNN-MP-BSBL algorithm requires fewer iterations and
+provides better NMSE performance, indicating its advantages
+in crowded NORA system with low-latency requirement.
+V. C ONCLUSIONS
+A DNN-MP-BSBL algorithm was proposed in this paper for
+the joint UAD and CE problem in grant-free NORA systems.
+The iterative message passing process is transferred from a
+factor graph to a DNN, while weights are imposed on the
+messages and trained to improve the UAD and CE accuracy.
+It was veriﬁed that the weighted message passing in the DNN-
+MP-BSBL algorithm could alleviate the convergence problem
+of the MP-BSBL algorithm in crowded NORA systems. Sim-
+ulation results showed that the NMSE performance of the
+DNN-MP-BSBL algorithm could approach the lower bound
+in a feasible number of iterations, indicating its advantages
+for low-latency NORA systems.
+REFERENCES
+[1] L. D. Xu, W. He, and S. Li, “Internet of Things in industries: a survey,”
+IEEE Transactions on Industrial Informatics, vol. 10, no. 4, pp. 2233-
+2243, Nov. 2014.
+[2] W. Saad, M. Bennis, and M. Chen, “A vision of 6G wireless systems: ap-
+plications, trends, technologies, and open research problems.” [Online].
+Available: https://arxiv.org/abs/1902.10265
+[3] A. Osseiran, V . Braun, T. Hidekazu, P. Marsch, H. Schotten, H. Tullberg,
+M. A. Uusitalo, and M. Schellman, “The foundation of the mobile and
+wireless communications system for 2020 and beyond: challenges, en-
+ablers and technology solutions,” 2013 IEEE 77th V ehicular Technology
+Conference (VTC Spring), June 2013.
+[4] 3GPP, “Service Requirements for Machine-Type Communications,” TS
+22.368 V13.1.0, Dec. 2014.
+[5] G. Wu, S. Talwar, K. Johnsson, N. Himayat, and K. D. Johnson, “M2M:
+From mobile to embedded internet,” IEEE Commun. Mag., vol. 49, no.
+4, pp. 36-43, April 2011.
+[6] Z. Wang and V . W. S. Wong, “Optimal access class barring for stationary
+machine type communication devices with timing advance information,”
+IEEE Trans. Wireless Commun., vol.14, no.10, pp.5374-5387, Oct. 2015.
+[7] K.-D. Lee, S. Kim, and B. Yi, “Throughput comparison of random
+access methods for M2M service over LTE networks,” Proc. 2011 IEEE
+GLOBECOM Wkshps., Dec. 2011, pp. 373-377.
+[8] S. Choi, W. Lee, D. Kim, K. J. Park, S. Choi, and K. Y . Han, “Automatic
+conﬁguration of random access channel parameters in LTE systems,”
+Proc. 2011 IFIP Wireless Days, Oct. 2011, pp. 1-6.
+[9] H. S. Jang, S. M. Kim, H.-S. Park, and D. K. Sung, “Enhanced
+spatial group based random access for cellular M2M communications,”
+IEEE International Conference on Communication Workshop (ICCW) ,
+London, UK, June 2015, pp. 2102-2107.
+[10] T. Kim, H. S. Jang, and D. K. Sung, “An enhanced random access
+scheme with spatial group based reusable preamble allocation in cellular
+M2M networks,” IEEE Commun. Lett., vol. 19, no. 10, pp. 1714-1717,
+Oct. 2015.
+[11] H. S. Jang, S. M. Kim, H. S. Park, and D. K. Sung, “An early preamble
+collision detection scheme based on tagged preambles for cellular M2M
+random access,” IEEE Transactions on V ehicular Technology, vol. 66,
+no. 7, pp. 5974-5984, July 2017.
+[12] Z. Alavikia and A. Ghasemi, “Collision-aware resource access scheme
+for LTE-based Machine-to-Machine communications,” IEEE Transac-
+tions on V ehicular Technology,vol. 67, no. 5, pp. 4683-4688, May 2018.
+[13] L. G. Roberts, “ALOHA packet system with and without slots and
+capture,” ACM SIGCOMM Comput. Commun. Rev. , vol. 5, no. 2, pp.
+28-42, 1975.
+[14] E. Casini, R. De Gaudenzi, and O. del Rio Herrero, “Contention reso-
+lution diversity slotted ALOHA (CRDSA): An enhanced random access
+scheme for satellite access packet networks,” IEEE Trans. Wireless
+Commun., vol. 6, no. 4, pp. 1408-1419, Apr. 2007.
+[15] E. Paolini, G. Liva, and M. Chiani, “Coded slotted ALOHA: a graph-
+based method for uncoordinated multiple access,” IEEE Trans. Inf.
+Theory, vol. 61, no. 12, pp. 6815-6832.
+[16] C. Stefanovic, P. Popovski, and D. Vukobratovic, “Frameless ALOHA
+protocol for wireless networks,” IEEE Commun. Lett. , vol. 16, no. 12,
+pp. 2087-2090.
+[17] G. Liva, E. Paolini, M. Lentmaier, and M. Chiani, “Spatially-coupled
+random access on graphs,” IEEE Inter . Symp. Inf. Theory (ISIT) , Cam-
+bridge, MA, 2012, pp. 478-482.
+[18] Y . Chang, P. Jung, C. Zhou, and S. Stanczak, “Block compressed sensing
+based distributed device detection and resource allocation for M2M
+communications,” IEEE International Conference on Acoustics, Speech
+and Signal Processing (ICASSP), Mar. 2016, pp. 3791-3795.
+[19] X. Xu, X. Rao, and V . K. N. Lau, “Active user detection and channel
+estimation in uplink CRAN systems,”IEEE Inter . Conf. Commun. (ICC),
+June 2015, pp. 2727-2732.
+[20] G. Hannak, M. Mayer, A. Jung, G. Matz, and N. Goertz, “Joint channel
+estimation and activity detection for multiuser communication systems,”
+IEEE Inter . Conf. Commun. (ICC) Workshop, June 2015, pp. 2086-2091.
+[21] Z. Chen and W. Yu, “Massive device activity detection by approximate
+message passing,” in IEEE Inter . Conf. Acoustics, Speech, Signal Pro-
+cessing (ICASSP) , Mar. 2017, pp. 3514-3518.
+[22] L. Liu and W. Yu, “Massive connectivity with massive MIMO-part I:
+device activity detection and channel estimation,” IEEE Transactions on
+Signal Processing, vol. 66, no. 11, pp. 2933-2946.
+[23] L. Liu and W. Yu, “Massive connectivity with massive MIMO-part II:
+achievable rate characterization,” IEEE Transactions on Signal Process-
+ing, vol. 66, no. 11, pp. 2947-2959.
+[24] M. Al-Shoukairi and B. Rao, “Sparse Bayesian learning using approxi-
+mate message passing,” 48th Asilomar Conference on Signals, Systems
+and Computers , 2014, pp. 1957-1961.
+[25] C. Wei, H. Liu, Z. Zhang, J. Dang, and L. Wu, “Near-optimum sparse
+channel estimation based on least squares and approximate message
+passing,” IEEE Wireless Communications Letters , vol. 6, no. 6, pp. 754-
+757.
+
+=== PDF PAGE 12 ===
+12
+[26] N. Ye, X. Li, H. Yu, A. Wang, W. Liu, and X. Hou, “Deep learning
+aided grant-free NOMA towards reliable low-latency access in tactile
+Internet of Things,” IEEE Transactions on Industrial Informatics .
+[27] F. Wei, W. Chen, Y . Wu, J. Ma, and T. A. Tsiftsis, “Message-passing
+receiver design for joint channel estimation and data decoding in uplink
+grant-free SCMA systems,” IEEE Trans. Wireless Commun., vol. 18, no.
+1, pp. 167-181, Jan. 2019.
+[28] Y . Zhang, Q. Guo, Z. Wang, J. Xi, and N. Wu, “Block sparse Bayesian
+learning based joint user activity detection and channel estimation for
+grant-free NOMA systems,” IEEE Transactions on V ehicular Technol-
+ogy, vol. 67, no. 10, pp. 9631-9640.
+[29] L. Liu, C. Yuen, Y . L. Guan, Y . Li, and Y . Su, “Convergence analysis
+and assurance for Gaussian message passing iterative detector in massive
+MU-MIMO systems,” IEEE Trans. Wireless Commun. , vol. 15, no. 9,
+pp. 6487-6500.
+[30] C. Huang, L. Liu, C. Yuen and S. Sun, “Iterative channel estimation
+using LSE and sparse message passing for MmWave MIMO systems,”
+IEEE Transactions on Signal Processing , vol. 67, no. 1, pp. 245-259, 1
+Jan.1, 2019.
+[31] C. Huang, L. Liu and C. Yuen, “Asymptotically optimal estimation
+algorithm for the sparse signal with arbitrary distributions,” IEEE
+Transactions on V ehicular Technology, vol. 67, no. 10, pp. 10070-10075,
+Oct. 2018.
+[32] E. Riegler, G. E. Kirkelund, C. N. Manchon, M. Badiu, and B. H. Fleury,
+“Merging belief propagation and the mean ﬁeld approximation: a free
+energy approach,” IEEE Transactions on Information Theory , vol. 59,
+no. 1, pp. 588-602.
+[33] E. Nachmani, E. Marciano, L. Lugosch, W. J. Gross, D. Burshtein, and
+Y . Be’ery, “Deep learning methods for improved decoding of linear
+codes,” IEEE Journal of Selected Topics in Signal Processing , vol. 12,
+no. 1, pp. 119-131, Feb. 2018.
+[34] Z. Zhang, Y . Li, L. Liu, and W. Hou, “Fixed-symbol aided random access
+scheme for Machine-to-Machine communications,” IEEE Access, vol. 7,
+pp. 52913-52928, 2019.
+[35] R. Razavi, A.-I. Mohammed, M. A. Imran, R. Hoshyar, and D. Chen,
+“On receiver design for uplink low density signature OFDM (LDS-
+OFDM),” IEEE Transactions on Communications , vol. 60, no. 11, pp.
+3499-3508, Nov. 2012.
+[36] L. Wen, R. Razavi, P. Xiao, and M. A. Imran, “Fast convergence and
+reduced complexity receiver design for LDS-OFDM system,” in Proc.
+IEEE PIMRC , Sept, 2014, pp. 918-922.
+[37] R. C. Frank and S. A. Zadoff, “Phase shift pulse codes with good
+periodic correlation properties (Corresp.),” IRE Trans. Inf. Theory , vol.
+8, no. 6, pp. 381-382, Oct. 1962.
+[38] D. G. Tzikas, A. C. Likas, and N. P. Galatsanos, “The variational
+approximation for Bayesian inference,” IEEE Signal Process. Mag. , vol.
+25, no. 6, pp. 131-146, Nov. 2008.

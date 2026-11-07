@@ -1,0 +1,33 @@
+{
+  "status": "PASS",
+  "checked_unix": 1792833015.6701398,
+  "epoch": 1,
+  "samples": 34368,
+  "optimizer_steps": 537,
+  "model_tensors": 248,
+  "ema_tensors": 248,
+  "optimizer_parameter_states": 248,
+  "original_first_epoch_permutation_matches": true,
+  "checkpoint_keys": [
+    "best",
+    "cuda_rng",
+    "cursor",
+    "ema",
+    "epoch",
+    "history",
+    "indices",
+    "loss_sum",
+    "model",
+    "mps_rng",
+    "optimizer",
+    "rng",
+    "schema",
+    "seen",
+    "selected_epoch",
+    "shape_rng",
+    "specification_sha256",
+    "steps",
+    "torch_rng"
+  ],
+  "note": "Read-only verification of a periodic training checkpoint; no pause or optimizer update."
+}

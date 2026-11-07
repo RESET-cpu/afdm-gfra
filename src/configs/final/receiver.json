@@ -1,0 +1,27 @@
+{
+  "backbone": {
+    "kind": "direct_cai",
+    "config": {
+      "antennas": 16,
+      "side": 16,
+      "base_channels": 128,
+      "snr_db_min": -20,
+      "snr_db_max": 30,
+      "noise_conditioning": "continuous",
+      "input_transform": "legacy_image"
+    }
+  },
+  "normalized_training_second_moment": 1.0004404181394917,
+  "complex_variance_support": [
+    0.001,
+    100.0
+  ],
+  "receiver": {
+    "maximum_depth": 10,
+    "activity_threshold": 0.5,
+    "microbatch": 100,
+    "variance_soft_floor_temperature_ratio": 0.02,
+    "maximum_feedback_variance_ratio": 0.95,
+    "variance_calibration_order": "after_positive"
+  }
+}

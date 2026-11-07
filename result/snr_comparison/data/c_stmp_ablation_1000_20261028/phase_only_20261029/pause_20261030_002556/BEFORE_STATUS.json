@@ -1,0 +1,61 @@
+{
+  "stage": "RUNNING",
+  "scope": "estimated_phase_only",
+  "pid": 84388,
+  "started_unix": 1793287030.1441805,
+  "updated_unix": 1793291152.882084,
+  "planned": 6000,
+  "completed": 4163,
+  "reused": 3783,
+  "completed_by_variant_and_snr": {
+    "gaussian_prior": {
+      "-4": 1000,
+      "-2": 1000,
+      "0": 1000,
+      "2": 1000,
+      "4": 1000,
+      "6": 1000
+    },
+    "gaussian_evidence": {
+      "-4": 355,
+      "-2": 355,
+      "0": 355,
+      "2": 355,
+      "4": 354,
+      "6": 354
+    },
+    "estimated_phase": {
+      "-4": 693,
+      "-2": 694,
+      "0": 694,
+      "2": 694,
+      "4": 694,
+      "6": 694
+    }
+  },
+  "total_preserved_outputs": 12291,
+  "original_planned": 18000,
+  "gaussian_evidence_status": "STOPPED_BY_USER",
+  "gaussian_figures": false,
+  "nonconverged": {
+    "gaussian_prior": 841,
+    "gaussian_evidence": 724,
+    "estimated_phase": 56
+  },
+  "failed": 0,
+  "pending": 6,
+  "active_cpu_workers": 0,
+  "active_gpu_workers": 6,
+  "elapsed_seconds": 4122.737948417664,
+  "resource_override": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\phase_only_20261029",
+  "resources": {
+    "created_unix": 1793291147.8776238,
+    "gpu_used_mib": 14189.0,
+    "gpu_total_mib": 16303.0,
+    "gpu_free_mib": 2114.0,
+    "gpu_utilization_percent": 86.0,
+    "power_watts": 215.65,
+    "available_ram_gib": 5.225681304931641
+  },
+  "stop_reason": null
+}

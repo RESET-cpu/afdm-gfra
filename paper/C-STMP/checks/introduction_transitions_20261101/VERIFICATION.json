@@ -1,0 +1,32 @@
+{
+  "checks": {
+    "only_introduction_manuscript_source_changed": true,
+    "citations_unchanged": true,
+    "contributions_and_roadmap_unchanged": true,
+    "approved_prerequisite_sentence_retained": true,
+    "counts_match": true,
+    "pdf_has_OTFS_change": true,
+    "pdf_has_STMP_change": true,
+    "pdf_page_count_retained": true,
+    "no_overfull_boxes": true,
+    "no_undefined_references": true,
+    "no_missing_characters": true,
+    "pdf_structural_preflight_passed": true,
+    "visual_review_pages_1_to_3_passed": true
+  },
+  "changed_manuscript_sources": [
+    "sections/01_introduction.tex"
+  ],
+  "before_counts": {
+    "paragraph_initial_To": 3,
+    "However": 5
+  },
+  "after_counts": {
+    "paragraph_initial_To": 1,
+    "However": 2
+  },
+  "pdf_pages": 13,
+  "underfull_warnings": 10,
+  "pdf_text_normalization": "NFKC, line-end word dehyphenation, removal of line breaks after en dashes, whitespace collapse",
+  "pdf_sha256": "961feb0c86775befaefd17eb551bfef9f7de4038ab90c62dd2c9f39350929b6c"
+}

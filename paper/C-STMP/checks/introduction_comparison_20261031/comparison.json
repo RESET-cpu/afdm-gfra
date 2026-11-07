@@ -1,0 +1,96 @@
+{
+  "date": "2026-10-31",
+  "before_path": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\compress_20261030\\before\\sections\\01_introduction.tex",
+  "after_path": "D:\\afdm-gfra\\paper\\C-STMP\\sections\\01_introduction.tex",
+  "before_sha256": "3637978b16d28ba3fc99bed7761f5bbd3cf9064a473f6ee3782d295b69cf1a6f",
+  "after_sha256": "1df53e48f296b3d34b7149f2d9a9834b48704dcda1567580ffd9c6468b7da576",
+  "word_counts": {
+    "before": 1032,
+    "after": 541,
+    "method": "English words; hyphenated word counted once; citations and LaTeX commands excluded"
+  },
+  "sections": [
+    {
+      "title": "研究背景与 GFRA 动机",
+      "before": "Sixth-generation (6G) wireless networks are expected to provide ubiquitous connectivity for a massive number of Internet-of-Things (IoT) devices [1, 2]. To serve devices in remote areas with limited terrestrial coverage, low Earth orbit (LEO) satellites complement cellular networks for applications such as smart agriculture and climate monitoring [3]. These power-limited devices transmit short packets sporadically, with only a small fraction active at a given time [3, 1]. In grant-based random access, handshaking before transmission incurs significant signaling overhead, while the long propagation delay of terrestrial-satellite links further increases access latency [1, 2]. Accordingly, grant-free random access (GFRA) allows active devices to transmit pilots and data directly without first obtaining a grant, reducing signaling overhead and access latency in LEO satellite IoT systems [1, 2].",
+      "after": "Sixth-generation (6G) networks are expected to connect large numbers of Internet-of-Things (IoT) devices, including remote, power-limited devices served by low Earth orbit (LEO) satellites [1, 2, 3]. Their short, sporadic transmissions favor grant-free random access (GFRA), which avoids the handshaking overhead and propagation latency of grant-based access [1, 2].",
+      "assessment": "删除了农业、气候监测等应用例子，将设备特点和接入动机合并。需要纠正：原文是“reducing … access latency”，现文“avoids … propagation latency”可能被理解为避免传播时延，超过原句含义。",
+      "priority": true
+    },
+    {
+      "title": "GNSS 预补偿与研究需求",
+      "before": "Supporting GFRA over LEO links requires handling large delays and Doppler shifts caused by long propagation distances and high satellite mobility. The 3rd Generation Partnership Project (3GPP) Release 17 framework addresses these effects through device-side precompensation assisted by the global navigation satellite system (GNSS) [4]. With such precompensation, many existing satellite GFRA schemes assume perfect compensation or small residual delays and Doppler shifts at the receiver [3]. However, frequent estimation and compensation increase energy consumption and reduce battery lifetime, making these schemes less suitable for power-limited remote IoT devices [3]. This motivates reducing dependence on GNSS, consistent with the GNSS-independent operation considered in the Release 19 study on satellite access [5]. With reduced reliance on device-side precompensation, the satellite receiver must accommodate large differential delays and Doppler shifts, which can cause severe inter-symbol and inter-carrier interference in conventional orthogonal frequency division multiplexing (OFDM) systems [3, 6].",
+      "after": "LEO links introduce large delays and Doppler shifts. The 3rd Generation Partnership Project (3GPP) Release 17 framework uses global navigation satellite system (GNSS)-assisted device-side precompensation [4]; many satellite GFRA schemes consequently assume perfect compensation or small residual offsets [3]. Frequent estimation and compensation consume energy, motivating GNSS-independent operation as considered in the Release 19 study [5]. The receiver must then accommodate large differential delays and Doppler shifts, which cause inter-symbol and inter-carrier interference in orthogonal frequency division multiplexing (OFDM) [3, 6].",
+      "assessment": "保留 Release 17、Release 19 及 GNSS-independent 的背景，删减了电池寿命、偏远低功耗设备适用性和成因说明。主线仍在，但动机铺垫变短。",
+      "priority": false
+    },
+    {
+      "title": "从 OTFS 到 AFDM",
+      "before": "To mitigate these effects, orthogonal time frequency space (OTFS) modulation exploits the quasi-static properties of channels in the delay–Doppler domain [3, 7]. In [3], multi-frame OTFS transmission handles large differential delays and Doppler shifts at the satellite receiver, allowing devices to operate without GNSS assistance or precompensation of these offsets. However, the two-dimensional transformation in OTFS entails relatively high modulation complexity [8, 6]. Affine frequency division multiplexing (AFDM), based on one-dimensional chirp modulation, offers lower modulation complexity than OTFS while retaining strong Doppler robustness over doubly dispersive channels [9, 8, 6]. With properly designed chirp parameters, AFDM can also achieve full diversity over such channels [9]. This combination of low modulation complexity and full diversity makes AFDM attractive for GFRA with power-limited IoT devices.",
+      "after": "Orthogonal time frequency space (OTFS) modulation exploits quasi-static delay–Doppler channels [3, 7]. Multi-frame OTFS in [3] handles these offsets without device-side GNSS precompensation, but its two-dimensional transformation incurs higher modulation complexity [8, 6]. Affine frequency division multiplexing (AFDM) uses one-dimensional chirp modulation and, with suitable chirp parameters, achieves full diversity over doubly dispersive channels at lower modulation complexity [9, 8, 6].",
+      "assessment": "保留变换维度、复杂度及 full diversity 的比较；删除了对多普勒鲁棒性的单独说明，以及末尾联系低功耗 IoT 设备的总结句。",
+      "priority": false
+    },
+    {
+      "title": "JADCE、稀疏方法与分数时延／多普勒",
+      "before": "To unleash the full potential of AFDM-GFRA, accurate joint activity detection and channel estimation (JADCE) is a critical prerequisite [8]. Existing methods exploit sporadic device activity to formulate JADCE as a compressed sensing (CS) problem and incorporate structured priors to capture channel sparsity [3, 8]. The scheme in [8] further uses a graph neural network to adaptively learn sparsity patterns, while retaining a predefined delay–Doppler grid for the sparse channel representation. However, in practical propagation environments, fractional Doppler shifts and fractional time delays can introduce significant power leakage in the effective channel matrix, thereby weakening its sparsity [6]. This motivates learning effective-channel priors from data to capture channel structures beyond the assumed sparse representation [1, 6].",
+      "after": "AFDM-GFRA requires joint activity detection and channel estimation (JADCE). Compressed sensing (CS) methods exploit sporadic activity and structured channel sparsity [3, 8]; the graph neural network in [8] learns sparsity patterns on a predefined delay–Doppler grid. Fractional delays and Doppler shifts, however, cause power leakage that weakens effective-channel sparsity [6], motivating priors learned directly from channel samples [1, 6].",
+      "assessment": "压缩 CS 建模、GNN 与预设网格的介绍，保留功率泄漏削弱稀疏性这一动机。",
+      "priority": false
+    },
+    {
+      "title": "生成式方法、STMP 与现有不足",
+      "before": "Score-based generative models learn channel priors from samples by estimating the score function of the channel distribution [10, 11]. In [6], score-based learning is performed directly on the AFDM effective channel to address fractional delay–Doppler off-grid leakage in channel estimation. For massive random access, [12] proposes a two-stage algorithm that first identifies active devices through a Transformer-based detector and then uses generative diffusion models for joint channel estimation and data detection. However, both approaches rely on iterative posterior sampling, which requires repeated score function evaluations and incurs substantial computational cost [6, 12]. To avoid iterative posterior sampling, [1] develops a score-based turbo message passing (STMP) algorithm that incorporates generative channel priors for JADCE. Through Tweedie's formulas, separate first- and second-order score networks provide posterior means and variances for single-step minimum mean-squared error (MMSE) denoising under equivalent additive white Gaussian noise (AWGN) observations. However, this AWGN model is justified in the large-system limit with right-rotationally invariant random sensing matrices [1]. In the finite-dimensional, structured multi-frame AFDM system considered here, departures from these conditions can exacerbate the mismatch between denoiser input errors and the white Gaussian perturbations used for training. A similar limitation has been highlighted for structured compression matrices in [13]. This mismatch can degrade channel denoising accuracy and, consequently, JADCE performance. Moreover, [1] computes activity probabilities using Gaussian extrinsic messages obtained after projecting the channel posterior onto a Gaussian distribution. In general, matching posterior means and variances does not preserve the marginal likelihood associated with a non-Gaussian channel prior. Consequently, the resulting likelihood ratio can yield inaccurate activity probabilities even when the channel posterior moments are accurately estimated. These errors further affect the activity-weighted channel estimates exchanged with the linear estimation module.",
+      "after": "Score-based generative models learn such priors through the channel distribution's score function [10, 11]. The AFDM estimator in [6] addresses fractional delay–Doppler leakage, while [12] combines a Transformer activity detector with diffusion-based channel estimation and data detection. Both require repeated score evaluations for iterative posterior sampling. Score-based turbo message passing (STMP) [1] instead uses Tweedie's formulas and separate first- and second-order score networks for single-step minimum mean-squared error (MMSE) denoising under equivalent additive white Gaussian noise (AWGN) observations. The AWGN approximation is justified in the large-system limit with right-rotationally invariant random sensing matrices [1]. Finite-dimensional, structured multi-frame AFDM can depart from these conditions, increasing the mismatch between denoiser input errors and white-noise training perturbations; a related limitation is reported in [13]. Furthermore, STMP computes activity probabilities from Gaussian extrinsic messages after posterior projection. For a non-Gaussian channel prior, matching posterior moments need not preserve the marginal likelihood. The resulting activity-probability errors can therefore affect channel estimation even when the conditional moments are accurate.",
+      "assessment": "重组两段：将 STMP 的介绍并入生成式方法综述，后一段集中说明 AWGN 近似条件与活动概率问题。删除了计算成本、去噪精度下降及误差向线性模块传递的部分展开；条件矩与边缘似然的关键区分仍在，但论证展开减少。",
+      "priority": false
+    },
+    {
+      "title": "贡献之前的研究对象说明",
+      "before": "Against this background, we investigate GNSS-independent AFDM-GFRA for LEO satellite IoT systems. Our main contributions are summarized as follows:",
+      "after": "Our contributions are:",
+      "assessment": "原文明确承接“GNSS-independent AFDM-GFRA for LEO satellite IoT systems”；现文仅剩“Our contributions are”。研究对象在前文仍有提及，但这里的承接被删掉了。",
+      "priority": true
+    },
+    {
+      "title": "贡献 1：多帧 AFDM 模型",
+      "before": "We develop a multi-frame AFDM transmission scheme that handles large differential delays and Doppler shifts at the satellite receiver. The derived input–output relationship retains fractional delay–Doppler effects and the chirp-periodic prefix phase for delays exceeding the useful symbol duration. Separating the phase evolution across frames yields a multiple measurement vector (MMV) model in which the effective channel of each device remains approximately constant over consecutive frames. Additional pilot frames therefore provide more observations without increasing the number of channel coefficients to be estimated.",
+      "after": "A multi-frame AFDM model retains fractional delay–Doppler effects and chirp-periodic prefix phases for delays exceeding the useful symbol duration. Separating inter-frame phases yields a multiple measurement vector (MMV) model: additional pilot frames provide observations of the same effective channel without increasing its dimension.",
+      "assessment": "保留分数效应、CPP 相位和增加观测而不增加信道维数。需要恢复：原文的“remains approximately constant over consecutive frames”被压成“the same effective channel”，丢失“近似”限定；大差分时延／多普勒由卫星端处理的贡献说明也缩短了。",
+      "priority": true
+    },
+    {
+      "title": "贡献 2：生成式信道先验",
+      "before": "We learn a score-based generative prior directly from multiantenna AFDM effective-channel samples with fractional delays and Doppler shifts. The denoiser is trained using colored Gaussian perturbations, and the learned prior provides channel posterior mean and variance estimates for message passing.",
+      "after": "A score-based generative prior is learned from multiantenna AFDM effective channels using colored Gaussian perturbations. The trained denoiser provides posterior means and variances for message passing.",
+      "assessment": "保留多天线有效信道、有色高斯扰动以及后验均值／方差。删除了本条中的 fractional delays and Doppler shifts；原句以 learned prior 为主语，现句改为 trained denoiser，原句对整体计算方式的表述更稳妥。",
+      "priority": false
+    },
+    {
+      "title": "贡献 3：活动概率与消息传递接收机",
+      "before": "We develop a message-passing JADCE receiver for the structured multi-frame AFDM observation model. A learned density-ratio estimator compares the active and inactive observation distributions under the effective-channel prior to obtain soft activity probabilities. These probabilities are combined with channel posterior mean and variance estimates obtained using the learned prior to form Gaussian extrinsic messages for iterative exchange with the linear estimation module. Simulation results demonstrate that the proposed receiver improves activity detection and channel estimation performance compared with STMP across different signal-to-noise ratios and pilot-frame counts.",
+      "after": "A learned density-ratio estimator supplies soft activity probabilities, which combine with the channel moments to form Gaussian extrinsic messages. The resulting JADCE receiver improves on STMP across the evaluated signal-to-noise ratio and pilot-frame grids.",
+      "assessment": "保留密度比估计、软活动概率和高斯外信息，但删除了活动／非活动分布的比较对象、结构化多帧模型以及与线性模块迭代交换的明确表述。原来的性能句分别点明活动检测和信道估计，现句只说 improves on STMP，贡献描述不如原文充分。",
+      "priority": true
+    },
+    {
+      "title": "论文结构介绍",
+      "before": "The remainder of this paper is organized as follows. Section II presents the system model and the multi-frame AFDM input–output relationship. Sections III–V describe the receiver design, the channel and activity denoisers, and the overall algorithm with its computational complexity analysis, respectively. Section VI presents the simulation results.",
+      "after": "The remainder of this paper is organized as follows. Section II presents the system model and the multi-frame AFDM input–output relationship. Sections III–V describe the receiver design, the channel and activity denoisers, and the overall algorithm with its computational complexity analysis, respectively. Section VI presents the simulation results.",
+      "assessment": "本段逐字保持（忽略换行）。",
+      "priority": false
+    }
+  ],
+  "manuscript_files_unchanged": true,
+  "protected_file_hashes": {
+    "D:\\afdm-gfra\\paper\\C-STMP\\main.tex": "849cac9d3b5330403bafd4c1e8a73f600db1a0c8a20c3cbec0d2be9cd1251101",
+    "D:\\afdm-gfra\\paper\\C-STMP\\main.pdf": "9b174bd2b23a79e06a8d11d32395cc104b47b5bbe932c8e6f0685c4f14a03c78",
+    "D:\\afdm-gfra\\paper\\C-STMP\\sections\\00_abstract_zh.md": "335309d07bba8a818cbef161124386d4015ae6ccf530873a270ffbe28b50d8d1",
+    "D:\\afdm-gfra\\paper\\C-STMP\\sections\\01_introduction.tex": "1df53e48f296b3d34b7149f2d9a9834b48704dcda1567580ffd9c6468b7da576"
+  },
+  "subsequent_status": {
+    "date": "2026-10-31",
+    "introduction_restored_to_before": true,
+    "revision_record": "../restore_introduction_20261031/REVISION_NOTES.md"
+  }
+}

@@ -1,0 +1,1074 @@
+[
+  {
+    "unit": 6,
+    "file": "main.tex",
+    "old": "Euclidean norm of all matrix or tensor entries",
+    "new": "Frobenius norm",
+    "reason": "采用矩阵/张量范数的标准名称，避免绕行解释。",
+    "evidence": "Shen，Notation，PDF p.3；本文沿用到张量所有元素的平方和"
+  },
+  {
+    "unit": 13,
+    "file": "sections/01_introduction.tex",
+    "old": "received-symbol delay position",
+    "new": "the position of the received symbol along the delay dimension",
+    "reason": "三个索引中第三个是接收符号的延迟维位置；旧压缩搭配不自然。",
+    "evidence": "Shen，II-B，PDF p.4，received symbol position along the delay dimension"
+  },
+  {
+    "unit": 13,
+    "file": "sections/01_introduction.tex",
+    "old": "an inverse DFT and two diagonal chirp multiplications",
+    "new": "an inverse DFT and multiplications by two diagonal chirp matrices",
+    "reason": "diagonal 修饰矩阵，不是 multiplication。",
+    "evidence": "Bemani，II-B，式(16)：IDAFT 的两个对角 chirp 矩阵"
+  },
+  {
+    "unit": 13,
+    "file": "sections/01_introduction.tex",
+    "old": "For the stationary-device channel considered here,",
+    "new": "For the stationary devices considered here,",
+    "reason": "stationary 的对象是终端；此处不需要另造 channel 类别。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 16,
+    "file": "sections/01_introduction.tex",
+    "old": "structured compression matrices",
+    "new": "structured sensing matrices",
+    "reason": "与本段 sensing matrices 的对象和用词一致；不增加引文。",
+    "evidence": "Cai，III-A/V；保留此前作者指定的无 Wei 标号句，不将本次一致性编辑当成新增文献验证"
+  },
+  {
+    "unit": 18,
+    "file": "sections/01_introduction.tex",
+    "old": "The resulting formulation\ncollects additional pilot observations",
+    "new": "Additional pilot frames\nprovide more observations",
+    "reason": "提供更多观测的是新增导频帧，不是 formulation。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 21,
+    "file": "sections/01_introduction.tex",
+    "old": "the learning of channel and activity denoisers",
+    "new": "the learned channel denoiser and activity classifier",
+    "reason": "活动概率由分类器估计；与第四章实际模型名称一致。",
+    "evidence": "Cai，IV：channel denoising；Menon，§2/§4.2：classification 与 density ratio estimation"
+  },
+  {
+    "unit": 27,
+    "file": "sections/02_system_model.tex",
+    "old": "$g_{k\\ell}$ is the path gain of the $\\ell$th path, and",
+    "new": "$g_{k\\ell}$ is the path gain of the $\\ell$th path,",
+    "reason": "删除并列定义中重复的 and。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 27,
+    "file": "sections/02_system_model.tex",
+    "old": "$\\widetilde\\tau_{k\\ell}$ and $\\tau_c$ are denoted as\npropagation delay and common delay, respectively.",
+    "new": "$\\widetilde\\tau_{k\\ell}$ and $\\tau_c$ denote the\npropagation delay and common delay, respectively.",
+    "reason": "符号 denote 物理量，旧句把指代关系写反。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 32,
+    "file": "sections/02_system_model.tex",
+    "old": "The time-domain transmitted signal is generated through the inverse\ndiscrete affine Fourier transform (IDAFT) applied to $\\mathbf p_{qk}$,\nmathematically formulated as",
+    "new": "Applying the inverse discrete affine Fourier transform (IDAFT) to\n$\\mathbf p_{qk}$ gives the time-domain transmitted signal",
+    "reason": "直接描述变换与输出，删去重复引式套语。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 34,
+    "file": "sections/02_system_model.tex",
+    "old": "chirp-periodic prefix (CPP) length",
+    "new": "chirp-periodic prefix (CPP) duration",
+    "reason": "下文比较 N_CPP*T_s 与秒制时延，应为持续时间；参数表 N_CPP 仍是样点长度。",
+    "evidence": "本文 CPP 不等式；Shen，II-B，PDF p.4：CP time duration"
+  },
+  {
+    "unit": 38,
+    "file": "sections/02_system_model.tex",
+    "old": "The pilot symbols including this phase rotation are given by",
+    "new": "Incorporating this phase rotation into the pilot matrix gives",
+    "reason": "A 是引入相位后的矩阵，不把原始发送符号 P 与 A 混称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 39,
+    "file": "sections/02_system_model.tex",
+    "old": "the same useful-symbol\nenergy",
+    "new": "the same energy in the useful symbols",
+    "reason": "展开压缩修饰语，保留能量对齐条件。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 41,
+    "file": "sections/02_system_model.tex",
+    "old": "Each device determines whether to access the channel in an independent\nand identically distributed (i.i.d.) manner.\nWe use a binary activity variable $\\alpha_k$, defined as",
+    "new": "We model device activities as independent and identically distributed\n(i.i.d.) binary variables. For device $k$, define $\\alpha_k$ as",
+    "reason": "i.i.d. 描述随机变量，不描述设备作决定的 manner。",
+    "evidence": "Cai，II 中 Bernoulli activity 模型；本文推断模型保持"
+  },
+  {
+    "unit": 50,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "old": "Each likelihood factor uses the corresponding",
+    "new": "Each likelihood factor depends on the corresponding",
+    "reason": "因子图表达概率因子对变量的依赖。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 56,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "old": "For any device tensor $H_k$",
+    "new": "For the channel tensor $H_k$",
+    "reason": "张量表示信道，不表示设备。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 58,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "old": "the normalized\nconditional posterior",
+    "new": "the posterior distribution",
+    "reason": "活跃条件已在首句说明；不重复叠加限定。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 62,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "old": "the active-channel posterior",
+    "new": "the channel posterior under the active hypothesis",
+    "reason": "将 active 对应假设明确写出，避免类别式拼接。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 63,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "old": "To obtain the spatial covariance",
+    "new": "To compute the posterior covariance across antennas",
+    "reason": "明确协方差的变量维度及后验含义。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 63,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "old": "Averaging the resulting covariance over the $N^2$ channel entries gives",
+    "new": "Averaging over the $N^2$ channel entries per antenna gives",
+    "reason": "重排均值不直接产生协方差；明确平均的索引。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 67,
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "old": "Section~\\ref{sec:learning} learns the channel mean, variance, and\nactivity probability from channel samples.",
+    "new": "Section~\\ref{sec:learning} describes learned estimators for the channel\nmean, variance, and activity probability.",
+    "reason": "章节不能执行学习；方差由已学去噪器的导数估计。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 68,
+    "file": "sections/04_generative_priors.tex",
+    "old": "Learning Channel and Activity Denoisers",
+    "new": "Learning Channel Denoising and Activity Detection",
+    "reason": "标题同时覆盖去噪器和活动分类器，不混称两个 denoisers。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 71,
+    "file": "sections/04_generative_priors.tex",
+    "old": "an independent proper\ncomplex Gaussian perturbation with covariance $\\mathbf C\\succ0$, giving the real\nobservation",
+    "new": "a proper complex Gaussian\nperturbation independent of $H$, with covariance $\\mathbf C\\succ0$.\nThe real observation is",
+    "reason": "明确 independence 的对象，避免误读为各坐标独立而与有色噪声矛盾。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 77,
+    "file": "sections/04_generative_priors.tex",
+    "old": "is a mean function",
+    "new": "is a denoiser",
+    "reason": "此函数是参数化去噪器；不用含义过泛的 mean function。",
+    "evidence": "Cai，IV-A/B；Karras，§5 的 denoiser 与 preconditioning"
+  },
+  {
+    "unit": 78,
+    "file": "sections/04_generative_priors.tex",
+    "old": "over unrestricted mean functions",
+    "new": "over all estimators of $\\mathbf h_{\\mathbb R}$ from $\\mathbf u$",
+    "reason": "最小化范围是估计函数，不是另一个名为 mean functions 的类别；保留无限函数类条件。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 79,
+    "file": "sections/04_generative_priors.tex",
+    "old": "sampling law for $v$",
+    "new": "sampling distribution of $v$",
+    "reason": "使用明确常见的分布表述；law 并非错误或不存在。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 80,
+    "file": "sections/04_generative_priors.tex",
+    "old": "complex mean map",
+    "new": "complex-valued denoiser",
+    "reason": "与 f_theta 的操作及数学类型一致，不另起 map 名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 80,
+    "file": "sections/04_generative_priors.tex",
+    "old": "scalar-variance message",
+    "new": "input message",
+    "reason": "噪声协方差 vI 已在同句给出，无需制造消息类别。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 83,
+    "file": "sections/04_generative_priors.tex",
+    "old": "the variance per complex coordinate",
+    "new": "the average conditional variance per complex coordinate",
+    "reason": "tr(P)/D 是各坐标条件方差的平均，不等同于每个坐标方差。",
+    "evidence": "Dytso，Prop.1；本文 trace/D 定义"
+  },
+  {
+    "unit": 84,
+    "file": "sections/04_generative_priors.tex",
+    "old": "We estimate this trace using Monte Carlo finite differences\n\\cite{metzler2016}, with $f_\\theta$ in place of the conditional\nmean.",
+    "new": "We approximate the derivatives by finite differences and estimate the\ntrace by Monte Carlo averaging \\cite{metzler2016}, with $f_\\theta$ in\nplace of the conditional mean.",
+    "reason": "拆开求导近似与随机迹估计两项操作，不将组合包装为方法名。",
+    "evidence": "Metzler 作者稿，V-B Monte Carlo method，PDF p.15；随机符号和中心差分仍为本文公式"
+  },
+  {
+    "unit": 88,
+    "file": "sections/04_generative_priors.tex",
+    "old": "sampling law for $v$",
+    "new": "sampling distribution of $v$",
+    "reason": "与有色训练段落统一。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 89,
+    "file": "sections/04_generative_priors.tex",
+    "old": "At the population optimum over unrestricted logits, this loss recovers the\nposterior log odds under the training distribution:",
+    "new": "The minimizer of the expected loss over all functions of $(R,v)$ is\nthe posterior log odds under the training distribution:",
+    "reason": "优化对象是 logit 函数；将 population optimum 的技术压缩改成具体数学陈述。",
+    "evidence": "Menon，§2.1–2.2，PDF p.2，expected risk/Bayes-optimal scorer/logistic link；§4.2"
+  },
+  {
+    "unit": 90,
+    "file": "sections/04_generative_priors.tex",
+    "old": "through this Bayes correction",
+    "new": "through Bayes' rule",
+    "reason": "实际操作是代入先验的 Bayes 公式，与前文和图标一致。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 94,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "mean-network illustration",
+    "new": "denoiser illustration",
+    "reason": "图中的功能是去噪，统一名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 95,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "common conditional variance",
+    "new": "common variance estimate",
+    "reason": "这里是跨设备平均并加下限后的估计量。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 96,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "Dividing the Gaussian approximation with mean",
+    "new": "Dividing the Gaussian posterior approximation with mean",
+    "reason": "明确被除的分布对象。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 97,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "current Gaussian input likelihood",
+    "new": "current Gaussian likelihood",
+    "reason": "去除 input 的冗余修饰，前文已定义此似然。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 98,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "is the training average\nof $\\norm{H}_F^2/D$",
+    "new": "is the average\nof $\\norm{H}_F^2/D$ over the training channels",
+    "reason": "说明在哪些样本上取平均。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 99,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "Form \\eqref{eq:nonlinear-extrinsic}",
+    "new": "Compute the extrinsic message in \\eqref{eq:nonlinear-extrinsic}",
+    "reason": "计算的是外信息，不是公式编号。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 101,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "Appendix~\\ref{app:frontend} estimates the phases",
+    "new": "The procedure in Appendix~\\ref{app:frontend} estimates the phases",
+    "reason": "执行估计的是方法，不是附录。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 101,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "For noise estimation",
+    "new": "For noise-variance estimation",
+    "reason": "估计对象是 sigma^2，不是噪声样本。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 101,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "spatial sample covariance and noise estimate",
+    "new": "spatial sample covariance and noise-variance estimate",
+    "reason": "与公式对象一致。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 101,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "Under a lower-rank spatial signal plus white noise, this estimate remains\nfixed during MP.",
+    "new": "This estimator assumes a low-rank signal covariance and spatially white\nnoise. We keep the estimate fixed during MP.",
+    "reason": "低秩修饰协方差；统计假设与固定估计量的算法选择分别表述。",
+    "evidence": "Nadakuditi–Edelman，II-A，式(5)–(7)，pp.2626–2627；本文实现"
+  },
+  {
+    "unit": 103,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "the next scale is",
+    "new": "the updated scaling factor is",
+    "reason": "kappa 是方差缩放因子，不是泛指尺度。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 104,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "the training-channel\nroot mean square $s$",
+    "new": "the root mean square $s$ of the training-channel entries",
+    "reason": "说明 RMS 的取值对象。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 105,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "the same weight",
+    "new": "the same damping factor",
+    "reason": "统一 eta 的名称。",
+    "evidence": "Cai，V-B1：damping factor"
+  },
+  {
+    "unit": 108,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "rectangular-pulse OTFS with an identity transmit window",
+    "new": "rectangular-pulse OTFS without transmit windowing",
+    "reason": "单位窗表示不加窗；使用具体操作而非 identity window 组合。",
+    "evidence": "Zou/Xu 作者稿，II-A/B，式(1)/(4)/(5)，Pi_t=I"
+  },
+  {
+    "unit": 108,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "after transform cancellation",
+    "new": "after cancelling the consecutive DFT and inverse DFT operations",
+    "reason": "明确消掉的是哪些变换。",
+    "evidence": "同上，F_N^H F_N=I；原文 M/N 与本文 L/N 已重映射"
+  },
+  {
+    "unit": 108,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "Their ordering depends",
+    "new": "The relative modulation costs depend",
+    "reason": "ordering 的比较对象是复杂度大小。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 110,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "SVD and noise estimation",
+    "new": "SVD and noise-variance estimation",
+    "reason": "统一噪声方差估计对象。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 112,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "supplied phases",
+    "new": "known phases",
+    "reason": "统一相位条件用词。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 112,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "working storage\nis",
+    "new": "the memory requirement\nis",
+    "reason": "改成直接的存储需求描述。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 112,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "pilot/SVD factors",
+    "new": "the pilot matrix and SVD factors",
+    "reason": "pilot 是矩阵而非 factor；展开斜杠关系。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 115,
+    "file": "sections/06_simulation_results.tex",
+    "old": "Devices are uniform",
+    "new": "Devices are uniformly distributed",
+    "reason": "uniform 描述位置分布。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 115,
+    "file": "sections/06_simulation_results.tex",
+    "old": "determined by the geometry and large-scale effects\ncompensated. The NTN-TDL-D profile \\cite{shen2025} uses\nuniform delay spread $[30,50]$~ns,",
+    "new": "determined by the geometry. Large-scale effects are\ncompensated. We use the NTN-TDL-D profile \\cite{shen2025}, with a delay\nspread drawn uniformly from $[30,50]$~ns,",
+    "reason": "分开补偿与几何关系；均匀抽样是本实验设置，不是 profile 名称的定义。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 117,
+    "file": "sections/06_simulation_results.tex",
+    "old": "Independent Bernoulli activities",
+    "new": "Independent Bernoulli activity variables",
+    "reason": "Bernoulli 分布修饰随机变量。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 117,
+    "file": "sections/06_simulation_results.tex",
+    "old": "resulting marginal $\\rho",
+    "new": "resulting marginal activity probability $\\rho",
+    "reason": "说明边缘量是概率。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 117,
+    "file": "sections/06_simulation_results.tex",
+    "old": "clean signal",
+    "new": "noiseless received signal",
+    "reason": "Y0 是无噪声接收信号；与去噪训练的 clean channel 区分。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 118,
+    "file": "sections/06_simulation_results.tex",
+    "old": "Doppler support",
+    "new": "Doppler-shift range",
+    "reason": "参数表描述具体取值范围，避免无必要的 support 术语。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 119,
+    "file": "sections/06_simulation_results.tex",
+    "old": "activity masking",
+    "new": "multiplication by $\\alpha_k$",
+    "reason": "直接写出实际操作，避免未定义 masking 名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 119,
+    "file": "sections/06_simulation_results.tex",
+    "old": "decay $0.999$;\nvalidation loss under fixed noise realizations selects the model.",
+    "new": "decay $0.999$.\nWe select the model with the lowest validation loss under fixed noise\nrealizations.",
+    "reason": "模型由训练者按验证损失选择，补回实际的最低损失标准。",
+    "evidence": "已登记训练流程/保存模型；本地训练代码以 validation loss 最低值选 checkpoint"
+  },
+  {
+    "unit": 120,
+    "file": "sections/06_simulation_results.tex",
+    "old": "Colored training uses the proper complex Gaussian covariance",
+    "new": "We train with proper complex Gaussian noise with covariance",
+    "reason": "Gaussian/proper 描述随机噪声，不描述协方差矩阵。",
+    "evidence": "Neeser，proper complex random processes；Shastri，III-B，DNN Denoiser for Correlated Noise"
+  },
+  {
+    "unit": 121,
+    "file": "sections/06_simulation_results.tex",
+    "old": "with validation\nmodel selection",
+    "new": "with model selection based on\nvalidation loss",
+    "reason": "说明模型选择依据，展开压缩组合。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 123,
+    "file": "sections/06_simulation_results.tex",
+    "old": "real/imaginary input maps",
+    "new": "real and imaginary input maps",
+    "reason": "明确两个输入部分。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 123,
+    "file": "sections/06_simulation_results.tex",
+    "old": "input/output projections use",
+    "new": "the input and output layers use",
+    "reason": "这里具体是卷积层，与后面的条件线性投影区分。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 123,
+    "file": "sections/06_simulation_results.tex",
+    "old": "flattened real/imaginary entries",
+    "new": "flattened real and imaginary entries",
+    "reason": "展开并列关系。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 124,
+    "file": "sections/06_simulation_results.tex",
+    "old": "the nominal normalized variance per\nreal coordinate, and $g_\\theta$ is the backbone",
+    "new": "the nominal variance per real coordinate after\nnormalization, and $g_\\theta$ is the RefineNet described above",
+    "reason": "明确归一化修饰范围及网络指代，避免泛称 backbone。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 125,
+    "file": "sections/06_simulation_results.tex",
+    "old": "real/imaginary maps",
+    "new": "real and imaginary maps",
+    "reason": "统一表示。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 126,
+    "file": "sections/06_simulation_results.tex",
+    "old": "fixed AFDM/multiantenna adaptations",
+    "new": "fixed adaptations to multiantenna AFDM",
+    "reason": "展开两个限定词的关系。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 136,
+    "file": "sections/06_simulation_results.tex",
+    "old": "References are",
+    "new": "The reference methods are",
+    "reason": "此处为比较方法，不是文献条目。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 136,
+    "file": "sections/06_simulation_results.tex",
+    "old": "Given true path geometry, powers, and line-of-sight gain, the genie\nreports the analytic conditional MSE of the remaining Gaussian gains.",
+    "new": "For the genie-aided reference, we compute the analytic conditional MSE\nof the remaining Gaussian gains given the true path geometry, powers,\nand line-of-sight gain.",
+    "reason": "执行计算的是研究者；保留 genie 所知真值及条件 MSE 的含义。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 136,
+    "file": "sections/06_simulation_results.tex",
+    "old": "internal noise update",
+    "new": "internal noise-variance update",
+    "reason": "更新对象是方差。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 137,
+    "file": "sections/06_simulation_results.tex",
+    "old": "AWGN test noise with known variance",
+    "new": "AWGN with known variance",
+    "reason": "AWGN 已包含 noise；删除重复词。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 140,
+    "file": "sections/06_simulation_results.tex",
+    "old": "Table~\\ref{tab:activity-evidence} pools AER",
+    "new": "Table~\\ref{tab:activity-evidence} reports AER pooled",
+    "reason": "表格报告结果，不执行合并计算。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 144,
+    "file": "sections/06_simulation_results.tex",
+    "old": "the complete receivers",
+    "new": "the receivers",
+    "reason": "此节已明确是 JADCE 接收机，无需重复 complete。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 145,
+    "file": "sections/06_simulation_results.tex",
+    "old": "compares the iteration trajectories",
+    "new": "compares NMSE versus iteration",
+    "reason": "明确曲线变量。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 147,
+    "file": "sections/06_simulation_results.tex",
+    "old": "approaches its final accuracy earlier than",
+    "new": "approaches its final NMSE in fewer iterations than",
+    "reason": "指明指标与横轴，不用泛指 accuracy/earlier。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 150,
+    "file": "sections/06_simulation_results.tex",
+    "old": "improves AER over GP-MP",
+    "new": "achieves lower AER than GP-MP",
+    "reason": "明确误差率越低越好。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 153,
+    "file": "sections/06_simulation_results.tex",
+    "old": "the candidate population",
+    "new": "the number of candidate devices",
+    "reason": "明确增加的是候选终端数量。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 156,
+    "file": "sections/06_simulation_results.tex",
+    "old": "remains the most accurate receiver",
+    "new": "maintains the lowest NMSE",
+    "reason": "性能判断限定为图中度量。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 157,
+    "file": "sections/06_simulation_results.tex",
+    "old": "investigates the effect of pilot-frame\ncount",
+    "new": "shows the effect of the number of pilot frames",
+    "reason": "图展示结果；统一 pilot-frame count 的普通表述。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 159,
+    "file": "sections/06_simulation_results.tex",
+    "old": "On the tested grid",
+    "new": "Among the evaluated pilot-frame counts",
+    "reason": "grid 在本文已有时延多普勒含义；这里实际是测试的帧数集合。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 160,
+    "file": "sections/06_simulation_results.tex",
+    "old": "power-delay and\nfading distributions",
+    "new": "power delay profiles and\nfading distributions",
+    "reason": "power delay profile 与 fading distribution 是不同对象。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 162,
+    "file": "sections/06_simulation_results.tex",
+    "old": "outperforms the four sparse-recovery baselines",
+    "new": "achieves lower NMSE than the four sparse-recovery baselines",
+    "reason": "结果限定为本图报告的 NMSE。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 164,
+    "file": "sections/07_conclusion.tex",
+    "old": "using a shared\neffective-channel representation to collect additional pilot observations",
+    "new": "using a shared\neffective-channel representation to process additional pilot observations",
+    "reason": "表示用于处理观测，不自行采集观测。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 167,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "old": "Approximate each\ncandidate device by one dominant path",
+    "new": "Approximate the channel of each\ncandidate device by one dominant path",
+    "reason": "单路径近似的对象是信道。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 168,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "old": "shifts by integer multiples of $N$ change",
+    "new": "adding integer multiples of $N$ to $d$ changes",
+    "reason": "明确被移位的是时延参数。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 169,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "old": "When updating device $k$",
+    "new": "When updating the parameters of device $k$",
+    "reason": "更新的是参数。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 169,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "old": "Coarse correlations initialize candidates.",
+    "new": "A coarse search based on pilot correlations initializes the candidates.",
+    "reason": "correlation 是搜索评分，不是 coarse 的抽象对象。",
+    "evidence": "phase_estimation.py，coarse_scores/candidates：匹配滤波相关和网格候选选择"
+  },
+  {
+    "unit": 169,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "old": "and refine by L-BFGS-B \\cite{zhu1997}, accepting updates that do not\nincrease the residual beyond numerical tolerance within an interval where the waveform is differentiable.",
+    "new": "and refine by L-BFGS-B \\cite{zhu1997} within an interval where the\nwaveform is differentiable. Accept updates that do not increase the\nobjective beyond numerical tolerance.",
+    "reason": "可微区间限定搜索；验收比较标量目标而非残差向量。",
+    "evidence": "phase_estimation.py，refine/objective/estimate；Zhu，L-BFGS-B 原论文"
+  },
+  {
+    "unit": 169,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "old": "previous position",
+    "new": "previous parameter estimates",
+    "reason": "position 是实现变量名，实际为 delay/Doppler 参数，不是设备位置。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 171,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "old": "retaining cross-device conditional covariances and the\nconstraint $e^{\\mathrm jq\\beta_k}$",
+    "new": "retaining cross-device conditional covariances and imposing inter-frame\nphase rotations of the form $e^{\\mathrm jq\\beta_k}$",
+    "reason": "表达式本身不是 constraint，明确相位形式约束。",
+    "evidence": "Shen，III-C，式(47)–(54) 为参照；共同斜率形式是本文约束"
+  },
+  {
+    "unit": 172,
+    "file": "sections/appendix_parameter_estimation.tex",
+    "old": "rebuild $\\widehat{\\mathbf A}$ and its SVD",
+    "new": "update $\\widehat{\\mathbf A}$ and recompute its SVD",
+    "reason": "矩阵更新与重新分解分开陈述。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 174,
+    "file": "sections/appendix_afdm_channel_model.tex",
+    "old": "Integer phase factors cancel because",
+    "new": "Factors with phases equal to integer multiples of $2\\pi$ are one because",
+    "reason": "不是相位因子为整数，也不是与另一个因子抵消；指数为 2pi 整数倍才等于一。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 175,
+    "file": "sections/appendix_afdm_channel_model.tex",
+    "old": "The remainder of $d$ determines",
+    "new": "The value $d\\bmod N$ determines",
+    "reason": "明确模数。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 175,
+    "file": "sections/appendix_afdm_channel_model.tex",
+    "old": "delays extending over multiple useful-symbol periods",
+    "new": "delays exceeding $N$ samples",
+    "reason": "useful-symbol period 容易误解，直接用该推导的样点单位。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 176,
+    "file": "sections/appendix_afdm_channel_model.tex",
+    "old": "the useful interval starts",
+    "new": "the useful part starts",
+    "reason": "此处指参考帧除去前缀后的部分。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 179,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "learned second-order network",
+    "new": "learned second-order score network",
+    "reason": "second-order 的对象是 score，不是网络本身。",
+    "evidence": "Cai，IV-A/B"
+  },
+  {
+    "unit": 179,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "learned density-ratio classifier",
+    "new": "classifier for density ratio estimation",
+    "reason": "明确分类器用途，不另设方法类别。",
+    "evidence": "Menon，§2/§4.2"
+  },
+  {
+    "unit": 179,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "complete-receiver comparison",
+    "new": "comparison of the receivers",
+    "reason": "展开过度压缩的组合；保留比较因素不唯一的必要披露。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 181,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "Development and baseline-threshold selection\noverlap the evaluation scenes;",
+    "new": "Some evaluation scenes were used during method development and\nselection of baseline activity thresholds;",
+    "reason": "重叠的是场景集合，明确评估数据曾用于开发。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 181,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "All finite outputs enter the reported metrics",
+    "new": "All finite outputs are included in the reported metrics",
+    "reason": "明确纳入计算的关系。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 183,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "condition evaluations per method",
+    "new": "receiver runs per method",
+    "reason": "计数对象为场景×SNR 的接收机运行。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 183,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "used for the complete receiver. AER pools all device decisions across",
+    "new": "used for the receiver with learned density ratios. AER is computed from\nall device decisions across",
+    "reason": "两者都是完整接收机；明确比较版本与统计操作。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 184,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "The learned density ratio and Gaussian approximation\nproduce",
+    "new": "The receivers using the learned density ratio and Gaussian approximation\nproduce",
+    "reason": "产生检测结果的是接收机。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 184,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "the\ntested receiver substitution",
+    "new": "the\nreplacement of the activity-probability calculation",
+    "reason": "写明替换内容。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 184,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "cause of nonconvergence",
+    "new": "cause of failure to meet the stopping criterion",
+    "reason": "达到迭代上限不等于证明算法数学上不收敛。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 186,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "The receiver receives",
+    "new": "The receiver uses",
+    "reason": "避免无意义重复。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 186,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "are unavailable to inference",
+    "new": "are not supplied to the receiver",
+    "reason": "明确真值信息不可用的对象。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 187,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "A check is eligible when",
+    "new": "The conditions for performing a refinement are met when",
+    "reason": "eligible 是内部调度口吻，改成操作条件。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 187,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "and the current channel mean and covariance estimates are valid.",
+    "new": "and site updates have been accepted within the training variance\ninterval for five consecutive iterations.",
+    "reason": "valid 含义不明，直接说明原实现用于判断的条件及窗口。",
+    "evidence": "C_STMP_phase_selection_20261030/iterations.py，observe_decisions/ready；STMP/denoiser.py 的 supported/site_accepted"
+  },
+  {
+    "unit": 187,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "at successive eligible checks",
+    "new": "at successive checks satisfying these conditions",
+    "reason": "承接刚定义的条件，不创建 eligible check 名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 187,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "ten iterations with stable decisions and valid mean and covariance estimates",
+    "new": "ten iterations with stable decisions and accepted site updates within\nthe training variance interval",
+    "reason": "用实际判断替代未定义的 valid。",
+    "evidence": "STMP/phase_output_cycle_stopping.py 的 decision_stable/current_moment_iterations"
+  },
+  {
+    "unit": 189,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "at weight $0.2$ and a $12$-input diagnostic at weight\n$0.1$",
+    "new": "with damping factor $0.2$ and a diagnostic test with $12$ inputs at\ndamping factor $0.1$",
+    "reason": "明确参数及诊断输入数，展开日志式短语。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 189,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "With the original weight",
+    "new": "With the original damping factor",
+    "reason": "统一名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 189,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "$500$ scenes reached",
+    "new": "$500$ runs reached",
+    "reason": "达到迭代上限的是运行，不是场景。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 189,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "all $500$ scenes converge at",
+    "new": "all $500$ runs satisfy the stopping criterion at",
+    "reason": "报告实际停止条件，不扩大成数学收敛声明。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 190,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "the weight was reduced",
+    "new": "the damping factor was reduced",
+    "reason": "统一名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 190,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "with weight $0.2$",
+    "new": "with damping factor $0.2$",
+    "reason": "统一名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 190,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "retain weight $0.4$",
+    "new": "retain damping factor $0.4$",
+    "reason": "统一名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 190,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "These settings\nconstitute retrospective parameter development, rather than independent\nvalidation of a fixed damping rule across all candidate device counts.",
+    "new": "These damping factors were selected retrospectively and do not\nconstitute independent validation of a fixed rule across all candidate\ndevice counts.",
+    "reason": "把 retrospective 的对象写清楚；保留选择性调参披露。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 192,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "displayed trajectory",
+    "new": "displayed curve",
+    "reason": "图中实际是 NMSE 曲线。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 193,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "All finite nonconverged outputs remain in both NMSE and AER.",
+    "new": "Finite outputs from runs reaching the iteration limit are included in\nboth NMSE and AER.",
+    "reason": "不将上限运行直接命名为 nonconverged。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 194,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "retain weights",
+    "new": "retain damping factors",
+    "reason": "统一名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 194,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "runs in the activity sweep converge",
+    "new": "runs in the activity-probability experiment meet the stopping criterion",
+    "reason": "明确实验变量与实际停止事实。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 195,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "power-delay and\nfading profiles",
+    "new": "power delay profiles and\nfading distributions",
+    "reason": "统一两类不同统计对象。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 195,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "It does not introduce a full time-varying Doppler-spectrum\nmodel; its transfer conclusions concern the evaluated channel profiles.",
+    "new": "Path gains remain fixed within each block, so the comparison concerns\nthe evaluated delay and fading profiles.",
+    "reason": "将未定义的 full Doppler-spectrum model 改成已有模型的实际假设；保留适用范围。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 197,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "The activity-change, site-parameter, and activity-history tolerances",
+    "new": "The tolerances for changes in activity probabilities and site parameters,\nand for deviations from the moving average of activity probabilities",
+    "reason": "展开三类阈值的对象，不依赖内部组合名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 198,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "The estimate check monitors",
+    "new": "The stopping rule monitors",
+    "reason": "直接描述停止规则，避免自拟子检查名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 198,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "the maximum activity change",
+    "new": "the maximum change in activity probability",
+    "reason": "p 是软概率，不是硬活动状态。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 198,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "The site check requires accepted updates with stable precision",
+    "new": "It also requires accepted site updates with stable precision",
+    "reason": "统一停止规则的叙述。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 198,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "a small\nactivity-history residual",
+    "new": "a small difference from the previous exponential moving average,",
+    "reason": "明确 w 是何种历史量，不自造 residual 名称。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 198,
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "both checks must hold",
+    "new": "all these conditions must hold",
+    "reason": "与前面统一的规则叙述一致，数值和逻辑合取不变。",
+    "evidence": "本文公式/操作语义；普通描述，不作为文献中的方法名称"
+  },
+  {
+    "unit": 99,
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "Form $\\widehat{\\mathbf A}$ and $\\widehat\\sigma^2$",
+    "new": "Construct $\\widehat{\\mathbf A}$ and estimate $\\widehat\\sigma^2$",
+    "reason": "算法步骤明确构造矩阵与估计噪声方差两项操作。",
+    "evidence": "本文算法中的实际对象"
+  }
+]

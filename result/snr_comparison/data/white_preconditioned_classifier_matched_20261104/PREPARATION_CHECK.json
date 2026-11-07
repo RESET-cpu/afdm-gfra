@@ -1,0 +1,27 @@
+{
+  "checked_local": "2026-11-05T02:53:34.577191+08:00",
+  "stage": "CLASSIFIER_PREPARATION_FAILED",
+  "formal_training_started": false,
+  "optimizer_steps": 0,
+  "denoiser_complete_and_verified": true,
+  "failure_record": "FAILED_prepare.json",
+  "repair_proposal": "repair_proposal/REPAIR.json",
+  "configuration_unchanged": true,
+  "failure_process_exited": true,
+  "automatic_retry": false,
+  "user_notification": true,
+  "stdout": "runs/20261105T025100/prepare.stdout.log",
+  "stderr": "runs/20261105T025100/prepare.stderr.log",
+  "command": [
+    "D:/afdm-gfra/.venv/Scripts/python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "-m",
+    "training.colored_activity_20261025.run",
+    "prepare",
+    "--config",
+    "src/configs/training/white_activity_matched_20261104.json"
+  ],
+  "exit_code": 1
+}

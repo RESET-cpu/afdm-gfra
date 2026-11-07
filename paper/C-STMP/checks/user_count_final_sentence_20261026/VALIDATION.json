@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "request": "用户数正常表述；特调说明只保留在该实验说明的最后一句，其他位置不重复。",
+  "scope": "C-STMP user-count manuscript, figure, and reading PDF",
+  "scene_count_per_point": 500,
+  "source_summary": "C:\\Users\\25911\\Desktop\\afdm-gfra\\result\\user_count\\data\\c_stmp_variance_em_500_k80scene0372_beta02_20261026\\SUMMARY.json",
+  "source_summary_sha256": "bcaa2dfed958f9025c8ce94aa7935bb758b708569b3dace7875ee8982e25145d",
+  "figure_matches_source_bytes": true,
+  "figure_sha256": "731e055745eb69361bb75384da0c6192d0169524c2cea521d4261585aa0ac596",
+  "numerical_claims_match_summary": true,
+  "disclosure_is_single_final_sentence": true,
+  "disclosure_occurrences_in_pdf": 1,
+  "other_protected_files_checked": 20,
+  "protected_files_changed": [],
+  "page_count": 12,
+  "pdf_sha256": "4e1cf6595c7524bdbb028f85c9b047625ed097228f3fdf9519364130e9e140d2",
+  "compiler": "Tectonic 0.17.0; app cached resources; exit code 0",
+  "desktop_compiler_check": "success",
+  "overfull_boxes_or_undefined_references": false,
+  "visual_check": {
+    "status": "PASS",
+    "detail_pages": [
+      8,
+      9,
+      10
+    ],
+    "all_12_pages_contact_sheet_checked": true,
+    "no_clipping_or_overlap": true,
+    "user_count_intro_not_split_mid_sentence": true
+  },
+  "new_experiments_or_training": false,
+  "full_paper_pdf_backups_created": false,
+  "execution_note": "Standalone cached compilation initially lacked the app cache setting; compilation succeeded after pointing TECTONIC_CACHE_DIR to the existing app cache. Source needed no repair."
+}

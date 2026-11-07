@@ -1,0 +1,329 @@
+{
+  "checked_local": "2026-11-05T19:04:28.106452+08:00",
+  "branches": {
+    "white_preconditioned_matched_fp32_1000_snr_20261105": {
+      "state": {
+        "stage": "RUNNING",
+        "pid": 2408,
+        "updated_unix": 1793876666.6513395,
+        "completed": 2748,
+        "planned": 6000,
+        "active_workers": 2,
+        "workers": [
+          {
+            "position": 2748,
+            "preflight": false,
+            "pid": 34648,
+            "created_unix": 1793876656.5441515,
+            "command": [
+              "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "-B",
+              "-m",
+              "evaluation.white_matched_fp32_20261105.run",
+              "worker",
+              "--position",
+              "2748"
+            ],
+            "started_unix": 1793876656.546824,
+            "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_fp32_1000_snr_20261105\\logs\\scene0458_condition00.out",
+            "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_fp32_1000_snr_20261105\\logs\\scene0458_condition00.err"
+          },
+          {
+            "position": 2749,
+            "preflight": false,
+            "pid": 51700,
+            "created_unix": 1793876661.6465716,
+            "command": [
+              "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+              "-X",
+              "utf8",
+              "-B",
+              "-m",
+              "evaluation.white_matched_fp32_20261105.run",
+              "worker",
+              "--position",
+              "2749"
+            ],
+            "started_unix": 1793876661.6491666,
+            "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_fp32_1000_snr_20261105\\logs\\scene0458_condition01.out",
+            "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_fp32_1000_snr_20261105\\logs\\scene0458_condition01.err"
+          }
+        ],
+        "failed": 0,
+        "dispatched": 2750
+      },
+      "processes": [
+        {
+          "pid": 136868,
+          "created": 1793855091.665561,
+          "command": [
+            "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "evaluation.white_matched_fp32_20261105.run",
+            "coordinate"
+          ],
+          "children": [
+            {
+              "pid": 46564,
+              "created": 1793855091.671158,
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ],
+              "cpu_affinity": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23
+              ],
+              "priority": 32
+            },
+            {
+              "pid": 2408,
+              "created": 1793855091.6881144,
+              "command": [
+                "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+                "-X",
+                "utf8",
+                "-B",
+                "-m",
+                "evaluation.white_matched_fp32_20261105.run",
+                "coordinate"
+              ],
+              "cpu_affinity": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23
+              ],
+              "priority": 32
+            }
+          ]
+        },
+        {
+          "pid": 2408,
+          "created": 1793855091.6881144,
+          "command": [
+            "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "evaluation.white_matched_fp32_20261105.run",
+            "coordinate"
+          ],
+          "children": [
+            {
+              "pid": 51700,
+              "created": 1793876661.6465716,
+              "command": [
+                "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+                "-X",
+                "utf8",
+                "-B",
+                "-m",
+                "evaluation.white_matched_fp32_20261105.run",
+                "worker",
+                "--position",
+                "2749"
+              ],
+              "cpu_affinity": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23
+              ],
+              "priority": 32
+            }
+          ]
+        },
+        {
+          "pid": 34648,
+          "not_running": true
+        },
+        {
+          "pid": 51700,
+          "created": 1793876661.6465716,
+          "command": [
+            "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "evaluation.white_matched_fp32_20261105.run",
+            "worker",
+            "--position",
+            "2749"
+          ],
+          "children": [
+            {
+              "pid": 135608,
+              "created": 1793876661.6511006,
+              "command": [
+                "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+                "0x4"
+              ],
+              "cpu_affinity": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23
+              ],
+              "priority": 32
+            },
+            {
+              "pid": 98008,
+              "created": 1793876661.666625,
+              "command": [
+                "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+                "-X",
+                "utf8",
+                "-B",
+                "-m",
+                "evaluation.white_matched_fp32_20261105.run",
+                "worker",
+                "--position",
+                "2749"
+              ],
+              "cpu_affinity": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23
+              ],
+              "priority": 16384
+            }
+          ]
+        }
+      ]
+    },
+    "offgrid_search_budgets_1000_cpu_20261105": {
+      "state": {
+        "stage": "COMPLETE",
+        "pid": 128196,
+        "updated_unix": 1793876120.2193866,
+        "completed": 12000,
+        "planned": 12000,
+        "active_workers": 0,
+        "workers": [],
+        "failed": 0
+      },
+      "processes": [
+        {
+          "pid": 117912,
+          "not_running": true
+        },
+        {
+          "pid": 128196,
+          "not_running": true
+        }
+      ]
+    }
+  },
+  "remaining_sbl_old_white_diagnostic_processes": []
+}

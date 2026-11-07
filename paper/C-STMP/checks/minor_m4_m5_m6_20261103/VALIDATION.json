@@ -1,0 +1,107 @@
+{
+  "status": "PASS",
+  "variants": {
+    "main": {
+      "pages": 13,
+      "bibliography_entries": 42,
+      "labels": 108,
+      "reference_uses": 92,
+      "citation_uses": 110,
+      "undefined_references": [],
+      "duplicate_labels": [],
+      "numbering_unchanged": true,
+      "overfull_or_missing_character_warnings": [],
+      "underfull_hbox": 5,
+      "underfull_vbox": 1,
+      "pdf_sha256": "fe9020101c545d577a0631a8931b7c86e54247352a3fd62b2d2a2a3de47f9fe8"
+    },
+    "main_full": {
+      "pages": 15,
+      "bibliography_entries": 42,
+      "labels": 113,
+      "reference_uses": 106,
+      "citation_uses": 111,
+      "undefined_references": [],
+      "duplicate_labels": [],
+      "numbering_unchanged": true,
+      "overfull_or_missing_character_warnings": [],
+      "underfull_hbox": 5,
+      "underfull_vbox": 0,
+      "pdf_sha256": "ffac46c40558175017f970d118225245e944daa4a391d490067661cee5ca9efb"
+    }
+  },
+  "m4": "No required source change; actual conditional branches and compiled references checked",
+  "m5": {
+    "punctuation_edits": 2,
+    "equations": [
+      "29",
+      "B.1"
+    ],
+    "mathematical_content_unchanged": true
+  },
+  "m6": {
+    "points_exactly_preserved": 156,
+    "vector_only": true,
+    "axis_limits_preserved": true,
+    "legend_font_pt": 8,
+    "axis_font_pt": 8.5
+  },
+  "changed_snapshot_files": [
+    "paper/C-STMP/main.pdf",
+    "paper/C-STMP/main_full.pdf",
+    "paper/C-STMP/main.log",
+    "paper/C-STMP/main_full.log",
+    "paper/C-STMP/main.aux",
+    "paper/C-STMP/main_full.aux",
+    "paper/C-STMP/figures/README.md",
+    "paper/C-STMP/docs/REVIEW_DECISIONS.md",
+    "paper/C-STMP/sections/04_generative_priors.tex",
+    "paper/C-STMP/sections/appendix_afdm_channel_model.tex",
+    "paper/C-STMP/figures/pilot_frames.pdf",
+    "paper/C-STMP/figures/snr_comparison.pdf"
+  ],
+  "protected_files_unchanged": [
+    "paper/C-STMP/main.tex",
+    "paper/C-STMP/main_full.tex",
+    "paper/C-STMP/main.bbl",
+    "paper/C-STMP/main_full.bbl",
+    "paper/C-STMP/sections/01_introduction.tex",
+    "paper/C-STMP/sections/02_system_model.tex",
+    "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "paper/C-STMP/sections/06_simulation_results.tex",
+    "paper/C-STMP/sections/07_conclusion.tex",
+    "paper/C-STMP/sections/appendix_evaluation_protocol.tex",
+    "paper/C-STMP/sections/appendix_parameter_estimation.tex",
+    "paper/C-STMP/sections/appendix_second_order_training.tex",
+    "paper/C-STMP/figures/activity_probability.pdf",
+    "paper/C-STMP/figures/channel_denoising.pdf",
+    "paper/C-STMP/figures/convergence.pdf",
+    "paper/C-STMP/figures/cross_channel.pdf",
+    "paper/C-STMP/figures/factor_graph.pdf",
+    "paper/C-STMP/figures/learned_receiver.pdf",
+    "paper/C-STMP/figures/system_multiframe.pdf",
+    "paper/C-STMP/figures/user_count.pdf",
+    "paper/C-STMP/references.bib",
+    "FINAL.json",
+    "result/snr_comparison/figures/phase_selected_main_500_20261102/CONFIG.json",
+    "result/snr_comparison/figures/phase_selected_main_500_20261102/KNOWN_PHASE_500.json",
+    "result/snr_comparison/figures/phase_selected_main_500_20261102/PLOT_DATA.json",
+    "result/snr_comparison/figures/phase_selected_main_500_20261102/VALIDATION.json",
+    "result/pilot_frames/figures/full_grid_final_20261026/CONFIG.json",
+    "result/pilot_frames/figures/full_grid_final_20261026/FIGURES.json",
+    "result/pilot_frames/figures/full_grid_final_20261026/LEGEND_LAYOUT.json",
+    "result/pilot_frames/figures/full_grid_final_20261026/PLOT_DATA.json"
+  ],
+  "visual_review": {
+    "status": "PASS",
+    "reviewed": [
+      "individual figures",
+      "main pages 6 and 10-13",
+      "main_full pages 10-15"
+    ],
+    "main_new_underfull_vbox": "Mild vertical spacing at a column break; no clipping or overlap"
+  },
+  "training_started": false,
+  "inference_started": false
+}

@@ -1,0 +1,515 @@
+[
+  {
+    "label": "eq:physical-channel",
+    "number": "1",
+    "old_number": "1",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 47,
+    "kind": "文献模型适配",
+    "evidence": "Shen §II-A，Huang §II（PDF p.2），阵列与共同 Doppler 模型。本文固定块内路径参数并引入接收端公共时延补偿；不宣称逐字原式。"
+  },
+  {
+    "label": "eq:upa",
+    "number": "2",
+    "old_number": "2",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 65,
+    "kind": "文献模型适配",
+    "evidence": "Shen §II-A，Huang §II（PDF p.2），阵列与共同 Doppler 模型。本文固定块内路径参数并引入接收端公共时延补偿；不宣称逐字原式。"
+  },
+  {
+    "label": "eq:afdm-time-signal",
+    "number": "3",
+    "old_number": "3",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 104,
+    "kind": "同类原式",
+    "evidence": "Bemani AFDM 的 DAFT/IDAFT 定义；作者稿 §II-B 式 (16)、§III-A 式 (18)。转置、指数符号及 1/√N 已核对。"
+  },
+  {
+    "label": "eq:daft",
+    "number": "4",
+    "old_number": "4",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 120,
+    "kind": "同类原式",
+    "evidence": "Bemani AFDM 的 DAFT/IDAFT 定义；作者稿 §II-B 式 (16)、§III-A 式 (18)。转置、指数符号及 1/√N 已核对。"
+  },
+  {
+    "label": "eq:cpp",
+    "number": "5",
+    "old_number": "5",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 136,
+    "kind": "文献基础＋本文延拓",
+    "evidence": "Bemani 学位论文 §3.1.1 式 (3.7)、(3.9)，印刷 pp.26–27/PDF pp.52–53；§3.2 式 (3.14)，印刷 p.29/PDF p.55。本文采用无量纲时间、取模和多周期 CPP；已核对采样及延拓恒等式。"
+  },
+  {
+    "label": "eq:continuous-waveform",
+    "number": "6",
+    "old_number": "6",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 148,
+    "kind": "文献基础＋本文延拓",
+    "evidence": "Bemani 学位论文 §3.1.1 式 (3.7)、(3.9)，印刷 pp.26–27/PDF pp.52–53；§3.2 式 (3.14)，印刷 p.29/PDF p.55。本文采用无量纲时间、取模和多周期 CPP；已核对采样及延拓恒等式。"
+  },
+  {
+    "label": "eq:channel",
+    "number": "7",
+    "old_number": "7",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 162,
+    "kind": "物理模型推导",
+    "evidence": "Huang §II 式 (4)–(5)，PDF p.2；Bemani 学位论文 §3.2 式 (3.13)–(3.15)。本文将路径波形采样、Doppler 乘法与 DAFT 组合；不是 Huang 的同一索引原式。"
+  },
+  {
+    "label": "eq:path-operator-system",
+    "number": "8",
+    "old_number": "8",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 178,
+    "kind": "物理模型推导",
+    "evidence": "Huang §II 式 (4)–(5)，PDF p.2；Bemani 学位论文 §3.2 式 (3.13)–(3.15)。本文将路径波形采样、Doppler 乘法与 DAFT 组合；不是 Huang 的同一索引原式。"
+  },
+  {
+    "label": "eq:twc-frame-channel",
+    "number": "9",
+    "old_number": "9",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 193,
+    "kind": "本文直接推导/定义",
+    "evidence": "由 D_{ν,g_q}=exp(j2πνqT_frame)D_{ν,g_0} 及每设备共同 Doppler 得出；β 取主值只选相位代表，不丢弃 Doppler 候选。设备块导频定义没有额外假设。"
+  },
+  {
+    "label": "eq:effective-pilot",
+    "number": "10",
+    "old_number": "10",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 202,
+    "kind": "本文直接推导/定义",
+    "evidence": "由 D_{ν,g_q}=exp(j2πνqT_frame)D_{ν,g_0} 及每设备共同 Doppler 得出；β 取主值只选相位代表，不丢弃 Doppler 候选。设备块导频定义没有额外假设。"
+  },
+  {
+    "label": "eq:mmv",
+    "number": "11",
+    "old_number": "12",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 243,
+    "kind": "文献分块形式＋本文排列",
+    "evidence": "Cai §II-A 式 (4)，Shen §II-C 式 (14)–(15)；本文 H_k 为 N×MN，与 Cai 的 N×M 不同。已核对物理逐分量叠加、设备块乘法及 vec 顺序。"
+  },
+  {
+    "label": "eq:working-posterior",
+    "number": "12",
+    "old_number": "14",
+    "file": "paper/C-STMP/sections/02_system_model.tex",
+    "line": 282,
+    "kind": "同类因子分解",
+    "evidence": "Cai §II-B 式 (5)，其因子图为 Fig.2。本文 q_tr 为训练信道分布；先验因子和确定性约束按分布理解，不要求物理信道具有全维 Lebesgue 密度。"
+  },
+  {
+    "label": "eq:linear-mean",
+    "number": "13",
+    "old_number": "16",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 40,
+    "kind": "标准 Gaussian 运算",
+    "evidence": "Cai §III-A；Ma–Ping §III-C 式 (12)、(15c)，作者稿 PDF p.3；均值及逆协方差来自 Gaussian conditioning，外信息来自 Gaussian 相除。保留一般矩阵式，不能套用 A 行正交的简式。"
+  },
+  {
+    "label": "eq:linear-variance",
+    "number": "14",
+    "old_number": "17",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 44,
+    "kind": "标准 Gaussian 运算",
+    "evidence": "Cai §III-A；Ma–Ping §III-C 式 (12)、(15c)，作者稿 PDF p.3；均值及逆协方差来自 Gaussian conditioning，外信息来自 Gaussian 相除。保留一般矩阵式，不能套用 A 行正交的简式。"
+  },
+  {
+    "label": "eq:linear-extrinsic",
+    "number": "15",
+    "old_number": "18",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 57,
+    "kind": "标准 Gaussian 运算",
+    "evidence": "Cai §III-A；Ma–Ping §III-C 式 (12)、(15c)，作者稿 PDF p.3；均值及逆协方差来自 Gaussian conditioning，外信息来自 Gaussian 相除。保留一般矩阵式，不能套用 A 行正交的简式。"
+  },
+  {
+    "label": "eq:pseudo-awgn",
+    "number": "16",
+    "old_number": "19",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 78,
+    "kind": "工作模型与条件矩",
+    "evidence": "Cai §III-B1 式 (20)、(22)–(23)。本文 D=MN²；近似号对应有限网络及保留 site 后的条件均值/方差，不承诺真实迭代误差严格 AWGN。"
+  },
+  {
+    "label": "eq:conditional-channel-integrals",
+    "number": "17",
+    "old_number": "21",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 94,
+    "kind": "工作模型与条件矩",
+    "evidence": "Cai §III-B1 式 (20)、(22)–(23)。本文 D=MN²；近似号对应有限网络及保留 site 后的条件均值/方差，不承诺真实迭代误差严格 AWGN。"
+  },
+  {
+    "label": "eq:query-densities",
+    "number": "18",
+    "old_number": "22",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 111,
+    "kind": "Bayes 公式",
+    "evidence": "Cai §III-B2；Menon §3 式 (6)–(9)。本文在任意训练信道分布下对 Gaussian 似然取期望；式中 q_1 是加噪后的密度，q_tr 本身无需有普通密度。"
+  },
+  {
+    "label": "eq:local-activity",
+    "number": "19",
+    "old_number": "23",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 117,
+    "kind": "Bayes 公式",
+    "evidence": "Cai §III-B2；Menon §3 式 (6)–(9)。本文在任意训练信道分布下对 Gaussian 似然取期望；式中 q_1 是加噪后的密度，q_tr 本身无需有普通密度。"
+  },
+  {
+    "label": "eq:mixture",
+    "number": "20",
+    "old_number": "24",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 133,
+    "kind": "Bernoulli–Gaussian 均值",
+    "evidence": "Cai §III-B3 式 (32)–(35)，Liu §III-C–III-D。零分量与活动分量的含义保留，用文字和均值式替代测度展开。"
+  },
+  {
+    "label": "eq:joint-spatial-covariance",
+    "number": "21",
+    "old_number": "25",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 142,
+    "kind": "混合矩的本文排列",
+    "evidence": "由 Cov(vec X)=p t I+p(1−p)vec(Hpost)vec(Hpost)^H，按同一收发坐标取天线子块并平均得到。Cai 的混合矩提供基础，M×M 空间平均形式为本文推导。"
+  },
+  {
+    "label": "eq:joint-average-variance",
+    "number": "22",
+    "old_number": "26",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 152,
+    "kind": "混合矩的本文排列",
+    "evidence": "由 Cov(vec X)=p t I+p(1−p)vec(Hpost)vec(Hpost)^H，按同一收发坐标取天线子块并平均得到。Cai 的混合矩提供基础，M×M 空间平均形式为本文推导。"
+  },
+  {
+    "label": "eq:nonlinear-extrinsic",
+    "number": "23",
+    "old_number": "27",
+    "file": "paper/C-STMP/sections/03_bayesian_receiver_design.tex",
+    "line": 163,
+    "kind": "标准 Gaussian 相除",
+    "evidence": "Cai §III-B3 式 (40)–(42)；令 b=tbar_X/v 即得到当前简记。b 的数值裁剪是另列的实现规则。"
+  },
+  {
+    "label": "eq:colored-query",
+    "number": "24",
+    "old_number": "28",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 27,
+    "kind": "复数到实数表示",
+    "evidence": "proper complex Gaussian 的实虚协方差转换；Neeser–Massey 的 proper complex 概念。Σ 的 1/2、负虚部位置及 D/2D 区别保留，不能直接套用复数 score 的另一种梯度约定。"
+  },
+  {
+    "label": "eq:tweedie-mean",
+    "number": "25",
+    "old_number": "29",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 38,
+    "kind": "已有恒等式的约定转换",
+    "evidence": "Dytso 正式出版版 §I-B 式 (9)、§III Proposition 1 式 (17)，PDF p.3/印刷 p.1885；Cai §IV-A 式 (44)–(45)。本文 Jacobian 为输出行/输入列，因此 P=JΣ；Dytso 的 Jacobian 定义转置，不可机械复制乘法顺序。"
+  },
+  {
+    "label": "eq:tweedie-covariance",
+    "number": "26",
+    "old_number": "30",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 54,
+    "kind": "已有恒等式的约定转换",
+    "evidence": "Dytso 正式出版版 §I-B 式 (9)、§III Proposition 1 式 (17)，PDF p.3/印刷 p.1885；Cai §IV-A 式 (44)–(45)。本文 Jacobian 为输出行/输入列，因此 P=JΣ；Dytso 的 Jacobian 定义转置，不可机械复制乘法顺序。"
+  },
+  {
+    "label": "eq:denoising-score-objective",
+    "number": "27",
+    "old_number": "31",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 73,
+    "kind": "DSM 的协方差加权适配",
+    "evidence": "Vincent 的 denoising score matching；Cai §IV-B1 的加噪 score 学习。本文在固定 Σ 下加权并代入 s=Σ^{-1}(f−u)，直接得到均值损失；条件期望最优性不依赖 Karras 的训练权重。"
+  },
+  {
+    "label": "eq:first-loss",
+    "number": "28",
+    "old_number": "32",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 87,
+    "kind": "DSM 的协方差加权适配",
+    "evidence": "Vincent 的 denoising score matching；Cai §IV-B1 的加噪 score 学习。本文在固定 Σ 下加权并代入 s=Σ^{-1}(f−u)，直接得到均值损失；条件期望最优性不依赖 Karras 的训练权重。"
+  },
+  {
+    "label": "eq:mean-derivative-variance",
+    "number": "29",
+    "old_number": "33",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 123,
+    "kind": "已有恒等式的约定转换",
+    "evidence": "Dytso 正式出版版 §I-B 式 (9)、§III Proposition 1 式 (17)，PDF p.3/印刷 p.1885；Cai §IV-A 式 (44)–(45)。本文 Jacobian 为输出行/输入列，因此 P=JΣ；Dytso 的 Jacobian 定义转置，不可机械复制乘法顺序。"
+  },
+  {
+    "label": "eq:derivative-trace",
+    "number": "30",
+    "old_number": "34",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 146,
+    "kind": "随机迹估计的本文适配",
+    "evidence": "Metzler §V-B，作者稿 v5 PDF p.15，使用 Gaussian 方向和单边差分。本文用 E[zz^T]=I 的随机符号方向、w=Σ^{1/2}z、中央差分；由 E[w^TJw]=tr(JΣ) 得出，不是 Metzler 的原式。"
+  },
+  {
+    "label": "eq:activity-log-odds",
+    "number": "31",
+    "old_number": "35",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 158,
+    "kind": "已有分类与密度比关系",
+    "evidence": "Menon §3 式 (6)–(9)、§4.2 式 (16)–(17)，PDF pp.2–3；§4.2 明确 balanced logistic classifier 的密度比为 exp(logit)。本文使用 a∈{0,1} 和接收端活动先验 ρ。"
+  },
+  {
+    "label": "eq:classifier-loss",
+    "number": "32",
+    "old_number": "36",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 179,
+    "kind": "已有分类与密度比关系",
+    "evidence": "Menon §3 式 (6)–(9)、§4.2 式 (16)–(17)，PDF pp.2–3；§4.2 明确 balanced logistic classifier 的密度比为 exp(logit)。本文使用 a∈{0,1} 和接收端活动先验 ρ。"
+  },
+  {
+    "label": "eq:ideal-logit",
+    "number": "33",
+    "old_number": "37",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 186,
+    "kind": "已有分类与密度比关系",
+    "evidence": "Menon §3 式 (6)–(9)、§4.2 式 (16)–(17)，PDF pp.2–3；§4.2 明确 balanced logistic classifier 的密度比为 exp(logit)。本文使用 a∈{0,1} 和接收端活动先验 ρ。"
+  },
+  {
+    "label": "eq:activity-probability",
+    "number": "34",
+    "old_number": "38",
+    "file": "paper/C-STMP/sections/04_generative_priors.tex",
+    "line": 198,
+    "kind": "已有分类与密度比关系",
+    "evidence": "Menon §3 式 (6)–(9)、§4.2 式 (16)–(17)，PDF pp.2–3；§4.2 明确 balanced logistic classifier 的密度比为 exp(logit)。本文使用 a∈{0,1} 和接收端活动先验 ρ。"
+  },
+  {
+    "label": "eq:pooled-variance",
+    "number": "35",
+    "old_number": "39",
+    "file": "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "line": 30,
+    "kind": "本文数值规则",
+    "evidence": "对设备方差求平均并设置正下限。没有将此规则包装成新定理，也不声称来自某篇论文的同式；已去掉只使用一次的 τ_raw。"
+  },
+  {
+    "label": "eq:site-update",
+    "number": "36",
+    "old_number": "40",
+    "file": "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "line": 41,
+    "kind": "Gaussian 外信息/条件矩",
+    "evidence": "Cai §III-B1 式 (24)–(27)，Vehtari §2.1 的 site 概念。本文按设备保留 site，τ_k^ext 取代与 c1/c2 重名的 c_k；重新相乘可恢复新网络矩，保留旧 site 时 Hpost 不必等于 F。"
+  },
+  {
+    "label": "eq:conditional-moments",
+    "number": "37",
+    "old_number": "41",
+    "file": "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "line": 48,
+    "kind": "Gaussian 外信息/条件矩",
+    "evidence": "Cai §III-B1 式 (24)–(27)，Vehtari §2.1 的 site 概念。本文按设备保留 site，τ_k^ext 取代与 c1/c2 重名的 c_k；重新相乘可恢复新网络矩，保留旧 site 时 Hpost 不必等于 F。"
+  },
+  {
+    "label": "eq:noise-estimation",
+    "number": "38",
+    "old_number": "42",
+    "file": "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "line": 116,
+    "kind": "标准样本协方差与谱估计",
+    "evidence": "Wax–Kailath 的 MDL 源数估计与尾部特征值均值；Nadakuditi–Edelman 的低秩信号加白噪声模型。本文把 QN 个空间向量作为样本；不是新的噪声估计算法。"
+  },
+  {
+    "label": "eq:query-variance-target",
+    "number": "39",
+    "old_number": "43",
+    "file": "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "line": 130,
+    "kind": "EM 思路下的本文目标",
+    "evidence": "Vila–Schniter §III-A 式 (22)–(27)，PDF p.4/印刷 p.4661，针对观测噪声。本文将相同的期望 Gaussian 负对数似然计算用于局部输入，得到残差能量＋后验方差；不是原论文的观测噪声更新原式。"
+  },
+  {
+    "label": "eq:query-variance-update",
+    "number": "40",
+    "old_number": "44",
+    "file": "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "line": 138,
+    "kind": "本文数值更新/文献阻尼形式",
+    "evidence": "Cai §V-B1 给出消息阻尼思路；κ、作用对象、顺序、首轮处理属于本稿设置。没有通用理论要求其参数取本文数值。"
+  },
+  {
+    "label": "eq:input-damping",
+    "number": "41",
+    "old_number": "45",
+    "file": "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "line": 151,
+    "kind": "本文数值更新/文献阻尼形式",
+    "evidence": "Cai §V-B1 给出消息阻尼思路；κ、作用对象、顺序、首轮处理属于本稿设置。没有通用理论要求其参数取本文数值。"
+  },
+  {
+    "label": "eq:output-damping",
+    "number": "42",
+    "old_number": "46",
+    "file": "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "line": 165,
+    "kind": "本文数值更新/文献阻尼形式",
+    "evidence": "Cai §V-B1 给出消息阻尼思路；κ、作用对象、顺序、首轮处理属于本稿设置。没有通用理论要求其参数取本文数值。"
+  },
+  {
+    "label": "eq:linear-fraction",
+    "number": "43",
+    "old_number": "47",
+    "file": "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "line": 190,
+    "kind": "一般 LMMSE 的等价计算",
+    "evidence": "将一般 LMMSE 后验协方差按 A 的奇异值展开，使用 KN−rank(A) 个零奇异值贡献。与前文直接矩阵计算核对；无需另一篇论文存在同名 f_L。"
+  },
+  {
+    "label": "eq:iteration-complexity",
+    "number": "44",
+    "old_number": "48",
+    "file": "paper/C-STMP/sections/05_overall_algorithm.tex",
+    "line": 208,
+    "kind": "本文运算计数",
+    "evidence": "由当前步骤的矩阵维度和 1+2L_z 次去噪器调用计数，网络调用代价保留为 Cθ/Cφ。不是文献定理；本轮没有重跑硬件计时或重新审计全部实现。"
+  },
+  {
+    "label": "eq:pilot",
+    "number": "45",
+    "old_number": "49",
+    "file": "paper/C-STMP/sections/06_simulation_results.tex",
+    "line": 25,
+    "kind": "部分 DFT 构造适配",
+    "evidence": "Cai §II-A 对部分正交导频的条件；本文采用 Q 行 KN 点 DFT、列置换和单位模列相位。PP^H=KE_pI 及每设备每帧能量已核对。"
+  },
+  {
+    "label": "eq:snr",
+    "number": "46",
+    "old_number": "50",
+    "file": "paper/C-STMP/sections/06_simulation_results.tex",
+    "line": 36,
+    "kind": "实验指标定义",
+    "evidence": "按接收信号功率、能量加权 NMSE 和活动错误计数定义；无需参考论文使用相同场景索引。保留原统计方式、所有数值及图。"
+  },
+  {
+    "label": "eq:simulation-colored-covariance",
+    "number": "47",
+    "old_number": "51",
+    "file": "paper/C-STMP/sections/06_simulation_results.tex",
+    "line": 87,
+    "kind": "本文训练分布定义",
+    "evidence": "I 与归一化 ZZ^H 的凸组合；ξ∈[0,0.5] 保证正定，trace=16。Shastri 支撑相关噪声训练思路，不支撑声称这组随机采样参数是原文方案。"
+  },
+  {
+    "label": "eq:mean-preconditioning",
+    "number": "48",
+    "old_number": "52",
+    "file": "paper/C-STMP/sections/06_simulation_results.tex",
+    "line": 131,
+    "kind": "Karras 标量形式的矩阵扩展",
+    "evidence": "Karras Table 1（PDF p.3）、§5 式 (7)–(8)（PDF p.8），Appendix B.6。本文用 Σ 的矩阵函数；输入与名义残差的协方差核对通过，Σ=σ²I 时严格退化为原标量预条件。"
+  },
+  {
+    "label": "eq:gaussian-evidence",
+    "number": "49",
+    "old_number": "53",
+    "file": "paper/C-STMP/sections/06_simulation_results.tex",
+    "line": 191,
+    "kind": "Gaussian 似然比",
+    "evidence": "由 CN(R;E,(τext+v)I)/CN(R;0,vI) 取对数，得到平方残差及 log determinant 项。与 Cai §III-B2 的活动似然计算同类，当前维度和 site 记号为本文适配。"
+  },
+  {
+    "label": "eq:simulation-nmse",
+    "number": "50",
+    "old_number": "54",
+    "file": "paper/C-STMP/sections/06_simulation_results.tex",
+    "line": 223,
+    "kind": "实验指标定义",
+    "evidence": "按接收信号功率、能量加权 NMSE 和活动错误计数定义；无需参考论文使用相同场景索引。保留原统计方式、所有数值及图。"
+  },
+  {
+    "label": "eq:simulation-aer",
+    "number": "51",
+    "old_number": "55",
+    "file": "paper/C-STMP/sections/06_simulation_results.tex",
+    "line": 231,
+    "kind": "实验指标定义",
+    "evidence": "按接收信号功率、能量加权 NMSE 和活动错误计数定义；无需参考论文使用相同场景索引。保留原统计方式、所有数值及图。"
+  },
+  {
+    "label": "frontend:eq:phase-atom",
+    "number": "A.1",
+    "old_number": "A.1",
+    "file": "paper/C-STMP/sections/appendix_parameter_estimation.tex",
+    "line": 21,
+    "kind": "本文相位前端定义",
+    "evidence": "由前文路径算子作用于已知导频得到；G0 去除可由未知增益吸收的常数相位。d 与 d+jN 的等价已核对；单主径近似不等于物理信道的完整多径模型。"
+  },
+  {
+    "label": "frontend:eq:phase-fit",
+    "number": "A.2",
+    "old_number": "A.2",
+    "file": "paper/C-STMP/sections/appendix_parameter_estimation.tex",
+    "line": 35,
+    "kind": "已有最小二乘形式的模型适配",
+    "evidence": "O’Leary–Rust 的 separable nonlinear least squares / variable projection；当前多设备 AFDM 原子与候选选择属于本稿相位算法，不称为 Shen 原式。"
+  },
+  {
+    "label": "frontend:eq:phase-variable-projection",
+    "number": "A.3",
+    "old_number": "A.3",
+    "file": "paper/C-STMP/sections/appendix_parameter_estimation.tex",
+    "line": 50,
+    "kind": "已有 variable projection 关系",
+    "evidence": "固定 d,ν 后的线性最小二乘解与投影残差；与独立最小二乘求解核对。更新策略和 M4 的后续相位工作按既有决定处理。"
+  },
+  {
+    "label": "eq:path-entry-expansion",
+    "number": "B.1",
+    "old_number": "B.1",
+    "file": "paper/C-STMP/sections/appendix_afdm_channel_model.tex",
+    "line": 14,
+    "kind": "AFDM 算子的本文展开",
+    "evidence": "Bemani 的整数时延 CPP/循环移位矩阵；Huang §II 式 (5) 的分段分数时延基底。本文明确保留参考帧相位、完整时延和 wrap 区间；与直接波形采样后 DAFT 的计算相符。"
+  },
+  {
+    "label": "eq:integer-operator",
+    "number": "B.2",
+    "old_number": "B.2",
+    "file": "paper/C-STMP/sections/appendix_afdm_channel_model.tex",
+    "line": 25,
+    "kind": "AFDM 算子的本文展开",
+    "evidence": "Bemani 的整数时延 CPP/循环移位矩阵；Huang §II 式 (5) 的分段分数时延基底。本文明确保留参考帧相位、完整时延和 wrap 区间；与直接波形采样后 DAFT 的计算相符。"
+  },
+  {
+    "label": "eq:integer-prefix-phase",
+    "number": "B.3",
+    "old_number": "B.3",
+    "file": "paper/C-STMP/sections/appendix_afdm_channel_model.tex",
+    "line": 28,
+    "kind": "AFDM 算子的本文展开",
+    "evidence": "Bemani 的整数时延 CPP/循环移位矩阵；Huang §II 式 (5) 的分段分数时延基底。本文明确保留参考帧相位、完整时延和 wrap 区间；与直接波形采样后 DAFT 的计算相符。"
+  }
+]

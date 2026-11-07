@@ -1,0 +1,925 @@
+=== PDF PAGE 1 ===
+LEO Satellite-Enabled Grant-Free Random Access
+with MIMO-OTFS
+Boxiao Shen, Yongpeng Wu, Wenjun Zhang, Geoffrey Ye Li, Jianping An, and Chengwen Xing
+Abstract—This paper investigates joint channel estimation and
+device activity detection in the LEO satellite-enabled grant-free
+random access systems with large differential delay and Doppler
+shift. In addition, the multiple-input multiple-output (MIMO)
+with orthogonal time-frequency space modulation (OTFS) is
+utilized to combat the dynamics of the terrestrial-satellite link. To
+simplify the computation process, we estimate the channel tensor
+in parallel along the delay dimension. Then, the deep learning
+and expectation-maximization approach are integrated into the
+generalized approximate message passing with cross-correlation-
+based Gaussian prior to capture the channel sparsity in the
+delay-Doppler-angle domain and learn the hyperparameters.
+Finally, active devices are detected by computing energy of
+the estimated channel. Simulation results demonstrate that the
+proposed algorithms outperform conventional methods.
+Index Terms —Random access, OTFS, satellite communica-
+tions, message passing, Doppler shift
+I. I NTRODUCTION
+Internet-of-Things (IoT) are important application scenarios
+in the 5G and future networks. However, in many situations,
+a large number of IoT devices are distributed in remote areas,
+such as deserts, oceans, forests, etc [1]. The existing cellular
+communication networks are mainly designed and deployed
+in places where populations are concentrated, which makes it
+is difﬁcult to support remote IoT devices. Fortunately, low-
+earth orbit (LEO) satellites are with low propagation delay,
+low path loss, and ﬂexible elevation angle and could provide
+a very promising solution in these situations [2]. Therefore, we
+are investigating the LEO satellite-enabled grant-free random
+access (RA) for IoT systems.
+Over the past few years, many methods have been proposed
+for joint channel estimation and device activity detection in
+the terrestrial grant-free RA systems. For example, the sparse
+Bayesian learning (SBL) has been adopted in [3] to solve
+this problem. In [4], the generalized multiple measurement
+vector approximate message passing (GMMV-AMP) has been
+proposed to explore the sparsity in the angular domain, which
+can further improve the estimation performance. The above
+The work of Y . Wu is supported in part by the National Key R&D Pro-
+gram of China under Grant 2018YFB1801102, National Science Foundation
+(NSFC) under Grant 62122052 and 62071289, 111 project BP0719010, and
+STCSM 18DZ2270700.
+B. Shen, Y . Wu, and W. Zhang are with the Department of Electronic Engi-
+neering, Shanghai Jiao Tong University, Shanghai 200240, China (e-mail: box-
+iao.shen@sjtu.edu.cn; yongpeng.wu@sjtu.edu.cn; zhangwenjun@sjtu.edu.cn).
+G. Y . Li is with the Department of Electrical and Electronic Engi-
+neering, Imperial College London, London SW7 2AZ, UK (Email: geof-
+frey.li@imperial.ac.uk).
+J. An and C. Xing are with the School of Information and Electronics, Bei-
+jing Institute of Technology, Beijing 100081, China (e-mails: an@bit.edu.cn;
+chengwenxing@ieee.org).
+works have been designed for the block fading channel, which
+is constant during a transmission slot. However, the high
+mobility of LEO satellites inevitably leads to the rapid change
+of terrestrial-satellite link (TSL) and the large Doppler shift,
+which degrades the performance of the current algorithms.
+Besides, the long delay effect should also be involved in
+the design of satellite communication systems. Therefore, the
+current grant-free random access schemes are hard to apply to
+LEO satellite communications straightforwardly.
+Orthogonal time-frequency space (OTFS) which directly
+operates in the delay-Doppler domain is a promising solution
+to tackle the above issues. In [5] and [6], the input-output rela-
+tionship of OTFS with massive multiple-input multiple-output
+(MIMO) has been derived and the 3D-structured sparsity of the
+channel in the delay-Doppler-angle (DDA) domain has been
+identiﬁed, which enables the development of the 3D-structured
+orthogonal matching pursuit channel estimation algorithm. In
+[7] and [8], two grant-free RA schemes with MIMO-OTFS
+have been proposed for the LEO satellite communications,
+where the device precompensates the delay and/or Doppler
+shift before the RA process. However, the precompensation
+incurs extra complexity, which will decrease the battery life
+of these remote IoT devices.
+In this paper, we investigate the joint channel estimation and
+device activity detection in the LEO satellite-enabled grant-
+free RA, where OTFS is adopted to address the doubly disper-
+sive effect in the TSL link and MIMO is integrated to improve
+the performance. Different from the existing literature, we
+consider the case that the differential delay is more than one
+symbol duration and/or the differential Doppler shift is more
+than one subcarrier spacing. To reduce the complexity of the
+IoT devices, we handle the large differential delay and Doppler
+shift at the satellite end. In this scenario, channel at each
+antenna can be expressed as a 3D tensor, which is complicated
+to handle directly. Hence, we estimate channel along delay
+dimension so that the 3D tensor can be decomposed into
+a set of matrices and computations can perform in parallel.
+Notice that the channel tensor in each delay dimension has
+the 2D burst block sparsity due to the adoption of MIMO-
+OTFS. To capture this 2D sparsity, we propose a deep learning-
+based generalized approximate message passing (DL-GAMP)
+algorithm with cross-correlation-based Gaussian prior, where
+the GAMP estimates the channel tensor, and the deep learning
+and expectation-maximization (EM) rule are adopted to learn
+the hyperparameters.
+arXiv:2208.01828v1  [cs.IT]  3 Aug 2022
+
+=== PDF PAGE 2 ===
+II. S YSTEM MODEL
+In this section, the basic system setup is ﬁrst introduced.
+Then, we present the adopted channel model and input-output
+relationship of the MIMO-OTFS system when both the large
+differential delay and Doppler shift exist. Finally, we formulate
+the considered problem.
+A. System Setup
+We consider a LEO satellite-enabled grant-free random
+access system with MIMO-OTFS, where U single-antenna
+devices adopting OTFS modulation intend to communicate
+with a LEO satellite. The satellite is equipped with Na =
+Ny× Nz uniform planar array (UPA) antennas and works
+with the regenerative payload, which allows it for on-board
+processing of baseband signals. In a given time interval, only
+Ua devices are active and transmit signal to satellite utilizing
+the same time-frequency resources. We denote λu as the
+activity indicator of the u-th device, with λu = 1 if active and
+λu = 0 otherwise. We follow the recommendations of 3GPP
+[9] and assume that the satellite precompensates Doppler shift
+for the center of the beam and broadcasts a common delay
+to all devices. The residual delay and Doppler shift (called
+differential delay and Doppler shift in 3GPP terminology) are
+handled by satellite in the uplink transmissions.
+B. Channel Model and Signal Modulation
+1) Channel Model: We consider the following channel re-
+sponse corresponding to the u-th device in the delay-Doppler-
+space domain, i.e.,
+hu(τ, ν) =
+P∑
+i=0
+hu,iδ (τ− τu,i) δ (ν− νu,i) v(ψu,i, ϕu,i),
+(1)
+where hu,i, νu,i, τu,i, ψu,i, and ϕu,i denote the complex gain,
+differential Doppler shift, differential delay, azimuth angle, and
+elevation angle of the i-th path, respectively, and v(ψu,i, ϕu,i)
+is the steering vector of the antennas. The steering vector is
+the Kronecker product of the array response vectors v(ϑyu,i)
+and v(ϑzu,i) corresponding to the directions with respect to
+y- and z-axis, respectively, that is,
+v(ψu,i, ϕu,i) = v(ϑyu,i)⊗ v(ϑzu,i), (2)
+where ϑyu,i = sin ϕu,i sin ψu,i and ϑzu,i = cos ϕu,i are the
+directional cosines along the y- and z-axis, respectively, and
+v(ϑ) = [1 exp{−¯πϑ} . . . exp{−¯π (Ny− 1) ϑ}]T (3)
+The Doppler and delay taps for the i-th path of the u-th
+device can be expressed as
+νu,i = ku,i + ˜ku,i + bu,iN
+N Tsym
+, τu,i = lu,i + cu,iM
+M∆f , (4)
+where N is the number of OFDM symbols, M is the number
+of subcarriers, and ∆f is the subcarrier spacing; lu,i =
+0, . . . , M− 1 and ku,i =⌈−N/2⌉, . . . ,⌈N/2⌉− 1 represent
+indexes of the delay tap and Doppler tap corresponding to
+the delay τu,i and Doppler νu,i, respectively; ˜ki ∈ (− 1
+2 , 1
+2]
+corresponds to the fractional Doppler shift; Tsym is the time
+duration of a OFDM symbol with cyclic preﬁx (CP); bu,i and
+cu,i are integers, referred to as the outer Doppler tap and outer
+delay tap, respectively, which are non-zeros when differential
+Doppler νu,i > ∆f and/or differential delay τu,i > T (T is
+one symbol duration without CP). Outer Doppler and delay
+taps are often non-zeros in the LEO satellite communications
+due to the large geographical difference of devices, which is
+distinct from the terrestrial communications ( νu,i≪ ∆f and
+τu,i≪ T ). For example, in the 3GPP set-2 conﬁguration [9],
+the maximum differential Doppler and delay can be up to 3880
+Hz and 699 µs [2], respectively. Then, if a subcarrier spacing
+is equal to 3880 Hz, a symbol duration (without CP) will be
+258 µs and smaller than 699 µs.
+2) Signal Modulation: The u-th device employs the
+OFDM-based OTFS modulation to combat the doubly fading
+effect of the above channel. The detailed mathematical deriva-
+tions of this modulation are omitted due to the limited spacing
+and interested readers can refer to [5]–[7]. We directly give
+the input-output relationship of the u-th device in the delay-
+Doppler-space domain at the (nz + nyNz)-th antenna as [7]
+Y DDS
+u,ny,nz[k, l] =
+P∑
+i=0
+⌈N/2⌉−1∑
+k′=⌈−N/2⌉
+XDD
+u
+[
+⟨k− k′⟩N , (l− lu,i)M
+]
+× HDDS
+u,ny,nz [k′, lu,i, l] + ZDDS
+ny,nz [k, l] (5)
+where ny = 0, . . . , Ny− 1, nz = 0, . . . , Nz− 1, (·)M denotes
+mod M,⟨x⟩N denotes
+(
+x +
+⌊N
+2
+⌋)
+N−
+⌊N
+2
+⌋
+, ZDDS
+ny,nz is the
+noise, and the effective channel HDDS
+u . The effective channel
+can be expressed as
+HDDS
+u,ny,nz [k′, lu,i, l] = 1
+N
+N−1∑
+j=0
+hMcp+j(M+Mcp),lu,i e−¯ 2π
+N k′j
+× e
+¯2π (ku,i +˜ku,i +bu,iN)(l−cu,iM)
+(M +Mcp)N e¯πnyϑyu,i e¯πnzϑzu,i ,
+(6)
+where Mcp is the length of the CP and hρ,l is the complex
+gain of the time-variant channel on the delay tap l at the time
+ρTs, deﬁned as [6]
+hρ,l =
+P∑
+i=0
+hu,ie¯2π(ρ−l)Tsνu,i δ (lTs− (τu,i)T ) , (7)
+where Ts = 1
+M∆f is the system sampling interval.
+Remark 1: The difference between the effective channel in
+(6) and those in previous literature [5]–[7] is that the phase
+compensation e
+¯2π (ku,i +˜ku,i +bu,iN)(l−cu,iM)
+(M +Mcp)N is difﬁcult to be
+separated from the effective channel or to be neglected, due
+to the existence of outer Doppler tap bi and outer delay tap
+ci. In this scenario, the effective channel at each antenna is a
+3D tensor and is complicated to estimate directly. To reduce
+computational complexity, we propose to handle it along delay
+dimension, subsequently.
+
+=== PDF PAGE 3 ===
+C. Problem Formulation
+To exploit the sparsity in the angular domain, the two-
+dimensional discrete Fourier transform (2D-DFT) is applied
+for the channel of u-th device along the space dimension, and
+then the delay-Doppler-angle domain channel is given by
+HDDA
+u,ay,az[k, lu,i, l] =
+√
+NyNz
+P∑
+i=0
+hu,ie¯2π(Mcp+l)Tsνu,i
+× e−¯2πτu,iνu,iΠN(k− N Tsymνu,i)δ (lu,iTs− (τu,i)T )
+× ΠNy(ay− Nyϑyu,i /2)ΠNz(az− Nzϑzu,i /2), (8)
+where ay = 0, . . . , Ny−1 and az = 0, . . . , Nz−1 are indexes
+along angular domain and ΠN(x) ≜ 1
+N
+∑N−1
+i=0 e−¯2π x
+Ni. From
+(8), HDDA
+u,ay,az[k, lu,i, l]DDA has dominant elements only if k≈
+N Tsym(νu,i)1/Tsym, lu,i≈ M∆f(τu,i)T , ay≈ NyΩyu /2, and
+az≈ NzΩzu /2. Therefore, the channel in the delay-Doppler-
+angle domain has the 3D-structured sparsity [5].
+The received symbols from all the devices in the delay-
+Doppler-angle domain is given by
+Y DDA
+ay,az [k, l] =
+U−1∑
+u=0
+M−1∑
+l′=0
+⌈N/2⌉−1∑
+k′=⌈−N/2⌉
+λuHDDA
+u,ay,az [k′, l′, l]
+× XDD
+u [⟨k− k′⟩N , (l− l′)M] + ZDDA[k, l, ay, az], (9)
+where ZDDA is the noise in the delay-Doppler-angle domain.
+To facilitate the following analysis, we rewrite (9) into the
+matrix form for each l as
+Yl = XlΛ ˜Hl + Zl, (10)
+where the elements of Zl are independent zero-mean Gaussian
+noises with variance σ2; the (az + 1 + Nzay)-th column of
+Yl is YDDA
+ay,az[:, l]; Xl = [ X0,l, . . . ,XU−1,l] ∈ CN×UMN ,
+where Xu,l∈ CN×MN is the pilot matrix of the u-th device
+in delay dimension l. Note that Xu,l is a block circulant
+matrix due to the 2D circular convolution in (9), and its
+sub-matrix Xu,l,l′, l′ = 0 , . . . , M− 1 is circulant matrix,
+formed by
+[
+XDD
+u [0, (l− l′)M], . . . , XDD
+u [−1, (l− l′)M]
+]
+.
+Λ = diag([ λ01MN ,··· , λU−11MN ]) is a diagonal matrix
+composed of the activity indicator of all the devices and
+1MN∈ RMN is a all-one vector; Finally, the (az +1+ Nzay)-
+th column of ˜H is given by
+˜Hl[:, az + 1 + Nzay] =
+
+
+vec
+(
+HDDA
+0,ay,az[:, :, l]
+)
+...
+vec
+(
+HDDA
+U−1,ay,az[:, :, l]
+)
+
+ ,
+(11)
+where vec(·) denotes the vectorization of a matrix. We denote
+the channel matrix Λ ˜Hl as Hl. Then, (10) can be written as
+Yl = XlHl + Zl. (12)
+Therefore, the joint device activity detection and channel esti-
+mation in this scenario turns into a sparse signal reconstruction
+problem, and can be separately and parallelly handled along
+delay dimension for each Hl. In addition, the 2D burst block
+sparsity [7] appears in Hl, which is different from those in the
+conventional grant-free random access systems [3], [4] and can
+be utilized to improve the estimation performance further.
+In this work, we estimate Hl adopting the minimum mean
+square error (MMSE) rule, represented as
+ˆHl = arg max
+H′
+E[∥H′− Hl∥2
+2|Yl] (13)
+Based on the estimation, the active device can be detected by
+comparing the energy of each device’s channel with a pre-
+deﬁned threshold, i.e.,
+ˆλu = I
+
+
+
+1
+M
+M−1∑
+l=0
+(u+1)MN−1∑
+i=uMN
+NyNz−1∑
+j=0
+⏐⏐⏐ ˆHl,i,j
+⏐⏐⏐
+2
+> ξth
+
+
+ ,
+(14)
+where ˆHl,i,j is the (i, j)-th element of ˆHl. Note that since
+each Hl can be estimated separately, we omit the index l in
+the following content.
+III. J OINT CHANNEL ESTIMATION AND DEVICE
+ACTIVITY DETECTION
+A. Correlation-based Prior for Channel Coefﬁcients
+Since channel matrix H has the 2D burst block sparsity, i.e.,
+its non-zero elements are statistically dependent along the row
+and column, we consider the cross-correlation-based Gaussian
+prior for the (i, j)-th element of H, given by
+p(hi,j|A, B) =CN (hi,j|0,
+
+
+Dx∑
+p=−Dx
+Dy∑
+q=−Dy
+βp,qαi+p,j+q
+
+
+−1
+),
+(15)
+where A is the precision matrix whose (i, j)-th element αi,j
+is the local precision hyperparameter of hi,j; B∈ [0, 1]Dx×Dy
+is the kernel and its (p, q)-th element βp,q represents the
+relevence between hi,j and hi+p,j+q. We denote θi,j as the
+prior variance of hi,j. From (15), θi,j not only depends on
+local hyperparameter αi,j of hi,j, but also on the hyperpa-
+rameters of its neighborhoods along the row and column of
+H. Therefore, such coupled prior has the potential to capture
+the unknown 2D sparsity structure in H. Then, following the
+conventional SBL, we adopt the Gamma distribution as the
+hierarchical prior for the local precision hyperparameter A,
+i.e.,
+p(A|a, b) =
+UMN−1∏
+i=0
+NyNz−1∏
+j=0
+Γ(a)−1baαa
+i,je−bαi,j , (16)
+where Γ(c) ≜
+∫∞
+0 tc−1e−tdt. Note that this hierarchical
+Bayesian modeling encourages the sparseness in the estimation
+since the overall prior of H (i.e., integrate out αi,j) is a
+Student-t distribution that is sharply peaked at zero. Based on
+the above prior distribution, it is possible to ﬁnd the analytical
+solution of (13). However, the matrix inversion will inevitably
+be involved, which leads to the high computational complexity.
+
+=== PDF PAGE 4 ===
+Convolution
+Relu
+,
+t
+ij
+a
+b +
+Convolution
+Relu
+2 2
+,,
+ˆ ˆtt
+i j i jh +
+t-th iteration of GAMP t+1-th iteration of GAMP
+Update σ 
+,
+ˆ t
+ijh
+,ˆ t
+ij
+t
+1
+,() t
+ij −
+1
+,
+ˆt
+ijh +
+2
+,ˆt
+ij +
+2
+,
+ˆt
+ijh +
+1
+,ˆt
+ij +
+1t +
+11
+,() t
+ij −+
+1
+,
+t
+ij +
+,
+t
+ij
+Fig. 1: The proposed DL-GAMP algorithm.
+Fortunately, the prior and the likelihood function of H can be
+fully factorized, leading to the following posterior distribution,
+i.e.,
+p(hi,j|Y, A, B, σ2)∝
+∫
+p(yj|gj, σ2)p(hj|A, B)dh∼i,j
+=
+∫ N−1∏
+o=0
+p(yo,j|go,j, σ2)
+UMN−1∏
+i=0
+p(hi,j|A, B)dh∼i,j,
+(17)
+where yj and hj are the j-th column of Y and H, respectively,
+and gj = Xhj. Hence, we can resort to the GAMP algorithm
+to estimate the posterior mean and variance of the channel
+matrix with lower complexity.
+B. MMSE Estimation via GAMP
+The messages passed within the GAMP algorithm are
+approximated by Gaussian distributions, and then only the
+means and variances of the messages need to be calculated and
+preserved, which reduces the complexity signiﬁcantly. We next
+outline the MMSE estimation of channel matrix H in the t-th
+iteration by following the GAMP algorithms [10]. The detailed
+derivations are omitted for brevity. Here, the hyperparameters
+{A, B, σ} are assumed to be known and ﬁxed, and we will
+update them later.
+1) Initilization ( t = 1 ): The initial estimation of the
+posterior mean of the channel is set as its prior mean i.e.,
+ˆh1
+i,j = 0 and the estimation of the posterior variance ˆγi,j
+is initialized to its prior variance θi,j with a small positive
+number, e.g., ˆγ1
+i,j = θ1
+i,j = 0.01. Residual ˆs0
+o,j is set as 0.
+2) Messages on the Output Nodes: Based on linear rela-
+tionship gj = Xhj and observation yj, the messages are
+combined to obtain the posterior mean and variance of go,j,
+given by
+ˆgo,j = E
+[
+go,j|yo,j, ˆpt
+o,j, τp,t
+o,j
+]
+,
+τg,t
+o,j = Var
+[
+go,j|yo,j, ˆpt
+o,j, τp,t
+o,j
+]
+, (18)
+where E[·] and Var[·] are taken with respect to the posterior
+distribution of go,j given priorCN (go,j|ˆpt
+o,j, τp,t
+o,j ) and likeli-
+hood functionCN (yo,j|go,j, σ2
+t ). The prior mean and variance
+of go,j are calculated as
+τp,t
+o,j =
+∑
+i
+|Xo,i|2 ˆγt
+i,j,
+ˆpt
+o,j =
+∑
+i
+(Xo,iˆht
+i,j)− ˆst−1
+o,j τp,t
+o,j . (19)
+Then, residual ˆst
+o,j and inverse-residual variance τs,t
+o,j are
+computed by
+ˆst
+o,j =
+(
+ˆgt
+o,j− ˆpt
+o,j
+)
+/τp,t
+o,j ,
+τs,t
+o,j =
+(
+1− τg,t
+o,j /τp,t
+o,j
+)
+/τp,t
+o,j . (20)
+3) Messages on the Input Nodes: Based on the residual and
+the inverse-residual variance, the posterior mean and variance
+of hi,j can be updated by
+ˆht+1
+i,j = E[hi,j|ˆrt
+i,j, τr,t
+i,j , At, Bt],
+ˆγt+1
+i,j = Var[hi,j|ˆrt
+i,j, τr,t
+i,j , At, Bt], (21)
+where E[·] and Var[·] are taken with respect to the posterior
+distribution of hi,j given prior p(hi,j|At, Bt) and likelihood
+function CN (hi,j|ˆrt
+i,j, τr,t
+i,j ). The mean and variance in the
+likelihood function are calculated as
+τr,t
+i,j =
+(∑
+o
+|Xo,i|2 τs,t
+o,j
+)−1
+,
+ˆrt
+i,j = ˆht
+i,j + τr,t
+i,j
+∑
+o
+X∗
+o,iˆst
+o,j. (22)
+Combining (15) and (21)-(22), we have
+ˆht+1
+i,j = θt
+i,jˆrt
+i,j
+θt
+i,j + τr,t
+i,j
+,
+ˆγt+1
+i,j =
+θt
+i,jτr,t
+i,j
+θt
+i,j + τr,t
+i,j
+. (23)
+C. Learning the Hyperparameters
+In this subsection, we utilize the EM algorithm together with
+deep learning to learn the hyperparameters {A, B, σ}, where
+A and σ are updated by the EM-based rule and B is learned
+
+=== PDF PAGE 5 ===
+by a convolutional neural network (CNN), as shown in Fig. 1.
+We then explain it in detail. Following the conventional SBL,
+we place a Gamma hyperprior over σ−2, i.e.,
+p(σ|r, s) = Γ(r)−1srσ−2re−sσ−2
+. (24)
+Based on the estimation in the t-th iteration, the precision
+matrix and the noise variance can be updated by
+At+1 = arg max
+A
+E[log p(H|A, B)p(A)|Y, At, σt], (25)
+σt+1 = arg max
+σ
+E[log p(Y|H, σ)p(σ)|Y, At, σt], (26)
+where the kernel B is assumed to be known in this step. The
+optimization in (25) is difﬁcult to get the analytic solution
+since the hyperparameters are entangled with each other due
+to the logarithm term. Although the gradient descent methods
+can be adopted to get the optimal solution, it involves higher
+computational complexity as compared with an analytical
+update rule. We derive a closed-form sub-optimal solution (see
+[7] for more detail) by examining the ﬁrst derivative of the
+objective function with respect to αi,j and by proper scaling,
+given as
+αt+1
+i,j = a
+b + ωt
+i,j
+, (27)
+where ωt
+i,j = ∑Dx
+p=−Dx
+∑Dy
+q=−Dy βp,qE[|hi−p,j−q|2] and pos-
+terior second moment E[|hpq|2] =
+⏐⏐⏐ˆht
+p,q
+⏐⏐⏐
+2
++
+⏐⏐ˆγt
+p,q
+⏐⏐2
+, which are
+the outputs of the GAMP algorithm in the t-th iteration. Then,
+computing the ﬁrst derivative of the objective function in (26)
+with respect to σ2 and setting it equal to zero, we get
+(σ2)t+1 =
+∑NyNz−1
+j=0 E
+[
+∥yj− Xhj∥2
+]
++ s
+M N NyNz + r , (28)
+where
+E
+[
+∥yj− Xhj∥2
+]
+=
+yj− Xˆht
+j
+
+2
++ (σ2)t
+×
+UMN−1∑
+i=0
+(1− ˆγt
+i,j/θt
+i,j). (29)
+By examining (15) and (27), the update of precision matrix
+A is related to the 2D convolution between kernel B and the
+posterior second moment, and the update of prior variance
+θi,j is related to the cross-correlation between the kernel and
+precision matrix, i.e.,
+(θ−1
+i,j )t+1 =
+Dx∑
+p=−Dx
+Dy∑
+q=−Dy
+βp,qαt+1
+i+p,j+q. (30)
+The only difference between the 2D convolution and the
+cross-correlation is whether the kernel is ﬂipped within the
+computations, which motivates us to utilize the CNN to learn
+kernel B and then update precision matrix A. Here, the
+trainable ﬁlter of the convolutional layer can be seen as ﬂipped
+kernel B. Combining this idea with the EM update rule and
+the GAMP algorithm leads to the deep learning-based GAMP
+TABLE I: SIMULATION PARAMETERS
+Parameter Values
+Carrier frequency (GHz) 2
+Subcarrier spacing (kHz) 3.75
+Size of OTFS symbol (M,N ) (16, 35)
+Length of CP 42
+Number of Satellite antennas 4× 4
+Number of LoS paths 1
+Number of Non-LoS path 1
+The differential delay (µs) [0, 699]
+The differential Doppler shift (kHz) [−3.88, 3.88]
+Directional cosine along the y- and z-axis [−1, 1]
+Rician factor (dB) 8
+algorithm (DL-GAMP), and we summarize the computation
+process as follows.
+As shown in Fig. 1, in the t-th iteration, the posterior
+second moment computed by the GAMP algorithm in the
+(t− 1)-th iteration is ﬁrstly inputted to a convolutional layer
+and then the rectiﬁed linear unit (ReLU) [11] will ensure a
+positive output ωt
+i,j. Next, precision αt+1
+i,j is updated according
+to (27), and then is inputted to another convolutional layer
+followed by the ReLU to get the update of prior variance θt+1
+i,j
+(similar to (30)). Simultaneously, noise standard variance σt+1
+is given by (28). Finally, the output of GAMP in this iteration
+{ˆht+1
+i,j , ˆγt+1
+i,j } and the update of {θt+1
+i,j , σt+1} computed by
+the CNN and the EM approach will be inputted to the next
+iteration of the DL-GAMP. The algorithm will run until the
+maximum iteration Tmax is reached, and then the active device
+is detected according to (14). Note that the ﬁlters in the two
+convolutional layers are not restricted to be identical since
+they will be learned from the training samples. Besides, the
+matrix multiplication in the GAMP algorithm dominates other
+computations, like the 2D convolution in CNN, leading to
+complexity O(U M N2NyNz) in each iteration when each
+channel matrix Hl is parallelly estimated by DL-GAMP. If
+Hl is estimated in a serial manner, the complexity will be
+O(U M2N2NyNz) in each iteration.
+IV. N UMERICAL RESULTS
+In this section, we demonstrate the performance of the pro-
+posed algorithms through computer simulations. We consider
+the set-2 conﬁguration of the non-terrestrial networks recom-
+mended by the 3GPP [2] [9]. The detailed system parameters
+are summarized in Table I. Each device transmits Gaussian
+pliot matrix with independent entries obeying CN (0, 1
+MN ).
+Moreover, the power of the multi-path channel gain is nor-
+malized as 1, i.e., ∑p
+i=0|hu,i|2 = 1 . Finally, we deﬁne the
+signal-to-noise ratio (SNR) as SNR = 10 log10
+1
+MNσ 2 .
+To train the DL-GAMP, we generate 2× 104 samples; set
+Dx = Dy = 1 , b = r = s = 10−4, and Tmax = 600 ; set
+a as the hyerparameter learned in the training process; adopt
+the Adam optimizer to update parameters in CNN with the
+learning rate of 10−4. We generate 3× 103 samples at each
+SNR point to test the DL-GAMP. Besides, we adopt GMMV-
+AMP [4] as benchmarks to show the effectiveness of the
+proposed algorithms. Finally, the average normalized mean-
+squared-error (NMSE) and the average error probability are
+
+=== PDF PAGE 6 ===
+adopted as the metrics for the channel estimation and device
+activity detection, respectively, given by
+NMSE = 1
+M
+M−1∑
+l=0
+Hl− ˆHl
+
+2
+F
+∥Hl∥2
+F
+, Pe = 1
+U
+U−1∑
+u=0
+⏐⏐⏐λu− ˆλu
+⏐⏐⏐ .
+(31)
+5 10 15 20 25
+SNR (dB)
+-15
+-10
+-5
+0
+NMSE  (dB)
+GMMV-AMP
+ConvGAMP with =0.5
+ConvGAMP with =1
+DL-GAMP
+5 10 15 20 25
+SNR (dB)
+-15
+-10
+-5
+0
+NMSE  (dB)
+GMMV-AMP
+ConvGAMP with =0.5
+ConvGAMP with =1
+DL-GAMP
+Fig. 2: Performance comparison of channel estimation between
+the GMMV-AMP, ConvGAMP, and DL-GAMP under differ-
+ent SNR values. U = 5, Ua = 1, Ny = Nz = 4.
+5 10 15 20 25
+SNR (dB)
+10-4
+10-3
+10-2
+10-1
+GMMV-AMP
+ConvGAMP with =0.5
+ConvGAMP with =1
+DL-GAMP
+5 10 15 20 25
+SNR (dB)
+10-4
+10-3
+10-2
+10-1
+GMMV-AMP
+ConvGAMP with =0.5
+ConvGAMP with =1
+DL-GAMP
+Fig. 3: Performance comparison of device activity detection
+between the GMMV-AMP, ConvGAMP, and DL-GAMP under
+different SNR values. U = 5, Ua = 1, Ny = Nz = 4.
+Fig. 2 compares the channel estimation performance be-
+tween the DL-GAMP and GMMV-AMP. In the ﬁgure, we
+also provide the performance of the proposed algorithm with a
+constant kernel (without learning), named ConvGAMP, where
+the center coefﬁcient of the kernel is set as 1 and other
+coefﬁcients are set to be identical with β = 0 .5 or β = 1 ,
+which means that the neighborhoods of the channel hi,j have
+the same inﬂuence on it. Besides, there are ﬁve potential
+devices with an active one, i.e., U = 5 and Ua = 1. From the
+ﬁgure, the proposed algorithms ConvGAMP and DL-GAMP
+outperform the GMMV-AMP under different SNR values since
+the GMMV-AMP only captures the sparsity in the angular
+domain while the proposed algorithms are able to deal with
+the sparsity in the delay-Doppler-angle domain. For example,
+when the NMSE is about -7.5 dB, the proposed algorithms
+outperform the GMMV-AMP by around 5 dB. Besides, the
+DL-GAMP has better performance than ConvGAMP, and has
+the 2.5 dB gain when the NMSE is -10 dB, which indicates
+that the kernel learned by CNN can provide better estimation
+performance.
+Finally, in Fig. 3, we compare the device activity detec-
+tion performance of the GMMV-AMP, ConvGAMP, and DL-
+GAMP, where U = 5 and Ua = 1. From the ﬁgure, similar
+to Fig. 2, the ConvGAMP and DL-GAMP outperform the
+GMMV-AMP. With the assistance of CNN, the performance
+of DL-GAMP is improved further compared with the Con-
+vGAMP.
+V. C ONCLUSION
+This work investigated the application of MIMO-OTFS for
+the grant-free random access in LEO satellite communications,
+where there are usually large differential delay and Doppler
+shift. To exploit the 2D burst block sparsity in the delay-
+Doppler-angle domain, the correlation-based Gaussian prior
+with the GAMP was proposed to estimate the channel and
+detect the active device. Finally, the hyperparameters were
+learned by the EM rule and deep learning. Simulation results
+demonstrated that the proposed algorithms could acquire ac-
+curate channel state information and device activity.
+REFERENCES
+[1] M. De Sanctis, E. Cianca, G. Araniti, I. Bisio, and R. Prasad, “Satellite
+communications supporting internet of remote things,” IEEE Internet
+Things J., vol. 3, no. 1, pp. 113–123, Oct. 2016.
+[2] H. Chougrani, S. Kisseleff, W. A. Martins, and S. Chatzinotas, “NB-
+IoT random access for non-terrestrial networks: Preamble detection and
+uplink synchronization,” IEEE Internet Things J. , pp. 1–1, 2021 (Early
+Access).
+[3] Y . Zhang, Q. Guo, Z. Wang, J. Xi, and N. Wu, “Block sparse Bayesian
+learning based joint user activity detection and channel estimation for
+grant-free NOMA systems,” IEEE Trans. Veh. Technol., vol. 67, no. 10,
+pp. 9631–9640, Jul. 2018.
+[4] M. Ke, Z. Gao, Y . Wu, X. Gao, and R. Schober, “Compressive sensing-
+based adaptive active user detection and channel estimation: Massive
+access meets massive MIMO,” IEEE Trans. Signal Process. , vol. 68,
+pp. 764–779, Jan. 2020.
+[5] W. Shen, L. Dai, J. An, P. Fan, and R. W. Heath, “Channel estimation for
+orthogonal time frequency space (OTFS) massive MIMO,” IEEE Trans.
+Signal Process., vol. 67, no. 16, pp. 4204–4217, May 2019.
+[6] D. Shi, W. Wang, L. You, X. Song, Y . Hong, X. Gao, and G. Fettweis,
+“Deterministic pilot design and channel estimation for downlink massive
+MIMO-OTFS systems in presence of the fractional Doppler,” IEEE
+Trans. Wireless Commun., pp. 1–1, May 2021 (Early Access).
+[7] B. Shen, Y . Wu, J. An, C. Xing, L. Zhao, and W. Zhang, “Random
+access with massive MIMO-OTFS in LEO satellite communications,”
+2022. [Online]. Available: https://arxiv.org/abs/2202.13058.
+[8] X. Zhou, K. Ying, Z. Gao, Y . Wu, Z. Xiao, S. Chatzinotas, J. Yuan, and
+B. Ottersten, “Active terminal identiﬁcation, channel estimation, and
+signal detection for grant-free NOMA-OTFS in LEO satellite internet-
+of-things,” 2022. [Online]. Available: https://arxiv.org/abs/2201.02084.
+[9] 3rd Generation Partnership Project, “3rd generation partnership project;
+technical speciﬁcation group radio access network; solutions for NR
+to support nonterrestrial networks (NTN) (Release 16),” 3GPP TR
+38.811V15.1.0, June 2019.
+[10] S. Rangan, “Generalized approximate message passing for estimation
+with random linear mixing,” in Proc. IEEE Int. Symp. Inf. Theory (ISIT),
+St. Petersburg, Russia, Oct. 2011, pp. 2168–2172.
+[11] X. Glorot, A. Bordes, and Y . Bengio, “Deep sparse rectiﬁer neural
+networks,” in Proc. Int. Conf. Artif. Intell. Statist , Ft. Lauderdale, FL,
+USA, Jan. 2011, pp. 315–323.

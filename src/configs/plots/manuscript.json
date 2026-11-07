@@ -1,0 +1,1185 @@
+{
+  "version": 1,
+  "paper": "paper/C-STMP",
+  "figures": {
+    "system_multiframe": {
+      "number": 1,
+      "kind": "method"
+    },
+    "factor_graph": {
+      "number": 2,
+      "kind": "method"
+    },
+    "learned_receiver": {
+      "number": 3,
+      "kind": "method"
+    },
+    "channel_denoising": {
+      "number": 4,
+      "kind": "experiment",
+      "source": "result/channel_denoising/figures/white_mainline_500_20261107/PLOT_DATA.json",
+      "source_sha256": "f928bfa154ec3e6fcb576937e4933432bad8bda881c56e71a48a0003e289dbd3",
+      "styles": {
+        "proposed": {
+          "color": "#ff00ff",
+          "marker": "o",
+          "linestyle": "--",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "offgrid_sbl": {
+          "color": "#0000ff",
+          "marker": "s",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gnn": {
+          "color": "#00a0a0",
+          "marker": "^",
+          "linestyle": "-.",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gamp": {
+          "color": "#2e8b57",
+          "marker": "D",
+          "linestyle": ":",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "somp": {
+          "color": "#123d2a",
+          "marker": "x",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "noisy": {
+          "color": "#8994a3",
+          "marker": "+",
+          "linestyle": ":",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gaussian": {
+          "color": "#b08d26",
+          "marker": "v",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "genie_bound": {
+          "color": "#222222",
+          "marker": "x",
+          "linestyle": "-.",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "pretrained_white_first": {
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        }
+      },
+      "labels": {
+        "proposed": "STMP",
+        "offgrid_sbl": "Off-grid SBL",
+        "gnn": "GNN-ASPL",
+        "gamp": "GAMP-SBL",
+        "somp": "SOMP",
+        "noisy": "LS",
+        "gaussian": "Gaussian prior",
+        "genie_bound": "Genie MMSE",
+        "pretrained_white_first": "GP-MP"
+      },
+      "methods": [
+        "pretrained_white_first",
+        "proposed",
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp",
+        "noisy",
+        "gaussian",
+        "genie_bound"
+      ],
+      "size_inches": [
+        3.5,
+        3.0
+      ],
+      "point_count": 54,
+      "x": "snr_db",
+      "legend_order": [
+        "pretrained_white_first",
+        "offgrid_sbl",
+        "somp",
+        "proposed",
+        "gnn",
+        "noisy",
+        "genie_bound",
+        "gamp",
+        "gaussian"
+      ]
+    },
+    "convergence": {
+      "number": 5,
+      "kind": "experiment",
+      "source": "result/snr_comparison/figures/convergence_first30_300_20261105/PAPER_PLOT_DATA.json",
+      "source_sha256": "d61d655e94e5ab4798b5c4bebc9ae14fef36ead05751a46c909a8157c26cbc7d",
+      "styles": {
+        "GP-MP": {
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-",
+          "linewidth": 1.0,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false,
+          "markevery": [
+            0,
+            9,
+            29,
+            49,
+            69,
+            89,
+            109,
+            129,
+            149
+          ]
+        },
+        "STMP": {
+          "color": "#ff00ff",
+          "marker": "o",
+          "linestyle": "--",
+          "linewidth": 1.0,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false,
+          "markevery": [
+            0,
+            12,
+            32,
+            52,
+            72,
+            92,
+            112,
+            132,
+            149
+          ]
+        },
+        "offgrid_sbl": {
+          "color": "#0000ff",
+          "marker": "s",
+          "linestyle": "--",
+          "linewidth": 1.0,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false,
+          "markevery": [
+            0,
+            15,
+            35,
+            55,
+            75,
+            95,
+            115,
+            135,
+            149
+          ]
+        }
+      },
+      "labels": {
+        "GP-MP": "GP-MP",
+        "STMP": "STMP",
+        "offgrid_sbl": "Off-grid SBL"
+      },
+      "methods": [
+        "GP-MP",
+        "STMP",
+        "offgrid_sbl"
+      ],
+      "size_inches": [
+        3.5,
+        2.65
+      ],
+      "point_count": 450,
+      "x": "iteration",
+      "status": "Author-adopted 30 paired scenes; NMSE only; first 150 of 300 actual iterations; original Off-grid SBL configuration.",
+      "xticks": [
+        1,
+        25,
+        50,
+        75,
+        100,
+        125,
+        150
+      ]
+    },
+    "snr_comparison": {
+      "number": 6,
+      "kind": "experiment",
+      "source": "result/snr_comparison/figures/main_snr_white_20261107/PLOT_DATA.json",
+      "source_sha256": "8699091d0a480c517fbdbc5abb9448d60d05e00e6c93ee184c9c81680940f496",
+      "styles": {
+        "C_STMP": {
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "STMP": {
+          "color": "#ff00ff",
+          "marker": "o",
+          "linestyle": "--",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "offgrid_sbl": {
+          "color": "#0000ff",
+          "marker": "s",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gnn": {
+          "color": "#00a0a0",
+          "marker": "^",
+          "linestyle": "-.",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gamp": {
+          "color": "#2e8b57",
+          "marker": "D",
+          "linestyle": ":",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "somp": {
+          "color": "#123d2a",
+          "marker": "x",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "C_STMP_phase_frontend_marginal_20261104": {
+          "color": "#ff0000",
+          "marker": "^",
+          "linestyle": "--",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "offgrid_sbl_13": {
+          "color": "#0000ff",
+          "marker": "o",
+          "linestyle": "-.",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "offgrid_sbl_25": {
+          "color": "#0000ff",
+          "marker": "v",
+          "linestyle": ":",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        }
+      },
+      "labels": {
+        "C_STMP": "GP-MP",
+        "STMP": "STMP",
+        "offgrid_sbl": "Off-grid SBL (7)",
+        "gnn": "GNN-ASPL",
+        "gamp": "GAMP-SBL",
+        "somp": "SOMP",
+        "C_STMP_phase_frontend_marginal_20261104": "GP-MP-EP",
+        "offgrid_sbl_13": "Off-grid SBL (13)",
+        "offgrid_sbl_25": "Off-grid SBL (25)"
+      },
+      "methods": [
+        "C_STMP",
+        "C_STMP_phase_frontend_marginal_20261104",
+        "STMP",
+        "offgrid_sbl",
+        "offgrid_sbl_13",
+        "offgrid_sbl_25",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "size_inches": [
+        3.5,
+        2.65
+      ],
+      "point_count": 108,
+      "x": "snr_db",
+      "panel_config": {
+        "version": 1,
+        "experiment": "snr_comparison",
+        "input": "result/snr_comparison/figures/main_snr_white_20261107/PLOT_DATA.json",
+        "selection": {
+          "methods": [
+            "C_STMP",
+            "C_STMP_phase_frontend_marginal_20261104",
+            "STMP",
+            "offgrid_sbl",
+            "offgrid_sbl_13",
+            "offgrid_sbl_25",
+            "gnn",
+            "gamp",
+            "somp"
+          ],
+          "conditions": {},
+          "scenes": {
+            "first": 1000
+          },
+          "per_scene": null
+        },
+        "labels": {
+          "C_STMP": "GP-MP",
+          "STMP": "STMP",
+          "offgrid_sbl": "Off-grid SBL (7)",
+          "gnn": "GNN-ASPL",
+          "gamp": "GAMP-SBL",
+          "somp": "SOMP",
+          "C_STMP_phase_frontend_marginal_20261104": "GP-MP-EP",
+          "offgrid_sbl_13": "Off-grid SBL (13)",
+          "offgrid_sbl_25": "Off-grid SBL (25)"
+        },
+        "styles": {
+          "C_STMP": {
+            "color": "#ff0000",
+            "marker": "s",
+            "linestyle": "-",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "STMP": {
+            "color": "#ff00ff",
+            "marker": "o",
+            "linestyle": "--",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "offgrid_sbl": {
+            "color": "#0000ff",
+            "marker": "s",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "gnn": {
+            "color": "#00a0a0",
+            "marker": "^",
+            "linestyle": "-.",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "gamp": {
+            "color": "#2e8b57",
+            "marker": "D",
+            "linestyle": ":",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "somp": {
+            "color": "#123d2a",
+            "marker": "x",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "C_STMP_phase_frontend_marginal_20261104": {
+            "color": "#ff0000",
+            "marker": "^",
+            "linestyle": "--",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "offgrid_sbl_13": {
+            "color": "#0000ff",
+            "marker": "o",
+            "linestyle": "-.",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "offgrid_sbl_25": {
+            "color": "#0000ff",
+            "marker": "v",
+            "linestyle": ":",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        "plot": {
+          "x": "snr_db",
+          "metrics": [
+            "nmse_db",
+            "aer"
+          ],
+          "facet": null,
+          "facet_order": null,
+          "panels": [
+            "combined",
+            "separate"
+          ],
+          "title": "",
+          "show_panel_titles": false,
+          "annotate": null,
+          "facet_columns": 2
+        },
+        "axes": {
+          "x": {
+            "limits": [
+              -4,
+              6
+            ],
+            "labelpad": 0,
+            "tickpad": 4
+          },
+          "nmse_db": {
+            "labelpad": 0,
+            "tickpad": 4
+          },
+          "aer": {
+            "scale": "log",
+            "zeros": "separate",
+            "labelpad": 0,
+            "tickpad": 4,
+            "limits": [
+              0.0001,
+              0.02
+            ]
+          }
+        },
+        "legend": {
+          "show": false,
+          "loc": "upper right",
+          "ncol": 1,
+          "fontsize": 6,
+          "groups": [],
+          "combined_metrics": [
+            "aer"
+          ],
+          "frameon": true,
+          "framealpha": 1,
+          "fancybox": false,
+          "labelspacing": 0.1,
+          "handlelength": 2.6,
+          "handletextpad": 0.4,
+          "borderpad": 0.3
+        },
+        "figure": {
+          "panel_size": [
+            1.75,
+            2.2
+          ],
+          "separate_panel_size": [
+            3.5,
+            2.2
+          ],
+          "font_family": "Times New Roman",
+          "font_size": 8.5,
+          "layout": {
+            "w_pad": 0.01,
+            "h_pad": 0.02,
+            "wspace": 0,
+            "hspace": 0
+          },
+          "grid": true,
+          "minor_grid": true,
+          "major_grid_color": "#b9b9b9",
+          "major_grid_alpha": 0.65,
+          "major_grid_linewidth": 0.45,
+          "minor_grid_color": "#d4d4d4",
+          "minor_grid_alpha": 0.45,
+          "minor_grid_linewidth": 0.35
+        },
+        "export": {
+          "formats": [
+            "pdf",
+            "svg",
+            "png"
+          ],
+          "dpi": 600,
+          "preview_dpi": 180
+        }
+      },
+      "legend_order": [
+        "C_STMP",
+        "C_STMP_phase_frontend_marginal_20261104",
+        "STMP",
+        "offgrid_sbl",
+        "offgrid_sbl_13",
+        "offgrid_sbl_25",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "legend_height_inches": 0.46,
+      "legend_style": {
+        "handlelength": 1.65,
+        "columnspacing": 0.55
+      }
+    },
+    "pilot_frames": {
+      "number": 7,
+      "kind": "experiment",
+      "source": "result/pilot_frames/figures/full_grid_final_20261026/PLOT_DATA.json",
+      "source_sha256": "9b3e75bd7f3dd628b4e1bf456d952ad8aff6445407aa71472b8c305dbbfe6dc0",
+      "styles": {
+        "C_STMP": {
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "STMP": {
+          "color": "#ff00ff",
+          "marker": "o",
+          "linestyle": "--",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "offgrid_sbl": {
+          "color": "#0000ff",
+          "marker": "s",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gnn": {
+          "color": "#00a0a0",
+          "marker": "^",
+          "linestyle": "-.",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gamp": {
+          "color": "#2e8b57",
+          "marker": "D",
+          "linestyle": ":",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "somp": {
+          "color": "#123d2a",
+          "marker": "x",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        }
+      },
+      "labels": {
+        "C_STMP": "GP-MP",
+        "STMP": "STMP",
+        "offgrid_sbl": "Off-grid SBL",
+        "gnn": "GNN-ASPL",
+        "gamp": "GAMP-SBL",
+        "somp": "SOMP"
+      },
+      "methods": [
+        "C_STMP",
+        "STMP",
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "size_inches": [
+        3.5,
+        2.5
+      ],
+      "point_count": 72,
+      "x": "frames",
+      "panel_config": {
+        "version": 1,
+        "experiment": "pilot_frames",
+        "input": "result/pilot_frames/figures/full_grid_final_20261026/PLOT_DATA.json",
+        "selection": {
+          "methods": null,
+          "conditions": {},
+          "scenes": {},
+          "per_scene": null
+        },
+        "labels": {
+          "C_STMP": "GP-MP",
+          "STMP": "STMP",
+          "offgrid_sbl": "Off-grid SBL",
+          "gnn": "GNN-ASPL",
+          "gamp": "GAMP-SBL",
+          "somp": "SOMP"
+        },
+        "styles": {
+          "C_STMP": {
+            "color": "#ff0000",
+            "marker": "s",
+            "linestyle": "-",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "STMP": {
+            "color": "#ff00ff",
+            "marker": "o",
+            "linestyle": "--",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "offgrid_sbl": {
+            "color": "#0000ff",
+            "marker": "s",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "gnn": {
+            "color": "#00a0a0",
+            "marker": "^",
+            "linestyle": "-.",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "gamp": {
+            "color": "#2e8b57",
+            "marker": "D",
+            "linestyle": ":",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          },
+          "somp": {
+            "color": "#123d2a",
+            "marker": "x",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        "plot": {
+          "x": "frames",
+          "metrics": [
+            "nmse_db",
+            "aer"
+          ],
+          "facet": null,
+          "facet_order": null,
+          "panels": [
+            "combined",
+            "separate"
+          ],
+          "title": "",
+          "show_panel_titles": false,
+          "annotate": null,
+          "facet_columns": 2
+        },
+        "axes": {
+          "x": {
+            "limits": [
+              8,
+              48
+            ],
+            "label": "Number of pilot frames",
+            "labelpad": 0,
+            "tickpad": 4
+          },
+          "nmse_db": {
+            "labelpad": 0,
+            "tickpad": 4,
+            "limits": [
+              -20,
+              0
+            ],
+            "ticks": [
+              -20,
+              -15,
+              -10,
+              -5,
+              0
+            ]
+          },
+          "aer": {
+            "scale": "log",
+            "zeros": "separate",
+            "labelpad": 0,
+            "tickpad": 4,
+            "limits": [
+              0.0001,
+              0.1
+            ],
+            "ticks": [
+              0.0001,
+              0.001,
+              0.01,
+              0.1
+            ]
+          }
+        },
+        "legend": {
+          "show": false,
+          "loc": "upper right",
+          "ncol": 1,
+          "fontsize": 6,
+          "groups": [],
+          "combined_metrics": [
+            "aer"
+          ],
+          "frameon": true,
+          "framealpha": 1,
+          "fancybox": false,
+          "labelspacing": 0.1,
+          "handlelength": 2.6,
+          "handletextpad": 0.4,
+          "borderpad": 0.3
+        },
+        "figure": {
+          "panel_size": [
+            1.75,
+            2.2
+          ],
+          "separate_panel_size": [
+            3.5,
+            2.2
+          ],
+          "font_family": "Times New Roman",
+          "font_size": 8.5,
+          "layout": {
+            "w_pad": 0.01,
+            "h_pad": 0.02,
+            "wspace": 0,
+            "hspace": 0
+          },
+          "grid": true,
+          "minor_grid": true,
+          "major_grid_color": "#b9b9b9",
+          "major_grid_alpha": 0.65,
+          "major_grid_linewidth": 0.45,
+          "minor_grid_color": "#d4d4d4",
+          "minor_grid_alpha": 0.45,
+          "minor_grid_linewidth": 0.35
+        },
+        "export": {
+          "formats": [
+            "pdf",
+            "svg",
+            "png"
+          ],
+          "dpi": 600,
+          "preview_dpi": 180
+        }
+      },
+      "legend_order": [
+        "C_STMP",
+        "STMP",
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp"
+      ]
+    },
+    "user_count": {
+      "number": 8,
+      "kind": "experiment",
+      "source": "result/user_count/figures/redraw_beta01_500_20261028/PLOT_DATA.json",
+      "source_sha256": "63ad4bcb9ac14bbc09a5d558cedb81fc6c154fa8836d15bed5e4dae14e69b3cf",
+      "styles": {
+        "C_STMP": {
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "STMP": {
+          "color": "#ff00ff",
+          "marker": "o",
+          "linestyle": "--",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "offgrid_sbl": {
+          "color": "#0000ff",
+          "marker": "s",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gnn": {
+          "color": "#00a0a0",
+          "marker": "^",
+          "linestyle": "-.",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gamp": {
+          "color": "#2e8b57",
+          "marker": "D",
+          "linestyle": ":",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "somp": {
+          "color": "#123d2a",
+          "marker": "x",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        }
+      },
+      "labels": {
+        "C_STMP": "GP-MP",
+        "STMP": "STMP",
+        "offgrid_sbl": "Off-grid SBL",
+        "gnn": "GNN-ASPL",
+        "gamp": "GAMP-SBL",
+        "somp": "SOMP"
+      },
+      "methods": [
+        "C_STMP",
+        "STMP",
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "size_inches": [
+        3.5,
+        2.65
+      ],
+      "point_count": 30,
+      "x": "users",
+      "status": "Existing accepted display; C1 final-result decision remains pending; see REVIEW_DECISIONS.md."
+    },
+    "activity_probability": {
+      "number": 9,
+      "kind": "experiment",
+      "source": "result/activity_probability/figures/stmp_c_stmp_500_20261026/PLOT_DATA.json",
+      "source_sha256": "f5a931bf2f8e80332c786a308b2dbda05e1e5f6541f54b95a9e52169752f6373",
+      "styles": {
+        "C_STMP": {
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "STMP": {
+          "color": "#ff00ff",
+          "marker": "o",
+          "linestyle": "--",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "offgrid_sbl": {
+          "color": "#0000ff",
+          "marker": "s",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gnn": {
+          "color": "#00a0a0",
+          "marker": "^",
+          "linestyle": "-.",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gamp": {
+          "color": "#2e8b57",
+          "marker": "D",
+          "linestyle": ":",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "somp": {
+          "color": "#123d2a",
+          "marker": "x",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        }
+      },
+      "labels": {
+        "C_STMP": "GP-MP",
+        "STMP": "STMP",
+        "offgrid_sbl": "Off-grid SBL",
+        "gnn": "GNN-ASPL",
+        "gamp": "GAMP-SBL",
+        "somp": "SOMP"
+      },
+      "methods": [
+        "C_STMP",
+        "STMP",
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "size_inches": [
+        3.5,
+        2.65
+      ],
+      "point_count": 30,
+      "x": "activity_probability"
+    },
+    "cross_channel": {
+      "number": 10,
+      "kind": "experiment",
+      "source": "result/cross_channel/figures/full_500_paper_20261028/PLOT_DATA.json",
+      "source_sha256": "3ae6c6ac2f66b48b2f8a9d58e42ff8f962610de9772828b117641b4f328b431a",
+      "styles": {
+        "C_STMP": {
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "STMP": {
+          "color": "#ff00ff",
+          "marker": "o",
+          "linestyle": "--",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "offgrid_sbl": {
+          "color": "#0000ff",
+          "marker": "s",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gnn": {
+          "color": "#00a0a0",
+          "marker": "^",
+          "linestyle": "-.",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "gamp": {
+          "color": "#2e8b57",
+          "marker": "D",
+          "linestyle": ":",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "somp": {
+          "color": "#123d2a",
+          "marker": "x",
+          "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        }
+      },
+      "labels": {
+        "C_STMP": "GP-MP",
+        "STMP": "STMP",
+        "offgrid_sbl": "Off-grid SBL",
+        "gnn": "GNN-ASPL",
+        "gamp": "GAMP-SBL",
+        "somp": "SOMP"
+      },
+      "methods": [
+        "C_STMP",
+        "STMP",
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "size_inches": [
+        7.0,
+        2.6
+      ],
+      "point_count": 144,
+      "x": "snr_db",
+      "panel_order": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    }
+  },
+  "method_sources": {
+    "reference/literature/shen2025.pdf": "49ba5402794cb29bdbd39c10ed5146e10291e15d2db222e4e57f8b13ae3f7abd",
+    "reference/literature/cai2026_stmp_v2.pdf": "f0e6f8acbeec4ca91ecdadb3f51471026646f7d6f338cb051f663a6ba66178cf",
+    "result/channel_denoising/figures/white_mainline_500_20261107/scene000_example.npz": "02d7176ca5c69819e79c658818785f41f0ea2b04f6209bbd7ef2aa2e13cbdd90"
+  }
+}

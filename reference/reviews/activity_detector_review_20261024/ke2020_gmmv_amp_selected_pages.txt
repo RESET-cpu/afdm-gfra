@@ -1,0 +1,63 @@
+PDF PAGE 7
+JOURNAL  OF  LATEX  CLASS  FILES,  VOL.  14,  NO.  8,  AUGUST  2018                                                                                                                                                                                                                                                                                                                                                             7
+
+
+Algorithm  1   GMMV-AMP  Algorithm                                                                 based  on  empirical  experience.  Nevertheless,  we  note  that  the
+ Input:  ∀p  :   Noisy   observations YGp  ,   pilot   matrices SGp  ;   the                       decisions   of   the   CG-AD   and   BI-AD   are   not   sensitive   to   the
+      damping  parameter ρ,  the  maximum  number  of  iterations                                  values   of pcg    and pbi3.   Finally,   if   the k-th   UE   is   declared[ˆXp]T
+      Tamp,  and  termination  threshold η.                                                        active,  its  channel  is  estimated  as ˆhp,k  =
+ Output:   Estimated  channel  matrix {ˆXp}Pp=1   and  the  related                                    2)   Angular   Domain   Simultaneous   AUD   and   CE   (Schemek, :.
+      belief  indicators πp,k,m    , ∀p,k,m    .                                                   2):  The  GMMV-AMP  algorithm  designed  for  CS  model  (11)
+  1:  ∀p,k,m,g      :  Set  iteration  index q  to  1,  initialize  the  hyper-                    can    be    directly    applied    to    model    (12)    for    angular    domain
+      parameters  as  in  (35)-(37),  and  initialize  other  parameters                           simultaneous AUD  and CE  by replacingYGp    and ˆXGp    with RGp
+      as  V 0p,g,m    =  1,  Z0p,g,m    =  yp,g,m    ,  ˆx1p,k,m    =  µ1p,k,m    ,                and ˆWGp  ,  respectively.  Actually,  (11)  and  (12)  are  equivalent
+      v1p,k,m   = τ1p,k,m    .                                                                     signal models. Meanwhile, it  is worth noticing that the  channel
+  2:    repeat                                                                                     matrix Xp   and Wp   exhibit  two  different  forms  of  structured
+  3:     ∀p,g,m    :   Update V qp,g,m       and Zqp,g,m       according  to   (21)                sparsity.  Hence,  the  difference  between  the  spatial  domain  and
+          and  (22)  at  the  factor  nodes.                                                       the  angular domain schemes mainly lies  in  the  different update
+  4:     V qp,g,m   = ρV q− 1p,g,m   +(1− ρ)V qp,g,m    .                                          rules  (i.e.,  (38)  and  (42))  for  reﬁning  the  sparsity  ratio γp,k,m
+  5:     Zqp,g,m   = ρZq− 1p,g,m  +(1− ρ)Zqp,g,m    .                                              in  line  8  of  Algorithm  1.  Different  from  (11),  both  the  space-
+  6:     ∀p,k,m    :     Update  Dqp,k,m         and  Cqp,k,m         according     to             frequency  and  the  angular-frequency structured  sparsity  of  the
+          (19)    and    (20)    at    the    variable    nodes,    and  ˆxq+1()(p,k,m    =)       channel matrix are  considered in  (12), as  has been discussed in
+          ga    Cqp,k,m  ,D qp,k,m        , vq+1p,k,m   = gc     Cqp,k,m  ,D qp,k,m       .        Section  II-C  and  illustrated  in  Fig.  2(b).  Deﬁne  the  neighbors
+  7:     ∀p,k,m    :   Update   the   hyper-parameters µq+1p,k,m    , γq+1p,k,m    ,               of wp,k,m       as
+          τq+1p,k,m    ,  and σq+1p,k,m       as  in  (31)-(34).                                                    ˜Np,k,m   ={(p− 1,k,m  ), (p+1,k,m  ),
+  8:     ∀p,k,m    :   Reﬁne   the   update   rule   for   the   sparsity   ratio,∑                                                (p,k,m   − 1), (p,k,m   +1)}.                       (42)
+          γq+1p,k,m   =          1|Np,k,m|c(o,l,u  )∈N p,k,m πq+1o,l,u    .
+  9:     q = q +1.                      ˆXqp− ˆXq− 1F/  ∑          ˆXq− 1F<η.          Due    to     the     clustered    sparsity     and    the    structured    sparsity
+10:    until q>Tamp  or ∑p                            p               p       p                    described    in    (8)-(10),  wp,k,m        and    the    elements    of   ˜Np,k,m
+                                                                                                   tend   to   be   simultaneously   either   zero   or   non-zero4.   Hence,
+11:    return  {ˆXp}Pp=1;  πp,k,m   = γqp,k,m    , ∀p,k,m    .                                     when   the   GMMV-AMP  algorithm  is   applied   to   (12), Np,k,m
+                                                                                                   in   line   8   is   replaced   by   ˜Np,k,m    .   Based   on   the   estimate   of
+                                                                                                   {Wp}Pp=1,   the {ˆXp}Pp=1    can   be   acquired   according   to   (7).
+respectively,   as   follows.   We   ﬁrst   deﬁne   a   threshold   function                       Moveover,   the    active    UEs    can    be    detected    via    CG-AD    in
+r(x;ε),  where r(x;ε) = 1  if |x|> ε,  otherwise r(x;ε) = 0.                                       (39)    based    on  {ˆXp}Pp=1     or    via    BI-AD    in    (41)    based    on
+   Deﬁnition    1:    Based    on  {ˆXp}Pp=1,    a    channel    gain-based                        the    belief    indicators    of  wp,k,m    ,  ∀p,k,m    .    However,    as    the
+activity  detector  (CG-AD)  is  proposed  for  AUD  as  follows                                   common   sparsity   across   multiple   BS   antennas   is   destroyed,
+               {  1,           1 ∑     ∑                                                           it  is  challenging  to  ﬁnd  a  suitable pbi   for  BI-AD.  Hence,  we
+                           PM    ∑p    ∑mr(ˆxp,k,m  ;εcg) ≥  pcg,                                  set pbi   to pangbi   = pspabi  Samin/M    ,   where Samin   is   the   minimum
+      ˆαk =         0,           1                                                                 number   of   non-zero   elements   of [Wp]k, :, ∀p,k  .   For   AUD,
+                           PM        p     mr(ˆxp,k,m  ;εcg) < pcg,                    (39)
+where εcg  =  ˜α max{|ˆxp,k,m  |,  ∀p,k,m  },  ˜α  =  0. 01   is   the                             our  simulations  in  Section  V  reveal  that,  for  Scheme  1  based
+ratio  of  the  minimum and  maximum amplitudes of  the  channel                                   on  model  (11),  BI-AD  is  more  reliable  than  CG-AD,   but  for
+coefﬁcients,  see  [23,  Sec.  IV],  and pcg = 0. 92.                                              Scheme  2  based  on  model  (12),  CG-AD  is  more  reliable  than
+   Proposition 2: In the large system limit, if a reliable estimate                                BI-AD  .
+
+of Xp   is  acquired  after  the  convergence  of  the  GMMV-AMP                                   C.   Alternating  AUD  and  CE  Schemes
+algorithm,                              {  1, x k,m  ̸= 0,                                             The  simultaneous  AUD  and  CE   based  on  (11)   or  (12)   can
+                           πk,m  =          0, x k,m  = 0.                                                    (40)not fully exploit the enhanced sparsity ofWp  and the common
+                                                                                                   sparsity   pattern   across   the   multiple   columns   of Xp.   Hence,
+Proof          Please  refer  to  the  Appendix  B.                               □                we    propose   a    Turbo-GMMV-AMP   algorithm   that    performs
+   Deﬁnition   2:   Since   the   belief   indicator πp,k,m       tends   to   be                  AUD  and  CE  in  an  alternating  manner,  where  model  (11)  and
+1   for ˆxp,k,m   ̸= 0   and   0   for ˆxp,k,m   = 0,   we   further   design   a                  model (12) are alternately exploited for enhanced performance.
+belief  indicator-based  activity  detector  (BI-AD)  as                                           This  facilitates  the  development  of  a  CS-based  adaptive  AUD
+               {  1,           1 ∑      ∑                                                          and   CE   scheme   for   practical   massive   access   scenarios   with
+      ˆαk =                PM    ∑p     ∑mr(πp,k,m  ;εbi) ≥  pbi,                                  unknown  channel  sparsity  level.
+                    0,           1PM p     mr(πp,k,m  ;εbi) < pbi.                     (41)            1)   Turbo-GMMV-AMP   Algorithm   (Scheme   3):   This   algo-
+For  spatial  domain  simultaneous  AUD  and  CE,   we  set εbi =                                  rithm  is  summarized  in   Algorithm  2,   and  consists  of  module
+εspabi   = 0. 5 to make the missed detection and false alarm proba-                                   3We  found  empirically   via  simulations   for  a  wide  range  of  system  param-
+bilities  identical,  and  the  same  as pcg,  we  set pbi = pspabi   = 0. 9                       eters  that pcg = pspa
+                                                                                                      4Here,   we   assume   that   no   power   leakage   caused   by   the   discrete   Fourierbi   = 0.9  yields   a  high  AUD  performance.
+
+  2If   more   than 90%   of   the   elements   of {[ˆXp]k,:}Pp=1   are   decided   to   be        transformation   in   (7)   [29].   Otherwise,   the   channel   would   be   approximately
+non-zero,   the k-th  UE  is  declared   active.                                                   sparse.

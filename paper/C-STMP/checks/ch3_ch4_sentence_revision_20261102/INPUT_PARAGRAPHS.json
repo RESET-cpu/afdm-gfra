@@ -1,0 +1,217 @@
+[
+  {
+    "id": "ch3-P01",
+    "group": "ch3",
+    "text": "The posterior in \\eqref{eq:working-posterior} combines the\nobservation likelihood with the channel and activity priors.\nFollowing the turbo message-passing framework in \\cite{cai2026},\nwe separate their contributions into linear estimation and joint\ndenoising, as shown in Fig.~\\ref{fig:receiver-structure}.\nLinear estimation combines the received pilots with a Gaussian\ninput message to estimate $\\mathbf X$. Joint denoising uses the\nchannel prior $q_{\\rm tr}$ and activity prior $\\rho$ to estimate\neach $X_k=\\alpha_kH_k$. The two estimates are exchanged through\nGaussian extrinsic messages obtained by expectation propagation\n\\cite{minka2001}."
+  },
+  {
+    "id": "ch3-P02",
+    "group": "ch3",
+    "text": "The input to linear estimation is a Gaussian message from joint\ndenoising. Its mean\nmatrix is denoted by\n$\\mathbf X^{\\rm pri}\\in\\mathbb C^{KN\\times MN}$ and the\ncovariance of each column by $\\gamma\\I_{KN}$, with $\\gamma>0$.\nFor each column, multiplying this message by the likelihood in\n\\eqref{eq:working-posterior} gives a Gaussian posterior. The\ncorresponding mean matrix and per-column covariance are\n\\cite[Sec.~III-A]{cai2026}:"
+  },
+  {
+    "id": "ch3-P03",
+    "group": "ch3",
+    "text": "The scalar $t_{\\rm L}$ averages the posterior variance over\nthe $KN$ coefficients in a column. In our model, the phase\nrotations in $\\widehat{\\mathbf A}$ can destroy the row\northogonality of the pilots. We therefore retain the full matrix\nin these expressions; the partial-orthogonality simplification\nused in \\cite[Sec.~III-A]{cai2026} does not generally apply."
+  },
+  {
+    "id": "ch3-P04",
+    "group": "ch3",
+    "text": "For message exchange, the posterior covariance is approximated\nby $t_{\\rm L}\\I_{KN}$ \\cite{ma2015,cai2026}. Dividing the\nGaussian posterior with this covariance by the input message\nremoves the information supplied by joint denoising \\cite{minka2001}.\nThe resulting extrinsic variance and mean are"
+  },
+  {
+    "id": "ch3-P05",
+    "group": "ch3",
+    "text": "Reorganizing $\\mathbf R_{\\rm L}$ by device gives the tensor\ninputs to joint denoising, with common variance $v_{\\rm L}$."
+  },
+  {
+    "id": "ch3-P06",
+    "group": "ch3",
+    "text": "The relation $X_k=\\alpha_kH_k$ couples the channel and device\nactivity. Following \\cite[Sec.~III-B]{cai2026}, we\ncalculate the channel estimate conditioned on activity and the\nactivity probability separately, then combine them to estimate\n$X_k$. Let $R_k$ and $v$ denote the input mean and variance.\nThe Gaussian input message defines the local observation model"
+  },
+  {
+    "id": "ch3-P07",
+    "group": "ch3",
+    "text": "Conditioned on $\\alpha_k=1$, \\eqref{eq:pseudo-awgn} describes\nthe channel observed in AWGN. Its likelihood and the prior\n$q_{\\rm tr}$ determine the conditional posterior\n$\\pi_v(dH\\mid R)$, normalized to integrate to one:"
+  },
+  {
+    "id": "ch3-P08",
+    "group": "ch3",
+    "text": "The conditional mean and covariance are"
+  },
+  {
+    "id": "ch3-P09",
+    "group": "ch3",
+    "text": "Here $m=m(R,v)$ in the covariance integral. The conditional\nmean is the MMSE channel estimate under the active hypothesis;\nthe covariance describes its estimation uncertainty. Both depend\non the full channel prior, so the dependence among the entries\nof $H_k$ is retained in the posterior calculation. We denote\nthe approximations to $m(R_k,v)$ and\n$\\tr\\bm\\Sigma_H(R_k,v)/D$ by $\\mu_k$ and $t_k$, respectively."
+  },
+  {
+    "id": "ch3-P10",
+    "group": "ch3",
+    "text": "Activity detection compares the hypotheses $R_k=W_k$ and\n$R_k=H_k+W_k$. Integrating over the channel in the active case\ngives $q_{1,v}$, while the inactive likelihood $q_{0,v}$ is\nthe Gaussian noise density:"
+  },
+  {
+    "id": "ch3-P11",
+    "group": "ch3",
+    "text": "The active likelihood $q_{1,v}$ also normalizes the channel\nposterior in \\eqref{eq:active-channel-posterior}. With prior\nactivity probability $\\rho$, Bayes' rule gives"
+  },
+  {
+    "id": "ch3-P12",
+    "group": "ch3",
+    "text": "Thus, the posterior activity probability depends on how well\nthe observation is explained by each hypothesis. Let $p_k$\ndenote the approximation to $p^\\star(R_k,v)$ used in the\njoint estimate below."
+  },
+  {
+    "id": "ch3-P13",
+    "group": "ch3",
+    "text": "Under the two activity hypotheses, $X_k$ is either zero or\nequal to $H_k$. Averaging the conditional channel moments\nover these hypotheses gives"
+  },
+  {
+    "id": "ch3-P14",
+    "group": "ch3",
+    "text": "The first covariance term represents channel uncertainty under\nthe active hypothesis. The second accounts for uncertainty in\nwhether the device is active\n\\cite[Secs.~III-C--III-D]{liu2018}, \\cite[Sec.~III-B]{cai2026}.\nApproximating the active-channel posterior by a Gaussian with\nmean $\\mu_k$ and covariance $t_k\\I_D$ gives the\nBernoulli--Gaussian approximation"
+  },
+  {
+    "id": "ch3-P15",
+    "group": "ch3",
+    "text": "For the spatial covariance, write the entries of $\\mu_k$ as\n$\\mathbf U_k\\in\\mathbb C^{M\\times N^2}$, with one row for\neach antenna. Averaging the covariance over the $N^2$ channel\npositions gives"
+  },
+  {
+    "id": "ch3-P16",
+    "group": "ch3",
+    "text": "Averaging its trace over devices and antennas gives the scalar\nposterior variance"
+  },
+  {
+    "id": "ch3-P17",
+    "group": "ch3",
+    "text": "The feedback uses a Gaussian approximation with mean\n$\\widehat X_k$ and common variance $\\overline t_X$.\nLet $b=\\overline t_X/v$. Dividing this approximation by the\nincoming Gaussian message, as in \\eqref{eq:linear-extrinsic}, gives"
+  },
+  {
+    "id": "ch3-P18",
+    "group": "ch3",
+    "text": "For $0<b<1$, this message has a finite, positive variance.\nReorganizing its means into $\\mathbf X^{\\rm pri}$ and using\n$\\gamma_{\\rm out}$ as the input variance closes the iteration."
+  },
+  {
+    "id": "ch3-P19",
+    "group": "ch3",
+    "text": "Evaluating these updates requires the conditional channel moments\nin \\eqref{eq:conditional-channel-integrals} and the activity\nprobability in \\eqref{eq:local-activity}. The underlying integrals\nover the full channel prior generally have no closed-form\nexpressions. Section~\\ref{sec:learning} develops methods for\nlearning these quantities from channel samples, and\nSection~\\ref{sec:overall} incorporates them into the complete\nreceiver algorithm."
+  },
+  {
+    "id": "ch4_ab-P01",
+    "group": "ch4_ab",
+    "text": "The conditional channel moments in\n\\eqref{eq:conditional-channel-integrals} involve integrals over\nthe full channel prior. Score-based representations of these\nmoments allow them to be obtained from a learned denoising function\n\\cite[Sec.~IV-A]{cai2026}. We establish these relations and derive\na training objective that includes colored Gaussian perturbations.\nThe activity probability in \\eqref{eq:local-activity} is then\nobtained by learning the density ratio between the two activity\nhypotheses."
+  },
+  {
+    "id": "ch4_ab-P02",
+    "group": "ch4_ab",
+    "text": "Consider the channel observation under the active hypothesis in\n\\eqref{eq:pseudo-awgn}. To include correlated perturbations, let\n$\\mathbf h_{\\mathbb R}\\in\\mathbb R^{2D}$ concatenate the real\nand imaginary parts of $\\vect(H)$, with $H\\sim q_{\\rm tr}$.\nFor an independent proper complex Gaussian perturbation with\ncovariance $C\\succ0$, the real observation is"
+  },
+  {
+    "id": "ch4_ab-P03",
+    "group": "ch4_ab",
+    "text": "At fixed $C$, let $q_{\\bm\\Sigma}^{\\mathbb R}$ denote the density\nof $\\mathbf u$. Tweedie's formula gives\n\\cite{efron2011,dytso2021}"
+  },
+  {
+    "id": "ch4_ab-P04",
+    "group": "ch4_ab",
+    "text": "The gradient $\\nabla_{\\mathbf u}\\log q_{\\bm\\Sigma}^{\\mathbb R}$\nis the first-order score function. It determines the correction\nto the noisy observation needed for MMSE denoising. For\n$C=v\\I_D$, \\eqref{eq:tweedie-mean} gives the real representation\nof the conditional mean in \\eqref{eq:conditional-channel-integrals}."
+  },
+  {
+    "id": "ch4_ab-P05",
+    "group": "ch4_ab",
+    "text": "The conditional covariance\n$\\mathbf P_{\\mathbb R}=\\operatorname{Cov}(\\mathbf h_{\\mathbb R}\n\\mid\\mathbf u,C)$ is similarly related to the second-order score\n\\cite{dytso2021}, \\cite[Sec.~IV-A]{cai2026}:"
+  },
+  {
+    "id": "ch4_ab-P06",
+    "group": "ch4_ab",
+    "text": "Here the second-order score is the Hessian of the log density.\nEquations~\\eqref{eq:tweedie-mean} and \\eqref{eq:tweedie-covariance}\nexpress the channel moments through derivatives of the perturbed\nchannel density, avoiding direct evaluation of the posterior\nintegrals. We next learn the first-order score from channel\nsamples and use the resulting mean function to calculate the\nrequired variance."
+  },
+  {
+    "id": "ch4_ab-P07",
+    "group": "ch4_ab",
+    "text": "Let $S_\\theta(\\mathbf u,C)$ approximate the first-order score.\nFor a given perturbation covariance, score matching minimizes\nthe difference between this function and the score of\n$q_{\\bm\\Sigma}^{\\mathbb R}$. We use the covariance-weighted\nobjective"
+  },
+  {
+    "id": "ch4_ab-P08",
+    "group": "ch4_ab",
+    "text": "The unknown score prevents direct evaluation of this objective.\nHowever, the Gaussian perturbation in \\eqref{eq:colored-query}\nhas the known conditional score\n$-\\bm\\Sigma^{-1}(\\mathbf u-\\mathbf h_{\\mathbb R})$.\nDenoising score matching replaces the unknown score by this\nconditional score \\cite{vincent2011}, giving"
+  },
+  {
+    "id": "ch4_ab-P09",
+    "group": "ch4_ab",
+    "text": "The two objectives differ by a term independent of $\\theta$.\nAt each fixed $C$, both are minimized by\n$\\nabla_{\\mathbf u}\\log q_{\\bm\\Sigma}^{\\mathbb R}$ over\nunrestricted score functions."
+  },
+  {
+    "id": "ch4_ab-P10",
+    "group": "ch4_ab",
+    "text": "To obtain the channel estimate directly, we parameterize the\nscore through a mean function $f_\\theta(\\mathbf u,C)$ as\n$S_\\theta=\\bm\\Sigma^{-1}(f_\\theta-\\mathbf u)$.\nSubstituting this relation into \\eqref{eq:denoising-score-objective}\ngives the training loss"
+  },
+  {
+    "id": "ch4_ab-P11",
+    "group": "ch4_ab",
+    "text": "The expectation averages clean channels, perturbation covariances,\nand Gaussian noise. For each fixed $C$, the conditional mean\n$\\mathbf m_{\\mathbb R}(\\mathbf u,C)$ minimizes this loss over\nunrestricted mean functions. Thus, training with\n\\eqref{eq:first-loss} also learns the first-order score through\nthe above parameterization."
+  },
+  {
+    "id": "ch4_ab-P12",
+    "group": "ch4_ab",
+    "text": "The denoiser must accommodate different input noise levels during\nmessage passing. We therefore train over a range of perturbation\nvariances, as in \\cite[Sec.~IV-B]{cai2026}. In the finite-dimensional\nmulti-frame model, the input errors can also be correlated.\nTo include such errors in training, we use colored perturbations\nwith covariance\n$C=v(R_{\\rm a}\\otimes\\I_N\\otimes R_{\\rm c})$ in\nantenna--output--input order and condition the network on $C$\n\\cite[Sec.~III-B]{shastri2022}. The covariance factors and the\nsampling law for $v$ are specified in\nSection~\\ref{sec:training-settings}."
+  },
+  {
+    "id": "ch4_ab-P13",
+    "group": "ch4_ab",
+    "text": "Reshaping the real and imaginary outputs of $f_\\theta$ defines\nthe complex mean map $F_\\theta(R,C)$. For the scalar-variance\nmessage in \\eqref{eq:pseudo-awgn}, this map is evaluated at\n$C=v\\I_D$. The network architecture and preconditioning are given in\nSection~\\ref{sec:network-settings}."
+  },
+  {
+    "id": "ch4_cd-P01",
+    "group": "ch4_cd",
+    "text": "The joint posterior moments in \\eqref{eq:exact-local-moments}\nrequire the channel variance as well as its mean. Differentiating\n\\eqref{eq:tweedie-mean} with respect to $\\mathbf u$ at fixed $C$\ngives the output-by-input Jacobian\n$\\mathbf J_m=\\partial\\mathbf m_{\\mathbb R}/\\partial\\mathbf u\n=\\I_{2D}+\\bm\\Sigma\\nabla_{\\mathbf u}^2\n\\log q_{\\bm\\Sigma}^{\\mathbb R}(\\mathbf u)$.\nMultiplying by $\\bm\\Sigma$ on the right and using\n\\eqref{eq:tweedie-covariance} yields\n\\cite[Prop.~1]{dytso2021}"
+  },
+  {
+    "id": "ch4_cd-P02",
+    "group": "ch4_cd",
+    "text": "The trace sums real and imaginary variances, so division by $D$\ngives the variance per complex coordinate. At $C=v\\I_D$, this\nreduces to $\\tau^\\star=v\\operatorname{div}\\mathbf m_{\\mathbb R}/(2D)$.\nThus, the scalar variance required by the receiver can be obtained\nfrom derivatives of the same conditional-mean function."
+  },
+  {
+    "id": "ch4_cd-P03",
+    "group": "ch4_cd",
+    "text": "We approximate this quantity by replacing the exact mean with\n$f_\\theta$ and estimating its derivative trace through Monte Carlo\nfinite differences \\cite[Sec.~V-B]{metzler2014}. For independent\nrandom sign vectors $\\mathbf z_\\ell$ with\n$\\E[\\mathbf z_\\ell\\mathbf z_\\ell^{\\mathsf T}]=\\I_{2D}$, set\n$\\mathbf w_\\ell=\\bm\\Sigma^{1/2}\\mathbf z_\\ell$. The estimate is"
+  },
+  {
+    "id": "ch4_cd-P04",
+    "group": "ch4_cd",
+    "text": "Both evaluations hold $C$ fixed and differentiate the complete mean\nmap, including the preconditioning in \\eqref{eq:mean-preconditioning}.\nEvaluating \\eqref{eq:derivative-trace} at $C=v\\I_D$ supplies\nthe conditional variance estimates for the message updates.\nTheir use in the receiver is described in Section~\\ref{sec:overall}, and the\nfinite-difference settings are given in\nSection~\\ref{sec:receiver-settings}."
+  },
+  {
+    "id": "ch4_cd-P05",
+    "group": "ch4_cd",
+    "text": "The preceding calculations provide the conditional channel mean\nand variance. The remaining quantity for joint estimation is\nthe activity probability, which depends on the likelihoods of\nthe active and inactive hypotheses. Rewriting\n\\eqref{eq:local-activity} gives"
+  },
+  {
+    "id": "ch4_cd-P06",
+    "group": "ch4_cd",
+    "text": "The inactive likelihood $q_{0,v}$ is known, whereas $q_{1,v}$\ninvolves the channel integral in \\eqref{eq:query-densities}.\nOnly their ratio is needed in \\eqref{eq:activity-log-odds}.\nWe estimate this ratio directly by binary classification\n\\cite{menon2016}, using samples from the full channel prior."
+  },
+  {
+    "id": "ch4_cd-P07",
+    "group": "ch4_cd",
+    "text": "To construct the two classes, draw $a\\in\\{0,1\\}$ with\n$\\Pr(a=1)=\\pi_{\\rm tr}=1/2$. For $a=1$, generate\n$R=H+W$ with $H\\sim q_{\\rm tr}$; for $a=0$, generate $R=W$.\nIn both classes, $\\vect(W)\\sim\\CN(\\mathbf0,v\\I_D)$\nindependently of $H$, and $v$ has the same sampling law.\nThe resulting class-conditional densities are precisely those in\n\\eqref{eq:query-densities}. We learn a logit by minimizing the\nbinary cross-entropy loss"
+  },
+  {
+    "id": "ch4_cd-P08",
+    "group": "ch4_cd",
+    "text": "At the population optimum over unrestricted logits, this loss\nrecovers the training posterior log odds:"
+  },
+  {
+    "id": "ch4_cd-P09",
+    "group": "ch4_cd",
+    "text": "Subtracting the training prior log odds therefore estimates the\nlog density ratio \\cite[Sec.~4.2]{menon2016}. With\n$F_k=F_\\theta(R_k,v\\I_D)$, substitution into\n\\eqref{eq:activity-log-odds} gives the receiver activity probability"
+  },
+  {
+    "id": "ch4_cd-P10",
+    "group": "ch4_cd",
+    "text": "where $\\logit a=\\log[a/(1-a)]$ and\n$\\sigmoid b=(1+e^{-b})^{-1}$. The activity prior $\\rho$ enters\nthrough this Bayes correction, separately from the learned density\nratio."
+  },
+  {
+    "id": "ch4_cd-P11",
+    "group": "ch4_cd",
+    "text": "The classifier uses the observation together with $F_k$, so its\nfeatures include the channel\nestimate obtained from the learned prior. We first train the\ndenoiser and then hold it fixed while training the classifier.\nThe frozen denoiser output is a deterministic function of $R$\nand $v$, which preserves the population relation in \\eqref{eq:ideal-logit}.\nTogether, the denoiser, its derivative estimate, and the classifier\nprovide approximations to the channel moments and activity\nprobability required in Section~\\ref{sec:joint-denoising}. Both networks\nremain fixed during online inference."
+  }
+]

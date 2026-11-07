@@ -1,0 +1,88 @@
+{
+  "created_unix": 1792980843.1647615,
+  "decision": "Keep seven workers; do not increase to eight with only about 2.3 GiB available system RAM.",
+  "previous_workers": 6,
+  "current_workers": 7,
+  "previous_gpu_utilization_mean": 86.76666666666667,
+  "current_gpu_utilization_mean": 86.4,
+  "current_available_ram_gib": {
+    "mean": 2.481517028808594,
+    "min": 2.1712112426757812,
+    "max": 2.779857635498047
+  },
+  "current_gpu_memory_mib": {
+    "mean": 6869.8,
+    "min": 6804.0,
+    "max": 6888.0
+  },
+  "throughput": {
+    "created_unix": 1792980804.568253,
+    "six_workers": {
+      "180": {
+        "start": 1792980256.3795674,
+        "end": 1792980436.3795674,
+        "minutes": 3.0,
+        "completed": 14,
+        "completed_by_users": {
+          "20": 4,
+          "60": 4,
+          "80": 4,
+          "100": 2
+        },
+        "outputs_per_hour": 280.0,
+        "chunk_iteration_proxy_per_hour": 34620.0
+      },
+      "300": {
+        "start": 1792980136.3795674,
+        "end": 1792980436.3795674,
+        "minutes": 5.0,
+        "completed": 25,
+        "completed_by_users": {
+          "20": 7,
+          "60": 6,
+          "80": 7,
+          "100": 5
+        },
+        "outputs_per_hour": 300.0,
+        "chunk_iteration_proxy_per_hour": 45504.0
+      },
+      "600": {
+        "start": 1792979836.3795674,
+        "end": 1792980436.3795674,
+        "minutes": 10.0,
+        "completed": 54,
+        "completed_by_users": {
+          "20": 15,
+          "60": 14,
+          "80": 14,
+          "100": 11
+        },
+        "outputs_per_hour": 324.0,
+        "chunk_iteration_proxy_per_hour": 48492.0
+      }
+    },
+    "seven_workers": {
+      "start": 1792980611.7073443,
+      "end": 1792980804.5682058,
+      "minutes": 3.214347692330678,
+      "completed": 21,
+      "completed_by_users": {
+        "20": 5,
+        "60": 6,
+        "80": 6,
+        "100": 4
+      },
+      "outputs_per_hour": 391.99244157883606,
+      "chunk_iteration_proxy_per_hour": 54001.62540417013
+    },
+    "interpretation": "Descriptive production throughput on different planned inputs. Chunk-iteration count is only a rough workload proxy, not a controlled same-input benchmark.",
+    "extra_inferences": 0
+  },
+  "limitations": "Different planned inputs and short seven-worker window; descriptive throughput increase is not a controlled speedup claim or guaranteed ETA reduction.",
+  "saved_results_preserved": 595,
+  "extra_inferences": 0,
+  "algorithm_changed": false,
+  "checkpoint_changed": false,
+  "threshold_changed": false,
+  "execution_plan_sha256": "7833c0dcd87c94dc6633ebacf61d572dc40ed65b185b155105179ad990340a2d"
+}

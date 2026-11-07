@@ -1,0 +1,18 @@
+{
+  "schema": "afdm-offgrid-search-budget-v1",
+  "name": "Off-grid SBL (13 Doppler points)",
+  "base_configuration": "src/configs/final/offgrid_sbl.json",
+  "doppler_points": 13,
+  "delay_points": 112,
+  "solver_changes": {
+    "doppler_step": 0.22777777777800558,
+    "candidates_per_user": 24,
+    "offset_candidates": 96
+  },
+  "unchanged_iterations": 120,
+  "activity_policy": "result/snr_comparison/data/adopted_baseline_readout_20261025/POLICY.json",
+  "activity_policy_sha256": "6962b3f99e72532b1962a69dc2a0fabb933da4b59fd280c2e0b900211f89b4bb",
+  "activity_readout": "result/snr_comparison/data/adopted_baseline_readout_20261025/readout.py",
+  "activity_readout_sha256": "351af11854f4e7beadf2831672c30dbeb23de4b818a6fe9b9d92e1791591571f",
+  "scope": "Joint change to Doppler grid density and candidate budgets; not a grid-only ablation. Transfer the current main-SNR activity rule unchanged, without refitting or claiming new calibration."
+}

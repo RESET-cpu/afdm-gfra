@@ -1,0 +1,21 @@
+{
+  "schema": "c-stmp-direct-phase-20261103-v1",
+  "name": "zero_early2",
+  "receiver_configuration": "src/configs/candidates/C_STMP_variance_em_20261025.json",
+  "receiver_configuration_sha256": "044d906052bf9150b9dbc09a64efaa545af6f70972cd96fd18f75a8e840f23b8",
+  "initialization": {
+    "method": "zero"
+  },
+  "iteration_overrides": {
+    "iterations": 240,
+    "min_iterations": 60
+  },
+  "phase_update": {
+    "start": 1,
+    "interval": 2,
+    "sweeps": 1,
+    "fit_offset": false,
+    "phase_tolerance": 0.005,
+    "settle_iterations": 10
+  }
+}

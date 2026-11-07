@@ -1,0 +1,741 @@
+{
+  "schema": "lstmp-v3-execution-continuation",
+  "configuration": {
+    "schema": "afdm-lstmp-conditional-bce-v3",
+    "seed": 202610196000001,
+    "run_directory": "D:/afdm-gfra-cpu/runs/lstmp_conditional_bce_v3_depth10_fast_20261020",
+    "initialization": "Every new layer independently loads the same 50k AWGN score; new activity output and log calibrations are zero.",
+    "device": "cuda",
+    "users": 40,
+    "shape": [
+      16,
+      16,
+      16
+    ],
+    "complex_variance_support": [
+      0.001,
+      100.0
+    ],
+    "receiver": {
+      "maximum_depth": 10,
+      "train_scenes": 4750,
+      "validation_scenes": 1900,
+      "test_scenes": 0,
+      "train_seed": 202610206100001,
+      "validation_seed": 202610206200001,
+      "test_seed": 202610206300001,
+      "snr_db": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "learning_rate": 2e-05,
+      "calibration_learning_rate": 0.001,
+      "earlier_layer_loss_weight": 0.2,
+      "activity_threshold": 0.5,
+      "microbatch": 100,
+      "checkpoint_steps": 256,
+      "variance_soft_floor_temperature_ratio": 0.02,
+      "maximum_feedback_variance_ratio": 0.95,
+      "selection": "Mean final-layer conditional-channel loss + BCE; epoch0 eligible; earliest tie.",
+      "extensions": "Accepted general-A damped messages; independent pretrained first scores and activity heads; three independent scalar calibrations; no second score.",
+      "phase_mode": "known",
+      "noise_mode": "known",
+      "variance_calibration_order": "after_positive",
+      "cpu_cache_scenes": 64,
+      "conditions": {
+        "train": [
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": -4
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": -2
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 2
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 4
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 6
+          },
+          {
+            "users": 20,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 60,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 80,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 100,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 8,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 24,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 32,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 40,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 48,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.05,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.15,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.2,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.25,
+            "snr_db": 0
+          }
+        ],
+        "validation": [
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": -4
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": -2
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 2
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 4
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 6
+          },
+          {
+            "users": 20,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 60,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 80,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 100,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 8,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 24,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 32,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 40,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 48,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.05,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.15,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.2,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.25,
+            "snr_db": 0
+          }
+        ],
+        "test": [
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": -4
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": -2
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 2
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 4
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 6
+          },
+          {
+            "users": 20,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 60,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 80,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 100,
+            "frames": 16,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 8,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 24,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 32,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 40,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 48,
+            "activity_probability": 0.1,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.05,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.15,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.2,
+            "snr_db": 0
+          },
+          {
+            "users": 40,
+            "frames": 16,
+            "activity_probability": 0.25,
+            "snr_db": 0
+          }
+        ]
+      },
+      "activity_learning_rate": 0.0001,
+      "generation_workers": 4,
+      "epoch_schedule": [
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "early_stopping": false,
+      "feedback_damping": {
+        "parameterization": "Gaussian natural parameters",
+        "coefficient": "min(1, initial_variance / proposed_extrinsic_variance)",
+        "scope": "Feedback only; current layer score, channel mean and activity logits unchanged"
+      },
+      "adaptation_epochs": 1,
+      "joint_epochs": 2,
+      "joint_lr_multiplier": 0.1
+    },
+    "scope": "Ten layers; explicit nineteen formal conditions; known phase/noise; independent physical scenes; no independent test or automatic ablation.",
+    "backbone": {
+      "kind": "direct_cai",
+      "config": {
+        "antennas": 16,
+        "side": 16,
+        "base_channels": 128,
+        "snr_db_min": -20,
+        "snr_db_max": 30,
+        "noise_conditioning": "continuous",
+        "input_transform": "legacy_image"
+      }
+    },
+    "pretrained_score": {
+      "path": "runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt",
+      "sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+      "global_complex_rms": 0.2647966452702405
+    },
+    "normalized_training_second_moment": 1.0004404181394917,
+    "cpu_threads": 4,
+    "allow_tf32": true,
+    "run_final_evaluation": false,
+    "protected_assets": [
+      "runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt",
+      "runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/second/second_best.pt",
+      "runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+      "runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/receiver.json",
+      "runs/proposed_50000_cuda_20261018/data/prior_definition.json"
+    ],
+    "execution": {
+      "activation_checkpointing": false,
+      "adam_implementation": "fused",
+      "selective_checkpoint": {
+        "minimum_depth": 6,
+        "minimum_users": 1,
+        "first_layers": 10
+      }
+    },
+    "objective": {
+      "channel": "true-active conditional squared error / fixed training mean scene energy",
+      "activity": "summed natural-proportion BCE / fixed training mean users",
+      "coefficients": [
+        1.0,
+        1.0
+      ],
+      "bce_updates_score": true
+    },
+    "seed_policy": "New disjoint physical scene seeds; initialization and epoch-order rules inherited from v2.",
+    "planned_updates": 142500,
+    "condition_design": "Union of four one-variable sweeps; default appears once; no Cartesian product.",
+    "execution_acceleration": {
+      "graph_users": 40,
+      "graph_all_layers_through_depth": 5,
+      "graph_deep_layers": 3,
+      "data_workers": 1,
+      "prefetch_scenes": 4,
+      "loss_precision_unchanged": true,
+      "diagnostic_host_transfer": "batched; training status cadence unchanged",
+      "graph_scope": "score backbone only; single total-loss backward; eager diagnostics and evaluation"
+    },
+    "execution_continuation": {
+      "source_run": "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_20261020",
+      "source_manifest_sha256": "dd69c131f09c63082d6c55a5461dcf5aa491b00a92a620597a2c2097e6f60d4a",
+      "source_checkpoint": "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_20261020\\checkpoints\\depth_1\\last.pt",
+      "source_checkpoint_sha256": "92b0b5e0c99e16915f22476c0e16f03c60bf40516404b59b44be857f36f4c62e",
+      "source_depth": 1,
+      "source_epoch": 1,
+      "source_cursor": 3159,
+      "completed_updates_preserved": 3159,
+      "optimizer_and_rng_preserved": true,
+      "sample_order_and_validation_selection_preserved": true
+    }
+  },
+  "snapshot_hashes": {
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\backbone.py": "b3c6729676bd800d6d4d123a96cadd62728465df673970725617a33e31f77c81",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\baseline_evaluation.py": "e9a02048900f169ad8ccf0152f65b17b9fa3350eada49a72d09be922a4c4c206",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\common.py": "efe7d608ef5dafb104c5dfe2768408633e665bb61af6f95da8fad47fd98ede01",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\config.json": "da55d56e921c5caa18142d827bfe9f99a2ea38302c79581a174bc569cf959bc1",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\data.py": "31620a807af29f8896ce4c80276d41a36bc9aa6266f4611fb7f84f146144e56a",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\execution.py": "c6d0b75c260d904316411ca27d203ddf1cebc481067988f1bdadfa4e5938e014",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\extension.py": "a71e8e6010b768bde291bdf6aa2644fe2f3dfc6920997fcd8adbbe686902258a",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\fixed_budget.py": "1c912b19f5adb7a986ae980f8896372bbf3692e338161c26aa6ae821fb9de623",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\message_damping.py": "b919a5d8093a339f23e30ede5ed3bae48afbe709f37652f718d849d7167da1b8",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\optimization.py": "f19afb9f47d1a37987391dafc752a8c5d8ab9171dfd49b345c20003556ad127a",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\receiver.py": "800c2c7dbb4f2f99f654a93cb2a9e7f0f827eba2a79adb00960bffe43127e2b5",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\receiver_base.py": "ff77d9f8c41ccf837bfe9493ea9c56d6205c2636204771e0ccf574bcafdcde44",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\reuse.py": "2159abcd6ce48c2a9bdf0adcf5890e5700222fce4fb24a2eb61c3741b89c1d4d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\reuse_50000.json": "9fd0f75da772d24673f6bbdb655ed93c251c88718192f3b6c7832ae0bdb093dc",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\reuse_50000_fast.json": "c1ecf9c42ec4bdf8e6f5b3027d15a613a900b07dd9a53413a7220f41ad623b6f",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\reuse_50000_fixed_budget.json": "fcf9cac842a4ad834fe7457a888e35a2db52557450046d11083ca695855737ed",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\train.py": "1c38c438c0b1f06aa8fae9e043b1b3cbcff99c761bfa94f9d00ecc28228593b7",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\__init__.py": "4826d466632aab49e95998c76c0ce2bd1ce4e1a9377adcf5838b35bd5e508445",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_execution_v3_20261020\\config.json": "a8b849cbbbc493077ec062c36020a80c391ea2733e0fa24af8e431c6606ce424",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_execution_v3_20261020\\data.py": "2fe03f0ed3caf7ba09ff379f369339c1a4ff41ea7c49a39c3baa583f9c3bda78",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_execution_v3_20261020\\receiver.py": "ba158c42428c61f7149ee1f6d46c6d241adb151529b9f9b9503202d6db1e97d7",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_execution_v3_20261020\\train.py": "c811978a97ac223dfe1711831dfb4c987892209feb88fbcde16ea3a79e375db2",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_execution_v3_20261020\\__init__.py": "0bf06a39656832b464cb89ce368e48909d384291a6b614e99ee1b01d9a083d10",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v2_20261020\\config.json": "91e1c6e402612875862e42d2cc0945b1d81e546cb1f582b5fcbb762b4543216e",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v2_20261020\\evaluation.py": "a3de9b0a3f0ef02db4ef3ee58edfc303bae88c7d321e1770558f1129844b399d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v2_20261020\\objectives.py": "f3a33e3a3022b65c1d6b10e478cb8300a27578f3151bf17f9429c22f9fd4e3cd",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v2_20261020\\optimization.py": "76d38a60a5be9ae13e0751b4a5f548f7623b65b2d8d41a579f9523a246501e9c",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v2_20261020\\receiver.py": "4b6643def1b7370fad9ef9b24816694eae5304812b81fd9190b8e6bb57d691b0",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v2_20261020\\train.py": "f01e149211956f74a0d34a3d05a45283a1480615f704ca067b1d5eb91ce4abd6",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v2_20261020\\__init__.py": "08ec8e0cd9aa29ed2dee3da1e26ec55ca231b9ea61e86e17cb36b80967d3afa1",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v3_20261020\\config.json": "5a35e2ba8d89505456a8c202c6abfa7854e31ae9f8e4db869fba079472943344",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v3_20261020\\data.py": "6b7bd2eacb8639b908b9160f917453221d71c9005cbeba3cb38e358d9aa9135c",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v3_20261020\\generation.py": "dd2ffeaa0f4eea588ac4f5ebc43c9ff645ec17ea79cd6e4a12b7968c5bffa836",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v3_20261020\\plan.py": "f2e2ead04d89ee29779a84b57fe1eaeadcd1d56627650e9a7f700d092718a180",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v3_20261020\\train.py": "5ddc7c353417d7cea4dd8cb2d0d4fc044e464df411c2fdc3843f9c251fc7d29e",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_training_v3_20261020\\__init__.py": "3ad07758300bae1f89b9a30c0d194ef533c96462320fa4e131005ea020bcb99d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\PROVENANCE.json": "71abd0b944cb7ad89c95538c3c9cd2aa4b7dbf8e269bfe72b5e16b8fcd6c4172",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\SMOKE_CHECK.json": "fea9b31941550889979f214049317c4fcce55a9291fb189da15ad3a8cdab834c",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\__init__.py": "88f57d6f8529fe9c99acae8c315d99db59140a259d766824d1c432607a943ad6",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\score_sde_pytorch\\__init__.py": "88f57d6f8529fe9c99acae8c315d99db59140a259d766824d1c432607a943ad6",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\score_sde_pytorch\\models\\layers.py": "132b0c564d96c23448c2026cc1b19b8cafc484751f4a34a78ca56a25d01af7b5",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\score_sde_pytorch\\models\\layerspp.py": "55714531661209ede4c30df64f8660abcf21addc09d6ccf947911dd7e8e8da50",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\score_sde_pytorch\\models\\ncsnpp.py": "d0698237c5fc66bbaf16e4dafafc1672d366e19a47ff88a025622d6ad0584f6d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\score_sde_pytorch\\models\\normalization.py": "0195a2f50be2df649e823a6a2bda91090d54f6c7ab480bbda99376898395c447",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\score_sde_pytorch\\models\\up_or_down_sampling.py": "75bc81eaba5241c9feab9797fe8863d425b4c8d72d760275751b6891509b3ee2",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\score_sde_pytorch\\models\\utils.py": "08f36793b53f9a1aa5921a3e28d910af9722eb676d2a4185aa41f8ba4c873f21",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_code\\experiments\\lstmp_candidate_20261019\\vendor\\score_sde_pytorch\\models\\__init__.py": "88f57d6f8529fe9c99acae8c315d99db59140a259d766824d1c432607a943ad6",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\project.py": "567c6efb6aa1938cc09cdb98aedcab54dd887f5ba1e147e1aa8f24e6204f071e",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\utils.py": "c8fbc5d2e1be894186a93ff3fcce4616b61627a1a9dd512f074ac8911462e05b",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\__init__.py": "10b1d78175aeabb9ca5cc9b95a83c3973ef371a2277275104f5986cfcdca2b16",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\phase_candidate_atoms.py": "e91f2adc3febaf4fb1d3c2787b902757380eaa7fe50cd53f1a813960078575e1",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\phase_candidate_screening.py": "9f8a7302b293c29b8fb90f8b905ecec39318f6672911887e61e6df4dea797588",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\phase_estimation.py": "10e71c99732dbd8799021cb3256801ec7d69b746c1ca4c7189256f8e54cfd914",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\phase_estimation_candidate.py": "5448ceb9834ce9f80adb81cf3fad6f14b6488b1ddd9a9966640c3f9c6740a364",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\phase_estimation_optimized.py": "f6f66438912af13534004c3d884186ed2c7d110e10096503ca50f29ff01d2148",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\phase_estimation_vectorized.py": "8e50027fbf8de1f1370e35d33eefdc2be411ac8ee61789a2ae1de02b3263573e",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\phase_refinement.py": "d162d916143e7d4c7d738d879fe37552c17b2ee3aac537d2170199421da001bb",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed_average.py": "38c6456192638a9476f109bcc106b54ffff9e848f94b1cb6978b87854316de77",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed_calibration_candidate.py": "61872bafb51dc17714e818d3da3d713a2b73f1e59cf6706b42523b3830e8dce7",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed_frontend_candidate.py": "980597f95002614887d33a2167b0e8a975ed702c7d22162bc52b1a7d61e20ca8",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed_noise_candidate.py": "7976f6eda89fb1d49d399ef0c5ade5abf49ed21b6a26b3b7a0a3cafbf52a90db",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed_noise_public.py": "aeb7f6620281df18ef0d9a6108f5b6005bd17d39803b9c3fe6462af0a08769e5",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed_phase.py": "cae69e5de68948974573d457cac6eb2af5bdca4a032f790e7df72d7d9fdb00dd",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed_projected.py": "0f3ebe15e1c546a0a118165030efb1588929ef179d902d43f77921ee7352de04",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed_projected_energy.py": "0c404a7fcdff8fb49a57b002e4b077818ad97e92cf29ba2945d82bcde28544fd",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\registry.py": "8cd225933f3c4189e2fbf4d50c700130e875791dcb5fe71480eb8b0d57ebdb61",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\research.py": "441340b1ee0a9ceaff7e9fc4cf48bfdc376f352b33be2a33ae5be8f7fb21302d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\unfolded_score_candidate.py": "205af63270e89d928d689839564db4a6bdf0a609d24c96aa249c421913f6fd50",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\unknown_phase_model.py": "eaa6adc55dcabf73e7c8dc916f6f49c21b91b946b233849793fb3885d1a6b161",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\__init__.py": "053faba69bb7beb71e5b44c12124dec1f36794f627b5d885954afe64c227aef3",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\generate.py": "9d60e3f74073d59362666249bbc822aa5e768c8f19e9b4b110f01b72a80d648b",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\run.py": "f483830880d67072b86d981c26b76c021bbfd69ca17def9d4183f3f356741c8d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\train_full_score.py": "3d451a671ac8841b353d73b125bc10b0062b65f895a79aa1cb3dca665773f0d6",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\unknown_phase.py": "547fabbfc733642c8e9373e4a49dc23a5296633d4b89573ab771db590e65fa97",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\__init__.py": "5495a30626fd504fbe0da64530384b55b9f3805afefd57e73541630b4331f4ac",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\config.py": "4de72aafb5a3671d846c0a7d8e2a0000c4e840e5db820f4ed3afe2816df1ec93",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\dictionary.py": "a557aedd407a9bd47ab2fd5c6fd23cf855109ca595a2f92ae794d47ffc328b10",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\observation.py": "2490775f95b24d59a9467f5f1cf3cfc0852ab136c44882e60f58d75c240954df",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\phase.py": "3e8cb1ea39a425bbbcce5ec7b49d0f5702daa8d06d941f697a065d5e936231ff",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\physics.py": "02ee1b2f067d4bb7885f520b9ba163ca99015ba07b7da6f2661315cca1fab87b",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\pilot.py": "a0df49d254a99beeb8f4ef6c77e1626de4750894682209e9d5e37f6aa2eb56a9",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\__init__.py": "67543659527fca8f1cf2da62f0bf6c99f98435d8ae7c0dd3270d2150a892c58c",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\afdm\\closedform_periodic.py": "f54d7edbdbb068ad0cbea2be5d801e59f79fb688d95cc4ce9c01ff707e4c1591",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\afdm\\config.py": "4391c5e41163542bffe196cb4ddf8d2930784e3881d5658670881b08365c1953",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\afdm\\continuous.py": "f100b69389127c5d22acdc8607d29e153b89c6293fa232e3b0bb98c5b2678a7a",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\afdm\\path_operator_multicycle_full.py": "9440cc22e515d298efe24321940dd9bdf44294ea44a2657239a84af30fa0ab11",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\afdm\\types.py": "127a2dd55b8dfd557a6cd228c53f1c7597f0712611fb65c8b7872a54e21fc19d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\afdm\\__init__.py": "b78092ea203d34521fbfe6fb7de88163e6460d41ad0a7c3166da691645fcb711",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\core\\config.py": "ea75b60ca4ee653fc2af49da6ff58c1e5e6746cf097c8eec6dd5ec5b5be34fc5",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\core\\conventions.py": "ca4cb78e0e2ba0800c494d595e567a3a06f306151a87f2eb5fe6eed5c019ffb5",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\core\\upa.py": "f6962ada8886118507ed3486eab3b0dbbab1801e301432f39bdb696ff1648934",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\core\\__init__.py": "c629c0b154bff566566b7718f4da79056b081e02b42eadc6e4b2620a18b27165",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\receiver\\noise.py": "226eb99da16351d9a1fe4c166574094be338877c24fde7239698838fabe28571",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\receiver\\__init__.py": "5edae5aca9a7d53030745aa3ce9d6aeb521e640c68a2165be815507ee252cae3",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\scenario\\continuous.py": "1ae9cb7fde2263bf81e51757434b2ce891bda42432f6f024db04f0a9a3686989",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\scenario\\ding2026.py": "09fed5aaa69b9d2a7fb1ec6f9bdc2c5a7682dd929ad6a533af6eb790381c467b",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\scenario\\geometry.py": "9af3db791505264e3c6ff64ea06912d4334093a1326c14e251863671709c485d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\scenario\\geometry_consistent.py": "401b8eb247365e9a7faa125e425617396acf38b8c129cb4d852682c7745bac2c",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\scenario\\scene_generator.py": "d3c56f32a75140d9c8ed9e460a0a807c930f6c00113ecb8f6d158f7bcce08559",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\system\\scenario\\__init__.py": "6188a6b4e73a0c4f18709ac7f88fdeee52e318795d9843d0cb95f6cd23238376",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\evaluation\\metrics.py": "b30409674fb815ccc8045f6b90d966bcec8238287fb05e50e0a83416500815da",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\evaluation\\__init__.py": "824eac51708c962ce575c510091b53ef23ecfc3059f844ccece365a756f188a8",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\__init__.py": "f5c145fb5c3683211462e36e4a14ffa4c54e136eed3b5badc9483313fca8ba44",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\gnn\\cli.py": "5dca69363e45105b7c90886fb3bc7effc35be5d7f01c5481b17d24cfdaeac711",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\gnn\\common.py": "aef3fd0ec8eb7cd63d38c41cd05e3b268ffb5a017c769bcfa0ba3f23cfbd7553",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\gnn\\mixed.py": "6afbbe11f742a6a5d96020a3299542ad3bc3e7ef1209edcf3d31bce08847133f",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\gnn\\per_snr.py": "7dbb7639be53f630bc0f3b85734043bb1b550fd0549d344b2e0bc138289ffed2",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\gnn\\__init__.py": "a7b1a1955d37add19ab66b1406c0288f0f6692646c0087e037295526e5567605",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\proposed\\auxiliary.py": "45d58f4d534e52baac3d0ac2748d8f3f09c835f84c96b2ac172314ba0748b49a",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\proposed\\cli.py": "395a0bd9890a275d18a12a9f8ad0514051b560e8482926f7fee25065baf9ba40",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\proposed\\common.py": "4de2945dd74daf4bf26ac53ac673bf75686c7f39d65ca221ce025e9b345912de",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\proposed\\continuation.py": "d64240cad820e6d51565248841476b3a015705006dfdfb35cd29991f0afecba6",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\proposed\\data.py": "6f1f2fd9e637dc2b52c0ce03d78b132f8d564e0da905f43a14988c6e0aa8a1cb",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\proposed\\first.py": "b564f318b19bca61f011c7370c1d5ae28b77b3c9868a0b47bef3ce62f3012a4f",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\proposed\\__init__.py": "8397dd95283b0458e742012cbe2c4959fe1ae162e8d7445d2a3a4b9c379cd42d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\scores\\checkpoints.py": "97105daf0860953414e1403e834eb6fc4302c0ae806811d8b854f27ca8763c22",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\scores\\cuda_execution.py": "6fd13922d52097b47ba25972b51d71e1e38d41178226b172e953435603ae89af",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\scores\\cuda_graph_auxiliary.py": "7886ae36012710dc94b3a5b366e7b2891d18ddda0f808ebc119b9558309d42c4",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\scores\\cuda_graph_first.py": "99f9885cfae35a7aadcca2109dcaa709c4e83ff774634253e0a18096f4936a9b",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\scores\\device.py": "6035b4f56d9449cd50a4149687475fb871e7f24d71482c2670f651ac25a6f933",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\scores\\direct_objectives.py": "d00efe5e5f44e59cc4830f6f224b5bbdfbf76bed81a1ef985e59893cc21c6f5e",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\scores\\score_matching.py": "4c765466866adb7c50f90d2a14fc694c7b18625dc77357311fc9951a1799bc65",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\scores\\trainer.py": "1956e7cd2f344f0c03c90b3c74376cba13ab8a917452795acf7a28a29854e207",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\experiment\\training\\scores\\__init__.py": "f7062f41983045d817533906b3d933a6eebf35418efc2d0f9bc9fd3647e2ee28",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\baseline_noise.py": "b400d53482f86967257ad97b4a2b6db02c61f1c65d6361dc2e21f40247babe90",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\baseline_phase.py": "00135b79ea6d27acfa81f85afc2e75eea43d695e38116f9b502bacb3bfbf0550",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\baseline_phase_posterior.py": "ea27301913dd1b4be6c6386a5d61a3a3bdde0fdbc04a6944e2d15fbb84620e00",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\common.py": "7acd979d8d3b8bbc7bf184bb33e787544132ea1cf863e17fed96e227413ee45b",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\common_rate_oamp.py": "acf7518b98d9ac7d0b11ce60f1f1237f5eb526f8f9a9f99d81badc1594b46d0c",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ding.py": "49418e6ae9c49dff9717ab7d5ab359eca386b7a143168fa602be06e76ddc5337",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\em_gamp_zhao2025.py": "b5881ce46a39c3b2f0130679e47a3bdbeb4e04e1ee5b7abcec4ccfec0b66e68a",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\gamp_sbl_mmv.py": "5b6953f63e66d5dbcbbb0ed0f7e719f83f722c9980e0e38b65c6c451abc24ed0",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\gnn_aspl.py": "bab107756d5f207539a2d9798326844a6f3c54729136707e17926723ec79866b",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_output.py": "9e6f1c7814eccd90b75b6b007cdc459cd1b4b45975818c9cda62537c00689632",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\noise_estimation.py": "cf7e2956a88b16b0fbb8404686bf967a71be0d969187241e827e97fa408eff93",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\oamp.py": "01c706a427d0554b44d65d6967fd75c64e3a8b7adee4f99eccc2c2cee0ed5962",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\offgrid_noise.py": "f6b28edf97314ffeb6b5f5e3f83e38991ab2d39b703e9ed9d841886a352cd61a",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\output_stopping.py": "8456b1920897b60fe870a904e2634557636be47ecfe371e178c04957dc0968fa",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\readout.py": "c54c879c21a6a5c0b97406f5a8e6c90287661906949dda8dda469662d2c4b99a",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\receiver.py": "29aad99176625256fc727a9f469348243dea47f300307ecdbc493c7430c4f3d3",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\somp.py": "1892eeb99208486834067c38a3b7d4a4dbe05b467288f3b46dc71836b89fd328",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\unknown_phase_baselines.py": "1c63259eb8c3a5ce589d27a75bd461dce1a877a91230a84d7e198f1eea770f13",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\__init__.py": "479836b2e69619313acc17ed1b915a639078d02cd00cfeaf97d543690ddaaa3d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\diffusion_amp\\core.py": "12bf3a65d4f936966389fd47787337dfe307814c2ece8b44568ef15a648fad3b",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\diffusion_amp\\denoiser.py": "ea7a9eb0733e84691ab9e1ccec5308852414611dadbf7b3e6f4cea5c33b70d45",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\diffusion_amp\\network.py": "038dfd5c5dda2109b5f09563744a10a0efdc884afdde9424b27b384a32edfe27",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\diffusion_amp\\receiver.py": "1140ee68583649a73b6f978abcb6c6283d585dbc696d9c197a67cc467218144b",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\diffusion_amp\\training.py": "7c1aab15030b6652187e51487e2a69c75494abc31dc123d7432426238a608901",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\diffusion_amp\\__init__.py": "ec706e32f5b5aafcb13c581ae818e045f9c2ac1c4776cf5606b171a98bdc9625",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\joint_amp\\core.py": "bcd401996690f201bacde3943714438fcbab6cec898f75bfc9e4bc58e1b8f1c3",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\joint_amp\\denoiser.py": "cc786fe84f792b35c0c191912498cd6ae396452101435c7adbc5b06aef286196",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\joint_amp\\network.py": "ec2d88d2cb74bcbb97319ceb0e6ae6a9e7900ceacbb08cbfea68404c8dc61491",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\joint_amp\\receiver.py": "0800696b45c846753318d482949970a3c320f9722510e60f5c61528748749ead",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\joint_amp\\training.py": "811e10f0c54d0ce0742bee2d5c11686cfc8ece81910c95667414f1af4ca913d9",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\joint_amp\\__init__.py": "0082c02a3ddd525d65b75225ff66a47d43af72569cacafbb5d59efdbd4c9dbbe",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\activity.py": "5b269d487c1224cb18de017aed88b176e5a4afdb119fdd1bd3ede6d3aa2f5911",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\array_transforms.py": "fdc5d51115317c2d57ede29eb459f4667292fe1d538cc18e669094745be308dd",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\channel_network.py": "c67f30310f218e0cddaf7c5efe7e0bfba039317b4fced9036f0920d5f81f0fc1",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\configuration.py": "bd33ace095ce7f70e75e54ae677be7a086653fa9f9cdf17db547f3d87b5ce10a",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\denoiser.py": "b8f38425034979c247859daa80e6acf67c044a1d90c22705131d8a5f912ffe51",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\gaussian.py": "e1b41ab509c473c825bc4cd839e29450ad422a70e507e581e209e51b18b6f55f",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\iterations.py": "17bacf137bf2a3d29cb22bb672e5460624ba8f2db27edc625af1a8dc6b8e53ff",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\linear.py": "3a5b1b702b206524988a2746085a3c4796ae5508658ee2b20f1e151639df0c9d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\moments.py": "433a2ec549b508c523beaf6f32f09989fe65dfb79971d3c654b4ad578ac2e285",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\network.py": "be0b0a452bb64bb654e1065f9e906be3db9df95708f523a5dbb53366c9febc20",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\posterior.py": "a497fa48bd629c2d458423b7b0277e465ca091bd9b42af9ad232bc1004774862",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\rank_one.py": "4a825b3bf98cf41a39553cea634adcaff57b34eb5c5507272fa911acdf2762af",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\receiver.py": "a6ef60562f04d37a30ee8a838acbbfed871d30a4235483f0435fcbdbee8811c4",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\records.py": "0278e92167adf8e345d074c890add963560ba08854c3f372a610fd3004f862a6",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\unknown_phase.py": "709fc35d4e69a76f7bdcc0f88b51f3962c3d2fb78d6b1de04fc3a46a3a260671",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\__init__.py": "1a5bdf1686f57425566ee5472430d2f231ebc73b8c8d3a007610438ddb4c5bdc",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\score_amp\\core.py": "2d032a5c172c74fc94d344cd8f5b8f379aa3fbbb2d826a9a343f54c120f22e0f",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\score_amp\\denoiser.py": "98ae4aee8f7097c9af9538881af268a60944e56798ef7209321f25caf5981e90",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\score_amp\\receiver.py": "21574f61f4babd1fe5c16a44958bfd68a25baff9d6ba2e2c9c8929ceacc74200",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\score_amp\\__init__.py": "ceb143f77e12c7f952cb5d607e22983e6e10ba6315e201321cf87569828be99c",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\score_amp_damped\\core.py": "8a6af55a60a306d3668381111de72ce972285d98425b4cba5ba2625ce5a5bb97",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\score_amp_damped\\receiver.py": "b5ca7eb379ddb87887d456f7b302703e353d34367ae8cc740c4fe188d291ea5c",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\score_amp_damped\\__init__.py": "9d1ee71b4004c0caf04761fb886a2bc5fdc51a11e90bf3ec47bd1fdf81c163e2",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\score_amp_query_damped\\core.py": "c9305645892e175782175a9bbf32678ddcceec66db8173e5f2365b68af9181da",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\score_amp_query_damped\\receiver.py": "d6d4a6c36ef0ab2012643739f86bb0aef67253feeede2a7b344140fb19ea9a00",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\score_amp_query_damped\\__init__.py": "d985d694b627c250a07b983f220ed0dbb97c242e2fa20c57a7ea18387cb7adfa",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\cai_models\\layers.py": "40ece1a54cf43e8687a41979d7b0b874f56950f622c15f88f4e289dd98c823ab",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\cai_models\\ncsn_channel_diffusion.py": "8e9c9614dad8813a21562915903e480f6d21b3ac4ba45d938f84593e5a0c527a",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\cai_models\\normalization.py": "f0bd151174513a7523d820b1c8257c10d581e76bf810eaf5adce2e64550e267d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\proposed\\cai_models\\__init__.py": "a1ce7f50e3aa8a680f7e041c195392ad91a47cca596378eb5322ef7ee160e4d8",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp\\beam.py": "cad86f481f0b3db59a077b429fd366cb1f0033592aa4388bc9efd8579f5843dd",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp\\core.py": "887d1b57e893d9cc411f5888b1e530de085c24b1b0b3f853ca3999bf958cbc80",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp\\matrix.py": "380ea3ab93171bafcee5303e9461f15bff3e6f5787e27ceca773ecc3cb67150e",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp\\network.py": "5278b17fd1e60a986246feeb3e92db4b2a7c7495f6ed80b832d5e564a8c8c7e2",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp\\receiver.py": "68ca4e4ca5dcd93bc7e1661790e3665e43d6827f04d17be9f3936fd7272a311c",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp\\representation.py": "c2cbe2265b114a9a52c02b1577e544fd87d65289d51da063661e6d01d529cd2b",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp\\training.py": "e6aa79c6682cab71172081ea17718eedd4310a5b01ffdd45f69bc78213e5bbbb",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp\\__init__.py": "6fbdffd7bed6aa700fe8bb35d6fda68d0c404355097f62abe7593b54dd28ffb9",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_joint\\core.py": "befd613f5326ee6dbf25092532b0914f4d745bc03f40ebdfdef01b26e6bd15ff",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_joint\\denoiser.py": "98723cea89bb1c10f7fb19d4d9b6b0cb1e7662754e178a097bb103d70575adb7",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_joint\\model.py": "bf5af2089d297e3ac34b88866282932ba71fa136514455ad090ba79fcf81ba02",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_joint\\projected_trace.py": "d001c861decfffd583b074b76377c80114d98f8a820fff6cd96ada05715d8325",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_joint\\range_model.py": "ffb1ac979939ff39b164f018892b2897c57cfc20abc0dc14642686ffaeb35627",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_joint\\receiver.py": "84827eaba337c86da9182d4ec6a9831ec4dfc5078a7fae48658ce4cffd995e6d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_joint\\residual_model.py": "a7964e998e16950b0649134fd9f0143b7ebce30428cc73846ec8c5de2981c7e8",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_joint\\residual_noise_model.py": "9b0ffaceeacece09c22c5ec8645e729e9b8f99bc9f86ae3defef9f7957af2b10",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_joint\\__init__.py": "453018403b6bdfc52d8faf5d95e2f9d0b6e17618dbf15b565c282716a4a8ae99",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_score\\core.py": "02e75f770700d2f40481bedc4b308aa0a0b464d994797a8d5ab96cc7ccbb29f3",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_score\\denoiser.py": "3dafd5df39e5a2d30440e39911cb5f9b01ebde45a840faf5777c9580ddf2f726",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_score\\receiver.py": "1e884a137ce87e387d766fb04b6b032f55e664d8db3a250a4263cdd08981d249",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\ldamp_score\\__init__.py": "d0687f83ed5c31db75fb9a82de56431468b0c82dca7af127ef11e5b02b204e2c",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\offgrid\\atoms.py": "2b409a83eb742a792073c93abcd61c58be44f7876bcceb8bf510d17357055d1e",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\offgrid\\receiver.py": "2714c1e39e2e217ce68ca6eb9776e35cd7a964e1065d80885e6c6bfb6f6714f3",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\offgrid\\sbl.py": "8375d9973d2cdbcc5284bd662a9326c0ac87c303592debafd5ac511be3dd6972",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\source_project\\afdm_jadcedd\\algorithm\\baselines\\offgrid\\__init__.py": "4e169b75ae6e667990a3c1655569ce887a4b66d2965d47344fc036d3861601e7"
+  },
+  "bound_assets": {
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\check_implementation.py": "1acf419a8dadec97d60191f86be6e1b3f933d6c311b69efa658656913ec53731",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\check_lstmp_v3_gpu_continuation_20261020.py": "848c3170bc7b7ce7c3adaa561a4c7826a4c69fdba034cb38456cc14e49260f70",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\CONDITIONS.json": "0ea2425ef0e17d06c58b49b0e888ad592255835c11bfbfd957e47fa653d58ee1",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\CONTINUATION_SOURCE.json": "628c9ff3b4cfc4b8d9bfb3ff280f73ea5dab516b80aa83dea77e93d14cac46cc",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\EXECUTION_CHANGE.json": "c258dacc89c45d9629cc29d9d25928579542af03e70bf587fa97b3a265491288",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\EXECUTION_PREFLIGHT_REPAIR.json": "c28a2f603877a331101ba4d9601aaad2dcf17bd75c827aed42b956c19f96f793",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\LSTMP_TRAINING_PROTOCOL_20261020_V3.md": "de544a46980043a43743dc48c8959eed7bf5716178ac564138e516c9c4f90e31",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\prepare_lstmp_v3_gpu_continuation_20261020.py": "c363fd311afee1d126f19dac51fdf8d199effdb6f4dd53d906867758ce8605ea",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\prepare_run.py": "a89ed8de56e1e0367bb2240f81b1822b6170e6af986c8d9647c6b71b18076588",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\PREVIOUS_RUN_STOP.json": "d4155d18adc5cf6e876b8362805c1b481c3ef5a5746d2900ed3593e0ac5d82ab",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\SEED_SEPARATION.json": "bc3c1b7f301896bc0f1f301d16ac01565f8290c83004dc6dbdf9e10c853e0309",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\test_lstmp_training_v3.py": "4c61ff0a4ffbf637fc8a6b40507248bd098c2aaa51bf7fa075fff5ba932de11f",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\protocol\\TRAINING_STATISTICS.json": "c569aa4be2ee5d8c680c309fcb0f5fc594bba18c1ef18b02f9e0f61bea6e9e55",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\initialization\\first_50000.pt": "01eadf06c80cca4583ffd2976805426dcceb1c00f157e21df9c6ec632cdd25db",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\initialization\\BINDING.json": "a47f3e9571ead3245f256ab5fee40b5a252ec08af1e498c9b8bec9ef3de7a502",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\data\\normalization.json": "75eaaa20b4cc50c9eb4053d10acfa9f89919f68df9412613d45d210f41bd375d",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\data\\receiver_train.json": "806c19bff156254573ebbdac8e8bdaddae5bcb045e9665fd9e7c409592a9e345",
+    "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\data\\receiver_validation.json": "20fa4fa02edde0b7d10496ddb3b28016a8f8c4017932a47d85bfa64a74671a36"
+  },
+  "protected_assets": {
+    "MAINLINE.json": "2ad0bb19de70a3c4fa64ad70efdf8b10c1152971257fc12f035589bea86aaf0c",
+    "configs/proposed.json": "63ca4c6b4232255b3a0367f81d9206621ae47a243e2cc6f85d78a28869b36003",
+    "models/proposed/first.pt": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+    "models/proposed/second.pt": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5",
+    "models/proposed/activity.pt": "b2e59a36e9ff07f8a53d18305f4ca029f55c16ca6c55a8faee62510d6562f53c",
+    "runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+    "runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/second/second_best.pt": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5",
+    "runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d",
+    "runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/receiver.json": "a698a0769cfd0469f0709202da9dd81933df39e357b5b9649c46f90d14af18c4",
+    "runs/proposed_50000_cuda_20261018/data/prior_definition.json": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed"
+  },
+  "source_manifest_sha256": "dd69c131f09c63082d6c55a5461dcf5aa491b00a92a620597a2c2097e6f60d4a"
+}

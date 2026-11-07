@@ -1,0 +1,102 @@
+{
+  "scope": "English abstract, Introduction, notation, Sections II-V, Figures 1-3 and Algorithm 1",
+  "source_lines": {
+    "main.tex": 105,
+    "sections\\01_introduction.tex": 133,
+    "sections\\02_system_model.tex": 281,
+    "sections\\03_bayesian_receiver_design.tex": 166,
+    "sections\\04_generative_priors.tex": 200,
+    "sections\\05_overall_algorithm.tex": 219
+  },
+  "abstract_words": 193,
+  "scoped_vocabulary_hits": [],
+  "scoped_em_dashes": 0,
+  "undefined_references": [],
+  "undefined_citation_keys": [],
+  "scoped_equations": {
+    "eq:physical-channel": "1",
+    "eq:upa": "2",
+    "eq:afdm-time-signal": "3",
+    "eq:daft": "4",
+    "eq:continuous-waveform": "5",
+    "eq:channel": "6",
+    "eq:path-operator-system": "7",
+    "eq:twc-frame-channel": "8",
+    "eq:effective-pilot": "9",
+    "eq:mmv": "10",
+    "eq:working-posterior": "11",
+    "eq:linear-mean": "12",
+    "eq:linear-variance": "13",
+    "eq:linear-extrinsic": "14",
+    "eq:pseudo-awgn": "15",
+    "eq:conditional-channel-integrals": "16",
+    "eq:query-densities": "17",
+    "eq:local-activity": "18",
+    "eq:mixture": "19",
+    "eq:joint-spatial-covariance": "20",
+    "eq:joint-average-variance": "21",
+    "eq:nonlinear-extrinsic": "22",
+    "eq:colored-query": "23",
+    "eq:tweedie-mean": "24",
+    "eq:tweedie-covariance": "25",
+    "eq:denoising-score-objective": "26",
+    "eq:first-loss": "27",
+    "eq:mean-derivative-variance": "28",
+    "eq:derivative-trace": "29",
+    "eq:activity-log-odds": "30",
+    "eq:classifier-loss": "31",
+    "eq:ideal-logit": "32",
+    "eq:activity-probability": "33",
+    "eq:site-update": "34",
+    "eq:conditional-moments": "35",
+    "eq:noise-estimation": "36",
+    "eq:query-variance-target": "37",
+    "eq:input-damping": "38",
+    "eq:output-damping": "39",
+    "eq:linear-fraction": "40"
+  },
+  "main_pages": 13,
+  "main_full_pages": 14,
+  "figure_raster_counts": {
+    "factor_graph.pdf": 0,
+    "learned_receiver.pdf": 0,
+    "system_multiframe.pdf": 0
+  },
+  "section_VI_pages": [
+    8
+  ],
+  "visual_review": {
+    "pages_reviewed": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "page_8_scope": "Section V only",
+    "observed_clipping_overlap_or_missing_glyphs": false
+  },
+  "protected_assets_checked": 26,
+  "changed_protected_assets": [],
+  "full_manuscript_auxiliary_vocabulary_scan": {
+    "files": 10,
+    "hits": [
+      {
+        "file": "sections\\06_simulation_results.tex",
+        "line": 146,
+        "term": "yielding",
+        "text": "with SiLU between them, yielding one logit per device."
+      },
+      {
+        "file": "sections\\appendix_parameter_estimation.tex",
+        "line": 53,
+        "term": "yielding",
+        "text": "A coarse search based on pilot correlations initializes the candidates. Doppler shifts yielding the same frame phase $\\beta$ are"
+      }
+    ],
+    "interpretation": "Historical nonblocking items; no mechanical AI-authorship or severity inference."
+  }
+}

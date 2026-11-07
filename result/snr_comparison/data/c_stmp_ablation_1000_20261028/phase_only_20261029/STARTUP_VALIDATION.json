@@ -1,0 +1,90 @@
+{
+  "status": "PASS",
+  "created_unix": 1793287154.7158797,
+  "beijing_time": "2026-10-29T23:19:14+08:00",
+  "old_parent_exited": true,
+  "new_parent": {
+    "pid": 84388,
+    "create_time": 1793287029.2475083,
+    "started_unix": 1793287030.1441805,
+    "command": [
+      "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-u",
+      "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\phase_only_20261029\\resume.py",
+      "run"
+    ],
+    "scope": "estimated_phase_only",
+    "continuation": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\phase_only_20261029"
+  },
+  "active_workers": [
+    {
+      "pid": 120912,
+      "variant": "estimated_phase",
+      "stage": "RUNNING"
+    },
+    {
+      "pid": 121732,
+      "variant": "estimated_phase",
+      "stage": "RUNNING"
+    },
+    {
+      "pid": 68068,
+      "variant": "estimated_phase",
+      "stage": "RUNNING"
+    },
+    {
+      "pid": 40676,
+      "variant": "estimated_phase",
+      "stage": "RUNNING"
+    }
+  ],
+  "phase_completed": 3791,
+  "phase_new_outputs_checked": [
+    {
+      "scene": 630,
+      "index": 3
+    },
+    {
+      "scene": 630,
+      "index": 4
+    },
+    {
+      "scene": 630,
+      "index": 5
+    },
+    {
+      "scene": 631,
+      "index": 0
+    },
+    {
+      "scene": 631,
+      "index": 1
+    },
+    {
+      "scene": 631,
+      "index": 2
+    },
+    {
+      "scene": 631,
+      "index": 3
+    },
+    {
+      "scene": 631,
+      "index": 4
+    }
+  ],
+  "gaussian_evidence_retained": 2128,
+  "gaussian_prior_retained": 6000,
+  "preserved_pointers_unchanged": 11911,
+  "phase_reused_native_files_hash_checked": 11349,
+  "algorithm_assets_unchanged": true,
+  "phase_report_methods": [
+    "known",
+    "estimated_phase"
+  ],
+  "gaussian_figures": false,
+  "errors": 0
+}

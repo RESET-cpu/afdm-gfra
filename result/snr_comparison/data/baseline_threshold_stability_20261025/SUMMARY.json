@@ -1,0 +1,297 @@
+{
+  "created_utc": "2026-10-25T15:49:51.056754+00:00",
+  "primary_snr_db": [
+    -4,
+    -2,
+    0,
+    2,
+    4,
+    6
+  ],
+  "methods": {
+    "offgrid_sbl": {
+      "frozen_eight_snr_optimum_reproduced": true,
+      "frozen_eight_snr_threshold": 0.06469673817866867,
+      "frozen_eight_snr_errors": 689,
+      "six_snr_full_calibration_optimum": {
+        "threshold": 0.07078474396974002,
+        "errors": 560,
+        "misses": 480,
+        "false_alarms": 80
+      },
+      "six_snr_bootstrap_threshold_q05_q50_q95": [
+        0.06324423909712622,
+        0.07034322038679504,
+        0.07315594468316336
+      ],
+      "bootstrap_relative_q90_width": 0.14090491637340202,
+      "paired_heldout_aer_mean": 0.0024599479166666667,
+      "paired_absolute_aer_difference_q50_q90_q95": [
+        4.166666666666685e-05,
+        0.00018749999999999973,
+        0.00022916666666666658
+      ],
+      "pooled_material_difference": 0.0005,
+      "pooled_fraction_exceeding": 0.0,
+      "per_snr_paired_heldout_aer_mean": [
+        0.0047246875000000015,
+        0.002132499999999995,
+        0.0020246874999999944,
+        0.001979999999999998,
+        0.001977812499999996,
+        0.0019199999999999972
+      ],
+      "per_snr_material_difference": [
+        0.0011811718750000004,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "per_snr_fraction_exceeding": [
+        0.29,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "learning_curve": {
+        "250": {
+          "heldout_aer_mean": 0.002463020833333333,
+          "misses_mean": 96.05,
+          "false_alarms_mean": 22.175
+        },
+        "500": {
+          "heldout_aer_mean": 0.0024567708333333334,
+          "misses_mean": 96.25,
+          "false_alarms_mean": 21.675
+        },
+        "800": {
+          "heldout_aer_mean": 0.0024883333333333333,
+          "misses_mean": 98.385,
+          "false_alarms_mean": 21.055
+        }
+      },
+      "extend": true
+    },
+    "gnn": {
+      "frozen_eight_snr_optimum_reproduced": true,
+      "frozen_eight_snr_threshold": 0.03806203231215478,
+      "frozen_eight_snr_errors": 780,
+      "six_snr_full_calibration_optimum": {
+        "threshold": 0.03390470519661904,
+        "errors": 668,
+        "misses": 584,
+        "false_alarms": 84
+      },
+      "six_snr_bootstrap_threshold_q05_q50_q95": [
+        0.02262620069086552,
+        0.0338132530450821,
+        0.03806203231215478
+      ],
+      "bootstrap_relative_q90_width": 0.456502413438576,
+      "paired_heldout_aer_mean": 0.0029066666666666663,
+      "paired_absolute_aer_difference_q50_q90_q95": [
+        4.1666666666666415e-05,
+        0.00018749999999999973,
+        0.00023020833333333332
+      ],
+      "pooled_material_difference": 0.0005813333333333333,
+      "pooled_fraction_exceeding": 0.0,
+      "per_snr_paired_heldout_aer_mean": [
+        0.005670625000000004,
+        0.003724999999999996,
+        0.0027531249999999986,
+        0.002040312499999995,
+        0.0016853124999999963,
+        0.0015656249999999958
+      ],
+      "per_snr_material_difference": [
+        0.001417656250000001,
+        0.001,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "per_snr_fraction_exceeding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "learning_curve": {
+        "250": {
+          "heldout_aer_mean": 0.0029109375000000003,
+          "misses_mean": 117.095,
+          "false_alarms_mean": 22.63
+        },
+        "500": {
+          "heldout_aer_mean": 0.0029141666666666665,
+          "misses_mean": 118.225,
+          "false_alarms_mean": 21.655
+        },
+        "800": {
+          "heldout_aer_mean": 0.0029085416666666665,
+          "misses_mean": 119.79,
+          "false_alarms_mean": 19.82
+        }
+      },
+      "extend": false
+    },
+    "gamp": {
+      "frozen_eight_snr_optimum_reproduced": true,
+      "frozen_eight_snr_threshold": 0.0733916910573131,
+      "frozen_eight_snr_errors": 1175,
+      "six_snr_full_calibration_optimum": {
+        "threshold": 0.0741134513442958,
+        "errors": 1004,
+        "misses": 782,
+        "false_alarms": 222
+      },
+      "six_snr_bootstrap_threshold_q05_q50_q95": [
+        0.0709138223049615,
+        0.07409326705015522,
+        0.0773059593334421
+      ],
+      "bootstrap_relative_q90_width": 0.08627149649311094,
+      "paired_heldout_aer_mean": 0.004329583333333333,
+      "paired_absolute_aer_difference_q50_q90_q95": [
+        2.0833333333334075e-05,
+        0.00022916666666666745,
+        0.00029166666666666664
+      ],
+      "pooled_material_difference": 0.0008659166666666666,
+      "pooled_fraction_exceeding": 0.0,
+      "per_snr_paired_heldout_aer_mean": [
+        0.009299375000000004,
+        0.005036249999999995,
+        0.003658749999999997,
+        0.0031487499999999975,
+        0.0025331249999999946,
+        0.002301249999999996
+      ],
+      "per_snr_material_difference": [
+        0.002324843750000001,
+        0.0012590624999999987,
+        0.001,
+        0.001,
+        0.001,
+        0.001
+      ],
+      "per_snr_fraction_exceeding": [
+        0.015,
+        0.0,
+        0.005,
+        0.0,
+        0.005,
+        0.0
+      ],
+      "learning_curve": {
+        "250": {
+          "heldout_aer_mean": 0.0043671874999999995,
+          "misses_mean": 163.75,
+          "false_alarms_mean": 45.875
+        },
+        "500": {
+          "heldout_aer_mean": 0.004310729166666667,
+          "misses_mean": 160.845,
+          "false_alarms_mean": 46.07
+        },
+        "800": {
+          "heldout_aer_mean": 0.004286458333333333,
+          "misses_mean": 160.705,
+          "false_alarms_mean": 45.045
+        }
+      },
+      "extend": false
+    },
+    "somp": {
+      "frozen_eight_snr_optimum_reproduced": true,
+      "frozen_eight_snr_threshold": 0.13139987342535986,
+      "frozen_eight_snr_errors": 1666,
+      "six_snr_full_calibration_optimum": {
+        "threshold": 0.13139987342535986,
+        "errors": 1351,
+        "misses": 878,
+        "false_alarms": 473
+      },
+      "six_snr_bootstrap_threshold_q05_q50_q95": [
+        0.12970724101274633,
+        0.1317519370591466,
+        0.14203082665201616
+      ],
+      "bootstrap_relative_q90_width": 0.09353627669047081,
+      "paired_heldout_aer_mean": 0.00583203125,
+      "paired_absolute_aer_difference_q50_q90_q95": [
+        5.208333333333237e-05,
+        0.00029166666666666675,
+        0.0003562500000000001
+      ],
+      "pooled_material_difference": 0.0011664062500000001,
+      "pooled_fraction_exceeding": 0.0,
+      "per_snr_paired_heldout_aer_mean": [
+        0.009325625000000011,
+        0.006211874999999994,
+        0.005590937499999997,
+        0.005062812499999999,
+        0.004517499999999995,
+        0.004283437499999999
+      ],
+      "per_snr_material_difference": [
+        0.0023314062500000027,
+        0.0015529687499999986,
+        0.0013977343749999992,
+        0.0012657031249999997,
+        0.0011293749999999987,
+        0.0010708593749999998
+      ],
+      "per_snr_fraction_exceeding": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "learning_curve": {
+        "250": {
+          "heldout_aer_mean": 0.005848124999999999,
+          "misses_mean": 186.945,
+          "false_alarms_mean": 93.765
+        },
+        "500": {
+          "heldout_aer_mean": 0.0058227083333333325,
+          "misses_mean": 186.88,
+          "false_alarms_mean": 92.61
+        },
+        "800": {
+          "heldout_aer_mean": 0.005785104166666667,
+          "misses_mean": 182.175,
+          "false_alarms_mean": 95.51
+        }
+      },
+      "extend": false
+    }
+  },
+  "excluded_comparison_scenes": "0..999; their predictions/truth were not read",
+  "evaluation_reads": [],
+  "new_inference_count": 0,
+  "policy_changed": false,
+  "extension_required": true,
+  "triggered_methods": [
+    "offgrid_sbl"
+  ],
+  "statistical_interpretation": {
+    "claim": "Empirical calibration-sample sensitivity, not evidence of final test superiority.",
+    "ranges_are_not_confidence_intervals": true,
+    "overlapping_splits_not_independent_replicates": true,
+    "formal_hypothesis_tests": 0,
+    "fallacy_checks": "11/11 reviewed: preserve all scenes, respect physical grouping, show pooled and per-SNR effects, report misses and false alarms, apply all methods/criteria, do not claim causation or population guarantees.",
+    "limitations": "1000 existing calibration scenes, one user/load/pilot configuration; no proof for other operating conditions. Cross-validation and threshold changes do not erase earlier study exposure."
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "platform": "win32",
+  "python": "3.13.1",
+  "torch": "2.7.1+cu128",
+  "numpy": "2.2.1",
+  "device": "cpu",
+  "checkpoint_verification": {
+    "status": "PASS",
+    "method": "full_score",
+    "activity_evidence": "classifier",
+    "checkpoint_sha256": {
+      "first_checkpoint": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+      "second_checkpoint": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5",
+      "evidence_checkpoint": "b2e59a36e9ff07f8a53d18305f4ca029f55c16ca6c55a8faee62510d6562f53c"
+    },
+    "network_queries": 0
+  },
+  "training_assets": {
+    "status": "PASS",
+    "samples": {
+      "train": 50000,
+      "validation": 5000
+    },
+    "initialization_sha256": {
+      "first": "47422682e8a136b32d30f72fc76ad91d44dd78702cafc8fa35580f5c633624be",
+      "second": "ef6308ffa2587615f80e53e665b9444539378c12cad9bf6963541cf9b8b80935",
+      "activity": "f7765eeee544243a5c5a981bedaa2944ea9cd56cbfc8655c9d72ffef4293573f"
+    },
+    "selected_teacher_sha256": {
+      "first": "0bfeee06fcb5e5325c2f815c577f858b54d4deecd4d85345e7b3da133ca5d736",
+      "second": "001c394313eb7785671745c08f9fed14564414e392f65d2d23705073f4e0f7f5"
+    }
+  },
+  "synthetic_network_queries": 2,
+  "unit_tests": 7,
+  "fresh_ablation_plan": "PASS",
+  "full_receiver_experiment_run": false
+}

@@ -1,0 +1,99 @@
+{
+  "status": "PREFLIGHT_ONLY",
+  "experiment": "channel_denoising",
+  "rows": [
+    {
+      "method": "pretrained_colored_first",
+      "variance": 0.001,
+      "snr_db": 30.0,
+      "scenes": 1,
+      "samples": 4,
+      "error": 1.9970753512650936,
+      "energy": 18447.271720185076,
+      "nmse_db": -39.65537693316583
+    },
+    {
+      "method": "pretrained_colored_first",
+      "variance": 0.01,
+      "snr_db": 20.0,
+      "scenes": 1,
+      "samples": 4,
+      "error": 11.968610933059782,
+      "energy": 18447.271720185076,
+      "nmse_db": -31.87888395299792
+    },
+    {
+      "method": "pretrained_colored_first",
+      "variance": 0.1,
+      "snr_db": 10.0,
+      "scenes": 1,
+      "samples": 4,
+      "error": 74.06334953851754,
+      "energy": 18447.271720185076,
+      "nmse_db": -23.963287955142818
+    },
+    {
+      "method": "pretrained_colored_first",
+      "variance": 1.0,
+      "snr_db": -0.0,
+      "scenes": 1,
+      "samples": 4,
+      "error": 312.48978591454727,
+      "energy": 18447.271720185076,
+      "nmse_db": -17.710963182767355
+    },
+    {
+      "method": "pretrained_colored_first",
+      "variance": 10.0,
+      "snr_db": -10.0,
+      "scenes": 1,
+      "samples": 4,
+      "error": 1097.6549478313566,
+      "energy": 18447.271720185076,
+      "nmse_db": -12.254663053959538
+    },
+    {
+      "method": "pretrained_colored_first",
+      "variance": 100.0,
+      "snr_db": -20.0,
+      "scenes": 1,
+      "samples": 4,
+      "error": 12040.072730841413,
+      "energy": 18447.271720185076,
+      "nmse_db": -1.8530303439190434
+    }
+  ],
+  "differences_from_old_50k": [
+    {
+      "snr_db": 30.0,
+      "delta_nmse_db": 0.8421655715049319,
+      "definition": "New minus original 50k first network; negative means lower NMSE."
+    },
+    {
+      "snr_db": 20.0,
+      "delta_nmse_db": 1.1683076115718956,
+      "definition": "New minus original 50k first network; negative means lower NMSE."
+    },
+    {
+      "snr_db": 10.0,
+      "delta_nmse_db": 1.4343661391903986,
+      "definition": "New minus original 50k first network; negative means lower NMSE."
+    },
+    {
+      "snr_db": -0.0,
+      "delta_nmse_db": 0.3456211856524608,
+      "definition": "New minus original 50k first network; negative means lower NMSE."
+    },
+    {
+      "snr_db": -10.0,
+      "delta_nmse_db": -1.7010570486130616,
+      "definition": "New minus original 50k first network; negative means lower NMSE."
+    },
+    {
+      "snr_db": -20.0,
+      "delta_nmse_db": -1.6430650369712019,
+      "definition": "New minus original 50k first network; negative means lower NMSE."
+    }
+  ],
+  "source_plan_sha256": "8ee367c20aedd2c7b06c574dec1e82c5822d04ae5841dcf4c44a647876c2794f"
+}

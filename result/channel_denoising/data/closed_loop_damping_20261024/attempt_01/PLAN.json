@@ -1,0 +1,386 @@
+{
+  "created_unix": 1792844482.2661073,
+  "authorization": "User: 可以，你尝试一下。 Closed-loop damping pilot at new-message weights 0.2, 0.4, 0.6.",
+  "material_passport": {
+    "origin_skill": "academic-research-suite",
+    "origin_mode": "run + validate",
+    "origin_date": "2026-10-24",
+    "verification_status": "PLANNED",
+    "version_label": "closed_loop_damping_20261024"
+  },
+  "candidate": {
+    "path": "D:\\afdm-gfra\\result\\channel_denoising\\data\\actual_query_denoising_refresh_20261024\\candidate_first.pt",
+    "sha256": "764df5720bfbb56023f5871b74d9f94e096f992e3f4ecbd35ee8f8aaa4570f8a",
+    "metadata": {
+      "epoch": 92,
+      "validation": {
+        "loss": 0.08852630486488343,
+        "samples": 5000,
+        "nmse_db": -11.900114718788188,
+        "error": 1318314.7665537,
+        "signal": 20418817.54943657,
+        "bands": {
+          "snr_-20_to_-15_db": {
+            "samples": 465,
+            "error": 654672.313873291,
+            "signal": 1916811.4076385498,
+            "nmse_db": -4.665554103868002
+          },
+          "snr_-15_to_-10_db": {
+            "samples": 513,
+            "error": 269229.6185760498,
+            "signal": 2153868.7277240753,
+            "nmse_db": -9.03096394808826
+          },
+          "snr_-5_to_0_db": {
+            "samples": 519,
+            "error": 109847.29052734375,
+            "signal": 2086415.4892578125,
+            "nmse_db": -12.7861144904306
+          },
+          "snr_5_to_10_db": {
+            "samples": 480,
+            "error": 42969.04693031311,
+            "signal": 1861624.5019073486,
+            "nmse_db": -16.367363653398247
+          },
+          "snr_10_to_15_db": {
+            "samples": 509,
+            "error": 21455.40759897232,
+            "signal": 2123812.8083724976,
+            "nmse_db": -19.955794661790613
+          },
+          "snr_15_to_20_db": {
+            "samples": 511,
+            "error": 7873.521785497665,
+            "signal": 2022063.5167236328,
+            "nmse_db": -24.09625759966754
+          },
+          "snr_20_to_25_db": {
+            "samples": 503,
+            "error": 2653.4217282533646,
+            "signal": 2165468.1975250244,
+            "nmse_db": -29.117455288282628
+          },
+          "snr_25_to_30_db": {
+            "samples": 536,
+            "error": 974.2266229987144,
+            "signal": 2216303.0875701904,
+            "nmse_db": -33.56969157979458
+          },
+          "snr_-10_to_-5_db": {
+            "samples": 471,
+            "error": 131644.89421844482,
+            "signal": 1908955.091430664,
+            "nmse_db": -11.613916917710956
+          },
+          "snr_0_to_5_db": {
+            "samples": 493,
+            "error": 76995.0246925354,
+            "signal": 1963494.7212867737,
+            "nmse_db": -14.06567075442764
+          }
+        }
+      },
+      "specification_sha256": "61344549f8646fb1bd105e7476c0990428e689150d7c4e6e88a6e208bdbe75a8",
+      "initialization_sha256": "1ff7105ad62ba3bb0d509501fe7fbd317a7361286649c74ade53404e9230fd63",
+      "noise": {
+        "snr_db": [
+          -20,
+          30
+        ],
+        "max_strength": 0.5,
+        "rank": 4
+      },
+      "training_scope": "First network only. Fresh 200-epoch run from the original random trunk initialization; same colored samples, seeds, objective, Adam, EMA and validation. No auxiliary training or receiver binding."
+    },
+    "source": "D:\\afdm-gfra\\result\\channel_denoising\\data\\colored_preconditioned_50000_matched_20261024\\first_best.pt"
+  },
+  "configuration": {
+    "scale": 0.2647966452702405,
+    "batch_size": 40,
+    "conditional_variance_floor_checkpoint_normalized": 0.0001,
+    "decision_threshold": 0.5,
+    "site_damping": 1.0,
+    "ep": {
+      "iterations": 600,
+      "damping": 0.2,
+      "min_iterations": 60,
+      "convergence_tolerance": 0.0005,
+      "convergence_patience": 5,
+      "variance_fraction_floor": 1e-06,
+      "variance_fraction_ceiling": 0.999999,
+      "covariance_mode": "isotropic",
+      "activity_convergence_tolerance": 0.001,
+      "raw_site_residual_tolerance": 0.1,
+      "activity_weight_residual_tolerance": 0.001,
+      "decision_stability_window": 10,
+      "activity_stopping_reference": "smoothed"
+    },
+    "initialization": {
+      "kind": "activity_prior_times_training_power",
+      "normalized_training_second_moment": 1.0004404181394917,
+      "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+    },
+    "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+    "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+    "first_checkpoint": "result/runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt",
+    "first_checkpoint_sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+    "second_checkpoint": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/second/second_best.pt",
+    "second_checkpoint_sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5",
+    "schema": "full-channel-score-message-passing-v1",
+    "implementation": "full_score",
+    "activity_evidence": "classifier",
+    "evidence_checkpoint": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+    "evidence_checkpoint_sha256": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d"
+  },
+  "cases": [
+    {
+      "scene": 14,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 14,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\881a8fa4684863aca9cb5930e2beb539b2801e83193b699255960384c7344dff.json",
+        "result_sha256": "b19ab2c3bbc442c9f4623af311d5afa2df6b5941353477f31bbc64243e7cc80f",
+        "compact_sha256": "d16dd28201e658696a409bab52feeba150b7d2b8453a6a82680f9401f1cf2b2b",
+        "record_sha256": "937c8928a80d038bdc71faa45b9dcceb186b22e077bfac75b31340de712a3f64"
+      },
+      "input": {
+        "scene": 14,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100015\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "ba548eb25045b13ffe95fba1b9e23eeedb02863e89e11f60072e2eb5381908e7"
+      }
+    },
+    {
+      "scene": 14,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 14,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\1a1d6c5639208d95893b27b95fa4ebc9dfc12f94e8d4dd73e2776b2c2c91368b.json",
+        "result_sha256": "58e50795c1b59c1b8231e09533a9366ffb732d8461f45d4bf169e5de9d85ab2b",
+        "compact_sha256": "9daa7c228ae6303810e20de69a3f91286f83d05fdcaa6c26a6c94b945ce712d4",
+        "record_sha256": "851364e1d94609812a2344f636238bd6c25258287d273c4f8fc74d8a3dd9a1cd"
+      },
+      "input": {
+        "scene": 14,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100015\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "8f3676aaf68a871daed093473ec172581cbb32b1a3e0ac1ee00b89d9f8ea6511"
+      }
+    },
+    {
+      "scene": 97,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 97,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\5c28f7bc1272d6176df5214d18668b921316769cdc9872352af3bc8d191c7665.json",
+        "result_sha256": "ac2259dec077b1f1834c223da9f9962f69f27a2b39b7d5f107355df57baea14b",
+        "compact_sha256": "1a797fc3b871eae813de0f1f7ceb803ddae2a4c16e9846618b4ce0bdc5f09c1b",
+        "record_sha256": "e3f3cfac10fda397c8ea81a4ab3755885b7003497a28c788eb2485237ef314e7"
+      },
+      "input": {
+        "scene": 97,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100098\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "c3e0b7ed94e88a8829b30789425ca02fb439dee9bae9095652dc66c84d60fc73"
+      }
+    },
+    {
+      "scene": 97,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 97,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\2cb732583b3b575e8e28b3f0c01e26b5beff7724d65553c56dd8e7c7730967f2.json",
+        "result_sha256": "62a72b9f90fb4aa274f727b0fb407a76499120b4ac0aa63915620072358e2570",
+        "compact_sha256": "70d5a6dd5a32a884649ba92905c5a1380f7ad9d91c45440c41dc0e089547c1b1",
+        "record_sha256": "f8899f4fe169e6c2f0f59583a78bdd773003ea3374c8ee1d9c5c87a73aab2264"
+      },
+      "input": {
+        "scene": 97,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100098\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "eef0f4c387230177f028e2021ccce44f94e01b0a0d8fe339b0a3cea54400c9b9"
+      }
+    },
+    {
+      "scene": 593,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 593,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\025bf7af0fc39f2ce8129fa2fcd8021dc4fe48193233abcf8c897011f79af129.json",
+        "result_sha256": "396b38b51029bc798d47cacdf55aeaf686428f691aa85ee000af97831b9478ef",
+        "compact_sha256": "01f3f8d681584b6562d8c5fbfbcac5fc257f797e07bb889da107890e583aa1c1",
+        "record_sha256": "b5634d7a0c4aad76c869459f5bb71875e8759067babc1b40e2368eedba75fe9a"
+      },
+      "input": {
+        "scene": 593,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100594\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "b96e01710348b0f7558f017034fa51cf1efdaf923c9e9646794696cb6282fdb6"
+      }
+    },
+    {
+      "scene": 593,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 593,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\edde9093059ae17f1517eb0ddb89ce6f00b6a6e973ec6789a8a9b48608727aa1.json",
+        "result_sha256": "772db46ee204b1902da6f7c387b57047ba0818c9da9f4610bda57fba6c83f6f6",
+        "compact_sha256": "a47d72d7285b2060c5c75025261d49f4105aec658384f5c70fe4bf138feaf41b",
+        "record_sha256": "47e4b12f641c6b96f8fe02232fdfcdd09920213be0b950acc0d8b38e823ac33b"
+      },
+      "input": {
+        "scene": 593,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100594\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "f1855961873a066e218e03a90b16bf1fdd5466e58a32ae230dc83506a23e49d5"
+      }
+    },
+    {
+      "scene": 739,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 739,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\70bdab1d974462061d5b42d0c96b93e957af141e8bfe84f40c38b1a9e7b59c56.json",
+        "result_sha256": "2fd5d4bc249babc9877dc408fdd0b8dbb21a1e36e1657a5c8cb1542b8249c5b0",
+        "compact_sha256": "70bb3251076a4b8ea4dcf84683ef3578c67d162f8378ff4a1f048b5ec30dc92c",
+        "record_sha256": "92eb988e1312ac7777a91afc13e5179324c9fdcbdc4a9b60b2bebb5bf4789513"
+      },
+      "input": {
+        "scene": 739,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100740\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "63b91c11d906328c9d9f755d1ab949294deb8dadc469194499b3746357539f8a"
+      }
+    },
+    {
+      "scene": 739,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 739,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\0f2f336d74ff8ff2634fcc0ea415a3e23e5e6487b0697e6165270dd92b5729f4.json",
+        "result_sha256": "1db3e67752da6e040334f6bd20bdb8d0d0fb3722095187536cd4660329dfea4d",
+        "compact_sha256": "07a106c21df5f3b1c4da624ffcc1f76a462374c805a84f75a5038e6c7828a85c",
+        "record_sha256": "b6e0c1c553b08a5a201714277ace07c4d085f33e5b8adc1298da882fafdbda8d"
+      },
+      "input": {
+        "scene": 739,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100740\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "db133cfa096a4559d5bfcc52a1615792a593df668ddc4b0ad49cd9147bcb7f32"
+      }
+    }
+  ],
+  "scene_selection": {
+    "source_uniform_scenes": [
+      14,
+      21,
+      59,
+      97,
+      305,
+      446,
+      593,
+      659,
+      729,
+      739,
+      925,
+      978
+    ],
+    "indices": [
+      0,
+      3,
+      6,
+      9
+    ],
+    "selected": [
+      14,
+      97,
+      593,
+      739
+    ],
+    "selection_uses_new_outcomes": false
+  },
+  "methods": [
+    "old_native",
+    "new_I",
+    "new_C"
+  ],
+  "weights": [
+    0.2,
+    0.4,
+    0.6
+  ],
+  "iterations": 120,
+  "training_budget": {
+    "old_epoch": 200,
+    "new_epoch": 92
+  },
+  "variance": {
+    "method": "fixed Rademacher central difference of complete conditional mean",
+    "formula": "tau=tr(J_D Sigma)/4096",
+    "epsilon": 0.01,
+    "probes": 1,
+    "probe_seed": 2026102407,
+    "held_fixed": "C and its eigensystem during derivative",
+    "working_model_only": true
+  },
+  "batch_size": 40,
+  "torch_threads": 2,
+  "hard_timeout_seconds": 3600,
+  "measurement": "Each arm runs 120 fixed iterations. Record original native stopping condition, active-user denoising and joint NMSE, all-user NMSE, AER, misses and false alarms at every iteration.",
+  "noise": "Known phase, observation-estimated noise; same as saved query diagnostic.",
+  "controls": "Only ep.damping and candidate mean/variance adapter change; classifier, activity threshold, site algebra and scalar feedback projection remain unchanged.",
+  "limitations": [
+    "Small reused development sample; not an independent 1000-scene confirmation.",
+    "Old native arm uses its trained second network; new arms use matched Jacobian variance. Cross-model effects include this interface change; within-model damping comparison is controlled.",
+    "Classifier is frozen from old AWGN training and receives new conditional mean.",
+    "C is linearly interpolated working covariance, not the true covariance of temporally correlated errors.",
+    "Feedback and activity site still use original scalar variance projection; this is not full D-GEC.",
+    "Single fixed random probe; finite differences and finite network may give imperfect or negative variance; original pooling/floor/rejection rules are retained and counted.",
+    "Concurrent training and numerical derivative overhead make wall times descriptive, not isolated deployment timing."
+  ],
+  "source_iteration_sha256": "6c65eb1fe93a917ced07718cd85e358d2fb3e99472a22720df9999b4e6c7fe12",
+  "protected_sha256": {
+    "D:\\afdm-gfra\\FINAL.json": "758534b08e7eaae7f63a540f0ca51d8f3bd8d7ac778477d7916676a646a4672a",
+    "D:\\afdm-gfra\\MAINLINE.json": "2ad0bb19de70a3c4fa64ad70efdf8b10c1152971257fc12f035589bea86aaf0c",
+    "D:\\afdm-gfra\\src\\configs\\final\\STMP.json": "314f49447fa05e5bf10672008851be4e1959c3362529e479fde63f353964195a"
+  },
+  "code_sha256": {
+    "D:\\afdm-gfra\\result\\channel_denoising\\data\\closed_loop_damping_20261024\\run.py": "940817ee60aab2c678eb7973586c386dc48356f91eaa035042331f3305804b01",
+    "D:\\afdm-gfra\\result\\channel_denoising\\data\\closed_loop_damping_20261024\\interface.py": "6ee91528bd1df85814a925321ba7defb0ed6bf3fe2adfdc1894d90bc29be2c1b",
+    "D:\\afdm-gfra\\result\\channel_denoising\\data\\closed_loop_damping_20261024\\iterations_snapshot.py": "f0fc65e51935dece7830ce0caf7a9800bf495a45db575ddbc0977bbc50fd079e"
+  }
+}

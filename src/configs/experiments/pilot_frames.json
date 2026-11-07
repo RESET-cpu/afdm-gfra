@@ -1,0 +1,27 @@
+{
+  "schema": "afdm-experiment-v1",
+  "experiment": "pilot_frames",
+  "methods": [
+    "GP_MP",
+    "STMP",
+    "offgrid_sbl",
+    "gnn",
+    "gamp",
+    "somp"
+  ],
+  "scenes": 500,
+  "timing_repeats": 1,
+  "reference_method": "GP_MP",
+  "include_stmp": true,
+  "execution_status": "READY",
+  "values": [
+    8,
+    16,
+    24,
+    32,
+    40,
+    48
+  ],
+  "phase_mode": "known",
+  "noise_mode": "estimated"
+}

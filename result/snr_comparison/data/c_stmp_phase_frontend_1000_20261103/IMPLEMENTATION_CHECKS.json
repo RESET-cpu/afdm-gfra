@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "scope": "Startup harness preparation only; no claim of 6000-input completion or performance success",
+  "runner": "AST parse, imports, frozen CPU model loading without inference, independent read-only review",
+  "report": "AST/import, user-error swaps, pooled-energy NMSE, nonconverged retention, q=0 exclusion, incomplete coverage rejects completion, historical scene0 known/selected rescoring",
+  "report_review": "Delegated verification plus root source review; same model family",
+  "prepared": {
+    "status": "PASS",
+    "inputs": 6000,
+    "known_references": 6000,
+    "selected_references": 3000,
+    "source_assets": 140,
+    "prior_dependencies": 75,
+    "full_array_hash_audit": "Inputs and new outputs per case; saved reference arrays at final report; preparation checks reference metadata and identity",
+    "native_free_bytes": 369213046784
+  }
+}

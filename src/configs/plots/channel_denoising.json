@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "experiment": "channel_denoising",
+  "input": "../../../result/channel_denoising/data/colored_first_500_20261025_v2",
+  "output": "../../../result/channel_denoising/figures/narrow_paper_20261026",
+  "selection": {
+    "methods": [
+      "proposed",
+      "pretrained_colored_first",
+      "noisy",
+      "gaussian",
+      "genie_bound",
+      "offgrid_sbl",
+      "gnn",
+      "gamp",
+      "somp"
+    ],
+    "conditions": {},
+    "scenes": {},
+    "per_scene": null
+  },
+  "labels": {
+    "proposed": "Score-based denoiser (AWGN)",
+    "pretrained_colored_first": "Score-based denoiser (colored)"
+  },
+  "styles": {
+    "proposed": {
+      "markersize": 3.5,
+      "markeredgewidth": 0.7,
+      "linewidth": 0.9
+    },
+    "pretrained_colored_first": {
+      "markersize": 3.5,
+      "markeredgewidth": 0.7,
+      "linewidth": 0.9
+    },
+    "noisy": {
+      "markersize": 3.5,
+      "markeredgewidth": 0.7,
+      "linewidth": 0.65
+    },
+    "gaussian": {
+      "markersize": 3.5,
+      "markeredgewidth": 0.7,
+      "linewidth": 0.65
+    },
+    "genie_bound": {
+      "markersize": 3.5,
+      "markeredgewidth": 0.7,
+      "linewidth": 0.65
+    },
+    "offgrid_sbl": {
+      "markersize": 3.5,
+      "markeredgewidth": 0.7,
+      "linewidth": 0.65
+    },
+    "gnn": {
+      "markersize": 3.5,
+      "markeredgewidth": 0.7,
+      "linewidth": 0.65
+    },
+    "gamp": {
+      "markersize": 3.5,
+      "markeredgewidth": 0.7,
+      "linewidth": 0.65
+    },
+    "somp": {
+      "markersize": 3.5,
+      "markeredgewidth": 0.7,
+      "linewidth": 0.65
+    }
+  },
+  "plot": {
+    "x": null,
+    "metrics": null,
+    "facet": null,
+    "facet_order": null,
+    "panels": [
+      "combined"
+    ],
+    "title": "",
+    "show_panel_titles": false,
+    "annotate": null,
+    "facet_columns": 2
+  },
+  "axes": {
+    "x": {
+      "limits": [
+        -20,
+        30
+      ],
+      "tickpad": 5
+    },
+    "nmse_db": {
+      "tickpad": 5
+    },
+    "aer": {
+      "scale": "auto",
+      "zeros": "separate"
+    }
+  },
+  "legend": {
+    "show": true,
+    "loc": "upper right",
+    "ncol": 1,
+    "fontsize": 6,
+    "groups": [
+      {
+        "methods": [
+          "proposed",
+          "pretrained_colored_first",
+          "genie_bound"
+        ],
+        "loc": "upper right"
+      },
+      {
+        "methods": [
+          "noisy",
+          "gaussian",
+          "offgrid_sbl",
+          "gnn",
+          "gamp",
+          "somp"
+        ],
+        "loc": "lower left"
+      }
+    ],
+    "labelspacing": 0.1,
+    "handlelength": 2.6,
+    "handletextpad": 0.4,
+    "borderpad": 0.3,
+    "frameon": true,
+    "framealpha": 1,
+    "fancybox": false
+  },
+  "figure": {
+    "panel_size": [
+      3.15,
+      2.6
+    ],
+    "font_family": "Times New Roman",
+    "font_size": 8.5,
+    "grid": true,
+    "minor_grid": true,
+    "major_grid_color": "#909090",
+    "major_grid_alpha": 0.8,
+    "major_grid_linewidth": 0.65,
+    "layout": {
+      "w_pad": 0.041666666666666664,
+      "h_pad": 0.041666666666666664,
+      "wspace": 0.02,
+      "hspace": 0.02
+    }
+  },
+  "export": {
+    "formats": [
+      "pdf",
+      "svg",
+      "png"
+    ],
+    "dpi": 600,
+    "preview_dpi": 180
+  }
+}

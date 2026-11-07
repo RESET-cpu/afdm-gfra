@@ -1,0 +1,61 @@
+{
+  "scale": 0.2647966452702405,
+  "batch_size": 40,
+  "conditional_variance_floor_checkpoint_normalized": 0.0001,
+  "decision_threshold": 0.5,
+  "site_damping": 1.0,
+  "ep": {
+    "iterations": 600,
+    "damping": 0.4,
+    "min_iterations": 60,
+    "convergence_tolerance": 0.0005,
+    "convergence_patience": 5,
+    "variance_fraction_floor": 1e-06,
+    "variance_fraction_ceiling": 0.999999,
+    "covariance_mode": "isotropic",
+    "activity_convergence_tolerance": 0.001,
+    "raw_site_residual_tolerance": 0.1,
+    "activity_weight_residual_tolerance": 0.001,
+    "decision_stability_window": 10,
+    "activity_stopping_reference": "smoothed"
+  },
+  "initialization": {
+    "kind": "activity_prior_times_training_power",
+    "normalized_training_second_moment": 1.0004404181394917,
+    "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+  },
+  "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+  "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+  "first_checkpoint": "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt",
+  "first_checkpoint_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+  "schema": "colored-stmp-candidate-v1",
+  "implementation": "colored_conditional_mean",
+  "activity_evidence": "classifier",
+  "evidence_checkpoint": "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/evidence_best.pt",
+  "evidence_checkpoint_sha256": "2b3bb9a3e48e5304e6e1bcef9af2649ac635c4bdf7f6fa9200e9aa10c4f9251c",
+  "method": "C-STMP",
+  "query_covariance": "vI",
+  "classifier_policy": "retrained_colored_mean_vI",
+  "first_epoch": 200,
+  "classifier_training_binding": {
+    "first_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+    "second_sha256": null
+  },
+  "variance_estimator": {
+    "probes": 1,
+    "epsilon": 0.01,
+    "seed": 2026102407
+  },
+  "limitations": [
+    "Colored-trained first queried at C=vI; scalar feedback.",
+    "Classifier trained from random initialization for 100 epochs on same-prior Gaussian queries using this first mean; receiver residuals need not be Gaussian.",
+    "Derivative trace is a working variance, not calibrated conditional MSE."
+  ],
+  "classifier_training_record": "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/complete.json",
+  "classifier_training_record_sha256": "d054d3df9142314404121077b70f00cabbb2d320533efc7f2fc46f5640056b94",
+  "classifier_training_specification": "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/specification.json",
+  "classifier_training_specification_sha256": "40a0c1ba0914bf30993684bd1a68f9bbd306656a2bbe895b66bf48b57397aa10",
+  "classifier_execution_record": "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/acceleration_20261025/EXECUTION.json",
+  "classifier_execution_record_sha256": "a79bf0df1db884cc06e6435619b77b832d4a77e4af421c179a54de6ec591265b",
+  "classifier_epoch": 90
+}

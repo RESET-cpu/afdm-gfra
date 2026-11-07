@@ -1,0 +1,116 @@
+{
+  "stage": "FAILED",
+  "pid": 39296,
+  "created_unix": 1793966803.9247985,
+  "command": [
+    "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "-m",
+    "evaluation.white_phase_pool_20261106.run",
+    "coordinate"
+  ],
+  "updated_unix": 1793978340.2513819,
+  "planned": 6000,
+  "completed": 4114,
+  "active_workers": 2,
+  "workers": [
+    {
+      "pid": 33376,
+      "created_unix": 1793966916.686656,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_20261106.run",
+        "worker",
+        "--session",
+        "1793966808665593500",
+        "--slot",
+        "0"
+      ],
+      "started_unix": 1793978333.5856428,
+      "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker0\\STATE.json",
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker0\\stdout.log",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker0\\stderr.log",
+      "slot": 0,
+      "position": 4115,
+      "closing": false,
+      "worker_state": {
+        "stage": "BUSY",
+        "position": 4115,
+        "started_unix": 1793978333.5857048,
+        "updated_unix": 1793978333.5857048,
+        "pid": 9532,
+        "created_unix": 1793966916.708892,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_phase_pool_20261106.run",
+          "worker",
+          "--session",
+          "1793966808665593500",
+          "--slot",
+          "0"
+        ]
+      }
+    },
+    {
+      "pid": 34828,
+      "created_unix": 1793966924.420062,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_20261106.run",
+        "worker",
+        "--session",
+        "1793966808665593500",
+        "--slot",
+        "1"
+      ],
+      "started_unix": 1793978325.9772503,
+      "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker1\\STATE.json",
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker1\\stdout.log",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker1\\stderr.log",
+      "slot": 1,
+      "position": 4114,
+      "closing": false,
+      "worker_state": {
+        "stage": "COMPLETE",
+        "position": 4114,
+        "started_unix": 1793978325.9773276,
+        "updated_unix": 1793978340.2455797,
+        "iterations": 60,
+        "rss_gib": 1.784210205078125,
+        "pid": 54328,
+        "created_unix": 1793966924.444007,
+        "command": [
+          "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "evaluation.white_phase_pool_20261106.run",
+          "worker",
+          "--session",
+          "1793966808665593500",
+          "--slot",
+          "1"
+        ]
+      }
+    }
+  ],
+  "failed": 1,
+  "execution_module": "evaluation.white_phase_pool_20261106.run",
+  "session": "1793966808665593500",
+  "max_workers": 3
+}

@@ -1,0 +1,158 @@
+{
+  "schema": "afdm-reused-panel-readout-calibration-v1",
+  "created_utc": "2026-10-23T14:40:43.806446+00:00",
+  "user_authorization": "Reuse scenes 0-499 for fitting, 500-999 for validation/selection, 1000-1999 for final testing; no new inference.",
+  "source_main_plan": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\snr_comparison_passive\\PLAN.json",
+  "source_main_plan_sha256": "254c0f8f72c779dd9253bdbbb787eae2b986c1d6f5fac5bcba83619e401d92a7",
+  "source_runtime_identities": [
+    "98c808e195ec885ff806c809fdc2cd74f1c8badbf5e20f5b14d048d793cb5f2c",
+    "21a4856ac6dd3360c496b2c0dbcd67f5fd7ea31dedec70d7b9777b8291593df7"
+  ],
+  "splits": {
+    "calibration": {
+      "first_scene": 0,
+      "last_scene": 499,
+      "scenes": 500,
+      "base_seed": 202610219100001
+    },
+    "validation": {
+      "first_scene": 500,
+      "last_scene": 999,
+      "scenes": 500,
+      "base_seed": 202610219100501
+    },
+    "test": {
+      "first_scene": 1000,
+      "last_scene": 1999,
+      "scenes": 1000,
+      "base_seed": 202610219101001
+    }
+  },
+  "methods": [
+    "somp",
+    "gamp",
+    "gnn",
+    "offgrid_sbl"
+  ],
+  "conditions": [
+    {
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": -4,
+      "channel_model": "D",
+      "pilot": "dft"
+    },
+    {
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": -2,
+      "channel_model": "D",
+      "pilot": "dft"
+    },
+    {
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft"
+    },
+    {
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 2,
+      "channel_model": "D",
+      "pilot": "dft"
+    },
+    {
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 4,
+      "channel_model": "D",
+      "pilot": "dft"
+    },
+    {
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 6,
+      "channel_model": "D",
+      "pilot": "dft"
+    }
+  ],
+  "snr_nodes_db": [
+    -4,
+    -2,
+    0,
+    2,
+    4,
+    6
+  ],
+  "base_seed": 202610219100001,
+  "phase_mode": "known",
+  "noise_mode": "estimated",
+  "objective": "Total user decision errors, equally weighted six SNRs and physical scenes",
+  "tie_break": [
+    "fewer_false_alarms",
+    "smallest_threshold"
+  ],
+  "binned_dispatch": "Nearest estimated-SNR node, midpoint ties to lower node, out-of-range to endpoint; identical dispatch during fit and validation",
+  "empty_bin_fallback": "Pooled calibration threshold; report empty bin",
+  "selection": "Default fixed. Recommend binned only if upper end of paired physical-scene 98.75% bootstrap CI for pooled binned-minus-fixed AER is below zero. Four method comparisons use Bonferroni adjustment. Per-SNR results descriptive and fully reported.",
+  "bootstrap_replicates": 10000,
+  "bootstrap_seed": 2026102307,
+  "score_arithmetic": "float64 conversion of saved native energy scores before candidate readout",
+  "activity_sampling": "Same frozen generator as main: Bernoulli vectors conditioned on at least one active user; no performance-based filtering",
+  "output_statistics": "AER and miss/false-alarm counts/rates; raw full-channel NMSE is unchanged",
+  "prior_exposure": {
+    "calibration_and_validation": "First 800 scenes previously inspected during diagnostic comparisons; this is a retrospective development split, not blinded validation.",
+    "reserved_test_known_exposed": [
+      1040,
+      1041,
+      1042,
+      1043,
+      1044,
+      1045,
+      1046,
+      1047,
+      1048,
+      1049,
+      1050,
+      1051,
+      1052,
+      1053,
+      1054,
+      1055,
+      1056,
+      1057
+    ],
+    "source": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\PRIOR_EXPOSURE.json",
+    "source_sha256": "97776ba01bbf1299dbde8a4eb28c06fbaab6e6db5af4f5f5c1a7d84766bdd8d1",
+    "scope": "Seed occurrences in existing candidate ROWS.json files; lower bound, not an exhaustive audit of every past evaluation",
+    "interpretation": "Retain all fixed scenes. Test scenes are excluded from this threshold fit/selection, but the full reserved set is not entirely historically unseen."
+  },
+  "inference_performed": false,
+  "training": false,
+  "main_experiment_mutation": false,
+  "abandoned_independent_run": {
+    "path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_calibration_20261023",
+    "status": "STOPPED_BY_REQUEST",
+    "outputs_retained": true,
+    "used_in_this_calibration": false
+  },
+  "source_sha256": {
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_calibration_reuse1000_20261023\\run.py": "7571f3dfdafd9bf3b95226565eb9154e7fdf011f291ee9834dc866a2e14895b9",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_calibration_reuse1000_20261023\\test_reuse.py": "d4a741b113d332e778ada11245b588e23a41a127dd6752bb05e744e95ce984e3",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_calibration_20261023\\analysis.py": "ee844b5dd9676f968353c446f43bf1f2904c298348e312df9fd78df6a07e70c2",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_calibration_20261023\\PLAN.json": "4e1db6667ca58915ce31f369926f29a2c9b1d7f5a90e0de55872c674adb14996",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\candidates\\baseline_readout_20261023\\readout.py": "864a25c7cac57f3673d94ce2e3ad99b2d28690a37625db9f9a53d7d4c8efee6b",
+    "D:\\afdm-gfra\\src\\algorithm\\baseline\\_common.py": "8a2cef853e42d0363b6e846ce07ef34d1f1b38423b2e9de08a618983a5f883a8",
+    "D:\\afdm-gfra\\src\\utils.py": "2af8cfccf251817ac389b5777735f1dce18d5f352a2bfc14f518cce370964200",
+    "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\PRIOR_EXPOSURE.json": "97776ba01bbf1299dbde8a4eb28c06fbaab6e6db5af4f5f5c1a7d84766bdd8d1"
+  },
+  "final_test_method": "Use the same scene IDs 1000-1999 for STMP and all four calibrated baselines; no threshold fitting or policy selection from test outcomes."
+}

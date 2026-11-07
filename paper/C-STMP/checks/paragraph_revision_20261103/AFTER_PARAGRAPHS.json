@@ -1,0 +1,299 @@
+[
+  {
+    "id": "III-01",
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 6,
+    "text": "Figure~\\ref{fig:receiver-structure} represents the posterior in\n\\eqref{eq:working-posterior}.\nFollowing the turbo message-passing framework in \\cite{cai2026}, the receiver\niterates between linear estimation and joint denoising.\nInformation is exchanged between the two estimators through Gaussian\nextrinsic messages based on expectation propagation \\cite{minka2001}.",
+    "before": "III-01",
+    "sources": "Cai III, S3.p1, PDF p.5",
+    "note": "框架与两模块交换；沿用原段任务。"
+  },
+  {
+    "id": "III-02",
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 27,
+    "text": "The linear estimator receives a Gaussian message from joint denoising.\nThis message has mean matrix $\\mathbf X^{\\rm pri}\\in\\mathbb C^{KN\\times MN}$\nand per-column covariance $\\gamma\\I_{KN}$, with $\\gamma>0$.\nFor each column, the product of this message and the likelihood in\n\\eqref{eq:working-posterior} gives a Gaussian posterior.\nThe posterior mean matrix and per-column covariance are given by\n\\cite[Sec.~III-A]{cai2026}, \\cite[eq.~(15c)]{ma2017}:\n\\begin{align}\n \\mathbf X_{\\rm L}\n &=\\mathbf X^{\\rm pri}\n +\\gamma\\widehat{\\mathbf A}^{\\mathsf H}\n (\\widehat\\sigma^2\\I_Q+\\gamma\\widehat{\\mathbf A}\\widehat{\\mathbf A}^{\\mathsf H})^{-1}\n (\\mathbf Y-\\widehat{\\mathbf A}\\mathbf X^{\\rm pri}),\n \\label{eq:linear-mean}\\\\\n \\bm\\Sigma_{\\rm L}\n &=(\\gamma^{-1}\\I_{KN}+\\widehat\\sigma^{-2}\\widehat{\\mathbf A}^{\\mathsf H}\\widehat{\\mathbf A})^{-1},\n \\qquad t_{\\rm L}=\\frac{\\tr\\bm\\Sigma_{\\rm L}}{KN}.\n \\label{eq:linear-variance}\n\\end{align}\nThe posterior covariance is approximated by\n$t_{\\rm L}\\I_{KN}$ \\cite{ma2015,cai2026}.",
+    "before": "III-02 + III-03首句",
+    "sources": "Cai III-A, S3.SS1.p1, PDF p.5, (6)–(8)",
+    "note": "标量协方差近似归回后验计算段；矩阵形式为本文模型。"
+  },
+  {
+    "id": "III-03",
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 49,
+    "text": "The extrinsic message is obtained by dividing this Gaussian approximation\nby the incoming message \\cite{minka2001}.\nIts variance and mean are\n\\begin{equation}\n v_{\\rm L}=(t_{\\rm L}^{-1}-\\gamma^{-1})^{-1},\\qquad\n \\mathbf R_{\\rm L}=v_{\\rm L}\n \\left(\\frac{\\mathbf X_{\\rm L}}{t_{\\rm L}}\n       -\\frac{\\mathbf X^{\\rm pri}}{\\gamma}\\right).\n \\label{eq:linear-extrinsic}\n\\end{equation}\nWe rearrange $\\mathbf R_{\\rm L}$ by device and pass the resulting tensors\nto joint denoising with common variance $v_{\\rm L}$.",
+    "before": "III-03余文 + III-04",
+    "sources": "Cai III-A, S3.SS1.p2, PDF pp.5–6, (9)–(11)",
+    "note": "外信息相除、重排、传送放在同段。"
+  },
+  {
+    "id": "III-04",
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 65,
+    "text": "Following \\cite[Sec.~III-B]{cai2026}, we first derive the channel estimate\nunder the active hypothesis and the posterior activity probability, and then\ncombine them to estimate $X_k$.\nLet $R_k$ and $v$ denote the input mean and variance.\nFor the channel tensor $H_k$, we define\n$[\\vect(H_k)]_{mN^2+rN+n}=H_{kmrn}$.\nThis Gaussian input message corresponds to the local observation model\n\\begin{equation}\n \\begin{gathered}\n R_k=\\alpha_k H_k+W_k,\\qquad H_k\\sim q_{\\rm tr},\\\\\n \\vect(W_k)\\sim\\CN(\\mathbf0,v\\I_D),\\qquad D=MN^2.\n \\end{gathered}\n \\label{eq:pseudo-awgn}\n\\end{equation}",
+    "before": "III-05",
+    "sources": "Cai III-B, S3.SS2.p1–p2; III-B1, (20), PDF p.6",
+    "note": "保留已压缩的模块分工和输入模型；仍属多原段适配。"
+  },
+  {
+    "id": "III-05",
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 83,
+    "text": "Under the active hypothesis $\\alpha_k=1$, \\eqref{eq:pseudo-awgn} is an AWGN\nobservation of the channel.\nCombining its likelihood with the prior $q_{\\rm tr}$ gives the posterior distribution $\\pi_v(dH\\mid R)$:\n\\begin{equation}\n \\pi_v(dH\\mid R)\n \\propto\\CN(\\vect(R);\\vect(H),v\\I_D)q_{\\rm tr}(dH).\n \\label{eq:active-channel-posterior}\n\\end{equation}\nThe conditional mean and covariance are\n\\begin{equation}\n \\begin{aligned}\n m(R,v)&=\\int H\\,\\pi_v(dH\\mid R),\\\\\n \\bm\\Sigma_H(R,v)&=\\int \\vect(H-m)\\vect(H-m)^{\\mathsf H}\n                       \\pi_v(dH\\mid R).\n \\end{aligned}\n \\label{eq:conditional-channel-integrals}\n\\end{equation}\nWe denote the approximations to $m(R_k,v)$ and $\\tr\\bm\\Sigma_H(R_k,v)/D$ by\n$\\mu_k$ and $t_k$, respectively.",
+    "before": "III-06",
+    "sources": "Cai III-B1, S3.SS2.SSS1.p1–p3, PDF pp.6–7, (15)–(23)",
+    "note": "保留活跃条件、积分与估计量的紧凑推导，不声称单母段改写。"
+  },
+  {
+    "id": "III-06",
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 106,
+    "text": "Activity detection compares the hypotheses $R_k=W_k$ and $R_k=H_k+W_k$.\nMarginalizing the channel under the active hypothesis yields the likelihood\n$q_{1,v}$, whereas $q_{0,v}$ is the Gaussian noise density under the\ninactive hypothesis:\n\\begin{equation}\n \\begin{aligned}\n q_{1,v}(R)&=\\int\\CN(\\vect(R);\\vect(H),v\\I_D)q_{\\rm tr}(dH),\\\\\n q_{0,v}(R)&=\\CN(\\vect(R);\\mathbf0,v\\I_D).\n \\end{aligned}\n \\label{eq:query-densities}\n\\end{equation}\nWith prior activity probability $\\rho$, Bayes' rule gives\n\\begin{equation}\n p^\\star(R,v)=\\frac{\\rho q_{1,v}(R)}\n {(1-\\rho)q_{0,v}(R)+\\rho q_{1,v}(R)}.\n \\label{eq:local-activity}\n\\end{equation}\nLet $p_k$ denote the approximation to $p^\\star(R_k,v)$ used in the joint\nestimate below.",
+    "before": "III-07",
+    "sources": "Cai III-B2, S3.SS2.SSS2.p1, PDF p.7; Menon §2.1/§4.2",
+    "note": "活动后验原段的任务保留，完整先验积分和密度比为本文替换。"
+  },
+  {
+    "id": "III-07",
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 129,
+    "text": "Under the two activity hypotheses, $X_k$ is either zero or equal to $H_k$.\nApproximating the channel posterior under the active hypothesis by a Gaussian with mean $\\mu_k$\nand covariance $t_k\\I_D$ gives the Bernoulli--Gaussian approximation\n\\cite[Secs.~III-C--III-D]{liu2018}, \\cite[Sec.~III-B]{cai2026}\n\\begin{equation}\n \\begin{aligned}\n \\widetilde q_k(dX_k)&=(1-p_k)\\delta_0(dX_k)\\\\\n &\\quad+p_k\\CN(\\vect(X_k);\\vect(\\mu_k),t_k\\I_D)\\,dX_k,\\\\\n \\widehat X_k&=p_k\\mu_k.\n \\end{aligned}\n \\label{eq:mixture}\n\\end{equation}\nHere $\\delta_0$ denotes the probability measure concentrated at the zero tensor.",
+    "before": "III-08",
+    "sources": "Cai III-B3, S3.SS2.SSS3.p1, PDF p.7, (32)–(38); Liu §III-C/D",
+    "note": "混合分布与均值。"
+  },
+  {
+    "id": "III-08",
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 143,
+    "text": "To compute the posterior covariance across antennas, we rearrange $\\mu_k$ into\n$\\mathbf U_k\\in\\mathbb C^{M\\times N^2}$, with one row for each antenna.\nAveraging over the $N^2$ channel entries per antenna gives\n\\begin{equation}\n \\mathbf C_{X,k}=p_kt_k\\I_M+\n \\frac{p_k(1-p_k)}{N^2}\\mathbf U_k\\mathbf U_k^{\\mathsf H}.\n \\label{eq:joint-spatial-covariance}\n\\end{equation}\nThe scalar posterior variance is then obtained by averaging its trace over\ndevices and antennas:\n\\begin{equation}\n \\begin{aligned}\n \\overline t_X&=\\frac{1}{KM}\\sum_k\\tr\\mathbf C_{X,k}\\\\\n &=\\frac1K\\sum_k\\left[\n p_kt_k+p_k(1-p_k)\\frac{\\norm{\\mu_k}_F^2}{D}\\right].\n \\end{aligned}\n \\label{eq:joint-average-variance}\n\\end{equation}",
+    "before": "III-09 + III-10",
+    "sources": "Cai III-B3, (36)–(38), PDF p.7; 本文空间协方差推导",
+    "note": "保留新增空间协方差段，将取迹平均接回；不是 Cai 同式。"
+  },
+  {
+    "id": "III-09",
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "line": 162,
+    "text": "To form the extrinsic message, we use a Gaussian approximation with mean\n$\\widehat X_k$ and common variance $\\overline t_X$.\nLet $b=\\overline t_X/v$.\nDividing this approximation by the incoming Gaussian message, as in\n\\eqref{eq:linear-extrinsic}, gives\n\\begin{equation}\n \\gamma_{\\rm out}=\\frac{vb}{1-b},\\qquad\n X_{k,\\rm out}=\\frac{\\widehat X_k-bR_k}{1-b}.\n \\label{eq:nonlinear-extrinsic}\n\\end{equation}\nFor $0<b<1$, the extrinsic variance is positive.\nThe output means form $\\mathbf X^{\\rm pri}$, and $\\gamma_{\\rm out}$ is the\ninput variance of the linear estimator in the next iteration.",
+    "before": "III-11 + III-12；删除 III-13",
+    "sources": "Cai III-B3, S3.SS2.SSS3.p2, PDF pp.7–8, (39)–(42)",
+    "note": "相除、正方差条件和下一轮输入同段；删除单独章节指引。"
+  },
+  {
+    "id": "IV-01",
+    "file": "sections/04_generative_priors.tex",
+    "line": 4,
+    "text": "We use score functions to estimate the channel mean and variance in\n\\eqref{eq:conditional-channel-integrals} \\cite[Sec.~IV-A]{cai2026}.\nWe then estimate the density ratio for activity detection in\n\\eqref{eq:local-activity}.",
+    "before": "IV-01",
+    "sources": "Cai IV, S4.p1, PDF p.8; Menon §4.2",
+    "note": "章节引入；分别说明均值/方差与活动概率。"
+  },
+  {
+    "id": "IV-02",
+    "file": "sections/04_generative_priors.tex",
+    "line": 12,
+    "text": "Consider the channel observation under the active hypothesis in\n\\eqref{eq:pseudo-awgn}.\nFor a complex-valued channel sample $H\\sim q_{\\rm tr}$, we stack the\nreal and imaginary parts of $\\vect(H)$ in $\\mathbf h_{\\mathbb\nR}\\in\\mathbb R^{2D}$.\nWe add proper complex Gaussian noise with covariance $\\mathbf C\\succ0$,\nindependently of $H$.\nThe real observation is\n\\begin{equation}\n \\begin{gathered}\n \\mathbf u=\\mathbf h_{\\mathbb R}+\\bm\\Sigma^{1/2}\\bm\\epsilon,\n \\qquad \\bm\\epsilon\\sim\\mathcal N(\\mathbf0,\\I_{2D}),\\\\\n \\bm\\Sigma=\\frac12\n \\begin{bmatrix}\\Re \\mathbf C&-\\Im \\mathbf C\\\\\\Im \\mathbf C&\\Re \\mathbf C\\end{bmatrix}.\n \\end{gathered}\n \\label{eq:colored-query}\n\\end{equation}",
+    "before": "IV-02",
+    "sources": "Cai IV-A, (43), PDF p.8; Shastri III-B, (38), PDF p.8; Dytso (1)–(3)",
+    "note": "一般协方差和复数实数转换为本文适配，保留独立模型段。"
+  },
+  {
+    "id": "IV-03",
+    "file": "sections/04_generative_priors.tex",
+    "line": 30,
+    "text": "At fixed $\\mathbf C$, let $q_{\\bm\\Sigma}^{\\mathbb R}$ denote the density of\n$\\mathbf u$.\nThe conditional mean is given by Tweedie's formula\n\\cite{efron2011,dytso2023}\n\\begin{equation}\n \\mathbf m_{\\mathbb R}(\\mathbf u,\\mathbf C)\n =\\mathbf u+\\bm\\Sigma\\nabla_{\\mathbf u}\n       \\log q_{\\bm\\Sigma}^{\\mathbb R}(\\mathbf u).\n \\label{eq:tweedie-mean}\n\\end{equation}\nwhere $\\nabla_{\\mathbf u}\\log q_{\\bm\\Sigma}^{\\mathbb R}$ is the\nfirst-order score function \\cite{hyvarinen2005}.\nFor $\\mathbf C=v\\I_D$, \\eqref{eq:tweedie-mean} gives the real representation of\nthe conditional mean in \\eqref{eq:conditional-channel-integrals}.",
+    "before": "IV-03 + IV-04",
+    "sources": "Cai IV-A, S4.SS1.p1, (44), PDF p.8; Dytso (3)",
+    "note": "Tweedie 均值、score 定义及白噪声特例同段。"
+  },
+  {
+    "id": "IV-04",
+    "file": "sections/04_generative_priors.tex",
+    "line": 45,
+    "text": "The conditional covariance $\\mathbf P_{\\mathbb\nR}=\\operatorname{Cov}(\\mathbf h_{\\mathbb R} \\mid\\mathbf u,\\mathbf C)$ is\nsimilarly related to the second-order score \\cite{dytso2023},\n\\cite[Sec.~IV-A]{cai2026}:\n\\begin{equation}\n \\mathbf P_{\\mathbb R}\n =\\bm\\Sigma+\\bm\\Sigma\n   \\nabla_{\\mathbf u}^2\\log q_{\\bm\\Sigma}^{\\mathbb R}(\\mathbf u)\n   \\bm\\Sigma.\n \\label{eq:tweedie-covariance}\n\\end{equation}\nHere the second-order score is the Hessian of the log density.",
+    "before": "IV-05",
+    "sources": "Cai IV-A, S4.SS1.p2, (45), PDF p.8; Dytso III, Proposition 1",
+    "note": "二阶 score 与协方差。"
+  },
+  {
+    "id": "IV-05",
+    "file": "sections/04_generative_priors.tex",
+    "line": 61,
+    "text": "Let $S_\\theta(\\mathbf u,\\mathbf C)$ approximate the first-order score, with\ntrainable parameters $\\theta$.\nThe score of $q_{\\bm\\Sigma}^{\\mathbb R}$ is unknown.\nFor the conditional Gaussian density in \\eqref{eq:colored-query}, the score\nis $-\\bm\\Sigma^{-1}(\\mathbf u-\\mathbf h_{\\mathbb R})$.\nDenoising score matching \\cite{vincent2011} therefore uses\n\\begin{equation}\n \\mathcal L_{\\rm DSM}(\\theta)=\n \\E\\left[\\frac{1}{2D}\n \\norm{\\bm\\Sigma^{1/2}\n (S_\\theta(\\mathbf u,\\mathbf C)\n +\\bm\\Sigma^{-1}(\\mathbf u-\\mathbf h_{\\mathbb R}))}^2\\right].\n \\label{eq:denoising-score-objective}\n\\end{equation}\nFor each fixed $\\mathbf C$, this differs from score matching weighted by $\\bm\\Sigma$ by a term independent of $\\theta$.",
+    "before": "IV-06",
+    "sources": "Cai IV-B, S4.SS2.p1, (46)–(48), PDF p.8; Vincent §4.2",
+    "note": "DSM 目标；协方差权重为本稿适配，固定协方差条件保留。"
+  },
+  {
+    "id": "IV-06",
+    "file": "sections/04_generative_priors.tex",
+    "line": 77,
+    "text": "To obtain the channel estimate directly, we parameterize the score as\n$S_\\theta=\\bm\\Sigma^{-1}(f_\\theta-\\mathbf u)$, where $f_\\theta(\\mathbf\nu,\\mathbf C)$ is a denoiser.\nSubstituting this relation into \\eqref{eq:denoising-score-objective}\ngives the training loss\n\\begin{equation}\n \\mathcal L_{\\rm ch}(\\theta)=\n \\E\\left[\\frac{1}{2D}\n \\norm{\\bm\\Sigma^{-1/2}\n       (f_\\theta(\\mathbf u,\\mathbf C)-\\mathbf h_{\\mathbb R})}^2\\right].\n \\label{eq:first-loss}\n\\end{equation}\nThe expectation is taken over the clean channels, perturbation\ncovariances, and Gaussian noise.\nFor each fixed $\\mathbf C$, the conditional mean $\\mathbf m_{\\mathbb R}(\\mathbf\nu,\\mathbf C)$ minimizes this loss over all estimators of $\\mathbf h_{\\mathbb R}$ from $\\mathbf u$.",
+    "before": "IV-07 + IV-08",
+    "sources": "Cai IV-A/B, (44), (48), PDF p.8; Dytso (3); 本文代入推导",
+    "note": "去噪器参数化、损失、期望对象及条件均值最优性同段。"
+  },
+  {
+    "id": "IV-07",
+    "file": "sections/04_generative_priors.tex",
+    "line": 94,
+    "text": "We train the denoiser over a range of noise variances\n\\cite[Sec.~IV-B]{cai2026}.\nFor training with correlated noise \\cite[Sec.~III-B]{shastri2022}, we add\ncolored Gaussian noise with covariance\n$\\mathbf C=v(\\mathbf R_{\\rm a}\\otimes\\I_N\\otimes\\mathbf R_{\\rm c})$\nto clean channel samples and condition the network on $\\mathbf C$.\nThe Kronecker factors follow the antenna--output--input order.\nThe covariance factors and the sampling distribution of $v$ are specified in\nSection~\\ref{sec:training-settings}.",
+    "before": "IV-09",
+    "sources": "Cai IV-B, S4.SS2.p2, (49), PDF pp.8–9; Shastri III-B, PDF pp.8–9",
+    "note": "多个噪声水平接有色训练；Kronecker 分布及网络条件输入为本文设置。"
+  },
+  {
+    "id": "IV-08",
+    "file": "sections/04_generative_priors.tex",
+    "line": 104,
+    "text": "Reshaping the real and imaginary outputs of $f_\\theta$ defines the\ncomplex-valued denoiser $F_\\theta(R,\\mathbf C)$.\nFor the input message in \\eqref{eq:pseudo-awgn}, we evaluate\n$F_\\theta$ at $\\mathbf C=v\\I_D$.\nThe network architecture and preconditioning are given in\nSection~\\ref{sec:network-settings}.",
+    "before": "IV-10",
+    "sources": "Cai Fig.3, PDF p.10; 本文网络输出与输入定义",
+    "note": "保留训练输出接回接收机的操作说明；不把完整句子归为 Cai 原句。"
+  },
+  {
+    "id": "IV-09",
+    "file": "sections/04_generative_priors.tex",
+    "line": 114,
+    "text": "Differentiating \\eqref{eq:tweedie-mean} with respect to $\\mathbf u$ at fixed\n$\\mathbf C$ gives the Jacobian $\\mathbf J_m=\\partial\\mathbf\nm_{\\mathbb R}/\\partial\\mathbf u =\\I_{2D}+\\bm\\Sigma\\nabla_{\\mathbf u}^2 \\log\nq_{\\bm\\Sigma}^{\\mathbb R}(\\mathbf u)$.\nRight-multiplying by $\\bm\\Sigma$ and using \\eqref{eq:tweedie-covariance}, we\nobtain \\cite[Prop.~1]{dytso2023}\n\\begin{equation}\n \\mathbf P_{\\mathbb R}=\\mathbf J_m\\bm\\Sigma,\\qquad\n \\tau^\\star=\\frac1D\\tr(\\mathbf J_m\\bm\\Sigma).\n \\label{eq:mean-derivative-variance}\n\\end{equation}\nHere $\\tau^\\star$ is the average conditional variance per complex coordinate.\nAt $\\mathbf C=v\\I_D$, this reduces to $\\tau^\\star=v\\operatorname{div}\\mathbf\nm_{\\mathbb R}/(2D)$.",
+    "before": "IV-11 + IV-12",
+    "sources": "Dytso III, Proposition 1, (17), PDF p.3; Cai IV-C, (53), PDF p.9",
+    "note": "Jacobian、条件协方差及白噪声迹公式同段；注意 Jacobian 转置约定。"
+  },
+  {
+    "id": "IV-10",
+    "file": "sections/04_generative_priors.tex",
+    "line": 129,
+    "text": "We approximate the derivatives by finite differences and estimate the\ntrace by Monte Carlo averaging \\cite{metzler2016}, with $f_\\theta$ in\nplace of the conditional mean.\nLet $\\mathbf z_\\ell$ be independent random sign vectors with $\\E[\\mathbf\nz_\\ell\\mathbf z_\\ell^{\\mathsf T}]=\\I_{2D}$, and define $\\mathbf\nw_\\ell=\\bm\\Sigma^{1/2}\\mathbf z_\\ell$.\nUsing $L_z$ random directions and a finite-difference step\n$\\delta_{\\rm FD}>0$, the resulting estimate is\n\\begin{equation}\n \\begin{aligned}\n \\Delta_\\ell f_\\theta\n &=f_\\theta(\\mathbf u+\\delta_{\\rm FD}\\mathbf w_\\ell,\\mathbf C)\n   -f_\\theta(\\mathbf u-\\delta_{\\rm FD}\\mathbf w_\\ell,\\mathbf C),\\\\\n \\widehat\\tau_\\theta(R,\\mathbf C)\n &=\\frac{1}{2\\delta_{\\rm FD} D L_z}\\sum_{\\ell=1}^{L_z}\n       \\mathbf w_\\ell^{\\mathsf T}\\Delta_\\ell f_\\theta.\n \\end{aligned}\n \\label{eq:derivative-trace}\n\\end{equation}\nThe finite-difference settings are given in Section~\\ref{sec:receiver-settings}.",
+    "before": "IV-13 + IV-14",
+    "sources": "Metzler 作者稿 V-B, PDF p.15",
+    "note": "有限差分、Monte Carlo 平均及参数指引同段；中心差分/随机符号/权重为本文设置。"
+  },
+  {
+    "id": "IV-11",
+    "file": "sections/04_generative_priors.tex",
+    "line": 153,
+    "text": "Taking the log odds of \\eqref{eq:local-activity} gives\n\\begin{equation}\n \\log\\frac{p^\\star(R,v)}{1-p^\\star(R,v)}\n =\\log\\frac{\\rho}{1-\\rho}\n  +\\log\\frac{q_{1,v}(R)}{q_{0,v}(R)}.\n \\label{eq:activity-log-odds}\n\\end{equation}\nEvaluating $q_{1,v}$ requires the channel integral in\n\\eqref{eq:query-densities}.\nWe estimate the ratio $q_{1,v}/q_{0,v}$ by binary classification\n\\cite{menon2016}.",
+    "before": "IV-15",
+    "sources": "Menon §2.1–2.2, PDF p.2; §4.2, (16)–(17), PDF p.3",
+    "note": "Bayes log odds 接密度比估计任务。"
+  },
+  {
+    "id": "IV-12",
+    "file": "sections/04_generative_priors.tex",
+    "line": 165,
+    "text": "The training data contain two classes with equal prior probability,\n$\\Pr(a=1)=\\pi_{\\rm tr}=1/2$, where $a\\in\\{0,1\\}$.\nFor $a=1$, the observation is $R=H+W$ with $H\\sim q_{\\rm tr}$; for $a=0$, it\nis $R=W$.\nThe noise satisfies $\\vect(W)\\sim\\CN(\\mathbf0,v\\I_D)$ independently of $H$,\nand both classes use the same sampling distribution of $v$.\nWe train the classifier with parameters $\\phi$ by minimizing the\nbinary cross-entropy loss\n\\begin{equation}\n \\begin{gathered}\n \\mathcal L_{\\rm act}(\\phi)=\n \\E[\\log(1+e^{z_\\phi})-a z_\\phi],\\\\\n z_\\phi=z_\\phi(R,v,F_\\theta(R,v\\I_D)).\n \\end{gathered}\n \\label{eq:classifier-loss}\n\\end{equation}\nFor the training distribution, the minimizer of the expected loss over\nall functions of $(R,v)$ is\n\\begin{equation}\n z^\\star(R,v)=\\logit\\pi_{\\rm tr}\n       +\\log\\frac{q_{1,v}(R)}{q_{0,v}(R)}.\n \\label{eq:ideal-logit}\n\\end{equation}",
+    "before": "IV-16 + IV-17",
+    "sources": "Menon §2.1–2.2, PDF p.2; Shen IV-A2, (60)–(61), PDF p.11",
+    "note": "两类样本、交叉熵及理想函数最优解同段；不移植 Shen 的符号检测标签。"
+  },
+  {
+    "id": "IV-13",
+    "file": "sections/04_generative_priors.tex",
+    "line": 189,
+    "text": "We estimate the log density ratio by subtracting $\\logit\\pi_{\\rm tr}$ from\nthe classifier output \\cite[Sec.~4.2]{menon2016}.\nWith $F_k=F_\\theta(R_k,v\\I_D)$, inserting this estimate into\n\\eqref{eq:activity-log-odds} gives the activity probability\n\\begin{equation}\n \\begin{gathered}\n \\ell_k=z_\\phi(R_k,v,F_k)-\\logit\\pi_{\\rm tr},\\\\\n p_k=\\sigmoid(\\logit\\rho+\\ell_k),\n \\end{gathered}\n \\label{eq:activity-probability}\n\\end{equation}\nwhere $\\logit a=\\log[a/(1-a)]$ and $\\sigmoid b=(1+e^{-b})^{-1}$.",
+    "before": "IV-18",
+    "sources": "Menon §4.2, (16)–(17), PDF p.3; 本文 Bayes 公式",
+    "note": "减训练先验 log odds，再代入实际活动先验；删除式后重复强调。"
+  },
+  {
+    "id": "V-01",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 7,
+    "text": "GP-MP-CCD combines the multi-frame linear estimation (MFLE) in\nSection~\\ref{sec:linear-estimation} with generative-prior-aided joint\ndenoising (GPJD) using the estimators in Section~\\ref{sec:learning}.\nFig.~\\ref{fig:learned-receiver} shows their message exchange.",
+    "before": "V-01",
+    "sources": "Cai V-A, S5.SS1.p2, PDF p.9",
+    "note": "保留算法总览先行的写法。"
+  },
+  {
+    "id": "V-02",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 22,
+    "text": "For a Gaussian input $(R_k,v)$, the denoiser gives\n$F_k=F_\\theta(R_k,v\\I_D)$, and the classifier gives $p_k$ in\n\\eqref{eq:activity-probability}. With\n$\\widehat\\tau_k=\\widehat\\tau_\\theta(R_k,v\\I_D)$ from\n\\eqref{eq:derivative-trace}, we use the common variance estimate\n\\begin{equation}\n \\tau_{\\rm raw}=\\frac1K\\sum_{k=1}^K\\widehat\\tau_k,\\qquad\n \\tau^{\\rm post}=\\max\\{\\tau_{\\rm raw},\\tau_{\\min}\\}.\n \\label{eq:pooled-variance}\n\\end{equation}\nHere $\\tau_{\\min}>0$ is a numerical floor.",
+    "before": "V-02",
+    "sources": "Cai V-A, S5.SS1.p1, (55)–(56), PDF p.9; 本文估计器",
+    "note": "网络输出及共用方差；下限和分类器为本稿设置。"
+  },
+  {
+    "id": "V-03",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 34,
+    "text": "The site approximation to the channel prior takes the form\n$\\CN(\\vect(H_k);\\vect(E_k),c_k\\I_D)$ \\cite[Sec.~2.1]{vehtari2020}.\nDividing the Gaussian posterior approximation with mean $F_k$ and variance\n$\\tau^{\\rm post}$ by the input likelihood gives\n\\begin{equation}\n c_k=((\\tau^{\\rm post})^{-1}-v^{-1})^{-1},\\qquad\n E_k=c_k\\left(\\frac{F_k}{\\tau^{\\rm post}}-\\frac{R_k}{v}\\right).\n \\label{eq:site-update}\n\\end{equation}\nMultiplying this site by the current Gaussian likelihood gives the\nconditional channel mean and variance\n\\begin{equation}\n t_k=\\frac{c_kv}{c_k+v},\\qquad\n \\mu_k=\\frac{c_kR_k+vE_k}{c_k+v}.\n \\label{eq:conditional-moments}\n\\end{equation}",
+    "before": "V-03 + V-04",
+    "sources": "Cai III-B1/III-B3, (24)–(27)/(33)–(34), PDF p.7; Vehtari §2.1, pp.5–6",
+    "note": "合并 site 相除和条件统计量恢复；保留第五章实现位置，不称与 Cai 同章逐段一致。"
+  },
+  {
+    "id": "V-04",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 51,
+    "text": "Algorithm~1 combines these estimates with $p_k$ and returns Gaussian\nextrinsic messages to MFLE. Estimated phases are refined as in\nAppendix~\\ref{app:phase-refinement}. After normalization,\nwe initialize $\\mathbf X^{{\\rm pri},(0)}=\\mathbf0$,\n$\\gamma^{(0)}=\\rho\\widehat P_H$, $E_k=0$, $c_k=1$, and\n$\\kappa^{(1)}=1$, where $\\widehat P_H$ is the average\nof $\\norm{H}_F^2/D$ over the training channels.\nStopping checks and numerical settings are given in\nSection~\\ref{sec:simulation-settings}.",
+    "before": "V-05 + V-11设置指引",
+    "sources": "Cai V-A/V-B2, S5.SS1.p2/S5.SS2.SSS2.p2, PDF pp.9–10; 本文初始化",
+    "note": "算法调用、初始化及设置指引集中。"
+  },
+  {
+    "id": "V-05",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 106,
+    "text": "The procedure in Appendix~\\ref{app:frontend} estimates the phases used to form\n$\\widehat{\\mathbf A}$, which is fixed between phase refinements.\nFor noise-variance estimation, let\n$\\mathbf y_{qr}=(Y_{q0r},\\ldots,Y_{q,M-1,r})^{\\mathsf T}$ and\n$N_{\\rm s}=QN>M\\geq2$. The spatial sample covariance and noise-variance estimate are\n\\begin{equation}\n \\widehat{\\mathbf R}_y=\\frac1{N_{\\rm s}}\\sum_{q,r}\n \\mathbf y_{qr}\\mathbf y_{qr}^{\\mathsf H},\\qquad\n \\widehat\\sigma^2=\\frac{\\sum_{i=\\widehat r_{\\rm s}+1}^{M}\\lambda_i}\n {M-\\widehat r_{\\rm s}}.\n \\label{eq:noise-estimation}\n\\end{equation}\nHere $\\lambda_1\\geq\\cdots\\geq\\lambda_M$ are the covariance eigenvalues,\nand $\\widehat r_{\\rm s}$ is selected by the Wax--Kailath minimum\ndescription length (MDL) criterion \\cite{wax1985,nadakuditi2008}.\nThis estimator assumes a low-rank signal covariance and spatially white\nnoise. We keep the estimate fixed during MP.",
+    "before": "V-06",
+    "sources": "Wax–Kailath; Nadakuditi–Edelman II-A, (5)–(7), pp.2626–2627; 本文附录 A",
+    "note": "未知参数估计是新增任务；必要低秩/白噪声条件保留。"
+  },
+  {
+    "id": "V-06",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 124,
+    "text": "Minimizing the expected Gaussian negative log likelihood over the input\nvariance $v$, with the current approximate posterior \\eqref{eq:mixture}\nheld fixed \\cite[Sec.~III-A]{vila2013}, gives\n\\begin{equation}\n v_{\\rm tar}=\\frac{1}{KD}\\sum_{k=1}^K\n \\norm{R_k-\\widehat X_k}_F^2+\\overline t_X.\n \\label{eq:query-variance-target}\n\\end{equation}\nAt iteration $i$, we use $v^{(i)}=\\kappa^{(i)}\\bar v^{(i)}$, where $\\bar\nv^{(i)}$ denotes the damped MFLE variance.\nWith damping factor $\\eta\\in(0,1]$, the updated scaling factor is\n\\begin{equation}\n \\kappa^{(i+1)}=(1-\\eta)\\kappa^{(i)}\n       +\\eta\\frac{v_{\\rm tar}^{(i)}}{\\bar v^{(i)}}.\n \\label{eq:query-variance-update}\n\\end{equation}",
+    "before": "V-07 + V-08",
+    "sources": "Vila–Schniter III-A, (24)–(27); Cai V-B1 阻尼名称",
+    "note": "固定后验的方差目标与实际缩放更新同段；更新对象为本稿输入方差。"
+  },
+  {
+    "id": "V-07",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 141,
+    "text": "We normalize $(H_k,X_k,\\mathbf Y,\\mathbf W)$ by the root mean square $s$\nof the training-channel entries and the noise variance by $s^2$.\nWe retain the same symbols for the normalized quantities.",
+    "before": "V-09归一化句",
+    "sources": "Cai V-B2, PDF p.10; 本文训练全局 RMS 设置",
+    "note": "归一化独立成段；不用 Cai 每样本归一化替换本文全局尺度。"
+  },
+  {
+    "id": "V-08",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 145,
+    "text": "For $i\\geq2$, the MFLE output is damped as \\cite[Sec.~V-B1]{cai2026}\n\\begin{equation}\n \\begin{aligned}\n R_k^{(i)}&=(1-\\eta)R_k^{(i-1)}+\\eta R_{{\\rm L},k}^{(i)},\\\\\n \\bar v^{(i)}&=(1-\\eta)\\bar v^{(i-1)}+\\eta v_{\\rm L}^{(i)}.\n \\end{aligned}\n \\label{eq:input-damping}\n\\end{equation}\nIn the feedback update \\eqref{eq:nonlinear-extrinsic}, we replace\n$b=\\overline t_X/v$ by $b=\\clip(\\overline t_X/v,\\varepsilon,1-\\varepsilon)$,\nwhere $0<\\varepsilon<1/2$.\nHere $\\clip(x,a,b)=\\min\\{b,\\max\\{a,x\\}\\}$.\nThe feedback is then damped with the same damping factor:\n\\begin{equation}\n \\begin{aligned}\n X_k^{{\\rm pri},(i)}\n &=(1-\\eta)X_k^{{\\rm pri},(i-1)}+\\eta X_{k,\\rm out}^{(i)},\\\\\n \\gamma^{(i)}\n &=(1-\\eta)\\gamma^{(i-1)}+\\eta\\gamma_{\\rm out}^{(i)}.\n \\end{aligned}\n \\label{eq:output-damping}\n\\end{equation}\nThe first input and feedback messages are used without damping.",
+    "before": "V-09阻尼 + V-10 + V-11首句",
+    "sources": "Cai V-B1, S5.SS2.SSS1.p1, (57)–(58), PDF pp.9–10; 本文截断设置",
+    "note": "双向阻尼及首次迭代集中，截断紧邻反馈公式。"
+  },
+  {
+    "id": "V-09",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 172,
+    "text": "With precomputed chirp factors, $L$ AFDM frames require at most\n$LC_{\\rm FFT}(N)+2LN$ complex multiplications\n\\cite[eq.~(16)]{bemani2022}, where $C_{\\rm FFT}(n)$ is the cost of an\n$n$-point FFT or inverse FFT. For the same $LN$ useful symbols,\nrectangular-pulse OTFS without transmit windowing requires\n$NC_{\\rm FFT}(L)$ after cancelling the consecutive DFT and inverse DFT operations\n\\cite{zou2021otfs}.",
+    "before": "V-12",
+    "sources": "Bemani II-B, (16); Zou 作者稿 II-A/B, (1)/(4)/(5)",
+    "note": "波形调制复杂度独立；删除笼统成本说明。"
+  },
+  {
+    "id": "V-10",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 180,
+    "text": "For JADCE with fixed phases and $Q\\leq KN$, the singular value decomposition\n(SVD), $\\widehat{\\mathbf A}=\\mathbf U\\diag(s_1,\\ldots,s_Q)\\mathbf V^{\\mathsf H}$,\nis reused across iterations, where $s_a$ are the singular values.\nThe scalar updates in\n\\eqref{eq:linear-variance}--\\eqref{eq:linear-extrinsic} can be written as\n\\begin{equation}\n f_{\\rm L}=\\frac{1}{KN}\\sum_{a=1}^{Q}\n \\frac{\\gamma s_a^2}{\\widehat\\sigma^2+\\gamma s_a^2},\\qquad\n t_{\\rm L}=\\gamma(1-f_{\\rm L}),\\qquad\n v_{\\rm L}=\\frac{t_{\\rm L}}{f_{\\rm L}}.\n \\label{eq:linear-fraction}\n\\end{equation}\nHere $\\mathbf R_{\\rm L}=\\mathbf X^{\\rm pri} +(\\mathbf X_{\\rm L}-\\mathbf\nX^{\\rm pri})/f_{\\rm L}$.",
+    "before": "V-13 + V-14首句",
+    "sources": "本文线性矩阵公式的 SVD 计算形式；Rangan VAMP III, (11), Algorithm 2, 作者稿 pp.3–4",
+    "note": "独立说明 SVD 复用，外信息表达式接回本段；不是 Cai 的正交导频设计。"
+  },
+  {
+    "id": "V-11",
+    "file": "sections/05_overall_algorithm.tex",
+    "line": 195,
+    "text": "SVD and noise-variance estimation cost $O(KNQ^2)$ and $O(QNM^2+M^3)$\nper block, respectively. Let $C_{\\rm phase}$ denote the phase-search,\nrefinement, and gain-estimation cost in Appendix~\\ref{app:frontend}.\nPer iteration, MFLE transformations cost $O(QKMN^2)$, spatial covariance\noperations cost $O(KM^2N^2)$, and matrix factorizations cost $O(M^3)$.\nLet $C_\\theta,C_\\phi$ denote the per-device denoiser and classifier costs.\nThe $1+2L_z$ denoiser evaluations and one classifier evaluation within the\ntraining interval give the per-iteration complexity\n\\begin{equation}\n \\begin{aligned}\n C_{\\rm iter}=O\\bigl(&QKMN^2+KM^2N^2+M^3\\\\\n &+K[(1+2L_z)C_\\theta+C_\\phi]\\bigr).\n \\end{aligned}\n \\label{eq:iteration-complexity}\n\\end{equation}\nFor $I$ iterations, the total online complexity is\n$O(C_{\\rm phase}+QNM^2+M^3+KNQ^2+I C_{\\rm iter})$.\nHere $C_{\\rm phase}=0$ for known phases; each phase refinement also\nrequires a new $O(KNQ^2)$ SVD. With shared network parameters, the memory requirement\nis $O(QKN+KMN^2+KM^2)$ for the pilot matrix and SVD factors, channel messages, and spatial\ncovariances, excluding parameters and network activations.",
+    "before": "V-14余文 + V-15 + V-16",
+    "sources": "Cai V-C, S5.SS3.p2, PDF p.11; 本文算法运算次数",
+    "note": "单次/全部迭代成本、相位条件与存储连续说明；复杂度公式来自本文实现。"
+  }
+]

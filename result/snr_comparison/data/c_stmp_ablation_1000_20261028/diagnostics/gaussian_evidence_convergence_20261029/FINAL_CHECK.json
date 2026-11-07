@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "created_unix": 1793236956.1734874,
+  "same_experiment_parent": true,
+  "source_and_configuration_files_unchanged": 153,
+  "experiment_state": {
+    "stage": "RUNNING",
+    "pid": 115548,
+    "started_unix": 1793201763.6093514,
+    "updated_unix": 1793236951.007714,
+    "planned": 18000,
+    "completed": 8436,
+    "reused": 73,
+    "completed_by_variant_and_snr": {
+      "gaussian_prior": {
+        "-4": 1000,
+        "-2": 1000,
+        "0": 1000,
+        "2": 1000,
+        "4": 1000,
+        "6": 1000
+      },
+      "gaussian_evidence": {
+        "-4": 144,
+        "-2": 144,
+        "0": 143,
+        "2": 144,
+        "4": 144,
+        "6": 144
+      },
+      "estimated_phase": {
+        "-4": 263,
+        "-2": 262,
+        "0": 262,
+        "2": 262,
+        "4": 262,
+        "6": 262
+      }
+    },
+    "nonconverged": {
+      "gaussian_prior": 841,
+      "gaussian_evidence": 300,
+      "estimated_phase": 15
+    },
+    "failed": 0,
+    "pending": 5,
+    "active_cpu_workers": 0,
+    "active_gpu_workers": 6,
+    "elapsed_seconds": 35187.39839053154,
+    "resource_override": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\acceleration_20261028",
+    "resources": {
+      "created_unix": 1793236951.0037768,
+      "gpu_used_mib": 8407.0,
+      "gpu_total_mib": 16303.0,
+      "gpu_free_mib": 7896.0,
+      "gpu_utilization_percent": 88.0,
+      "power_watts": 220.94,
+      "available_ram_gib": 5.8432464599609375
+    },
+    "stop_reason": null
+  },
+  "artifacts": {
+    "analyze.py": "db72d87ee96abe2dff9b2941b2e0e1dc704a30159ac15b0d64f02552e5407584",
+    "CASES.json": "eee23f2c51659f69fd07202910c17e933e1a241a5e2752f9d17a4322ba0a9888",
+    "FINDINGS.json": "3c5438b797ee11c5f4aef0bc116b987679b02b981365ddb69ab5f78f335ee34c",
+    "READ_ASSETS.json": "37b661218f950e6b628818b653d7fda127c6f482138b42fddb06147ed944a57f",
+    "REPORT.md": "09eb7613d64bd67266da1d091b23d02c88706b7f1db77279891c2341b94b78bf",
+    "report.py": "542a8bd48ca0be01c25bd20496a84271547fc27d008f792a0b8fe3c183296076",
+    "SNAPSHOT.json": "3e489d34f9799893db1db8c38cd84545046b1197088e9e8bcabfb099d8481eff",
+    "SUMMARY.json": "428f7dad9bcf6ecfbf41f65c6eb2793139bddd7b32d232b0c6b8735650c001a7",
+    "trace_diagnostic.pdf": "667156f6d7dc55c2eb406eacb918c369ed41711ea7143922de99583ddacc31e7",
+    "trace_diagnostic.png": "b60b761c45e50e70490a1d91f55b8e170a0ffbbc8961b96848f3cd90a4fdb30c",
+    "VALIDATION.json": "8c32a4838bfdc4e28048dd6e68dcc20b730de70a91f13bab2b984a6ab2cc1347"
+  },
+  "inference_started": false,
+  "parameters_changed": false,
+  "process_signals_sent": false
+}

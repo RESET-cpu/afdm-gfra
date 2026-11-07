@@ -1,0 +1,625 @@
+=== PDF PAGE 1 ===
+arXiv:2010.11321v1  [cs.IT]  21 Oct 2020
+MRI IMAGE RECOVERY USING DAMPED DENOISING VECTOR AMP
+Subrata Sarkar†, Rizwan Ahmad ∗, and Philip Schniter †
+†Dept. ECE, The Ohio State Univ., Columbus, OH, 43210, {sarkar.51, schniter.1}@osu.edu
+∗Dept. BME, The Ohio State Univ., Columbus, OH, 43210, rizwan .ahmad@osumc.edu
+ABSTRACT
+Motivated by image recovery in magnetic resonance imaging
+(MRI), we propose a new approach to solving linear inverse
+problems based on iteratively calling a deep neural-networ k,
+sometimes referred to as plug-and-play recovery. Our ap-
+proach is based on the vector approximate message passing
+(V AMP) algorithm, which is known for mean-squared error
+(MSE)-optimal recovery under certain conditions. The for-
+ward operator in MRI, however, does not satisfy these con-
+ditions, and thus we design new damping and initialization
+schemes to help V AMP . The resulting DD-V AMP++ algo-
+rithm is shown to outperform existing algorithms in conver-
+gence speed and accuracy when recovering images from the
+fastMRI database for the practical case of Cartesian sampling.
+1. INTRODUCTION
+Magnetic resonance imaging (MRI) is a non-invasive diag-
+nostic tool that provides excellent soft-tissue contrast w ithout
+the use of ionizing radiation. The primary drawback of MRI
+is that the data acquisition process is inherently slow. Be-
+cause the scan time scales with the number of measurements,
+there is a motivation to collect as few measurements as pos-
+sible while still providing accurate image recovery. Altho ugh
+our work focuses on MRI, it has applicability to other invers e
+problems where the goal is to recover a richly structured sig -
+nal from undersampled Fourier measurements.
+In MRI, the Fourier-domain (or “k space”) measurements
+y ∈ CM can be modeled as
+y = Ax0 + w with A = M F, (1)
+where x0 ∈ CN is the rasterized N -pixel image that we aim
+to recover, F ∈ CN ×N is the unitary 2D discrete Fourier
+transform (DFT) matrix, M ∈ CM×N is a sampling mask
+(containing rows of the identity matrix I ∈ RN ×N ), and w ∼
+N (0, I/γ w) is circularly symmetric additive white Gaussian
+noise (AWGN) of precision γw (i.e., variance 1/γ w). Typical
+sampling masks are illustrated in Fig. 1. The ratio of pixels
+This work was funded in part by the National Institutes of Hea lth under
+grant R01HL135489 and by the National Science Foundation un der grant
+CCF-1955587.
+PSfrag replacements
+Point
+PSfrag replacements
+Cartesian
+Fig. 1: Typical sampling masks for acceleration R = 4
+to measurements, R ≜ N/M , is known as the “acceleration
+rate.” When R > 1, there are many x that lead to the same y,
+and so it is essential to use prior knowledge of x in recovery.
+Many methods have been proposed for MRI image re-
+covery. As we describe in the next section, the classical ap-
+proach is based on iterative optimization [1, 2]. Recently, it
+has been proposed to train deep neural networks (DNNs) to
+directly map compressed measurements y to image estimates
+ˆx, e.g., [3, 4]. Although such DNNs are capable of excel-
+lent performance, training them requires huge fully-sampl ed
+k-space datasets (which may be difﬁcult or impossible to ob-
+tain) and their performance can be degraded by changes in the
+sampling mask M between training and testing [5].
+For these reasons, we focus on a hybrid approach where
+a DNN is iteratively called for image denoising . The DNN
+denoiser can be trained using relatively few images (via
+patches); no k-space data are needed. Furthermore, the trai n-
+ing of the denoiser is divorced from the sampling mask. This
+hybrid approach is often referred to as “plug-and-play” recov-
+ery [5, 6]. Our approach is based on the vector AMP (V AMP)
+algorithm with two enhancements that lead to signiﬁcant im-
+provements in MRI image recovery: novel initialization and
+damping schemes. Experiments with fastMRI [4] knee im-
+ages show advantages over existing plug-and-play approaches
+to MRI image recovery in speed and accuracy.
+2. BACKGROUND
+2.1. Optimization-based methods
+The conventional approach to MRI image recovery [1, 2] is to
+pose and solve an optimization problem of the form
+ˆx = arg min
+x
+{ γw
+2 ∥y − Ax∥2 + φ(x)
+}
+, (2)
+
+=== PDF PAGE 2 ===
+where the regularizer φ : CN → R+ aims to penalize x
+that are not valid images. It is common to choose φ(x) =
+λ∥Ψx∥1 with a suitable (e.g., wavelet) transform Ψ and care-
+fully chosen λ > 0. In this case, the regularization encour-
+ages sparsity in the wavelet coefﬁcients Ψx.
+Many algorithms have been designed to solve optimiza-
+tion problems of the form (2) with convex φ(·) [2]. A fa-
+mous one is the alternating directions method of multiplier s
+(ADMM) [7], which for (2) iterates
+xt+1 = arg min
+x
+{ γw
+2 ∥y − Ax∥2 + γ
+2 ∥x − vt + ut∥2}
+(3a)
+vt+1 = proxγ−1φ(xt+1 + ut) (3b)
+ut+1 = ut +
+(
+xt+1 − vt+1)
+, (3c)
+for t = 0, 1, 2, . . . , starting from v0 = 0 = u0, where
+proxρ(r) ≜ arg min
+x
+{
+ρ(x) + 1
+2 ∥x − r∥2}
+. (4)
+In (3), γ > 0 is a tunable stepsize that affects the speed of
+ADMM’s convergence but not its ﬁxed point.
+2.2. Plug-and-play methods
+It can be useful to interpret the optimization (2) as maximum
+a posteriori (MAP) estimation of x. This can be seen using
+Bayes rule, p(x|y) = p(y|x)p(x)/p (y), as follows,
+ˆxMAP ≜ arg max
+x
+p(x|y) (5)
+= arg min
+x
+{
+− ln p(y|x) − ln p(x)
+}
+, (6)
+and conﬁrming that (6) matches (2) under the prior p(x) ∝
+e−φ(x) and likelihood p(y|x) = N (y; Ax, I/γ w). Simi-
+larly, ADMM’s prox step (3b) can be interpreted as MAP de-
+noising, i.e., MAP estimation of x ∼ p(x) ∝ e−φ(x) from the
+noise-corrupted measurement r = x+w with w ∼ N (0, I/γ ).
+Leveraging this MAP denoising interpretation, Bouman et
+al. [6] proposed to replace proxγ−1φ in line (3b) with a call to
+a black-box image denoiser f : CN → CN like BM3D [8] or
+DnCNN [9], and coined the approach “plug-and-play” (PnP)
+ADMM. In MRI, PnP methods tend to signiﬁcantly outper-
+form [5] the conventional optimization approach (2) to imag e
+recovery. Note, however, that when (3b) is replaced with a
+denoising step of the form vt+1 = f (xt+1+ut), the stepsize
+γ does affect the ﬁxed-point and thus must be tuned.
+2.3. Approximate message passing
+Approximate message passing (AMP) [10] is another iterative
+approach to computing the solution of (2) or (6), i.e., the MAP
+estimate of x from y. But it can also [11] be used to approx-
+imate ˆxMMSE ≜ E{x |y}, the minimum mean-squared error
+(MMSE) estimate of x from y. In general, AMP iterates
+vt+1 = β ·
+(
+y − Axt + 1
+M vt tr{∇ f t(xt−1+AHvt)}
+)
+(7a)
+τt+1 = 1
+M ∥vt+1∥2 (7b)
+xt+1 = f t+1(xt + AHvt+1) (7c)
+over t = 0 , 1, 2, . . . , starting from v0 = 0 = x0, where
+f t(·) is a Lipschitz denoising function, tr{∇ f t(r)} is the
+trace of the Jacobian of f t at r, and β = N/ ∥A∥2
+F . When
+conﬁgured for MAP estimation, AMP uses the MAP denoiser
+f t
+MAP(r) = prox τ tφ(r). When conﬁgured for MMSE esti-
+mation, AMP instead uses the MMSE denoiser f t
+MMSE(r) =
+E{x |r} for r = x + w with w ∼ N (0, τ tI).
+When the forward operator A is large and i.i.d. sub-
+Gaussian, the macroscopic behavior of AMP is rigorously
+characterized by a scalar state-evolution for any Lipschit z
+f t [12, 13]. When f t is the MMSE denoiser and the state-
+evolution has a unique ﬁxed point, AMP provably converges
+to the MMSE-optimal estimate ˆxMMSE [12, 13]. Although
+an exact MMSE denoiser for images is unknown, one could
+instead use a black-box approximation (like BM3D) within
+AMP , as proposed in [14] and called “denoising-AMP” (D-
+AMP). In that setting, the Jacobian term in (7a) is typically
+approximated using the approach from [15],
+tr{∇ f t(r)} ≈ ǫ−1qH[
+f t(r + ǫq) − f t(r)
+]
+, (8)
+for random q ∼ N (0, I) and small positive ǫ.
+For AMP to behave as expected, the forward operator A
+should resemble a typical realization of a large, i.i.d. sub -
+Gaussian matrix. To expand the applicability of AMP , a varia-
+tion called “vector AMP (V AMP)” was proposed [16]. V AMP
+has essentially the same desirable properties of AMP (e.g.,
+rigorous state evolution and provable MMSE denoising) but
+they hold for a much larger class of random matrices: right or-
+thogonally invariant (ROI) ones [16, 17]. An ROI matrix has
+a singular value decomposition of the form U SV H, where U
+is unitary, S is diagonal, and V is Haar (i.e., uniformly dis-
+tributed over the set of unitary matrices). A denoising V AMP
+(D-V AMP) was proposed in [18] that uses a black-box image
+denoiser f t together with the Jacobian approximation (8).
+2.4. AMP for MRI
+While the PnP-ADMM algorithm requires manual tuning of
+both the ADMM parameter γ and the noise variance assumed
+by the denoiser f , the AMP algorithm (7) is self-tuning; it es-
+timates the denoiser-input variance τt at each iteration t. This
+motivates the application of AMP to MRI image recovery.
+Unfortunately, neither AMP nor V AMP works as ex-
+pected in MRI because A in (1) is neither i.i.d. nor ROI.
+In fact, MRI applications of AMP or V AMP often diverge.
+For this reason, several MRI-speciﬁc variations of AMP have
+been proposed. For example, [19] used D-AMP with β = 1
+instead of the default value β = N/ ∥A∥2
+F = N/M , which
+acts to slow down the algorithm to help convergence but
+degrades the ﬁxed points. A reﬁnement based on a matrix-
+valued β was proposed in [20]. In [21], a hybrid between
+AMP and V AMP was proposed for the special case of point
+sampling (recall Fig. 1), called variable density (VD)-AMP .
+We numerically investigate these approaches in the sequel.
+
+=== PDF PAGE 3 ===
+3. PROPOSED APPROACH
+3.1. Damped Denoising V AMP
+The proposed damped D-V AMP (DD-V AMP) algorithm is
+summarized in Alg. 1. Note that, in the absence of damping
+(i.e., θ = 1 = ζt), DD-V AMP reduces to D-V AMP from [18].
+An explanation of each step is now provided.
+Line 3 of Alg. 1 computes the MMSE/MAP estimate of
+x under the likelihood function N (y; Ax, I/γ w) and the
+pseudo-prior x ∼ N (x; rt
+2, I/γ t
+2) via
+g(r; γ) ≜ arg min
+x
+{ γw
+2 ∥y − Ax∥2 + γ
+2 ∥x − r∥2}
+(9)
+= F H(γwM TM + γI)−1(γF r + γwM Ty), (10)
+where (9) holds for general A and (10) holds under (1). Be-
+cause M is a masking matrix, the computational complexity
+of (10) is dominated by two FFTs. Line 4 computes the sen-
+sitivity of this linear estimator g as
+tr{∇ g(r; γ)}/N = γ tr{(γwAHA + γI)−1}/N (11)
+=
+(
+(1 − M
+N )γw + γ
+)
+/
+(
+γw + γ
+)
+, (12)
+where (11) holds for general A and (12) holds under (1).
+Lines 5–6 perform “Onsager cancellation,” which produces
+the (rt
+1, γ t
+1) passed on to the denoising stage. If f t is Lips-
+chitz and A is large and ROI, then these latter terms obey the
+statistical model rt
+1 = x0 + N (0, I/γ t
+1) [17].
+Lines 8–12 of Alg. 1 comprise the denoising stage,
+which calls the denoiser f t and approximates its sensitiv-
+ity tr{∇ f t(rt
+1)}/N in a manner similar to D-AMP (see (8)).
+Note that the denoiser can leverage knowledge of the noise
+variance τt = 1 /γ t
+1. Lines 11–12 perform Onsager cancella-
+tion, producing (
+rt+1
+2 , γt+1
+2 ) for use by the linear stage.
+Before (rt+1
+2 , γ t+1
+2 ) are passed on, however, they are
+damped in lines 15–16 using the damping factor ζt ∈ (0, 1]
+chosen in line 14; with ζt = 1 there would be no damping,
+and as ζt decreases there would be more damping. A similar
+form of damping is performed on α t
+1 in line 10 using the
+factor θ. Intuitively, the goal of damping is to slow down
+V AMP without changing its ﬁxed points. The rt
+2-damping in
+line 15 was shown to be sufﬁcient to ensure the convergence
+of a double-loop version of V AMP in the strongly convex
+scenario [22]. But additional damping of γ t
+2 and α t
+1 is needed
+to stabilize D-V AMP for MRI image recovery.
+Although γi-damping was suggested in [16, eq.(27)], the
+approach here is different in that damped quantities are ﬁrs t
+converted to amplitudes. That is, for a variance term like α 1
+we damp the square-root, and for a precision term like γ2 we
+damp the inverse square root. The α 1-damping is new and
+motivated by the fact that the Jacobian approximation in line 9
+can be very “noisy,” especially in the ﬁrst iterations. Although
+it could be improved using more averaging, i.e.,
+tr{∇ f (r)} ≈ 1
+K
+∑K
+k=1 ǫ−1qH
+k
+[
+f (r + ǫqk) − f (r)
+]
+, (13)
+Algorithm 1 Damped Denoising-V AMP (DD-V AMP)
+Require: r0
+2 ∈ CN , γ 0
+2 > 0, θ ∈ (0, 1], q ∼ N (0, I)
+1: for t = 0, . . . , T max do
+2: Linear Stage:
+3: xt
+2 = g(rt
+2; γ t
+2)
+4: α t
+2 = tr{∇ g(rt
+2; γ t
+2)}/N
+5: rt
+1 = (xt
+2 − α t
+2rt
+2)/ (1 − α t
+2)
+6: γ t
+1 = γ t
+2(1 − α t
+2)/α t
+2
+7: Denoising:
+8: xt
+1 = f t(rt
+1)
+9:
+α t
+1 = ǫ−1qH[
+f t(rt
+1 + ǫq) − f t(rt
+1)
+]
+10: α t
+1 = {θ(
+α t
+1)
+1
+2 + (1 − θ)(α t−1
+1 )
+1
+2 }2 (damping)
+11: rt+1
+2 = (xt
+1 − α t
+1rt
+1)/ (1 − α t
+1)
+12:
+γ t+1
+2 = γ t
+1(1 − α t
+1)/α t
+1
+13: Damping:
+14: Choose damping factor ζt ∈ (0, 1]
+15: rt+1
+2 = ζt
+rt+1
+2 + (1 − ζt)rt
+2
+16: γ t+1
+2 = {ζt(γ t+1
+2 )− 1
+2 + (1 − ζt)(γ t
+2)− 1
+2 }−2
+17: end for
+with i.i.d. {qk}K
+k=1 and large K, this would require K + 1
+denoiser-calls per V AMP iteration and thus be too expensive.
+There are several ways to choose the damping factor ζt in
+line 14. One is to use the rule
+ζt = 2
+1 + max{γ t
+1/ γt+1
+2 , γt+1
+2 /γ t
+1} = 2 min{α t
+1, α t
+2}, (14)
+which is sufﬁcient in the double-loop strongly convex sce-
+nario [22]. Another is to chose some ﬁxed ζt = ζ for all t.
+3.2. ADMM-PR and DD-V AMP++
+Empirically, we ﬁnd that DD-V AMP converges to ﬁxed points
+that are similar or better than those of PnP-ADMM. However,
+we ﬁnd that it can converge somewhat slowly as a result of
+damping. To circumvent this issue, we propose a carefully
+initialized version called “DD-V AMP++.” The challenge with
+initializing DD-V AMP , i.e., choosing(r0
+2, γ 0
+2 ), is that the two
+values must be consistent. That is, if r0
+2 is very good (i.e., ≈
+x0) but γ 0
+2 is not matched to r0
+2, then DD-V AMP will initially
+move rt
+2 away from r0
+2 while adjusting γ t
+2, and ﬁnally return
+rt
+2 to the neighborhood of r0
+2.
+The proposed initialization approach exploits the fact tha t
+V AMP is closely related to the Peaceman-Rachford (PR) vari-
+ant [23] of ADMM, which is the iteration (3) with an addi-
+tional u-update of the form (3c) between (3a) and (3b). In
+particular, when V AMP is run with ﬁxed γ1 = γ2 = γ for all
+iterations t, it reduces to ADMM-PR [22].
+For DD-V AMP++, we ﬁrst run PnP-ADMM-PR for Tswi
+iterations, starting from u0 = 0 = v0 and a well-chosen
+value of γ, and then switch to DD-V AMP , simply by allow-
+ing the values of γ1 and γ2 to update according to Alg. 1.
+
+=== PDF PAGE 4 ===
+DD-V AMP++’s two adjustable parameters, Tswi and γ, can
+be tuned using training data, as described in the next sectio n.
+4. NUMERICAL EXPERIMENTS
+We now present numerical experiments that compare the pro-
+posed DD-V AMP and DD-V AMP++ algorithms to the exist-
+ing PnP-ADMM [6], VD-AMP [21], and BM3D-AMP-MRI
+[19] algorithms for MRI image recovery. For completeness,
+we also test the PnP-ADMM-PR algorithm, which is run dur-
+ing the initialization phase of DD-V AMP++.
+For the DD-V AMP , DD-V AMP++, PnP-ADMM, and
+PnP-ADMM-PR algorithms, we used the DNN-based de-
+noiser DnCNN [9]. (The BM3D denoiser [8] yields similar
+image quality but runs signiﬁcantly slower.) Our D-V AMP
+algorithms used the DnCNN implementation in the D-AMP
+toolbox https://github.com/ricedsp/D-AMP
+Toolbox,
+which calls an instance of DnCNN trained with a noise vari-
+ance close to the requested one, τt = 1 /γ t
+1. VD-AMP
+and BM3D-AMP-MRI were both implemented using the
+respective groups’ code. To denoise, VD-AMP uses SURE-
+tuned wavelet thresholding while BM3D-AMP-MRI uses a
+modiﬁed BM3D. All experiments used mid-slice, non-fat-
+suppressed, 128 × 128 knee images from fastMRI [4]. We
+focused on the Cartesian mask (see Fig. 1) at acceleration
+R = N/M = 4 . The variance of the AWGN w in (1) was
+adjusted to achieve an SNR, ∥Ax∥2/ ∥w∥2, of 40 dB.
+The PnP-ADMM, PnP-ADMM-PR, DD-V AMP , and DD-
+V AMP++ algorithms (all initialized at zero) have tuning pa-
+rameters that must be optimized for best performance. For
+PnP-ADMM and PnP-ADMM-PR we tuned γ in (3), for DD-
+V AMP we tuned γ 0
+2 , and for DD-V AMP++ we tuned γ and
+the switching time Tswi. In all cases, these parameters were
+tuned over a grid using the following procedure. For each hy-
+pothesized value, the algorithm was used to recover 30 train -
+ing images, the recovery-NMSE was averaged over iterations
+Tmeas = 35 to Tmax = 150, and the median was taken over the
+training images (to reduce the effect of outlier images). Fi -
+nally, the parameter value that minimized the median NMSE
+was selected.
+Figure 2 shows NMSE ≜ ∥ˆx − x0∥2/ ∥x0∥2 versus
+iteration with a Cartesian mask, which is the mask most
+commonly used in clinical practice. The top subplot shows
+median NMSE over the 30 training images for the tuned
+version of each algorithm. There, DD-V AMP++ converged
+fastest and to the best NMSE. DD-V AMP achieved the 2nd-
+best NMSE at 150 iterations, but converged slowly. The two
+versions of PnP-ADMM showed similar behavior, although
+PnP-ADMM-PR was less smooth and its ﬁnal NMSE was
+slightly worse. The bottom subplot of Fig. 2 shows median
+NMSE over the 19 remaining fastMRI mid-slice non-fat-
+suppressed images, which were used as a test set. Here
+too, we see that DD-V AMP++ converged fastest to the best
+NMSE, with PnP-ADMM and PnP-ADMM-PR close behind.
+0 50 100 150
+10 -3
+10 -2
+10 -1
+PnP-ADMM
+PnP-ADMM-PR
+DD-VAMP++
+DD-VAMP
+0 50 100 150
+10 -3
+10 -2
+10 -1
+PnP-ADMM
+PnP-ADMM-PR
+DD-VAMP++
+DD-VAMP
+VD-AMP
+BM3D-AMP-MRI
+PSfrag replacements
+iteration
+iteration
+median NMSE on training set
+median NMSE on test set
+NMSE NMSE
+Fig. 2: Image recovery NMSE versus iteration.
+PSfrag replacements
+original
+PSfrag replacements
+ADMM: -24.443, 0.928
+PSfrag replacements
+ADMM-PR: -24.694, 0.927
+PSfrag replacements
+BM3D-AMP-MRI: -19.263, 0.857
+PSfrag replacements
+DD-VAMP: -25.097, 0.936
+PSfrag replacements
+DD-VAMP++: -25.475, 0.939
+Fig. 3 : Image recovered after 150 iterations. Subplot titles
+identify algorithm, NMSE (dB), and SSIM.
+After 150 iterations, DD-V AMP is still converging to what
+seems to be an excellent terminal NMSE. BM3D-AMP-MRI
+converged to a signiﬁcantly worse NMSE; we conjecture that
+this was due to its heuristic β modiﬁcation and the mismatch
+between Cartesian-masked A and typical i.i.d. sub-Gaussian
+matrices. Finally, VD-AMP (which was designed speciﬁcally
+for point masks) diverged; it is apparently not compatible
+with Cartesian masks. In experiments that we conducted with
+point masks (not shown here for reasons of space), VD-AMP
+converged very quickly to an NMSE >10 dB worse than DD-
+V AMP++ and PnP-ADMM, but consistent with the results
+in [21]. Evidently, VD-AMP’s wavelet-thresholding denois er
+is no match for BM3D or DnCNN.
+Figure 3 shows example image recoveries after 150 it-
+erations, along with NMSE (dB) and SSIM values. DD-
+V AMP++ achieved the best recovery in NMSE and SSIM.
+
+=== PDF PAGE 5 ===
+5. REFERENCES
+[1] M. Lustig, D. L. Donoho, J. M. Santos, and J. M.
+Pauly, “Compressed sensing MRI,” IEEE Signal Pro-
+cess. Mag., vol. 25, no. 2, pp. 72–82, Mar. 2008.
+[2] J. A. Fessler, “Optimization methods for magnetic res-
+onance image reconstruction,” IEEE Signal Process.
+Mag., vol. 37, no. 1, pp. 33–40, 2020.
+[3] K. H. Jin, M. T. McCann, E. Froustey, and M. Unser,
+“Deep convolutional neural network for inverse prob-
+lems in imaging,” IEEE Trans. Image Process., vol. 26,
+no. 9, pp. 4509–4522, 2017.
+[4] J. Zbontar, F. Knoll, A. Sriram, M. J. Muckley,
+M. Bruno, A. Defazio, M. Parente et al. , “fastMRI:
+An open dataset and benchmarks for accelerated MRI,”
+arXiv:1811.08839, 2018.
+[5] R. Ahmad, C. A. Bouman, G. T. Buzzard, S. Chan,
+S. Liu, E. T. Reehorst, and P . Schniter, “Plug and play
+methods for magnetic resonance imaging,” IEEE Signal
+Process. Mag., vol. 37, no. 1, pp. 105–116, 2020.
+[6] S. V . V enkatakrishnan, C. A. Bouman, and B. Wohlberg,
+“Plug-and-play priors for model based reconstruction,”
+in Proc. IEEE Global Conf. Signal Info. Process. , 2013,
+pp. 945–948.
+[7] S. Boyd, N. Parikh, E. Chu, B. Peleato, and J. Eck-
+stein, “Distributed optimization and statistical learn-
+ing via the alternating direction method of multipliers,”
+F ound. Trends Mach. Learn., vol. 3, no. 1, pp. 1–122,
+2011.
+[8] K. Dabov, A. Foi, V . Katkovnik, and K. Egiazarian, “Im-
+age denoising by sparse 3-D transform-domain collabo-
+rative ﬁltering,” IEEE Trans. Image Process. , vol. 16,
+no. 8, pp. 2080–2095, 2007.
+[9] K. Zhang, W . Zuo, Y . Chen, D. Meng, and L. Zhang,
+“Beyond a Gaussian denoiser: Residual learning of deep
+CNN for image denoising,” IEEE Trans. Image Pro-
+cess., vol. 26, no. 7, pp. 3142–3155, 2017.
+[10] D. L. Donoho, A. Maleki, and A. Montanari, “Message
+passing algorithms for compressed sensing,” Proc. Nat.
+Acad. Sci. , vol. 106, no. 45, pp. 18 914–18 919, Nov.
+2009.
+[11] ——, “Message passing algorithms for compressed
+sensing: I. Motivation and construction,” in Proc. In-
+form. Theory W orkshop , Cairo, Egypt, Jan. 2010, pp.
+1–5.
+[12] M. Bayati and A. Montanari, “The dynamics of mes-
+sage passing on dense graphs, with applications to com-
+pressed sensing,” IEEE Trans. Inform. Theory , vol. 57,
+no. 2, pp. 764–785, Feb. 2011.
+[13] R. Berthier, A. Montanari, and P .-M. Nguyen, “State
+evolution for approximate message passing with non-
+separable functions,” Inform. Inference, 2019.
+[14] C. A. Metlzer, A. Maleki, and R. G. Baraniuk, “BM3D-
+AMP: A new image recovery algorithm based on BM3D
+denoising,” in Proc. IEEE Int. Conf. Image Process. ,
+2015, pp. 3116–3120.
+[15] S. Ramani, T. Blu, and M. Unser, “Monte-Carlo SURE:
+A black-box optimization of regularization parameters
+for general denoising algorithms,” IEEE Trans. Image
+Process., vol. 17, no. 9, pp. 1540–1554, 2008.
+[16] S. Rangan, P . Schniter, and A. K. Fletcher, “V ector ap-
+proximate message passing,” IEEE Trans. Inform. The-
+ory, pp. 6664–6684, 2019.
+[17] A. K. Fletcher, P . Pandit, S. Rangan, S. Sarkar, and
+P . Schniter, “Plug-in estimation in high-dimensional lin-
+ear inverse problems: A rigorous analysis,” in Proc.
+Neural Inform. Process. Syst. Conf. , 2018, pp. 7440–
+7449.
+[18] P . Schniter, S. Rangan, and A. K. Fletcher, “Denoising-
+based vector approximate message passing,” in Proc.
+Intl. Biomed. Astronom. Signal Process. (BASP) Fron-
+tiers W orkshop, 2017, p. 77.
+[19] E. M. Eksioglu and A. K. Tanc, “Denoising AMP for
+MRI reconstruction: BM3D-AMP-MRI,” SIAM J. Imag.
+Sci., vol. 11, no. 3, pp. 2090–2109, 2018.
+[20] S. Sarkar, “Solving linear and bilinear inverse proble ms
+using approximate message passing methods,” Ph.D.
+dissertation, Ohio State, 2020.
+[21] C. Millard, A. T. Hess, B. Mailh´ e, and J. Tanner,
+“Approximate message passing with a colored aliasing
+model for variable density Fourier sampled images,”
+arXiv:2003.02701, 2020.
+[22] A. K. Fletcher, M. Sahraee-Ardakan, S. Rangan,
+and P . Schniter, “Expectation consistent approxi-
+mate inference: Generalizations and convergence,”
+arXiv:1602.07795, Feb. 2016.
+[23] D. Gabay, “Applications of the method of multipliers
+to variational inequalities,” in Augmented Lagrangian
+Methods: Applications to the Numerical Solution of
+Boundary-V alue Problems, M. Fortin and R. Glowinski,
+Eds. Elsevier, 1983, pp. 299–331.

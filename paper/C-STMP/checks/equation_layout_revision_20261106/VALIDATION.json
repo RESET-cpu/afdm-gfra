@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "source_changes_only_alignment_and_linebreaks": true,
+  "results": {
+    "main": {
+      "pages": 13,
+      "equation_count": 45,
+      "equation_numbers_unchanged": true,
+      "log_errors": [],
+      "underfull": [
+        "Underfull \\hbox (badness 1472) in paragraph at lines 161--164",
+        "Underfull \\hbox (badness 1371) in paragraph at lines 270--277"
+      ]
+    },
+    "main_full": {
+      "pages": 14,
+      "equation_count": 45,
+      "equation_numbers_unchanged": true,
+      "log_errors": [],
+      "underfull": [
+        "Underfull \\hbox (badness 1472) in paragraph at lines 161--164",
+        "Underfull \\hbox (badness 1371) in paragraph at lines 270--277",
+        "Underfull \\vbox (badness 1412) has occurred while \\output is active []"
+      ]
+    }
+  },
+  "pages_with_changed_text_layout": {
+    "main": [
+      6,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "main_full": [
+      6,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ]
+  },
+  "changed_files": [
+    "paper/C-STMP/main.pdf",
+    "paper/C-STMP/main_full.pdf",
+    "paper/C-STMP/main.aux",
+    "paper/C-STMP/main_full.aux",
+    "paper/C-STMP/sections/05_overall_algorithm.tex"
+  ],
+  "unexpected_source_or_figure_changes": [],
+  "visual_review_passed": true,
+  "shared_equation_pages_pixel_identical": [
+    6,
+    8
+  ],
+  "visual_notes": "Equations (34) and (42) occupy two rows with the original single centered number. Subsequent pagination inspected. Full-version page 12 has ordinary section spacing despite an underfull vbox warning."
+}

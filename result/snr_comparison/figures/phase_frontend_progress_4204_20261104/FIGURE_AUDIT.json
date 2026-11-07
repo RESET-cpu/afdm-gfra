@@ -1,0 +1,108 @@
+{
+  "figure_type": "Experimental results; temporary progress figures",
+  "paradigm": "Paired SNR curves plus separate signed differences",
+  "rationale": "Curves show the overall scale; signed differences retain small measured discrepancies.",
+  "layout": "Two adjacent panels: channel NMSE and activity error rate. Separate difference figure uses zero baselines.",
+  "tool": "Matplotlib; vector PDF and PNG viewing copies",
+  "source": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_marginal_1000_20261104\\progress_20261104_192451_4204\\SUMMARY.json",
+  "source_sha256": "a9b691570abbb17d9971e85a3b9f3ae1055a9d50e4759b0e9d35ac0128571c68",
+  "script_sha256": "4e21003023d2b7d69ebdf28e7a738f5b4c99ec2b18e369ca79765a8be827edca",
+  "snapshot_inputs": 4204,
+  "table": [
+    {
+      "snr_db": -4,
+      "paired_inputs": 701,
+      "nmse_gap_db": 0.27389072115081525,
+      "error_energy_increase_percent": 6.509678094902601,
+      "frontend_aer_percent": 0.4600570613409415,
+      "known_aer_percent": 0.43152639087018546,
+      "aer_difference_percentage_points": 0.028530670470756025,
+      "frontend_errors": 129,
+      "known_errors": 121
+    },
+    {
+      "snr_db": -2,
+      "paired_inputs": 701,
+      "nmse_gap_db": 0.2926114168053271,
+      "error_energy_increase_percent": 6.969789623124403,
+      "frontend_aer_percent": 0.21398002853067047,
+      "known_aer_percent": 0.20684736091298145,
+      "aer_difference_percentage_points": 0.00713266761768902,
+      "frontend_errors": 60,
+      "known_errors": 58
+    },
+    {
+      "snr_db": 0,
+      "paired_inputs": 701,
+      "nmse_gap_db": 0.3285326673603528,
+      "error_energy_increase_percent": 7.858224457977962,
+      "frontend_aer_percent": 0.10342368045649072,
+      "known_aer_percent": 0.10699001426533523,
+      "aer_difference_percentage_points": -0.00356633380884451,
+      "frontend_errors": 29,
+      "known_errors": 30
+    },
+    {
+      "snr_db": 2,
+      "paired_inputs": 701,
+      "nmse_gap_db": 0.3907270414441193,
+      "error_energy_increase_percent": 9.413951807970415,
+      "frontend_aer_percent": 0.05706134094151213,
+      "known_aer_percent": 0.06062767475035663,
+      "aer_difference_percentage_points": -0.003566333808844503,
+      "frontend_errors": 16,
+      "known_errors": 17
+    },
+    {
+      "snr_db": 4,
+      "paired_inputs": 700,
+      "nmse_gap_db": 0.4899109274699178,
+      "error_energy_increase_percent": 11.941492435848483,
+      "frontend_aer_percent": 0.02142857142857143,
+      "known_aer_percent": 0.025,
+      "aer_difference_percentage_points": -0.0035714285714285726,
+      "frontend_errors": 6,
+      "known_errors": 7
+    },
+    {
+      "snr_db": 6,
+      "paired_inputs": 700,
+      "nmse_gap_db": 0.6015375445989157,
+      "error_energy_increase_percent": 14.856017741769675,
+      "frontend_aer_percent": 0.017857142857142856,
+      "known_aer_percent": 0.017857142857142856,
+      "aer_difference_percentage_points": 0.0,
+      "frontend_errors": 5,
+      "known_errors": 5
+    }
+  ],
+  "caption": "Estimated-phase NMSE has a consistent small gap; AER curves are close on this partial matched cohort. NMSE is total error energy divided by total true signal energy. AER is user errors divided by user decisions. Neither plot establishes statistical equivalence.",
+  "checks": {
+    "vector_pdf": true,
+    "font_minimum_points": 9.5,
+    "dual_encoding": true,
+    "explicit_log_axis": true,
+    "no_smoothing": true,
+    "no_excluded_nonconverged_cases": true,
+    "difference_zero_baselines": true,
+    "source_identity_fixed": true
+  },
+  "visual_inspection": "passed: both PNG previews inspected; labels readable, legend and annotation do not cover curves, negative difference labels moved below zero line",
+  "limitations": [
+    "Saved-metric partial snapshot, not final full-array audit.",
+    "No confidence intervals or equivalence tests; plots are descriptive.",
+    "Individual-case NMSE losses are not represented by aggregate curves."
+  ],
+  "severity_summary": {
+    "critical": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "outputs_sha256": {
+    "paired_curves.pdf": "9c0b536e4b287656487815bc1459daa2778bfaca2353a64988ca14daf9d648d5",
+    "paired_curves.png": "6b3bb2b309dd8e020f24bec7e543f73d7ef7cdb12a3054bb812a6892031c9932",
+    "paired_differences.pdf": "da8baf2d30a85479ccfe4246357a30cf4b30e9e8bf16b2385feeae34326a3c12",
+    "paired_differences.png": "c804bfe91fdb22eee8b02a25a68dfb1f5b15526693e2f02ea547db049c920f7b",
+    "PLOTTED_DATA.csv": "beb99bd28ee2a00b22aab6682ba16b0729d5ca30078d881f90fe0cc5ce30e823"
+  }
+}

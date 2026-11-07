@@ -1,0 +1,159 @@
+{
+  "status": "DESCRIPTIVE_STABILITY_ANALYSIS",
+  "created_utc": "2026-10-23T15:29:46.385535+00:00",
+  "physical_scenes": 500,
+  "user_decisions": 120000,
+  "active_decisions": 12594,
+  "distinct_scene_user_activity_labels": 20000,
+  "replicates": 1000,
+  "seed": 2026102316,
+  "methods": {
+    "somp": {
+      "frozen_threshold": 0.14394281710888504,
+      "bootstrap": {
+        "250": {
+          "percentiles_2_5_50_97_5": [
+            0.12369567347100349,
+            0.13868934782738152,
+            0.1544986785009421
+          ],
+          "standard_deviation": 0.008316744882697341,
+          "unique_thresholds": 178
+        },
+        "500": {
+          "percentiles_2_5_50_97_5": [
+            0.1254896834769051,
+            0.13884047988035478,
+            0.14853603806563567
+          ],
+          "standard_deviation": 0.00667002398960197,
+          "unique_thresholds": 129
+        }
+      },
+      "calibration_excess_aer_pp_percentiles_50_95_100": [
+        0.0025,
+        0.015,
+        0.0425
+      ],
+      "calibration_errors": 751,
+      "calibration_false_alarms": 152
+    },
+    "gamp": {
+      "frozen_threshold": 0.0741134513442958,
+      "bootstrap": {
+        "250": {
+          "percentiles_2_5_50_97_5": [
+            0.06650502168061047,
+            0.07352433819600253,
+            0.08330742476158882
+          ],
+          "standard_deviation": 0.00453218814002059,
+          "unique_thresholds": 125
+        },
+        "500": {
+          "percentiles_2_5_50_97_5": [
+            0.06859369120128399,
+            0.07352433819600253,
+            0.08226324989256757
+          ],
+          "standard_deviation": 0.0032110284762218782,
+          "unique_thresholds": 87
+        }
+      },
+      "calibration_excess_aer_pp_percentiles_50_95_100": [
+        0.0016666666666666668,
+        0.01758333333333326,
+        0.035
+      ],
+      "calibration_errors": 566,
+      "calibration_false_alarms": 116
+    },
+    "gnn": {
+      "frozen_threshold": 0.03070802986621857,
+      "bootstrap": {
+        "250": {
+          "percentiles_2_5_50_97_5": [
+            0.021816863492131237,
+            0.029954116791486744,
+            0.039505325257778175
+          ],
+          "standard_deviation": 0.0057790289089759495,
+          "unique_thresholds": 75
+        },
+        "500": {
+          "percentiles_2_5_50_97_5": [
+            0.02260191179811955,
+            0.03070197254419327,
+            0.03609998524188996
+          ],
+          "standard_deviation": 0.0045626721340027866,
+          "unique_thresholds": 50
+        }
+      },
+      "calibration_excess_aer_pp_percentiles_50_95_100": [
+        0.0033333333333333335,
+        0.006666666666666667,
+        0.0225
+      ],
+      "calibration_errors": 359,
+      "calibration_false_alarms": 52
+    },
+    "offgrid_sbl": {
+      "frozen_threshold": 0.06323638283199504,
+      "bootstrap": {
+        "250": {
+          "percentiles_2_5_50_97_5": [
+            0.05595437009368684,
+            0.06413133263063057,
+            0.07590652012435474
+          ],
+          "standard_deviation": 0.005257786601279034,
+          "unique_thresholds": 97
+        },
+        "500": {
+          "percentiles_2_5_50_97_5": [
+            0.05684496148340232,
+            0.06374703876766394,
+            0.07285905817013605
+          ],
+          "standard_deviation": 0.003988213168381496,
+          "unique_thresholds": 62
+        }
+      },
+      "calibration_excess_aer_pp_percentiles_50_95_100": [
+        0.0016666666666666668,
+        0.0125,
+        0.02666666666666667
+      ],
+      "calibration_errors": 280,
+      "calibration_false_alarms": 56
+    }
+  },
+  "resampling": "Physical-scene bootstrap; all six SNRs and 40 users jointly weighted. Same bootstrap draws across methods.",
+  "interval_interpretation": "Central 95% bootstrap threshold ranges conditional on these 500 observed scenes; descriptive, not simultaneous confidence guarantees or evidence about new 1000-scene performance.",
+  "sample_size_comparison": "250 and 500 bootstrap draws from the same empirical set; does not add independent physical scenes.",
+  "aer_scope": "Excess AER is measured on the original calibration data only, not a generalization estimate.",
+  "calibration_archive_sha256": "e0db335f45e2c9fc20ada635029dd823fadfacfed3a1632c13b554ebaeb3c2e6",
+  "frozen_readout_sha256": "d044e9cced9084291e3733af4464db169589fccb292d2677492d5206a3798395",
+  "script_sha256": "510b33a8c2860484bd41d442b40ced87f06f6b0a464b5b686f45c1fa458a48d0",
+  "samples_sha256": "594fff9397086b898b2395d7ab811a8a924b7e23406f8850e44eb14cdbe1bfe3",
+  "synthetic_weighted_checks": 30,
+  "frozen_policies_unchanged": true,
+  "new_inference_performed": false,
+  "fallacy_check": {
+    "coverage": "11/11",
+    "items": [
+      "All four algorithms and both resample sizes retained; pooled objective does not prove per-SNR improvement.",
+      "Physical scene is resampling unit; no individual-user independence claim.",
+      "Fixed original scene IDs retained; no performance-based sampling.",
+      "No collider controls introduced.",
+      "Activity base rate and all user-decision denominators retained.",
+      "No extreme-case selection.",
+      "All 500 scenes included; no failed-output filtering.",
+      "No significance testing or selective favorable-method reporting.",
+      "Retrospective diagnostic; earlier protocol changes remain recorded.",
+      "No causal/generalization claim from empirical resampling.",
+      "No reverse-causality claim."
+    ]
+  }
+}

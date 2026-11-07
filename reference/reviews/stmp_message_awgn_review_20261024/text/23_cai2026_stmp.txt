@@ -1,0 +1,2586 @@
+=== PDF PAGE 1 ===
+1
+Joint Activity Detection and Channel Estimation for
+Massive Connectivity: Where Message Passing
+Meets Score-Based Generative Priors
+Chang Cai,Member , IEEE,Wenjun Jiang,Member , IEEE,Xiaojun Yuan,Fellow, IEEE,
+and Ying-Jun Angela Zhang,Fellow, IEEE
+Abstract—Massive connectivity supports the sporadic access of
+a vast number of devices without requiring prior permission from
+the base station (BS). In such scenarios, the BS must perform
+joint activity detection and channel estimation (JADCE) prior
+to data reception. Message-passing algorithms have emerged as
+a prominent solution for JADCE under a Bayesian inference
+framework. The existing message-passing algorithms, however,
+typically rely on some hand-crafted and overly simplistic priors
+of the wireless channel, leading to significant channel estima-
+tion errors and reduced activity detection accuracy. In this
+paper, we focus on the problem of JADCE in a multiple-
+input multiple-output orthogonal frequency division multiplexing
+(MIMO-OFDM) grant-free random access network. We propose
+to incorporate a more accurate channel prior learned by score-
+based generative models (a.k.a. diffusion models) into message
+passing, so as to push towards the performance limit of JADCE.
+Specifically, we develop a novel turbo message passing (TMP)
+framework that models the entire channel matrix as a super
+node, rather than factorizing it element-wise. This design enables
+the seamless integration of score-based generative models as a
+minimum mean-squared error (MMSE) denoiser. The variance
+of the denoiser, which is essential in message passing, can also be
+learned through score-based generative models. Our approach,
+termed score-based TMP for JADCE (STMP-JADCE), takes full
+advantages of the powerful generative prior and, meanwhile,
+benefits from the fast convergence speed of message passing.
+Numerical simulations show that STMP-JADCE drastically en-
+hances the activity detection and channel estimation performance
+compared to the state-of-the-art baseline algorithms.
+Index Terms—Massive connectivity, diffusion models, score-
+based generative models, plug-and-play priors, message passing,
+joint activity detection and channel estimation (JADCE).
+This work was supported in part by the China Postdoctoral Science
+Foundation under Grant GZC20252291 and Grant 2025M783500; in part by
+the National Natural Science Foundation of China under Grant 62571087;
+in part by the General Research Fund from the Research Grants Council
+of Hong Kong under Project 14214122, Project 14202723, and Project
+14207624; in part by the Area of Excellence Scheme Grant from the
+Research Grants Council of Hong Kong under Project AoE/E-601/22-R; and
+in part by the NSFC/RGC Collaborative Research Scheme from the Research
+Grants Council of Hong Kong under Project CRS HKUST603/22 and Project
+CRS HKU702/24.(Corresponding author: Xiaojun Yuan.)
+Chang Cai was with the Department of Information Engineering, The Chi-
+nese University of Hong Kong, Hong Kong, and is now with the Department
+of Electrical and Electronic Engineering, The University of Hong Kong, Hong
+Kong (e-mail: changcai@hku.hk).
+Wenjun Jiang and Xiaojun Yuan are with the National Key Laboratory
+of Wireless Communications, University of Electronic Science and Technol-
+ogy of China, Chengdu 611731, China (e-mail: wjjiang@std.uestc.edu.cn;
+xjyuan@uestc.edu.cn).
+Ying-Jun Angela Zhang is with the Department of Information En-
+gineering, The Chinese University of Hong Kong, Hong Kong (e-mail:
+yjzhang@ie.cuhk.edu.hk).
+I. INTRODUCTION
+Evolved from massive machine-type communication
+(mMTC) in fifth-generation (5G), massive communication
+(a.k.a. massive connectivity) has been identified as one of
+the six key usage scenarios in sixth-generation (6G) wireless
+networks [1]. A unique feature of massive communication
+is the sporadic transmission of short packets by massive
+machine-type devices, e.g., Internet-of-Things (IoT) devices,
+where only a small fraction of devices are active in packet
+transmission at any given time instant [2]. To support
+massive connectivity of machine-type devices, conventional
+grant-based random access schemes require each device to
+obtain a grant from the base station (BS) before transmission.
+The uplink grant request involves a complex handshaking
+process, which may result in significant signaling overhead
+and access latency [3], [4], especially in scenarios with
+massive connected devices.
+In contrast, grant-free random access [2]–[6] enables active
+devices to access the uplink channel without waiting for BSs’
+permission, making it a more appealing solution for massive
+connectivity. Specifically, each active device first sends a
+unique pilot sequence to the BS, and then transmits payload
+data directly. Since the device activity is unknown at the
+BS beforehand, the BS must first detect the active devices
+and estimate their channels prior to payload data reception.
+However, due to the large number of devices and the limited
+resources for pilot transmission, it is impractical for the
+pilot sequences to be mutually orthogonal. As a result, the
+received pilots suffer from significant co-channel interference,
+which necessitates the development of advanced algorithms
+for accurate activity detection and channel estimation.
+Due to the sporadic traffic of massive devices, activity
+detection and channel estimation can be formulated jointly
+as a compressive sensing (CS) problem. Message-passing
+algorithms stand out as a powerful tool for efficient problem
+solving within a Bayesian framework. The performance of
+message passing relies heavily on the accuracy of the chosen
+priors, especially the prior of the wireless channel. Existing
+works on massive connectivity either assume a statistical chan-
+nel model, such as Rayleigh fading [5]–[9] and Rician fading
+[10], or exploit channel sparsity in certain discrete transform
+domains, such as the discrete Fourier transform (DFT) angular
+basis [11], [12]. The former approach may be overly simplistic
+to model the multipath component, while the latter suffers
+arXiv:2506.00581v2  [eess.SP]  7 Feb 2026
+
+=== PDF PAGE 2 ===
+2
+from significant energy leakage caused by basis mismatch
+with the predefined codebook. The oversimplification or mis-
+specification of the channel prior can result in substantial
+errors in channel estimation, which consequently degrades the
+accuracy of activity detection. Moreover, although not specif-
+ically tailored to massive connectivity, the authors in [13],
+[14] introduced advanced off-grid and grid-free line spectral
+estimation techniques for super-resolution channel estimation.
+Nevertheless, these methods continue to face challenges in
+resolving sub-paths within clustered multipath components
+and often entail prohibitive computational complexity.
+In light of the limitations of model-based approaches in
+accurately capturing the real wireless propagation environ-
+ments, deep learning offers a powerful alternative by learning
+the channel distribution directly from data. Recently, score-
+based generative models [15], [16] (a.k.a. diffusion mod-
+els [17]) have made remarkable breakthroughs in generating
+high-quality samples from learned prior distributions, revo-
+lutionizing fields such as image synthesis, video generation,
+and molecular conformation. These developments highlight
+their strong ability to model the intricate structures of high-
+dimensional data distributions. In particular, score-based gen-
+erative models learn the prior by matching the gradient of the
+log density of the data distribution, referred to as the score
+function. Apart from generative tasks, such learned priors can
+also be leveraged to solve CS problems by sampling from the
+posterior distribution, known as diffusion posterior sampling
+(DPS) [18]–[23]. This approach makes use of the posterior
+score, which can be obtained by combining the learned prior
+score with the likelihood term from the measurement model
+using Bayes’ theorem. Yet, DPS typically requires traversing
+hundreds or even thousands of reverse diffusion steps, leading
+to prohibitively high computational cost.
+To speed up convergence, the authors in [24], [25] proposed
+the integration of score-based generative models into message-
+passing algorithms for solving inverse problems. Specifically,
+a score-based turbo message passing (STMP) framework was
+developed for compressive image recovery, in which the score
+network is integrated into Turbo-CS [26] as a plug-and-play
+denoiser. This framework inherits the rapid convergence of
+message passing, typically achieved within10iterations, with
+each iteration requiring only a single-step denoising operation.
+Compared to DPS [18]–[23], STMP eliminates the need for
+reverse diffusion sampling, and thus reduces the computa-
+tional complexity by orders of magnitude. This motivates us
+to explore the feasibility of solving joint activity detection
+and channel estimation (JADCE) by integrating an accurate
+channel prior learned by score-based generative networks into
+message passing.
+A. Contributions
+In this paper, we consider a multiple-input multiple-output
+orthogonal frequency division multiplexing (MIMO-OFDM)
+grant-free random access network, where a massive num-
+ber of devices sporadically access the uplink channel. We
+aim to develop an efficient message-passing algorithm that
+incorporates a plug-and-play score-based generative channel
+prior to approach the performance limit of JADCE. The
+extension of STMP [24], [25] for solving the JADCE prob-
+lem is highly non-trivial, as the sporadic access of devices
+introduces additional activity-induced sparsity, which is not
+captured by the channel prior score network. To address this
+challenge, we propose a novel turbo message passing (TMP)
+framework that decouples the denoising of the channel and
+the device activity. This stands in contrast to prior works
+[5], [6], [11], [27], which treat the channel and its activity
+indicator as a whole. Moreover, unlike the separable denoisers
+in [5], [6], [11], [27] that operate element-wise for channel
+denoising, our TMP framework models the spatial-frequency
+channel matrix as a super node in the factor graph, enabling
+the incorporation of score-based generative models as non-
+separable denoisers for more effective exploitation of channel
+correlations. The score network enables single-step minimum
+mean-squared error (MMSE) denoising at each message-
+passing iteration, supported by the well-established Tweedie’s
+formula [28], [29]. Additionally, we employ a second-order
+score network that outputs the Hessian diagonals of the log
+density to compute the variance of the denoiser. The plug-in
+implementation of the first- and second-order score networks
+yields the STMP algorithm tailored for JADCE, hence the
+name STMP-JADCE. The two score networks can be trained
+based on the denoising score matching technique [15], [30],
+[31]. The main contributions of this paper are summarized as
+follows.
+•We devise a novel TMP framework for JADCE that iter-
+ates between a linear estimation module and a denoising
+module. The key innovation lies in the denoising mod-
+ule, which features non-separable channel denoisers and
+decoupled treatment of channel and activity estimates.
+•We develop the STMP-JADCE algorithm that seamlessly
+integrates score-based generative channel priors into the
+TMP framework. As a model-based deep learning so-
+lution, STMP-JADCE generalizes well across different
+device activity levels, pilot patterns, and signal-to-noise
+ratios (SNRs) without requiring retraining the score net-
+works.
+•Experimental results show that our method significantly
+outperforms the existing message-passing algorithms with
+a comparable or even faster convergence speed. Re-
+markably, our method consistently delivers over a5dB
+normalized mean-squared error (NMSE) gain in channel
+estimation on the clustered delay line (CDL) channel
+models specified by the 3GPP standards [32].
+Beyond the algorithmic advances, this work underscores a
+conceptual shift in Bayesian inference for massive connec-
+tivity: from traditional model-based methods relying on hand-
+crafted statistical priors (e.g., Rayleigh or Rician fading), to
+data-driven approaches that directly learn channel distributions
+from data via score-based generative modeling. This philo-
+sophical transition is central to our contribution, as it enables
+Bayesian inference to harness expressive learned priors with-
+out sacrificing the efficiency of message passing.
+
+=== PDF PAGE 3 ===
+3
+B. Related Works
+1) Message-Passing Algorithms for JADCE:It was shown
+in [5] that JADCE with single- and multi-antenna BSs cor-
+responds to CS in single measurement vector (SMV) and
+multiple measurement vector (MMV) setups, respectively. The
+authors in [5] employed the approximate message passing
+(AMP) to solve both problems, in which the Rayleigh channel
+assumption is adopted to derive the MMSE denoiser in closed
+form. Interestingly, a follow-up work [6] revealed that the
+activity detection error by AMP is asymptotically zero as
+the number of BS antennas approaches infinity. Apart from
+[5], [6], the same Rayleigh channel model was also em-
+ployed in [7]–[9] to facilitate message calculation and analysis.
+Considering that the line-of-sight (LoS) component in wave
+propagation is non-negligible in low Earth orbit (LEO) satellite
+networks, the authors in [10] proposed a Bernoulli-Rician
+message-passing algorithm tailored for LEO satellite-enabled
+IoT applications with Rician channel modeling. The authors
+in [33] proposed a JADCE scheme exploiting the sparsity of
+the time-domain channel impulse response (CIR). However,
+an energy leakage problem arises from the inverse discrete
+Fourier transform (IDFT) to obtain the time-domain channel,
+which undermines its sparsity level. Considering frequency-
+domain channel estimation, the work in [11] developed a
+turbo-type algorithm that exploits the common angular sparsity
+over OFDM subcarriers. To reduce the pilot overhead, the
+authors in [27] constructed a block-wise linear model in
+the frequency domain, requiring the estimation of only the
+mean and slope in each sub-block. In the above work, the
+channel modeling and assigned prior distribution may fail
+to accurately capture the intricacies of the high-dimensional
+channel, leading to sub-optimal performance.
+2) Model-Based and Model-Free Deep Learning for
+JADCE:It is well-known that message-passing algorithms
+can be unfolded into a layer-wise structure analogous to
+a neural network (NN) [34]. By incorporating additional
+learnable parameters, the unfolded message passing networks
+can be trained using pairs of the channel samples, device
+activity realizations, and observations. It is shown that the
+deep unfolding technique can mitigate the potential message
+correlation issue on dense graphs and speed up convergence
+[8], [9], [12]. Nevertheless, deep unfolding, as a model-based
+deep learning approach, still requires prior knowledge of
+the wireless channel distribution. For example, the on-grid
+millimeter-wave parametric channel is adopted in [12], and
+the Rayleigh fading is adopted in [8], [9]. In contrast, pure
+data-driven approaches [35], [36] learn to fit certain input-
+output relationships without the need of explicit mathematical
+modeling. In [35], the authors proposed the use of two long
+short-term memory (LSTM) networks to learn the mappings
+from the received signals to the indices of active devices
+and to the channel coefficients. However, the existing deep
+learning-based solutions, whether model-based or model-free,
+are trained in a supervised manner using predefined active
+probabilities, specific pilot patterns, and fixed SNRs, which
+may not generalize effectively to diverse scenarios.
+3) Score-Based Generative Models for Channel Estima-
+tion:Recent studies [37]–[43] have applied DPS [18]–[23]
+to solve channel estimation problems by sampling from the
+posterior channel distribution conditioned on the received
+pilots. Since the pilots (measurement matrix) are solely tied
+to the likelihood, different pilot designs can be implemented
+without necessitating retraining of the prior score network.
+As mentioned before, these approaches require hundreds or
+even thousands of iterations, resulting in unaffordable com-
+putational cost. Although some initial attempts have explored
+higher-order annealed Langevin diffusion [40] and variational
+inference [44] to accelerate convergence, the required steps
+are only reduced by a small margin. Moreover, the authors
+in [45] investigated the integration of score networks into
+orthogonal AMP (OAMP) [46] for channel estimation in near-
+field holographic MIMO systems.
+C. Organization and Notations
+The remainder of this paper is organized as follows. Section
+II presents the system model, formulates the JADCE problem,
+and outlines the inherent limitations of traditional message-
+passing algorithms for problem-solving. Section III develops
+a TMP framework that supports the integration of score-based
+generative priors. Section IV reveals the relationship between
+the score function and MMSE denoising, and then specifies
+the training objectives for the score networks. In Section V, we
+present the STMP-JADCE algorithm and related engineering
+tricks. In Section VI, we provide extensive simulation results
+to validate the efficiency and effectiveness of the proposed
+method. Finally, we conclude this paper in Section VII.
+Notations:Lower-case letters are used to denote scalars.
+Vectors and matrices are denoted by lower-case and upper-case
+boldface letters, respectively. We useA T,A H, andA −1 to de-
+note the transpose, conjugate transpose, and inverse of matrix
+A, respectively. We use the symbol∝to indicate equality
+up to a constant multiplicative factor. We usediag{·},tr(·),
+E[·],Var[·], andCov[·]to represent the diagonal operator, the
+trace of a square matrix, the expectation, the variance, and
+the covariance matrix, respectively. The probability density
+function (pdf) of a circularly-symmetric complex Gaussian
+(CSCG) random variablexwith meanmand variancevis
+denoted byCN(x;m, v). The pdf of a CSCG random vector
+xwith meanmand covariance matrixVis denoted by
+CN(x;m,V).
+II. SYSTEMMODEL ANDPROBLEMSTATEMENT
+A. System Model
+Consider the uplink transmission of massive devices in an
+IoT network, as illustrated in Fig. 1. The system operates under
+a grant-free random access scheme to support the sporadic
+connectivity ofK≫1devices. The BS is equipped with
+Mantennas, while each IoT device is equipped with a single
+antenna. A total ofNadjacent OFDM subcarriers are shared
+among the devices for pilot transmission. We adopt a block-
+fading model, i.e., all the channels remain quasi-static within a
+transmission block. Moreover, we assume that the IoT devices
+
+=== PDF PAGE 4 ===
+4
+BSActive devicesInactive devices OFDM SymbolSubcarrier
+…
+<latexit sha1_base64="z/vArVQT6avm1pQM4xWQ38xe51M=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKewGiR4DXjwmkBckS5iddJIxs7PLzKwQlnyBFw+KePWTvPk3TpI9aGJBQ1HVTXdXEAuujet+O7mt7Z3dvfx+4eDw6PikeHrW1lGiGLZYJCLVDahGwSW2DDcCu7FCGgYCO8H0fuF3nlBpHsmmmcXoh3Qs+YgzaqzUaA6KJbfsLkE2iZeREmSoD4pf/WHEkhClYYJq3fPc2PgpVYYzgfNCP9EYUzalY+xZKmmI2k+Xh87JlVWGZBQpW9KQpfp7IqWh1rMwsJ0hNRO97i3E/7xeYkZ3fsplnBiUbLVolAhiIrL4mgy5QmbEzBLKFLe3EjahijJjsynYELz1lzdJu1L2quVq46ZUq2Rx5OECLuEaPLiFGjxAHVrAAOEZXuHNeXRenHfnY9Wac7KZc/gD5/MHrmuM0w==</latexit>
+T
+<latexit sha1_base64="nFykwA0P9tbFIEN+bffS6LqtZgc=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgKewGiR4DXjxJAuYByRJmJ73JmNnZZWZWCCFf4MWDIl79JG/+jZNkD5pY0FBUddPdFSSCa+O6305uY3Nreye/W9jbPzg8Kh6ftHScKoZNFotYdQKqUXCJTcONwE6ikEaBwHYwvp377SdUmsfywUwS9CM6lDzkjBorNe77xZJbdhcg68TLSAky1PvFr94gZmmE0jBBte56bmL8KVWGM4GzQi/VmFA2pkPsWipphNqfLg6dkQurDEgYK1vSkIX6e2JKI60nUWA7I2pGetWbi/953dSEN/6UyyQ1KNlyUZgKYmIy/5oMuEJmxMQSyhS3txI2oooyY7Mp2BC81ZfXSatS9qrlauOqVKtkceThDM7hEjy4hhrcQR2awADhGV7hzXl0Xpx352PZmnOymVP4A+fzB6VTjM0=</latexit>
+N
+Fig. 1. System model of the MIMO-OFDM grant-free random access network.
+are synchronized, and each device determines whether to ac-
+cess the channel in an independent and identically distributed
+(i.i.d.) manner. As a result, only a (small) subset of the devices
+is active in any given transmission block. We use an indicator
+functionα k to model the device activity as
+αk =
+(
+1,if thek-th device is active,
+0,otherwise. (1)
+Letλrepresent the probability of a device being active, i.e.,
+p(αk = 1) =λ, whereλ≪1.
+Denote byh knm ∈Cthe channel frequency response on the
+n-th subcarrier from thek-th device to them-th BS antenna.
+Then, the channel frequency response from thek-th device to
+the BS can be expressed in a matrix form as
+Hk =
+
+
+hk11 hk12 . . . h k1M
+hk21 hk22 . . . h k2M
+... ... ... ...
+hkN1 hkN2 . . . h kN M
+
+ ∈C N×M .(2)
+Assume that a total ofTOFDM symbols are allocated for pilot
+transmission. Letq ktn ∈Cbe the pilot symbol transmitted by
+thek-th device during thet-th OFDM symbol on then-th
+subcarrier. We construct a diagonal pilot matrix asQ kt ≜
+diag{q kt1, . . . , qktN } ∈C N×N ,∀k, t. Assume that the cyclic
+prefix (CP) length exceeds the maximum channel delay spread.
+After removing the CP and applying the DFT, the received
+signalY t ∈C N×M during thet-th OFDM symbol is given
+by
+Yt =
+KX
+k=1
+αkQktHk +N t,(3)
+whereN t ∈C N×M is an AWGN matrix with the elements
+i.i.d. drawn fromCN(0, δ 2
+0). LetX k ≜α kHk. Define
+Y≜
+
+YH
+1 , . . . ,YH
+T
+H
+∈C N T×M ,Q k ≜
+
+QH
+k1, . . . ,QH
+kT
+H
+∈
+CN T×N , andN≜
+
+NH
+1 , . . . ,NH
+T
+H
+∈C N T×M . We express
+the received signalYover theTOFDM symbols in a more
+compact form as
+Y=
+KX
+k=1
+QkXk +N=QX+N,(4)
+TABLE I
+SUMMARY OFNOTATIONS
+Notation Description
+MNumber of BS antennas
+NNumber of OFDM subcarriers
+KNumber of sporadic access devices
+TNumber of OFDM symbols
+PTransmit power budget of each device
+λPrior probability that a device is active
+αk Indicator of whether devicekis active
+Hk Channel matrix from devicekto the BS
+Xk Effective channel matrixX k ≜α kHk
+hkm (xkm) Them-th column ofH k (Xk)
+X X≜
+
+XH
+1 , . . . ,X H
+K
+H
+xm Them-th column ofX
+QConcatenated pilot symbol matrix
+YConcatenated received signal matrix
+NConcatenated AWGN matrix
+xpri
+m,A,v pri
+m,A Prior mean and variance ofx m in module A
+xpost
+m,A,v post
+m,A Posterior mean and variance ofx m in module A
+xext
+m,A,v ext
+m,A Extrinsic mean and variance ofx m in module A
+xpri
+km,B,v pri
+m,B Prior mean and variance ofx km in module B
+xpost
+km,B,v post
+m,B Posterior mean and variance ofx km in module B
+xext
+km,B,v ext
+m,B Extrinsic mean and variance ofx km in module B
+hpri
+km,τ pri
+m Prior mean and variance ofh km in module B
+hpost
+km ,τ post
+m Posterior mean and variance ofh km in module B
+hext
+km,τ ext
+m Extrinsic mean and variance ofh km in module B
+λpost
+k Posterior estimate of the active probability of devicek
+whereQ≜[Q 1, . . . ,QK]∈C N T×N K, andX≜
+XH
+1 , . . . ,XH
+K
+H
+∈C N K×M. For simplicity, we impose the
+condition thatQis partial orthogonal, specifically requiring
+thatQQ H =KPI N T, where each device has the same
+transmit power budgetP. The design of partial orthogonalQ
+is deferred to Section V-C. Due to the sporadic access of the
+devices, matrixXexhibits a block-sparsity structure. Specifi-
+cally, if thek-th device is inactive, we haveX k =α kHk =0.
+Frequently used notations in this paper are summarized in
+Table I.
+B. Problem Statement
+In this paper, we aim to simultaneously detect the active
+devices and estimate the corresponding channels based on
+the observationYunder a Bayesian inference framework.
+Exact Bayesian estimators, e.g., the MMSE estimator, are
+generally intractable due to the high-dimensional integrals
+in the marginalization of the joint posterior distribution
+p
+ 
+X,{H k}K
+k=1,{α k}K
+k=1|Y
+
+.
+Alternatively, message-passing algorithms [5], [6], [27],
+[47] provide a low-complexity iterative approach for approxi-
+mately calculating the MMSE estimator. In message passing,
+we factorize the joint posterior distribution according to Baye’s
+theorem and the conditional independence relationships among
+the variables, expressed as
+p
+ 
+X,{H k}K
+k=1,{α k}K
+k=1|Y
+
+∝
+MY
+m=1
+p(ym|xm)
+KY
+k=1
+p(Xk|Hk, αk)p(Hk)p(αk),(5)
+
+=== PDF PAGE 5 ===
+5
+…
+……
+…
+<latexit sha1_base64="JKKufgVVzYoWUzVzYpew/m902TE=">AAAEzXicrVTPb9MwGPWaAGv51cGRi0U1xKlKrGlwnLQLwqIMiW6TmqpyHLezljiR7UzrQrjy/3HjzD+C26amm5EYE59k6el9z5/9nuLERcqVDoIfWy3Pv3f/wXa78/DR4ydPuzvPjlVeSsqGNE9zeRoTxVIu2FBznbLTQjKSxSk7ic8PF/2TCyYVz8VnPS/YOCMzwaecEm2oyU7rZzuK2YyLKs6Ilvyy7rTbl5MqDMMavoJLhBYoSnKt1syHGkZRI0RWiBwhWguji4b9DZLrjJ03sPMGzrzBet7uX2o1C1kTyDGBNk0gawI5JtAdTCBrAjkm0L+YuOWR/1d2u3CxDRc74eLNcLENFzvh4juEi2242AkXr8ONmEjsJz3p9oJ+sCzogrABPdDU0aT73cykZcaEpilRahQGhR5XRGpOU1Z3olKxgtBzMmMjAwXJmBpXy9dYw13DJHCaS7OEhkt2c0dFMqXmWWyU5n5n6mZvQf6pNyr19O244qIoNRN0ddC0TKHO4eJpw4RLRnU6N4BQyc1dIT0jklBtfgAdE0J407ILjlE/3O/vf9rrHfSbOLbBC/ASvAYheAMOwDtwBIaAeu+9wpt7V/5Hv/S/+F9X0tZWs+c5uFb+t1/U6lno</latexit>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+x111 x112 ... x 11M
+x121 x122 ... x 12M
+...
+...
+...
+...
+x1N1 x1N2 ... x 1NM
+x211 x212 ... x 21M
+x221 x222 ... x 22M
+...
+...
+...
+...
+x2N1 x2N2 ... x 2NM
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+...
+xK11 xK12 ... x K1M
+xK21 xK22 ... x K2M
+...
+...
+...
+...
+xKN 1 xKN 2 ... x KNM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<latexit sha1_base64="95ll5GNpjuksjrTiMEUpN9+QWJY=">AAACDnicbVDLSsNAFJ3UV62vqEs3g6VQQUpSpLosuCl0U8E+oA1hMp20QyfJMDMRSuwXuPFX3LhQxK1rd/6NkzaCth4YOPece5l7j8cZlcqyvozc2vrG5lZ+u7Czu7d/YB4edWQUC0zaOGKR6HlIEkZD0lZUMdLjgqDAY6TrTa5Tv3tHhKRReKumnDgBGoXUpxgpLblmiZcHAVJjz096M7d5/1M0dHE+QIyPkds8c82iVbHmgKvEzkgRZGi55udgGOE4IKHCDEnZty2unAQJRTEjs8IgloQjPEEj0tc0RAGRTjI/ZwZLWhlCPxL6hQrO1d8TCQqknAae7ky3lcteKv7n9WPlXzkJDXmsSIgXH/kxgyqCaTZwSAXBik01QVhQvSvEYyQQVjrBgg7BXj55lXSqFbtWqd1cFOvVLI48OAGnoAxscAnqoAFaoA0weABP4AW8Go/Gs/FmvC9ac0Y2cwz+wPj4Bgk5nA0=</latexit>
+p(XK|HK,ωK)
+<latexit sha1_base64="8Yum2OEYKemyqLEnvpafCNzTzNc=">AAACDnicbVDLSsNAFJ3UV62vqEs3g6VQQUoSpLosuOmygn1AG8JkOmmHTiZhZiKU2C9w46+4caGIW9fu/BsnbQRtPTBw7jn3MvceP2ZUKsv6Mgpr6xubW8Xt0s7u3v6BeXjUkVEiMGnjiEWi5yNJGOWkrahipBcLgkKfka4/uc787h0Rkkb8Vk1j4oZoxGlAMVJa8sxKXB2ESI39IO3NPOf+p2jq4nyAWDxGnnPmmWWrZs0BV4mdkzLI0fLMz8EwwklIuMIMSdm3rVi5KRKKYkZmpUEiSYzwBI1IX1OOQiLddH7ODFa0MoRBJPTjCs7V3xMpCqWchr7uzLaVy14m/uf1ExVcuSnlcaIIx4uPgoRBFcEsGzikgmDFppogLKjeFeIxEggrnWBJh2Avn7xKOk7NrtfqNxflhpPHUQQn4BRUgQ0uQQM0QQu0AQYP4Am8gFfj0Xg23oz3RWvByGeOwR8YH9+ULJvC</latexit>
+p(X2|H2,ω2)
+<latexit sha1_base64="MVzieInzrXVLXYbLoGbucbr7jKA=">AAACDnicbVDLSsNAFJ3UV62vqEs3wVKoICUpUl0W3HRZwT6gCWEynbRDJ5NhZiKU2C9w46+4caGIW9fu/BsnbQRtPTBw7jn3MveegFMilW1/GYW19Y3NreJ2aWd3b//APDzqyjgRCHdQTGPRD6DElDDcUURR3OcCwyiguBdMrjO/d4eFJDG7VVOOvQiOGAkJgkpLvlnhVTeCahyEaX/mO/c/RUsX5y6kfAx958w3y3bNnsNaJU5OyiBH2zc/3WGMkggzhSiUcuDYXHkpFIogimclN5GYQzSBIzzQlMEISy+dnzOzKloZWmEs9GPKmqu/J1IYSTmNAt2ZbSuXvUz8zxskKrzyUsJ4ojBDi4/ChFoqtrJsrCERGCk61QQiQfSuFhpDAZHSCZZ0CM7yyaukW685jVrj5qLcrOdxFMEJOAVV4IBL0AQt0AYdgMADeAIv4NV4NJ6NN+N90Vow8plj8AfGxzePfpu/</latexit>
+p(X1|H1,ω1)
+<latexit sha1_base64="1FPat5lIWOEXaLyJcpaIYGGferQ=">AAAB83icbVDLSsNAFL2pr1pfVZduBovgqiRFqsuCG8FNBfuAJpTJdNIOnUzCPIQS+htuXCji1p9x5984abPQ1gMDh3Pu5Z45YcqZ0q777ZQ2Nre2d8q7lb39g8Oj6vFJVyVGEtohCU9kP8SKciZoRzPNaT+VFMchp71wepv7vScqFUvEo56lNIjxWLCIEayt5Psx1pMwyvrz4f2wWnPr7gJonXgFqUGB9rD65Y8SYmIqNOFYqYHnpjrIsNSMcDqv+EbRFJMpHtOBpQLHVAXZIvMcXVhlhKJE2ic0Wqi/NzIcKzWLQzuZZ1SrXi7+5w2Mjm6CjInUaCrI8lBkONIJygtAIyYp0XxmCSaS2ayITLDERNuaKrYEb/XL66TbqHvNevPhqtZqFHWU4QzO4RI8uIYW3EEbOkAghWd4hTfHOC/Ou/OxHC05xc4p/IHz+QMfqpG1</latexit>
+XK
+<latexit sha1_base64="hAE7l3lNp/bQn0XWzKTOR8G2hqk=">AAAB83icbVDLSsNAFL3xWeur6tLNYBFclaRIdVlw47KCfUBTymQ6aYdOJmHmRiihv+HGhSJu/Rl3/o2TNgttPTBwOOde7pkTJFIYdN1vZ2Nza3tnt7RX3j84PDqunJx2TJxqxtsslrHuBdRwKRRvo0DJe4nmNAok7wbTu9zvPnFtRKwecZbwQUTHSoSCUbSS70cUJ0GY9eZDb1ipujV3AbJOvIJUoUBrWPnyRzFLI66QSWpM33MTHGRUo2CSz8t+anhC2ZSOed9SRSNuBtki85xcWmVEwljbp5As1N8bGY2MmUWBncwzmlUvF//z+imGt4NMqCRFrtjyUJhKgjHJCyAjoTlDObOEMi1sVsImVFOGtqayLcFb/fI66dRrXqPWeLiuNutFHSU4hwu4Ag9uoAn30II2MEjgGV7hzUmdF+fd+ViObjjFzhn8gfP5A/gzkZs=</latexit>
+X1
+<latexit sha1_base64="7+1NUaattYUPnKhs8uMpopD5OLc=">AAAB83icbVDLSsNAFL3xWeur6tLNYBFclaRIdVlw47KCfUBTymR60w6dTMLMRCihv+HGhSJu/Rl3/o2TNgttPTBwOOde7pkTJIJr47rfzsbm1vbObmmvvH9weHRcOTnt6DhVDNssFrHqBVSj4BLbhhuBvUQhjQKB3WB6l/vdJ1Sax/LRzBIcRHQsecgZNVby/YiaSRBmvfmwPqxU3Zq7AFknXkGqUKA1rHz5o5ilEUrDBNW677mJGWRUGc4Ezst+qjGhbErH2LdU0gj1IFtknpNLq4xIGCv7pCEL9fdGRiOtZ1FgJ/OMetXLxf+8fmrC20HGZZIalGx5KEwFMTHJCyAjrpAZMbOEMsVtVsImVFFmbE1lW4K3+uV10qnXvEat8XBdbdaLOkpwDhdwBR7cQBPuoQVtYJDAM7zCm5M6L86787Ec3XCKnTP4A+fzB/m3kZw=</latexit>
+X2
+<latexit sha1_base64="EOpnJopOFTsZToWZQ+wgR3zhXyQ=">AAAB83icbVDLSgMxFL1TX7W+qi7dBIvgqswUqS4LbrqsYB/QGUomzbShSWZIMkIZ+htuXCji1p9x59+YaWehrQcCh3Pu5Z6cMOFMG9f9dkpb2zu7e+X9ysHh0fFJ9fSsp+NUEdolMY/VIMSaciZp1zDD6SBRFIuQ0344u8/9/hNVmsXy0cwTGgg8kSxiBBsr+b7AZhpGWXsx8kbVmlt3l0CbxCtIDQp0RtUvfxyTVFBpCMdaDz03MUGGlWGE00XFTzVNMJnhCR1aKrGgOsiWmRfoyipjFMXKPmnQUv29kWGh9VyEdjLPqNe9XPzPG6YmugsyJpPUUElWh6KUIxOjvAA0ZooSw+eWYKKYzYrIFCtMjK2pYkvw1r+8SXqNutesNx9uaq1GUUcZLuASrsGDW2hBGzrQBQIJPMMrvDmp8+K8Ox+r0ZJT7JzDHzifP9/DkYs=</latexit>
+H1
+<latexit sha1_base64="A4RFbFbK84edKyJjvEKGHIMDQj4=">AAAB83icbVDLSsNAFL2pr1pfVZduBovgqiRFqsuCmy4r2Ac0oUymk3boZBLmIZTQ33DjQhG3/ow7/8ZJm4W2Hhg4nHMv98wJU86Udt1vp7S1vbO7V96vHBweHZ9UT896KjGS0C5JeCIHIVaUM0G7mmlOB6mkOA457Yez+9zvP1GpWCIe9TylQYwngkWMYG0l34+xnoZR1l6MGqNqza27S6BN4hWkBgU6o+qXP06IianQhGOlhp6b6iDDUjPC6aLiG0VTTGZ4QoeWChxTFWTLzAt0ZZUxihJpn9Boqf7eyHCs1DwO7WSeUa17ufifNzQ6ugsyJlKjqSCrQ5HhSCcoLwCNmaRE87klmEhmsyIyxRITbWuq2BK89S9vkl6j7jXrzYebWqtR1FGGC7iEa/DgFlrQhg50gUAKz/AKb45xXpx352M1WnKKnXP4A+fzB+FHkYw=</latexit>
+H2
+<latexit sha1_base64="B2muUydyBMzQ29TPtfLC5fSHOII=">AAAB83icbVDLSsNAFL3xWeur6tLNYBFclaRIdVlwU3BTwT6gCWUynbRDJ5MwD6GE/oYbF4q49Wfc+TdO2iy09cDA4Zx7uWdOmHKmtOt+OxubW9s7u6W98v7B4dFx5eS0qxIjCe2QhCeyH2JFORO0o5nmtJ9KiuOQ0144vcv93hOViiXiUc9SGsR4LFjECNZW8v0Y60kYZa358H5Yqbo1dwG0TryCVKFAe1j58kcJMTEVmnCs1MBzUx1kWGpGOJ2XfaNoiskUj+nAUoFjqoJskXmOLq0yQlEi7RMaLdTfGxmOlZrFoZ3MM6pVLxf/8wZGR7dBxkRqNBVkeSgyHOkE5QWgEZOUaD6zBBPJbFZEJlhiom1NZVuCt/rlddKt17xGrfFwXW3WizpKcA4XcAUe3EATWtCGDhBI4Rle4c0xzovz7nwsRzecYucM/sD5/AEHOpGl</latexit>
+HK
+<latexit sha1_base64="16d5nU+ibyRcbZh+tGDF9VDqsv8=">AAAB+HicbVBNS8NAFHypX7V+NOrRy2IR6qUkRarHgpeClwq2FtoQNttNu3SzCbsboYb+Ei8eFPHqT/Hmv3Hb5qCtAwvDzHu82QkSzpR2nG+rsLG5tb1T3C3t7R8clu2j466KU0loh8Q8lr0AK8qZoB3NNKe9RFIcBZw+BJObuf/wSKVisbjX04R6ER4JFjKCtZF8u5xUBxHW4yDMWjP/9sK3K07NWQCtEzcnFcjR9u2vwTAmaUSFJhwr1XedRHsZlpoRTmelQapogskEj2jfUIEjqrxsEXyGzo0yRGEszRMaLdTfGxmOlJpGgZmch1Sr3lz8z+unOrz2MiaSVFNBlofClCMdo3kLaMgkJZpPDcFEMpMVkTGWmGjTVcmU4K5+eZ106zW3UWvcXVaa9byOIpzCGVTBhStoQgva0AECKTzDK7xZT9aL9W59LEcLVr5zAn9gff4AH2WStQ==</latexit>
+p(HK)
+<latexit sha1_base64="x37iaXS7vV+MzXZnudlr39k4GdQ=">AAAB+HicbVDLSsNAFL2pr1ofjbp0M1iEuilJkeqy4KbLCvYBbQiT6aQdOpmEmYlQQ7/EjQtF3Pop7vwbp20W2npg4HDOvdwzJ0g4U9pxvq3C1vbO7l5xv3RweHRctk9OuypOJaEdEvNY9gOsKGeCdjTTnPYTSXEUcNoLpncLv/dIpWKxeNCzhHoRHgsWMoK1kXy7nFSHEdaTIMxac79+5dsVp+YsgTaJm5MK5Gj79tdwFJM0okITjpUauE6ivQxLzQin89IwVTTBZIrHdGCowBFVXrYMPkeXRhmhMJbmCY2W6u+NDEdKzaLATC5CqnVvIf7nDVId3noZE0mqqSCrQ2HKkY7RogU0YpISzWeGYCKZyYrIBEtMtOmqZEpw17+8Sbr1mtuoNe6vK816XkcRzuECquDCDTShBW3oAIEUnuEV3qwn68V6tz5WowUr3zmDP7A+fwD5WZKc</latexit>
+p(H2)
+<latexit sha1_base64="ng1kk5Yd7+HNJrC3CdQc8SkGmrI=">AAAB+HicbVDLSsNAFL2pr1ofjbp0M1iEuilJkeqy4KbLCvYBbQiT6aQdOpmEmYlQQ7/EjQtF3Pop7vwbp20W2npg4HDOvdwzJ0g4U9pxvq3C1vbO7l5xv3RweHRctk9OuypOJaEdEvNY9gOsKGeCdjTTnPYTSXEUcNoLpncLv/dIpWKxeNCzhHoRHgsWMoK1kXy7nFSHEdaTIMxac9+98u2KU3OWQJvEzUkFcrR9+2s4ikkaUaEJx0oNXCfRXoalZoTTeWmYKppgMsVjOjBU4IgqL1sGn6NLo4xQGEvzhEZL9fdGhiOlZlFgJhch1bq3EP/zBqkOb72MiSTVVJDVoTDlSMdo0QIaMUmJ5jNDMJHMZEVkgiUm2nRVMiW461/eJN16zW3UGvfXlWY9r6MI53ABVXDhBprQgjZ0gEAKz/AKb9aT9WK9Wx+r0YKV75zBH1ifP/fUkps=</latexit>
+p(H1)
+<latexit sha1_base64="f3tLMek06/VSrcGLVMb3Nfsee0s=">AAAB73icbVBNS8NAEJ3Ur1q/qh69LBbBU0mKVI8FLx4r2A9oQ5lsN+3SzSbuboQS+ie8eFDEq3/Hm//GbZuDtj4YeLw3w8y8IBFcG9f9dgobm1vbO8Xd0t7+weFR+fikreNUUdaisYhVN0DNBJesZbgRrJsohlEgWCeY3M79zhNTmsfywUwT5kc4kjzkFI2Vun0UyRgH3qBccavuAmSdeDmpQI7moPzVH8Y0jZg0VKDWPc9NjJ+hMpwKNiv1U80SpBMcsZ6lEiOm/Wxx74xcWGVIwljZkoYs1N8TGUZaT6PAdkZoxnrVm4v/eb3UhDd+xmWSGibpclGYCmJiMn+eDLli1IipJUgVt7cSOkaF1NiISjYEb/XlddKuVb16tX5/VWnU8jiKcAbncAkeXEMD7qAJLaAg4Ble4c15dF6cd+dj2Vpw8plT+APn8wezk4+3</latexit>
+ω1
+<latexit sha1_base64="XnpAF3+ncGF7vh2/W1rjsSUFnq8=">AAAB73icbVBNS8NAEJ3Ur1q/qh69LBbBU0mKVI8FLx4r2A9oQ5lsN+3SzSbuboQS+ie8eFDEq3/Hm//GbZuDtj4YeLw3w8y8IBFcG9f9dgobm1vbO8Xd0t7+weFR+fikreNUUdaisYhVN0DNBJesZbgRrJsohlEgWCeY3M79zhNTmsfywUwT5kc4kjzkFI2Vun0UyRgHtUG54lbdBcg68XJSgRzNQfmrP4xpGjFpqECte56bGD9DZTgVbFbqp5olSCc4Yj1LJUZM+9ni3hm5sMqQhLGyJQ1ZqL8nMoy0nkaB7YzQjPWqNxf/83qpCW/8jMskNUzS5aIwFcTEZP48GXLFqBFTS5Aqbm8ldIwKqbERlWwI3urL66Rdq3r1av3+qtKo5XEU4QzO4RI8uIYG3EETWkBBwDO8wpvz6Lw4787HsrXg5DOn8AfO5w+1F4+4</latexit>
+ω2
+<latexit sha1_base64="rnaLoWVNS/06unwPAae4WZLipCU=">AAAB73icbVBNS8NAEJ34WetX1aOXxSJ4KkmR6rHgRfBSwX5AG8pku2mXbjZxdyOU0D/hxYMiXv073vw3btsctPXBwOO9GWbmBYng2rjut7O2vrG5tV3YKe7u7R8clo6OWzpOFWVNGotYdQLUTHDJmoYbwTqJYhgFgrWD8c3Mbz8xpXksH8wkYX6EQ8lDTtFYqdNDkYywf9cvld2KOwdZJV5OypCj0S999QYxTSMmDRWodddzE+NnqAyngk2LvVSzBOkYh6xrqcSIaT+b3zsl51YZkDBWtqQhc/X3RIaR1pMosJ0RmpFe9mbif143NeG1n3GZpIZJulgUpoKYmMyeJwOuGDViYglSxe2thI5QITU2oqINwVt+eZW0qhWvVqndX5br1TyOApzCGVyAB1dQh1toQBMoCHiGV3hzHp0X5935WLSuOfnMCfyB8/kD2vuP0Q==</latexit>
+ωK
+<latexit sha1_base64="00QbQQfNs3Msdrxob8T6DtGTosc=">AAAB8nicbVBNSwMxEM3Wr1q/qh69BItQL2W3SPVY8CJ4qWA/YLuU2TTbhmazIckKZenP8OJBEa/+Gm/+G9N2D9r6YODx3gwz80LJmTau++0UNja3tneKu6W9/YPDo/LxSUcnqSK0TRKeqF4ImnImaNsww2lPKgpxyGk3nNzO/e4TVZol4tFMJQ1iGAkWMQLGSr6s9oHLMQzuLwfliltzF8DrxMtJBeVoDcpf/WFC0pgKQzho7XuuNEEGyjDC6azUTzWVQCYwor6lAmKqg2xx8gxfWGWIo0TZEgYv1N8TGcRaT+PQdsZgxnrVm4v/eX5qopsgY0KmhgqyXBSlHJsEz//HQ6YoMXxqCRDF7K2YjEEBMTalkg3BW315nXTqNa9RazxcVZr1PI4iOkPnqIo8dI2a6A61UBsRlKBn9IreHOO8OO/Ox7K14OQzp+gPnM8fd02QsA==</latexit>
+p(ωK)
+<latexit sha1_base64="KB4Kf5DroQD8bM1L7ISMgiUR6C4=">AAAB8nicbVBNSwMxEM3Wr1q/qh69BItQL2W3SPVY8OKxgq2FdinZNNuGZpOQzApl6c/w4kERr/4ab/4b03YP2vpg4PHeDDPzIi24Bd//9gobm1vbO8Xd0t7+weFR+fikY1VqKGtTJZTpRsQywSVrAwfButowkkSCPUaT27n/+MSM5Uo+wFSzMCEjyWNOCTipp6t9IvSYDILLQbni1/wF8DoJclJBOVqD8ld/qGiaMAlUEGt7ga8hzIgBTgWblfqpZZrQCRmxnqOSJMyG2eLkGb5wyhDHyriSgBfq74mMJNZOk8h1JgTGdtWbi/95vRTimzDjUqfAJF0uilOBQeH5/3jIDaMgpo4Qari7FdMxMYSCS6nkQghWX14nnXotaNQa91eVZj2Po4jO0DmqogBdoya6Qy3URhQp9Ixe0ZsH3ov37n0sWwtePnOK/sD7/AFPy5CW</latexit>
+p(ω1)
+<latexit sha1_base64="OS8dqY2oI1SvMMDDn3BuSHoUP9k=">AAAB8nicbVBNSwMxEM3Wr1q/qh69BItQL2W3SPVY8OKxgq2FdimzabYNzSYhyQpl6c/w4kERr/4ab/4b03YP2vpg4PHeDDPzIsWZsb7/7RU2Nre2d4q7pb39g8Oj8vFJx8hUE9omkkvdjcBQzgRtW2Y57SpNIYk4fYwmt3P/8Ylqw6R4sFNFwwRGgsWMgHVST1X7wNUYBvXLQbni1/wF8DoJclJBOVqD8ld/KEmaUGEJB2N6ga9smIG2jHA6K/VTQxWQCYxoz1EBCTVhtjh5hi+cMsSx1K6ExQv190QGiTHTJHKdCdixWfXm4n9eL7XxTZgxoVJLBVkuilOOrcTz//GQaUosnzoCRDN3KyZj0ECsS6nkQghWX14nnXotaNQa91eVZj2Po4jO0DmqogBdoya6Qy3URgRJ9Ixe0ZtnvRfv3ftYtha8fOYU/YH3+QNRUJCX</latexit>
+p(ω2)
+<latexit sha1_base64="YjpuiTNt2Pp2MAIqrXjI57z/WwQ=">AAACBXicbVDLSsNAFL3xWesr6lIXg0Wom5IUqS4LblxWsA9oS5hMJ+3QyYOZiRhiN278FTcuFHHrP7jzb5y0EbT1wMC559zL3HvciDOpLOvLWFpeWV1bL2wUN7e2d3bNvf2WDGNBaJOEPBQdF0vKWUCbiilOO5Gg2Hc5bbvjy8xv31IhWRjcqCSifR8PA+YxgpWWHPMoKvd8rEaulyYTx77/Ke50ceqYJatiTYEWiZ2TEuRoOOZnbxCS2KeBIhxL2bWtSPVTLBQjnE6KvVjSCJMxHtKupgH2qeyn0ysm6EQrA+SFQr9Aoan6eyLFvpSJ7+rObEk572Xif143Vt5FP2VBFCsakNlHXsyRClEWCRowQYniiSaYCKZ3RWSEBSZKB1fUIdjzJy+SVrVi1yq167NSvZrHUYBDOIYy2HAOdbiCBjSBwAM8wQu8Go/Gs/FmvM9al4x85gD+wPj4Bpc7mJg=</latexit>
+p(y1|x1)
+<latexit sha1_base64="ZHvx32hejzbxaZsgXD9TGjx4p3k=">AAACBXicbVDLSsNAFL3xWesr6lIXg0Wom5IUqS4LblxWsA9oS5hMJ+3QyYOZiRhiN278FTcuFHHrP7jzb5y0EbT1wMC559zL3HvciDOpLOvLWFpeWV1bL2wUN7e2d3bNvf2WDGNBaJOEPBQdF0vKWUCbiilOO5Gg2Hc5bbvjy8xv31IhWRjcqCSifR8PA+YxgpWWHPMoKvd8rEaulyYTp3r/U9zp4tQxS1bFmgItEjsnJcjRcMzP3iAksU8DRTiWsmtbkeqnWChGOJ0Ue7GkESZjPKRdTQPsU9lPp1dM0IlWBsgLhX6BQlP190SKfSkT39Wd2ZJy3svE/7xurLyLfsqCKFY0ILOPvJgjFaIsEjRgghLFE00wEUzvisgIC0yUDq6oQ7DnT14krWrFrlVq12elejWPowCHcAxlsOEc6nAFDWgCgQd4ghd4NR6NZ+PNeJ+1Lhn5zAH8gfHxDZpSmJo=</latexit>
+p(y2|x2)
+<latexit sha1_base64="ae09bDJgahpvSjJlbJLpfKQdHWM=">AAACBXicbVDLSsNAFJ3UV62vqEtdDBahbkpSpLosuHEjVLAPaEOYTCft0MkkzEzEELtx46+4caGIW//BnX/jpI2grQcGzj3nXube40WMSmVZX0ZhaXllda24XtrY3NreMXf32jKMBSYtHLJQdD0kCaOctBRVjHQjQVDgMdLxxheZ37klQtKQ36gkIk6Ahpz6FCOlJdc8jCr9AKmR56fJxL26/ynudHHimmWrak0BF4mdkzLI0XTNz/4gxHFAuMIMSdmzrUg5KRKKYkYmpX4sSYTwGA1JT1OOAiKddHrFBB5rZQD9UOjHFZyqvydSFEiZBJ7uzJaU814m/uf1YuWfOynlUawIx7OP/JhBFcIsEjiggmDFEk0QFlTvCvEICYSVDq6kQ7DnT14k7VrVrlfr16flRi2PowgOwBGoABucgQa4BE3QAhg8gCfwAl6NR+PZeDPeZ60FI5/ZB39gfHwD7b+Y0A==</latexit>
+p(yM|xM)
+<latexit sha1_base64="kb55yDe0JMWRe2nrNSmwJp/pR9Q=">AAAB83icbVDLSgMxFL3js9ZX1aWbYBFclZki1WXBjRuhgn1AZyiZNNOGZjIhyYhl6G+4caGIW3/GnX9jpp2Fth4IHM65l3tyQsmZNq777aytb2xubZd2yrt7+weHlaPjjk5SRWibJDxRvRBrypmgbcMMpz2pKI5DTrvh5Cb3u49UaZaIBzOVNIjxSLCIEWys5PsxNuMwyp5mg7tBperW3DnQKvEKUoUCrUHlyx8mJI2pMIRjrfueK02QYWUY4XRW9lNNJSYTPKJ9SwWOqQ6yeeYZOrfKEEWJsk8YNFd/b2Q41noah3Yyz6iXvVz8z+unJroOMiZkaqggi0NRypFJUF4AGjJFieFTSzBRzGZFZIwVJsbWVLYleMtfXiWdes1r1Br3l9VmvaijBKdwBhfgwRU04RZa0AYCEp7hFd6c1Hlx3p2PxeiaU+ycwB84nz9TkpHX</latexit>
+xM
+<latexit sha1_base64="+5sPIFdjyD3ADnkRWL3wi/ydoj0=">AAAB83icbVDLSsNAFL2pr1pfVZduBovgqiRFqsuCG5cV7AOaUCbTSTt0MgnzEEvob7hxoYhbf8adf+OkzUJbDwwczrmXe+aEKWdKu+63U9rY3NreKe9W9vYPDo+qxyddlRhJaIckPJH9ECvKmaAdzTSn/VRSHIec9sLpbe73HqlULBEPepbSIMZjwSJGsLaS78dYT8Ioe5oPG8Nqza27C6B14hWkBgXaw+qXP0qIianQhGOlBp6b6iDDUjPC6bziG0VTTKZ4TAeWChxTFWSLzHN0YZURihJpn9Boof7eyHCs1CwO7WSeUa16ufifNzA6ugkyJlKjqSDLQ5HhSCcoLwCNmKRE85klmEhmsyIywRITbWuq2BK81S+vk26j7jXrzfurWqtR1FGGMziHS/DgGlpwB23oAIEUnuEV3hzjvDjvzsdytOQUO6fwB87nDyqmkbw=</latexit>
+x2
+<latexit sha1_base64="xJapFQEzZ/vXyjbBgeKZbniRS0o=">AAAB83icbVDLSsNAFL2pr1pfVZduBovgqiRFqsuCG5cV7AOaUCbTSTt0MgnzEEvob7hxoYhbf8adf+OkzUJbDwwczrmXe+aEKWdKu+63U9rY3NreKe9W9vYPDo+qxyddlRhJaIckPJH9ECvKmaAdzTSn/VRSHIec9sLpbe73HqlULBEPepbSIMZjwSJGsLaS78dYT8Ioe5oPvWG15tbdBdA68QpSgwLtYfXLHyXExFRowrFSA89NdZBhqRnhdF7xjaIpJlM8pgNLBY6pCrJF5jm6sMoIRYm0T2i0UH9vZDhWahaHdjLPqFa9XPzPGxgd3QQZE6nRVJDlochwpBOUF4BGTFKi+cwSTCSzWRGZYImJtjVVbAne6pfXSbdR95r15v1VrdUo6ijDGZzDJXhwDS24gzZ0gEAKz/AKb45xXpx352M5WnKKnVP4A+fzBykikbs=</latexit>
+x1
+Module AModule BVector-matrix reorg.
+Fig. 2. Factor graph representation of the joint posterior distribution
+p(X,{H k}K
+k=1,{α k}K
+k=1|Y). The variables are represented by the “vari-
+able nodes” that appear as circles, while the distributions are represented by
+the “factor nodes” that appear as black filled squares. We use different colors
+to differentiatex m andX k in vector-matrix reorganization.
+wherex m ∈C N K andy m ∈C N T denote them-th column
+ofX= [x 1, . . . ,xM]andY= [y 1, . . . ,yM], respectively. A
+factor graph is then utilized to represent the joint distribution
+in (5), as illustrated in Fig. 2. The distributions of each factor
+node and their abbreviations are summarized in Table II. The
+main difficulty in implementing message passing on the factor
+graph lies in the message calculation associated with the factor
+nodep(H k), detailed as follows.
+•Lack of exact characterization of channel distribution:
+It is extremely challenging, if not impossible, to obtain
+an accurate characterization of the channel distribution
+p(Hk). Existing literature resorts to various assumptions,
+e.g., Rayleigh fading [5], [6], Rician fading [10], angular-
+frequency structured sparsity [11], or frequency-domain
+block-wise linearity [27], to model the wireless channel.
+These assumptions, however, may be mismatched with
+the ground-truth prior distribution, leading to significant
+performance degradation and potentially causing the al-
+gorithm to diverge.
+•Intractable high-dimensional integrals:The messages
+associated with the factor nodep(H k)can only be derived
+under specific, simple, and easily computable priors.
+For example, the work in [11] adopted a simple i.i.d.
+Bernoulli-Gaussian distribution to account for the inher-
+ent sparsity in the angular domain. Generally speaking,
+even if the ground-truth channel distribution becomes
+analytically available, calculating the messages for the
+factor nodep(H k)remains highly challenging due to the
+complicated and high-dimensional integrals (as will be
+discussed in Section III-B).
+To summarize, the message-passing framework faces a
+dilemma: the adopted channel prior is either too imprecise to
+ensure good performance, or too complex to facilitate efficient
+message calculation. This paper seeks to address the afore-
+mentioned challenges by plugging in deep generative priors
+for efficient message calculation. We begin by developing
+a TMP framework for JADCE. Then, we present a unique
+interpretation of the belief calculation at the factor nodep(H k)
+TABLE II
+FACTORNODES ANDTHEIRABBREVIATIONS
+Factor node Abbreviation Distribution
+p(ym|xm)f ym CN(Qx m, δ2
+0 IN T )
+p(Xk|Hk, αk)f Xk δ(Xk −α kHk)
+p(Hk)f Hk –
+p(αk)f αk (1−λ)δ(α k) +λδ(1−α k)
+as an MMSE denoising problem under AWGN observations.
+This insight enables the integration of score-based generative
+networks for provable MMSE denoising, eliminating the need
+to compute high-dimensional integrals.
+III. TURBOMESSAGEPASSINGFRAMEWORK
+In this section, we develop a novel TMP framework based
+on the combined use of the sum-product rule [48] and the
+EP algorithm [49]. TMP interprets the message updates on
+the factor graph in Fig. 2 as iterations between two modules,
+namely, module A and module B. Module A is a linear
+estimator that separately estimates each column ofX(i.e.,x m)
+exploiting the likelihoodp(y m|xm)and the messages from
+module B. Module B is a denoiser ofX k exploiting the priors
+p(Hk)andp(α k), along with the messages from module A.
+These estimates iterate between the two modules like turbo
+decoding, hence the name TMP. We describe the message
+calculations in module A and module B in the following
+subsections.
+A. Module A: Linear Estimator
+Following Turbo-CS [26], we start by initializing the mes-
+sage from the variable nodex m to the factor nodep(y m|xm)
+asM xm→fym (xm) =CN(x m;x pri
+m,A, vpri
+m,AIN K). The belief
+ofx m on the factor nodep(y m|xm)is expressed as
+Mfym (xm)∝p(y m|xm)Mxm→fym (xm).(6)
+In (6), the beliefM fym (xm)is proportional to the product of
+two Gaussian pdfs, which is also a Gaussian pdf. The mean
+and covariance can be obtained by completing the square in
+the exponent of the Gaussian product with respect tox m.
+We further approximate the covariance matrix using a shared
+scalar variance [26], [50], resulting in the belief of the form
+Mfym (xm)≈ CN(x m;x post
+m,A, vpost
+m,A IN K), where
+xpost
+m,A =x pri
+m,A +
+vpri
+m,A
+KP vpri
+m,A +δ 2
+0
+QH
+
+ym −Qx pri
+m,A
+
+,(7)
+vpost
+m,A =v pri
+m,A −
+T P(v pri
+m,A)2
+KP vpri
+m,A +δ 2
+0
+.(8)
+Eqns. (7) and (8) are respectively the posterior mean and
+variance from the linear MMSE (LMMSE) estimator ofx m,
+given the prior meanx pri
+m,A and variancev pri
+m,A.
+The message from the factor nodep(y m|xm)to the variable
+nodex m, also known as the extrinsic message, is calculated
+based on the EP algorithm [49] as
+Mfym →xm(xm)∝ Mfym (xm)
+Mxm→fym (xm) .(9)
+
+=== PDF PAGE 6 ===
+6
+From (9), the extrinsic message is proportional to the ratio of
+two Gaussian pdfs, which is another Gaussian pdf, denoted as
+Mfym →xm(xm) =CN(x m;x ext
+m,A, vext
+m,AIN K). The variance
+vext
+m,A and meanx ext
+m,A are respectively given by
+vext
+m,A =
+ 
+1
+vpost
+m,A
+− 1
+vpri
+m,A
+!−1
+,(10)
+xext
+m,A =v ext
+m,A
+ 
+xpost
+m,A
+vpost
+m,A
+−
+xpri
+m,A
+vpri
+m,A
+!
+.(11)
+The messageM fym →xm(xm)flows rightward through the
+factor graph unchanged, serving as the input to module B:
+xpri
+m,B =x ext
+m,A,v pri
+m,B =v ext
+m,A.
+B. Module B: Channel and Device Activity Denoisers
+As shown in Fig. 2, the denoiser ofX k =α kHk can be
+further divided into two sub-modules: the denoiser ofH k
+and the denoiser ofα k. The outputs from these two sub-
+modules are then combined at the factor nodep(X k|Hk, αk)
+to produce the denoisedX k. In this subsection, we formally
+establish the equivalence between belief calculation at the
+factor nodep(H k)and MMSE denoising ofH k under AWGN
+observations. This equivalence plays a crucial role in the
+integration of score-based generative priors for efficient belief
+calculation.
+Firstly, we derive the message from the variable nodeX k to
+the factor nodep(X k|Hk, αk), denoted asM Xk→fXk
+(Xk),
+by examining the relationships in vector-matrix reorgani-
+zation. We marginalize the messageM fym →xm(xm) =
+CN
+ 
+xm;x pri
+m,B, vpri
+m,BIN K
+
+from module A to obtain
+Mfym →xkm(xkm) =CN
+ 
+xkm;x pri
+km,B, vpri
+m,BIN
+
+,(12)
+wherex km ≜[x k1m, . . . , xkN m]T ∈C N andx pri
+km,B ≜
+xpri
+k1m,B, . . . , xpri
+kN m,B
+T
+∈C N represent thek-th blocks in
+xm andx pri
+m,B, respectively, i.e.,x m =
+
+xH
+1m, . . . ,xH
+Km
+H
+andx pri
+m,B =
+
+(xpri
+1m,B)H, . . . ,(xpri
+Km,B)HH
+. After vector-matrix
+reorganization, the message from the variable nodeX k to the
+factor nodep(X k|Hk, αk)manifests as
+MXk→fXk
+(Xk) =
+Y
+m
+Mfym →xkm(xkm)(13)
+=
+Y
+m
+CN
+ 
+xkm;x pri
+km,B, vpri
+m,BIN
+
+,(14)
+where (13) arises from the fact that the messages
+Mfym →xkm(xkm)are independent for different values ofm.
+1) Denoiser ofH k:The message from the factor node
+p(Xk|Hk, αk)to the variable nodeH k is computed following
+the sum-product rule [48]:
+MfXk →Hk(Hk)
+∝
+Z
+Xk,αk
+δ(Xk −α kHk)MXk→fXk
+(Xk)p(αk)
+∝(1−λ)
+Z
+Xk
+δ(Xk)
+Y
+m
+CN
+ 
+xkm;x pri
+km,B, vpri
+m,BIN
+
++λ
+Z
+Xk
+δ(Xk −H k)
+Y
+m
+CN
+ 
+xkm;x pri
+km,B, vpri
+m,BIN
+
+∝(1−λ)
+Y
+m
+CN
+ 
+0;x pri
+km,B, vpri
+m,BIN
+
++λ
+Y
+m
+CN
+ 
+hkm;x pri
+km,B, vpri
+m,BIN
+
+,(15)
+whereh km ≜[h k1m, . . . , hkN m]T ∈C N represents the
+m-th column ofH k, i.e.,H k = [h k1, . . . ,hkM ]. The first
+term in (15) corresponds to the case that thek-th device is
+inactive and is a constant with respect toH k. As a result,
+MfXk →Hk(Hk)cannot be properly normalized to a valid
+pdf when this term is retained. To obtain a tractable message
+for channel denoising, we approximateM fXk →Hk(Hk)by
+conditioning on the active case and forwarding only the second
+term to the channel denoiser. The activity uncertainty will be
+handled separately through the Bernoulli update in (30). The
+approximated Gaussian message reads
+MfXk →Hk(Hk)≈
+Y
+m
+CN
+ 
+hkm;h pri
+km, τ pri
+m IN
+
+,(16)
+whereh pri
+km =x pri
+km,B andτ pri
+m =v pri
+m,B.
+Based on the update rules of EP [49], the belief ofH k on
+the factor nodep(H k)is expressed as
+MfHk
+(Hk) = proj
+h
+p(Hk)MfXk →Hk(Hk)
+i
+≈
+Y
+m
+CN
+ 
+hkm;h post
+km , τ post
+m IN
+
+,(17)
+whereproj[·]represents the projection of a probability distri-
+bution to a Gaussian density with matched first- and second-
+order moments, and (17) approximates the variance by a set
+of scalars. The posterior meanh post
+km and varianceτ post
+m can
+be calculated as
+hpost
+km = 1
+Zk
+Z
+Hk
+hkmp(Hk)
+Y
+m
+CN
+ 
+hkm;h pri
+km, τ pri
+m IN
+
+,(18)
+τ post
+m = 1
+KN
+X
+k,n
+1
+Zk
+Z
+Hk
+|hknm −h pri
+knm|2p(Hk)
+×
+Y
+m
+CN
+ 
+hkm;h pri
+km, τ pri
+m IN
+
+,(19)
+whereZ k ≜
+R
+Hk
+p(Hk)Q
+m CN
+ 
+hkm;h pri
+km, τ pri
+m IN
+
+is the
+normalization constant.
+State evolution (SE) analysis [51] has shown that the error
+vectorh pri
+km −h km is i.i.d. Gaussian in the large system limit.
+In other words, module A decouples the linear mixing model
+(3) into a series of independent AWGN observations of the
+ground truth, i.e.,
+hpri
+km =h km +w km,w km ∼ CN
+ 
+0, τ pri
+m IN
+
+.(20)
+
+=== PDF PAGE 7 ===
+7
+Eqn. (20) implies the Gaussian transition probability
+p(hpri
+km|hkm) =CN
+ 
+hpri
+km;h km, τ pri
+m IN
+
+, and therefore,
+p(Hpri
+k |Hk) =
+Y
+m
+CN
+ 
+hpri
+km;h km, τ pri
+m IN
+
+,(21)
+where we denoteH pri
+k ≜
+
+hpri
+k1 , . . . ,hpri
+kM
+
+for brevity. By
+noting thatQ
+m CN
+ 
+hkm;h pri
+km, τ pri
+m IN
+
+in (18) and (19) takes
+the same form asp(H pri
+k |Hk), the belief calculation ofH k
+can be interpreted as an MMSE denoising problem given the
+AWGN model (20):
+Hpost
+k =E
+
+Hk|Hpri
+k
+
+,(22)
+τ post
+m = 1
+KN
+X
+k,n
+Var
+
+hknm|Hpri
+k
+
+,(23)
+whereH post
+k ≜
+
+hpost
+k1 , . . . ,hpost
+kM
+
+. To summarize, the be-
+lief calculation amounts to combining the Gaussian pseudo-
+likelihoodp(H pri
+k |Hk)with the true priorp(H k).This oper-
+ation is mathematically equivalent to MMSE denoising under
+AWGN observations: the pseudo-observation from Module A
+provides a noisy estimate of the channel, and the prior serves
+as the denoiser to refine this estimate. The posterior mean
+and variance in (22) and (23) are, however, by no means
+easy to calculate due to the complicated and high-dimensional
+integrals. We will detail the method for obtaining the posterior
+message in Sections IV and V.
+The extrinsic message from the variable nodeH k to the
+factor nodep(X k|Hk, αk)is calculated as
+MHk→fXk
+(Hk)∝
+MfHk
+(Hk)
+MfXk →Hk(Hk) (24)
+∝
+Y
+m
+CN(h km;h ext
+km, τ ext
+m IN),(25)
+where the extrinsic variance and mean are respectively given
+by
+τ ext
+m =
+ 1
+τ post
+m
+− 1
+τ pri
+m
+−1
+,(26)
+hext
+km =τ ext
+m
+ 
+hpost
+km
+τ post
+m
+− hpri
+km
+τ pri
+m
+!
+.(27)
+2) Denoiser ofα k:The belief ofα k on the factor node
+p(Xk|Hk, αk)is expressed as
+MfXk
+(αk)
+∝
+Z
+Hk,Xk
+δ(Xk −αkHk)MXk→fXk
+(Xk)MHk→fXk
+(Hk)p(αk)
+(28)
+∝(1−λ post
+k )δ(αk) +λ post
+k δ(1−α k),(29)
+where
+λpost
+k
+=
+
+1 +
+(1−λ) Q
+m CN
+ 
+0;x pri
+km,B, vpri
+m,BIN
+
+λQ
+m CN
+
+0;x pri
+km,B −h ext
+km,
+ 
+vpri
+m,B +τ extm
+
+IN
+
+
+
+−1
+(30)
+is the posterior probability of activity for thek-th device. We
+set a thresholdλ thr to facilitate the binary decision of device
+activity, i.e.,
+ˆαk =
+(
+1, λ post
+k ≥λ thr,
+0, λ post
+k < λ thr. (31)
+3) Denoiser ofX k:Based on the update rules of EP [49],
+the belief ofX k on the factor nodep(X k|Hk, αk)is expressed
+as
+MfXk
+(Xk)
+∝proj
+Z
+Hk,αk
+δ(Xk −α kHk)MXk→fXk
+(Xk)
+× MHk→fXk
+(Hk)p(αk)
+
+∝proj
+h
+(1−λ post
+k )δ(Xk)
++λ post
+k
+Y
+m
+CN
+ 
+xkm; ˜xpost
+km,B,˜vpost
+m,B IN
+i
+,(32)
+where
+˜vpost
+m,B =
+ 
+1
+vpri
+m,B
++ 1
+τ extm
+!−1
+,(33)
+˜xpost
+km,B = ˜vpost
+m,B
+ 
+xpri
+km,B
+vpri
+m,B
++ hext
+km
+τ extm
+!
+.(34)
+In (32), the expression inside the Gaussian projection operator
+is a Bernoulli-Gaussian pdf. By taking the Gaussian projection,
+the mean ofx km with respect to the beliefM fXk
+(Xk)is given
+by
+xpost
+km,B =λ post
+k ˜xpost
+km,B.(35)
+The variance of the(n, m)-th element ofX k with respect to
+the beliefM fXk
+(Xk)is
+vpost
+knm,B =λ post
+k
+
+|˜xpost
+knm,B|2 + ˜vpost
+m,B
+
+− |xpost
+knm,B|2.(36)
+Based on the above, the projected Gaussian belief is expressed
+as
+MfXk
+(Xk)≈
+Y
+m
+CN
+ 
+xkm;x post
+km,B, vpost
+m,B IN
+
+,(37)
+where we approximate the variance of each column ofX k by
+vpost
+m,B = 1
+KN
+X
+k,n
+vpost
+knm,B.(38)
+While per-element or full covariance estimation could, in
+principle, capture heterogeneous confidence across users and
+subcarriers, such estimates are highly unreliable with limited
+pilot observations. Scalar averaging, as adopted in (38), is a
+standard design choice to stabilize message-passing updates
+[26], [50].
+Finally, we calculate the message from the factor node
+p(Xk|Hk, αk)to the variable nodeX k as
+MfXk →Xk(Xk) =
+MfXk
+(Xk)
+MXk→fXk
+(Xk) ,(39)
+=
+Y
+m
+CN
+ 
+xkm;x ext
+km,B, vext
+m,B
+
+,(40)
+
+=== PDF PAGE 8 ===
+8
+Algorithm 1:TMP Framework
+1:Input:Q,Y,δ 2
+0,{x pri
+m,A}M
+m=1,{v pri
+m,A}M
+m=1
+2:Output:{ˆα k}K
+k=1,{H post
+k }K
+k=1
+3:repeat
+4:% Linear estimator
+5:Updatex post
+m,A,v post
+m,A by (7) and (8),∀m;
+6:Updatex ext
+m,A,v ext
+m,A by (11) and (10),∀m;
+7:x pri
+km,B =x ext
+km,A,v pri
+m,B =v ext
+m,A,∀k, m;
+8:% Channel and device activity denoisers
+9:h pri
+km =x pri
+km,B,τ pri
+m =v pri
+m,B,∀k, m;
+10:UpdateH post
+k ,τ post
+m by (22) and (23),∀k, m;
+11:Updateh ext
+km,τ ext
+m by (27) and (26),∀k, m;
+12:Updateλ post
+k by (30),∀k;
+13:Updatex post
+km,B,v post
+m,B by (35) and (38),∀k, m;
+14:Updatex ext
+km,B,v ext
+m,B by (42) and (41),∀k, m;
+15:x pri
+km,A =x ext
+km,B,v pri
+m,A =v ext
+m,B,∀k, m;
+16:untilthe stopping criterion is met
+17:Decide the indices of active devices by (31),∀k.
+where
+vext
+m,B =
+ 
+1
+vpost
+m,B
+− 1
+vpri
+m,B
+!−1
+,(41)
+xext
+km,B =v ext
+m,B
+ 
+xpost
+km,B
+vpost
+m,B
+−
+xpri
+km,B
+vpri
+m,B
+!
+.(42)
+The extrinsic message in (40) flows leftward through the
+vector-matrix reorganization module unchanged, serving as
+the prior message of module A in the next iteration, i.e.,
+xpri
+km,A =x ext
+km,B,v pri
+m,A =v ext
+m,B. We summarize the pseudo-
+code of the TMP framework in Algorithm 1.
+IV. LEARNINGSCORE-BASEDGENERATIVEPRIORS FOR
+MMSE DENOISING
+In this section, we introduce score-based representations of
+(22) and (23) to circumvent the intractable high-dimensional
+integrals involved in posterior message calculation. Then, we
+elaborate the denoising score matching technique [15], [30],
+[31], a data-driven approach for empirically estimating score
+functions.
+A. Bridging Score Function and MMSE Denoising
+For simplicity, we approximate that in (20), different
+columns ofH pri
+k (i.e.,h pri
+km) share a common variance given by
+τ pri = 1
+M
+P
+m τ pri
+m . Then, we rewrite the AWGN observation
+model as
+Hpri
+k =H k +W k,W k ∼ CN
+ 
+0, τ priIN M
+
+.(43)
+For the model in (43), Tweedie’s formula [28], [29] offers an
+empirical Bayes approach to calculate the posterior mean, ap-
+plicable regardless of the specific form of the prior distribution
+p(Hk). The formula reads
+E
+
+Hk|Hpri
+k
+
+=H pri
+k +τ pri∇Hpri
+k
+logp(H pri
+k ),(44)
+where∇ Hpri
+k
+logp(H pri
+k )∈C N×M is the gradient of the
+log-density function, commonly known as the (first-order)
+score function. Tweedie’s formula bridges MMSE denoising
+and the score of the perturbed data distribution through a
+simple equation, eliminating the need for calculating high-
+dimensional integrals. Specifically, the posterior mean can be
+viewed as the sum of the maximum likelihood estimator and
+a Bayes correction term. The formula can also be framed as
+“denoised result = noisy data - predicted noise” from a de-
+noising perspective, in which the predicted noise corresponds
+to−τ pri∇Hpri
+k
+logp(H pri
+k ).
+Likewise, the posterior covariance matrix can be obtained
+through the second-order Tweedie’s formula [29] as
+Cov
+
+Hk|Hpri
+k
+
+=τ priIN M+ (τpri)2∇2
+Hpri
+k
+logp(H pri
+k ),(45)
+where∇ 2
+Hpri
+k
+logp(H pri
+k )∈C N M×N M is the Hessian of the
+log-density function, referred to as the second-order score
+function. The first- and second-order Tweedie’s formulas are
+well-known results that can be proven using simple integration
+tricks [52, Appendix B] or by applying the properties of
+exponential families [53, Appendix A].
+Once the score functions are known, we can apply (44) and
+(45) to efficiently implement the MMSE denoiser described
+in (22) and (23). For massive connectivity, learning the score
+functions individually for each device is impractical due to
+the vast number of devices involved. Instead, we train only
+two networks, namely the first- and the second-order score
+networks, in which all the training samples from different
+devices are combined into a single training set.
+B. First-Order Score Matching
+With a slight abuse of notation, letp(H) :C N×M →R
+be the mixture distribution of the channels for the totalK
+devices. We perturb it with a pre-specified noise distribution
+p( ˜H|H) =CN(0, τI N M). Consequently, the perturbed chan-
+nel distribution is expressed asp( ˜H) =
+R
+H p( ˜H|H)p(H). For
+a specific value ofτ, our goal is to learn a first-order score
+networkS 1(·, τ;θ) :C N×M →C N×M parameterized byθ
+with the following score matching objective:
+min
+θ
+Ep( ˜H)
+S1( ˜H, τ;θ)− ∇ ˜H logp( ˜H)
+
+2
+F
+
+.(46)
+Eqn. (46) cannot be directly used as the loss function since
+∇ ˜H logp( ˜H)does not have an analytical form. The above for-
+mulation is shown equivalent to the denoising score matching
+objective [15], [30], given by
+min
+θ
+Ep(H)p( ˜H|H)
+S1( ˜H, τ;θ)− ∇ ˜H logp( ˜H|H)
+
+2
+F
+
+.
+(47)
+The equivalence is in the sense that (46) and (47) share the
+same optimal solutionS 1( ˜H, τ;θ ⋆) =∇ ˜H logp( ˜H), suppos-
+ing that the network has sufficient representation capability.
+Substituting∇ ˜H logp( ˜H|H) =−
+˜H−H
+τ into (47) yields
+min
+θ
+ℓ1(τ;θ)≜E p(H)p( ˜H|H)
+
+
+S1( ˜H, τ;θ) +
+˜H−H
+τ
+
+2
+F
+
+ .
+(48)
+
+=== PDF PAGE 9 ===
+9
+Eqn. (48) implies that the first-order score matching is essen-
+tially to learn a noise predictor that outputs the noise scaled
+by a negative factor.
+In practice, the score-based MMSE denoiser is required to
+operate effectively across a range of noise levels. We therefore
+combine (48) for all possible values ofτ∈ {τ i}I
+i=1 to establish
+a unified objective for training the first-order score network:
+min
+θ
+IX
+i=1
+λ1(τi)ℓ1(τi;θ).(49)
+A common choice for the weighting factor isλ 1(τi) =τ i [15],
+which empirically balances the loss termℓ 1(τi;θ)for different
+values ofτ i.
+C. Second-Order Score Matching
+For a givenτ, we seek to learn a second-order score model
+S2(·, τ;ϕ) :C N×M →C N M×N M parameterized byϕwith
+the second-order score matching objective:
+min
+ϕ
+Ep( ˜H)
+S2( ˜H, τ;ϕ)− ∇ 2
+˜H logp( ˜H)
+
+2
+F
+
+.(50)
+The second-order score matching objective can also be ex-
+pressed in an equivalent denoising score matching formulation
+as
+min
+ϕ
+Ep(H)p( ˜H|H)
+S2( ˜H, τ;ϕ)
+−b(H, ˜H, τ)b(H, ˜H, τ) H + IN M
+τ
+
+2
+F
+
+,(51)
+whereb(H, ˜H, τ)≜vec
+
+∇ ˜H logp( ˜H) +
+˜H−H
+τ
+
+. Please
+refer to [31, Appendix F] for the detailed derivation. The
+objective in (51) relies on the ground truth of the first-order
+score function, which is in general unavailable. To address this,
+we replace∇ ˜H logp( ˜H)with the learned modelS 1( ˜H, τ;θ)
+for efficient computation. Consequently, the objective in (51)
+modifies to
+min
+ϕ
+Ep(H)p( ˜H|H)
+S2( ˜H, τ;ϕ)
+− ˆb(H, ˜H, τ) ˆb(H, ˜H, τ) H + IN M
+τ
+
+2
+F
+
+,(52)
+where ˆb(H, ˜H, τ)≜vec
+
+S1( ˜H, τ;θ) +
+˜H−H
+τ
+
+. It has been
+established in [31] that this replacement allows the second-
+order score network to maintain an error-bounded property,
+provided that the first-order score matching error remains
+bounded.
+As demonstrated in (23), only the trace of the posterior
+covariance matrix is required, rather than the full matrix itself.
+By noting in (45) the simple relation between the posterior
+covariance matrix and the second-order score function, it
+suffices to match only the trace of the second-order score
+function for posterior variance evaluation. This leads to a
+simplified objective expressed as
+min
+ϕ
+ℓ2(τ;ϕ)≜E p(H)p( ˜H|H)
+tr
+ 
+S2( ˜H, τ;ϕ)
+
+−
+ˆb(H, ˜H, τ)
+
+2
+2
++ N M
+τ
+
+2
+.(53)
+We combine (53) for allτ∈ {τ i}I
+i=1 to formulate a unified
+objective for training the second-order score network:
+min
+ϕ
+IX
+i=1
+λ2(τi)ℓ2(τi;ϕ),(54)
+whereλ 2(τi)is the weighting factor depending onτ i. Follow-
+ing [31], we chooseλ 2(τi) =τ 2
+i .
+In practice, one can first train a first-order score network,
+and then freeze it during the second-order score learning
+phase. Alternatively, both networks can be trained simultane-
+ously by disabling gradient backpropagation from the second-
+order training objective (54) to the first-order score network.
+V. STMP-JADCE ALGORITHM
+A. Overall Algorithm
+With the two score networks available, we are able to obtain
+the posterior meanH post
+k and varianceτ post
+m based on (44) and
+(45) as
+Hpost
+k =H pri
+k +τ priS1
+ 
+Hpri
+k , τ pri;θ
+
+,(55)
+τ post
+m =τ pri + (τ pri)2
+KN
+X
+k,n
+s2,nm
+ 
+Hpri
+k , τ pri;ϕ
+
+,(56)
+wheres 2,nm(Hpri
+k , τ pri;ϕ)denotes the((n−1)M+m)-th
+diagonal elements ofS 2
+ 
+Hpri
+k , τ pri;ϕ
+
+.
+Fig. 3 demonstrates the integration of the two score net-
+works into the TMP framework, resulting in the STMP-
+JADCE algorithm. STMP-JADCE features a hybrid structure
+in which the channel denoiser is realized by score networks,
+while the device activity denoiser and the linear estimator are
+derived analytically. In this way, our method can be easily
+applied across different device activity levels, pilot patterns,
+and SNRs without the need to retain the score networks.
+Moreover, the potential mismatch between the chosen prior
+of the device activity and the ground truth can be rectified
+by incorporating the expectation-maximization (EM) update
+[54]. Essentially, the development of STMP-JADCE highlights
+a broader philosophical shift: whereas conventional Bayesian
+inference in wireless communications has long relied on
+manually specified and typically oversimplified priors for
+tractability, our framework embraces a data-driven paradigm
+in which the channel prior is learned directly from data. This
+data-driven Bayesian inference not only resolves the mismatch
+between hand-crafted priors and real channel statistics, but
+also opens the door to more principled integration of modern
+generative models into inference algorithms. We discuss the
+engineering tricks used in STMP-JADCE in the following.
+B. Engineering Tricks
+1) Damping:The pseudo AWGN observation model in (20)
+is justified only in the large system limit with right-rotationally
+invariant randomQ[51]. In practice, the equivalent noise may
+not be strictly Gaussian due to the particular choice ofQand
+the finite dimensions ofM,N,K, andT. This discrepancy
+can lead to some unexpected numerical issues and diverges.
+In this work, we employ the damping technique to improve
+
+=== PDF PAGE 10 ===
+10
+…
+…
+…
+<latexit sha1_base64="JKKufgVVzYoWUzVzYpew/m902TE=">AAAEzXicrVTPb9MwGPWaAGv51cGRi0U1xKlKrGlwnLQLwqIMiW6TmqpyHLezljiR7UzrQrjy/3HjzD+C26amm5EYE59k6el9z5/9nuLERcqVDoIfWy3Pv3f/wXa78/DR4ydPuzvPjlVeSsqGNE9zeRoTxVIu2FBznbLTQjKSxSk7ic8PF/2TCyYVz8VnPS/YOCMzwaecEm2oyU7rZzuK2YyLKs6Ilvyy7rTbl5MqDMMavoJLhBYoSnKt1syHGkZRI0RWiBwhWguji4b9DZLrjJ03sPMGzrzBet7uX2o1C1kTyDGBNk0gawI5JtAdTCBrAjkm0L+YuOWR/1d2u3CxDRc74eLNcLENFzvh4juEi2242AkXr8ONmEjsJz3p9oJ+sCzogrABPdDU0aT73cykZcaEpilRahQGhR5XRGpOU1Z3olKxgtBzMmMjAwXJmBpXy9dYw13DJHCaS7OEhkt2c0dFMqXmWWyU5n5n6mZvQf6pNyr19O244qIoNRN0ddC0TKHO4eJpw4RLRnU6N4BQyc1dIT0jklBtfgAdE0J407ILjlE/3O/vf9rrHfSbOLbBC/ASvAYheAMOwDtwBIaAeu+9wpt7V/5Hv/S/+F9X0tZWs+c5uFb+t1/U6lno</latexit>
+
+
+x111 x112... x11M
+x121 x122... x12M
+... ... ... ...
+x1N1 x1N2 ... x1NM
+x211 x212... x21M
+x221 x222... x22M
+... ... ... ...
+x2N1 x2N2 ... x2NM
+... ... ... ...
+... ... ... ...
+... ... ... ...
+xK11 xK12... xK1M
+xK21 xK22... xK2M
+... ... ... ...
+xKN1xKN2... xKNM
+
+
+<latexit sha1_base64="95ll5GNpjuksjrTiMEUpN9+QWJY=">AAACDnicbVDLSsNAFJ3UV62vqEs3g6VQQUpSpLosuCl0U8E+oA1hMp20QyfJMDMRSuwXuPFX3LhQxK1rd/6NkzaCth4YOPece5l7j8cZlcqyvozc2vrG5lZ+u7Czu7d/YB4edWQUC0zaOGKR6HlIEkZD0lZUMdLjgqDAY6TrTa5Tv3tHhKRReKumnDgBGoXUpxgpLblmiZcHAVJjz096M7d5/1M0dHE+QIyPkds8c82iVbHmgKvEzkgRZGi55udgGOE4IKHCDEnZty2unAQJRTEjs8IgloQjPEEj0tc0RAGRTjI/ZwZLWhlCPxL6hQrO1d8TCQqknAae7ky3lcteKv7n9WPlXzkJDXmsSIgXH/kxgyqCaTZwSAXBik01QVhQvSvEYyQQVjrBgg7BXj55lXSqFbtWqd1cFOvVLI48OAGnoAxscAnqoAFaoA0weABP4AW8Go/Gs/FmvC9ac0Y2cwz+wPj4Bgk5nA0=</latexit>
+p(XK|HK,ωK)
+<latexit sha1_base64="8Yum2OEYKemyqLEnvpafCNzTzNc=">AAACDnicbVDLSsNAFJ3UV62vqEs3g6VQQUoSpLosuOmygn1AG8JkOmmHTiZhZiKU2C9w46+4caGIW9fu/BsnbQRtPTBw7jn3MvceP2ZUKsv6Mgpr6xubW8Xt0s7u3v6BeXjUkVEiMGnjiEWi5yNJGOWkrahipBcLgkKfka4/uc787h0Rkkb8Vk1j4oZoxGlAMVJa8sxKXB2ESI39IO3NPOf+p2jq4nyAWDxGnnPmmWWrZs0BV4mdkzLI0fLMz8EwwklIuMIMSdm3rVi5KRKKYkZmpUEiSYzwBI1IX1OOQiLddH7ODFa0MoRBJPTjCs7V3xMpCqWchr7uzLaVy14m/uf1ExVcuSnlcaIIx4uPgoRBFcEsGzikgmDFppogLKjeFeIxEggrnWBJh2Avn7xKOk7NrtfqNxflhpPHUQQn4BRUgQ0uQQM0QQu0AQYP4Am8gFfj0Xg23oz3RWvByGeOwR8YH9+ULJvC</latexit>
+p(X2|H2,ω2)
+<latexit sha1_base64="MVzieInzrXVLXYbLoGbucbr7jKA=">AAACDnicbVDLSsNAFJ3UV62vqEs3wVKoICUpUl0W3HRZwT6gCWEynbRDJ5NhZiKU2C9w46+4caGIW9fu/BsnbQRtPTBw7jn3MveegFMilW1/GYW19Y3NreJ2aWd3b//APDzqyjgRCHdQTGPRD6DElDDcUURR3OcCwyiguBdMrjO/d4eFJDG7VVOOvQiOGAkJgkpLvlnhVTeCahyEaX/mO/c/RUsX5y6kfAx958w3y3bNnsNaJU5OyiBH2zc/3WGMkggzhSiUcuDYXHkpFIogimclN5GYQzSBIzzQlMEISy+dnzOzKloZWmEs9GPKmqu/J1IYSTmNAt2ZbSuXvUz8zxskKrzyUsJ4ojBDi4/ChFoqtrJsrCERGCk61QQiQfSuFhpDAZHSCZZ0CM7yyaukW685jVrj5qLcrOdxFMEJOAVV4IBL0AQt0AYdgMADeAIv4NV4NJ6NN+N90Vow8plj8AfGxzePfpu/</latexit>
+p(X1|H1,ω1)
+<latexit sha1_base64="1FPat5lIWOEXaLyJcpaIYGGferQ=">AAAB83icbVDLSsNAFL2pr1pfVZduBovgqiRFqsuCG8FNBfuAJpTJdNIOnUzCPIQS+htuXCji1p9x5984abPQ1gMDh3Pu5Z45YcqZ0q777ZQ2Nre2d8q7lb39g8Oj6vFJVyVGEtohCU9kP8SKciZoRzPNaT+VFMchp71wepv7vScqFUvEo56lNIjxWLCIEayt5Psx1pMwyvrz4f2wWnPr7gJonXgFqUGB9rD65Y8SYmIqNOFYqYHnpjrIsNSMcDqv+EbRFJMpHtOBpQLHVAXZIvMcXVhlhKJE2ic0Wqi/NzIcKzWLQzuZZ1SrXi7+5w2Mjm6CjInUaCrI8lBkONIJygtAIyYp0XxmCSaS2ayITLDERNuaKrYEb/XL66TbqHvNevPhqtZqFHWU4QzO4RI8uIYW3EEbOkAghWd4hTfHOC/Ou/OxHC05xc4p/IHz+QMfqpG1</latexit>
+XK
+<latexit sha1_base64="hAE7l3lNp/bQn0XWzKTOR8G2hqk=">AAAB83icbVDLSsNAFL3xWeur6tLNYBFclaRIdVlw47KCfUBTymQ6aYdOJmHmRiihv+HGhSJu/Rl3/o2TNgttPTBwOOde7pkTJFIYdN1vZ2Nza3tnt7RX3j84PDqunJx2TJxqxtsslrHuBdRwKRRvo0DJe4nmNAok7wbTu9zvPnFtRKwecZbwQUTHSoSCUbSS70cUJ0GY9eZDb1ipujV3AbJOvIJUoUBrWPnyRzFLI66QSWpM33MTHGRUo2CSz8t+anhC2ZSOed9SRSNuBtki85xcWmVEwljbp5As1N8bGY2MmUWBncwzmlUvF//z+imGt4NMqCRFrtjyUJhKgjHJCyAjoTlDObOEMi1sVsImVFOGtqayLcFb/fI66dRrXqPWeLiuNutFHSU4hwu4Ag9uoAn30II2MEjgGV7hzUmdF+fd+ViObjjFzhn8gfP5A/gzkZs=</latexit>
+X1
+<latexit sha1_base64="7+1NUaattYUPnKhs8uMpopD5OLc=">AAAB83icbVDLSsNAFL3xWeur6tLNYBFclaRIdVlw47KCfUBTymR60w6dTMLMRCihv+HGhSJu/Rl3/o2TNgttPTBwOOde7pkTJIJr47rfzsbm1vbObmmvvH9weHRcOTnt6DhVDNssFrHqBVSj4BLbhhuBvUQhjQKB3WB6l/vdJ1Sax/LRzBIcRHQsecgZNVby/YiaSRBmvfmwPqxU3Zq7AFknXkGqUKA1rHz5o5ilEUrDBNW677mJGWRUGc4Ezst+qjGhbErH2LdU0gj1IFtknpNLq4xIGCv7pCEL9fdGRiOtZ1FgJ/OMetXLxf+8fmrC20HGZZIalGx5KEwFMTHJCyAjrpAZMbOEMsVtVsImVFFmbE1lW4K3+uV10qnXvEat8XBdbdaLOkpwDhdwBR7cQBPuoQVtYJDAM7zCm5M6L86787Ec3XCKnTP4A+fzB/m3kZw=</latexit>
+X2
+<latexit sha1_base64="EOpnJopOFTsZToWZQ+wgR3zhXyQ=">AAAB83icbVDLSgMxFL1TX7W+qi7dBIvgqswUqS4LbrqsYB/QGUomzbShSWZIMkIZ+htuXCji1p9x59+YaWehrQcCh3Pu5Z6cMOFMG9f9dkpb2zu7e+X9ysHh0fFJ9fSsp+NUEdolMY/VIMSaciZp1zDD6SBRFIuQ0344u8/9/hNVmsXy0cwTGgg8kSxiBBsr+b7AZhpGWXsx8kbVmlt3l0CbxCtIDQp0RtUvfxyTVFBpCMdaDz03MUGGlWGE00XFTzVNMJnhCR1aKrGgOsiWmRfoyipjFMXKPmnQUv29kWGh9VyEdjLPqNe9XPzPG6YmugsyJpPUUElWh6KUIxOjvAA0ZooSw+eWYKKYzYrIFCtMjK2pYkvw1r+8SXqNutesNx9uaq1GUUcZLuASrsGDW2hBGzrQBQIJPMMrvDmp8+K8Ox+r0ZJT7JzDHzifP9/DkYs=</latexit>
+H1
+<latexit sha1_base64="A4RFbFbK84edKyJjvEKGHIMDQj4=">AAAB83icbVDLSsNAFL2pr1pfVZduBovgqiRFqsuCmy4r2Ac0oUymk3boZBLmIZTQ33DjQhG3/ow7/8ZJm4W2Hhg4nHMv98wJU86Udt1vp7S1vbO7V96vHBweHZ9UT896KjGS0C5JeCIHIVaUM0G7mmlOB6mkOA457Yez+9zvP1GpWCIe9TylQYwngkWMYG0l34+xnoZR1l6MGqNqza27S6BN4hWkBgU6o+qXP06IianQhGOlhp6b6iDDUjPC6aLiG0VTTGZ4QoeWChxTFWTLzAt0ZZUxihJpn9Boqf7eyHCs1DwO7WSeUa17ufifNzQ6ugsyJlKjqSCrQ5HhSCcoLwCNmaRE87klmEhmsyIyxRITbWuq2BK89S9vkl6j7jXrzYebWqtR1FGGC7iEa/DgFlrQhg50gUAKz/AKb45xXpx352M1WnKKnXP4A+fzB+FHkYw=</latexit>
+H2
+<latexit sha1_base64="B2muUydyBMzQ29TPtfLC5fSHOII=">AAAB83icbVDLSsNAFL3xWeur6tLNYBFclaRIdVlwU3BTwT6gCWUynbRDJ5MwD6GE/oYbF4q49Wfc+TdO2iy09cDA4Zx7uWdOmHKmtOt+OxubW9s7u6W98v7B4dFx5eS0qxIjCe2QhCeyH2JFORO0o5nmtJ9KiuOQ0144vcv93hOViiXiUc9SGsR4LFjECNZW8v0Y60kYZa358H5Yqbo1dwG0TryCVKFAe1j58kcJMTEVmnCs1MBzUx1kWGpGOJ2XfaNoiskUj+nAUoFjqoJskXmOLq0yQlEi7RMaLdTfGxmOlZrFoZ3MM6pVLxf/8wZGR7dBxkRqNBVkeSgyHOkE5QWgEZOUaD6zBBPJbFZEJlhiom1NZVuCt/rlddKt17xGrfFwXW3WizpKcA4XcAUe3EATWtCGDhBI4Rle4c0xzovz7nwsRzecYucM/sD5/AEHOpGl</latexit>
+HK
+<latexit sha1_base64="16d5nU+ibyRcbZh+tGDF9VDqsv8=">AAAB+HicbVBNS8NAFHypX7V+NOrRy2IR6qUkRarHgpeClwq2FtoQNttNu3SzCbsboYb+Ei8eFPHqT/Hmv3Hb5qCtAwvDzHu82QkSzpR2nG+rsLG5tb1T3C3t7R8clu2j466KU0loh8Q8lr0AK8qZoB3NNKe9RFIcBZw+BJObuf/wSKVisbjX04R6ER4JFjKCtZF8u5xUBxHW4yDMWjP/9sK3K07NWQCtEzcnFcjR9u2vwTAmaUSFJhwr1XedRHsZlpoRTmelQapogskEj2jfUIEjqrxsEXyGzo0yRGEszRMaLdTfGxmOlJpGgZmch1Sr3lz8z+unOrz2MiaSVFNBlofClCMdo3kLaMgkJZpPDcFEMpMVkTGWmGjTVcmU4K5+eZ106zW3UWvcXVaa9byOIpzCGVTBhStoQgva0AECKTzDK7xZT9aL9W59LEcLVr5zAn9gff4AH2WStQ==</latexit>
+p(HK)
+<latexit sha1_base64="x37iaXS7vV+MzXZnudlr39k4GdQ=">AAAB+HicbVDLSsNAFL2pr1ofjbp0M1iEuilJkeqy4KbLCvYBbQiT6aQdOpmEmYlQQ7/EjQtF3Pop7vwbp20W2npg4HDOvdwzJ0g4U9pxvq3C1vbO7l5xv3RweHRctk9OuypOJaEdEvNY9gOsKGeCdjTTnPYTSXEUcNoLpncLv/dIpWKxeNCzhHoRHgsWMoK1kXy7nFSHEdaTIMxac79+5dsVp+YsgTaJm5MK5Gj79tdwFJM0okITjpUauE6ivQxLzQin89IwVTTBZIrHdGCowBFVXrYMPkeXRhmhMJbmCY2W6u+NDEdKzaLATC5CqnVvIf7nDVId3noZE0mqqSCrQ2HKkY7RogU0YpISzWeGYCKZyYrIBEtMtOmqZEpw17+8Sbr1mtuoNe6vK816XkcRzuECquDCDTShBW3oAIEUnuEV3qwn68V6tz5WowUr3zmDP7A+fwD5WZKc</latexit>
+p(H2)
+<latexit sha1_base64="ng1kk5Yd7+HNJrC3CdQc8SkGmrI=">AAAB+HicbVDLSsNAFL2pr1ofjbp0M1iEuilJkeqy4KbLCvYBbQiT6aQdOpmEmYlQQ7/EjQtF3Pop7vwbp20W2npg4HDOvdwzJ0g4U9pxvq3C1vbO7l5xv3RweHRctk9OuypOJaEdEvNY9gOsKGeCdjTTnPYTSXEUcNoLpncLv/dIpWKxeNCzhHoRHgsWMoK1kXy7nFSHEdaTIMxac9+98u2KU3OWQJvEzUkFcrR9+2s4ikkaUaEJx0oNXCfRXoalZoTTeWmYKppgMsVjOjBU4IgqL1sGn6NLo4xQGEvzhEZL9fdGhiOlZlFgJhch1bq3EP/zBqkOb72MiSTVVJDVoTDlSMdo0QIaMUmJ5jNDMJHMZEVkgiUm2nRVMiW461/eJN16zW3UGvfXlWY9r6MI53ABVXDhBprQgjZ0gEAKz/AKb9aT9WK9Wx+r0YKV75zBH1ifP/fUkps=</latexit>
+p(H1)
+<latexit sha1_base64="f3tLMek06/VSrcGLVMb3Nfsee0s=">AAAB73icbVBNS8NAEJ3Ur1q/qh69LBbBU0mKVI8FLx4r2A9oQ5lsN+3SzSbuboQS+ie8eFDEq3/Hm//GbZuDtj4YeLw3w8y8IBFcG9f9dgobm1vbO8Xd0t7+weFR+fikreNUUdaisYhVN0DNBJesZbgRrJsohlEgWCeY3M79zhNTmsfywUwT5kc4kjzkFI2Vun0UyRgH3qBccavuAmSdeDmpQI7moPzVH8Y0jZg0VKDWPc9NjJ+hMpwKNiv1U80SpBMcsZ6lEiOm/Wxx74xcWGVIwljZkoYs1N8TGUZaT6PAdkZoxnrVm4v/eb3UhDd+xmWSGibpclGYCmJiMn+eDLli1IipJUgVt7cSOkaF1NiISjYEb/XlddKuVb16tX5/VWnU8jiKcAbncAkeXEMD7qAJLaAg4Ble4c15dF6cd+dj2Vpw8plT+APn8wezk4+3</latexit>
+ω1
+<latexit sha1_base64="XnpAF3+ncGF7vh2/W1rjsSUFnq8=">AAAB73icbVBNS8NAEJ3Ur1q/qh69LBbBU0mKVI8FLx4r2A9oQ5lsN+3SzSbuboQS+ie8eFDEq3/Hm//GbZuDtj4YeLw3w8y8IBFcG9f9dgobm1vbO8Xd0t7+weFR+fikreNUUdaisYhVN0DNBJesZbgRrJsohlEgWCeY3M79zhNTmsfywUwT5kc4kjzkFI2Vun0UyRgHtUG54lbdBcg68XJSgRzNQfmrP4xpGjFpqECte56bGD9DZTgVbFbqp5olSCc4Yj1LJUZM+9ni3hm5sMqQhLGyJQ1ZqL8nMoy0nkaB7YzQjPWqNxf/83qpCW/8jMskNUzS5aIwFcTEZP48GXLFqBFTS5Aqbm8ldIwKqbERlWwI3urL66Rdq3r1av3+qtKo5XEU4QzO4RI8uIYG3EETWkBBwDO8wpvz6Lw4787HsrXg5DOn8AfO5w+1F4+4</latexit>
+ω2
+<latexit sha1_base64="rnaLoWVNS/06unwPAae4WZLipCU=">AAAB73icbVBNS8NAEJ34WetX1aOXxSJ4KkmR6rHgRfBSwX5AG8pku2mXbjZxdyOU0D/hxYMiXv073vw3btsctPXBwOO9GWbmBYng2rjut7O2vrG5tV3YKe7u7R8clo6OWzpOFWVNGotYdQLUTHDJmoYbwTqJYhgFgrWD8c3Mbz8xpXksH8wkYX6EQ8lDTtFYqdNDkYywf9cvld2KOwdZJV5OypCj0S999QYxTSMmDRWodddzE+NnqAyngk2LvVSzBOkYh6xrqcSIaT+b3zsl51YZkDBWtqQhc/X3RIaR1pMosJ0RmpFe9mbif143NeG1n3GZpIZJulgUpoKYmMyeJwOuGDViYglSxe2thI5QITU2oqINwVt+eZW0qhWvVqndX5br1TyOApzCGVyAB1dQh1toQBMoCHiGV3hzHp0X5935WLSuOfnMCfyB8/kD2vuP0Q==</latexit>
+ωK
+<latexit sha1_base64="00QbQQfNs3Msdrxob8T6DtGTosc=">AAAB8nicbVBNSwMxEM3Wr1q/qh69BItQL2W3SPVY8CJ4qWA/YLuU2TTbhmazIckKZenP8OJBEa/+Gm/+G9N2D9r6YODx3gwz80LJmTau++0UNja3tneKu6W9/YPDo/LxSUcnqSK0TRKeqF4ImnImaNsww2lPKgpxyGk3nNzO/e4TVZol4tFMJQ1iGAkWMQLGSr6s9oHLMQzuLwfliltzF8DrxMtJBeVoDcpf/WFC0pgKQzho7XuuNEEGyjDC6azUTzWVQCYwor6lAmKqg2xx8gxfWGWIo0TZEgYv1N8TGcRaT+PQdsZgxnrVm4v/eX5qopsgY0KmhgqyXBSlHJsEz//HQ6YoMXxqCRDF7K2YjEEBMTalkg3BW315nXTqNa9RazxcVZr1PI4iOkPnqIo8dI2a6A61UBsRlKBn9IreHOO8OO/Ox7K14OQzp+gPnM8fd02QsA==</latexit>
+p(ωK)
+<latexit sha1_base64="KB4Kf5DroQD8bM1L7ISMgiUR6C4=">AAAB8nicbVBNSwMxEM3Wr1q/qh69BItQL2W3SPVY8OKxgq2FdinZNNuGZpOQzApl6c/w4kERr/4ab/4b03YP2vpg4PHeDDPzIi24Bd//9gobm1vbO8Xd0t7+weFR+fikY1VqKGtTJZTpRsQywSVrAwfButowkkSCPUaT27n/+MSM5Uo+wFSzMCEjyWNOCTipp6t9IvSYDILLQbni1/wF8DoJclJBOVqD8ld/qGiaMAlUEGt7ga8hzIgBTgWblfqpZZrQCRmxnqOSJMyG2eLkGb5wyhDHyriSgBfq74mMJNZOk8h1JgTGdtWbi/95vRTimzDjUqfAJF0uilOBQeH5/3jIDaMgpo4Qari7FdMxMYSCS6nkQghWX14nnXotaNQa91eVZj2Po4jO0DmqogBdoya6Qy3URhQp9Ixe0ZsH3ov37n0sWwtePnOK/sD7/AFPy5CW</latexit>
+p(ω1)
+<latexit sha1_base64="OS8dqY2oI1SvMMDDn3BuSHoUP9k=">AAAB8nicbVBNSwMxEM3Wr1q/qh69BItQL2W3SPVY8OKxgq2FdimzabYNzSYhyQpl6c/w4kERr/4ab/4b03YP2vpg4PHeDDPzIsWZsb7/7RU2Nre2d4q7pb39g8Oj8vFJx8hUE9omkkvdjcBQzgRtW2Y57SpNIYk4fYwmt3P/8Ylqw6R4sFNFwwRGgsWMgHVST1X7wNUYBvXLQbni1/wF8DoJclJBOVqD8ld/KEmaUGEJB2N6ga9smIG2jHA6K/VTQxWQCYxoz1EBCTVhtjh5hi+cMsSx1K6ExQv190QGiTHTJHKdCdixWfXm4n9eL7XxTZgxoVJLBVkuilOOrcTz//GQaUosnzoCRDN3KyZj0ECsS6nkQghWX14nnXotaNQa91eVZj2Po4jO0DmqogBdoya6Qy3URgRJ9Ixe0ZtnvRfv3ftYtha8fOYU/YH3+QNRUJCX</latexit>
+p(ω2)
+<latexit sha1_base64="YjpuiTNt2Pp2MAIqrXjI57z/WwQ=">AAACBXicbVDLSsNAFL3xWesr6lIXg0Wom5IUqS4LblxWsA9oS5hMJ+3QyYOZiRhiN278FTcuFHHrP7jzb5y0EbT1wMC559zL3HvciDOpLOvLWFpeWV1bL2wUN7e2d3bNvf2WDGNBaJOEPBQdF0vKWUCbiilOO5Gg2Hc5bbvjy8xv31IhWRjcqCSifR8PA+YxgpWWHPMoKvd8rEaulyYTx77/Ke50ceqYJatiTYEWiZ2TEuRoOOZnbxCS2KeBIhxL2bWtSPVTLBQjnE6KvVjSCJMxHtKupgH2qeyn0ysm6EQrA+SFQr9Aoan6eyLFvpSJ7+rObEk572Xif143Vt5FP2VBFCsakNlHXsyRClEWCRowQYniiSaYCKZ3RWSEBSZKB1fUIdjzJy+SVrVi1yq167NSvZrHUYBDOIYy2HAOdbiCBjSBwAM8wQu8Go/Gs/FmvM9al4x85gD+wPj4Bpc7mJg=</latexit>
+p(y1|x1)
+<latexit sha1_base64="ZHvx32hejzbxaZsgXD9TGjx4p3k=">AAACBXicbVDLSsNAFL3xWesr6lIXg0Wom5IUqS4LblxWsA9oS5hMJ+3QyYOZiRhiN278FTcuFHHrP7jzb5y0EbT1wMC559zL3HvciDOpLOvLWFpeWV1bL2wUN7e2d3bNvf2WDGNBaJOEPBQdF0vKWUCbiilOO5Gg2Hc5bbvjy8xv31IhWRjcqCSifR8PA+YxgpWWHPMoKvd8rEaulyYTp3r/U9zp4tQxS1bFmgItEjsnJcjRcMzP3iAksU8DRTiWsmtbkeqnWChGOJ0Ue7GkESZjPKRdTQPsU9lPp1dM0IlWBsgLhX6BQlP190SKfSkT39Wd2ZJy3svE/7xurLyLfsqCKFY0ILOPvJgjFaIsEjRgghLFE00wEUzvisgIC0yUDq6oQ7DnT14krWrFrlVq12elejWPowCHcAxlsOEc6nAFDWgCgQd4ghd4NR6NZ+PNeJ+1Lhn5zAH8gfHxDZpSmJo=</latexit>
+p(y2|x2)
+<latexit sha1_base64="ae09bDJgahpvSjJlbJLpfKQdHWM=">AAACBXicbVDLSsNAFJ3UV62vqEtdDBahbkpSpLosuHEjVLAPaEOYTCft0MkkzEzEELtx46+4caGIW//BnX/jpI2grQcGzj3nXube40WMSmVZX0ZhaXllda24XtrY3NreMXf32jKMBSYtHLJQdD0kCaOctBRVjHQjQVDgMdLxxheZ37klQtKQ36gkIk6Ahpz6FCOlJdc8jCr9AKmR56fJxL26/ynudHHimmWrak0BF4mdkzLI0XTNz/4gxHFAuMIMSdmzrUg5KRKKYkYmpX4sSYTwGA1JT1OOAiKddHrFBB5rZQD9UOjHFZyqvydSFEiZBJ7uzJaU814m/uf1YuWfOynlUawIx7OP/JhBFcIsEjiggmDFEk0QFlTvCvEICYSVDq6kQ7DnT14k7VrVrlfr16flRi2PowgOwBGoABucgQa4BE3QAhg8gCfwAl6NR+PZeDPeZ60FI5/ZB39gfHwD7b+Y0A==</latexit>
+p(yM|xM)
+<latexit sha1_base64="kb55yDe0JMWRe2nrNSmwJp/pR9Q=">AAAB83icbVDLSgMxFL3js9ZX1aWbYBFclZki1WXBjRuhgn1AZyiZNNOGZjIhyYhl6G+4caGIW3/GnX9jpp2Fth4IHM65l3tyQsmZNq777aytb2xubZd2yrt7+weHlaPjjk5SRWibJDxRvRBrypmgbcMMpz2pKI5DTrvh5Cb3u49UaZaIBzOVNIjxSLCIEWys5PsxNuMwyp5mg7tBperW3DnQKvEKUoUCrUHlyx8mJI2pMIRjrfueK02QYWUY4XRW9lNNJSYTPKJ9SwWOqQ6yeeYZOrfKEEWJsk8YNFd/b2Q41noah3Yyz6iXvVz8z+unJroOMiZkaqggi0NRypFJUF4AGjJFieFTSzBRzGZFZIwVJsbWVLYleMtfXiWdes1r1Br3l9VmvaijBKdwBhfgwRU04RZa0AYCEp7hFd6c1Hlx3p2PxeiaU+ycwB84nz9TkpHX</latexit>
+xM
+<latexit sha1_base64="+5sPIFdjyD3ADnkRWL3wi/ydoj0=">AAAB83icbVDLSsNAFL2pr1pfVZduBovgqiRFqsuCG5cV7AOaUCbTSTt0MgnzEEvob7hxoYhbf8adf+OkzUJbDwwczrmXe+aEKWdKu+63U9rY3NreKe9W9vYPDo+qxyddlRhJaIckPJH9ECvKmaAdzTSn/VRSHIec9sLpbe73HqlULBEPepbSIMZjwSJGsLaS78dYT8Ioe5oPG8Nqza27C6B14hWkBgXaw+qXP0qIianQhGOlBp6b6iDDUjPC6bziG0VTTKZ4TAeWChxTFWSLzHN0YZURihJpn9Boof7eyHCs1CwO7WSeUa16ufifNzA6ugkyJlKjqSDLQ5HhSCcoLwCNmKRE85klmEhmsyIywRITbWuq2BK81S+vk26j7jXrzfurWqtR1FGGMziHS/DgGlpwB23oAIEUnuEV3hzjvDjvzsdytOQUO6fwB87nDyqmkbw=</latexit>
+x2
+<latexit sha1_base64="xJapFQEzZ/vXyjbBgeKZbniRS0o=">AAAB83icbVDLSsNAFL2pr1pfVZduBovgqiRFqsuCG5cV7AOaUCbTSTt0MgnzEEvob7hxoYhbf8adf+OkzUJbDwwczrmXe+aEKWdKu+63U9rY3NreKe9W9vYPDo+qxyddlRhJaIckPJH9ECvKmaAdzTSn/VRSHIec9sLpbe73HqlULBEPepbSIMZjwSJGsLaS78dYT8Ioe5oPvWG15tbdBdA68QpSgwLtYfXLHyXExFRowrFSA89NdZBhqRnhdF7xjaIpJlM8pgNLBY6pCrJF5jm6sMoIRYm0T2i0UH9vZDhWahaHdjLPqFa9XPzPGxgd3QQZE6nRVJDlochwpBOUF4BGTFKi+cwSTCSzWRGZYImJtjVVbAne6pfXSbdR95r15v1VrdUo6ijDGZzDJXhwDS24gzZ0gEAKz/AKb45xXpx352M5WnKKnVP4A+fzBykikbs=</latexit>
+x1
+…
+… ……
+<latexit sha1_base64="0FFss36vWd4LwhCsZ0LS8V8hcAI=">AAACGHicbVDLSgMxFM3UV62vqks3wSJUKHVGpApuCm5cVrQP6JSSyWTaYGYyJHeEMvQz3Pgrblwo4rY7/8ZM24W2Hgj3cO695J7jxYJrsO1vK7eyura+kd8sbG3v7O4V9w9aWiaKsiaVQqqORzQTPGJN4CBYJ1aMhJ5gbe/xJuu3n5jSXEYPMIpZLySDiAecEjBSv3jmhgSGXpDej/tO2aW+hAqelmvselL4ehSakrowZEDGp/1iya7aU+Bl4sxJCc3R6Bcnri9pErIIqCBadx07hl5KFHAq2LjgJprFhD6SAesaGpGQ6V46NTbGJ0bxcSCVeRHgqfp7IyWhzg40k5kNvdjLxP963QSCq17KozgBFtHZR0EiMEicpYR9rhgFMTKEUMXNrZgOiSIUTJYFE4KzaHmZtM6rTq1au7so1SvzOPLoCB2jMnLQJaqjW9RATUTRM3pF7+jDerHerE/razaas+Y7h+gPrMkPqemgIA==</latexit>
+S1(·,·;ω)
+<latexit sha1_base64="8CArTlcqnUVsDyrLQy+b5kwrIJ8=">AAACFnicbVDLSsNAFJ3UV62vqEs3g0WoUEtSpApuCm5cVrQPaEKYTCbt0EkmzEyEEvoVbvwVNy4UcSvu/BsnbRfaemC4h3PvZe45fsKoVJb1bRRWVtfWN4qbpa3tnd09c/+gI3kqMGljzrjo+UgSRmPSVlQx0ksEQZHPSNcfXef97gMRkvL4Xo0T4kZoENOQYqS05JlnToTU0A+zu4lXrzg44KoKp+UKOj5ngRxHumROMqSTU88sWzVrCrhM7DkpgzlanvnlBBynEYkVZkjKvm0lys2QUBQzMik5qSQJwiM0IH1NYxQR6WZTWxN4opUAhlzoFys4VX9vZCiS+Xl6MjchF3u5+F+vn6rw0s1onKSKxHj2UZgyqDjMM4IBFQQrNtYEYUH1rRAPkUBY6SRLOgR70fIy6dRrdqPWuD0vN6vzOIrgCByDCrDBBWiCG9ACbYDBI3gGr+DNeDJejHfjYzZaMOY7h+APjM8f+2CfOA==</latexit>
+S2(·,·;ω)
+<latexit sha1_base64="1WeXNusUZ5ZDD5PyFKsIbpLe6Gw=">AAAB6HicbVDLSgNBEOyNrxhfUY9eBoPgQcKuSPQY8CJ4ScA8IFnC7KQ3GTM7u8zMCiHkC7x4UMSrn+TNv3GS7EETCxqKqm66u4JEcG1c99vJra1vbG7ltws7u3v7B8XDo6aOU8WwwWIRq3ZANQousWG4EdhOFNIoENgKRrczv/WESvNYPphxgn5EB5KHnFFjpfp9r1hyy+4cZJV4GSlBhlqv+NXtxyyNUBomqNYdz02MP6HKcCZwWuimGhPKRnSAHUsljVD7k/mhU3JmlT4JY2VLGjJXf09MaKT1OApsZ0TNUC97M/E/r5Oa8MafcJmkBiVbLApTQUxMZl+TPlfIjBhbQpni9lbChlRRZmw2BRuCt/zyKmlelr1KuVK/KlUvsjjycAKncA4eXEMV7qAGDWCA8Ayv8OY8Oi/Ou/OxaM052cwx/IHz+QOe+YzE</latexit>
+K
+<latexit sha1_base64="TOzBctgxTTDhIWhGo9zBIiiKWZY=">AAACAnicbVDLSsNAFJ3UV62vqCtxM1gEF1ISkeqy4KbLCvYBbQyT6aQdOnkwcyOUUNz4K25cKOLWr3Dn3zhJs9DWAwNnzrmXe+/xYsEVWNa3UVpZXVvfKG9WtrZ3dvfM/YOOihJJWZtGIpI9jygmeMjawEGwXiwZCTzBut7kJvO7D0wqHoV3MI2ZE5BRyH1OCWjJNY8GAYGx56fNmTu5zz8AaSz5zDWrVs3KgZeJXZAqKtByza/BMKJJwEKggijVt60YnJRI4FSwWWWQKBYTOiEj1tc0JAFTTpqfMMOnWhliP5L6hYBz9XdHSgKlpoGnK7Md1aKXif95/QT8ayflYZwAC+l8kJ8IDBHO8sBDLhkFMdWEUMn1rpiOiSQUdGoVHYK9ePIy6VzU7HqtfntZbZwXcZTRMTpBZ8hGV6iBmqiF2oiiR/SMXtGb8WS8GO/Gx7y0ZBQ9h+gPjM8fXIKYAQ==</latexit>
+Hpri
+k
+<latexit sha1_base64="dVQDtdGHCCIAPo8gJmeIfcFAELc=">AAACA3icbVDLSsNAFJ3UV62vqDvdBIvgQkoiUl0W3HRZwT6gjWEynbRDJ5kwcyOUUHDjr7hxoYhbf8Kdf+MkzUJbDwycOede7r3HjzlTYNvfRmlldW19o7xZ2dre2d0z9w86SiSS0DYRXMiejxXlLKJtYMBpL5YUhz6nXX9yk/ndByoVE9EdTGPqhngUsYARDFryzKNBiGHsB2lz5k3u8w9AGgsFM8+s2jU7h7VMnIJUUYGWZ34NhoIkIY2AcKxU37FjcFMsgRFOZ5VBomiMyQSPaF/TCIdUuWl+w8w61crQCoTULwIrV393pDhUahr6ujJbUi16mfif108guHZTFsUJ0IjMBwUJt0BYWSDWkElKgE81wUQyvatFxlhiAjq2ig7BWTx5mXQuak69Vr+9rDbOizjK6BidoDPkoCvUQE3UQm1E0CN6Rq/ozXgyXox342NeWjKKnkP0B8bnD0aZmIY=</latexit>
+Hpost
+k
+<latexit sha1_base64="X/DyUajulS9KbRxZcMCE2lDTFLk=">AAACAnicbVDLSsNAFJ34rPUVdSVugkVwISURqS4LbrqsYB/QxjCZTtqhk0mYuRFLCG78FTcuFHHrV7jzb5ykXWjrgYEz59zLvff4MWcKbPvbWFpeWV1bL22UN7e2d3bNvf22ihJJaItEPJJdHyvKmaAtYMBpN5YUhz6nHX98nfudeyoVi8QtTGLqhngoWMAIBi155mE/xDDyg7SReeO74gOQ0gfIPLNiV+0C1iJxZqSCZmh65ld/EJEkpAIIx0r1HDsGN8USGOE0K/cTRWNMxnhIe5oKHFLlpsUJmXWilYEVRFI/AVah/u5IcajUJPR1Zb6jmvdy8T+vl0Bw5aZMxAlQQaaDgoRbEFl5HtaASUqATzTBRDK9q0VGWGICOrWyDsGZP3mRtM+rTq1au7mo1M9mcZTQETpGp8hBl6iOGqiJWoigR/SMXtGb8WS8GO/Gx7R0yZj1HKA/MD5/AGWQmAc=</latexit>
+Hext
+k
+<latexit sha1_base64="2sdmQshjtE0D7EqnCnsGJXE30N0=">AAAB/HicbVDLSsNAFJ3UV62vaJdugkVwISURqS4LblxWsA9oYphMJ+3QmSTM3Agh1F9x40IRt36IO//GSZuFth4YOJxzL/fMCRLOFNj2t1FZW9/Y3Kpu13Z29/YPzMOjnopTSWiXxDyWgwAryllEu8CA00EiKRYBp/1gelP4/UcqFYuje8gS6gk8jljICAYt+WbdBZz64sEVGCYAeSLZzDcbdtOew1olTkkaqETHN7/cUUxSQSMgHCs1dOwEvBxLYITTWc1NFU0wmeIxHWoaYUGVl8/Dz6xTrYysMJb6RWDN1d8bORZKZSLQk0VGtewV4n/eMIXw2stZlKRAI7I4FKbcgtgqmrBGTFICPNMEE8l0VotMsMQEdF81XYKz/OVV0rtoOq1m6+6y0T4v66iiY3SCzpCDrlAb3aIO6iKCMvSMXtGb8WS8GO/Gx2K0YpQ7dfQHxucPpvOVXw==</latexit>
+ωpri
+m
+<latexit sha1_base64="ITgni6DLzeuYOfYeqX+4jjc2iOk=">AAAB+nicbVDLSsNAFJ34rPWV6tLNYBFcSElEqsuCG5cV7AOaWCbTSTt0MgkzN0qJ/RQ3LhRx65e482+ctFlo64GBwzn3cs+cIBFcg+N8Wyura+sbm6Wt8vbO7t6+XTlo6zhVlLVoLGLVDYhmgkvWAg6CdRPFSBQI1gnG17nfeWBK81jewSRhfkSGkoecEjBS3654QNJ7LyIwAsgSxad9u+rUnBnwMnELUkUFmn37yxvENI2YBCqI1j3XScDPiAJOBZuWvVSzhNAxGbKeoZJETPvZLPoUnxhlgMNYmScBz9TfGxmJtJ5EgZnMM+pFLxf/83ophFd+xmWSApN0fihMBYYY5z3gAVeMgpgYQqjiJiumI6IIBdNW2ZTgLn55mbTPa269Vr+9qDbOijpK6Agdo1PkokvUQDeoiVqIokf0jF7Rm/VkvVjv1sd8dMUqdg7RH1ifPxlllH8=</latexit>
+ωpri
+<latexit sha1_base64="MHyQAXgkjjL2pF1NUY8scLR+/iY=">AAAB/XicbVDLSsNAFJ34rPUVHzs3g0VwISURqS4LblxWsA9oYphMJ+3QmSTM3Ag1FH/FjQtF3Pof7vwbJ20X2npg4HDOvdwzJ0wF1+A439bS8srq2nppo7y5tb2za+/tt3SSKcqaNBGJ6oREM8Fj1gQOgnVSxYgMBWuHw+vCbz8wpXkS38EoZb4k/ZhHnBIwUmAfekCyQN57ksAAIE8TDePArjhVZwK8SNwZqaAZGoH95fUSmkkWAxVE667rpODnRAGngo3LXqZZSuiQ9FnX0JhIpv18kn6MT4zSw1GizIsBT9TfGzmRWo9kaCaLkHreK8T/vG4G0ZWf8zjNgMV0eijKBIYEF1XgHleMghgZQqjiJiumA6IIBVNY2ZTgzn95kbTOq26tWru9qNTPZnWU0BE6RqfIRZeojm5QAzURRY/oGb2iN+vJerHerY/p6JI12zlAf2B9/gCOmJXk</latexit>
+ωpost
+m
+<latexit sha1_base64="H+fEn4XQK7YBEEAj+FyYlmp+nQk=">AAAB/HicbVDLSsNAFJ34rPUV7dJNsAgupCQi1WXBjcsK9gFNDJPppB06k4SZGzGE+ituXCji1g9x5984abPQ1gMDh3Pu5Z45QcKZAtv+NlZW19Y3Nitb1e2d3b198+Cwq+JUEtohMY9lP8CKchbRDjDgtJ9IikXAaS+YXBd+74FKxeLoDrKEegKPIhYygkFLvllzAae+uHcFhjFATh9h6pt1u2HPYC0TpyR1VKLtm1/uMCapoBEQjpUaOHYCXo4lMMLptOqmiiaYTPCIDjSNsKDKy2fhp9aJVoZWGEv9IrBm6u+NHAulMhHoySKjWvQK8T9vkEJ45eUsSlKgEZkfClNuQWwVTVhDJikBnmmCiWQ6q0XGWGICuq+qLsFZ/PIy6Z43nGajeXtRb52VdVTQETpGp8hBl6iFblAbdRBBGXpGr+jNeDJejHfjYz66YpQ7NfQHxucPsAGVZQ==</latexit>
+ωext
+m
+Fig. 3. Diagram of the STMP-JADCE algorithm. The real and imaginary parts of the wireless channel matrix are concatenated as two feature channels
+(analogous to the RGB channels in images) when fed into the score networks. For thek-the device, the input tensor is constructed by stacking the real and
+imaginary parts ofH k into a tensor of size(N, M,2). Across multiple devices, these tensors are further batched along the user dimension. In this figure, the
+first and the second devices are active, whereas theK-th device is inactive. Therefore, the input to the score networks takes the form ofH pri
+k =H k +W k
+fork= 1,2, whileH pri
+K is a random noise. Note that, for brevity, we omitted the skip connections (dependences) from the prior messages to both the the
+posterior and extrinsic messages. Please refer to eqns. (55), (56), (26), and (27) for the rigorous relationships.
+Algorithm 2:STMP-JADCE Algorithm
+1:Input:Q,Y,δ 2
+0,{x pri
+m,A}M
+m=1,{v pri
+m,A}M
+m=1
+2:Output:{ˆα k}K
+k=1,{H post
+k }K
+k=1
+3:repeat
+4:% Linear estimator
+5:Updatex post
+m,A(i),v post
+m,A(i)by (7) and (8),∀m;
+6:Updatex ext
+m,A(i),v ext
+m,A(i)by (11) and (10),∀m;
+7:x pri
+km,B(i) =γx ext
+km,A(i) + (1−γ)x ext
+km,A(i−1),
+vpri
+m,B(i) =γv ext
+m,A(i) + (1−γ)v ext
+m,A(i−1),∀k, m;
+8:% Channel and device activity denoisers
+9:h pri
+km(i) =x pri
+km,B(i),τ pri
+m (i) =v pri
+m,B(i),∀k, m;
+10:Update ¯Hpri
+k (i),¯τpri(i)by (60) and (61),∀k;
+11:Update ¯Hpost
+k (i),¯τpost
+m (i)by (62) and (63),∀k, m;
+12:UpdateH post
+k (i)andτ post
+m (i)by (64) and (65),∀k,m;
+13:Updateh ext
+km(i),τ ext
+m (i)by (27) and (26),∀k, m;
+14:Updateλ post
+k (i)by (30),∀k;
+15:Updatex post
+km,B(i),v post
+m,B(i)by (35) and (38),∀k, m;
+16:Updatex ext
+km,B(i),v ext
+m,B(i)by (42) and (41),∀k, m;
+17:x pri
+km,A(i) =γx ext
+km,B(i) + (1−γ)x ext
+km,B(i−1),
+vpri
+m,A(i) =γv ext
+m,B(i) + (1−γ)v ext
+m,B(i−1),∀k, m;
+18:untilthe stopping criterion is met
+19:Decide the indices of active devices by (31),∀k.
+the numerical stability of STMP-JADCE. Specifically, in each
+iteration, we smoothen the updates of the means and variances
+by using a linear combination of the current and previous
+updates. For example, we replace the input to module A (Line
+15 of Algorithm 1) at thei-th iteration by
+xpri
+km,A(i) =γx ext
+km,B(i) + (1−γ)x ext
+km,B(i−1),(57)
+vpri
+m,A(i) =γv ext
+m,B(i) + (1−γ)v ext
+m,B(i−1),(58)
+whereγ∈(0,1]is the damping factor. The input to module
+B is damped in a similar manner.
+2) Channel Power Normalization:Following the training
+recipe of score-based generative models [15], we normalize the
+power of each channel sample during training, ensuring that
+the normalized channel ¯Hk =
+√
+N MHk/∥H k∥F . During
+inference, the ground-truth channel power is unknown due to
+channel fading. The input should be properly scaled since the
+networks are trained on a specific channel power and may not
+generalize well to arbitrary power levels. According to (43),
+we have
+Hk
+2
+F =
+Hpri
+k
+2
+F −N M τ pri.(59)
+By comparing (59) with the training normalization
+ ¯Hk
+2
+F =
+N M, we compute the scaled input ofH pri
+k as follows:
+¯Hpri
+k =
+s
+N MHpri
+k
+2
+F −N M τ pri
+Hpri
+k .(60)
+Similarly, the scaled input ofτ pri is given by
+¯τpri = KN M
+P
+k
+Hpri
+k
+2
+F −KN M τ pri
+τ pri.(61)
+Let ¯Hpost
+k and¯τpost
+m be the scaled posterior mean and variance
+obtained from the score networks:
+¯Hpost
+k = ¯Hpri
+k + ¯τpriS1
+  ¯Hpri
+k ,¯τpri;θ
+
+,(62)
+¯τpost
+m = ¯τpri + (¯τpri)2
+KN
+X
+k,n
+s2,nm
+  ¯Hpri
+k ,¯τpri;ϕ
+
+.(63)
+Finally, we rescale ¯Hpost
+k and¯τpost
+m as
+Hpost
+k =
+sHpri
+k
+2
+F −N M τ pri
+N M
+¯Hpost
+k ,(64)
+τ post
+m =
+P
+k
+Hpri
+k
+2
+F −KN M τ pri
+KN M ¯τpost
+m .(65)
+Algorithm 2 provides the pseudo-code of STMP-JADCE
+with all the engineering tricks implemented.
+
+=== PDF PAGE 11 ===
+11
+C. Pilot Design and Complexity Analysis
+Recall that we assume partial orthogonalQto simplify the
+LMMSE estimator in module A. To fulfill this requirement,
+the pilot symbols{q ktn}K
+k=1 of all devices transmitted on the
+n-th subcarrier during thet-th OFDM symbol should satisfy
+[q1tn, q2tn, . . . , qKtn] =
+√
+KPu i,(66)
+whereu i ∈C 1×K is a row vector randomly selected from a
+unitary matrixU∈C K×K . Therefore, a total ofN Trows
+should be selected from aK-by-Kmatrix. For a particular
+n, the selectedTrows must be distinct for eacht. For a
+particulart, the selectedNrows do not need to be unique
+across different values ofn. It can now be readily verified
+thatQQ H =KPI N T. Moreover, ifUis a DFT matrix, the
+matrix multiplications in module A can be simplified through
+the fast Fourier transform (FFT).
+The computational complexity of STMP-JADCE is eval-
+uated in terms of the number of complex multiplications.
+The main contributors are the matrix-vector multiplications in
+module A and the forward passes through the score networks
+in module B. In particular, each matrix-vector multiplication
+in (7) can be implemented byNlength-KFFT/IFFT opera-
+tions, resulting in a total of2M N Klog 2 Kcomplex multipli-
+cations across allMantennas. Other element-wise operations
+are of lower order and therefore neglected. The complexity of
+the score networks is denoted byC= max{C 1, C2}, where
+C1 andC 2 represent the computational costs of a forward
+pass through the first- and second-order score networks, re-
+spectively. Consequently, the overall per-iteration complexity
+of STMP-JADCE isO(M N Klog 2 K+C).
+VI. SIMULATIONRESULTS
+A. Simulation Settings
+1) Channel Dataset:We adopt the CDL family of channel
+models generated from the QuaDRiGa toolbox [55] for train-
+ing and evaluation. The training and evaluation sets consist
+of50,000and5,000channel samples, respectively. The
+evaluation samples are directly generated from the CDL-C
+model specified in [32, Table 7.7.1-3]. In the training set,
+we randomly generate the angles, delays, and complex gains
+of each path in CDL-C to cover a diverse range of channel
+realizations. The CDL-C channel model comprises24clusters,
+each contributing20sub-paths, resulting in a total ofL= 480
+propagation paths.
+In simulation, the BS is equipped with a uniform lin-
+ear array (ULA) consisting ofM= 32antennas, ar-
+ranged with half-wavelength spacing. A total ofN= 48
+OFDM subcarriers is considered, operating in a central fre-
+quency of2.6GHz. The subcarrier spacing is∆f= 30
+kHz. The delay spread is randomly chosen in the range
+of[100,363]ns. The channel model can be expressed as
+H= PL
+l=1 βl
+√ρlaN(τl)bH
+M(φl), whereβ l,ρ l,τ l, andφ l
+denote the complex coefficient, the path power, the path delay,
+and the angle of arrival (AoA) of thel-th path, respec-
+tively; the temporal and spatial steering vectors are defined
+asa N(τl)≜ 1√
+N
+
+1, e−j2π∆f τl , . . . , e−j2π(N−1)∆f τ l
+T
+and
+TABLE III
+NETWORKARCHITECTURES
+First-order score network
+(NCSNv2)
+Second-order score network
+(NCSN)
+3×3 Conv2D, 128 3×3 Conv2D, 128
+ResBlock, 128 CondResBlock, 128
+ResBlock, 128 CondResBlock, 128
+ResBlock down, 256 CondResBlock down, 256
+ResBlock, 256 CondResBlock, 256
+ResBlock down, 256 (dilation 2) CondResBlock down, 256 (dilation 2)
+ResBlock, 256 (dilation 2) CondResBlock, 256 (dilation 2)
+ResBlock down, 256 (dilation 4) CondResBlock down, 256 (dilation 4)
+ResBlock, 256 (dilation 4) CondResBlock, 256 (dilation 4)
+RefineBlock, 256 CondRefineBlock, 256
+RefineBlock, 256 CondRefineBlock, 256
+RefineBlock, 128 CondRefineBlock, 128
+RefineBlock, 128 CondRefineBlock, 128
+3×3 Conv2D, 2 3×3 Conv2D, 2
+bM(φl)≜ 1√
+M
+
+1, e−jπsinφ l , . . . , e−jπ(M−1) sinφ l
+T
+. The
+distance between the devices and the BS ranges from35to
+200m. The path-loss component is modeled as−128.1−
+36.7 log10 dk in dB scale, whered k is the distance (in km)
+between thek-th device and the BS.
+2) Network Architectures and Hyperparameters:We adopt
+the NCSNv2 [56] and NCSN [15] architectures for the first-
+and second-order score networks, respectively. Both networks
+adopt multi-scale convolutional architectures based on a U-
+Net or RefineNet backbone, composed of stacked residual
+and refinement blocks. Each block consists of two3×3
+convolutions followed by instance normalization and nonlin-
+ear activation, with skip connections between corresponding
+encoder and decoder stages to preserve fine-grained spatial
+information. The networks progressively downsample feature
+maps from128to256channels through residual blocks, then
+upsample them symmetrically using refinement blocks with
+dilated convolutions to enlarge the receptive field. The noise
+level is embedded through a conditioning mechanism imple-
+mented by a small multilayer perceptron followed by feature-
+wise linear modulation, which injects noise-dependent scale
+and shift parameters into every block. The output of the NCSN
+model corresponds to the diagonal entries of the second-order
+score (Hessian) function, sharing the same dimension as the
+first-order score. The detailed layer configurations of both
+architectures are summarized in Table III.
+The models are trained on every integer SNR in the range
+of[−10,30]dB, yieldingI= 41distinct noise levels{τ i}I
+i=1.
+Both networks are optimized using Adam with a learning
+rate of10 −4, batch size400, and400training epochs. An
+exponential moving average (EMA) of the model parameters
+with rate0.999is applied to stabilize training [56]. The
+training is conducted on a Linux server with 4 NVIDIA A800
+GPUs and an Intel Xeon Platinum 8358P CPU @ 2.60 GHz.
+Under this configuration, the training of the first- and second-
+order score networks each takes approximately one day.
+3) Evaluation Settings:During evaluation, the channel of
+each device is randomly sampled from the evaluation set.
+The following settings are adopted unless specified otherwise:
+λ= 0.05,K= 800, and the SNR is10dB. For the
+
+=== PDF PAGE 12 ===
+12
+Fig. 4. Comparison of the denoising performance under AWGN by different
+denoisers.
+figures showing the NMSE 1 performance and detection error
+probability, each data point is averaged over500and5000
+Monte Carlo trials, respectively. The evaluation utilizes a
+single NVIDIA A800 GPU, which is performed on the same
+machine used for training.
+B. Score-Based MMSE Denoising Performance
+Before digging into the evaluation of the STMP-JADCE
+algorithm, we separately assess the performance of the score-
+based MMSE denoiser specified in (44). We consider the
+task of recoveringH∈C N×M from its AWGN-corrupted
+observationY=H+N. We assume for simplicity that the
+path-loss are perfectly compensated. The following baselines
+are considered:
+•Least square (LS):The LS estimator is ˆHLS =Y.
+•Orthogonal matching pursuit (OMP) [57]:A greedy
+algorithm to sequentially identify the top ¯L= 100delay-
+angle pairs{τ l, φl}
+¯L
+l=1 that best match the observation,
+based on a delay–angular domain dictionary constructed
+via uniform sampling overa N(·)⊗b M(·). Then, the
+coefficients{β l
+√ρl}¯L
+l=1 are estimated by LS.
+•Element-wise MMSE [26]:This method adopts an i.i.d.
+Bernoulli-Gaussian prior for the channel coefficients in
+the same transform domain used by OMP, based on which
+an element-wise MMSE denoiser is implemented. The
+prior sparsity level is set to0.15.
+•Variational line spectral estimation (V ALSE) [58]:A
+super-resolution algorithm that computes the approximate
+posterior pdfs of the delays, angles, and path coefficients.
+•Genie-aided lower bound:This baseline assumes per-
+fect knowledge of the path powers, delays, and angles
+{ρl, τl, φl}L
+l=1, and employs the MMSE estimator to
+recover the complex coefficients{β l}L
+l=1.
+Fig. 4 compares the denoising performance of the score-
+based MMSE denoiser against these baselines. Remarkably,
+1The NMSE of channel estimation is defined as
+P
+k ∥Hk−Hpost
+k ∥2
+FP
+k ∥Hk∥2
+F
+.
+Fig. 5. NMSE in channel estimation versus the iteration number, whereλ=
+0.05,T= 30, and the SNR is10dB. Left:K= 800and we set the damping
+factorγ= 0.8for all schemes; right:K= 1600and we setγ= 0.6for all
+schemes.
+the score-based MMSE denoiser outperforms V ALSE [58], the
+state-of-the-art line spectral estimation algorithm, and closely
+approaches the unattainable genie-aided low bound. Our score-
+based MMSE denoiser requires only a forward propagation
+through the first-order score network. In contrast, the V ALSE
+algorithm suffers from prohibitively high computational com-
+plexity due to the iterative evaluation of continuous pdfs,
+making it less suitable for real-time channel estimation.
+C. JADCE Performance
+We compare the proposed STMP-JADCE algorithm against
+the following baselines:
+•Bernoulli-Gaussian TMP (BG-TMP):This method
+adopts the same TMP framework in Algorithm 1, but
+incorporates an i.i.d. Gaussian prior for channel denois-
+ing.
+•Generalized MMV-AMP (GMMV-AMP) [11]:This
+algorithm exploits the structured sparsity of the channel
+matrix observed at multiple receive antennas and multi-
+ple subcarriers. The structured sparsity arises from the
+sporadic access of devices.
+•TMP-EM [27]:This algorithm performs JADCE based
+on a block-wise linear model in the frequency domain.
+The EM algorithm [54] is applied to learn the prior vari-
+ance of the parameters of the block-wise linear model. In
+TMP-EM, the number of sub-blocks is a hyperparameter
+that balances model accuracy with the number of free
+variables.
+Fig. 5 shows the convergence behaviors of STMP-JADCE
+compared to various baselines. For all plots in the left subfig-
+ure (K= 800), we use a damping factor ofγ= 0.8, while
+in the right subfigure (K= 1600), we apply a damping factor
+ofγ= 0.6. Under this setting, GMMV-AMP frequently fails
+to converge and is therefore omitted from the results. When
+K= 800, STMP-JADCE converges within10iterations,
+outperforming TMP-EM and BG-TMP both in convergence
+
+=== PDF PAGE 13 ===
+13
+Fig. 6. NMSE in channel estimation against SNR, whereλ= 0.05,K=
+800, andT= 20.
+Fig. 7. Detection error probability against SNR, whereλ= 0.05,K= 800,
+andT= 20.
+speed and NMSE performance. AsKincreases to1600, all
+the schemes experience a slight decrease in convergence speed.
+Nevertheless, our method still converges in approximately20
+iterations. In contrast, TMP-EM shows substantial fluctuations
+when configured with either4or6linear sub-blocks. We also
+note that the second iteration in STMP-JADCE leads to an
+increase in NMSE. We conjecture that this is due to substantial
+estimation errors in the large-scale fading component during
+the initial iterations. This causes a power mismatch in the
+input to the score networks, ultimately degrading the denoising
+performance.
+Fig. 6 shows the NMSE in channel estimation versus the
+SNR. Our method demonstrates a significant improvement
+over the baselines across all SNRs. The performance gap
+between our method and BG-TMP highlights the critical
+importance of an accurate channel prior in message passing.
+Moreover, the TMP-EM algorithm favors a smaller number
+of sub-blocks at low SNR, while preferring a larger number
+of sub-blocks at high SNR. The sensitivity to the number
+of sub-blocks can pose challenges in hyperparameter tuning.
+Fig. 8. NMSE in channel estimation against the number of devicesK, where
+λ= 0.05,T= 40, and the SNR is10dB.
+Fig. 9. NMSE in channel estimation against the device active probabilityλ,
+whereK= 800,T= 40, and the SNR is10dB.
+In contrast, STMP-JADCE learns the channel prior directly
+from data, eliminating the need for hand-crafted modeling and
+achieving superior adaptability with consistent performance
+gains over model-based baselines.
+In Fig. 7, we present the detection error probability, which
+sums up missed detections and false alarms, plotted against
+different SNRs. The BG-TMP algorithm often fails to con-
+verge and is not included. Interestingly, although all schemes
+utilize the same Bernoulli prior for device activity, our method
+achieves the lowest detection error probability. This improve-
+ment can also be attributed to the plug-in of the score-
+based generative channel prior. The reason is the following.
+As shown in Fig. 6, the accurate channel prior brings a
+remarkable gain in channel estimation. Through message-
+passing iterations, the device activity is detected using this
+more accurate channel estimate, hence resulting in enhanced
+detection performance.
+In Fig. 8, we plot the achieved NMSE in channel estimation
+for various numbers of total devices. Targeted at a channel
+estimation NMSE of−25dB, our method can support3000
+
+=== PDF PAGE 14 ===
+14
+Fig. 10. NMSE in channel estimation against the pilot sequence lengthT,
+whereλ= 0.05,K= 800, and the SNR is10dB.
+connected devices, while the best baseline (TMP-EM with12
+sub-blocks) can accommodate only750devices, leading to a
+4×increase in access capacity. Moreover, for NMSE values
+below−5dB, STMP-JADCE shows the flattest slope in the
+performance curve. This suggests that, given an equivalent
+tolerance in NMSE degradation (in dB), our approach can
+support the largest increase in the number of connected
+devices. These observations highlight the superiority of the
+proposed algorithm for achieving massive connectivity.
+Fig. 9 shows the NMSE performance by varying the device
+active probability from0.01to0.15. It is observed that STMP-
+JADCE consistently outperforms all other schemes by a large
+margin. In addition, the NMSE of STMP-JADCE deteriorates
+more gracefully than that of the other schemes as the active
+probability increases. Fig. 10 investigates the influence of pilot
+sequence length on the NMSE in channel estimation. The
+proposed algorithm has a roughly5dB gain in NMSE when
+T= 80, and the gain is increased to10dB whenT= 10. This
+demonstrates the distinct advantage of the proposed method in
+the low pilot overhead regime.
+To examine the robustness of STMP-JADCE under channel
+model mismatch, we conduct a cross-CDL evaluation in which
+the score networks are trained on the CDL-C dataset, while the
+STMP-JADCE algorithm is evaluated on the distinct CDL-B
+channel model. As shown in Fig. 11, STMP-JADCE maintains
+strong performance and continues to outperform all baselines
+across the entire SNR range. This cross-model consistency
+can be attributed to the randomized generation of angles,
+delays, and complex path gains in the CDL-C training set,
+which exposes the score prior to a broad variety of channel
+realizations, as well as to the inherent generalization capability
+of the generative score networks.
+We further evaluate STMP-JADCE under different measure-
+ment matrices without retraining the generative prior. In addi-
+tion to the DFT-based design, we consider a Hadamard pilot
+matrix whose entries are binary{±1}and mutually orthogonal
+across rows, providing a real-valued and multiplication-free
+alternative to complex-valued DFT pilots. As shown in Fig. 12,
+Fig. 11. NMSE in channel estimation versus SNR for cross-CDL evaluation,
+whereλ= 0.05,K= 800, andT= 20. The score networks are trained on
+the CDL-C dataset, while the STMP-JADCE algorithm is evaluated on the
+distinct CDL-B channel model.
+Fig. 12. Convergence behaviors of STMP-JADCE under different measure-
+ment matrices, whereλ= 0.05,K= 1024,T= 30, andγ= 0.8.
+the algorithm exhibits consistent convergence behavior and
+comparable NMSE performance across DFT and Hadamard
+pilots. This consistency arises naturally from the plug-and-
+play formulation of STMP-JADCE, in which the unconditional
+score prior operates independently of the pilot structure, allow-
+ing seamless adaptation to various pilot designs drawn from
+suitably random matrix ensembles.
+Finally, to assess the data efficiency of the proposed STMP-
+JADCE, we evaluate its performance under different training
+set sizes in Fig. 13. The performance rapidly improves as the
+dataset size increases from8×10 2 to4×10 3, and then quickly
+saturates beyond1×10 4 samples. This result indicates that
+STMP-JADCE requires only a moderate amount of data to
+achieve near-optimal performance, demonstrating strong data
+efficiency and robustness even when large-scale datasets are
+unavailable.
+
+=== PDF PAGE 15 ===
+15
+Fig. 13. NMSE in channel estimation versus the number of training samples,
+whereλ= 0.05,K= 800,T= 30and the SNR is3dB.
+VII. CONCLUSION ANDDISCUSSION
+In this paper, we introduced STMP-JADCE for massive
+connectivity, a model-based deep learning solution that com-
+bines message passing with score-based generative models. In
+each message-passing iteration, our approach maintains both
+a first-order and a second-order score network to calculate
+the posterior mean and variance of the channel, respectively.
+We show by simulation results that STMP-JADCE drastically
+outperforms all competing algorithms, while achieving a com-
+parable or even faster convergence speed.
+From a more general perspective, this work evidences
+that with carefully specified message update rules and ap-
+proximations, message passing allows for the integration of
+unconditional score-based generative models to solve Bayesian
+inference problems without requiring task-specific training.
+This opens up new opportunities for the STMP framework to
+tackle a variety of inverse problems arising in communication,
+sensing, and other application domains.
+REFERENCES
+[1]Framework and Overall Objectives of the Future Development of IMT
+for 2030 and beyond, ITU-R M.2160, 2023.
+[2] C. Bockelmann, N. Pratas, H. Nikopour, K. Au, T. Svensson, C. Ste-
+fanovic, P. Popovski, and A. Dekorsy, “Massive machine-type commu-
+nications in 5G: Physical and MAC-layer solutions,”IEEE Commun.
+Mag., vol. 54, no. 9, pp. 59–65, 2016.
+[3] P. Schulzet al., “Latency critical IoT applications in 5G: Perspective on
+the design of radio interface and network architecture,”IEEE Commun.
+Mag., vol. 55, no. 2, pp. 70–78, 2017.
+[4] X. Chen, D. W. K. Ng, W. Yu, E. G. Larsson, N. Al-Dhahir, and
+R. Schober, “Massive access for 5G and beyond,”IEEE J. Sel. Areas
+Commun., vol. 39, no. 3, pp. 615–637, 2021.
+[5] Z. Chen, F. Sohrabi, and W. Yu, “Sparse activity detection for massive
+connectivity,”IEEE Trans. Signal Process., vol. 66, no. 7, pp. 1890–
+1904, 2018.
+[6] L. Liu and W. Yu, “Massive connectivity with massive MIMO-part I:
+Device activity detection and channel estimation,”IEEE Trans. Signal
+Process., vol. 66, no. 11, pp. 2933–2946, 2018.
+[7] J. Ahn, B. Shim, and K. B. Lee, “EP-based joint active user detection and
+channel estimation for massive machine-type communications,”IEEE
+Trans. Commun., vol. 67, no. 7, pp. 5178–5189, 2019.
+[8] Z. Zhang, Y . Li, C. Huang, Q. Guo, C. Yuen, and Y . L. Guan, “DNN-
+aided block sparse bayesian learning for user activity detection and
+channel estimation in grant-free non-orthogonal random access,”IEEE
+Trans. V eh. Technol., vol. 68, no. 12, pp. 12 000–12 012, 2019.
+[9] Y . Qiang, X. Shao, and X. Chen, “A model-driven deep learning
+algorithm for joint activity detection and channel estimation,”IEEE
+Commun. Lett., vol. 24, no. 11, pp. 2508–2512, 2020.
+[10] Z. Zhang, Y . Li, C. Huang, Q. Guo, L. Liu, C. Yuen, and Y . L. Guan,
+“User activity detection and channel estimation for grant-free random
+access in LEO satellite-enabled internet of things,”IEEE Internet Things
+J., vol. 7, no. 9, pp. 8811–8825, 2020.
+[11] M. Ke, Z. Gao, Y . Wu, X. Gao, and R. Schober, “Compressive sensing-
+based adaptive active user detection and channel estimation: Massive
+access meets massive MIMO,”IEEE Trans. Signal Process., vol. 68,
+pp. 764–779, 2020.
+[12] J. Johnston and X. Wang, “Model-based deep learning for joint activity
+detection and channel estimation in massive and sporadic connectivity,”
+IEEE Trans. Wireless Commun., vol. 21, no. 11, pp. 9806–9817, 2022.
+[13] Y . Tsai, L. Zheng, and X. Wang, “Millimeter-wave beamformed full-
+dimensional MIMO channel estimation based on atomic norm minimiza-
+tion,”IEEE Trans. Commun., vol. 66, no. 12, pp. 6150–6163, 2018.
+[14] H. Liu, X. Yuan, and Y . J. Zhang, “Super-resolution blind channel-
+and-signal estimation for massive MIMO with one-dimensional antenna
+array,”IEEE Trans. Signal Process., vol. 67, no. 17, pp. 4433–4448,
+2019.
+[15] Y . Song and S. Ermon, “Generative modeling by estimating gradients
+of the data distribution,” inProc. Adv. Neural Inf. Process. Syst., 2019,
+pp. 11 895–11 907.
+[16] Y . Song, J. Sohl-Dickstein, D. P. Kingma, A. Kumar, S. Ermon, and
+B. Poole, “Score-based generative modeling through stochastic differ-
+ential equations,” inProc. Int. Conf. Learn. Repr ., 2021.
+[17] J. Ho, A. Jain, and P. Abbeel, “Denoising diffusion probabilistic models,”
+inProc. Adv. Neural Inf. Process. Syst., 2020.
+[18] B. Kawar, M. Elad, S. Ermon, and J. Song, “Denoising diffusion
+restoration models,” inProc. Adv. Neural Inf. Process. Syst., S. Koyejo,
+S. Mohamed, A. Agarwal, D. Belgrave, K. Cho, and A. Oh, Eds., 2022.
+[19] H. Chung, J. Kim, M. T. McCann, M. L. Klasky, and J. C. Ye, “Diffusion
+posterior sampling for general noisy inverse problems,” inProc. Int.
+Conf. Learn. Repr ., 2023.
+[20] J. Song, A. Vahdat, M. Mardani, and J. Kautz, “Pseudoinverse-guided
+diffusion models for inverse problems,” inProc. Int. Conf. Learn. Repr .,
+2023.
+[21] Z. Dou and Y . Song, “Diffusion posterior sampling for linear inverse
+problem solving: A filtering perspective,” inProc. Int. Conf. Learn.
+Repr ., 2024.
+[22] Z. Xue, P. Cai, X. Yuan, and X. Gao, “Score-based reverse mean
+propagation for solving inverse problems,”IEEE Trans. Signal Process.,
+vol. 73, pp. 3947–3962, 2025.
+[23] Y . Wang, S. Bi, Y .-J. A. Zhang, and X. Yuan, “Traversing distortion-
+perception tradeoff using a single score-based generative model,” in
+Proc. IEEE Conf. Comput. Vis. Pattern Recognit., 2025, pp. 2377–2386.
+[24] C. Cai, X. Yuan, and Y .-J. A. Zhang, “Score-based turbo message
+passing for plug-and-play compressive image recovery,” inProc. IEEE
+Int. Workshop on Signal Process. Artif. Intell. Wireless Commun., 2025,
+pp. 1–5.
+[25] C. Cai, H. Jiang, X. Yuan, and Y .-J. A. Zhang, “Score-based
+turbo message passing for plug-and-play compressive imaging,” 2025.
+[Online]. Available: https://arxiv.org/abs/2512.14435
+[26] J. Ma, X. Yuan, and L. Ping, “Turbo compressed sensing with partial
+DFT sensing matrix,”IEEE Signal Process. Lett., vol. 22, no. 2, pp.
+158–161, 2015.
+[27] W. Jiang, M. Yue, X. Yuan, and Y . Zuo, “Massive connectivity over
+MIMO-OFDM: Joint activity detection and channel estimation with
+frequency selectivity compensation,”IEEE Trans. Wireless Commun.,
+vol. 21, no. 9, pp. 6920–6934, 2022.
+[28] H. E. Robbins, “An empirical bayes approach to statistics,” inBreak-
+throughs in Statistics: F oundations and basic theory. Springer, 1992,
+pp. 388–394.
+[29] B. Efron, “Tweedie’s formula and selection bias,”J. Amer . Stat. Assoc.,
+vol. 106, no. 496, pp. 1602–1614, 2011.
+[30] P. Vincent, “A connection between score matching and denoising au-
+toencoders,”Neural Comput., vol. 23, no. 7, pp. 1661–1674, 2011.
+[31] C. Lu, K. Zheng, F. Bao, J. Chen, C. Li, and J. Zhu, “Maximum likeli-
+hood training for score-based diffusion ODEs by high order denoising
+score matching,” inProc. Int. Conf. Mach. Learn., 2022, pp. 14 429–
+14 460.
+
+=== PDF PAGE 16 ===
+16
+[32] 3GPP, “Study on channel model for frequencies from 0.5 to 100 GHz,”
+Tech. Rep. 3GPP TR 38.901, v16.1.0, 2020.
+[33] S. Park, H. Seo, H. Ji, and B. Shim, “Joint active user detection and
+channel estimation for massive machine-type communications,” inProc.
+IEEE Int. Workshop Signal Process. Adv. Wireless Commun., 2017, pp.
+1–5.
+[34] H. He, C.-K. Wen, S. Jin, and G. Y . Li, “Deep learning-based channel
+estimation for beamspace mmwave massive MIMO systems,”IEEE
+Wireless Commun. Lett., vol. 7, no. 5, pp. 852–855, 2018.
+[35] Y . Ahn, W. Kim, and B. Shim, “Active user detection and channel
+estimation for massive machine-type communication: Deep learning
+approach,”IEEE Internet Things J., vol. 9, no. 14, pp. 11 904–11 917,
+2022.
+[36] H. Yu, Z. Fei, Z. Zheng, N. Ye, and Z. Han, “Deep learning-based user
+activity detection and channel estimation in grant-free NOMA,”IEEE
+Trans. Wireless Commun., vol. 22, no. 4, pp. 2202–2214, 2023.
+[37] M. Arvinte and J. I. Tamir, “MIMO channel estimation using score-based
+generative models,”IEEE Trans. Wireless Commun., vol. 22, no. 6, pp.
+3698–3713, 2023.
+[38] A. Aali, M. Arvinte, S. Kumar, and J. I. Tamir, “Solving inverse
+problems with score-based generative priors learned from noisy data,” in
+Proc. 58th Asilomar Conf. Signals, Syst., Comput., 2023, pp. 837–843.
+[39] X. Ma, Y . Xin, Y . Ren, D. Burghal, H. Chen, and J. C. Zhang, “Diffusion
+model based channel estimation,” inProc. IEEE Int. Conf. Commun.
+Workshops, 2024, pp. 1159–1164.
+[40] N. Zilberstein, A. Sabharwal, and S. Segarra, “Solving linear inverse
+problems using higher-order annealed langevin diffusion,”IEEE Trans.
+Signal Process., vol. 72, pp. 492–505, 2024.
+[41] N. Zilberstein, A. Swami, and S. Segarra, “Joint channel estimation and
+data detection in massive MIMO systems based on diffusion models,”
+inProc. IEEE Int. Conf. Acoust., Speech, Signal Process., 2024, pp.
+13 291–13 295.
+[42] B. Fesl, M. Baur, F. Strasser, M. Joham, and W. Utschick, “Diffusion-
+based generative prior for low-complexity MIMO channel estimation,”
+IEEE Wireless Commun. Lett., vol. 13, no. 12, pp. 3493–3497, 2024.
+[43] X. Zhou, L. Liang, J. Zhang, P. Jiang, Y . Li, and S. Jin, “Generative
+diffusion models for high dimensional channel estimation,”IEEE Trans.
+Wireless Commun., pp. 1–1, 2025.
+[44] Z. Chen, H. Shin, and A. Nallanathan, “Generative diffusion model-
+based variational inference for MIMO channel estimation,”IEEE Trans.
+Commun., pp. 1–1, 2025.
+[45] W. Yu, H. He, X. Yu, S. Song, J. Zhang, R. Murch, and K. B. Letaief,
+“Bayes-optimal unsupervised learning for channel estimation in near-
+field holographic MIMO,”IEEE J. Sel. Top. Signal Process., vol. 18,
+no. 4, pp. 714–729, 2024.
+[46] J. Ma and L. Ping, “Orthogonal AMP,”IEEE Access, vol. 5, pp. 2020–
+2033, 2017.
+[47] X. Bian, Y . Mao, and J. Zhang, “Joint activity detection, channel
+estimation, and data decoding for grant-free massive random access,”
+IEEE Internet Things J., vol. 10, no. 16, pp. 14 042–14 057, 2023.
+[48] F. Kschischang, B. Frey, and H.-A. Loeliger, “Factor graphs and the
+sum-product algorithm,”IEEE Trans. Inf. Theory, vol. 47, no. 2, pp.
+498–519, 2001.
+[49] T. P. Minka, “Expectation propagation for approximate bayesian infer-
+ence,” inProc. Conf. Uncertainty Artif. Intell.Morgan Kaufmann,
+2001, pp. 362–369.
+[50] S. Rangan, P. Schniter, and A. K. Fletcher, “Vector approximate message
+passing,”IEEE Trans. Inf. Theory, vol. 65, no. 10, pp. 6664–6684, 2019.
+[51] A. K. Fletcher, P. Pandit, S. Rangan, S. Sarkar, and P. Schniter, “Plug-
+in estimation in high-dimensional linear inverse problems: A rigorous
+analysis,” inProc. Adv. Neural Inf. Process. Syst., 2018, pp. 7451–7460.
+[52] F. Rozet, G. Andry, F. Lanusse, and G. Louppe, “Learning diffusion
+priors from observations by expectation maximization,” inProc. Adv.
+Neural Inf. Process. Syst., 2024.
+[53] M. A. Finzi, A. Boral, A. G. Wilson, F. Sha, and L. Zepeda-N ´u˜nez,
+“User-defined event sampling and uncertainty quantification in diffusion
+models for physical dynamical systems,” inProc. Int. Conf. Mach.
+Learn.PMLR, 2023, pp. 10 136–10 152.
+[54] J. T. Parker, P. Schniter, and V . Cevher, “Bilinear generalized approxi-
+mate message passing—part I: Derivation,”IEEE Trans. Signal Process.,
+vol. 62, no. 22, pp. 5839–5853, 2014.
+[55] S. Jaeckel, L. Raschkowski, K. B ¨orner, L. Thiele, F. Burkhardt, and
+E. Eberlein, “QuaDRiGa-Quasi deterministic radio channel generator
+user manual and documentation,” Fraunhofer Heinrich Hertz Inst.,
+Berlin, Germany, Tech. Rep. Tech. Rep. v2.8.1, 2023.
+[56] Y . Song and S. Ermon, “Improved techniques for training score-based
+generative models,” inProc. Adv. Neural Inf. Process. Syst., 2020.
+[57] T. T. Cai and L. Wang, “Orthogonal matching pursuit for sparse signal
+recovery with noise,”IEEE Trans. Inf. Theory, vol. 57, no. 7, pp. 4680–
+4688, 2011.
+[58] M.-A. Badiu, T. L. Hansen, and B. H. Fleury, “Variational bayesian
+inference of line spectra,”IEEE Trans. Signal Process., vol. 65, no. 9,
+pp. 2247–2261, 2017.

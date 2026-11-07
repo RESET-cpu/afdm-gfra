@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ch5_bc-P01",
+    "text": "The preceding posterior calculations use a fixed observation matrix\n$\\widehat{\\mathbf A}$ and physical noise variance\n$\\widehat\\sigma^2$. The matrix is formed from the available\ninter-frame phases through \\eqref{eq:effective-pilot}; when the\nphases are unknown, they are estimated by variable projection\n\\cite{oleary2013}. For the noise variance, the spatial sample\ncovariance separates the signal subspace from the trailing\neigenvalues under a lower-rank spatial signal plus white noise.\nThe minimum description length (MDL) criterion selects the signal\nrank, and the mean of the remaining eigenvalues gives\n$\\widehat\\sigma^2$ \\cite{nadakuditi2008}.\nAppendix~\\ref{app:frontend} gives both estimators. Their outputs\nremain fixed throughout message passing.",
+    "sentences": [
+      "The preceding posterior calculations use a fixed observation matrix $\\widehat{\\mathbf A}$ and physical noise variance $\\widehat\\sigma^2$.",
+      "The matrix is formed from the available inter-frame phases through \\eqref{eq:effective-pilot}; when the phases are unknown, they are estimated by variable projection \\cite{oleary2013}.",
+      "For the noise variance, the spatial sample covariance separates the signal subspace from the trailing eigenvalues under a lower-rank spatial signal plus white noise.",
+      "The minimum description length (MDL) criterion selects the signal rank, and the mean of the remaining eigenvalues gives $\\widehat\\sigma^2$ \\cite{nadakuditi2008}.",
+      "Appendix~\\ref{app:frontend} gives both estimators.",
+      "Their outputs remain fixed throughout message passing."
+    ]
+  },
+  {
+    "id": "ch5_bc-P02",
+    "text": "The input variance $v$ in the local model\n\\eqref{eq:pseudo-awgn} describes the uncertainty after linear\nestimation. Its update follows from the expected Gaussian\nnegative log likelihood with the current approximate posterior\n\\eqref{eq:mixture} held fixed \\cite[Sec.~III-A]{vila2013}.\nFor a candidate variance $\\widetilde v$, the terms depending on it\nare $KD\\log\\widetilde v+\n\\sum_k\\E_{\\widetilde q_k}[\\norm{R_k-X_k}_F^2]/\\widetilde v$.\nMinimizing this expression and expanding the expected squared\nerror gives",
+    "sentences": [
+      "The input variance $v$ in the local model \\eqref{eq:pseudo-awgn} describes the uncertainty after linear estimation.",
+      "Its update follows from the expected Gaussian negative log likelihood with the current approximate posterior \\eqref{eq:mixture} held fixed \\cite[Sec.~III-A]{vila2013}.",
+      "For a candidate variance $\\widetilde v$, the terms depending on it are $KD\\log\\widetilde v+ \\sum_k\\E_{\\widetilde q_k}[\\norm{R_k-X_k}_F^2]/\\widetilde v$.",
+      "Minimizing this expression and expanding the expected squared error gives"
+    ]
+  },
+  {
+    "id": "ch5_bc-P03",
+    "text": "The residual measures the error of the posterior mean, while\n$\\overline t_X$ accounts for the remaining channel and activity\nuncertainty. Let $\\bar v^{(i)}$ denote the damped MFLE variance\nand use $v^{(i)}=\\kappa^{(i)}\\bar v^{(i)}$ during iteration $i$.\nWith new-message weight $\\eta\\in(0,1]$, the next scale is",
+    "sentences": [
+      "The residual measures the error of the posterior mean, while $\\overline t_X$ accounts for the remaining channel and activity uncertainty.",
+      "Let $\\bar v^{(i)}$ denote the damped MFLE variance and use $v^{(i)}=\\kappa^{(i)}\\bar v^{(i)}$ during iteration $i$.",
+      "With new-message weight $\\eta\\in(0,1]$, the next scale is"
+    ]
+  },
+  {
+    "id": "ch5_bc-P04",
+    "text": "The current $v^{(i)}$ is used for both joint denoising and the\nextrinsic update; the updated scale enters the following iteration.",
+    "sentences": [
+      "The current $v^{(i)}$ is used for both joint denoising and the extrinsic update; the updated scale enters the following iteration."
+    ]
+  },
+  {
+    "id": "ch5_bc-P05",
+    "text": "The channel prior and online observations use the same fixed\nnormalization. If $s$ is the root mean square of the training-channel\ncoefficients, we divide $(H_k,X_k,\\mathbf Y,\\mathbf W)$ by $s$\nand the physical noise variance by $s^2$, retaining the same symbols\nfor normalized quantities. The pilot matrix is unchanged.\nTo moderate changes between successive Gaussian messages, we apply\ndamping \\cite[Sec.~V-B1]{cai2026} to the MFLE output for $i\\geq2$:",
+    "sentences": [
+      "The channel prior and online observations use the same fixed normalization.",
+      "If $s$ is the root mean square of the training-channel coefficients, we divide $(H_k,X_k,\\mathbf Y,\\mathbf W)$ by $s$ and the physical noise variance by $s^2$, retaining the same symbols for normalized quantities.",
+      "The pilot matrix is unchanged.",
+      "To moderate changes between successive Gaussian messages, we apply damping \\cite[Sec.~V-B1]{cai2026} to the MFLE output for $i\\geq2$:"
+    ]
+  },
+  {
+    "id": "ch5_bc-P06",
+    "text": "For numerical evaluation of \\eqref{eq:nonlinear-extrinsic}, we\nreplace $b=\\overline t_X/v$ by\n$b=\\clip(\\overline t_X/v,\\varepsilon,1-\\varepsilon)$, where\n$0<\\varepsilon<1/2$. The feedback is then damped with the same weight:",
+    "sentences": [
+      "For numerical evaluation of \\eqref{eq:nonlinear-extrinsic}, we replace $b=\\overline t_X/v$ by $b=\\clip(\\overline t_X/v,\\varepsilon,1-\\varepsilon)$, where $0<\\varepsilon<1/2$.",
+      "The feedback is then damped with the same weight:"
+    ]
+  },
+  {
+    "id": "ch5_bc-P07",
+    "text": "The first input and feedback messages are used without damping.\nOutside the training variance range, the retained Gaussian sites\nprovide the activity density ratio specified in\n\\eqref{eq:gaussian-evidence}. Iteration stops when the estimates\nand accepted site updates have stabilized, or at the maximum\niteration count. The corresponding checks and numerical settings\nare given in Section~\\ref{sec:simulation-settings}.",
+    "sentences": [
+      "The first input and feedback messages are used without damping.",
+      "Outside the training variance range, the retained Gaussian sites provide the activity density ratio specified in \\eqref{eq:gaussian-evidence}.",
+      "Iteration stops when the estimates and accepted site updates have stabilized, or at the maximum iteration count.",
+      "The corresponding checks and numerical settings are given in Section~\\ref{sec:simulation-settings}."
+    ]
+  },
+  {
+    "id": "ch5_bc-P08",
+    "text": "The observation matrix is fixed within a transmission block, so its\nthin singular value decomposition (SVD),\n$\\widehat{\\mathbf A}=\\mathbf U\\diag(s_i)\\mathbf V^{\\mathsf H}$,\ncan be reused across iterations. In particular,\n\\eqref{eq:linear-variance}--\\eqref{eq:linear-extrinsic} become",
+    "sentences": [
+      "The observation matrix is fixed within a transmission block, so its thin singular value decomposition (SVD), $\\widehat{\\mathbf A}=\\mathbf U\\diag(s_i)\\mathbf V^{\\mathsf H}$, can be reused across iterations.",
+      "In particular, \\eqref{eq:linear-variance}--\\eqref{eq:linear-extrinsic} become"
+    ]
+  },
+  {
+    "id": "ch5_bc-P09",
+    "text": "Here $\\mathbf R_{\\rm L}=\\mathbf X^{\\rm pri}\n+(\\mathbf X_{\\rm L}-\\mathbf X^{\\rm pri})/f_{\\rm L}$.\nFor $Q\\leq KN$, the SVD costs $O(KNQ^2)$ once per block.\nNoise estimation costs $O(QNM^2+M^3)$; let $C_{\\rm phase}$ denote\nthe phase-search, refinement, and gain-refitting cost in\nAppendix~\\ref{app:frontend}. Per iteration, MFLE transformations\ncost $O(QKMN^2)$, spatial covariance operations cost\n$O(KM^2N^2)$, and matrix factorizations cost $O(M^3)$.\nIf $C_\\theta,C_\\phi$ denote the per-device denoiser and classifier\ncosts, GPJD uses $1+2L_z$ denoiser evaluations and one classifier\nevaluation within the training interval. Hence,",
+    "sentences": [
+      "Here $\\mathbf R_{\\rm L}=\\mathbf X^{\\rm pri} +(\\mathbf X_{\\rm L}-\\mathbf X^{\\rm pri})/f_{\\rm L}$.",
+      "For $Q\\leq KN$, the SVD costs $O(KNQ^2)$ once per block.",
+      "Noise estimation costs $O(QNM^2+M^3)$; let $C_{\\rm phase}$ denote the phase-search, refinement, and gain-refitting cost in Appendix~\\ref{app:frontend}.",
+      "Per iteration, MFLE transformations cost $O(QKMN^2)$, spatial covariance operations cost $O(KM^2N^2)$, and matrix factorizations cost $O(M^3)$.",
+      "If $C_\\theta,C_\\phi$ denote the per-device denoiser and classifier costs, GPJD uses $1+2L_z$ denoiser evaluations and one classifier evaluation within the training interval.",
+      "Hence,"
+    ]
+  },
+  {
+    "id": "ch5_bc-P10",
+    "text": "For $I$ iterations, the total online complexity is bounded by",
+    "sentences": [
+      "For $I$ iterations, the total online complexity is bounded by"
+    ]
+  },
+  {
+    "id": "ch5_bc-P11",
+    "text": "For supplied phases, $C_{\\rm phase}=0$.\nAll devices share the trained parameters.\nExcluding these parameters and network activations,\nthe pilot/SVD factors, channel messages, and spatial covariance\nmatrices require $O(QKN+KMN^2+KM^2)$ working storage.",
+    "sentences": [
+      "For supplied phases, $C_{\\rm phase}=0$.",
+      "All devices share the trained parameters.",
+      "Excluding these parameters and network activations, the pilot/SVD factors, channel messages, and spatial covariance matrices require $O(QKN+KMN^2+KM^2)$ working storage."
+    ]
+  }
+]

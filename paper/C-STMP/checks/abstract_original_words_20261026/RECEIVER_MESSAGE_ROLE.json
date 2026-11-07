@@ -1,0 +1,38 @@
+{
+  "status": "PASS_SOURCE_ONLY_COMPILE_DEFERRED",
+  "date": "2026-10-26",
+  "english_abstract": "This paper investigates grant-free random access in low Earth orbit satellite Internet-of-Things systems without global navigation satellite system (GNSS) assistance. We firstly propose a multi-frame transmission scheme with affine frequency division multiplexing (AFDM) to handle the large differential delay and Doppler shift at the satellite receiver, and derive the input-output relationship. Subsequently, we learn a score-based generative channel prior directly on the AFDM effective channel with fractional delay and Doppler, without restrictive sparse or grid-aligned channel assumptions. The training uses colored Gaussian noise to account for correlations in the denoiser input error. The learned prior is then used for minimum mean-squared error (MMSE) denoising within a message passing (MP) receiver. The denoiser provides posterior mean and variance estimates of the channel at each iteration. These estimates are used in extrinsic message updates between the denoising and linear estimation modules to perform joint activity detection and channel estimation (JADCE). Numerical simulations demonstrate that the proposed receiver outperforms the baseline receiver in terms of activity detection and channel estimation.",
+  "receiver_description": "The learned prior is then used for minimum mean-squared error (MMSE) denoising within a message passing (MP) receiver. The denoiser provides posterior mean and variance estimates of the channel at each iteration. These estimates are used in extrinsic message updates between the denoising and linear estimation modules to perform joint activity detection and channel estimation (JADCE).",
+  "english_word_count": 167,
+  "sentence_word_counts": [
+    20,
+    31,
+    26,
+    15,
+    18,
+    14,
+    24,
+    19
+  ],
+  "sentences": 8,
+  "receiver_sentences": [
+    5,
+    6,
+    7
+  ],
+  "receiver_words": 56,
+  "result_sentence": 8,
+  "source_words_missing": [],
+  "technical_phrases_checked": 30,
+  "expressions_missing": [],
+  "all_sentences_verbatim_from_papers": false,
+  "technical_basis": "Cai2026 III (PDF pp.5-8), IV-V (pp.8-10), conclusion (p.15). Channel moments feed channel/activity denoising and extrinsic updates; activity classifier remains separate.",
+  "main_tex_outside_abstract_unchanged": true,
+  "bilingual_synchronized": true,
+  "compile_performed": false,
+  "main_pdf_updated": false,
+  "pdf_matches_current_source": false,
+  "retained_pdf_sha256": "3504ef292b140724792b607e26427acc5d4658ee54436c450c318b861b9913bb",
+  "main_tex_sha256": "407a419300b06e5e2f6088882559b62fc2d17360aa5e4945500f8f6e09835190",
+  "new_training_or_inference": false
+}

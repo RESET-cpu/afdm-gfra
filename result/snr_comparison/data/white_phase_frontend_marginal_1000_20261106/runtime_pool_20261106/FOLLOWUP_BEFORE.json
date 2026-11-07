@@ -1,0 +1,77 @@
+{
+  "status": "RUNNING",
+  "checked_at": "2026-11-06T19:51:00+08:00",
+  "coordinator": {
+    "pid": 36180,
+    "created_unix": 1793933709.904802,
+    "command": [
+      "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "evaluation.white_phase_adopted100_20261106.run",
+      "coordinate"
+    ]
+  },
+  "completed": 2509,
+  "planned": 6000,
+  "complete_paired_scenes": 418,
+  "per_snr": {
+    "-4": 419,
+    "-2": 418,
+    "0": 418,
+    "2": 418,
+    "4": 418,
+    "6": 418
+  },
+  "active_workers": 2,
+  "workers": [
+    {
+      "pid": 32960,
+      "position": 2509,
+      "identity": "exited since status snapshot"
+    },
+    {
+      "pid": 96128,
+      "position": 2510,
+      "identity": "PASS"
+    }
+  ],
+  "gpu_preflight": "PASS",
+  "preflight_sha256": "4f59f832bf634a9b72ea931299523db002d67d9360c1b379dda67d267b73dea4",
+  "saved_result_receipts_and_protocol_checked": 2509,
+  "iteration_limit_count": 0,
+  "entrypoint": "evaluation.white_phase_adopted100_20261106.run",
+  "amendment_sha256": "e2a010cdd156d154c759c2ad3fed63838c451e2c4a69bc1b56dadd40a6e1590d",
+  "dependencies": {
+    "status": "PASS",
+    "checked_unix": 1793965855.6090353,
+    "reasons": [],
+    "receipts": {
+      "white_known_phase": {
+        "completion_sha256": "9288b71f9447d0176e2ad74edad42e717df53a621174dd704e3b2c68f7f01cb8",
+        "summary_sha256": "5bd9f97c02754e00d29f0cc95633a84031a06dc5907748a0c37e8bd03f8869f9",
+        "paired_sha256": "1fd9a313ec093b5af9aa1922f293261bb0511b4d13d0e5e9a2be3e3e36443b00"
+      },
+      "ablation": {
+        "completion_sha256": "7a9e88158b594530ada2ce541912f5cf0972b31579b6a75c1fc668007eb48600",
+        "summary_sha256": "f5c6fa2195f9812599219232044ae801c1f967911f4f751fa055674ba729ef9d",
+        "paired_sha256": "f43f74efdcfde06262ff9b97c211d1d289f7c540ffb4b4d78a5f1c9c88bd32a9",
+        "source_hashes_sha256": "7d992a0081b1daf51d7b4aa2bafdbe62e0f474c9b206ce3bd88ef35c95b7fed6",
+        "adopted_scenes_per_snr": 100,
+        "new_inferences": 1200,
+        "reused_inferences": 1200
+      }
+    },
+    "live_processes": [],
+    "amendment_sha256": "e2a010cdd156d154c759c2ad3fed63838c451e2c4a69bc1b56dadd40a6e1590d"
+  },
+  "new_failures": 0,
+  "nonempty_stderr": [],
+  "previous_progress": {
+    "checked_at": "2026-11-06T19:20:57+08:00",
+    "completed": 2367
+  },
+  "verification_scope": "Progress check: result receipts and protocol metadata; complete saved-array rescoring remains the final completion step."
+}

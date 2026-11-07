@@ -1,0 +1,2833 @@
+=== PDF PAGE 1 ===
+arXiv:2111.05522v2  [cs.IT]  22 Apr 2022
+IEEE TRANSACTIONS ON INFORMA TION THEORY 1
+On the Convergence of Orthogonal/V ector AMP:
+Long-Memory Message-Passing Strategy
+Keigo Takeuchi, Member , IEEE
+Abstract—Orthogonal/vector approximate message-passing
+(AMP) is a powerful message-passing (MP) algorithm for sign al
+reconstruction in compressed sensing. This paper proves th e
+convergence of Bayes-optimal orthogonal/vector AMP in the large
+system limit. The proof strategy is based on a novel long-mem ory
+(LM) MP approach: A ﬁrst step is a construction of LM-MP
+that is guaranteed to converge systematically. A second ste p is
+a large-system analysis of LM-MP via an existing framework o f
+state evolution. A third step is to prove the convergence of s tate
+evolution recursions for Bayes-optimal LM-MP via a new stat is-
+tical interpretation of existing LM damping. The last is an e xact
+reduction of the state evolution recursions for Bayes-opti mal
+LM-MP to those for Bayes-optimal orthogonal/vector AMP . Th e
+convergence of the state evolution recursions for Bayes-op timal
+LM-MP implies that for Bayes-optimal orthogonal/vector AM P .
+Numerical simulations are presented to show the veriﬁcatio n of
+state evolution results for damped orthogonal/vector AMP a nd a
+negative aspect of LM-MP in ﬁnite-sized systems.
+Index Terms—Compressed sensing, orthogonal/vector approx-
+imate message-passing (AMP), long memory, damping, state
+evolution, convergence analysis.
+I. I NTRODUCTION
+A. Motivation
+C
+ONSIDER a reconstruction of an N -dimensional sparse
+signal vector x ∈ RN with N − 1E[∥x∥2] = 1 from
+compressed, noisy, and linear measurements y ∈ RM [1], [2]
+with M ≤ N , given by
+y = Ax + w. (1)
+In (1), A ∈ RM× N is a known sensing matrix. The vector w ∈
+RM denotes an additive noise vector with σ 2 =M − 1E[∥w∥2].
+A goal of compressed sensing is to reconstruct the signal
+vector x from the knowledge on the sensing matrix A and
+the measurement vector y.
+Compressed sensing has been applied to several practical
+issues, such as magnetic resonance imaging [3], radar [4],
+image super-resolution [5], channel estimation [6], spect rum
+sensing [7], error-correcting codes [8], and multiuser det ec-
+tion [9]. The prior distribution of the sparse signal vector is
+known in speciﬁc instances, such as error-correcting codes
+or multiuser detection, while it is unknown in many signal
+K. Takeuchi is with the Department of Electrical and Electro nic Information
+Engineering, Toyohashi University of Technology, Toyohashi 441-8580, Japan
+(e-mail: takeuchi@ee.tut.ac.jp).
+The author was in part supported by the Grant-in-Aid for Scie ntiﬁc
+Research (B) (JSPS KAKENHI Grant Numbers 21H01326), Japan. The
+material in this paper will be presented in part at 2022 IEEE I nternational
+Symposium on Information Theory.
+processing instances. This paper is more relevant to such
+speciﬁc instances—the prior distribution is known—since t he
+knowledge on the prior distribution is utilized in the theor etical
+analysis of iterative reconstruction algorithms.
+Approximate message-passing (AMP) [10], [11] is a power-
+ful message-passing (MP) algorithm for signal reconstruct ion.
+AMP with Bayes-optimal denoiser—called Bayes-optimal
+AMP—can be regarded as an exact approximation of loopy
+belief propagation in the large system limit [12], where
+both M and N tend to inﬁnity while the compression ratio
+δ = M/N ∈ (0, 1] is kept constant. Furthermore, Bayes-
+optimal AMP was proved to achieve the Bayes-optimal perfor-
+mance [13]–[16] for zero-mean, independent and identicall y
+distributed (i.i.d.), and sub-Gaussian sensing matrices [ 17],
+[18] if the ﬁxed-point (FP) equations describing the Bayes-
+optimal performance have a unique solution. Spatial cou-
+pling [19] is required when the FP equations have multiple
+solutions. See [20]–[23] for the details.
+The main weakness of AMP is that AMP does not converge
+for sensing matrices beyond zero-mean i.i.d. matrices, suc h as
+non-zero mean matrices [24] or ill-conditioned matrices [2 5].
+To tackle this convergence issue, several modiﬁed MP al-
+gorithms [26]–[31] were proposed. In particular, orthogon al
+AMP (OAMP) [30] or equivalently vector AMP (V AMP) [31]
+is a promising algorithm to solve the weakness of AMP . Since
+they are equivalent to each other in the linear measurement
+system (1), the two MP algorithms are referred to as OAMP
+in this paper.
+The main feature of OAMP is the use of extrinsic messages
+to eliminate intractable dependencies between the current
+message and all preceding messages. The extrinsic messages
+were originally used in a single loop algorithm to solve a FP o f
+the expectation consistency (EC) free energy [32], inspire d by
+expectation propagation [33]. In fact, Bayes-optimal OAMP
+can be regarded as an exact approximation of EP in the large
+system limit [34], [35].
+The asymptotic performance of OAMP can be characterized
+via rigorous state evolution [31], [35]. Bayes-optimal OAM P
+was proved to achieve the Bayes-optimal performance [36]–
+[38] for all orthogonally invariant sensing matrices if the FP
+equations describing the Bayes-optimal performance have a
+unique solution. The class of orthogonally invariant matri ces
+is a general class beyond zero-mean i.i.d. sensing matrices .
+Strictly speaking, state evolution [17], [18], [31], [35] d oes
+0000–0000/00$00.00 © 2015 IEEE
+
+=== PDF PAGE 2 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 2
+not guarantee the convergence 1 of MP algorithms for AMP or
+OAMP while it describes the asymptotic dynamics of these MP
+algorithms rigorously. As a result, we need to investigate t he
+convergence of state evolution recursions to a FP for indivi dual
+problems, e.g. [39]–[41].
+For ﬁnite-sized systems, damping [25] is used to improve
+the convergence property of MP algorithms. Conventional st ate
+evolution cannot describe the dynamics of damped AMP or
+OAMP anymore. To the best of author’s knowledge, theoretica l
+analysis for damped MP algorithms are very limited [25], [42 ].
+This paper addresses these two issues by proposing a
+novel damped MP algorithm that realizes the convergence
+in principle and the exact description for its dynamics. The
+damping issue has been already solved in [43] via the frame-
+work of long-memory (LM) MP [44]. LM-MP utilizes all
+preceding messages in computing the current message while
+conventional MP uses messages only in the latest iteration t o
+update the current message. LM-MP was originally used to
+solve the Thouless-Anderson-Palmer (TAP) equation for Isi ng
+models with orthogonally invariant spin interaction via no n-
+rigorous dynamical functional theory [45]. In this directi on,
+Fan [46] proposed an LM-MP algorithm and analyzed the
+dynamics of the LM-MP algorithm rigorously. See [47] for
+a generalization of [46].
+The state evolution framework for LM-MP in [44] is fully
+general, so that rigorous state evolution results for LM-MP
+can be obtained just by conﬁrming whether the model of esti-
+mation errors for the LM-MP is included into a general error
+model proposed in [44]. In this direction, convolutional AM P
+(CAMP) [44], [48] was proposed as an LM generalization
+of AMP . The framework was used to construct V AMP with
+warm-started conjugate gradient (WS-CG) in [49]. To solve
+an convergence issue in CAMP for sensing matrices with
+high condition numbers [50], memory AMP (MAMP) [43]
+was proposed. State evolution results in [43] can describe t he
+exact dynamics of MAMP even if damping is used. Since the
+main purpose of these LM-MP algorithms is to reduce the
+complexity of OAMP , such LM-MP algorithms are out of the
+scope of this paper.
+The “convergence in principle” is the main idea to prove the
+convergence of OAMP . It means that the convergence of an it-
+erative algorithm is intuitively trivial while the converg ence of
+conventional MP algorithms is non-trivial and therefore ne eds
+to be proved for individual problems. The current message
+in LM-MP can be regarded as an additional measurement for
+the signal vector that is correlated with all preceding mes-
+sages. When all measurements are utilized in a Bayes-optimal
+manner to estimate the signal vector, using the additional
+measurements never degrades the estimation performance. A s
+a result, the performance of the obtained Bayes-optimal LM-
+MP is monotonically convergent in principle as the iteratio n
+proceeds.
+1Throughout this paper, we only consider the convergence of s tate evolution
+recursions for MP algorithms in the large system limit, whic h may be phrased
+as the convergence of MP algorithms in the large system limit or more simply
+as the convergence of MP algorithms. Thus, convergence for ﬁ nite-sized
+systems is out of the scope of this paper.
+To design the Bayes-optimal estimation of the signal vector
+in each iteration, we start with an LM generalization of
+OAMP—called LM-OAMP . The estimation errors in LM-
+OAMP are proved to be jointly Gaussian-distributed for all
+iterations in the large system limit via the uniﬁed framewor k
+of state evolution [44]. Thus, the design issue of Bayes-opt imal
+LM-OAMP reduces to a solvable issue, i.e. the Bayes-optimal
+estimation of the signal vector from correlated additive wh ite
+Gaussian noise (AWGN) measurements. The convergence of
+Bayes-optimal OAMP is guaranteed by proving the equiva-
+lence between Bayes-optimal LM-OAMP and OAMP .
+B. Contributions
+The main contributions of this paper are threefold. In
+particular, the ﬁrst two contributions were presented in [5 1].
+A ﬁrst contribution is a statistical interpretation for the
+optimization of damping in [43]. This paper derives the
+optimized damping in terms of a sufﬁcient statistic, withou t
+using state evolution recursions, while it was obtained via an
+optimization problem for state evolution recursions [43]. This
+statistical interpretation is a key technical tool to prove the
+convergence of Bayes-optimal LM-OAMP rigorously.
+A second contribution is a derivation of state evolution
+recursions for LM-OAMP (Theorems 1 and 2) and a rigorous
+convergence analysis of state evolution recursions for Bay es-
+optimal LM-OAMP (Theorem 3), as well as an exact reduction
+of Bayes-optimal LM-OAMP to conventional Bayes-optimal
+OAMP [30]. These results provide a rigorous proof for the
+convergence of conventional Bayes-optimal OAMP in the
+large system limit.
+The last contribution is a negative aspect of LM-OAMP .
+Numerical simulations show that LM-OAMP requires larger
+systems than conventional OAMP for state evolution to pro-
+vide a good approximation for ﬁnite-sized systems. As a
+result, damped LM-OAMP is slightly inferior to OAMP with
+heuristic damping for small-to-moderate system sizes whil e
+it is consistent with state evolution for large systems. Thi s
+observation explains why MAMP with the optimized LM
+damping [43] needs large systems to realize good convergenc e
+properties.
+C. Organization
+After summarizing the notation used in this paper, Section I I
+presents the statistical interpretation and technical res ults in
+the ﬁrst contribution as preliminaries to propose LM-OAMP
+in Section III. Section IV presents state evolution results for
+LM-OAMP . The convergence of state evolution recursions
+for Bayes-optimal LM-OAMP is analyzed in Section V. Nu-
+merical simulations for damped LM-OAMP are presented in
+Section VI. Section VII concludes this paper. Several theor ems
+and lemmas are proved in the appendices.
+D. Notation
+Throughout this paper, M T, Tr(M ), and det M denote the
+transpose, trace, and determinant of a matrix M , respectively.
+The notation [M ]t′,t represents the (t′,t ) element of M .
+
+=== PDF PAGE 3 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 3
+For a vector vt with a subscript t, the nth element of vt
+is written as vn,t. The notation ∥ · · · ∥denotes the Euclidean
+norm. The vector 1 represents a vector whose elements are all
+one while en is the nth column of the identity matrix I. The
+notations ⊗ and δi,j denote the Kronecker product and delta,
+respectively.
+The Gaussian distribution with mean µ and covariance Σ
+is written as N (µ, Σ). The notations
+a.s.
+→ and
+a.s.
+= represent the
+almost sure convergence and equivalence, respectively.
+For a function f : Rt → R of t variables, the notation
+f (x1,..., xt) means the element-wise application of f , i.e.
+[f (x1,..., xt)]n =f ([x1]n,..., [xt]n). For a vector v ∈ RN ,
+the arithmetic mean of v is written as ⟨v⟩ = N − 1 ∑N
+n=1vn.
+Combining these notations, we ﬁnd that ⟨f (x, y)⟩ means
+N − 1 ∑N
+n=1f (xn,y n) for x, y ∈ RN .
+For any ﬁnite set T of non-negative integers, we deﬁne the
+one-to-one mappingi =IT (t) ∈ { 1,..., |T |}to represent that
+t ∈ T is the ith minimum element in T , e.g. for T = {2, 3, 4}
+we have IT (2) = 1 , IT (3) = 2 , and IT (4) = 3 .
+II. P RELIMINARIES
+A. Measurement Model
+The purpose of Section II is to present the technical back-
+ground of LM-OAMP proposed in Section III. This section is
+separated from the other sections in terms of the notation.
+Consider correlated (t + 1) AWGN measurements {Yτ ∈
+R}t
+τ =0 for a signal X ∈ R. For a subset Tτ ⊂ { 0,...,τ },
+we reconstruct the signal X from partial measurements Y τ ∈
+R1×|T τ | that consist of {Yt′ :t′ ∈ T τ }, given by
+Y τ =X1T + W τ, (2)
+where W τ = {Wt′ : t′ ∈ T τ } ∼ N (0, Στ ) denotes a zero-
+mean Gaussian row vector with covariance E[W T
+τ W τ ] =
+Στ ∈ R|Tτ |×|T τ |. The covariance matrix Στ is assumed to
+be positive deﬁnite. When all measurements are used, i.e.
+Tτ = {0,...,τ }, Στ is the (τ + 1) × (τ + 1) upper-left
+submatrix in Σt for all τ < t. The goal is to estimate the
+signalX from the knowledge on the measurement vector Y τ .
+We know that the posterior mean estimator E[X|Y τ ] is the
+best among all possible estimators f (Y τ ) in terms of the
+mean-square error (MSE) E[{X − f (Y τ )}2]. In computing
+the posterior mean estimator, we use a two-step approach:
+A ﬁrst step is the derivation of a sufﬁcient statistic Sτ for
+estimation of X based on the measurements Y τ . The second
+step is to compute the conditional mean of X given the
+sufﬁcient statistic Sτ , instead of the original measurements
+Y τ . This two-step approach is useful in proving technical
+lemmas to establish the main results while it is equivalent
+to direct computation of the posterior mean estimator, i.e.
+E[X|Y τ ] = E[X|Sτ ].
+B. Sufﬁcient Statistic
+We evaluate a sufﬁcient statistic for estimation of X based
+on the measurements Y τ . By deﬁnition, the probability den-
+sity function (pdf) of Y τ givenX is deﬁned as
+p(Y τ |X) = exp{− (Y τ − X1T)Σ− 1
+τ (Y τ − X1T)T/ 2}
+{(2π )|Tτ | det Στ }1/2 .
+(3)
+Evaluating the exponent in the pdf yields
+(Y τ − X1T)Σ− 1
+τ (Y τ − X1T)T
+=Y τ Σ− 1
+τ Y T
+τ − 2XY τ Σ− 1
+τ 1 +X 21TΣ− 1
+τ 1, (4)
+which implies that Y τ Σ− 1
+τ 1 is a sufﬁcient statistic for esti-
+mation of X given Y τ . Normalizing this sufﬁcient statistic,
+we arrive at
+Sτ = Y τ Σ− 1
+τ 1
+1TΣ− 1
+τ 1 =X + ˜Wτ, (5)
+with
+˜Wτ = W τ Σ− 1
+τ 1
+1TΣ− 1
+τ 1 . (6)
+It is straightforward to conﬁrm that ˜Wτ is a zero-mean
+Gaussian random variable with variance E[ ˜W 2
+τ ], given by
+E[ ˜W 2
+τ ] = 1
+1TΣ− 1
+τ 1. (7)
+Furthermore, the correlation E[ ˜Wτ ′ ˜Wτ ] is given by
+E[ ˜Wτ ′ ˜Wτ ] = 1TΣ− 1
+τ ′ E[W T
+τ ′W τ ]Σ− 1
+τ 1
+1TΣ− 1
+τ ′ 11TΣ− 1
+τ 1 . (8)
+When all measurements are used, i.e. Tτ = {0,...,τ }, the
+correlation (8) reduces to
+E[ ˜Wτ ′ ˜Wτ ] = 1
+1TΣ− 1
+τ 1 = E[ ˜W 2
+τ ] (9)
+for all τ′ ≤ τ, since E[W T
+τ ′W τ ] = ( I τ ′+1, O)Στ holds for
+W τ = (W0,...,W τ ). This property is used to prove the con-
+vergence of the error covariance in Bayes-optimal LM-OAMP
+via that of its diagonal elements, which are monotonically
+decreasing MSEs when we use the posterior mean estimator
+of the signal vector given all preceding messages.
+Finally, we investigate the impact of small eigenvalues for
+Στ on the variance E[ ˜W 2
+τ ].
+Proposition 1: Suppose that E[ ˜W 2
+τ ] > σ2
+0 holds for some
+σ 2
+0 > 0. For the eigen-decomposition Στ = ∑
+τ ′λ τ ′uτ ′uT
+τ ′,
+we have
+1Tuτ ′ = O(
+√
+λ τ ′) as λ τ ′ ↓ 0. (10)
+Proof: Applying the eigen-decomposition of Σ− 1
+τ to the
+deﬁnition of E[ ˜W 2
+τ ] in (7), we obtain
+E[ ˜W 2
+τ ] =
+{ ∑
+τ ′
+(1Tuτ ′)2
+λ τ ′
+} − 1
+>σ 2
+0, (11)
+which implies (1Tuτ ′)2/λ τ ′ <σ − 2
+0 for allτ′. Thus, we arrive
+at (10).
+The quantity σ 2
+0 in Proposition 1 may be obtained via
+the Bayes-optimal performance for the original compressed
+sensing problem (1). There exists σ 2
+0 > 0 as long as noisy
+measurements are considered.
+Proposition 1 implies that the inner product 1Tuτ ′ must
+tend to zero as some eigenvalue λ τ ′ > 0 goes to zero. In
+other words, all eigenvectors associated with small eigenv alues
+have a tendency to be orthogonal to the vector 1. Unless this
+asymptotic orthogonality holds, error-free estimation of X is
+possible via the matched ﬁlter (MF) Y τ uτ ′/ 1Tuτ ′ → X in
+probability as λ τ ′ ↓ 0.
+
+=== PDF PAGE 4 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 4
+C. Extrinsic Denoiser
+The Bayes-optimal estimator is deﬁned as the posterior
+mean estimator fopt(St) = E[X|St] ofX given the sufﬁcient
+statistic St. By deﬁnition, we have E[X|St] = E[X|Y t]. To
+realize asymptotic Gaussianity in LM-OAMP , we deﬁne the
+extrinsic denoiser f ext
+t : R|Tt| → R as
+f ext
+t (Y t) = fopt(St) − ∑
+τ ∈T tξτ,tYτ
+1 − ∑
+τ ∈T tξτ,t
+, (12)
+where ξτ,t for τ ∈ T t denotes the averaged partial derivative
+of fopt(St) with respect to Yτ , given by
+ξτ,t = E[f ′
+opt(St)]
+eT
+ITt (τ )Σ− 1
+t 1
+1TΣ− 1
+t 1 . (13)
+See Section I-D for the deﬁnition of the mapping ITt (·). By
+deﬁnition, we have ∑
+τ ∈T tξτ,t = E[f ′
+opt(St)].
+The numerator in the extrinsic denoiser (12) is the Onsager
+correction of the Bayes-optimal estimator fopt(St), which
+originates from a general error model in [44]. The signiﬁcan ce
+of the denominator is presented in the following propositio n:
+Proposition 2: Among all possible Lipschitz-continuous ex-
+trinsic denoisers ψ t : R|Tt| → R satisfying E[∂ψ (Y t)/∂Y τ ] =
+0 for all τ ∈ T t, the extrinsic denoiser f ext
+t conﬁgured from
+the Bayes-optimal estimator minimizes E[{ψ t(Y t) − X}2].
+Proof: See Appendix A-A.
+Proposition 2 implies that the denominator is the best optio n
+in terms of the MSE, as long as the Bayes-optimal denoiser
+is used.
+D. Estimator for Error Covariance
+For denoisersft′ andft, LM-OAMP needs a consistent esti-
+mator for the error covariance E[{X − ft′(St′)}{X − ft(St)}]
+under the assumption of the known signal power E[X 2] and
+covariance E[ ˜Wt′ ˜Wt]. When the Bayes-optimal estimators
+ft′ = fopt(St′) and ft = fopt(St) are used, we can use the
+posterior covarianceC(St′,S t) as a consistent estimator, given
+by
+C(St′,S t) = E[{X−fopt(St′)}{X−fopt(St)}|St′,S t]. (14)
+In particular, C(St,S t) reduces to the posterior variance
+E[{X − fopt(St)}2|St]. However, it is not straightforward to
+construct a consistent estimator for general denoisers.
+We derive a consistent estimator of the error covariance for
+generalft′ andft. For any t′ andt, let {St′,n,S t,n}N
+n=1 denote
+independent samples that follow the same joint distributio n as
+for the two sufﬁcient statistics (St′,S t), i.e.
+St,n =Xn + ˜Wt,n, (15)
+where {Xn} are independent random variables satisfying
+Xn ∼ X, while { ˜Wt′,n, ˜Wt,n}N
+n=1 are independent zero-mean
+Gaussian random variables with covariance E[ ˜Wt′,n ˜Wt,n] =
+E[ ˜Wt′ ˜Wt].
+Lemma 1: Suppose that ft′ andft are Lipschitz-continuous
+denoisers and let
+ˆC(St′,n,S t,n) = E[X 2] +ft′(St′,n)ft(St,n)
++E[ ˜Wt′ ˜Wt]f ′
+t(St,n) − St′,nft(St,n)
++E[ ˜Wt′ ˜Wt]f ′
+t′(St′,n) − St,nft′(St′,n). (16)
+Then, the sample average of { ˆC(St′,n,S t,n)}N
+n=1 is a con-
+sistent estimator: N − 1 ∑N
+n=1 ˆC(St′,n,S t,n) converges almost
+surely to the error covariance E[{X − ft′(St′)}{X − ft(St)}]
+as N → ∞ .
+Proof: See Appendix A-B.
+Corollary 1: Suppose that ft is a Lipschitz-continuous
+denoiser and let
+ˆC(St,n) = E[X 2] + E[ ˜W 2
+t ]f ′
+t(St,n) − St,nft(St,n). (17)
+Then, the sample average N − 1 ∑N
+n=1 ˆC(St,n) is a consistent
+estimator for E[X{X − ft(St)}] as N → ∞ .
+Proof: Use Lemma 1 for St′ =St and ft′ = 0.
+E. Properties of Bayes-Optimal Estimator
+We investigate properties of the Bayes-optimal estimator
+fopt(St) = E[X|St]. We have the following technical tools
+to analyze Bayes-optimal LM-OAMP:
+Lemma 2: Let Tτ = {0,...,τ } for all τ.
+• The monotonicity E[{X − fopt(St′)}2] ≥ E[{X −
+fopt(St)}2] and E[ ˜W 2
+t′] ≥ E[ ˜W 2
+t ] holds for all t′<t .
+• The identity C(St′,S t) = C(St,S t) for the posterior
+covariance (14) holds for t′ ≤ t if E[ ˜Wt′ ˜Wt] = E[ ˜W 2
+t ]
+is satisﬁed.
+Proof: See Appendix A-C.
+Lemma 3: Let Tτ = {0,...,τ } for all τ and suppose that
+the covariance Σt for the noise vector W t in (2) satisﬁes
+[Σt]τ ′,τ = [ Σt]τ,τ ′ = [ Σt]τ,τ for all τ′< τ. If {Στ }t
+τ =1 are
+positive deﬁnite, the following properties hold:
+• The monotonicity [Σt]τ,τ > [Σt]τ +1,τ +1 holds for all
+τ ∈ { 0,...,t − 1}.
+• The identity E[ ˜W 2
+t ] = E[W 2
+t ] holds for ˜Wt given in (6).
+• The identities St =Yt and ξτ,t = 0 hold for all τ ̸=t.
+Proof: See Appendix A-D.
+The former property in Lemma 2 is used to prove the
+convergence of state evolution recursions for Bayes-optim al
+LM-OAMP . The latter property and Lemma 3 are useful in
+proving an exact reduction of Bayes-optimal LM-OAMP to
+conventional Bayes-optimal OAMP .
+III. L ONG -M EMORY OAMP
+A. Outline
+LM-OAMP is a generalization of conventional OAMP [30],
+[31]. OAMP consists of two modules—called modules A and
+B in this paper. Module A uses a linear ﬁlter to compute a pos-
+terior message of the signal vector x while module B utilizes
+a separable denoiser to reﬁne the posterior message for each
+signal element. A crucial step in each module is the so-calle d
+Onsager correction to obtain extrinsic messages of x. This
+step realizes asymptotic Gaussianity for the estimation er rors
+in the two modules [31], [35]. The obtained messages may
+be damped in a heuristic manner to improve the convergence
+property of OAMP for ﬁnite-sized systems.
+LM-OAMP consists of two modules in Fig. 1, of which
+each has four steps. In the ﬁrst two steps, each module utiliz es
+all preceding messages to compute a posterior message of x
+while OAMP only uses those in the latest iteration. A ﬁrst
+
+=== PDF PAGE 5 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 5
+Computation of suﬃ cient
+statistic (18) and (19)
+Computation of suﬃ cient
+statistic (36) and (37)
+Computation of posterior
+messages (20) and (21)
+Computation of extrinsic
+messages (23) and (24)
+LM damping (27) and (28)
+Computation of posterior
+messages (38) and (39)
+Computation of extrinsic
+messages (41) and (42)
+LM damping (44) and (45)
+  
+xB→ A, t
+suf v B→ A, t', t
+suf
+xA, t
+post v A, t', t
+post
+xA, t
+ext v A, t', t
+ext
+Module A
+xB, t+1
+ext v B, t'+1, t+1
+ext
+xB, t+1
+post v B, t'+1, t+1
+post
+xA→ B, t
+suf v A→ B, t', t
+suf
+xA→ B, t v A→ B, t', t
+xB→ A, t+1 v B→ A, t'+1, t+1
+Module B
+(Linear Estimation) (Nonlinear Estimation)
+Fig. 1. Diagram of LM-OAMP .
+step in computing the posterior message is computation of
+a sufﬁcient statistic for estimation of x given all preceding
+messages, as presented in Section II. The second step com-
+putes a posterior message of x based on the sufﬁcient statistic.
+This step corresponds to the computation of the posterior
+messages in conventional OAMP . While the ﬁrst two steps
+are equivalent to direct computation of the posterior messa ge
+given all preceding messages, the two-step approach simpli ﬁes
+the formulation of the Onsager correction in a third step.
+To realize asymptotic Gaussianity in LM-OAMP , each
+module computes the Onsager correction of each posterior
+message. This third step is heavily based on a general frame-
+work of state evolution [44], which can evaluate asymptotic
+correlations between the current message and all preceding
+messages rigorously.
+The last step is optional: LM damping [43] is employed to
+improve the convergence property of LM-OAMP for ﬁnite-
+sized systems. As long as the Onsager-corrected messages
+in the third step are damped, LM damping does not break
+asymptotic Gaussianity for the estimation errors while heu ris-
+tic damping of posterior messages breaks asymptotic Gaus-
+sianity [44].
+B. Notation
+The notations used in LM-OAMP are summarized. Let
+xA→ B,t ∈ RN and {vA→ B,t′,t ∈ R}t
+t′=0 denote mean and
+covariance messages for the signal vector x, respectively,
+passed from module A to module B in iteration t. The
+covariance vA→ B,τ ′,τ corresponds to an estimate of the true
+error covariance N − 1E[(xA→ B,τ ′ − x)T(xA→ B,τ − x)] for all
+iterations τ′,τ ∈ { 0,...,t }. For notational convenience, we
+deﬁne the inﬁnite-dimensional real symmetric matrix V A→ B
+satisfying [V A→ B]τ ′,τ = [V A→ B]τ,τ ′ =vA→ B,τ ′,τ . Messages
+passed in the opposite direction are written as xB→ A,t ∈ RN ,
+{vB→ A,t′,t ∈ R}t
+t′=0, and V B→ A.
+The two modules utilize part of preceding messages in each
+iterationt. Let TA,t ⊂ { 0,...,t } and TB,t ⊂ { 0,...,t } denote
+subsets of indices that represent preceding messages used i n
+iterationt for modules A and B, respectively. We assume that
+both subsets TA,t and TB,t contain the current index t.
+We write the message matrix obtained by arranging the
+preceding messages {xA→ B,t′ : t′ ∈ T B,t} as X A→ B,t ∈
+RN ×|T B,t|. More precisely, xA→ B,t′ for t′ ∈ T B,t is the ith
+column in X A→ B,t withi =ITB,t (t′), deﬁned in Section I-D.
+Furthermore, we deﬁne V A→ B,t′,t ∈ R|TB,t′|×|T B,t| as the
+matrix obtained by extracting the (τ′,τ ) elements from V A→ B
+for all (τ′,τ ) ∈ T B,t′ × T B,t.
+Similarly, we deﬁne the message matrices X B→ A,t and
+V B→ A,t′,t ∈ R|TA,t′|×|T A,t| passed in the opposite direction
+via the preceding messages {xB→ A,t′ : t′ ∈ T A,t} and
+V B→ A. In particular, LM-OAMP reduces to conventional
+OAMP [30] when the subsets TA,t = TB,t = {t} are used,
+while TA,t = TB,t = {0,...,t } is the best in terms of the
+estimation performance. Interestingly, this paper proves that
+Bayes-optimal LM-OAMP reduces to Bayes-optimal OAMP
+for TA,t = TB,t = {0,...,t }.
+Update rules in LM-OAMP are deﬁned so as to realize
+asymptotic Gaussianity for {xA→ B,t′}. While a mathemati-
+cally rigorous deﬁnition for asymptotic Gaussianity is pre -
+sented shortly, a rough intuition is to regard the estimatio n
+errors ht = xA→ B,t − x and bt = V T(xB→ A,t − x)
+for the singular-value decomposition (SVD) A = U ΣV T
+as zero-mean Gaussian vectors with covariance E[hτ hT
+τ ′] =
+[V A→ B]τ ′,τ I N and E[bτ bT
+τ ′] = [ V B→ A]τ ′,τ I N , respectively.
+These properties help us understand LM-OAMP intuitively
+while they are too strong to justify. Asymptotic Gaussianit y
+proved in Theorem 1 is enough strong to prove the Bayes-
+optimality of LM-OAMP while it is weaker than the properties
+mentioned above.
+C. Module A (Linear Estimation)
+Module A consists of four steps in each iteration t. In
+the ﬁrst step, module A uses the preceding message ma-
+trix X B→ A,t and the covariance messages {vB→ A,τ ′,τ :
+τ′,τ ∈ { 0,...,t }} to compute a sufﬁcient statistic xsuf
+B→ A,t ∈
+RN for estimation of x and the corresponding covariance
+{vsuf
+B→ A,t′,t}t
+t′=0, given by
+xsuf
+B→ A,t =
+X B→ A,tV − 1
+B→ A,t,t1
+1TV − 1
+B→ A,t,t1 , (18)
+vsuf
+B→ A,t′,t =
+1TV − 1
+B→ A,t′,t′V B→ A,t′,tV − 1
+B→ A,t,t1
+1TV − 1
+B→ A,t′,t′11TV − 1
+B→ A,t,t1 . (19)
+For the initial iteration t = 0 , we use xB→ A,0 = 0 and
+vB→ A,0,0 = E[∥x∥2]/N . These update rules are obtained by
+regarding the estimation errors {xA→ B,t′ − x} as zero-mean
+Gaussian vectors with covariance E[(xA→ B,τ − x)(xA→ B,τ ′ −
+x)T] = [ V B→ A,t]τ ′,τ I N . See Section II for the derivation.
+The covariance matrix V B→ A,t,t is guaranteed to be asymp-
+totically positive deﬁnite via state evolution as long as t is
+ﬁnite. However, V B→ A,t,t has small positive eigenvalues that
+
+=== PDF PAGE 6 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 6
+converge to zero as t → ∞ . Nonetheless, such small eigenval-
+ues causes no numerical issues in computing V − 1
+B→ A,t,t1 since
+the eigenvectors associated with such small eigenvalues sh ould
+be orthogonal to the vector 1, as proved in Proposition 1.
+Remark 1: The sufﬁcient statistic (18) is a normalized linear
+combination of {xB→ A,t′}t
+t′=0 while it might not be a convex
+combination. Thus, (18) can be regarded as a damped estimate
+in module B. In fact, (18) was originally obtained via the
+optimization of damping [43]. Nonetheless, the interpreta tion
+in terms of a sufﬁcient statistic is important in analyzing t he
+convergence of LM-OAMP as a technical tool.
+The second step is computation of the posterior mean
+xpost
+A,t ∈ RN and covariance {vpost
+A,t′,t ∈ R}t
+t′=0. A linear ﬁlter
+W t ∈ RM× N is applied to the residual after interference
+subtraction based on the sufﬁcient statistic (18).
+xpost
+A,t = xsuf
+B→ A,t + W T
+t (y − Axsuf
+B→ A,t), (20)
+vpost
+A,t′,t =γt′,tvsuf
+B→ A,t′,t + σ 2
+N Tr
+(
+W t′W T
+t
+)
+, (21)
+with
+γt′,t = 1
+N Tr
+{(
+I N − W T
+t′A
+)T (
+I N − W T
+t A
+)}
+. (22)
+The formula (21) for the posterior covariance is justiﬁed in
+the large system limit via state evolution while the posteri or
+mean (20) is equivalent to that in conventional OAMP [30].
+The third step is the Onsager correction to realize asymp-
+totic Gaussianity. Module A computes the extrinsic mean
+xext
+A,t ∈ RN and covariance {vext
+A,t′,t}t
+t′=0, given by
+xext
+A,t =
+xpost
+A,t − ∑
+t′∈T A,tξA,t′,txB→ A,t′
+1 − ξA,t
+, (23)
+vext
+A,t′,t =
+vpost
+A,t′,t − ξA,t′ξA,tvsuf
+B→ A,t′,t
+(1 − ξA,t′)(1 − ξA,t) , (24)
+where ξA,t′,t ∈ R is given by
+ξA,t′,t =ξA,t
+eT
+ITA,t (t′)V − 1
+B→ A,t,t1
+1TV − 1
+B→ A,t,t1 (25)
+for t′ ∈ T A,t, with
+ξA,t = 1
+N Tr
+(
+I N − W T
+t A
+)
+. (26)
+The factor ξA,t′,t is the empirical average for the partial
+derivatives of the posterior mean xpost
+A,t with respect to the
+elements in xB→ A,t′. The formula (24) for the covariance is
+justiﬁed via state evolution.
+The numerator in (23) is the Onsager correction of the
+posterior message xpost
+A,t to realize asymptotic Gaussianity, and
+originates from a general error model in [44]. The denominat or
+in (23) has been selected to simplify state evolution, as
+considered in V AMP [31]. In particular, this selection is th e
+best when the true posterior mean estimator is used. See
+Section II-C for the details.
+The last step is LM damping [43] of the extrinsic mes-
+sages. Module A feeds the damped messages xA→ B,t and
+{vA→ B,t′,t}t
+t′=0 forward to module B.
+xA→ B,t =
+t∑
+τ =0
+θA,τ,txext
+A,τ, (27)
+vA→ B,t′,t =
+t′
+∑
+τ ′=0
+t∑
+τ =0
+θA,τ ′,t′θA,τ,tvext
+A,τ ′,τ, (28)
+where the damping factors {θA,τ,t} satisfy the following
+normalization condition:
+t∑
+τ =0
+θA,τ,t = 1, θ A,t,t ̸= 0 (29)
+for all t, where the condition θA,t,t ̸= 0 circumvents rank-
+deﬁcient V A→ B,t,t. Note that the positivity of the damping
+factors is not assumed since it is not required in state evolu tion.
+The main novelty for module A in LM-OAMP is in the
+sufﬁcient statistic (18), the correction (23) for the poste rior
+message to realize asymptotic Gaussianity, and the update
+rules (19), (21), (24), and (28) for the covariance messages .
+In particular, the sufﬁcient statistic is a key technical to ol to
+analyze the convergence of state evolution recursions for L M-
+OAMP rigorously.
+Example 1 (LMMSE): Consider the linear minimum mean-
+square error (LMMSE) ﬁlter
+W t =vsuf
+B→ A,t,t
+(
+σ 2I M +vsuf
+B→ A,t,tAAT
+)− 1
+A. (30)
+We know that the LMMSE ﬁlter minimizes the posterior
+variance vpost
+A,t,t in (21). Let η(x) denote the η-transform [52]
+of the empirical eigenvalue distribution of ATA, given by
+η(x) = 1
+N Tr
+{(
+IN +xATA
+)− 1}
+. (31)
+It is straightforward to conﬁrm that the variance vpost
+A,t,t in (21)
+reduces to
+vpost
+A,t,t =ξA,tvsuf
+B→ A,t,t, (32)
+where ξA,t in (26) is given by
+ξA,t =η
+(
+vsuf
+B→ A,t,t
+σ 2
+)
+. (33)
+For t′ ̸=t, on the other hand, vpost
+A,t′,t reduces to
+vpost
+A,t′,t =γt′,tvsuf
+B→ A,t′,t + vsuf
+B→ A,t′,t′vsuf
+B→ A,t,t
+vsuf
+B→ A,t′,t′ − vsuf
+B→ A,t,t
+·
+{
+η
+(
+vsuf
+B→ A,t,t
+σ 2
+)
+− η
+(
+vsuf
+B→ A,t′,t′
+σ 2
+)}
+, (34)
+where γt′,t in (22) is given by
+γt′,t =
+vsuf
+B→ A,t′,t′
+vsuf
+B→ A,t′,t′ − vsuf
+B→ A,t,t
+η
+(
+vsuf
+B→ A,t′,t′
+σ 2
+)
+−
+vsuf
+B→ A,t,t
+vsuf
+B→ A,t′,t′ − vsuf
+B→ A,t,t
+η
+(
+vsuf
+B→ A,t,t
+σ 2
+)
+. (35)
+
+=== PDF PAGE 7 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 7
+D. Module B (Nonlinear Estimation)
+Module B is formulated in the same manner as in module A.
+The only exception is element-wise nonlinear denoising whi le
+module A has used the linear ﬁlter to mitigate the interferen ce.
+Thus, the same explanation is omitted as in module A.
+In the ﬁrst step, module B uses the preceding message ma-
+trix X A→ B,t and covariance {vA→ B,τ ′,τ :τ′,τ ∈ { 0,...,t }}
+in iteration t to compute a sufﬁcient statistic xsuf
+A→ B,t and the
+corresponding covariance {vsuf
+A→ B,t′,t}t
+t′=0, given by
+xsuf
+A→ B,t =
+X A→ B,tV − 1
+A→ B,t,t1
+1TV − 1
+A→ B,t,t1 , (36)
+vsuf
+A→ B,t′,t =
+1TV − 1
+A→ B,t′,t′V A→ B,t′,tV − 1
+A→ B,t,t1
+1TV − 1
+A→ B,t′,t′11TV − 1
+A→ B,t,t1 . (37)
+The second step is computation of the posterior mean
+xpost
+B,t+1 ∈ RN and covariance 2 {vpost
+B,t′+1,t+1}t
+t′=0, which are
+deﬁned with a scalar denoiser ft : R → R as
+xpost
+B,t+1 =ft(xsuf
+A→ B,t), (38)
+vpost
+B,t′+1,t+1 = 1 + 1
+Nf T
+t′ (xsuf
+A→ B,t′)ft(xsuf
+A→ B,t)
++vsuf
+A→ B,t′,tξB,t − 1
+Nf T
+t (xsuf
+A→ B,t)xsuf
+A→ B,t′
++vsuf
+A→ B,t′,tξB,t′ − 1
+Nf T
+t′ (xsuf
+A→ B,t′)xsuf
+A→ B,t, (39)
+with
+ξB,t = ⟨f ′
+t(xsuf
+A→ B,t)⟩. (40)
+The posterior mean message xpost
+B,t+1 is used as an estimator
+of the signal vector x. Since the sufﬁcient statistic xsuf
+A→ B,t
+depends on the preceding messages X A→ B,t, the posterior
+message xpost
+B,t+1 is a function of the preceding message matrix
+X B→ A,t. In this sense, module B utilizes LM denoising.
+The posterior covariance (39) is a consistent estimator of t he
+covarianceN − 1E[{x− ft′(xsuf
+A→ B,t′)}T{x− ft(xsuf
+A→ B,t)}] for
+the estimation errors. See Section II-D for the details.
+The third step is the Onsager correction to realize asymp-
+totic Gaussianity. Module B computes the extrinsic mean
+xext
+B,t+1 ∈ RN and covariance {vext
+B,t′+1,t+1}t
+t′=0,
+xext
+B,t+1 =
+xpost
+B,t+1 − ∑
+t′∈T B,tξB,t′,txA→ B,t′
+1 − ξB,t
+, (41)
+vext
+B,t′+1,t+1 =
+vpost
+B,t′+1,t+1 − ξB,t′ξB,tvsuf
+A→ B,t′,t
+(1 − ξB,t′)(1 − ξB,t) , (42)
+with
+ξB,t′,t =ξB,t
+eT
+ITB,t (t′)V − 1
+A→ B,t,t1
+1TV − 1
+A→ B,t,t1 (43)
+for t′ ∈ T B,t, where ξB,t is given by (40).
+2If the true prior distribution of x is available, (39) should be replaced with
+the posterior covariance ⟨C(xsuf
+A→B,t′, xsuf
+A→B,t)⟩ in (14) while vpost
+B,0,t+1
+should be set to the posterior variance ⟨C(xsuf
+A→B,t, xsuf
+A→B,t)⟩.
+The last step is LM damping of the extrinsic messages.
+Module B feeds the obtained messages xB→ A,t+1 ∈ RN and
+{vB→ A,t′,t+1}t+1
+t′=0 back to module A. For t′,t ≥ 0,
+xB→ A,t+1 =
+t∑
+τ =0
+θB,τ,txext
+B,τ +1, (44)
+vB→ A,t′+1,t+1 =
+t′
+∑
+τ ′=0
+t∑
+τ =0
+θB,τ ′,t′θB,τ,tvext
+B,τ ′+1,τ +1, (45)
+with
+t∑
+τ =0
+θB,τ,t = 1, θ B,t,t ̸= 0. (46)
+Otherwise, for t ≥ 0 we use
+vB→ A,0,t+1 =
+t∑
+τ =0
+θB,τ,tvpost
+B,0,τ +1
+1 − ξB,τ
+, (47)
+with
+vpost
+B,0,t+1 = 1 + vsuf
+A→ B,t,tξB,t − 1
+Nf T
+t (xsuf
+A→ B,t)xsuf
+A→ B,t. (48)
+IV. T HEORETICAL ANALYSIS
+A. State Evolution
+We analyze the dynamics of LM-OAMP in the large sys-
+tem limit via state evolution [44]. A ﬁrst step is a proof
+of asymptotic Gaussianity for the estimation errors in LM-
+OAMP . Asymptotic Gaussianity is proved by conﬁrming that
+the error model for LM-OAMP is included into a general
+error model proposed in [44], which guarantees asymptotic
+Gaussianity. A second step is a derivation of state evolutio n
+recursions via asymptotic Gaussianity.
+We ﬁrst postulate technical assumptions to justify asymp-
+totic Gaussianity.
+Assumption 1: The signal vector x has i.i.d. elements with
+zero mean, unit variance, and bounded (2 +ǫ)th moment for
+some ǫ> 0.
+Assumption 1 is an assumption to simplify state evolu-
+tion analysis. We would need non-separable denoising if we
+postulated dependent signal elements. See [53]–[55] for no n-
+separable denoising.
+Assumption 2: The sensing matrix A is right-orthogonally
+invariant: For any orthogonal matrix Φ independent of A, the
+equivalence in distribution AΦ ∼ A holds. More precisely, for
+the SVD A = U ΣV T the orthogonal matrix V is indepen-
+dent of U Σ and Haar-distributed [52], [56]. Furthermore, the
+empirical eigenvalue distribution of ATA converges almost
+surely to a compactly supported deterministic distributio n with
+unit ﬁrst moment in the large system limit.
+The unit-ﬁrst-moment assumption is equivalent to the al-
+most sure convergence N − 1Tr(ATA)
+a.s.
+→ 1 in the large
+system limit. The right-orthogonal invariance is an import ant
+assumption to justify asymptotic Gaussianity, for which a
+rough intuition is as follows: Let m ∈ RN denote a vector
+independent of V . Since V is Haar-distributed, the orthogonal
+transform V m is distributed as (∥m∥/ ∥z∥)z for a standard
+Gaussian vector z. If the amplitude ∥m∥/ ∥z∥ converges in
+
+=== PDF PAGE 8 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 8
+probability to a constant a> 0 asN → ∞ , V m is distributed
+as if it followed N (0,a 2I N ).
+It is a challenging issue in random matrix theory to weaken
+the right-orthogonal invariance to more practical assump-
+tions, including discrete cosine transform (DCT) or Hadama rd
+matrices with random permutation [57]. See [58]–[60] for
+theoretical progress in this direction.
+Assumption 3: The noise vector w is orthogonally invariant:
+For any orthogonal matrix Φ independent of w, the equiva-
+lence in distribution Φw ∼ w holds. Furthermore, the almost
+sure convergence M − 1∥w∥2 a.s.
+→ σ 2 holds for the variance
+σ 2 > 0. The vector w has bounded (2 + ǫ)th moments for
+some ǫ> 0.
+The AWGN vector w ∼ N (0,σ 2I M ) with variance σ 2
+satisﬁes Assumption 3. When the sensing matrix is left-
+orthogonally invariant, the orthogonal invariance in w can be
+induced from A.
+Assumption 4: The linear ﬁlter matrix W t in module A has
+the same SVD structure as the sensing matrix A, i.e. W t =
+U ˜W tV T for A = U ΣV T. Furthermore, the diagonal matrix
+˜W
+T ˜W is in the space spanned by {Λj}∞
+j=0 with Λ = ΣTΣ.
+Assumption 4 contains practically important linear ﬁlters ,
+such as the MF W t = A and the LMMSE ﬁlter (30).
+Assumption 5: The scalar denoiser ft in module B is
+Lipschitz-continuous and nonlinear.
+The Lipschitz-continuity in Assumption 5 is a standard
+assumption in state evolution analysis [17], [31], [35], [4 4]
+while the nonlinearity is required for the positive deﬁnite ness
+of V B→ A,t,t. In module A, Assumption 4 and the compact
+support in Assumption 2 are substituted for Assumption 5.
+We are ready to present asymptotic Gaussianity for the
+estimation errors in LM-OAMP .
+Theorem 1 (Asymptotic Gaussianity): Suppose that Assump-
+tions 1–5 are satisﬁed and consider any iteration t. Then, the
+following results hold for all iterations τ′,τ ∈ { 0,...,t }.
+• The covariance N − 1(xB→ A,τ ′ − x)T(xB→ A,τ − x) con-
+verges almost surely to some constant ¯vB→ A,τ ′,τ in the
+large system limit. Furthermore, the (t + 1) × (t + 1)
+upper-left block of the matrix ¯V B→ A with [ ¯V B→ A]τ ′,τ =
+¯vB→ A,τ ′,τ is positive deﬁnite as long as t is ﬁnite.
+• Let ¯V B→ A,t′,t ∈ R|TA,t′|×|T A,t| denote the matrix ob-
+tained by extracting the elements ¯vB→ A,τ ′,τ for all
+τ′ ∈ T A,t′ and τ ∈ T A,t from the covariance matrix
+¯V B→ A deﬁned in the ﬁrst property. Then, the covariance
+N − 1(xpost
+A,τ ′ − x)T(xpost
+A,τ − x) converges almost surely to
+some constant ¯vpost
+A,τ ′,τ in the large system limit, given by
+¯vpost
+A,τ ′,τ = lim
+M=δN →∞
+{
+γτ ′,τ ¯vsuf
+B→ A,τ ′,τ
++σ 2
+N Tr
+(
+W τ ′W T
+τ
+)}
+, (49)
+where γτ ′,τ is given by (22), with
+¯vsuf
+B→ A,τ ′,τ =
+1TV − 1
+B→ A,τ ′,τ ′ ¯V B→ A,τ ′,τ V − 1
+B→ A,τ,τ 1
+1TV − 1
+B→ A,τ ′,τ ′11TV − 1
+B→ A,τ,τ 1 .
+(50)
+• The covariance N − 1(xA→ B,τ ′ − x)T(xA→ B,τ − x) con-
+verges almost surely to some constant ¯vA→ B,τ ′,τ in the
+large system limit. Furthermore, the (t + 1) × (t + 1)
+upper-left block of the matrix ¯V A→ B with [ ¯V A→ B]τ ′,τ =
+¯vA→ B,τ ′,τ is positive deﬁnite as long as t is ﬁnite.
+• Let ¯V A→ B,t′,t ∈ R|TB,t′|×|T B,t| denote the matrix
+deﬁned by extracting the elements ¯vA→ B,τ ′,τ for all
+τ′ ∈ T B,t′ and τ ∈ T B,t from the covariance matrix
+¯V A→ B deﬁned in the third property. Then, the covariance
+N − 1(xpost
+B,τ ′+1− x)T(xpost
+B,τ +1− x) converges almost surely
+to some constant ¯vpost
+B,τ ′+1,τ +1 in the large system limit,
+¯vpost
+B,τ ′+1,τ +1 = E[{fτ ′(x1 +zτ ′) − x1}
+·{fτ (x1 +zτ ) − x1}], (51)
+where {zτ ′,z τ } are independent of the signal element x1
+and zero-mean Gaussian random variables with covari-
+ance E[zτ ′zτ ] = ¯vsuf
+A→ B,τ ′,τ , given by
+¯vsuf
+A→ B,τ ′,τ =
+1TV − 1
+A→ B,τ ′,τ ′ ¯V A→ B,τ ′,τ V − 1
+A→ B,τ,τ 1
+1TV − 1
+A→ B,τ ′,τ ′11TV − 1
+A→ B,τ,τ 1 .
+(52)
+Furthermore,ξB,τ in (40) converges almost surely to ¯ξB,τ
+in the large system limit,
+¯ξB,τ = E[f ′
+τ (x1 +zτ )]. (53)
+Proof: See Appendix B.
+The second and fourth results in Theorem 1 are the precise
+meaning of asymptotic Gaussianity for LM-OAMP while the
+asymptotic Gaussianity for the second result is not explici t,
+because of the linear ﬁlter in module A. We cannot claim
+the joint Gaussianity for the estimation errors: the conver -
+gence of the joint distribution of {xsuf
+A→ B,τ − x}t
+τ =0 toward
+a joint Gaussian distribution with covariance E[(xsuf
+A→ B,τ −
+x)(xsuf
+A→ B,τ ′ − x)T] = ¯vsuf
+A→ B,τ ′,τ I. We only claim the almost
+sure convergence of N − 1(xpost
+B,τ ′+1 − x)T(xpost
+B,τ +1 − x) toward
+(51) given via the zero-mean Gaussian random variables zτ ′
+and zτ with covariance E[zτ ′zτ ] = ¯vsuf
+A→ B,τ ′,τ .
+We next derive state evolution recursions by evaluating the
+covariance ¯vA→ B,τ ′,τ and ¯vB→ A,τ ′,τ in Theorem 1.
+Theorem 2 (State Evolution): Suppose that Assumptions 1–5
+are satisﬁed. Then, the state evolution recursions for modu le A
+are given by
+¯vsuf
+B→ A,t′,t = 1T ¯V
+− 1
+B→ A,t′,t′ ¯V B→ A,t′,t ¯V
+− 1
+B→ A,t,t1
+1T ¯V
+− 1
+B→ A,t′,t′11T ¯V
+− 1
+B→ A,t,t1
+, (54)
+¯ξA,t = lim
+M=δN →∞
+1
+N Tr
+(
+I N − W T
+t A
+)
+, (55)
+¯vext
+A,t′,t =
+¯vpost
+A,t′,t − ¯ξA,t′ ¯ξA,t¯vsuf
+B→ A,t′,t
+(1 − ¯ξA,t′)(1 − ¯ξA,t) , (56)
+¯vA→ B,t′,t =
+t′
+∑
+τ ′=0
+t∑
+τ =0
+θA,τ ′,t′θA,τ,t ¯vext
+A,τ ′,τ, (57)
+with ¯vB→ A,0,0 = 1 , where ¯vpost
+A,t′,t is deﬁned in (49). In these
+expressions, vsuf
+B→ A,t,t in W t is replaced with ¯vsuf
+B→ A,t,t. On
+
+=== PDF PAGE 9 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 9
+the other hand, the state evolution recursions for module B
+are given by
+¯vsuf
+A→ B,t′,t = 1T ¯V
+− 1
+A→ B,t′,t′ ¯V A→ B,t′,t ¯V
+− 1
+A→ B,t,t1
+1T ¯V
+− 1
+A→ B,t′,t′11T ¯V
+− 1
+A→ B,t,t1
+, (58)
+¯vext
+B,t′+1,t+1 =
+¯vpost
+B,t′+1,t+1 − ¯ξB,t′ ¯ξB,t¯vsuf
+A→ B,t′,t
+(1 − ¯ξB,t′)(1 − ¯ξB,t) , (59)
+¯vB→ A,t′+1,t+1 =
+t′
+∑
+τ ′=0
+t∑
+τ =0
+θB,τ ′,t′θB,τ,t ¯vext
+B,τ ′+1,τ +1 (60)
+for t′,t ≥ 0, where ¯vpost
+B,t′+1,t+1 and ¯ξB,t are deﬁned as (51)
+and (53), respectively. For t′ = − 1, (60) is replaced with
+¯vB→ A,0,t+1 =
+t∑
+τ =0
+θB,τ,t ¯vpost
+B,0,τ +1
+1 − ¯ξB,τ
+(61)
+for t ≥ 0, with
+¯vpost
+B,0,τ +1 = E[x1{x1 − fτ (x1 +zτ )}], (62)
+where zτ is independent of x1 and a zero-mean Gaussian
+random variable with variance E[z2
+τ ] = ¯vsuf
+A→ B,τ,τ .
+Proof: See Appendix C.
+Theorem 2 presents the state evolution recursions for LM-
+OAMP , which justify the update rules for the covariance mes-
+sages in LM-OAMP . In particular, the MSE N − 1∥xpost
+B,t+1 −
+x∥2 converges almost surely to ¯vpost
+B,t+1,t+1 in the large system
+limit.
+Example 2: As an example of Theorem 2, we derive state
+evolution recursions for damped OAMP . Let TA,t = TB,t =
+{t} and consider damping θA,0,t = (1 − θA)t,θA,τ,t =θA(1−
+θA)t− τ for all τ > 0 in (27) with some θA ∈ [0, 1], and
+θB,0,t = (1 − θB)t, θB,τ,t = θB(1 − θB)t− τ for all τ >0 in
+(44) with some θB ∈ [0, 1] [31]. From (27) we have xA→ B,0 =
+xext
+A,0 and
+xA→ B,t =θA
+t∑
+τ =1
+(1 − θA)t− τ xext
+A,τ + (1 − θA)txext
+A,0
+=θAxext
+A,t + (1 − θA)xA→ B,t− 1 (63)
+for t >0. Similarly, from (44) we have xB→ A,1 = xext
+B→ A,1
+and for t> 0
+xB→ A,t+1 =θBxext
+B,t+1 + (1 − θB)xB→ A,t. (64)
+The state evolution recursion for module A in damped
+OAMP is given by
+¯vext
+A,t′,t =
+¯vpost
+A,t′,t − ¯ξA,t′ ¯ξA,t¯vB→ A,t′,t
+(1 − ¯ξA,t′)(1 − ¯ξA,t) , (65)
+where ¯vpost
+A,t′,t is deﬁned in (49) with ¯vsuf
+B→ A,t′,t = ¯vB→ A,t′,t.
+Furthermore, we have ¯vA→ B,0,0 = ¯vext
+A,0,0 and
+¯vA→ B,0,t =θA¯vext
+A,0,t + (1 − θA)¯cA,0,t− 1, (66)
+¯vA→ B,t′,t =θA¯cA,t′,t + (1 − θA)¯vA→ B,t′− 1,t, (67)
+for all t′,t> 0, with
+¯cA,t′,t = lim
+M=δN →∞
+1
+N (xext
+A,t′ − x)T(xA→ B,t − x)
+a.s.
+= θA¯vext
+A,t′,t + (1 − θA)¯cA,t′,t− 1, ¯cA,t′,0 = ¯vext
+A,t′,0. (68)
+The state evolution recursions for module B reduce to
+¯vext
+B,0,t+1 =
+¯vpost
+B,0,t+1
+1 − ¯ξB,t
+, (69)
+¯vext
+B,t′+1,t+1 =
+¯vpost
+B,t′+1,t+1 − ¯ξB,t′ ¯ξB,t¯vA→ B,t′,t
+(1 − ¯ξB,t′)(1 − ¯ξB,t) (70)
+for t′ ≥ 0, where ¯vpost
+B,t′+1,t+1 is given by (51) with
+¯vsuf
+A→ B,τ ′,τ = ¯vA→ B,τ ′,τ . Furthermore, we have ¯vB→ A,0,0 = 1,
+¯vB→ A,0,1 = ¯vext
+B,0,1, ¯vB→ A,1,1 = ¯vext
+B,1,1, and
+¯vB→ A,0,t+1 =θB¯vext
+B,0,t+1 + (1 − θB)¯vB→ A,0,t, (71)
+¯vB→ A,1,t+1 =θB¯vext
+B,1,t+1 + (1 − θB)¯cB,1,t, (72)
+¯vB→ A,t′+1,t+1 =θB¯cB,t′+1,t+1 + (1 − θB)¯vB→ A,t′,t+1 (73)
+for all t′,t> 0, with
+¯cB,t′,t+1 = lim
+M=δN →∞
+1
+N (xext
+B,t′ − x)T(xB→ A,t+1 − x)
+a.s.
+= θB¯vext
+B,t′,t+1 + (1 − θB)¯cB,t′,t, ¯cB,t′,1 = ¯vext
+B,t′,1. (74)
+These results imply that the correct state evolution recur-
+sions for damped OAMP are the two-dimensional discrete
+systems with respect to the covariance messages. Equivalen t
+results were derived for the MF W t = A and zero-mean i.i.d.
+Gaussian sensing matrices [42].
+The following heuristic damping for the variance messages
+was used:
+1
+vA→ B,t,t
+=θA
+(
+1
+vpost
+A,t,t
+− 1
+vB→ A,t,t
+)
++ 1 − θA
+vA→ B,t− 1,t− 1
+, (75)
+1
+vB→ A,t+1,t+1
+=θB
+(
+1
+vpost
+B,t+1,t+1
+− 1
+vA→ B,t,t
+)
++ 1 − θB
+vB→ A,t,t
+(76)
+in precision domain [31] or
+vA→ B,t,t =θA
+(
+1
+vpost
+A,t,t
+− 1
+vB→ A,t,t
+)− 1
++(1 − θA)vA→ B,t− 1,t− 1, (77)
+vB→ A,t+1,t+1 =θB
+(
+1
+vpost
+B,t+1,t+1
+− 1
+vB→ A,t,t
+)− 1
++(1 − θB)vA→ B,t,t (78)
+in variance domain. The heuristic damping cannot provide
+accurate estimates for the MSE in each module while it result s
+in a one-dimensional discrete system to describe the varian ce
+messages in OAMP .
+
+=== PDF PAGE 10 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 10
+V. O PTIMIZATION
+A. Damping
+LM-OAMP has several design parameters such as the sub-
+sets of indices TA,t, TB,t, the linear ﬁlter W t, damping factors
+{θA,τ,t}, {θB,τ,t}, and the denoiser ft. Since this paper focuses
+on the Bayes-optimal LM-OAMP , the LMMSE ﬁlter (30) and
+the Bayes-optimal denoiser are used. Thus, the remaining
+design parameters are TA,t, TB,t, {θA,τ,t}, and {θB,τ,t}.
+We use Theorem 2 to optimize the damping factors {θA,τ,t}
+and {θB,τ,t}. A reasonable criterion is the minimization of
+the variance ¯vsuf
+B→ A,t,t and ¯vsuf
+A→ B,t,t for the sufﬁcient statistics
+given in (54) and (58). This criterion results in greedy mini -
+mization of the MSEs ¯vpost
+A,t,t and ¯vpost
+B,t+1,t+1 for the posterior
+estimators.
+When all preceding messages are used, i.e. TA,t = TB,t =
+{0,...,t }, we have
+¯vsuf
+B→ A,t,t = 1
+1T ¯V
+− 1
+B→ A,t,t1
+, ¯vsuf
+A→ B,t,t = 1
+1T ¯V
+− 1
+A→ B,t,t1
+.
+(79)
+In this case, the damping factors can be optimized via the
+following lemma:
+Lemma 4: For any T , let CT ∈ R(T +1)× (T +1) denote
+a positive-deﬁnite symmetric matrix with [C T ]τ ′,τ = cτ ′,τ .
+Suppose that V T ∈ R(T +1)× (T +1) has the (t′,t ) elementvt′,t
+for t′,t ∈ { 0,...,T }, given by
+vt′,t =
+t′
+∑
+τ ′=0
+t∑
+τ =0
+cτ ′,τθτ ′,t′θτ,t, (80)
+where {θτ,t}t
+τ =0 satisfy the normalization condition,
+t∑
+τ =0
+θτ,t = 1. (81)
+Deﬁne the upper triangular matrix ΘT ∈ R(T +1)× (T +1) as
+ΘT =
+
+
+
+θ0,0 · · · θ0,T
+. . . .
+.
+.
+O θT,T
+
+
+ . (82)
+If ΘT has full rank, then the following identity holds:
+1TV − 1
+T 1 = 1TC − 1
+T 1. (83)
+Proof: By deﬁnition, V T is represented as V T =
+ΘT
+T CT ΘT . Since both V T and ΘT are invertible, we have
+1TV − 1
+T 1 = 1TΘ− 1
+T C − 1
+T (Θ− 1
+T )T1. The normalization (81)
+implies 1TΘT = 1T, so that 1T = 1TΘT Θ− 1
+T = 1TΘ− 1
+T
+holds. Combining these results, we arrive at Lemma 4.
+Using Lemma 4 for (57) and (60), we ﬁnd that the
+damping factors {θA,τ,t} and {θB,τ,t} are independent of the
+variance (79) for the sufﬁcient statistics if TA,t = TB,t =
+{0,...,t } are used. This observation is intuitively trivial since
+xsuf
+B→ A,t and xsuf
+A→ B,t in (18) and (36) are sufﬁcient statistics.
+Thus, we assume no damping θA,τ,t =θB,τ,t =δτ,t when all
+preceding information TA,t = TB,t = {0,...,t } are used.
+B. Bayes-Optimal LM-OAMP
+We consider Bayes-optimal LM-OAMP . In general, the
+state evolution recursions in Theorem 2 are two-dimensiona l
+discrete systems. Interestingly, the systems reduce to one -
+dimensional systems when all preceding information TA,t =
+TB,t = {0,...,t }, the LMMSE ﬁlter (30), and the Bayes-
+optimal denoiser are used in each iteration.
+The Bayes-optimal denoiser is deﬁned as the denoiser fτ
+that minimizes the MSE ¯vpost
+B,τ +1,τ +1 in (51). By deﬁnition,
+the Bayes-optimal denoiser is equal to the posterior mean
+estimator fτ = E[x1|x1 +zτ ] with zτ deﬁned in Theorem 1.
+To present the state evolution recursions for the Bayes-
+optimal LM-OAMP , we review state evolution recursions for
+conventional Bayes-optimal OAMP [31], [35], which are one-
+dimensional systems with respect to two variance parameter s
+¯vA→ B,t and ¯vB→ A,t,
+¯vA→ B,t =
+( 1
+¯ξA,t¯vB→ A,t
+− 1
+¯vB→ A,t
+)− 1
+, (84)
+¯vB→ A,t+1 =
+(
+1
+¯vpost
+B,t+1
+− 1
+¯vA→ B,t
+)− 1
+, (85)
+with ¯vB→ A,0 = 1. In (84), ¯ξA,t is given by
+¯ξA,t = 1 − lim
+M=δN →∞
+¯vB→ A,t
+N Tr
+{
+AAT
+·
+(
+σ 2IM + ¯vB→ A,tAAT
+)− 1}
+. (86)
+Furthermore, ¯vpost
+B,t+1 = E[{E[x1|x1 + zt] − x1}2] in (85)
+corresponds to the MSE for Bayes-optimal OAMP in the
+large system limit, with zt denoting a zero-mean independent
+Gaussian random variable with variance ¯vA→ B,t.
+Theorem 3 (Bayes-Optimal LM-OAMP): Suppose that As-
+sumptions 1–5 are satisﬁed. Consider TA,t = TB,t =
+{0,...,t }, θA,τ,t = θB,τ,t = δτ,t, the LMMSE ﬁlter (30),
+and the Bayes-optimal denoiser. Then,
+• The state evolution recursions for the Bayes-optimal LM-
+OAMP with the initialization ¯vB→ A,0,0 = 1 satisfy
+¯vA→ B,t′,t = ¯vA→ B,t and ¯vB→ A,t′+1,t+1 = ¯vB→ A,t+1
+for all t′ ≤ t, which are deﬁned via the state evolution
+recursions (84) and (85) for Bayes-optimal OAMP .
+• The state (¯vA→ B,t′,t, ¯vB→ A,t′+1,t+1) converges to a FP
+as t tends to inﬁnity for all t′ ≤ t.
+Proof: See Appendix D.
+Theorem 3 implies that the Bayes-optimal LM-OAMP
+converges for general signal prior and asymptotic eigenval ue
+distributions of ATA, while conventional MP algorithms
+require convergence analysis for individual problems [39] –
+[41].
+The state evolution recursions for the Bayes-optimal
+LM-OAMP are essentially one-dimensional: ¯vA→ B,t′,t and
+¯vB→ A,t′+1,t+1 are well deﬁned via the one-dimensional re-
+cursions (84) and (85) for Bayes-optimal OAMP [31], [35].
+As a by-product, we arrive at the convergence of conventiona l
+Bayes-optimal OAMP .
+Corollary 2 (Bayes-Optimal OAMP): Suppose that Assump-
+tions 1–5 are satisﬁed. Then, the state evolution recursion s (84)
+
+=== PDF PAGE 11 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 11
+and (85) for conventional Bayes-optimal OAMP converge to
+a FP . Furthermore, the FP characterizes the Bayes-optimal
+performance if it is unique.
+Proof: Since the Bayes-optimality of the unique FP is due
+to [30], we only prove the convergence of the state evolution
+recursions for Bayes-optimal OAMP .
+The latter property in Theorem 3 implies the convergence
+of ¯vA→ B,t′,t and ¯vB→ A,t′,t for the Bayes-optimal LM-OAMP
+to a FP . Furthermore, the former property in Theorem 3
+claims that the diagonal elements ¯vA→ B,t,t and ¯vB→ A,t,t are
+respectively equal to ¯vA→ B,t and ¯vB→ A,t in the state evolu-
+tion recursions (84) and (85) for Bayes-optimal OAMP [31],
+[35]. These observations imply the convergence of the state
+evolution recursions for Bayes-optimal OAMP to a FP .
+Theorem 3 implies that the dynamics of the MSE perfor-
+mance for the Bayes-optimal LM-OAMP is equal to that for
+Bayes-optimal OAMP . Interestingly, we can conﬁrm an equiv-
+alence between the Bayes-optimal LM-OAMP and Bayes-
+optimal OAMP .
+Proposition 3: Consider TA,t = TB,t = {0,...,t },θA,τ,t =
+θB,τ,t = δτ,t, the LMMSE ﬁlter (30), and the Bayes-optimal
+denoiser. If the covariance matrices V A→ B,t,t and V B→ A,t,t
+given via (28) and (45) are positive deﬁnite for all t, then
+the Bayes-optimal LM-OAMP is equivalent to Bayes-optimal
+OAMP .
+Proof: Repeating the proof of the former property in
+Theorem 3, we can prove the identities vA→ B,t′,t =vA→ B,t,t
+and vB→ A,t′+1,t+1 = vB→ A,t+1,t+1 for all t′ ≤ t. From the
+positive deﬁniteness of V A→ B,t,t and V B→ A,t,t, we can use
+the last property in Lemma 3 to ﬁnd that (18) and (36) reduce
+to xsuf
+B→ A,t = xB→ A,t and xsuf
+A→ B,t = xA→ B,t, respectively,
+and that ξA,t′,t = ξB,t′,t = 0 in (25) and (43) holds for all
+t′ ̸=t.
+The former observation implies that one can skip the com-
+putation of the sufﬁcient statistics in the ﬁrst step of the B ayes-
+optimal LM-OAMP . The latter observation indicates that the
+extrinsic mean messages in (23) and (41) are equivalent to
+those in Bayes-optimal OAMP [30]. Thus, the Bayes-optimal
+LM-OAMP is equivalent to Bayes-optimal OAMP .
+Theorem 1 justiﬁes the positive-deﬁniteness assumption in
+Proposition 3 in the large system limit. Intuitively, Propo si-
+tion 3 holds since xA→ B,t and xB→ A,t are sufﬁcient statistics
+for estimation of the signal vector given all preceding mes-
+sages in each module. The Bayes-optimal LM-OAMP may
+be regarded as a theoretical tool to prove that xA→ B,t and
+xB→ A,t are sufﬁcient statistics. These observations imply that
+conventional Bayes-optimal OAMP is the best option among
+all possible LM-MP algorithms in terms of the reconstructio n
+performance.
+VI. N UMERICAL RESULTS
+A. Simulation Conditions
+In all numerical results, we assume an i.i.d. Bernoulli-
+Gaussian (BG) signal vector x and artiﬁcial sensing matrices
+A. Each signal element xn is independently sampled from the
+Gaussian distribution N (0,ρ − 1) with probability ρ ∈ [0, 1].
+Otherwise,xn takes zero. See [44, Appendix F] for properties
+of the BG prior.
+In artiﬁcial sensing matrices with condition number κ> 1,
+A is assumed to have non-zero singular values σ0 ≥ · · · ≥
+σM− 1 > 0 satisfying the condition number κ = σ0/σ M− 1,
+σm/σ m− 1 =κ − 1/(M− 1), and σ 2
+0 =N (1 − κ − 2/(M− 1))/ (1 −
+κ − 2M/(M− 1)). As shown in [44, Eq. (65)], the η-transform η
+in (31) converges almost surely to
+η(x)
+a.s.
+→ 1 − 1
+C ln
+(κ 2 − 1 +κ 2Cx
+κ 2 − 1 +Cx
+)
+(87)
+in the large system limit, with C = 2 δ− 1 lnκ. The η-
+transform (87) is used in solving state evolution recursion s.
+To reduce the computational complexity, we assume the
+SVD structure A = ΣV T, in which V denotes a Hadamard
+matrix with random row permutation. Such orthogonal ma-
+trices V may be regarded as a practical alternative of Haar
+orthogonal matrices [58]–[60].
+B. Implementation
+We consider the LMMSE ﬁlter (30) in module A and the
+Bayes-optimal denoiser ft(st) = E[x1|st] with st = x1 +zt
+in module B, in which {zτ } are deﬁned in Theorem 1. In
+computing the covariance message vpost
+B,t′+1,t+1, we use the
+posterior covariance vpost
+B,t′+1,t+1 = ⟨C(xsuf
+A→ B,t′, xsuf
+A→ B,t)⟩
+with C(st′,s t) = E[{x1 − ft′(st′)}{x1 − ft(st)}|st′,s t],
+instead of (39). See [44, Appendix F] for the details.
+Let V ext
+B,t,t ∈ R|TB,t|×|T B,t| denote the covariance matrix
+with [V ext
+B,t,t]τ ′,τ = vext
+B,τ ′,τ given in (42). The matrix V ext
+B,t,t
+is guaranteed to be positive deﬁnite in the large system
+limit. For ﬁnite-sized systems, however, it might not be
+positive deﬁnite for some t. To circumvent this issue, it is
+recommended to replace vext
+B,τ ′,τ and vext
+B,τ,τ ′ with vext
+B,τ,τ if
+vext
+B,τ ′,τ ′vext
+B,τ,τ − (vext
+B,τ ′,τ )2 < ǫholds for small ǫ >0, which
+was set to ǫ = 10 − 6 in numerical simulations.
+As discussed in Section II, this replacement implies that th e
+AWGN observation sτ = x1 +zτ in Theorem 1 becomes a
+sufﬁcient statistic for estimation of x1 based on both sτ ′ and
+sτ for τ′< τ. In other words, it means that sτ ′ is not used
+since it is correlated with sτ strongly.
+C. Numerical Simulations
+Damped OAMP with the correct state evolution (67) and
+(73)—called LM-OAMP—is compared to damped OAMP
+with the heuristic damping (77) and (78) [31]—called OAMP .
+See Example 2 for the details.
+We ﬁrst verify the correctness of the state evolution result s
+via numerical simulations for large systems N = 2 13. Figure 2
+shows the MSEs versus the number of iterations for LM-
+OAMP with damping only in module B, i.e. θA = 1 and
+θB ∈ (0, 1). The state evolution results predict the MSEs of
+LM-OAMP accurately while OAMP is not in agreement with
+the state evolution results for small θB.
+We next compare LM-OAMP with OAMP for smaller
+systems than in Fig. 2. As shown in Fig. 3, LM-OAMP is
+slightly inferior to OAMP especially for small systems. Thi s is
+surprising since LM-OAMP uses the consistent state evoluti on
+in the large system limit.
+
+=== PDF PAGE 12 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 12
+10-5
+10-4
+10-3
+10-2
+10-1
+100
+0 5 10 15 20 25 30
+MSE
+Number of iterations
+LM-OAMP
+OAMP
+State evolution
+θ B=0.6
+θ B=0.9
+Fig. 2. MSE versus the number of iterations for M = 2 12, N = 2 13, BG
+signals with signal density ρ = 0 .1, condition number κ = 10 3, θA = 1 ,
+and SNR 1/σ2 = 40 dB.
+10-4
+10-3
+10-2
+10-1
+100
+0 5 10 15 20 25 30 35 40
+MSE
+Number of iterations
+LM-OAMP/OAMP (N=212, θ B=1)
+OAMP (N=211, θ B=0.95)
+LM-OAMP (N=211, θ B=0.95)
+OAMP (N=210, θ B=0.9)
+LM-OAMP (N=210, θ B=0.9)
+OAMP (N=29, θ B=0.8)
+LM-OAMP (N=29, θ B=0.85)
+State evolution (θ B=0.95)
+Fig. 3. MSE versus the number of iterations for compression r atio δ = 0.5,
+BG signals with signal density ρ = 0.1, condition number κ = 10 4, θA = 1,
+and SNR 1/σ2 = 40 dB.
+This result is intuitively understood as follows: LM-OAMP
+uses the covariance messages in all preceding iterations to
+compute the state evolution prediction in the current itera tion.
+As a result, all prediction errors in the preceding iteratio ns
+are accumulated for ﬁnite-sized systems, so that LM-OAMP
+should have larger prediction errors than conventional OAM P
+without LM processing. Figure 3 shows that this prediction
+errors due to ﬁnite size effects are more dominant than the
+inconsistency of the heuristic damping in the large system
+limit.
+VII. C ONCLUSIONS
+This paper has proposed LM-MP , constructed by adding
+computation of sufﬁcient statistics for estimation of the s ignal
+vector given all preceding messages to the beginning of
+each module in conventional MP . The proposed LM-MP is
+a modiﬁcation of conventional MP in two points.
+In one point, the Bayes-optimal LM-MP provides a proof
+strategy to guarantee the convergence of state evolution re cur-
+sions for conventional Bayes-optimal MP systematically. I n
+the proof strategy, one-dimensional state evolution recur sions
+for the Bayes-optimal MP are embedded into two-dimensional
+state evolution recursions for the Bayes-optimal LM-MP ,
+which are systematically guaranteed to converge. As a resul t,
+one can prove the convergence of the state evolution recursi ons
+for the Bayes-optimal MP . While it has been applied to Bayes-
+optimal OAMP [30], [31] in this paper, the proposed LM-MP
+strategy is general and applicable to the convergence analy sis
+of the other Bayes-optimal MP algorithms.
+The other point is that LM-MP may improve the conver-
+gence properties of conventional MP . If state evolution rec ur-
+sions for MP with Bayes-optimal denoiser are not embedded
+into those for the corresponding LM-MP , the LM-MP strategy
+indicates that the conventional MP has room for improvement :
+The constructed LM-MP improves the convergence properties
+of the conventional MP for large systems. In this sense,
+MAMP [43] can be regarded as a modiﬁcation of an MP
+algorithm without LM damping.
+Possible directions for future work are summarized to con-
+clude this paper. A ﬁrst issue is another criterion for optim ality
+such as the maximum a posteriori (MAP) scenario while this
+paper has focused on the minimum MSE (MMSE) scenario.
+It is an interesting direction whether the LM-MP strategy ca n
+be generalized to the other criteria for optimality.
+The other issue is an improvement of the state evolution
+prediction for LM-MP in ﬁnite-sized systems. State evoluti on
+recursions for LM-MP are more sensitive to ﬁnite size effect s
+than for conventional MP while they are consistent in the lar ge
+system limit. It is important to construct covariance estim ators
+that are consistent in the large system limit and accurate
+for ﬁnite-sized systems. Such covariance estimators shoul d
+increase practical value of LM-MP for ﬁnite-sized systems
+while the numerical simulations in this paper have shown the
+inferiority of damped LM-OAMP to OAMP with heuristic
+damping for ﬁnite-sized systems.
+APPENDIX A
+PROOFS
+A. Proof of Proposition 2
+We follow [30, Appendix B] to prove Proposition 2. We use
+the deﬁnition fopt(St) = E[X|St] to obtain
+E[(ψ t − X)2] =E[(ψ t − fopt +fopt − X)2]
+=E[(ψ t − fopt)2] + E[(fopt − X)2]. (88)
+Thus, the minimization of E[(ψ t − X)2] is equivalent to that
+of E[(ψ t − fopt)2].
+To evaluate E[(ψ t − fopt)2], we repeat the same argument
+for the extrinsic denoiser f ext
+t to obtain
+E[(ψ t − fopt)2] = E[(ψ t − f ext
+t +f ext
+t − fopt)2]
+=E[(ψ t − f ext
+t )2] + 2E[(ψ t − f ext
+t )(f ext
+t − fopt)]
++E[(f ext
+t − fopt)2], (89)
+which implies that ψ t =f ext
+t minimizes E[(ψ t − fopt)2] if the
+second term is equal to zero for all extrinsic denoisers ψ t.
+
+=== PDF PAGE 13 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 13
+To complete the proof of Proposition 2, it is sufﬁcient to
+prove E[ψ t(f ext
+t − fopt)] = 0 for any Lipschitz-continuous ex-
+trinsic denoiser ψ t with E[∂ψ t/∂Y τ ] = 0 . From the deﬁnition
+of f ext
+t in (12), we have
+f ext
+t − fopt =
+∑
+τ ∈T tξτ,t(fopt − X − Wτ )
+1 − ∑
+τ ∈T tξτ,t
+. (90)
+Since {Wτ : τ ∈ T t} are zero-mean Gaussian, we can use
+[44, Lemma 2] for Lipschitz-continuous ψ t to obtain
+E[Wτψ t] =
+∑
+t′∈T t
+E[WτWt′]E
+[∂ψ t
+∂Y t′
+]
+= 0, (91)
+where the last follows from the assumption E[∂ψ t/∂Y t′] = 0 .
+Thus, we have
+E[ψ t(f ext
+t − fopt)] =
+∑
+τ ∈T tξτ,t E[ψ t(fopt − X)]
+1 − ∑
+τ ∈T tξτ,t
+= 0, (92)
+where the last equality follows from E[ψ tX] = E[ψ tfopt]
+due to the deﬁnition fopt(St) = E[X|St] = E[X|Y t]. Thus,
+Proposition 2 holds.
+B. Proof of Lemma 1
+Since {St′,n,S t,n}N
+n=1 are independent samples, we use the
+strong law of large numbers to obtain
+lim
+N →∞
+1
+N
+N∑
+n=1
+ˆC(St′,n,S t,n)
+a.s.
+= E[ ˆC(St′,S t)]. (93)
+Thus, it is sufﬁcient to prove the unbiasedness of ˆC, i.e.
+E[ ˆC(St′,S t)] = E[{X − ft′(St′)}{X − ft(St)}]. (94)
+We ﬁrst evaluate the expectation E[St′ft(St)]. Substituting
+St′ = X + ˜Wt′ and using Stein’s lemma [61] for Lipschitz-
+continuous ft, we have
+E[St′ft(St)] = E[Xf t(St)] + E[ ˜Wt′ ˜Wt]E[f ′
+t(St)]. (95)
+Applying this result to (16), we arrive at
+E[ ˆC(St′,S t)] =E[X 2] + E[ft′(St′)ft(St)]
+− E[Xf t(St)] − E[Xf t′(St′)]
+=E[{X − ft′(St′)}{X − ft(St)}]. (96)
+Thus, Lemma 1 holds.
+C. Proof of Lemma 2
+We prove the former property. Since {Yτ }t
+τ =0 contains
+{Yτ }t′
+τ =0 for t′ < t, the optimality of the posterior mean
+estimator fopt(St) implies E[{X − fopt(St)}2] ≤ E[{X −
+fopt(St′)}2]. The monotonicity E[ ˜W 2
+t′] ≥ E[ ˜W 2
+t ] follows from
+the monotonicity of the MSE E[{X − fopt(St)}2] with respect
+to the variance E[ ˜W 2
+t ].
+We next prove the latter property. When E[ ˜Wt′ ˜Wt] =
+E[ ˜W 2
+t ] holds, we have the following representation for the
+sufﬁcient statistic:
+St′ =St +Zt′, S t =X + ˜Wt, (97)
+where Zt′ is a zero-mean Gaussian random variable with
+variance E[ ˜W 2
+t′] − E[ ˜W 2
+t ] ≥ 0 and independent of X and
+˜Wt. The representation (97) can be veriﬁed from
+E[( ˜Wt+Zt′)2] = E[ ˜W 2
+t′], E[( ˜Wt+Zt′) ˜Wt] = E[ ˜W 2
+t ]. (98)
+The representation (97) implies that St is a sufﬁcient
+statistic for estimation of X given both St′ and St. Thus,
+we have E[X|St′,S t] = E[X|St] = fopt(St). Applying this
+identity to the deﬁnition of C(St′,S t) in (14), we arrive at
+C(St′,S t) − C(St,S t)
+={fopt(St) − fopt(St′)} {E[X|St′,S t] − fopt(St)}
+=0. (99)
+Thus, the latter property holds.
+D. Proof of Lemma 3
+We ﬁrst prove the ﬁrst property. It is straightforward to
+conﬁrm
+det Σt = [Σt]t,t
+t− 1∏
+τ =0
+∆Στ,t, (100)
+with ∆Στ,t = [ Σt]τ,τ − [Σt]τ +1,τ +1. Since {Στ }t
+τ =1 have
+been assumed to be positive deﬁnite, we have the positivity
+{det Στ > 0}t
+τ =1. Using (100) yields the ﬁrst property
+∆Στ,t > 0 for all τ.
+Let us prove (100). Since [Σt]τ ′,τ = [ Σt]τ,τ ′ = [ Σt]τ,τ
+holds for all τ′<τ , we subtract the (τ + 1)th column in Σt
+from the τth column for all τ ∈ { 0,...,t − 1} to obtain the
+upper triangular expression for the determinant,
+det Σt =
+⏐
+⏐
+⏐
+⏐
+⏐
+⏐
+⏐
+⏐
+⏐
+⏐
+∆Σ0,t · · · ∆Σt− 1,t [Σt]t,t
+O . . . .
+.
+.
+.
+.
+.
+.
+.
+. . . . ∆Σt− 1,t
+.
+.
+.
+O · · · O [Σt]t,t
+⏐
+⏐
+⏐
+⏐
+⏐
+⏐
+⏐
+⏐
+⏐
+⏐
+, (101)
+which implies (100). Thus, the ﬁrst property holds.
+We next prove the second property. Using the assumption
+[Σt]τ ′,τ = [ Σt]τ,τ and the ﬁrst property [Σt]τ ′,τ ′ > [Σt]τ,τ
+for all τ′<τ , we have the following representation for {Yτ }:
+Yt =X +Wt, Y τ − 1 =Yτ +Vτ − 1 (102)
+for τ ∈ { 1,...,t }, where {Vτ − 1} are independent zero-mean
+Gaussian random variables with E[V 2
+τ − 1] = ∆Σ τ − 1,t > 0.
+This representation implies that Yt is a sufﬁcient statistic for
+estimation ofX based on {Yτ }t
+τ =0. Thus, we arrive at E[{X −
+fopt(St)}2] = E[{X − fopt(Yt)}2], which implies E[ ˜W 2
+t ] =
+E[W 2
+t ].
+Finally, the last property follows immediately from the
+deﬁnitions of St and ξτ,t in (5) and (13), and the identity
+Σ− 1
+t 1 = ([ Σt]t,t)− 1et. The identity St = Yt provides an
+alternative proof of the second property: E[ ˜W 2
+t ] = E[(St −
+X)2] = E[(Yt − X)2] = E[W 2
+t ].
+The identity Σ− 1
+t 1 = ([ Σt]t,t)− 1et can be conﬁrmed as
+follows: From the assumption in Lemma 3, Σt has the last
+column [Σt]t,t1. Thus, we have Σtet = [ Σt]t,t1, which is
+equivalent to the identity Σ− 1
+t 1 = ([Σt]t,t)− 1et.
+
+=== PDF PAGE 14 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 14
+APPENDIX B
+PROOF OF THEOREM 1
+Asymptotic Gaussianity has been proved for a general error
+model proposed in [44]. Thus, we ﬁrst prove that the error
+model for LM-OAMP is included into the general error model.
+Lemma 5: Suppose that Assumption 4 holds. Let ht =
+xA→ B,t − x denote the estimation error before denoising in
+iteration t. Deﬁne an error vector qt+1 associated with the
+estimation error after denoising by
+qt+1 =
+t∑
+τ =0
+θB,τ,t
+1 − ξB,τ
+(xpost
+B,τ +1 − x). (103)
+Then, the error model for LM-OAMP is included into the
+general error model in [44] and given by
+bt = V T˜qt, (104)
+mt =
+t∑
+τ =0
+θA,τ,t
+1 − ξA,τ
+V T(xpost
+A,τ − x), (105)
+˜mt =
+t∑
+τ =0
+θA,τ,t{V T(xpost
+A,τ − x) − ∑
+t′∈T A,τξA,t′,τ bt′}
+1 − ξA,τ
+,
+(106)
+V T(xpost
+A,t − x) =
+(
+I N − ˜W
+T
+t Σ
+) BtV − 1
+B→ A,t,t1
+1TV − 1
+B→ A,t,t1
++ ˜W
+T
+t U Tw, (107)
+ht = V ˜mt, (108)
+˜qt+1 =
+t∑
+τ =0
+θB,τ,t(xpost
+B,τ +1 − x − ∑
+t′∈T B,τξB,t′,τ ht′)
+1 − ξB,τ
+,
+(109)
+with ˜q0 = − x, where Bt ∈ RN ×|T A,t| consists of {bτ :τ ∈
+TA,t}. In particular, ˜qt = xB→ A,t − x holds.
+Proof: We ﬁrst prove
+˜qt+1 = qt+1 −
+t∑
+t′=0
+(
+1
+N
+N∑
+n=1
+∂q n,t+1
+∂h n,t′
+)
+ht′, (110)
+which is equivalent to the deﬁnition in [44, Eq. (9)]. From th e
+deﬁnition of qt+1 in (103), we have
+1
+N
+N∑
+n=1
+∂q n,t+1
+∂h n,t′
+= 1
+N
+N∑
+n=1
+t∑
+τ =0
+θB,τ,t
+1 − ξB,τ
+∂x post
+B,n,τ +1
+∂h n,t′
+. (111)
+We deﬁne the error matrix H t = X A→ B,t − 1T ⊗ x for
+the preceding messages before denoising, so that H t consists
+of the columns {ht′ : t′ ∈ T B,t}. Using the deﬁnition of
+xpost
+B,t+1 in (38) with (36), we ﬁnd that xpost
+B,t+1 is a function of
+{ht′ :t′ ∈ T B,t} since the sufﬁcient statistic (36) is a function
+of X A→ B,t = 1T ⊗ x + H t. Thus, we obtain
+1
+N
+N∑
+n=1
+∂x post
+B,n,τ +1
+∂h n,t′
+= 1
+N
+N∑
+n=1
+f ′
+τ (xsuf
+A→ B,n,τ )
+· ∂
+∂h n,t′
+([1T ⊗ x + H τ ],n)TV − 1
+B→ A,τ,τ 1
+1TV − 1
+B→ A,τ,τ 1
+=⟨f ′
+τ (xsuf
+A→ B,τ )⟩
+eT
+ITB,τ (t′)V − 1
+B→ A,τ,τ 1
+1TV − 1
+B→ A,τ,τ 1 =ξB,t′,τ (112)
+for t′ ∈ T B,τ , with ξB,t′,τ deﬁned in (43), where [· · ·],n
+denotes the nth row of · · ·. Substituting these results and
+the deﬁnition of qt+1 in (103) into (110), we arrive at the
+equivalence between (109) and (110).
+We next prove ˜qt+1 = xB→ A,t+1 − x. Using the deﬁnition
+of xext
+B,t in (41) and ht = xA→ B,t − x yields
+xext
+B,t+1 − x =
+xpost
+B,t+1 − x − ∑
+t′∈T B,tξB,t′,tht′
+1 − ξB,t
+, (113)
+where we have used ∑
+t′∈T B,tξB,t′,t = ξB,t. Applying this
+expression to (109), we have
+˜qt+1 =
+t∑
+τ =0
+θB,τ,t(xext
+B,τ +1 − x). (114)
+Using the deﬁnition of xB→ A,t+1 in (44) and the normaliza-
+tion (46), we arrive at ˜qt+1 = xB→ A,t+1 − x.
+We shall derive (107). Applying ˜qt = xB→ A,t − x to the
+sufﬁcient statistic (18) yields
+xsuf
+B→ A,t = x +
+˜QtV − 1
+B→ A,t,t1
+1TV − 1
+B→ A,t,t1, (115)
+with ˜Qt = X B→ A,t − (1T ⊗ x). Substituting this result and
+the measurement model (1) into the deﬁnition of xpost
+A,t in (20),
+we have
+xpost
+A,t − x =
+(
+I N − W T
+t A
+) ˜QtV − 1
+B→ A,t,t1
+1TV − 1
+B→ A,t,t1 + W T
+t w. (116)
+For the SVD A = U ΣV T, applying the SVD W t =
+U ˜W tV T in Assumption 4 to (116) and using the deﬁnition
+of bt in (104), we arrive at (107) with Bt = V T ˜Qt.
+Let us prove
+˜mt = mt −
+t∑
+t′=0
+(
+1
+N
+N∑
+n=1
+∂m n,t
+∂b n,t′
+)
+bt′, (117)
+which is equivalent to the deﬁnition in [44, Eq. (11)]. Using the
+expression for mt in (105) with (107), we repeat the derivation
+of (112) to have
+1
+N
+N∑
+n=1
+∂m n,t
+∂b n,t′
+=
+t∑
+τ =0
+θA,τ,tξA,t′,τ
+1 − ξA,τ
+(118)
+fort′ ∈ T A,t, with ξA,t′,t deﬁned in (25), where we have used
+the identity Tr(I N − ˜W
+T
+t Σ) = Tr(I N − W T
+t A). Substituting
+this expression and the deﬁnition of mt in (105) into (117),
+we arrive at the equivalence between (106) and (117).
+We have so far proved that the error model (104)–(109) is
+included into the general error model in [44]. To complete th e
+proof of Lemma 5, we prove ht = V ˜mt. From the deﬁnition
+of ˜mt in (106), we have
+V ˜mt =
+t∑
+τ =0
+θA,τ,t
+xpost
+A,τ − x − ∑
+t′∈T A,τξA,t′,τ ˜qt′
+1 − ξA,τ
+, (119)
+with ˜qt = V bt. Using the deﬁnition of xext
+A,t in (23) yields
+xext
+A,t − x =
+xpost
+A,t − x − ∑
+t′∈T A,tξA,t′,t˜qt′
+1 − ξA,t
+, (120)
+
+=== PDF PAGE 15 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 15
+with ˜qt = xB→ A,t − x, where we have used the identity∑
+t′∈T A,tξA,t′,t =ξA,t. Thus, we have
+V ˜mt =
+t∑
+τ =0
+θA,τ,t(xext
+A,τ − x) = xA→ B,t − x = ht, (121)
+where the second equality follows from the deﬁnition of
+xA→ B,t in (27) and the normalization (29). Thus, Lemma 5
+holds.
+Lemma 5 and Assumptions 1–5 allow us to use [44, Theo-
+rem 6] to prove Theorem 1. The ﬁrst property in Theorem 1
+follows from [44, Theorem 6 (B4) and Eq. (107)]. Similarly,
+the third property follows from [44, Theorem 6 (A4) and
+Eq. (98)].
+We next prove the second property. Using (107) and [44,
+Eq. (94)] yields
+1
+N (xpost
+A,τ ′ − x)T(xpost
+A,τ − x)
+a.s.
+= 1
+N
+1TV − 1
+B→ A,τ ′,τ ′
+1TV − 1
+B→ A,τ ′,τ ′1 E
+[
+BT
+τ ′Dτ ′,τ Bτ
+] V − 1
+B→ A,τ,τ 1
+1TV − 1
+B→ A,τ,τ 1
++N − 1E
+[
+wTU ˜W τ ′ ˜W
+T
+τ U Tw
+]
++o(1) (122)
+in the large system limit, with
+Dτ ′,τ =
+(
+IN − ˜W
+T
+τ ′Σ
+)T (
+I N − ˜W
+T
+τ Σ
+)
+, (123)
+where {Bτ } follow zero-mean Gaussian random matrices with
+covariance E[bτ bT
+τ ′] = ¯ vB→ A,τ ′,τ I N while U Tw follows
+N (0,σ 2I M ). Evaluating the expectation in (122) with the
+identities Tr(Dτ ′,τ ) = Tr {(IN − W T
+τ ′A)T(I N − W T
+τ A)}
+and Tr( ˜W τ ′ ˜W
+T
+τ ) = Tr( W τ ′W T
+τ ), we ﬁnd that the right-
+hand side (RHS) is equal to (49) in the large system limit.
+Thus, the second property in Theorem 1 holds.
+Finally, we prove the last property. Repeating the derivati on
+of (115) for the sufﬁcient statistic (36) yields
+xsuf
+A→ B,t = x + zt, zt =
+H tV − 1
+A→ B,t,t1
+1TV − 1
+A→ B,t,t1. (124)
+We use the deﬁnition of xB,τ +1 in (38) and [44, Eq. (103)]
+to obtain
+1
+N (xpost
+B,τ ′+1 − x)T(xpost
+B,τ +1 − x)
+a.s.
+= 1
+N
+N∑
+n=1
+E [{fτ ′(xn +zn,τ ′) − xn}{fτ (xn +zn,τ ) − xn}]
++o(1), (125)
+where {H τ } in (124) follow zero-mean Gaussian random ma-
+trices with covariance E[hτ hT
+τ ′] = ¯vA→ B,τ ′,τ I N . Evaluating
+the correlation E[zn,τ ′zn,τ ] with (8), we arrive at (51).
+The almost sure convergence of ξB,τ in (43) to ¯ξB,τ follows
+from Assumption 5 and [44, Eq. (104)]. Thus, Theorem 1
+holds.
+APPENDIX C
+PROOF OF THEOREM 2
+We ﬁrst evaluate the covariance ¯vA→ B,t′,t. Lemma 5 implies
+¯vA→ B,t′,t = lim
+M=δN →∞
+1
+N ˜mT
+t′ ˜mt, (126)
+where ˜mt is given by (106). By deﬁnition, we have
+¯vA→ B,t′,t
+a.s.
+=
+t′
+∑
+τ ′=0
+t∑
+τ =0
+θA,τ ′,t′θA,τ,t ¯vext
+A,τ ′,τ +o(1), (127)
+which is equal to (57), with
+(1 − ξA,t′)(1 − ξA,t)¯vext
+A,t′,t
+=¯vpost
+A,t′,t −
+∑
+τ ′∈T A,t′
+ξA,τ ′,t′
+bT
+τ ′V T(xpost
+A,t − x)
+N
+−
+∑
+τ ∈T A,t
+ξA,τ,t
+(xpost
+A,t′ − x)TV bτ
+N
++
+∑
+τ ′∈T A,t′
+∑
+τ ∈T A,t
+ξA,τ ′,t′ξA,τ,t ¯vB→ A,τ ′,τ, (128)
+where N − 1bT
+τ ′bτ =N − 1˜qT
+τ ′˜qτ
+a.s.
+→ ¯vB→ A,τ ′,τ has been used.
+We apply (26), (107), and [44, Eq. (31)] to obtain
+1
+N bT
+τ ′V T(xpost
+A,t − x)
+a.s.
+=
+∑
+τ ∈T A,t
+ξA,τ,t ¯vB→ A,τ ′,τ +o(1), (129)
+where we have used (25). Applying this result to (128) yields
+(1 − ξA,t′)(1 − ξA,t)¯vext
+A,t′,t
+a.s.
+= ¯vpost
+A,t′,t
+−
+∑
+τ ′∈T A,t′
+∑
+τ ∈T A,t
+ξA,τ ′,t′ξA,τ,t ¯vB→ A,τ ′,τ +o(1)
+= ¯vpost
+A,t′,t − ¯ξA,t′ ¯ξA,t¯vsuf
+B→ A,t′,t +o(1), (130)
+where the second equality follows from (25), (50), and (55).
+Thus, we have arrived at (56) with ¯vsuf
+B→ A,t′,t given by (50),
+instead of (54).
+We next evaluate ¯vB→ A,t′+1,t+1 for t′,t ≥ 0. Lemma 5
+implies
+¯vB→ A,t′+1,t+1 = 1
+N ˜qT
+t′+1˜qt+1, (131)
+where ˜qt+1 is given by (109). We use the deﬁnition of ξB,t′,t
+in (43) and Theorem 1 to obtain
+¯vB→ A,t′+1,t+1
+a.s.
+=
+t′
+∑
+τ ′=0
+t∑
+τ =0
+θB,τ ′,t′θB,τ,t ¯vext
+B,τ ′+1,τ +1 +o(1),
+(132)
+which is equal to (60), with
+(1 − ¯ξB,t′)(1 − ¯ξB,t)¯vext
+B,t′+1,t+1
+=¯vpost
+B,t′+1,t+1 − 1
+N
+∑
+τ ∈T B,t
+ξB,τ,t(xpost
+B,t′+1 − x)Thτ
+− 1
+N
+∑
+τ ′∈T B,t′
+ξB,τ ′,t′hT
+τ ′(xpost
+B,t+1 − x)
++ 1
+N
+∑
+τ ′∈T B,t′
+∑
+τ ∈T B,t
+ξB,τ ′,t′ξB,τ,thT
+τ ′hτ. (133)
+
+=== PDF PAGE 16 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 16
+Utilizing [44, Eq. (30)] for xpost
+B,t+1 given in (38) with (36),
+and applying (43) and Theorem 1, we have
+1
+N hT
+τ ′(xpost
+B,t+1 − x)
+a.s.
+=
+∑
+τ ∈T B,t
+ξB,t′,t¯vA→ B,τ ′,τ +o(1). (134)
+Substituting this result into (133) and repeating the deriv ation
+of the second equality in (130), we arrive at (59) with
+¯vsuf
+A→ B,t′,t given by (52), instead of (58).
+Finally, we evaluate ¯vB→ A,0,t+1 =N − 1˜qT
+0 ˜qt+1. By deﬁni-
+tion, ¯vB→ A,0,0 = 1 is trivial. Using ˜q0 = − x, the deﬁnition
+of ˜qt+1 in (109), and Theorem 1, we arrive at (61) for t ≥ 0.
+To complete the proof of Theorem 2, we derive (54)
+and (58). Since we have deﬁned the covariance messages
+that are consistent to the state evolution recursions in the
+large system limit, we have V A→ B,τ,τ
+a.s.
+→ ¯V A→ B,τ,τ and
+V B→ A,τ,τ
+a.s.
+→ ¯V B→ A,τ,τ . Thus, (50) and (52) reduce to
+(54) and (58), respectively. This justiﬁes the replacement of
+vsuf
+B→ A,t,t in W t with ¯vsuf
+B→ A,t,t.
+APPENDIX D
+POOF OF THEOREM 3
+We ﬁrst prove the identity ¯vA→ B,t′,t = ¯vA→ B,t for allt′ ≤ t.
+When all preceding information TA,t = TB,t = {0,...,t } is
+used for all t, ¯vsuf
+B→ A,t′,t in (54) for t′ ≤ t reduces to
+¯vsuf
+B→ A,t′,t = 1T ¯V
+− 1
+B→ A,t′,t′(I t′, O) ¯V B→ A,t,t ¯V
+− 1
+B→ A,t,t1
+1T ¯V
+− 1
+B→ A,t′,t′11T ¯V
+− 1
+B→ A,t,t1
+= 1
+1T ¯V
+− 1
+B→ A,t,t1
+, (135)
+as shown in (9). Using this result, the deﬁnition of γt′,t in (22),
+the LMMSE ﬁlter (30) with vsuf
+B→ A,t,t replaced by ¯vsuf
+B→ A,t,t,
+we ﬁnd that ¯vpost
+A,t′,t in (49) for t′ ≤ t reduces to
+¯vpost
+A,t′,t
+a.s.
+= o(1) + σ 2
+N Tr
+(
+Ξt′AATΞt
+)
++
+¯vsuf
+B→ A,t,t
+N Tr
+{(
+I N − ATΞt′A
+) (
+IN − ATΞtA
+)}
+=
+¯vsuf
+B→ A,t,t
+N Tr
+(
+I N − AT ΞtA
+)
++o(1)
+= ¯ξA,t¯vsuf
+B→ A,t,t +o(1), (136)
+with
+Ξt = ¯vsuf
+B→ A,t,t
+(
+σ 2I M + ¯vsuf
+B→ A,t,tAAT
+)− 1
+, (137)
+where the last equality follows from (55). This expression i s
+independent of t′. Thus, we have ¯vpost
+A,t′,t = ¯vpost
+A,t,t. Substituting
+¯ξA,t = ¯vpost
+A,t,t/ ¯vsuf
+B→ A,t,t into (56), we ﬁnd that, for all t′ ≤
+t, ¯vA→ B,t′,t in (57) is equal to ¯vA→ B,t given in (84) with
+¯vB→ A,t,t replaced by ¯vsuf
+B→ A,t,t.
+We next prove the identity ¯vB→ A,t′+1,t+1 = ¯vB→ A,t+1 for
+all t′ ≤ t. Repeating the same derivation for (58) as in (135),
+we ﬁnd
+¯vsuf
+A→ B,t′,t = 1
+1T ¯V
+− 1
+A→ B,t,t1
+= ¯vsuf
+A→ B,t,t (138)
+for all t′ ≤ t. Using the second property in Lemma 2 yields
+¯vpost
+B,t′,t = ¯vpost
+B,t,t for all t′ ≤ t. Furthermore, we have the gen-
+eral relationship ¯ξB,t = ¯vpost
+B,t+1,t+1/ ¯vsuf
+A→ B,t,t [35, Lemma 2]
+between the Bayes-optimal denoiser and the MMSE. Applying
+these results to (59), we ﬁnd that, for all t′ ≤ t, ¯vB→ A,t′+1,t+1
+in (60) is equal to ¯vB→ A,t+1 given in (85) with ¯vA→ B,t,t
+replaced by ¯vsuf
+A→ B,t,t.
+To complete the proof of the former property in Theorem 3,
+we need to prove the identities ¯vsuf
+A→ B,t,t = ¯vA→ B,t,t and
+¯vsuf
+B→ A,t,t = ¯vB→ A,t,t. Without loss of generality, we focus
+on the former ¯vsuf
+A→ B,t,t = ¯vA→ B,t,t.
+We have already proved ¯vA→ B,t′,t = ¯vA→ B,t,t for all t′ ≤ t.
+Furthermore, Theorem 1 implies that { ¯V A→ B,τ,τ }t
+τ =1 are
+positive deﬁnite. Thus, we can use the second property in
+Lemma 3 to arrive at ¯vsuf
+A→ B,t,t = ¯vA→ B,t,t, so that the former
+property in Theorem 3 holds.
+Let us prove the latter property in Theorem 3. Since
+¯vsuf
+A→ B,t,t = ¯vA→ B,t,t and ¯vsuf
+B→ A,t,t = ¯vB→ A,t,t hold, the
+ﬁrst property in Lemma 2 implies that {¯vA→ B,t,t ≥ 0} and
+{¯vB→ A,t,t ≥ 0} are monotonically non-increasing sequences
+with respect to t. Also, it is possible to prove that {¯vA→ B,t,t ≥
+0} and {¯vB→ A,t,t ≥ 0} are strictly deceasing sequences, by
+using the ﬁrst property in Lemma 3. Thus, there are the limits
+limt→∞ ¯vA→ B,t,t = ¯vA→ B and limt→∞ ¯vB→ A,t,t = ¯vB→ A,
+which imply the convergence of ¯vpost
+B,t+1,t+1 in (51) to some
+constant ¯vpost
+B . From (53) and (86), ¯ξB,t and ¯ξA,t converge
+to some constants ¯ξB and ¯ξA as t → ∞ . These observations
+imply that ¯vA→ B,t′,t = ¯vA→ B,t and ¯vB→ A,t′,t = ¯vB→ A,t given
+in (84) and (85) converge to a FP as t tends to inﬁnity for all
+t′ ≤ t.
+ACKNOWLEDGMENT
+The author thanks the anonymous reviewers for their sug-
+gestions that have improved the quality of the manuscript
+greatly.
+REFERENCES
+[1] D. L. Donoho, “Compressed sensing,” IEEE Trans. Inf. Theory , vol. 52,
+no. 4, pp. 1289–1306, Apr. 2006.
+[2] E. J. Cand´ es, J. Romberg, and T. Tao, “Robust uncertaint y principles:
+Exact signal reconstruction from highly incomplete freque ncy informa-
+tion,” IEEE Trans. Inf. Theory , vol. 52, no. 2, pp. 489–509, Feb. 2006.
+[3] M. Lustig, D. Donoho, and J. M. Pauly, “Sparse MRI: The app lication of
+compressed sensing for rapid MR imaging,” Magn. Reson. Med., vol. 58,
+no. 6, pp. 1182–1195, Dec. 2007.
+[4] M. A. Herman and T. Strohmer, “High-resolution radar via compressed
+sensing,” IEEE Trans. Signal Process. , vol. 57, no. 6, pp. 2275–2284,
+Jun. 2009.
+[5] J. Y ang, J. Wright, T. S. Huang, and Y . Ma, “Image super-re solution via
+sparse representation,” IEEE Trans. Image Process. , vol. 19, no. 11, pp.
+2861–2873, Nov. 2010.
+[6] W. U. Bajwa, J. Haupt, A. M. Sayeed, and R. Nowak, “Compres sed
+channel sensing: A new approach to estimating sparse multip ath chan-
+nels,” Proc. IEEE , vol. 98, no. 6, pp. 1058–1076, Jun. 2010.
+[7] F. Zeng, C. Li, and Z. Tian, “Distributed compressive spe ctrum sensing
+in cooperative multihop cognitive networks,” IEEE J. Sel. Topics Signal
+Process., vol. 5, no. 1, pp. 37–48, Feb. 2011.
+[8] A. Joseph and A. R. Barron, “Least squares superposition codes of
+moderate dictionary size are reliable at rates up to capacit y,” IEEE Trans.
+Inf. Theory , vol. 58, no. 5, pp. 2541–2557, May 2012.
+[9] B. Shim and B. Song, “Multiuser detection via compressiv e sensing,”
+IEEE Commun. Lett. , vol. 16, no. 7, pp. 972–974, Jul. 2012.
+
+=== PDF PAGE 17 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 17
+[10] D. L. Donoho, A. Maleki, and A. Montanari, “Message-pas sing algo-
+rithms for compressed sensing,” Proc. Nat. Acad. Sci. , vol. 106, no. 45,
+pp. 18 914–18 919, Nov. 2009.
+[11] S. Rangan, “Generalized approximate message passing f or estimation
+with random linear mixing,” in Proc. 2011 IEEE Int. Symp. Inf. Theory ,
+Saint Petersburg, Russia, Aug. 2011, pp. 2168–2172.
+[12] Y . Kabashima, “A CDMA multiuser detection algorithm on the basis of
+belief propagation,” J. Phys. A: Math. Gen. , vol. 36, no. 43, pp. 11 111–
+11 121, Oct. 2003.
+[13] T. Tanaka, “A statistical-mechanics approach to large -system analysis of
+CDMA multiuser detectors,” IEEE Trans. Inf. Theory , vol. 48, no. 11,
+pp. 2888–2910, Nov. 2002.
+[14] D. Guo and S. V erd´ u, “Randomly spread CDMA: Asymptotic s via
+statistical physics,” IEEE Trans. Inf. Theory , vol. 51, no. 6, pp. 1983–
+2010, Jun. 2005.
+[15] G. Reeves and H. D. Pﬁster, “The replica-symmetric pred iction for
+random linear estimation with Gaussian matrices is exact,” IEEE Trans.
+Inf. Theory , vol. 65, no. 4, pp. 2252–2283, Apr. 2019.
+[16] J. Barbier and N. Macris, “The adaptive interpolation m ethod: a simple
+scheme to prove replica formulas in Bayesian inference,” Probab. Theory
+Relat. Fields, vol. 174, no. 3–4, pp. 1133–1185, Aug. 2019.
+[17] M. Bayati and A. Montanari, “The dynamics of message pas sing on
+dense graphs, with applications to compressed sensing,” IEEE Trans.
+Inf. Theory , vol. 57, no. 2, pp. 764–785, Feb. 2011.
+[18] M. Bayati, M. Lelarge, and A. Montanari, “Universality in polytope
+phase transitions and message passing algorithms,” Ann. Appl. Probab. ,
+vol. 25, no. 2, pp. 753–822, Apr. 2015.
+[19] S. Kudekar, T. Richardson, and R. Urbanke, “Threshold s aturation via
+spatial coupling: Why convolutional LDPC ensembles perfor m so well
+over the BEC,” IEEE Trans. Inf. Theory , vol. 57, no. 2, pp. 803–834,
+Feb. 2011.
+[20] F. Krzakala, M. M´ ezard, F. Sausset, Y . F. Sun, and L. Zde borov´ a,
+“Statistical-physics-based reconstruction in compresse d sensing,” Phys.
+Rev. X, vol. 2, pp. 021 005–1–18, May 2012.
+[21] D. L. Donoho, A. Javanmard, and A. Montanari, “Informat ion-
+theoretically optimal compressed sensing via spatial coup ling and ap-
+proximate message passing,” IEEE Trans. Inf. Theory , vol. 59, no. 11,
+pp. 7434–7464, Nov. 2013.
+[22] A. Javanmard and A. Montanari, “State evolution for gen eral approxi-
+mate message passing algorithms, with applications to spat ial coupling,”
+Inf. Inference: A Journal of the IMA , vol. 2, no. 2, pp. 115–144, Dec.
+2013.
+[23] K. Takeuchi, T. Tanaka, and T. Kawabata, “Performance i mprovement
+of iterative multiuser detection for large sparsely-sprea d CDMA systems
+by spatial coupling,” IEEE Trans. Inf. Theory , vol. 61, no. 4, pp. 1768–
+1794, Apr. 2015.
+[24] F. Caltagirone, L. Zdeborov´ a, and F. Krzakala, “On con vergence of
+approximate message passing,” in Proc. 2014 IEEE Int. Symp. Inf.
+Theory, Honolulu, HI, USA, Jul. 2014, pp. 1812–1816.
+[25] S. Rangan, P . Schniter, A. Fletcher, and S. Sarkar, “On t he convergence
+of approximate message passing with arbitrary matrices,” IEEE Trans.
+Inf. Theory , vol. 65, no. 9, pp. 5339–5351, Sep. 2019.
+[26] Y . Kabashima and M. V ehkaper¨ a, “Signal recovery using expectation
+consistent approximation for linear observations,” in Proc. 2014 IEEE
+Int. Symp. Inf. Theory , Honolulu, HI, USA, Jul. 2014, pp. 226–230.
+[27] J. Vila, P . Schniter, S. Rangan, F. Krzakala, and L. Zdeb orov´ a, “Adaptive
+damping and mean removal for the generalized approximate me ssage
+passing algorithm,” in Proc. 2015 IEEE Int. Conf. Acoust. Speech Signal
+Process., South Brisbane, Australia, Apr. 2015, pp. 2021–2025.
+[28] A. Manoel, F. Krzakala, E. W. Tramel, and L. Zdeborov´ a, “Swept
+approximate message passing for sparse estimation,” in Proc. 32nd Int.
+Conf. Mach. Learn. , Lille, France, Jul. 2015, pp. 1123–1132.
+[29] S. Rangan, A. K. Fletcher, P . Schniter, and U. S. Kamilov , “Inference
+for generalized linear models via alternating directions a nd Bethe free
+energy minimization,” IEEE Trans. Inf. Theory , vol. 63, no. 1, pp. 676–
+697, Jan. 2017.
+[30] J. Ma and L. Ping, “Orthogonal AMP,” IEEE Access , vol. 5, pp. 2020–
+2033, Jan. 2017.
+[31] S. Rangan, P . Schniter, and A. K. Fletcher, “V ector appr oximate message
+passing,” IEEE Trans. Inf. Theory , vol. 65, no. 10, pp. 6664–6684, Oct.
+2019.
+[32] M. Opper and O. Winther, “Expectation consistent appro ximate infer-
+ence,” J. Mach. Learn. Res. , vol. 6, pp. 2177–2204, Dec. 2005.
+[33] T. P . Minka, “Expectation propagation for approximate Bayesian infer-
+ence,” in Proc. 17th Conf. Uncertainty Artif. Intell. , Seattle, W A, USA,
+Aug. 2001, pp. 362–369.
+[34] J. C´ espedes, P . M. Olmos, M. S´ anchez-Fern´ andez, and F. Perez-Cruz,
+“Expectation propagation detection for high-order high-d imensional
+MIMO systems,” IEEE Trans. Commun. , vol. 62, no. 8, pp. 2840–2849,
+Aug. 2014.
+[35] K. Takeuchi, “Rigorous dynamics of expectation-propa gation-based sig-
+nal recovery from unitarily invariant measurements,” IEEE Trans. Inf.
+Theory, vol. 66, no. 1, pp. 368–386, Jan. 2020.
+[36] K. Takeda, S. Uda, and Y . Kabashima, “Analysis of CDMA sy stems
+that are characterized by eigenvalue spectrum,” Europhys. Lett., vol. 76,
+no. 6, pp. 1193–1199, 2006.
+[37] A. M. Tulino, G. Caire, S. V erd´ u, and S. Shamai (Shitz), “Support
+recovery with sparsely sampled free random matrices,” IEEE Trans. Inf.
+Theory, vol. 59, no. 7, pp. 4243–4271, Jul. 2013.
+[38] J. Barbier, N. Macris, A. Maillard, and F. Krzakala, “Th e mutual
+information in random linear estimation beyond i.i.d. matr ices,” in Proc.
+2018 IEEE Int. Symp. Inf. Theory , V ail, CO, USA, Jun. 2018, pp. 1390–
+1394.
+[39] L. Liu, C. Y uen, Y . L. Guan, Y . Li, and Y . Su, “Convergence analysis
+and assurance for Gaussian message passing iterative detec tor in massive
+MU-MIMO systems,” IEEE Trans. Wireless Commun. , vol. 15, no. 9,
+pp. 6487–6501, Sep. 2016.
+[40] C. Gerbelot, A. Abbara, and F. Krzakala, “Asymptotic er rors for
+teacher-student convex generalized linear models (or : How to prove
+Kabashima’s replica formula),” [Online] Available:
+https://arxiv.org/abs/2006.06581.
+[41] M. Mondelli and R. V enkataramanan, “PCA initializatio n for approxi-
+mate message passing in rotationally invariant models,” [O nline] Avail-
+able: https://arxiv.org/abs/2106.02356.
+[42] K. Mimura and J. Takeuchi, “Dynamics of damped approxim ate message
+passing algorithms,” in Proc. 2019 IEEE Inf. Theory W orkshop , Visby,
+Sweden, Aug. 2019.
+[43] L. Liu, S. Huang, and B. M. Kurkoski, “Memory approximat e message
+passing,” in Proc. 2021 IEEE Int. Symp. Inf. Theory , Jul. 2021, pp.
+1379–1384.
+[44] K. Takeuchi, “Bayes-optimal convolutional AMP,” IEEE Trans. Inf.
+Theory, vol. 67, no. 7, pp. 4405–4428, Jul. 2021.
+[45] M. Opper, B. C ¸ akmak, and O. Winther, “A theory of solvin g TAP
+equations for Ising models with general invariant random ma trices,” J.
+Phys. A: Math. Theor . , vol. 49, no. 11, p. 114002, Feb. 2016.
+[46] Z. Fan, “Approximate message passing algorithms for ro tationally in-
+variant matrices,” Ann. Statist. , vol. 50, no. 1, pp. 197–224, Feb. 2022.
+[47] R. V enkataramanan, K. K¨ ogler, and M. Mondelli, “Estim ation in ro-
+tationally invariant generalized linear models via approx imate message
+passing,” Dec. 2021, [Online] Available:
+https://arxiv.org/abs/2112.04330.
+[48] K. Takeuchi, “Convolutional approximate message-pas sing,” IEEE Sig-
+nal Process. Lett. , vol. 27, pp. 416–420, 2020.
+[49] N. Skuratovs and M. Davies, “Compressed sensing with up scaled vector
+approximate message passing,” [Online] Available:
+https://arxiv.org/abs/2011.01369.
+[50] K. Takeuchi, “On the convergence of convolutional appr oximate
+message-passing for Gaussian signaling,” IEICE Trans. Fundamentals. ,
+vol. E105-A, no. 2, pp. 100–108, Feb. 2022.
+[51] ——, “On the convergence of orthogonal/vector AMP: Long -
+memory message-passing strategy,” accepted for presentat ion at 2022
+IEEE Int. Symp. Inf. Theory , Jun.–Jul. 2022, [Online] Available:
+https://arxiv.org/abs/2201.11335.
+[52] A. M. Tulino and S. V erd´ u, Random Matrix Theory and Wireless
+Communications. Hanover, MA USA: Now Publishers Inc., 2004.
+[53] R. Berthier, A. Montanari, and P .-M. Nguyen, “State evo lution for ap-
+proximate message passing with non-separable functions,” Inf. Inference:
+A Journal of the IMA , 2019, doi:10.1093/imaiai/iay021.
+[54] Y . Ma, C. Rush, and D. Baron, “Analysis of approximate me ssage
+passing with non-separable denoisers and Markov random ﬁel d priors,”
+IEEE Trans. Inf. Theory , vol. 65, no. 11, pp. 7367–7389, Nov. 2019.
+[55] A. K. Fletcher, P . Pandit, S. Rangan, S. Sarkar, and P . Sc hniter, “Plug-
+in estimation in high-dimensional linear inverse problems a rigorous
+analysis,” J. Stat. Mech.: Theory Exp. , vol. 2019, pp. 124 021–1–15,
+Dec. 2019.
+[56] F. Hiai and D. Petz, The Semicircle Law, Free Random V ariables and
+Entropy. Providence, RI, USA: Amer. Math. Soc., 2000.
+[57] E. J. Cand´ es and T. Tao, “Near-optimal signal recovery from random
+projections: Universal encoding strategies?” IEEE Trans. Inf. Theory ,
+vol. 52, no. 12, pp. 5406–5425, Dec. 2006.
+[58] G. W. Anderson and B. Farrell, “Asymptotically liberat ing sequences
+of random unitary matrices,” Adv. Math. , vol. 255, pp. 381–413, Apr.
+2014.
+
+=== PDF PAGE 18 ===
+IEEE TRANSACTIONS ON INFORMA TION THEORY 18
+[59] C. Male, Trafﬁc Distributions and Independence: Permutation Invar iant
+Random Matrices and the Three Notions of Independence . Providence,
+RI, USA: Amer. Math. Soc., 2020.
+[60] R. Dudeja, Y . M. Lu, and S. Sen, “Universality of approxi mate message
+passing with semi-random matrices,” Apr. 2022, [Online] Av ailable:
+https://arxiv.org/abs/2204.04281.
+[61] C. Stein, “A bound for the error in the normal approximat ion to the
+distribution of a sum of dependent random variables,” in 6th Berkeley
+Symp. Math. Statist. Prob. , vol. 2, 1972, pp. 583–602.

@@ -1,0 +1,38 @@
+{
+  "schema": "c-stmp-phase-selection-20261030-v1",
+  "name": "zero_40_20",
+  "frontend_binding": "src/configs/candidates/C_STMP_phase_frontend_20261027.json",
+  "frontend_binding_sha256": "d1c5df6553426af1cee2037fb17038f814ac431bdeabb839f58db17baa6eb77e",
+  "phase": {
+    "initializer": "zero",
+    "periodic_update": {
+      "start": 40,
+      "interval": 20
+    },
+    "minimum_iterations_after_last_update": 10,
+    "minimum_conditional_iterations": 80,
+    "stopping_mode": "cycle_and_slope_trial",
+    "trial_relative_tolerance": 0.01,
+    "stopping": {
+      "comparison": "completed_phase_update_cycles",
+      "consecutive_cycles": 2,
+      "relative_tolerance": 0.01,
+      "activity_tolerance": 0.001,
+      "require_stable_decisions": 10,
+      "require_raw_site_residual": false,
+      "allow_original_stopping": false,
+      "controlled_outputs": [
+        "physical_channel",
+        "received_signal_prediction",
+        "activity_decisions",
+        "current_moment_validity",
+        "current_slope_trial_mean_and_covariance"
+      ],
+      "requires_current_hypothesis_check": false,
+      "compare_only_ready_update_boundaries": true,
+      "requires_refinement_since_last_hypothesis": false
+    }
+  },
+  "selection_status": "UNSELECTED_CANDIDATE",
+  "development_revision": "v2: physical slope trial plus full-cycle channel; v1 message-rotation failure preserved"
+}

@@ -1,0 +1,33 @@
+{
+  "status": "PASS_SOURCE_ONLY_COMPILE_DEFERRED",
+  "date": "2026-10-26",
+  "english_abstract": "This paper investigates grant-free random access in low Earth orbit satellite Internet-of-Things systems without global navigation satellite system (GNSS) assistance. We firstly propose a multi-frame transmission scheme with affine frequency division multiplexing (AFDM) to handle the large differential delay and Doppler shift at the satellite receiver, and derive the input-output relationship. Subsequently, we learn a score-based generative channel prior directly on the AFDM effective channel with fractional delay and Doppler, without restrictive sparse or grid-aligned channel assumptions. The training uses colored Gaussian noise to account for correlations in the denoiser input error. The learned prior is then used for minimum mean-squared error (MMSE) denoising within a message passing (MP) receiver. The denoiser provides posterior mean and variance estimates of the channel, while a separately trained neural network is used to estimate the posterior probability of activity for each device. These estimates are incorporated into extrinsic message updates for joint activity detection and channel estimation (JADCE). Numerical simulations demonstrate that the proposed receiver outperforms the baseline receiver in terms of activity detection and channel estimation.",
+  "receiver_description": "The learned prior is then used for minimum mean-squared error (MMSE) denoising within a message passing (MP) receiver. The denoiser provides posterior mean and variance estimates of the channel, while a separately trained neural network is used to estimate the posterior probability of activity for each device. These estimates are incorporated into extrinsic message updates for joint activity detection and channel estimation (JADCE).",
+  "english_word_count": 174,
+  "sentence_word_counts": [
+    20,
+    31,
+    26,
+    15,
+    18,
+    29,
+    16,
+    19
+  ],
+  "receiver_words": 63,
+  "source_words_missing": [],
+  "technical_phrases_checked": 30,
+  "expressions_missing": [],
+  "all_sentences_verbatim_from_papers": false,
+  "raw_network_output": "One logit per device; with training prior 0.5, estimates log q1/q0 under the training query model.",
+  "receiver_readout": "sigmoid(logit(rho) + z - logit(pi_train)); abstract describes the resulting posterior probability estimate, not raw output.",
+  "source_locations": "Shen2025 IV-A eqs.60-61 and IV-B PDF p.11; Cai2026 III-B eq.30 PDF p.7; manuscript IV-C/D and STMP/activity.py forward/infer, STMP/denoiser.py lines171-172.",
+  "main_tex_outside_abstract_unchanged": true,
+  "bilingual_synchronized": true,
+  "compile_performed": false,
+  "main_pdf_updated": false,
+  "pdf_matches_current_source": false,
+  "retained_pdf_sha256": "3504ef292b140724792b607e26427acc5d4658ee54436c450c318b861b9913bb",
+  "main_tex_sha256": "d69e44c51304ab77a032518a0ea2987088a7719c67ca81fafdf5e3c082000117",
+  "new_training_or_inference": false
+}

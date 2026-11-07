@@ -1,0 +1,583 @@
+{
+  "scope": "25 works: 24 discussed/foundational papers plus one supplementary non-separable AMP universality preprint. 24 full texts obtained; Cheng 2021 not obtained. No receiver experiments or training.",
+  "updated_utc": "2026-10-24T04:21:31.277246+00:00",
+  "papers": [
+    {
+      "id": "01_ma2017_oamp",
+      "title": "Orthogonal AMP",
+      "authors": "Ma; Ping",
+      "version": "2017; arXiv v3",
+      "requested_url": "https://arxiv.org/pdf/1602.06509v3",
+      "retrieved_utc": "2026-10-24T04:07:41.545293+00:00",
+      "attempts": [],
+      "acquisition": "reused_local",
+      "reused_from": "D:\\afdm-gfra\\reference\\stmp_message_awgn_review_20261024\\main_sources\\ma2017_oamp_v3.pdf",
+      "status": "available",
+      "pdf": "papers/01_ma2017_oamp.pdf",
+      "text": "text/01_ma2017_oamp.txt",
+      "pages": 13,
+      "bytes": 445579,
+      "sha256": "a65d3253de1d1794da56e29e8b8653e0d2bb0e7f982cbe294e098779497ff612",
+      "first_page_excerpt": "1\nOrthogonal AMP\nJunjie Ma and Li Ping, Fellow, IEEE\nAbstract—Approximate message passing (AMP) is a low-cost\niterative signal recovery algorithm for linear system models.\nWhen the system transform matrix has independent identically\ndistributed (IID) Gaussian entries, the performance of AMP can\nbe asymptotically characterized by a simple scalar recursion\ncalled state evolution (SE). However, SE may become unreliable\nfor other matrix ensembles, especially for ill-conditioned ones.\nThis imposes limits on the applications of AMP.\nIn this paper, we propose an orthogonal AMP (OAMP)\nalgorithm based on de-correlated linear estimation (LE) and\ndivergence-free non-linear estimation (NLE). The Onsager"
+    },
+    {
+      "id": "02_rangan2019_vamp",
+      "title": "Vector Approximate Message Passing",
+      "authors": "Rangan; Schniter; Fletcher",
+      "version": "2019; arXiv v2",
+      "requested_url": "https://arxiv.org/pdf/1610.03082v2",
+      "retrieved_utc": "2026-10-24T04:07:41.546293+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/1610.03082v2",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/02_rangan2019_vamp.pdf",
+      "text": "text/02_rangan2019_vamp.txt",
+      "pages": 21,
+      "bytes": 615157,
+      "sha256": "4e2b5237066063702d8c7809c0db3458f3eb1589cf1fceb3d14d5f59b09c0e3c",
+      "first_page_excerpt": "arXiv:1610.03082v2  [cs.IT]  12 Jun 2018\n1\nV ector Approximate Message Passing\nSundeep Rangan, Fellow, IEEE, Philip Schniter, Fellow, IEEE, and Alyson K. Fletcher, Member , IEEE.\nAbstract—The standard linear regression (SLR) problem is to\nrecover a vector x0 from noisy linear observations y = Ax0 +w.\nThe approximate message passing (AMP) algorithm proposed b y\nDonoho, Maleki, and Montanari is a computationally efﬁcien t\niterative approach to SLR that has a remarkable property: fo r\nlarge i.i.d. sub-Gaussian matrices A, its per-iteration behavior is\nrigorously characterized by a scalar state-evolution whos e ﬁxed\npoints, when unique, are Bayes optimal. The AMP algorithm,\nhowever , is fragile "
+    },
+    {
+      "id": "03_fletcher2019_nonseparable_vamp",
+      "title": "Plug-in Estimation in High-Dimensional Linear Inverse Problems: A Rigorous Analysis",
+      "authors": "Fletcher; Pandit; Rangan; Sarkar; Schniter",
+      "version": "JSTAT 2019",
+      "requested_url": "https://phil-schniter.web.app/pdf/jstat19.pdf",
+      "retrieved_utc": "2026-10-24T04:07:41.546293+00:00",
+      "attempts": [],
+      "acquisition": "reused_local",
+      "reused_from": "D:\\afdm-gfra\\reference\\stmp_message_awgn_review_20261024\\main_sources\\fletcher2019_nonseparable_vamp.pdf",
+      "status": "available",
+      "pdf": "papers/03_fletcher2019_nonseparable_vamp.pdf",
+      "text": "text/03_fletcher2019_nonseparable_vamp.txt",
+      "pages": 15,
+      "bytes": 4086345,
+      "sha256": "ca8beb5a80a579e8800edbf3ff065a87aa040dd5c296b755d2ebc0d61388fc44",
+      "first_page_excerpt": "J. Stat. Mech. (2019) 124021\nPlug in estimation in high dimensional \nlinear inverse problems a rigorous \nanalysis∗\nAlyson K Fletcher1, Parthe Pandit2, Sundeep Rangan3, \nSubrata Sarkar4 and Philip Schniter4,5\n1 Department of Statistics, UC Los Angeles, CA, United States of America\n2 Department of ECE, UC Los Angeles, CA, United States of America\n3 Department of ECE, NYU, New York, NY, United States of America\n4 Department of ECE, The Ohio State University, Columbus, OH, United \nStates of America\nE-mail: akfletcher@ucla.edu, parthepandit@ucla.edu, srangan@nyu.edu, \nsarkar.51@osu.edu and schniter.1@osu.edu\nReceived 15 May 2019\nAccepted for publication 6 June 2019  \nPublished 20 December 2019\nOn"
+    },
+    {
+      "id": "04_xue2016_doamp",
+      "title": "D-OAMP: A Denoising-Based Signal Recovery Algorithm for Compressed Sensing",
+      "authors": "Xue; Ma; Yuan",
+      "version": "2016; arXiv v1",
+      "requested_url": "https://arxiv.org/pdf/1610.05991v1",
+      "retrieved_utc": "2026-10-24T04:07:41.548293+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/1610.05991v1",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/04_xue2016_doamp.pdf",
+      "text": "text/04_xue2016_doamp.txt",
+      "pages": 5,
+      "bytes": 279527,
+      "sha256": "3fd8637165c741d3f2156fcb9f39cbc120a063ab84901f9a5d2d8c2b7e5ee588",
+      "first_page_excerpt": "D-OAMP: A DENOISING-BASED SIGNAL RECOVERY ALGORITHM\nFOR COMPRESSED SENSING\nZhipeng Xue⋆ Junjie Ma† Xiaojun Yuan⋆\n⋆ School of Information Science and Technology, ShanghaiTech University\n†Department of Electronic Engineering, City University of Hong Kong\nABSTRACT\nApproximate message passing (AMP) is an efﬁcient iterative\nsignal recovery algorithm for compressed sensing (CS). For\nsensing matrices with independent and identically distributed\n(i.i.d.) Gaussian entries, the behavior of AMP can be asymp-\ntotically described by a scaler recursion called state evolu-\ntion. Orthogonal AMP (OAMP) is a variant of AMP that im-\nposes a divergence-free constraint on the denoiser. In this\npaper, we extend O",
+      "catalogue_title_before_first_page_check": "Denoising-Based Orthogonal Approximate Message Passing for Compressed Sensing"
+    },
+    {
+      "id": "05_xue2017_dturbo",
+      "title": "Denoising-based Turbo Compressed Sensing",
+      "authors": "Xue; Ma; Yuan",
+      "version": "2017; arXiv v1",
+      "requested_url": "https://arxiv.org/pdf/1703.08756v1",
+      "retrieved_utc": "2026-10-24T04:07:42.316224+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/1703.08756v1",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/05_xue2017_dturbo.pdf",
+      "text": "text/05_xue2017_dturbo.txt",
+      "pages": 11,
+      "bytes": 1967262,
+      "sha256": "46eb5835c8be7a6648469c7f33b2380111e5e3e323e54314d1dd27868665f8b1",
+      "first_page_excerpt": "1\nDenoising-based Turbo Compressed Sensing\nZhipeng Xue, Junjie Ma, and Xiaojun Yuan, Senior Member , IEEE\nAbstract—Turbo compressed sensing (Turbo-CS) is an efﬁcient\niterative algorithm for sparse signal recovery with partial orthog-\nonal sensing matrices. In this paper, we extend the Turbo-CS\nalgorithm to solve compressed sensing problems involving more\ngeneral signal structure, including compressive image recovery\nand low-rank matrix recovery. A main difﬁculty for such an\nextension is that the original Turbo-CS algorithm requires prior\nknowledge of the signal distribution that is usually unavailable\nin practice. To overcome this difﬁculty, we propose to redesign\nthe Turbo-CS algorithm by e"
+    },
+    {
+      "id": "06_liu2018_massive_mimo",
+      "title": "Massive Connectivity with Massive MIMO—Part I: Device Activity Detection and Channel Estimation",
+      "authors": "Liu; Yu",
+      "version": "2018; arXiv v2",
+      "requested_url": "https://arxiv.org/pdf/1706.06438v2",
+      "retrieved_utc": "2026-10-24T04:07:43.001471+00:00",
+      "attempts": [],
+      "acquisition": "reused_local",
+      "reused_from": "D:\\afdm-gfra\\reference\\activity_threshold_review_20261023\\liu2018_amp.pdf",
+      "status": "available",
+      "pdf": "papers/06_liu2018_massive_mimo.pdf",
+      "text": "text/06_liu2018_massive_mimo.txt",
+      "pages": 14,
+      "bytes": 369767,
+      "sha256": "66d3cded3d7b2efb108e56d1615855c3546005baab7dfda8e7779ee40d53cfe9",
+      "first_page_excerpt": "arXiv:1706.06438v2  [cs.IT]  15 Mar 2018\n1\nMassive Connectivity with Massive MIMO–Part I:\nDevice Activity Detection and Channel Estimation\nLiang Liu, Member , IEEE and Wei Y u, Fellow, IEEE\nAbstract—This two-part paper considers an uplink massive\ndevice communication scenario in which a large number of\ndevices are connected to a base-station (BS), but user trafﬁ c\nis sporadic so that in any given coherence interval, only a\nsubset of users are active. The objective is to quantify the\ncost of active user detection and channel estimation and to\ncharacterize the overall achievable rate of a grant-free tw o-\nphase access scheme in which device activity detection and\nchannel estimation are perform"
+    },
+    {
+      "id": "07_hannak2018_mmv",
+      "title": "Performance Analysis of Approximate Message Passing for Distributed Compressed Sensing",
+      "authors": "Hannak; Perelli; Goertz; Matz; Davies",
+      "version": "2018; arXiv v2",
+      "requested_url": "https://arxiv.org/pdf/1712.04893v2",
+      "retrieved_utc": "2026-10-24T04:07:43.066784+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/1712.04893v2",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/07_hannak2018_mmv.pdf",
+      "text": "text/07_hannak2018_mmv.txt",
+      "pages": 13,
+      "bytes": 1986792,
+      "sha256": "ad8a7c91242f056617bbff2e5fa410de727b88af104530520a64b338bb359c34",
+      "first_page_excerpt": "1\nPerformance Analysis of Approximate Message\nPassing for Distributed Compressed Sensing\nGabor Hannak, Alessandro Perelli, Norbert Goertz, Senior Member , IEEE, Gerald Matz, Senior Member , IEEE,\nand Mike E. Davies, Fellow, IEEE\nAbstract—Bayesian approximate message passing (BAMP) is\nan efﬁcient method in compressed sensing that is nearly optimal\nin the minimum mean squared error (MMSE) sense. Multiple\nmeasurement vector (MMV)-BAMP performs joint recovery of\nmultiple vectors with identical support and accounts for correla-\ntions in the signal of interest and in the noise. In this paper, we\nshow how to reduce the complexity of vector BAMP via a simple\njoint decorrelation (diagonalization) tra"
+    },
+    {
+      "id": "08_djelouat2021_correlated_amp",
+      "title": "User Activity Detection and Channel Estimation of Spatially Correlated Channels via AMP in Massive MTC",
+      "authors": "Djelouat; Marata; Leinonen; Alves; Juntti",
+      "version": "2021; arXiv v1",
+      "requested_url": "https://arxiv.org/pdf/2112.04295v1",
+      "retrieved_utc": "2026-10-24T04:07:44.123788+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2112.04295v1",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/08_djelouat2021_correlated_amp.pdf",
+      "text": "text/08_djelouat2021_correlated_amp.txt",
+      "pages": 5,
+      "bytes": 267433,
+      "sha256": "0649115fd91989048f4ac25c161df59aa26a3c190d55e4c27b0bb41dca41cac8",
+      "first_page_excerpt": "arXiv:2112.04295v1  [eess.SP]  8 Dec 2021\nUser Activity Detection and Channel Estimation of\nSpatially Correlated Channels via AMP in Massive\nMTC\nHamza Djelouat, Leatile Marata, Markus Leinonen, Hirley Al ves, and Markku Juntti\nCentre for Wireless Communications – Radio Technologies, U niversity of Oulu, Finland\ne-mail: {hamza.djelouat,leatile.marata,markus.leinon en,hirley.alves,markku.juntti}@oulu.ﬁ.\nAbstract—This paper addresses the problem of joint user iden-\ntiﬁcation and channel estimation (JUICE) for grant-free ac cess in\nmassive machine-type communications (mMTC). We consider t he\nJUICE under a spatially correlated fading channel model as t hat\nreﬂects the main characteristics of the "
+    },
+    {
+      "id": "09_kunde2026_complex_amp",
+      "title": "Complex Approximate Message Passing with Non-separable Denoising",
+      "authors": "Kunde; Mirri; Chamberland; Paolini",
+      "version": "2026; arXiv v1",
+      "requested_url": "https://arxiv.org/pdf/2604.21115v1",
+      "retrieved_utc": "2026-10-24T04:07:45.322905+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2604.21115v1",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/09_kunde2026_complex_amp.pdf",
+      "text": "text/09_kunde2026_complex_amp.txt",
+      "pages": 28,
+      "bytes": 538098,
+      "sha256": "d22d491e793911fe025f2d67ddc55edb3f5a4e835c5a445b161d58f490ef4e43",
+      "first_page_excerpt": "1\nComplex Approximate Message Passing\nwith Non-separable Denoising\nVishnu Teja Kunde, Alessandro Mirri,Graduate Student Member, IEEE,\nJean-Francois Chamberland,Senior Member, IEEE, and Enrico Paolini,Senior Member, IEEE\nAbstract\nApproximate Message Passing (AMP) is a general framework for iterative algorithms, originally developed for\ncompressed sensing and later extended to a wide range of high-dimensional inference problems. Although recent\nwork has advanced matrix AMP, complex AMP, and AMP for non-separable functions independently, a unified state\nevolution theory for complex AMP with non-separable denoisers has been lacking. This article fills that gap by\nestablishing state evolution in "
+    },
+    {
+      "id": "10_djelouat2024_hierarchical_ep",
+      "title": "Hierarchical MTC User Activity Detection and Channel Estimation with Unknown Spatial Covariance",
+      "authors": "Djelouat; Sillanpaa; Leinonen; Juntti",
+      "version": "TWC 2024; arXiv 2023 v1",
+      "requested_url": "https://arxiv.org/pdf/2310.10204v1",
+      "retrieved_utc": "2026-10-24T04:07:45.994878+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2310.10204v1",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/10_djelouat2024_hierarchical_ep.pdf",
+      "text": "text/10_djelouat2024_hierarchical_ep.txt",
+      "pages": 31,
+      "bytes": 801217,
+      "sha256": "6e9915a51f0d65b43cfd9d1642b30f59a5f266c19b5a3ac4ab537e29886d8d3e",
+      "first_page_excerpt": "1\nHierarchical MTC User Activity Detection and\nChannel Estimation with Unknown Spatial\nCovariance\nHamza Djelouat, Student Member, IEEE, Mikko J. Sillanpää, Markus\nLeinonen†, Member, IEEE, and Markku Juntti, Fellow, IEEE\nAbstract\nThis paper addresses the joint user identification and channel estimation (JUICE) problem in\nmachine-type communications under the practical spatially correlated channels model with unknown\ncovariance matrices. Furthermore, we consider an MTC network with hierarchical user activity patterns\nfollowing an event-triggered traffic mode. Therein the users are distributed over clusters with a structured\nsporadic activity behaviour that exhibits both cluster-level and intra",
+      "additional_version_attempts": [
+        {
+          "url": "https://oulurepo.oulu.fi/bitstream/handle/10024/51494/nbnfioulu-202408165465.pdf?isAllowed=y&sequence=1",
+          "status": "HTTP 403; published version not obtained; arXiv v1 retained"
+        }
+      ],
+      "version_note": "Available PDF is 2023 arXiv v1, not the 2024 journal layout. Display inconsistencies checked in this version only."
+    },
+    {
+      "id": "11_liu2022_memory_amp",
+      "title": "Memory AMP",
+      "authors": "Liu; Huang; Kurkoski",
+      "version": "2022; arXiv v7",
+      "requested_url": "https://arxiv.org/pdf/2012.10861v7",
+      "retrieved_utc": "2026-10-24T04:07:46.373711+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2012.10861v7",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/11_liu2022_memory_amp.pdf",
+      "text": "text/11_liu2022_memory_amp.txt",
+      "pages": 24,
+      "bytes": 1171195,
+      "sha256": "99fbc9f1d62df2f0f99aef05b94ecd20bd791909d488f28aae16267b1369e098",
+      "first_page_excerpt": "IEEE TRANSACTIONS ON INFORMATION THEORY 1\nMemory AMP\nLei Liu, Member, IEEE, Shunqi Huang, and Brian M. Kurkoski, Member, IEEE\nAbstract—Approximate message passing (AMP) is a low-\ncost iterative parameter-estimation technique for certain high-\ndimensional linear systems with non-Gaussian distributions.\nAMP only applies to independent identically distributed (IID)\ntransform matrices, but may become unreliable (e.g., perform\npoorly or even diverge) for other matrix ensembles, especially\nfor ill-conditioned ones. To solve this issue, orthogonal/vector\nAMP (OAMP/V AMP) was proposed for general right-unitarily-\ninvariant matrices. However, the Bayes-optimal OAMP/V AMP\n(BO-OAMP/V AMP) requires a hi"
+    },
+    {
+      "id": "12_liu2023_ssmamp",
+      "title": "Sufficient-Statistic Memory AMP",
+      "authors": "Liu; Huang; Yang; Zhang; Kurkoski",
+      "version": "2023; arXiv v4",
+      "requested_url": "https://arxiv.org/pdf/2112.15327v4",
+      "retrieved_utc": "2026-10-24T04:07:47.407616+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2112.15327v4",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/12_liu2023_ssmamp.pdf",
+      "text": "text/12_liu2023_ssmamp.txt",
+      "pages": 21,
+      "bytes": 1269502,
+      "sha256": "8c1b279e2ddaa37ba33bb81bbd6b25873edbf78d8e509067e529ba22f13410bc",
+      "first_page_excerpt": "1\nSufficient-Statistic Memory AMP\nLei Liu, Member, IEEE, Shunqi Huang, Yuzhi Yang,\nZhaoyang Zhang, Senior Member, IEEE and Brian M. Kurkoski, Member, IEEE\nAbstract—Approximate message passing (AMP) type algo-\nrithms have been widely used in the signal reconstruction of\ncertain large random linear systems. A key feature of the AMP-\ntype algorithms is that their dynamics can be correctly described\nby state evolution. While state evolution is a useful analytic\ntool, its convergence is not guaranteed. To solve the convergence\nproblem of the state evolution of AMP-type algorithms in\nprinciple, this paper proposes a sufficient-statistic memory AMP\n(SS-MAMP) algorithm framework under the conditions"
+    },
+    {
+      "id": "13_takeuchi2022_long_memory",
+      "title": "On the Convergence of Orthogonal/Vector AMP: Long-Memory Message-Passing Strategy",
+      "authors": "Takeuchi",
+      "version": "2022; arXiv v2",
+      "requested_url": "https://arxiv.org/pdf/2111.05522v2",
+      "retrieved_utc": "2026-10-24T04:07:48.006564+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2111.05522v2",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/13_takeuchi2022_long_memory.pdf",
+      "text": "text/13_takeuchi2022_long_memory.txt",
+      "pages": 18,
+      "bytes": 447887,
+      "sha256": "2362e40d9668317510b634cca397cabe7f4fb3a8d4b94b2d8d81952c43022136",
+      "first_page_excerpt": "arXiv:2111.05522v2  [cs.IT]  22 Apr 2022\nIEEE TRANSACTIONS ON INFORMA TION THEORY 1\nOn the Convergence of Orthogonal/V ector AMP:\nLong-Memory Message-Passing Strategy\nKeigo Takeuchi, Member , IEEE\nAbstract—Orthogonal/vector approximate message-passing\n(AMP) is a powerful message-passing (MP) algorithm for sign al\nreconstruction in compressed sensing. This paper proves th e\nconvergence of Bayes-optimal orthogonal/vector AMP in the large\nsystem limit. The proof strategy is based on a novel long-mem ory\n(LM) MP approach: A ﬁrst step is a construction of LM-MP\nthat is guaranteed to converge systematically. A second ste p is\na large-system analysis of LM-MP via an existing framework o f\nstate evo"
+    },
+    {
+      "id": "14_cheng2023_oamp_mmv",
+      "title": "Orthogonal AMP for Problems with Multiple Measurement Vectors and/or Multiple Transforms",
+      "authors": "Cheng; Liu; Liang; Manton; Ping",
+      "version": "TSP 2023; arXiv v1",
+      "requested_url": "https://arxiv.org/pdf/2304.08038v1",
+      "retrieved_utc": "2026-10-24T04:07:49.268894+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2304.08038v1",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/14_cheng2023_oamp_mmv.pdf",
+      "text": "text/14_cheng2023_oamp_mmv.txt",
+      "pages": 14,
+      "bytes": 875785,
+      "sha256": "0ac98f0d44eabd3b5d05f413e58100c5b11ecf0ed6f7eb1a1cedc1f20e63eafb",
+      "first_page_excerpt": "1\nOrthogonal AMP for Problems with Multiple Measurement\nVectors and/or Multiple Transforms\nYiyao Cheng, Lei Liu, Member, IEEE, Shansuo Liang,\nJonathan H. Manton, Fellow, IEEE, and Li Ping, Fellow, IEEE\nAbstract—Approximate message passing (AMP) algorithms\nbreak a (high-dimensional) statistical problem into parts then\nrepeatedly solve each part in turn, akin to alternating projections.\nA distinguishing feature is their asymptotic behaviours can be ac-\ncurately predicted via their associated state evolution equations.\nOrthogonal AMP (OAMP) was recently developed to avoid the\nneed for computing the so-called Onsager term in traditional\nAMP algorithms, providing two clear beneﬁts: the derivation"
+    },
+    {
+      "id": "15_liu2023_orthogonal_principle",
+      "title": "On Orthogonal Approximate Message Passing",
+      "authors": "Liu; Cheng; Liang; Manton; Ping",
+      "version": "TCOM 2023, published as On OAMP: Impact of the Orthogonal Principle; arXiv v2",
+      "requested_url": "https://arxiv.org/pdf/2203.00224v2",
+      "retrieved_utc": "2026-10-24T04:07:53.108183+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2203.00224v2",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/15_liu2023_orthogonal_principle.pdf",
+      "text": "text/15_liu2023_orthogonal_principle.txt",
+      "pages": 15,
+      "bytes": 965932,
+      "sha256": "474042477095ad2ef84dc42fd43fb0b3f8a496a6ae878f9c08fffda4be950abf",
+      "first_page_excerpt": "1\nOn Orthogonal Approximate Message Passing\nLei Liu, Member, IEEE, Yiyao Cheng, Shansuo Liang,\nJonathan H. Manton, Fellow, IEEE, and Li Ping, Fellow, IEEE\nAbstract—Approximate Message Passing (AMP) is an efﬁ-\ncient iterative parameter-estimation technique for certain high-\ndimensional linear systems with non-Gaussian distributions, such\nas sparse systems. In AMP, a so-called Onsager term is added\nto keep estimation errors approximately Gaussian. Orthogonal\nAMP (OAMP) does not require this Onsager term, relying instead\non an orthogonalization procedure to keep the current errors\nuncorrelated with (i.e., orthogonal to) past errors. In this paper,\nwe show the generality and signiﬁcance of the o"
+    },
+    {
+      "id": "16_millard2020_vdamp",
+      "title": "Approximate Message Passing with a Colored Aliasing Model for Variable Density Fourier Sampled Images",
+      "authors": "Millard; Hess; Mailhe; Tanner",
+      "version": "2020; arXiv v3",
+      "requested_url": "https://arxiv.org/pdf/2003.02701v3",
+      "retrieved_utc": "2026-10-24T04:07:53.445101+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2003.02701v3",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/16_millard2020_vdamp.pdf",
+      "text": "text/16_millard2020_vdamp.txt",
+      "pages": 13,
+      "bytes": 3191336,
+      "sha256": "e669525bc8c114c730ac41179ba99809290fb086b7c022cc6bce6fe19ea1434a",
+      "first_page_excerpt": "1\nApproximate Message Passing with a Colored Aliasing Model for\nVariable Density Fourier Sampled Images\nCharles Millard, Student Member , IEEE, Aaron T Hess, Boris Mailh ´e and Jared Tanner, Member , IEEE\nThe Approximate Message Passing (AMP) algorithm efﬁciently reconstructs signals which have been sampled with large i.i.d.\nsub-Gaussian sensing matrices. Central to AMP is its “state evolution”, which guarantees that the difference between the current\nestimate and ground truth (the “aliasing”) at every iteration obeys a Gaussian distribution that can be fully characterized by a\nscalar. However, when Fourier coefﬁcients of a signal with non-uniform spectral density are sampled, such as in Mag"
+    },
+    {
+      "id": "17_metzler2020_dvdamp",
+      "title": "D-VDAMP: Denoising-based Approximate Message Passing for Compressive MRI",
+      "authors": "Metzler; Wetzstein",
+      "version": "2020; arXiv v1",
+      "requested_url": "https://arxiv.org/pdf/2010.13211v1",
+      "retrieved_utc": "2026-10-24T04:07:54.262170+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2010.13211v1",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/17_metzler2020_dvdamp.pdf",
+      "text": "text/17_metzler2020_dvdamp.txt",
+      "pages": 5,
+      "bytes": 2501940,
+      "sha256": "d6c880dc52570464c62e4d5a26b358660061e856a7164e92dde8a46d1e9b2262",
+      "first_page_excerpt": "D-VDAMP: DENOISING-BASED APPROXIMA TE MESSAGE PASSING\nFOR COMPRESSIVE MRI\nChristopher A. Metzler, Gordon Wetzstein\nDepartment of Electrical Engineering at Stanford University\n{cmetzler,gordon.wetzstein}@stanford.edu\nABSTRACT\nPlug and play (P&P) algorithms iteratively apply highly\noptimized image denoisers to impose priors and solve compu-\ntational image reconstruction problems, to great effect. How-\never, in general the “effective noise”, that is the difference be-\ntween the true signal and the intermediate solution, within the\niterations of P&P algorithms is neither Gaussian nor white.\nThis fact makes existing denoising algorithms suboptimal.\nIn this work, we propose a CNN architecture for "
+    },
+    {
+      "id": "18_shastri2022_dgec",
+      "title": "Denoising Generalized Expectation-Consistent Approximation for MR Image Recovery",
+      "authors": "Shastri; Ahmad; Metzler; Schniter",
+      "version": "2022; arXiv v2",
+      "requested_url": "https://arxiv.org/pdf/2206.05049v2",
+      "retrieved_utc": "2026-10-24T04:07:54.909684+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2206.05049v2",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/18_shastri2022_dgec.pdf",
+      "text": "text/18_shastri2022_dgec.txt",
+      "pages": 40,
+      "bytes": 5541658,
+      "sha256": "0d6d39a591efe6755999178292f51550ea60c8476c68a6c08aab52f5f223a50e",
+      "first_page_excerpt": "1\nDenoising Generalized Expectation-Consistent\nApproximation for MR Image Recovery\nSaurav K. Shastri, Rizwan Ahmad, Christopher A. Metzler, and Philip Schniter\nAbstract\nTo solve inverse problems, plug-and-play (PnP) methods replace the proximal step in a convex optimization algo-\nrithm with a call to an application-speciﬁc denoiser, often implemented using a deep neural network (DNN). Although\nsuch methods yield accurate solutions, they can be improved. For example, denoisers are usually designed/trained to\nremove white Gaussian noise, but the denoiser input error in PnP algorithms is usually far from white or Gaussian.\nApproximate message passing (AMP) methods provide white and Gaussian den"
+    },
+    {
+      "id": "19_sarkar2020_ddvamp",
+      "title": "MRI Image Recovery using Damped Denoising Vector AMP",
+      "authors": "Sarkar; Ahmad; Schniter",
+      "version": "ICASSP 2021; arXiv 2020 v1",
+      "requested_url": "https://arxiv.org/pdf/2010.11321v1",
+      "retrieved_utc": "2026-10-24T04:07:55.402053+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2010.11321v1",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/19_sarkar2020_ddvamp.pdf",
+      "text": "text/19_sarkar2020_ddvamp.txt",
+      "pages": 5,
+      "bytes": 281497,
+      "sha256": "825a492935a080c65c843ec8efd364599c4f11bb6f151215972dbf76e84db02c",
+      "first_page_excerpt": "arXiv:2010.11321v1  [cs.IT]  21 Oct 2020\nMRI IMAGE RECOVERY USING DAMPED DENOISING VECTOR AMP\nSubrata Sarkar†, Rizwan Ahmad ∗, and Philip Schniter †\n†Dept. ECE, The Ohio State Univ., Columbus, OH, 43210, {sarkar.51, schniter.1}@osu.edu\n∗Dept. BME, The Ohio State Univ., Columbus, OH, 43210, rizwan .ahmad@osumc.edu\nABSTRACT\nMotivated by image recovery in magnetic resonance imaging\n(MRI), we propose a new approach to solving linear inverse\nproblems based on iteratively calling a deep neural-networ k,\nsometimes referred to as plug-and-play recovery. Our ap-\nproach is based on the vector approximate message passing\n(V AMP) algorithm, which is known for mean-squared error\n(MSE)-optimal recovery un"
+    },
+    {
+      "id": "20_bendel2025_fire",
+      "title": "Solving Inverse Problems using Diffusion with Iterative Colored Renoising",
+      "authors": "Bendel; Shastri; Ahmad; Schniter",
+      "version": "TMLR 2025; arXiv v4",
+      "requested_url": "https://arxiv.org/pdf/2501.17468v4",
+      "retrieved_utc": "2026-10-24T04:07:56.822869+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2501.17468v4",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/20_bendel2025_fire.pdf",
+      "text": "text/20_bendel2025_fire.txt",
+      "pages": 31,
+      "bytes": 41357562,
+      "sha256": "eea0002009377eee271458de4976d4ddf2a76a43cbed571a26bbad5dde23f080",
+      "first_page_excerpt": "Published in Transactions on Machine Learning Research (08/2025)\nSolving Inverse Problems using Diffusion with Iterative Col-\nored Renoising\nMatthew C. Bendel bendel.8@buckeyemail.osu.edu\nDept. Electrical and Computer Engineering, The Ohio State University, Columbus, OH, USA\nSaurav K. Shastri shastri.19@buckeyemail.osu.edu\nDept. Electrical and Computer Engineering, The Ohio State University, Columbus, OH, USA\nRizwan Ahmad rizwan.ahmad@osumc.edu\nDept. Biomedical Engineering, The Ohio State University, Columbus, OH, USA\nPhilip Schniter schniter.1@osu.edu\nDept. Electrical and Computer Engineering, The Ohio State University, Columbus, OH, USA\nReviewed on OpenReview: https: // openreview. net/ fo"
+    },
+    {
+      "id": "21_metzler2017_ldamp",
+      "title": "Learned D-AMP: Principled Neural Network based Compressive Image Recovery",
+      "authors": "Metzler; Mousavi; Baraniuk",
+      "version": "NeurIPS 2017; arXiv 1704.06625v4, 2017-11-06; verified on PDF first page",
+      "requested_url": "https://arxiv.org/pdf/1704.06625",
+      "retrieved_utc": "2026-10-24T04:08:04.421405+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/1704.06625",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/21_metzler2017_ldamp.pdf",
+      "text": "text/21_metzler2017_ldamp.txt",
+      "pages": 14,
+      "bytes": 2120603,
+      "sha256": "bd5b12453e01a2289f58d2d4de0270758c041b2a782bac553ac1840e68c9251a",
+      "first_page_excerpt": "Learned D-AMP: Principled Neural Network based\nCompressive Image Recovery\nChristopher A. Metzler\nRice University\nchris.metzler@rice.edu\nAli Mousavi\nRice University\nali.mousavi@rice.edu\nRichard G. Baraniuk\nRice University\nrichb@rice.edu\nAbstract\nCompressive image recovery is a challenging problem that requires fast and accu-\nrate algorithms. Recently, neural networks have been applied to this problem with\npromising results. By exploiting massively parallel GPU processing architectures\nand oodles of training data, they can run orders of magnitude faster than existing\ntechniques. However, these methods are largely unprincipled black boxes that are\ndifﬁcult to train and often-times speciﬁc to a ",
+      "versioned_source": "https://arxiv.org/pdf/1704.06625v4"
+    },
+    {
+      "id": "22_cheng2021_massive_access",
+      "title": "Orthogonal AMP for Massive Access in Channels With Spatial and Temporal Correlations",
+      "authors": "Cheng; Liu; Ping",
+      "version": "JSAC 2021",
+      "requested_url": "https://doi.org/10.1109/JSAC.2020.3018799",
+      "retrieved_utc": "2026-10-24T04:08:15.819286+00:00",
+      "attempts": [
+        {
+          "url": "https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&arnumber=9174826",
+          "status": "HTTP 418"
+        },
+        {
+          "url": "http://xplorestaging.ieee.org/ielx7/49/9357432/09174826.pdf?arnumber=9174826",
+          "status": "HTTP 418; HTTPS also 418"
+        },
+        {
+          "url": "https://ieeexplore.ieee.org/document/9174826/",
+          "status": "HTTP 202 empty non-PDF response"
+        },
+        {
+          "url": "https://scholars.cityu.edu.hk/en/publications/orthogonal-amp-for-massive-access-in-channels-with-spatial-and-te/",
+          "status": "bibliography and abstract only; no open PDF found"
+        },
+        {
+          "url": "https://sites.google.com/site/leihomepage/research",
+          "status": "publisher link only for this paper"
+        }
+      ],
+      "status": "full_text_unavailable_in_this_session",
+      "reason": "No full text obtained from checked author, institution, metadata and publisher routes. Not counted as downloaded or full-text read.",
+      "source_check_note": "notes/download_followup_memory.md"
+    },
+    {
+      "id": "23_cai2026_stmp",
+      "title": "Joint Activity Detection and Channel Estimation for Massive Connectivity: Where Message Passing Meets Score-Based Generative Priors",
+      "authors": "Cai; Jiang; Yuan; Zhang",
+      "version": "2026; arXiv v2",
+      "requested_url": "https://arxiv.org/pdf/2506.00581v2",
+      "retrieved_utc": "2026-10-24T04:08:15.834674+00:00",
+      "attempts": [],
+      "acquisition": "reused_local",
+      "reused_from": "D:\\afdm-gfra\\reference\\stmp_message_awgn_review_20261024\\main_sources\\cai2026_stmp_v2.pdf",
+      "status": "available",
+      "pdf": "papers/23_cai2026_stmp.pdf",
+      "text": "text/23_cai2026_stmp.txt",
+      "pages": 16,
+      "bytes": 3517510,
+      "sha256": "f0e6f8acbeec4ca91ecdadb3f51471026646f7d6f338cb051f663a6ba66178cf",
+      "first_page_excerpt": "1\nJoint Activity Detection and Channel Estimation for\nMassive Connectivity: Where Message Passing\nMeets Score-Based Generative Priors\nChang Cai,Member , IEEE,Wenjun Jiang,Member , IEEE,Xiaojun Yuan,Fellow, IEEE,\nand Ying-Jun Angela Zhang,Fellow, IEEE\nAbstract—Massive connectivity supports the sporadic access of\na vast number of devices without requiring prior permission from\nthe base station (BS). In such scenarios, the BS must perform\njoint activity detection and channel estimation (JADCE) prior\nto data reception. Message-passing algorithms have emerged as\na prominent solution for JADCE under a Bayesian inference\nframework. The existing message-passing algorithms, however,\ntypically rely on"
+    },
+    {
+      "id": "24_wei2026_lstmp",
+      "title": "Learned Score-Based Turbo Message Passing for Channel Recovery From Spatially Compressed Measurements",
+      "authors": "Wei; Yuan",
+      "version": "2026; arXiv v1",
+      "requested_url": "https://arxiv.org/pdf/2610.17785v1",
+      "retrieved_utc": "2026-10-24T04:08:16.021771+00:00",
+      "attempts": [],
+      "acquisition": "reused_local",
+      "reused_from": "D:\\afdm-gfra\\reference\\literature\\wei_yuan_2026_lstmp_v1.pdf",
+      "status": "available",
+      "pdf": "papers/24_wei2026_lstmp.pdf",
+      "text": "text/24_wei2026_lstmp.txt",
+      "pages": 5,
+      "bytes": 599749,
+      "sha256": "dee35d773df47f984b2022c2b7be07a01e3d942cde8fae84830ac3a0bfd2f7dd",
+      "first_page_excerpt": "PREPRINT 1\nLearned Score-Based Turbo Message Passing for Channel Recovery\nFrom Spatially Compressed Measurements\nYiming Wei,Student Member , IEEEand Xiaojun Yuan,Fellow, IEEE\nAbstract—Hybrid beamforming (HBF) reduces the hardware\ncost of massive MIMO base stations, but its channel acquisition\nrequires recovering the full spatial-domain channel from highly\ncompressed beam-domain observations. This paper proposes a\nlearned score-based turbo message passing (L-STMP) framework\nfor uplink HBF channel recovery under extreme spatial compres-\nsion. By deeply unfolding the turbo message-passing loop and\nintroducing trainable calibration parameters and learnable score\npriors in each layer, L-STMP libe"
+    },
+    {
+      "id": "25_lovig2026_universality",
+      "title": "On Universality of Non-Separable Approximate Message Passing Algorithms",
+      "authors": "Lovig; Wang; Fan",
+      "version": "2026; arXiv v2; supplementary scope check",
+      "requested_url": "https://arxiv.org/pdf/2506.23010v2",
+      "retrieved_utc": "2026-10-24T04:08:16.554646+00:00",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok"
+        }
+      ],
+      "resolved_url": "https://arxiv.org/pdf/2506.23010v2",
+      "acquisition": "downloaded",
+      "status": "available",
+      "pdf": "papers/25_lovig2026_universality.pdf",
+      "text": "text/25_lovig2026_universality.txt",
+      "pages": 82,
+      "bytes": 1202820,
+      "sha256": "496e5047e6247a3b210238d611843a8d2864faf365627c46d698564f50b208a9",
+      "first_page_excerpt": "ON UNIVERSALITY OF NON-SEPARABLE APPROXIMATE MESSAGE\nPASSING ALGORITHMS\nMAX LOVIG∗, TIANHAO WANG†, ZHOU FAN∗\nAbstract.Mean-field characterizations of first-order iterative algorithms — including Approxi-\nmate Message Passing (AMP), stochastic and proximal gradient descent, and Langevin diffusions\n— have enabled a precise understanding of learning dynamics in many statistical applications. For\nalgorithms whose non-linearities have a coordinate-separable form, it is known that such character-\nizations enjoy a degree of universality with respect to the underlying data distribution. However,\nmean-field characterizations of non-separable algorithm dynamics have largely remained restricted\nto i.i."
+    }
+  ],
+  "summary": {
+    "works_catalogued": 25,
+    "full_texts_available": 24,
+    "new_downloads": 19,
+    "reused_local": 5,
+    "total_pages": 459,
+    "total_bytes": 76402153
+  }
+}

@@ -1,0 +1,235 @@
+{
+  "schema": "white-gp-mp-mainline-extraction-v1",
+  "status": "PASS",
+  "created_at": "2026-11-07T05:34:05.494205+08:00",
+  "intent": "Independent white-trained mainline; preserve all historical code/configurations/data/results.",
+  "mappings": [
+    {
+      "source": "src/algorithm/C_STMP_variance_em_20261025/iterations.py",
+      "source_sha256": "25d5a2fb830ab63068ed8577a7d469024658851c2ae567ddfeef1f6110415d40",
+      "destination": "src/algorithm/GP_MP/iterations.py",
+      "destination_sha256": "62592033cc71bdfbcb434f254640dbccd17d98f820a616d8e1cc666c91e565cc",
+      "scope": "whole module numeric AST; imports unchanged"
+    },
+    {
+      "source": "src/algorithm/C_STMP_phase_init_marginal_20261104/initialization.py",
+      "source_sha256": "4236557cce326f90141f656154c2eaea3729a31361acd4dbddf6b0130483404f",
+      "destination": "src/algorithm/GP_MP/initialization.py",
+      "destination_sha256": "4236557cce326f90141f656154c2eaea3729a31361acd4dbddf6b0130483404f",
+      "scope": "whole module byte-identical"
+    },
+    {
+      "source": "src/training/colored_preconditioned_20261024/operators.py",
+      "source_sha256": "7f37527e2f3b90b75d6c28fc2797ca47d31b48d39a4eec12e5c938f807e03e57",
+      "destination": "src/algorithm/GP_MP/operators.py",
+      "destination_sha256": "7f37527e2f3b90b75d6c28fc2797ca47d31b48d39a4eec12e5c938f807e03e57",
+      "scope": "whole module byte-identical"
+    },
+    {
+      "source": "src/training/colored_score_20261024/model.py",
+      "source_sha256": "d4a1b32e3f670bc2ef149b94c216e59110cd57503f6ea72a4b5fbf8cb1f845a1",
+      "destination": "src/algorithm/GP_MP/model.py",
+      "destination_sha256": "efc46ddd4bf7659e9d2d803fab111820da16c27833642ff24dd798e22685dd39",
+      "scope": "ColoredScore class to CovarianceConditionedNetwork"
+    },
+    {
+      "source": "src/training/colored_preconditioned_20261024/model.py",
+      "source_sha256": "147d6bdb1fc82b7387d79a6c046d70ab91b200ee302a20e5ba75e3218afb1035",
+      "destination": "src/algorithm/GP_MP/model.py",
+      "destination_sha256": "efc46ddd4bf7659e9d2d803fab111820da16c27833642ff24dd798e22685dd39",
+      "scope": "PreconditionedScore to PreconditionedMean; loader adds strict white-training guard"
+    },
+    {
+      "source": "src/training/colored_score_20261024/noise.py",
+      "source_sha256": "05100bf3928706b9aef4f238d8a63ab561ade82d8fb2c6d4c546fcf75afa9f2d",
+      "destination": "src/algorithm/GP_MP/covariance.py",
+      "destination_sha256": "154fec22c1f43b8f5f622cc8ec1f10880d7de31aeb71caf9171331d0e8de9f05",
+      "scope": "Covariance and pack/unpack/hermitian_power only; no noise sampling/training"
+    },
+    {
+      "source": "src/algorithm/C_STMP/moments.py",
+      "source_sha256": "7e0d9b3928c12ed60c135125fef13626dd274ac3c7815101f2b1e98c084989e9",
+      "destination": "src/algorithm/GP_MP/moments.py",
+      "destination_sha256": "0a1cfa8f7472f265ea7a8042c9f762393c1ff193d6a22c0fbbbab1a4619c5267",
+      "scope": "ColoredMoments to Moments; same trace_variance; local imports"
+    },
+    {
+      "source": "src/evaluation/white_matched_20261105/receiver.py",
+      "source_sha256": "51197639e4a134505a0002b4a55f4775222acba2d40f71b7cf59734b6f28ffd4",
+      "destination": "src/algorithm/GP_MP/configuration.py",
+      "destination_sha256": "2c822dc477ddf955da91d7c85b5105866074a523ade5d70fa0f5db39c78c3b42",
+      "scope": "require/verify; additional white specification max_strength=0 check"
+    },
+    {
+      "source": "src/evaluation/white_matched_20261105/receiver.py",
+      "source_sha256": "51197639e4a134505a0002b4a55f4775222acba2d40f71b7cf59734b6f28ffd4",
+      "destination": "src/algorithm/GP_MP/receiver.py",
+      "destination_sha256": "c07d6ee38a01f709db2e03fb253b47b94f5f99adcda8f6aafcb6d6c973d0a5d9",
+      "scope": "white model/classifier construction; independent context"
+    },
+    {
+      "source": "src/algorithm/C_STMP_variance_em_20261025/receiver.py",
+      "source_sha256": "1d55b433ccf0df6285d03c3f0a8ce8273db1279b971e2f42cbaf6bd82e022f2b",
+      "destination": "src/algorithm/GP_MP/receiver.py",
+      "destination_sha256": "c07d6ee38a01f709db2e03fb253b47b94f5f99adcda8f6aafcb6d6c973d0a5d9",
+      "scope": "exact Receiver.infer numeric AST"
+    },
+    {
+      "source": "src/algorithm/C_STMP_phase_frontend_marginal_20261104/receiver.py",
+      "source_sha256": "c8ff38ace2b0375e58b7e8b900e7c048fdec02e00f9bf259064392b7a0ffb21f",
+      "destination": "src/algorithm/GP_MP/phase_receiver.py",
+      "destination_sha256": "28e6e78fc762f060d006dbaf413d0b9defe6969c74bbb28a7414d3eb29efb3d2",
+      "scope": "same unknown-phase infer body; remove known-phase branch; independent context"
+    },
+    {
+      "source": "src/evaluation/white_phase_frontend_20261106/receiver.py",
+      "source_sha256": "a10768cb173984928fa9bfa6b23dfa45e3c4f0e430dcd4b46a2170ea6bbcb74a",
+      "destination": "src/algorithm/GP_MP/phase_receiver.py",
+      "destination_sha256": "28e6e78fc762f060d006dbaf413d0b9defe6969c74bbb28a7414d3eb29efb3d2",
+      "scope": "same white binding verification; no historical superclass"
+    },
+    {
+      "source": "src/algorithm/C_STMP/moments.py",
+      "source_sha256": "7e0d9b3928c12ed60c135125fef13626dd274ac3c7815101f2b1e98c084989e9",
+      "destination": "src/algorithm/GP_MP/denoising.py",
+      "destination_sha256": "9b306c95cf3b8c72ce6d2dda70710701796e52124388965182ab0b20ba6f1b3d",
+      "scope": "standalone AWGN mean path; variance probes omitted, CPU comparison exact; default batch4"
+    }
+  ],
+  "ast_checks": [
+    {
+      "check": "src/algorithm/GP_MP/iterations.py",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/initialization.py",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/operators.py",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/model.py:CovarianceConditionedNetwork",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/model.py:PreconditionedMean",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/covariance.py:Covariance",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/covariance.py:pack",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/covariance.py:unpack",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/covariance.py:hermitian_power",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/moments.py:Moments",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/moments.py:trace_variance",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "src/algorithm/GP_MP/configuration.py:require",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "known-phase Receiver.infer",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "unknown-phase numerical infer body after input guards",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "checkpoint loader except additional strict white-training guard",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    },
+    {
+      "check": "binding verifier except additional strict white specification guard",
+      "status": "PASS",
+      "normalization": "mechanical class names and docstrings only"
+    }
+  ],
+  "preserved_numerics": [
+    "network state_dict keys and tensors",
+    "FP32 operation order",
+    "vI covariance condition",
+    "finite-difference probes and seed",
+    "posterior-residual variance adaptation",
+    "damping and all stopping controls",
+    "marginal phase estimation once then fixed",
+    "observation-based noise estimate"
+  ],
+  "explicit_changes": [
+    "local imports instead of historical colored/experiment packages",
+    "architecture class names only; serialized schema remains exact",
+    "strict checkpoint and denoiser specification max_strength=0 guards",
+    "independent known/estimated context records; estimated constructor never reports known phase",
+    "PhaseReceiver rejects ReceiverInput; only public UnknownPhaseInput allowed",
+    "Denoiser returns conditional mean without finite-difference variance calls; positive integer batch_size defaults to4"
+  ],
+  "metadata_compatibility": "Immutable old binding/phase/source records may retain historical paths/schema strings; hashed provenance, not runtime imports or loaded colored weights.",
+  "imported_common_modules": "algorithm.STMP scalar numerics, evidence architecture and records; no STMP score checkpoints loaded.",
+  "interfaces": {
+    "known_phase": "algorithm.GP_MP.receiver:Receiver(configuration, *, device=auto, noise_mode=estimated)",
+    "estimated_phase": "algorithm.GP_MP.phase_receiver:PhaseReceiver(configuration, *, device=auto, noise_mode=estimated)",
+    "denoising": "algorithm.GP_MP.denoising:Denoiser(configuration, *, device=auto, batch_size=4)"
+  },
+  "cpu_validation": {
+    "status": "PASS",
+    "tests": 15,
+    "elapsed_seconds": 5.73,
+    "command": "PYTHONPATH=src .venv/Scripts/python.exe -X utf8 -B -m pytest src/tests/test_gp_mp_mainline_20261107.py -q",
+    "warnings": 0,
+    "synthetic_fixtures_not_experiment_data": true,
+    "network_state_keys_and_weights_identical": true,
+    "small_cpu_forward_exact": true,
+    "mean_interface_matches_moment_mean_exact": true,
+    "fresh_process_no_retired_runtime_imports": true,
+    "cuda_not_initialized": true
+  },
+  "gpu_validation": "Not run by this extraction subtask; separate adoption replay required before experimental mainline use.",
+  "files": {
+    "src/algorithm/GP_MP/__init__.py": "0633ad3582417835c8f3a6007bfc298d046ccf205e769ae422e3e8eb102bedc7",
+    "src/algorithm/GP_MP/configuration.py": "2c822dc477ddf955da91d7c85b5105866074a523ade5d70fa0f5db39c78c3b42",
+    "src/algorithm/GP_MP/covariance.py": "154fec22c1f43b8f5f622cc8ec1f10880d7de31aeb71caf9171331d0e8de9f05",
+    "src/algorithm/GP_MP/denoising.py": "9b306c95cf3b8c72ce6d2dda70710701796e52124388965182ab0b20ba6f1b3d",
+    "src/algorithm/GP_MP/initialization.py": "4236557cce326f90141f656154c2eaea3729a31361acd4dbddf6b0130483404f",
+    "src/algorithm/GP_MP/iterations.py": "62592033cc71bdfbcb434f254640dbccd17d98f820a616d8e1cc666c91e565cc",
+    "src/algorithm/GP_MP/model.py": "efc46ddd4bf7659e9d2d803fab111820da16c27833642ff24dd798e22685dd39",
+    "src/algorithm/GP_MP/moments.py": "0a1cfa8f7472f265ea7a8042c9f762393c1ff193d6a22c0fbbbab1a4619c5267",
+    "src/algorithm/GP_MP/operators.py": "7f37527e2f3b90b75d6c28fc2797ca47d31b48d39a4eec12e5c938f807e03e57",
+    "src/algorithm/GP_MP/phase_receiver.py": "28e6e78fc762f060d006dbaf413d0b9defe6969c74bbb28a7414d3eb29efb3d2",
+    "src/algorithm/GP_MP/README.md": "0c21e69407735ac069dd5af7c53aca91bcc66c770be0c547bb097881c3205a5f",
+    "src/algorithm/GP_MP/receiver.py": "c07d6ee38a01f709db2e03fb253b47b94f5f99adcda8f6aafcb6d6c973d0a5d9"
+  },
+  "tests_sha256": "6d3741a150d4077930c8fbd4bcf52e89b3af9934964bf286058fc8b9159876a5"
+}

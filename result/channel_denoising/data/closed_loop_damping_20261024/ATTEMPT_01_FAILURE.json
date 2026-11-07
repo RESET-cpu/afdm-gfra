@@ -1,0 +1,5 @@
+{
+  "status": "FAILED",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\result\\channel_denoising\\data\\closed_loop_damping_20261024\\run.py\", line 206, in <module>\n    run(plan,base,candidate)\n    ~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\result\\channel_denoising\\data\\closed_loop_damping_20261024\\run.py\", line 187, in run\n    records.append(one(plan,base,candidate,case,kind,weight))\n                   ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\result\\channel_denoising\\data\\closed_loop_damping_20261024\\run.py\", line 162, in one\n    probs=z['probabilities']; estimate=z['estimate']\n                                       ~^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\Lib\\site-packages\\numpy\\lib\\_npyio_impl.py\", line 261, in __getitem__\n    raise KeyError(f\"{key} is not a file in the archive\")\nKeyError: 'estimate is not a file in the archive'\n",
+  "updated_unix": 1792844706.729223
+}

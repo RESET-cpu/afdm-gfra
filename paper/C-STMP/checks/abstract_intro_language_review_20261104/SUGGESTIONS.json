@@ -1,0 +1,210 @@
+[
+  {
+    "id": "A01",
+    "part": "摘要",
+    "path": "main.tex",
+    "priority": "建议修改",
+    "originals": [
+      "Numerical simulations demonstrate that the proposed receiver outperforms the baseline receiver in activity detection and channel estimation."
+    ],
+    "problem": "摘要独立阅读时，the baseline receiver 没有明确指代。",
+    "suggestion": "Numerical simulations demonstrate that the proposed receiver outperforms the white-noise-trained GP-MP baseline in activity detection and channel estimation.",
+    "boundary": "明确正文已定义的比较对象；不扩大成优于全部基线。GP-MP 是本文对照名称，不是新增技术术语。",
+    "locations": [
+      {
+        "line": 70,
+        "quote_verified": true
+      }
+    ]
+  },
+  {
+    "id": "A02",
+    "part": "摘要",
+    "path": "main.tex",
+    "priority": "可选优化",
+    "originals": [
+      "The learned prior is then incorporated into a message-passing (MP) receiver with two modules: multi-frame linear estimation (MFLE), which suppresses inter-user interference; and generative-prior-aided joint denoising (GPJD), which performs minimum mean-squared error (MMSE) denoising."
+    ],
+    "problem": "一句同时介绍接收机、两个模块名、缩写和各自功能，阅读负担较集中；MP 在摘要只出现一次。原句语法成立。",
+    "suggestion": "We incorporate the learned prior into a message-passing receiver with two modules: multi-frame linear estimation (MFLE) and generative-prior-aided joint denoising (GPJD). MFLE suppresses inter-user interference, while GPJD performs minimum mean-squared error (MMSE) denoising.",
+    "boundary": "仅拆句并去掉一次性 MP 缩写，模块名称、职责和 MMSE 表述保持；不是要求删掉所有缩写。原句也可保留。",
+    "locations": [
+      {
+        "line": 61,
+        "quote_verified": true
+      }
+    ]
+  },
+  {
+    "id": "A03",
+    "part": "摘要",
+    "path": "main.tex",
+    "priority": "内容选择；建议本轮暂不加",
+    "originals": [
+      "outperforms the baseline receiver in activity detection and channel estimation."
+    ],
+    "problem": "结果句只有定性比较。加入量化结果可使贡献更具体，但目前摘要约 193 词，结构完整，不存在必须补数字才能成立的问题。",
+    "suggestion": "若决定增加，可接在结果句后：With known phases and fixed per-frame pilot energy at a received signal-to-noise ratio of 0 dB, the proposed receiver reaches a normalized mean-squared error of −14 dB using 25% fewer frames than GP-MP among the evaluated pilot-frame counts.",
+    "boundary": "这是将正文已验证结果加入摘要，不属于纯语言修正。24 对 32 帧的依据见上一轮核验；不能删除测试帧数、已知相位及能量条件，把它概括为普遍节省 25%。本轮倾向不加，避免结果句挤占方法说明。",
+    "locations": [
+      {
+        "line": 72,
+        "quote_verified": true
+      }
+    ]
+  },
+  {
+    "id": "I01",
+    "part": "引言第3段",
+    "path": "sections/01_introduction.tex",
+    "priority": "可选优化",
+    "originals": [
+      "Its effective channel has three indices at each antenna, corresponding to Doppler, path delay, and the position of the received symbol along the delay dimension"
+    ],
+    "problem": "has three indices ... corresponding to 可以更直接，但原句没有技术或语法错误。",
+    "suggestion": "At each antenna, its effective channel is indexed by Doppler, path delay, and the position of the received symbol along the delay dimension",
+    "boundary": "Shen 的三个索引含义与原有引用保持；不为了压缩而把第三个索引误写成接收天线或删掉。",
+    "locations": [
+      {
+        "line": 39,
+        "quote_verified": true
+      }
+    ]
+  },
+  {
+    "id": "I02",
+    "part": "引言第3段",
+    "path": "sections/01_introduction.tex",
+    "priority": "建议修改",
+    "originals": [
+      "Its modulator consists of an inverse DFT and multiplications by two diagonal chirp matrices"
+    ],
+    "problem": "DFT 首次出现时未展开。该段之后不再使用此缩写，直接写全称即可。",
+    "suggestion": "Its modulator consists of an inverse discrete Fourier transform and multiplications by two diagonal chirp matrices",
+    "boundary": "只展开现有变换名称，保留 Bemani 引用；不新增 IDFT 缩写，不把 DFT 与 DAFT 混同。后续章节实际使用 DFT 缩写时，可在那一处再定义。",
+    "locations": [
+      {
+        "line": 42,
+        "quote_verified": true
+      }
+    ]
+  },
+  {
+    "id": "I03",
+    "part": "引言第4段开头",
+    "path": "sections/01_introduction.tex",
+    "priority": "建议修改",
+    "originals": [
+      "To realize the full potential of AFDM-GFRA, accurate joint activity detection and channel estimation (JADCE) is a crucial prerequisite"
+    ],
+    "problem": "full potential 与 crucial prerequisite 叠加强调，没有增加具体技术信息；可以更直接。",
+    "suggestion": "Accurate joint activity detection and channel estimation (JADCE) is essential for AFDM-GFRA",
+    "boundary": "保留 JADCE 的必要性及 Ding 引用。不是因为 crucial 命中词表就认定有问题，而是整句强调重复。",
+    "locations": [
+      {
+        "line": 52,
+        "quote_verified": true
+      }
+    ]
+  },
+  {
+    "id": "I04",
+    "part": "引言第4段",
+    "path": "sections/01_introduction.tex",
+    "priority": "可选优化",
+    "originals": [
+      "a compressed sensing (CS) problem"
+    ],
+    "problem": "CS 在引言只使用一次，括号缩写没有后续复用。原写法并不错误。",
+    "suggestion": "a compressed sensing problem",
+    "boundary": "只删除一次性缩写，compressed sensing 的含义、稀疏性论述及引用不变。",
+    "locations": [
+      {
+        "line": 54,
+        "quote_verified": true
+      }
+    ]
+  },
+  {
+    "id": "I05",
+    "part": "引言第5、6段",
+    "path": "sections/01_introduction.tex",
+    "priority": "可选优化",
+    "originals": [
+      "For massive random access, \\cite{ying2026} proposes a two-stage algorithm that first identifies active devices through a Transformer-based detector and then uses generative diffusion models for joint channel estimation and data detection.",
+      "Moreover, \\cite{cai2026} computes activity probabilities using Gaussian extrinsic messages obtained after projecting the channel posterior onto a Gaussian distribution."
+    ],
+    "problem": "两个句子都以引用编号作动作主语。工程论文常见，但改成方法或被动结构时，操作对象更自然。",
+    "suggestion": "For massive random access, the two-stage algorithm in \\cite{ying2026} first identifies active devices through a Transformer-based detector and then uses generative diffusion models for joint channel estimation and data detection.\n\nMoreover, in \\cite{cai2026}, activity probabilities are computed using Gaussian extrinsic messages obtained after projecting the channel posterior onto a Gaussian distribution.",
+    "boundary": "不改变对 Ying、Cai 的方法描述，不添加局限判断。两个位置可单独选择，不要求全篇改成同一种引文句法。",
+    "locations": [
+      {
+        "line": 69,
+        "quote_verified": true
+      },
+      {
+        "line": 88,
+        "quote_verified": true
+      }
+    ]
+  },
+  {
+    "id": "I06",
+    "part": "引言第6段",
+    "path": "sections/01_introduction.tex",
+    "priority": "删句选择；建议删除",
+    "originals": [
+      "A similar limitation has been highlighted for structured sensing matrices."
+    ],
+    "problem": "similar limitation 与前句近似重复，has been highlighted 没有明确由谁指出。该句承接不到一个新的具体事实。",
+    "suggestion": "删除这一句。前句结尾 errors and the white Gaussian noise used for training. 直接接下一句 This mismatch can degrade channel denoising accuracy and, consequently, JADCE performance.",
+    "boundary": "这是删去一条泛指文献陈述，不包装成语法修正。此前移除 Wei 引用时作者要求保留对应论述，所以本轮必须等作者选定；不自动恢复旧引用，也不重开 M3。",
+    "locations": [
+      {
+        "line": 85,
+        "quote_verified": true
+      }
+    ]
+  },
+  {
+    "id": "I07",
+    "part": "引言第6段",
+    "path": "sections/01_introduction.tex",
+    "priority": "可选优化",
+    "originals": [
+      "The score-based turbo message passing (STMP) algorithm in \\cite{cai2026}",
+      "performance. Moreover, \\cite{cai2026} computes activity probabilities using"
+    ],
+    "problem": "同一段先讲 AWGN 失配，再讲 Gaussian 近似对活动概率的影响，两条动机可以分开阅读。不是依据段落行数判定缺陷。",
+    "suggestion": "在 Moreover, ... 之前另起一段。前段保留 STMP、AWGN 条件与训练失配；后段保留活动概率及 Gaussian 近似。其余句序、内容和引用均保持。",
+    "boundary": "仅改变段落边界，不新增相关性诊断或技术路线辩护。若希望保持现有紧凑结构，也可不分。与 I05 的句法调整、I06 的删句相互独立。",
+    "locations": [
+      {
+        "line": 76,
+        "quote_verified": true
+      },
+      {
+        "line": 88,
+        "quote_verified": true
+      }
+    ]
+  },
+  {
+    "id": "I08",
+    "part": "第一项贡献",
+    "path": "sections/01_introduction.tex",
+    "priority": "建议修改",
+    "originals": [
+      "Additional pilot frames provide more observations without enlarging the channel tensor used by the learned prior."
+    ],
+    "problem": "第二章现已使用设备矩阵，网络部分才重排成三维数组；此处突然说 channel tensor，容易让人以为又引入不同对象。",
+    "suggestion": "Additional pilot frames provide more observations without enlarging the effective-channel representation used by the learned prior.",
+    "boundary": "用已有 effective-channel representation 统一呈现层次。矩阵与网络数组是同一组系数的重排，不能把原句说成维度错误；不改变随帧数增加而保持信道表示大小的结论。",
+    "locations": [
+      {
+        "line": 104,
+        "quote_verified": true
+      }
+    ]
+  }
+]

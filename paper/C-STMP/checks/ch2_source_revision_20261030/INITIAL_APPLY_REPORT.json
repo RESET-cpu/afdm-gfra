@@ -1,0 +1,676 @@
+{
+  "operation_count": 22,
+  "source_before_sha256": "94a99c98c0460c689285ea211827fb07974f935d79a8602cf0edc5b846c8e37a",
+  "source_after_sha256": "0afc16e78752ee18b28745542dc4f1a581eadab45ab8fb3658a28c27549bbbc2",
+  "numbered_equations_identical": 14,
+  "labels_unchanged": true,
+  "headings_unchanged": true,
+  "all_citation_keys_resolve": true,
+  "all_cross_reference_labels_resolve": true,
+  "protected_files_unchanged": [
+    "paper\\C-STMP\\sections\\01_introduction.tex",
+    "paper\\C-STMP\\sections\\03_bayesian_receiver_design.tex",
+    "paper\\C-STMP\\sections\\04_generative_priors.tex",
+    "paper\\C-STMP\\sections\\05_overall_algorithm.tex",
+    "paper\\C-STMP\\sections\\06_simulation_results.tex",
+    "paper\\C-STMP\\sections\\07_conclusion.tex",
+    "paper\\C-STMP\\sections\\appendix_afdm_channel_model.tex",
+    "paper\\C-STMP\\sections\\appendix_evaluation_protocol.tex",
+    "paper\\C-STMP\\sections\\appendix_implementation.tex",
+    "paper\\C-STMP\\sections\\appendix_parameter_estimation.tex",
+    "paper\\C-STMP\\sections\\appendix_second_order_training.tex",
+    "paper\\C-STMP\\figures\\activity_probability.pdf",
+    "paper\\C-STMP\\figures\\channel_denoising.pdf",
+    "paper\\C-STMP\\figures\\convergence.pdf",
+    "paper\\C-STMP\\figures\\cross_channel.pdf",
+    "paper\\C-STMP\\figures\\pilot_frames.pdf",
+    "paper\\C-STMP\\figures\\snr_comparison.pdf",
+    "paper\\C-STMP\\figures\\user_count.pdf",
+    "paper\\C-STMP\\main.tex",
+    "paper\\C-STMP\\references.bib",
+    "README.md",
+    "paper\\C-STMP\\README.md"
+  ],
+  "working_posterior_removed": true,
+  "operations": [
+    {
+      "part": "a",
+      "operation": 0,
+      "old": "In each transmission block, active devices\ntransmit their pilots over the same time-frequency resources.\n",
+      "new": "During each transmission block, active devices share the same\ntime-frequency resources to transmit their pilots to the satellite.\n",
+      "old_ids": [
+        "P01-S02"
+      ],
+      "source_refs": [
+        {
+          "key": "shen2025",
+          "page": 3,
+          "section": "II. System Model",
+          "quote": "During each time interval, active devices share the same time-frequency resources to transmit their signals to the satellite.",
+          "locator": "右栏 Fig.1 后第一段第三句。"
+        }
+      ],
+      "change_reason": "恢复 Shen 的 During ... share ... to transmit ... to the satellite 原句结构；time interval→transmission block、signals→pilots 是本稿对象限定。",
+      "necessary_substitutions": [
+        "time interval→transmission block",
+        "signals→pilots"
+      ],
+      "new_category": "TERM_ONLY"
+    },
+    {
+      "part": "a",
+      "operation": 1,
+      "old": "To reduce energy consumption, we assume that the devices operate\nwithout GNSS capabilities and do not pre-compensate for delay and Doppler shifts\n\\cite{shen2025}.",
+      "new": "Additionally, to minimize energy consumption, we assume that these\nterrestrial devices operate without GNSS capabilities and do not\npre-compensate for delay and Doppler shifts \\cite{shen2025}.",
+      "old_ids": [
+        "P01-S03"
+      ],
+      "source_refs": [
+        {
+          "key": "shen2025",
+          "page": 3,
+          "section": "II. System Model",
+          "quote": "Additionally, to minimize energy consumption, we assume that these terrestrial devices operate without GNSS capabilities and do not pre-compensate for delay and Doppler shifts.",
+          "locator": "右栏 Fig.1 后第一段第四句。"
+        }
+      ],
+      "change_reason": "恢复完整原句的 Additionally, to minimize ... these terrestrial devices；不再用 reduce 或压缩指代替代源措辞。",
+      "necessary_substitutions": [
+        "仅保留本稿引用键；英文原句恢复。"
+      ],
+      "new_category": "EXACT"
+    },
+    {
+      "part": "a",
+      "operation": 2,
+      "old": "The high mobility of the LEO satellite and multipath propagation\ngive rise to doubly dispersive terrestrial-satellite links (TSLs)\n\\cite{shen2025}. ",
+      "new": "The terrestrial-satellite links (TSLs) will experience fast variations\ndue to the high mobility of the LEO satellite. Hence, this time variation\nand multipath propagation require a doubly dispersive channel model\nfor accurate TSLs characterization \\cite{shen2025}. ",
+      "old_ids": [
+        "P02-S01"
+      ],
+      "source_refs": [
+        {
+          "key": "shen2025",
+          "page": 3,
+          "section": "II-A. Terrestrial-satellite Link Model",
+          "quote": "The TSLs will experience fast variations due to the high mobility of the LEO satellite. Hence, this time variation and multipath propagation require a doubly dispersive channel model for accurate TSLs characterization.",
+          "locator": "§II-A 起首两句。"
+        }
+      ],
+      "change_reason": "恢复 Shen 连续两句的高速引起时变、时变和多径要求双扩展模型的因果关系；仅首次将 TSLs 展开。不新增物理假设。",
+      "necessary_substitutions": [
+        "TSLs 首次出现展开为 terrestrial-satellite links (TSLs)。"
+      ],
+      "new_category": "TERM_ONLY"
+    },
+    {
+      "part": "a",
+      "operation": 3,
+      "old": "The differential delay\nof this path is $\\tau_{k\\ell}=\\widetilde\\tau_{k\\ell}-\\tau_c$, where\n$\\widetilde\\tau_{k\\ell}$ denotes its propagation delay. ",
+      "new": "$\\tau_{k\\ell}=\\widetilde\\tau_{k\\ell}-\\tau_c$ represents the differential\ndelay for the $\\ell$th path from device $k$ to the satellite, where\n$\\widetilde\\tau_{k\\ell}$ and $\\tau_c$ are denoted as propagation delay\nand common delay, respectively. ",
+      "old_ids": [
+        "P02-S05"
+      ],
+      "source_refs": [
+        {
+          "key": "shen2025",
+          "page": 3,
+          "section": "II-A. Terrestrial-satellite Link Model",
+          "quote": "As shown in Fig. 1, τ_{i,u} = τ̃_{i,u} − τ^c represents the differential delay for the i-th path from the u-th device to the satellite, where τ̃_{i,u} and τ^c are denoted as propagation delay and common delay, respectively.",
+          "locator": "Eq.(1) 后第二句。",
+          "eq": "(1)",
+          "note": "英文逐字核对；引语中的数学符号是原 PDF 的文本转写，原文共同延迟 c 为上标，本稿 τ_c 将其改为下标。"
+        }
+      ],
+      "change_reason": "恢复 Shen 的差值 represents differential delay ... where ... are denoted as ... respectively 结构；仅去掉本稿不存在的 Fig.1 指引，改路径/设备索引和共同延迟上下标。公式表达式保持不变。",
+      "necessary_substitutions": [
+        "i→ℓ、u→k、τ^c→τ_c。",
+        "删除 As shown in Fig.1，因为该图不属于本稿；the u-th device→device k。"
+      ],
+      "new_category": "TERM_ONLY"
+    },
+    {
+      "part": "a",
+      "operation": 4,
+      "old": "The common\ndelay $\\tau_c$ is the propagation time between the satellite and\nthe closest point on Earth within the beam coverage\n\\cite{shen2025}.",
+      "new": "The common delay $\\tau_c$ corresponds to the propagation time between\nthe satellite and the closest point on Earth within the beam coverage\n\\cite{shen2025}.",
+      "old_ids": [
+        "P02-S06"
+      ],
+      "source_refs": [
+        {
+          "key": "shen2025",
+          "page": 3,
+          "section": "II-A. Terrestrial-satellite Link Model",
+          "quote": "The common delay corresponds to the propagation time between the satellite and the closest point on earth within the beam coverage [21].",
+          "locator": "Eq.(1) 后 τ 差定义之后。",
+          "eq": "(1)"
+        }
+      ],
+      "change_reason": "将普通改写 is 恢复为源句 corresponds to；保留本稿已经定义的 τ_c 符号与 Earth 大写。",
+      "necessary_substitutions": [
+        "加入已经定义的 τ_c；earth→Earth；来源内部 [21]→shen2025。"
+      ],
+      "new_category": "TERM_ONLY"
+    },
+    {
+      "part": "a",
+      "operation": 5,
+      "old": "Here, $\\bigl(\\mu_{y,k},\\mu_{z,k}\\bigr)$ are the directional cosines,\n$\\bigl(d_y,d_z\\bigr)$ are the antenna spacings, and $\\lambda$ is the\nwavelength. ",
+      "new": "Here, $\\lambda$ is the wavelength, $\\bigl(d_y,d_z\\bigr)$ are the spacings\nbetween adjacent antennas along the y-axis and z-axis, and\n$\\bigl(\\mu_{y,k},\\mu_{z,k}\\bigr)$ are the directional cosines along these\naxes, respectively \\cite{shen2025,li2023}. ",
+      "old_ids": [
+        "P03-S02"
+      ],
+      "source_refs": [
+        {
+          "key": "shen2025",
+          "page": 3,
+          "section": "II-A. Terrestrial-satellite Link Model",
+          "quote": "The directional cosines Θ^z_u = cos ϑ^z_u and Θ^y_u = sin ϑ^z_u sin ϑ^a_u, along the z-axis and y-axis, depend on the zenith angle ϑ^z_u and azimuth angle ϑ^a_u, respectively.",
+          "locator": "§II-A 在本页末尾的最后一句。",
+          "eq": "(1)",
+          "note": "英文逐字核对；引语中的上下标及三角函数公式按原 PDF 转写。"
+        },
+        {
+          "key": "li2023",
+          "page": 4,
+          "section": "II-B. Signal Models",
+          "locator": "左栏第一完整段无编号 UPA 公式后的 where 分句：定义波长及沿相应轴的相邻阵元间距。本轮 notes 不复引英文。"
+        }
+      ],
+      "change_reason": "按主审确认，以 Shen 的 directional cosines/轴分句和 Li 的波长/相邻阵元间距分句作必要语法组合；不引入原文的角度变量、三角函数、阵列归一化或符号约定。将一般的阵元间距表述恢复为原文的“相邻阵元间距”定义，并作对应复数调整。",
+      "necessary_substitutions": [
+        "Li 的单轴 d_v→已有 (d_y,d_z)，spacing→spacings；删去 c、f_c、v 等本稿本句不需要的变量定义。",
+        "源 x/y 轴→本稿 y/z 轴；Shen 的 Θ_y,Θ_z→已有 μ_y,k,μ_z,k。",
+        "将 Shen 名词分句连为定义谓语，避免引入新角度变量；不宣称是单一完整原句。"
+      ],
+      "new_category": "REASONABLE_COMBINATION"
+    },
+    {
+      "part": "b",
+      "operation": 0,
+      "old": "Let $P_{qkn}\\in\\mathbb C$ denote the pilot symbol transmitted by\ndevice $k$ on chirp subcarrier $n$ in frame $q$. ",
+      "new": "Let $P_{qkn}\\in\\mathbb C$ be the pilot symbol transmitted by\nthe $k$-th device during the $q$-th AFDM frame on the $n$-th\nchirp subcarrier. ",
+      "old_ids": [
+        "P04.S02"
+      ],
+      "source_refs": [
+        {
+          "key": "cai2026",
+          "page": 4,
+          "section": "II-A",
+          "quote": "Let q_ktn ∈ C be the pilot symbol transmitted by the k-th device during the t-th OFDM symbol on the n-th subcarrier.",
+          "locator": "式(3)之前的导频标量定义"
+        }
+      ],
+      "change_reason": "恢复Cai的Let ... be ... transmitted by ... during ... on ...完整句法，只作P/q索引、OFDM symbol→AFDM frame及subcarrier→chirp subcarrier的必要对象替换。",
+      "clause_map": [
+        {
+          "source": "Cai II-A完整导频定义句",
+          "change": "q_ktn→P_qkn；t→q；OFDM symbol→AFDM frame；subcarrier→chirp subcarrier。"
+        }
+      ]
+    },
+    {
+      "part": "b",
+      "operation": 1,
+      "old": "Let $\\Delta f$ denote the subcarrier spacing and\n$T_s=1/(N\\Delta f)$ denote the sampling interval.\n",
+      "new": "The $k$-th device transmits signal $\\mathbf p_{qk}$ using AFDM\nmodulation with $N$ sub-carriers and sub-carrier spacing $\\Delta f$,\nwhere $T_s=1/(N\\Delta f)$ gives the sampling interval.\n",
+      "old_ids": [
+        "P05.S01"
+      ],
+      "source_refs": [
+        {
+          "key": "ding2026",
+          "page": 2,
+          "section": "II",
+          "quote": "and the k-th device transmits signal x_k using AFDM modulation with N sub-carriers and sub-carrier spacing Δf.",
+          "locator": "式(1)之前系统描述的并列分句"
+        },
+        {
+          "key": "ding2026",
+          "page": 2,
+          "section": "II",
+          "quote": "where T_s = 1/(NΔf) gives the sampling interval.",
+          "locator": "式(3)后where从句",
+          "eq": "(3)"
+        }
+      ],
+      "change_reason": "用Ding原句中完整发射分句与采样间隔where分句组合：去掉并列连接and并大写The，x_k替换为本稿导频向量p_qk。Δf和Ts关系不变，无新物理假设。",
+      "clause_map": [
+        {
+          "source": "Ding式(1)前完整并列分句",
+          "change": "去并列and，The首字母大写，x_k→p_qk。"
+        },
+        {
+          "source": "Ding式(3)后where采样间隔分句",
+          "change": "原句保留，连接到同一AFDM调制描述。"
+        }
+      ]
+    },
+    {
+      "part": "b",
+      "operation": 2,
+      "old": "For sample index $t=0,\\ldots,N-1$, applying the inverse discrete\naffine Fourier transform (IDAFT) to $\\mathbf p_{qk}$ yields the\ntime-domain transmitted signal \\cite{ding2026}\n\\begin{equation}\n s_{qk}[t]=\\frac{1}{\\sqrt N}\\sum_{n=0}^{N-1}\n P_{qkn}e^{j2\\pi(c_1t^2+c_2n^2+nt/N)},\n \\label{eq:afdm-time-signal}\n\\end{equation}\nwhere $c_1$ and $c_2$ are AFDM modulation parameters. ",
+      "new": "For sample index $t=0,\\ldots,N-1$, the time-domain transmitted\nsignal is generated through the inverse discrete affine Fourier\ntransform (IDAFT) applied to $\\mathbf p_{qk}$, mathematically\nformulated as \\cite{ding2026}\n\\begin{equation}\n s_{qk}[t]=\\frac{1}{\\sqrt N}\\sum_{n=0}^{N-1}\n P_{qkn}e^{j2\\pi(c_1t^2+c_2n^2+nt/N)},\n \\label{eq:afdm-time-signal}\n\\end{equation}\nwhere $c_1$ and $c_2$ are AFDM modulation parameters. ",
+      "old_ids": [
+        "P05.S02"
+      ],
+      "source_refs": [
+        {
+          "key": "ding2026",
+          "page": 2,
+          "section": "II",
+          "quote": "The time-domain transmitted signal is generated through the inverse discrete affine Fourier transform (IDAFT) applied to x_k, mathematically formulated as",
+          "locator": "引导分句；后接原式(1)",
+          "eq": "(1)"
+        },
+        {
+          "key": "ding2026",
+          "page": 2,
+          "section": "II",
+          "quote": "c1 and c2 are AFDM modulation parameters.",
+          "locator": "式(1)后参数释义"
+        }
+      ],
+      "change_reason": "撤销applying ... yields主动改写，恢复Ding原始主谓结构。现有t索引范围和显示公式原字节保留；参数原句用where连接，只有为完整公式句必要的语法连接。",
+      "clause_map": [
+        {
+          "source": "本稿既有索引声明",
+          "change": "For sample index及t=0,...,N−1原文保留，不冒称外部原句。"
+        },
+        {
+          "source": "Ding式(1)引导分句及参数原句",
+          "change": "x_k→p_qk；式(1)采用已审计的符号替换；参数句以where连接。"
+        }
+      ]
+    },
+    {
+      "part": "b",
+      "operation": 3,
+      "old": "Equivalently,\n\\eqref{eq:afdm-time-signal} can be written in matrix form as\n\\[\n \\mathbf s_{qk}=\\mathbf F_{\\rm A}^{\\mathsf H}\\mathbf p_{qk},\n\\]\nwhere\n\\begin{equation}\n \\begin{gathered}\n \\mathbf F_{\\rm A}\n =\\left[\\frac{1}{\\sqrt N}e^{-j2\\pi(c_2r^2+rt/N+c_1t^2)}\n \\right]_{r,t=0}^{N-1}\n \\end{gathered}\n \\label{eq:daft}\n\\end{equation}\nis the discrete affine Fourier transform (DAFT) matrix.",
+      "new": "The signal in \\eqref{eq:afdm-time-signal} can be represented in\nmatrix form as\n\\[\n \\mathbf s_{qk}=\\mathbf F_{\\rm A}^{\\mathsf H}\\mathbf p_{qk},\n\\]\nwhere\n\\begin{equation}\n \\begin{gathered}\n \\mathbf F_{\\rm A}\n =\\left[\\frac{1}{\\sqrt N}e^{-j2\\pi(c_2r^2+rt/N+c_1t^2)}\n \\right]_{r,t=0}^{N-1}\n \\end{gathered}\n \\label{eq:daft}\n\\end{equation}\ndenotes the discrete affine Fourier transform (DAFT) matrix.",
+      "old_ids": [
+        "P05.S03"
+      ],
+      "source_refs": [
+        {
+          "key": "ding2026",
+          "page": 2,
+          "section": "II",
+          "quote": "The signal in (1) can be represented in matrix form as",
+          "locator": "式(2)前原句引导分句",
+          "eq": "(2)"
+        },
+        {
+          "key": "huang2026",
+          "page": 2,
+          "section": "II",
+          "quote": "where A denotes the DAFT matrix",
+          "locator": "本页首段s=Aᴴx等式后的where分句；仅引此分句，不采用Ding矩阵分解中的F/Fᴴ不一致"
+        }
+      ],
+      "change_reason": "矩阵主句恢复Ding的The signal in ... can be represented；矩阵命名采用Huang的where A denotes the DAFT matrix。A换为本稿F_A并保留已定义的完整元素式，DAFT展开全称；所有显示数学原字节不动。",
+      "clause_map": [
+        {
+          "source": "Ding式(2)前主句",
+          "change": "式号换为本稿eq:afdm-time-signal。"
+        },
+        {
+          "source": "本稿正确矩阵等式/元素定义",
+          "change": "保持不变；不复制Ding F/Fᴴ或A/Aᴴ的笔误。"
+        },
+        {
+          "source": "Huang首段where命名分句",
+          "change": "A→F_A；DAFT写出全称以保留本稿首次定义。"
+        }
+      ]
+    },
+    {
+      "part": "b",
+      "operation": 4,
+      "old": "The chirp-periodic prefix (CPP) duration is chosen to satisfy\n$N_{\\rm CPP}T_s\\geq\\max_{k,\\ell}\\tau_{k\\ell}$.\n",
+      "new": "Assume that the chirp-periodic prefix (CPP) length is greater than\nor equal to the maximum channel delay spread, i.e.,\n$N_{\\rm CPP}T_s\\geq\\max_{k,\\ell}\\tau_{k\\ell}$.\n",
+      "old_ids": [
+        "P06.S01"
+      ],
+      "source_refs": [
+        {
+          "key": "cai2026",
+          "page": 4,
+          "section": "II-A",
+          "quote": "Assume that the cyclic prefix (CP) length exceeds the maximum channel delay spread.",
+          "locator": "式(3)之前的CP条件"
+        },
+        {
+          "key": "bemani2022",
+          "page": 8,
+          "section": "III-A",
+          "locator": "式(19)前长度条件允许L_cp等于所需最大delay spread样本数；只取其非严格比较用语，不复现完整原句",
+          "eq": "(19)之前"
+        }
+      ],
+      "change_reason": "采用Cai完整句骨架，CP→CPP；exceeds按Bemani既有非严格边界措辞适配，保持本稿≥而不收紧为>；i.e.后原不等式保持不变。",
+      "clause_map": [
+        {
+          "source": "Cai II-A前缀条件整句",
+          "change": "CP→CPP；比较关系按下项调整。"
+        },
+        {
+          "source": "Bemani III-A式(19)前长度条件",
+          "change": "仅使用非严格大小比较短语；保持已有数学边界。"
+        },
+        {
+          "source": "本稿既有不等式",
+          "change": "原式不动，i.e.仅连接同一条件。"
+        }
+      ]
+    },
+    {
+      "part": "b",
+      "operation": 5,
+      "old": "Fractional delays and Doppler shifts can cause\nsignificant power leakage in the effective channel matrix in\n\\eqref{eq:path-operator-system}, thereby weakening the sparsity of\n$H_k$ \\cite{huang2026}.",
+      "new": "In practical propagation environments, fractional Doppler\nshifts and fractional time delays can introduce significant\npower leakage in the effective channel matrix of\n\\eqref{eq:path-operator-system}, thereby weakening the sparsity of\n$H_k$ \\cite{huang2026}.",
+      "old_ids": [
+        "P07.S06"
+      ],
+      "source_refs": [
+        {
+          "key": "huang2026",
+          "page": 2,
+          "section": "II",
+          "quote": "In practical propagation environments, fractional Doppler shifts and fractional time delays can introduce significant power leakage in the effective channel matrix of (5), thereby weakening the sparsity of H_eff.",
+          "eq": "(5)后"
+        }
+      ],
+      "change_reason": "恢复Huang完整原句词序、限定语、can introduce及of方程引用，只替换已存在的本文方程引用和H_k符号；不把本稿G改称Huang完整原式，也不改G定义。",
+      "clause_map": [
+        {
+          "source": "Huang式(5)后完整泄漏句",
+          "change": "式(5)→现有eq:path-operator-system引用；H_eff→H_k；其余英文复原。"
+        }
+      ]
+    },
+    {
+      "part": "c",
+      "operation": 0,
+      "old": "Let $\\alpha_k$ denote the activity indicator of device $k$\n\\cite{cai2026}:\n\\[\n \\alpha_k=\\begin{cases}\n 1,&\\text{if the $k$th device is active},\\\\\n 0,&\\text{otherwise}.\n \\end{cases}\n\\]\n",
+      "new": "We use an indicator function $\\alpha_k$ to model the device activity as\n\\cite{cai2026}\n\\[\n \\alpha_k=\\begin{cases}\n 1,&\\text{if the $k$th device is active},\\\\\n 0,&\\text{otherwise}.\n \\end{cases}\n\\]\n",
+      "old_ids": [
+        "P09.S01"
+      ],
+      "source_refs": [
+        {
+          "key": "cai2026",
+          "page": "PDF p.4 / journal p.3578",
+          "section": "II-A",
+          "role": "content_support",
+          "quote": "We use an indicator function αk to model the device activity as",
+          "locator": "Left column, below Table I; cases: 1, if the k-th device is active; 0, otherwise.",
+          "eq": "(1)",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        },
+        {
+          "key": "cai2026_stmp_v2",
+          "page": "PDF p.4",
+          "section": "II-A",
+          "role": "content_support",
+          "locator": "Same indicator sentence and cases (1) as the formal version.",
+          "eq": "(1)"
+        }
+      ],
+      "change_reason": "恢复Cai II-A “We use an indicator function ... to model the device activity as”原句骨架；二值公式逐字不变。"
+    },
+    {
+      "part": "c",
+      "operation": 1,
+      "old": "The activity probability is denoted by $\\rho$, i.e.,\n$\\Pr(\\alpha_k=1)=\\rho$, with $\\rho\\ll1$. ",
+      "new": "Let $\\rho$ represent the probability of a device being active, i.e.,\n$\\Pr(\\alpha_k=1)=\\rho$, where $\\rho\\ll1$. ",
+      "old_ids": [
+        "P09.S02"
+      ],
+      "source_refs": [
+        {
+          "key": "cai2026",
+          "page": "PDF p.4 / journal p.3578",
+          "section": "II-A",
+          "role": "content_support",
+          "quote": "Let λ represent the probability of a device being active, i.e., p(αk = 1) = λ, where λ ≪ 1.",
+          "eq": "after (1)",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        }
+      ],
+      "change_reason": "恢复Cai II-A活动概率原句；仅λ→ρ及p→Pr符号适配，数学不变。"
+    },
+    {
+      "part": "c",
+      "operation": 2,
+      "old": "After removing the CPP and applying the DAFT, the received signal\n$\\mathbf Y_q\\in\\mathbb C^{M\\times N}$ during the $q$th AFDM\nframe is given by \\cite{cai2026}\n\\begin{equation}\n Y_{qmr}=[\\mathbf Y_q]_{mr}\n =\\sum_{k=1}^K\\sum_{n=0}^{N-1}A_{qkn}X_{kmrn}+W_{qmr},\n \\label{eq:observation-tensor}\n\\end{equation}\nwhere $\\mathbf W_q=[W_{qmr}]_{m,r}\\in\\mathbb C^{M\\times N}$ is an\nAWGN matrix with independent entries distributed as $\\CN(0,\\sigma^2)$.\n",
+      "new": "After removing the CPP and applying the DAFT, the received signal\n$\\mathbf Y_q\\in\\mathbb C^{M\\times N}$ during the $q$th AFDM\nframe is given by \\cite{cai2026}\n\\begin{equation}\n Y_{qmr}=[\\mathbf Y_q]_{mr}\n =\\sum_{k=1}^K\\sum_{n=0}^{N-1}A_{qkn}X_{kmrn}+W_{qmr},\n \\label{eq:observation-tensor}\n\\end{equation}\nwhere $\\mathbf W_q=[W_{qmr}]_{m,r}\\in\\mathbb C^{M\\times N}$ is an\nAWGN matrix with the elements i.i.d. drawn from $\\CN(0,\\sigma^2)$.\n",
+      "old_ids": [
+        "P09.S05"
+      ],
+      "source_refs": [
+        {
+          "key": "cai2026",
+          "page": "PDF p.4 / journal p.3578",
+          "section": "II-A",
+          "role": "content_support",
+          "quote": "After removing the CP and applying the DFT, the received signal Yt ∈ C^{N×M} during the t-th OFDM symbol is given by",
+          "locator": "Right column; Y_t = sum_k α_k Q_kt H_k + N_t, with Q_kt diagonal.",
+          "eq": "(3)",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        },
+        {
+          "key": "cai2026",
+          "page": "PDF p.4 / journal p.3578",
+          "section": "II-A",
+          "role": "content_support",
+          "quote": "where Nt ∈ C^{N×M} is an AWGN matrix with the elements i.i.d. drawn from CN(0, δ_0^2).",
+          "eq": "where after (3)",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        },
+        {
+          "key": "huang2026",
+          "page": "PDF p.2 / journal p.2950",
+          "section": "II, System Model",
+          "role": "content_support",
+          "locator": "AFDM effective input-output relation (4)–(5): an N×N effective channel matrix acts on an N-vector; supports non-diagonal symbol coupling.",
+          "eq": "(4)–(5)"
+        }
+      ],
+      "change_reason": "接收主句已按Cai的CP/DFT/OFDM替换为CPP/DAFT/AFDM，现只恢复where原词；W元素索引、双求和、全部维度是本稿数学适配，保持原字节。"
+    },
+    {
+      "part": "c",
+      "operation": 3,
+      "old": "Collecting the $Q$ received frames yields the matrix model\n\\begin{equation}\n \\mathbf Y=\\mathbf A\\mathbf X+\\mathbf W,\n \\label{eq:mmv}\n\\end{equation}\nwhere $\\mathbf Y,\\mathbf W\\in\\mathbb C^{Q\\times MN}$,\n$\\mathbf A\\in\\mathbb C^{Q\\times KN}$, and\n$\\mathbf X\\in\\mathbb C^{KN\\times MN}$.\n",
+      "new": "We express the received signal $\\mathbf Y$ over the $Q$ AFDM frames\nin a more compact form as\n\\begin{equation}\n \\mathbf Y=\\mathbf A\\mathbf X+\\mathbf W,\n \\label{eq:mmv}\n\\end{equation}\nwhere $\\mathbf Y,\\mathbf W\\in\\mathbb C^{Q\\times MN}$,\n$\\mathbf A\\in\\mathbb C^{Q\\times KN}$, and\n$\\mathbf X\\in\\mathbb C^{KN\\times MN}$.\n",
+      "old_ids": [
+        "P09.S06"
+      ],
+      "source_refs": [
+        {
+          "key": "cai2026",
+          "page": "PDF p.4 / journal p.3578",
+          "section": "II-A",
+          "role": "content_support",
+          "quote": "We express the received signal Y over the T OFDM symbols in a more compact form as",
+          "locator": "Y: NT×M; Q: NT×NK; X: NK×M. Stacks received subcarriers and time vertically.",
+          "eq": "(4)",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        },
+        {
+          "key": "shen2025",
+          "page": "PDF p.5",
+          "section": "II-C",
+          "role": "content_support",
+          "quote": "Next, we collect the Q received frames into a single matrix as",
+          "locator": "Collects OTFS observations Y_q^l over frames; this is not the present AFDM indexing.",
+          "eq": "(15)",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        }
+      ],
+      "change_reason": "恢复Cai II-A “We express the received signal Y over the T OFDM symbols in a more compact form as”主句；T/OFDM symbols→Q/AFDM frames。既有Q×MN、Q×KN、KN×MN及where定义不动，仍属本稿重排。"
+    },
+    {
+      "part": "c",
+      "operation": 4,
+      "old": "We estimate the full AFDM effective channel tensor $H_k$\nwithout imposing sparsity assumptions on its coefficients\n\\cite{huang2026}. ",
+      "new": "We directly estimate the full AFDM effective channel tensor $H_k$\nwithout imposing sparsity assumptions\n\\cite{huang2026}. ",
+      "old_ids": [
+        "P09.S08"
+      ],
+      "source_refs": [
+        {
+          "key": "huang2026",
+          "page": "PDF p.3 / journal p.2951",
+          "section": "III-A",
+          "role": "content_support",
+          "quote": "Since we directly estimate the full AFDM effective channel matrix Heff without imposing sparsity assumptions, using only one pilot sequence makes (6) underdetermined, so that multiple pilot sequences are required.",
+          "eq": "after (6)",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        }
+      ],
+      "change_reason": "逐词采用Huang III-A “we directly estimate the full AFDM effective channel matrix ... without imposing sparsity assumptions”分句；仅去Since使其独立成句，并将matrix H_eff适配为tensor H_k，不搬入其单导频因果条件。"
+    },
+    {
+      "part": "c",
+      "operation": 5,
+      "old": "Sporadic device activity gives $\\mathbf X$ a block-sparsity structure:\nif device $k$ is inactive, then $X_k=\\alpha_kH_k=\\mathbf 0$\n\\cite{cai2026}.",
+      "new": "Due to the sporadic access of the devices, matrix $\\mathbf X$ exhibits\na block-sparsity structure. Specifically, if the $k$th device is inactive,\nwe have $X_k=\\alpha_kH_k=\\mathbf 0$ \\cite{cai2026}.",
+      "old_ids": [
+        "P09.S10"
+      ],
+      "source_refs": [
+        {
+          "key": "cai2026",
+          "page": "PDF p.4 / journal p.3578",
+          "section": "II-A",
+          "role": "content_support",
+          "quote": "Due to the sporadic access of the devices, matrix X exhibits a block-sparsity structure. Specifically, if the k-th device is inactive, we have Xk = αkHk = 0.",
+          "eq": "after (4)",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        }
+      ],
+      "change_reason": "恢复Cai II-A两条连续原句的结构与词汇，不再用新主谓和冒号转述；零块公式不变。"
+    },
+    {
+      "part": "c",
+      "operation": 6,
+      "old": "Our objective is to jointly detect the active devices and estimate\ntheir channels from $\\mathbf Y$ within a Bayesian inference framework\n\\cite{cai2026}.",
+      "new": "In this paper, we aim to simultaneously detect the active devices\nand estimate the corresponding channels based on the observation\n$\\mathbf Y$ under a Bayesian inference framework \\cite{cai2026}.",
+      "old_ids": [
+        "P10.S01"
+      ],
+      "source_refs": [
+        {
+          "key": "cai2026",
+          "page": "PDF p.4 / journal p.3578",
+          "section": "II-B",
+          "role": "content_support",
+          "quote": "In this paper, we aim to simultaneously detect the active devices and estimate the corresponding channels based on the observation Y under a Bayesian inference framework.",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        }
+      ],
+      "change_reason": "恢复Cai II-B首句完整原文句法，只把观测Y使用本稿LaTeX符号；没有增加算法性能主张。"
+    },
+    {
+      "part": "c",
+      "operation": 7,
+      "old": "Here, $q$ denotes the working posterior, and\n$p(\\mathbf y_j\\mid\\mathbf x_j)=\\CN(\\mathbf y_j;\n\\widehat{\\mathbf A}\\mathbf x_j,\\widehat\\sigma^2\\I_Q)$ is the\nGaussian likelihood associated with \\eqref{eq:mmv}. ",
+      "new": "Here, $q$ denotes the joint posterior distribution, and\n$p(\\mathbf y_j\\mid\\mathbf x_j)=\\CN(\\mathbf y_j;\n\\widehat{\\mathbf A}\\mathbf x_j,\\widehat\\sigma^2\\I_Q)$ is the\nGaussian likelihood associated with \\eqref{eq:mmv}. ",
+      "old_ids": [
+        "P12.S02"
+      ],
+      "source_refs": [
+        {
+          "key": "cai2026",
+          "page": "PDF p.4 / journal p.3578",
+          "section": "II-B",
+          "role": "content_support",
+          "quote": "In message passing, we factorize the joint posterior distribution according to Baye’s theorem and the conditional independence relationships among the variables, expressed as",
+          "locator": "p(X,{H_k},{α_k}|Y) ∝ product_m p(y_m|x_m) product_k p(X_k|H_k,α_k)p(H_k)p(α_k).",
+          "eq": "(5)",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        },
+        {
+          "key": "cai2026",
+          "page": "PDF p.5 / journal p.3579",
+          "section": "II-B, Table II",
+          "role": "content_support",
+          "locator": "Table II rows: p(y_m|x_m)=CN(Qx_m,δ_0²I_NT); p(X_k|H_k,α_k)=δ(X_k−α_kH_k); p(H_k) unspecified; p(α_k)=(1−λ)δ(α_k)+λδ(1−α_k)."
+        }
+      ],
+      "change_reason": "移除未找到原词出处的working posterior，采用Cai II-B明确使用的joint posterior distribution。q、q_tr、给定估计、Gaussian似然及其公式不变；内部标签eq:working-posterior依标签不动要求保留。"
+    },
+    {
+      "part": "c",
+      "operation": 8,
+      "old": "We approximate these quantities by message passing with learned\ngenerative priors, avoiding direct integration over the\nhigh-dimensional posterior \\cite{cai2026}.\n",
+      "new": "Message-passing algorithms provide an iterative approach for\napproximately calculating these quantities by plugging in deep\ngenerative priors for efficient message calculation, eliminating\nthe need to compute high-dimensional integrals \\cite{cai2026}.\n",
+      "old_ids": [
+        "P13.S01"
+      ],
+      "source_refs": [
+        {
+          "key": "cai2026",
+          "page": "PDF p.4 / journal p.3578",
+          "section": "II-B",
+          "role": "content_support",
+          "quote": "Alternatively, message-passing algorithms [5], [6], [27], [47] provide a low-complexity iterative approach for approximately calculating the MMSE estimator.",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        },
+        {
+          "key": "cai2026",
+          "page": "PDF p.5 / journal p.3579",
+          "section": "II-B, concluding paragraph",
+          "role": "content_support",
+          "quote": "This paper seeks to address the aforementioned challenges by plugging in deep generative priors for efficient message calculation.",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        },
+        {
+          "key": "cai2026",
+          "page": "PDF p.5 / journal p.3579",
+          "section": "II-B, continuation above III",
+          "role": "content_support",
+          "quote": "This insight enables the integration of score-based generative networks for provable MMSE denoising, eliminating the need to compute high-dimensional integrals.",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        },
+        {
+          "key": "cai2026",
+          "page": "PDF p.4 / journal p.3578",
+          "section": "II-B",
+          "role": "content_support",
+          "quote": "Exact Bayesian estimators, e.g., the MMSE estimator, are generally intractable due to the high-dimensional integrals in the marginalization of the joint posterior distribution p(X,{Hk}_{k=1}^K,{αk}_{k=1}^K|Y).",
+          "quote_format": "英文措辞为原句/已注明的原句分句；数学排版用可读线性形式重建，非PDF逐字节转录。换行、连字、排版断词规范化。"
+        }
+      ],
+      "change_reason": "组合Cai II-B “message-passing algorithms ... provide ... iterative approach for approximately calculating”与“by plugging in deep generative priors for efficient message calculation”及“eliminating the need to compute high-dimensional integrals”三个可定位分句。these quantities指向本文q下两个目标；删去low-complexity修饰，不采用provable或新性能承诺。"
+    },
+    {
+      "part": "lead",
+      "operation": 0,
+      "old": "with $M=M_yM_z$ antennas serves $K$ single-antenna devices\n\\cite{ding2026}.",
+      "new": "with $M=M_yM_z$ antennas serves $K$ single-antenna devices\n\\cite{ding2026,shen2025}.",
+      "old_ids": [
+        "P01-S01"
+      ],
+      "source_refs": [
+        {
+          "key": "ding2026",
+          "page": 2,
+          "section": "II",
+          "locator": "AFDM-GF-RA系统起首句"
+        },
+        {
+          "key": "shen2025",
+          "page": 3,
+          "section": "II",
+          "locator": "UPA阵列维数Na=Nz×Ny的系统描述"
+        }
+      ],
+      "change_reason": "主审补齐该组合句中二维阵列维数的Shen来源；不改英文、数学或系统假设。"
+    }
+  ]
+}

@@ -1,0 +1,338 @@
+{
+  "status": "PASS",
+  "created_unix": 1793096236.9577606,
+  "main_identity": {
+    "pid": 110544,
+    "create_time": 1793095981.5996144,
+    "cmdline": [
+      "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-u",
+      "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\resource6_20261027\\resume.py",
+      "run"
+    ],
+    "parent_pid": 109264,
+    "started_unix": 1793095981.8699124,
+    "resource_override": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\resource6_20261027",
+    "plan_sha256": "6ca1e51d999f916830a0ea316128d43011827aa88ef01913813cb74f445ebbdd"
+  },
+  "actual_worker_count": 6,
+  "workers": [
+    {
+      "identity": {
+        "pid": 108644,
+        "create_time": 1793095981.9335055,
+        "cmdline": [
+          "D:\\afdm-gfra\\.venv\\base\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=110544, pipe_handle=736)",
+          "--multiprocessing-fork"
+        ],
+        "parent_pid": 110544,
+        "torch_threads": 2,
+        "torch_interop_threads": 1
+      },
+      "state": {
+        "scene": 135,
+        "index": 4,
+        "users": 100,
+        "pid": 108644,
+        "stage": "RUNNING",
+        "iteration": 60,
+        "updated_unix": 1793096220.8280087,
+        "estimate_change": 0.07570981240344006,
+        "unsupported_users": 0
+      }
+    },
+    {
+      "identity": {
+        "pid": 109084,
+        "create_time": 1793096025.1649032,
+        "cmdline": [
+          "D:\\afdm-gfra\\.venv\\base\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=110544, pipe_handle=788)",
+          "--multiprocessing-fork"
+        ],
+        "parent_pid": 110544,
+        "torch_threads": 2,
+        "torch_interop_threads": 1
+      },
+      "state": {
+        "scene": 134,
+        "index": 4,
+        "users": 100,
+        "pid": 109084,
+        "stage": "RUNNING",
+        "iteration": 80,
+        "updated_unix": 1793096211.0875494,
+        "estimate_change": 0.008288491646019022,
+        "unsupported_users": 0
+      }
+    },
+    {
+      "identity": {
+        "pid": 109400,
+        "create_time": 1793096175.0524497,
+        "cmdline": [
+          "D:\\afdm-gfra\\.venv\\base\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=110544, pipe_handle=984)",
+          "--multiprocessing-fork"
+        ],
+        "parent_pid": 110544,
+        "torch_threads": 2,
+        "torch_interop_threads": 1
+      },
+      "state": {
+        "scene": 135,
+        "index": 2,
+        "users": 60,
+        "pid": 109400,
+        "stage": "RUNNING",
+        "iteration": 60,
+        "updated_unix": 1793096217.4517505,
+        "estimate_change": 0.015190082444202491,
+        "unsupported_users": 0
+      }
+    },
+    {
+      "identity": {
+        "pid": 112788,
+        "create_time": 1793096025.16973,
+        "cmdline": [
+          "D:\\afdm-gfra\\.venv\\base\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=110544, pipe_handle=808)",
+          "--multiprocessing-fork"
+        ],
+        "parent_pid": 110544,
+        "torch_threads": 2,
+        "torch_interop_threads": 1
+      },
+      "state": {
+        "scene": 136,
+        "index": 2,
+        "users": 60,
+        "pid": 112788,
+        "stage": "RUNNING",
+        "iteration": 1,
+        "updated_unix": 1793096220.1251671,
+        "estimate_change": null,
+        "unsupported_users": 0
+      }
+    },
+    {
+      "identity": {
+        "pid": 112904,
+        "create_time": 1793095981.938037,
+        "cmdline": [
+          "D:\\afdm-gfra\\.venv\\base\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=110544, pipe_handle=716)",
+          "--multiprocessing-fork"
+        ],
+        "parent_pid": 110544,
+        "torch_threads": 2,
+        "torch_interop_threads": 1
+      },
+      "state": {
+        "scene": 133,
+        "index": 4,
+        "users": 100,
+        "pid": 112904,
+        "stage": "RUNNING",
+        "iteration": 220,
+        "updated_unix": 1793096220.144482,
+        "estimate_change": 0.001315478180734764,
+        "unsupported_users": 0
+      }
+    },
+    {
+      "identity": {
+        "pid": 33688,
+        "create_time": 1793096175.0491085,
+        "cmdline": [
+          "D:\\afdm-gfra\\.venv\\base\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=110544, pipe_handle=752)",
+          "--multiprocessing-fork"
+        ],
+        "parent_pid": 110544,
+        "torch_threads": 2,
+        "torch_interop_threads": 1
+      },
+      "state": {
+        "scene": 135,
+        "index": 3,
+        "users": 80,
+        "pid": 33688,
+        "stage": "RUNNING",
+        "iteration": 140,
+        "updated_unix": 1793096216.5312734,
+        "estimate_change": 0.0011875228780755455,
+        "unsupported_users": 0
+      }
+    }
+  ],
+  "saved_outputs_hash_checked": [
+    {
+      "pointer": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\results\\scene0131_condition02_STMP.json",
+      "scene": 131,
+      "users": 60,
+      "iterations": 162,
+      "converged": true
+    },
+    {
+      "pointer": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\results\\scene0131_condition03_STMP.json",
+      "scene": 131,
+      "users": 80,
+      "iterations": 166,
+      "converged": true
+    },
+    {
+      "pointer": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\results\\scene0131_condition04_STMP.json",
+      "scene": 131,
+      "users": 100,
+      "iterations": 215,
+      "converged": true
+    },
+    {
+      "pointer": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\results\\scene0132_condition02_STMP.json",
+      "scene": 132,
+      "users": 60,
+      "iterations": 200,
+      "converged": true
+    },
+    {
+      "pointer": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\results\\scene0132_condition03_STMP.json",
+      "scene": 132,
+      "users": 80,
+      "iterations": 249,
+      "converged": true
+    },
+    {
+      "pointer": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\results\\scene0132_condition04_STMP.json",
+      "scene": 132,
+      "users": 100,
+      "iterations": 219,
+      "converged": true
+    },
+    {
+      "pointer": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\results\\scene0133_condition02_STMP.json",
+      "scene": 133,
+      "users": 60,
+      "iterations": 194,
+      "converged": true
+    },
+    {
+      "pointer": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\results\\scene0133_condition03_STMP.json",
+      "scene": 133,
+      "users": 80,
+      "iterations": 218,
+      "converged": true
+    },
+    {
+      "pointer": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\results\\scene0134_condition02_STMP.json",
+      "scene": 134,
+      "users": 60,
+      "iterations": 190,
+      "converged": true
+    },
+    {
+      "pointer": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\results\\scene0134_condition03_STMP.json",
+      "scene": 134,
+      "users": 80,
+      "iterations": 184,
+      "converged": true
+    }
+  ],
+  "existing_preserved": 1399,
+  "algorithm_plan_run_report_unchanged": true,
+  "cross_channel_stays_paused": true,
+  "gpu_samples": [
+    [
+      55.0,
+      9678.0,
+      6300.0,
+      236.26,
+      59.0
+    ],
+    [
+      89.0,
+      9708.0,
+      6270.0,
+      236.12,
+      63.0
+    ],
+    [
+      90.0,
+      9708.0,
+      6270.0,
+      217.13,
+      65.0
+    ],
+    [
+      99.0,
+      9708.0,
+      6270.0,
+      254.34,
+      68.0
+    ],
+    [
+      89.0,
+      9707.0,
+      6271.0,
+      243.07,
+      63.0
+    ]
+  ],
+  "gpu_mean_utilization_percent": 84.4,
+  "current_status": {
+    "stage": "RUNNING",
+    "updated_unix": 1793096232.1156857,
+    "pid": 110544,
+    "completed": 1410,
+    "planned": 2500,
+    "completed_by_method_condition": {
+      "STMP": [
+        500,
+        500,
+        137,
+        138,
+        135
+      ]
+    },
+    "reused": 1012,
+    "newly_completed": 398,
+    "resume_newly_completed": 11,
+    "pending": 6,
+    "failed": 0,
+    "stop_reason": null,
+    "worker_capacity": 6,
+    "maximum_workers": 6,
+    "resource_override": "D:\\afdm-gfra\\result\\user_count\\data\\stmp_500_k60_k80_k100_beta01_20261027\\resource6_20261027",
+    "elapsed_seconds": 250.242600440979
+  },
+  "throughput_note": "Six workers have started and produced outputs. Initial mixed-scene warmup window is too short for a reliable speedup claim; no paired performance experiment performed."
+}

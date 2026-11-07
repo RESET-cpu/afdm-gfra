@@ -1,0 +1,690 @@
+=== PDF PAGE 1 ===
+arXiv:2112.04295v1  [eess.SP]  8 Dec 2021
+User Activity Detection and Channel Estimation of
+Spatially Correlated Channels via AMP in Massive
+MTC
+Hamza Djelouat, Leatile Marata, Markus Leinonen, Hirley Al ves, and Markku Juntti
+Centre for Wireless Communications – Radio Technologies, U niversity of Oulu, Finland
+e-mail: {hamza.djelouat,leatile.marata,markus.leinon en,hirley.alves,markku.juntti}@oulu.ﬁ.
+Abstract—This paper addresses the problem of joint user iden-
+tiﬁcation and channel estimation (JUICE) for grant-free ac cess in
+massive machine-type communications (mMTC). We consider t he
+JUICE under a spatially correlated fading channel model as t hat
+reﬂects the main characteristics of the practical multiple -input
+multiple-output channels. We formulate the JUICE as a spars e
+recovery problem in a multiple measurement vector setup and
+present a solution based on the approximate message passing
+(AMP) algorithm that takes into account the channel spatial
+correlation. Using the state evolution, we provide a detail ed
+theoretical analysis on the activity detection performanc e of
+AMP-based JUICE by deriving closed-from expressions for th e
+probabilities of miss detection and false alarm. The simula tion
+experiments show that the performance predicted by the theo ret-
+ical analysis matches the one obtained by the numerical resu lts.
+Index Terms —mMTC, activity detection, AMP, spatial corre-
+lation.
+I. I NTRODUCTION
+Grant-free access is as a key enabler for massive machine-
+type communications (mMTC) in order to support connec-
+tivity to a large number of users with sporadic activity and
+small signalling overhead requirements [1]. In contrast to the
+conventional scheduled access, mMTC with grant-free acces s
+allows the active users, referred to herein as user equipmen ts
+(UEs), to directly transmit information along with their un ique
+signatures to the base station (BS) without prior schedulin g,
+thus, resulting in collisions which is solved at the BS throu gh
+joint user identiﬁcation and channel estimation (JUICE).
+Motivated by the sparse user activity pattern, several spar se
+recovery algorithms have been proposed to solve the JUICE
+such as, approximate message passing (AMP) [2]–[6], sparse
+Bayesian learning (SBL) [7], mixed-norm minimization [8]–
+[10], and deep learning [11]. In particular, AMP has been
+widely investigated in the context of JUICE for mMTC with
+grant-free access. For instance, Chen et al. [2] analyzed analyt-
+ically the user activity detection performance for AMP-bas ed
+JUICE solution in both single measurement vector (SMV)
+and multiple measurement vector (MMV) setups. Liu and Y u
+[3], [4] extended the analysis presented in [2] and derived
+an asymptotic performance analysis for JUICE in terms of
+activity detection, channel estimation, and the achievabl e rate.
+Senel and Larsson [5] proposed a “non-coherent” detection
+scheme for very short packet transmission based on a modiﬁed
+version of AMP in order to jointly detect the active users alo ng
+with their transmitted information bits. Ke et al. [6] addressed
+the JUICE problem in an enhanced mobile broadband system
+and proposed a generalized AMP algorithm that exploits the
+sparsity in both the spatial and the angular domains.
+The vast majority of AMP-based JUICE works assume that
+the multiple-input multiple-output (MIMO) channels follo w an
+uncorrelated channel model. Although this assumption lead s to
+derive analytically tractable solutions [2], [3], it is not always
+practical as the MIMO channels are almost always spatially
+correlated [12]. Therefore, the performance analysis pres ented
+in the aforementioned works may not be suitable for practica l
+scenarios [11]. Recently, few works addressed the JUICE in
+spatially correlated MIMO channels. For instance, several
+mixed-norm minimization formulations using different lev els
+of prior knowledge of the channel distribution information
+(CDI) have been proposed in [8]–[10], whereas, Chen et al.
+[13] presented an orthogonal AMP algorithm to exploit both
+the spatial and the temporal channel correlation in mMTC
+systems. While these works have investigated a more practic al
+JUICE setup, they did not provide any theoretical analysis o n
+the user activity detection performance for the JUICE probl em.
+This paper aims to provide more insights on the JUICE
+performance under a more practical channel model. In par-
+ticular, we utilize a Bayesian AMP algorithm to solve the
+JUICE in spatially correlated MIMO channels. Furthermore,
+the paper provides a detailed analytical study for user acti vity
+detection performance by deriving closed-form expression s
+for the probabilities of miss detection and false alarm. The
+simulation experiments show that the predicted theoretica l
+analysis matches the numerical results.
+II. S YSTEM MODEL AND PROBLEM FORMULATION
+A. System Model
+We consider a single-cell uplink mMTC network consisting
+of a set N = {1,...,N } of uniformly distributed single-
+antenna UEs communicating with a BS equipped with a uni-
+form linear array (ULA) containing M antennas. We consider
+a block fading channel response over each coherence period
+Tc. Let hi ∈ CM denotes the channel response from the ith
+
+=== PDF PAGE 2 ===
+UE to the BS. We consider that the channel hi follows a
+correlated Rayleigh fading channel model given as
+hi = R
+1
+2
+i ¯hi, ∀i ∈ N , (1)
+where Ri = E[hihH
+i ] ∈ CM× M is the channel covariance
+matrix and ¯hi ∼ CN (0, IM ). Note that the vast majority of
+JUICE-related works consider independent Rayleigh fading
+channel with Ri = βiIM , which is a simpliﬁed version of
+(1). However, since the channels are typically correlated, we
+consider the more practical scenario with dense covariance
+matrices in order to characterize the channel spatial corre lation
+and the average path-loss in different spatial directions [ 12].
+The channel realizations hi, ∀i ∈ N , are assumed to be
+independent between different Tc. Furthermore, we consider
+UEs with low mobility, which is justiﬁed in the context
+of mMTC [14]. Hence, we adopt the common assumption
+that the channels are wide-sense stationary. Thus, the set o f
+channel covariance matrices {Ri}N
+i=1 vary in a slower time-
+scale compared to the channel realizations [12]. Furthermo re,
+{Ri}N
+i=1 are assumed to be known to the BS [13].
+In order to deploy a grant-free access scheme, we assume
+that all the UEs and the BS are synchronized. As the number of
+UEs in a typical mMTC network is very large, the BS cannot
+assign the UEs with orthogonal pilot sequences, because it
+would require a pilot sequence length of the same order as
+the number of UEs. Therefore, the BS assigns to the UEs non-
+orthogonal pilot sequences. More precisely, the BS generat es
+ﬁrst a pool of random pilot sequences that are drawn, for
+instance, from an independent identically distributed (i. i.d.)
+Gaussian or an i.i.d. Bernoulli distribution. Then, the BS
+assigns to each UE i ∈ N a unit-norm pilot sequence
+φi ∈ Cτp. This paper considers that the pilot sequences are
+generated from a complex symmetric Bernoulli distribution .
+This setup is motivated by the fact that: 1) pilot sequences
+generated from a complex symmetric Bernoulli distribution
+are practical as they can be deployed using quadratic phase
+shift keying (QPSK) modulation, 2) matrices drawn from a
+Bernoulli distribution are well suited for AMP-based suppo rt
+and signal recovery [5], [15] as we will discuss later.
+Due to the sporadic nature of mMTC, only a small subset
+of UEs are active at each Tc. At each Tc, the active UEs
+ﬁrst transmit their pilot sequences to the BS followed by
+transmitting the information data. The BS uses the received
+pilot sequences to identify the active UEs and estimate thei r
+channels in order to perform coherent data detection. Accor d-
+ingly, the received signal associated with the transmitted pilots
+at the BS, denoted by Y ∈ Cτp× M , is given by
+Y = ∑N
+i=1γiφihT
+i + W, (2)
+where W ∼ CN (0, σ2IM ) ∈ Cτp× M is additive white
+Gaussian noise, and γi ∈ B is the ith element of the binary
+user activity indicator vector γ = [γ1,γ 2,...,γ N ]T.
+The activity indicator γi is statistically modeled as
+a Bernoulli random variable with Pr(γi = 1) = ǫ and
+Pr(γi = 0) = 1 − ǫ. Subsequently, we deﬁne the effective
+channel of the ith UE as xi = γihi. Thus, effective channel
+xi has a mixed Gaussian-Bernoulli distribution, given as
+pxi = (1 − ǫ)δ(hi) +ǫphi (3)
+where phi ∼ CN (0, Ri) and δ(·) is the Dirac delta
+function. We deﬁne the effective channel matrix as
+X = [x1, x2,..., xN ] ∈ CM× N and the pilot sequence matrix
+as Φ = [ φ1, φ2,..., φN ] ∈ Cτp× N . Accordingly, we can
+rewrite the received pilot signals in (2) as
+Y = ΦXT + W. (4)
+B. Problem F ormulation
+The objective of JUICE is to identify the active UEs
+and estimate their channel responses. Therefore, the JUICE
+reduces to identifying the locations of the non-zero column s
+of the effective channel matrix X and estimating their coef-
+ﬁcients. Since XT is a row-sparse matrix, the JUICE can be
+modelled as joint support and signal recovery from an MMV
+setup. Subsequently, the canonical form of the JUICE can be
+presented as
+min
+X
+1
+2 ∥ΦXT − Y∥2
+F +β1∥XT∥2, 0, (5)
+where ∥XT∥2, 0 = ∑N
+i=1 1(∥xi∥2 ̸= 0) is the sparsity promot-
+ing penalty and β1 is a regularizer that controls the sparsity
+of the solution. Since the ℓ0-“norm” minimization is an
+intractable combinatorial NP-hard problem, several algor ithms
+have been proposed to relax (5). The existing recovery algo-
+rithms can be categorized into two classes depending on the
+required prior information on the sparse signal. The ﬁrst cl ass
+includes mixed-norm minimization and greedy algorithms,
+where the recovery exploits only the sparse structure of the
+signal. The second class consists of algorithms that requir e
+prior information on the distributions of a signal, for inst ance,
+AMP and SBL. Such prior information often renders the
+second class of algorithms to have superior sparse support
+and signal recovery performances.
+This paper exploits the assumption that the CDI is known
+to the BS and presents an AMP-based solution for the JUICE
+problem. In particular, we ﬁrst provide a detailed descript ion
+of AMP-based JUICE in spatially correlated channels. Secon d,
+we evaluate analytically the activity detection performan ce and
+we derive closed-form expressions for the probability of mi ss
+detection and the probability of false alarm.
+III. AMP FOR JUICE WITH SPATIALLY CORRELATED
+CHANNELS
+AMP is an iterative sparse recovery algorithm that has been
+proposed originally in [16] for the general sparse recovery
+problem in an SMV setup and extended to MMV setup in [17].
+Subsequently, AMP has been deployed to solve the JUICE in
+[2]–[6]. In this paper, we adopt a Bayesian AMP originally
+proposed in [18] for solving an MMV sparse recovery prob-
+lem. This section provides a description on the design of AMP
+for solving the JUICE in spatially correlated channels.
+
+=== PDF PAGE 3 ===
+The AMP algorithm for sparse signal recovery from an
+MMV setup can be expressed by the following iterations [18]:
+ˆx(t+1)
+i =η
+(
+Z(t)T
+φ ∗
+i + ˆx(t)
+i ; Σ(t))
+, (6)
+Z(t+1) = Y − ΦX(t+1)T
++ N
+τp
+∑N
+i=1
+η ′
+(
+Z(t)T φ ∗
+i +x(t)
+i
+)
+N , (7)
+wheret = 1, 2,... is the iteration index, ˆXt = [ ˆx(t)
+1 ,..., ˆx(t)
+N ]
+is the estimate of X at iteration (t), Z(t) ∈ Cτp× M is the
+residual matrix initialized with Z(1) = Y, and Σ(t) ∈ CM× M
+denotes a covariance matrix that can be tracked using the
+state evolution as we discuss later. Function η(·) represents
+the denoising function that operates on each row of XT
+individually, and η′(·) is the ﬁrst-order derivative of η(·). The
+third term in (7) is called the Onsager term and it is the key
+component in determining the performance of AMP [16].
+For the matrix Φ drawn from a Bernoulli distribution and
+under the assumption thatN,τ p → ∞ with a ﬁxed ratio τp
+N , the
+term θ(t)
+i = Z(t)T
+φ ∗
+i + x(t)
+i , ∀i ∈ N , is statistically equivalent
+to the sum of the true effective channel xi and a colored noise
+term e(t) ∼ CN (0, Σ(t)) as follows
+θ(t)
+i = xi + e(t), ∀i ∈ N . (8)
+Given the linear signal model (8) and by exploiting the fact
+that the CDI is known to the BS, a minimum mean square error
+(MMSE) based denoiser function η(θ(t)
+i ; Σ(t)) is calculated as
+η(θ(t)
+i ; Σ(t))= E[xi|θ(t)
+i ]
+=ψ (θ(t)
+i ; Σ(t))Ri(Ri + Σ(t))− 1θ(t)
+i , ∀i ∈ N ,
+(9)
+where
+ψ (θ(t)
+i ; Σ(t)) =
+(
+1 + 1 − ǫ
+ǫ exp
+(
+u(t)
+i − w(t)
+i
+) ) − 1
+, (10)
+with w(t)
+i = θ(t)H
+i Ξ(t)
+i θ(t)
+i , Ξ(t)
+i = Σ(t)− 1
+− (Ri + Σ(t))− 1,
+and u(t)
+i = log( |Ri+Σ(t)|
+|Σ(t)| ).
+The covariance matrix of the noise term Σ(t) can be
+tracked in the asymptotic regime via the state evolution. Mo re
+precisely, the matrix Σ(t) is updated at each iteration (t) using
+the following update rules [18]
+Σ(1) =σ 2IM + E[XXH]
+Σ(t+1) =σ 2IM + N
+τp
+1
+N
+∑N
+i=1(ψ (t)
+i − ψ (t)2
+i )q(t)
+i q(t)H
+i
++ψ (t)
+i Σ(t)Ri(Ri + Σ(t))− 1,
+(11)
+whereψ (t)
+i =ψ (θ(t)
+i ; Σ(t)), and q(t)
+i = Ri(Ri + Σ(t))− 1θ(t)
+i .
+IV. A CTIVITY DETECTION PERFORMANCE
+In this section, we derive closed-form expressions for the
+probabilities of miss detection and false alarm achieved by
+AMP in spatially correlated fading channels. The derivatio n
+hinges mainly on the equivalent system model (8) and the stat e
+evolution matrix (11). While the Gaussian system model in (8 )
+holds in the asymptotic regime, it can provide useful insigh t
+on the performance of the AMP for the practical mMTC setup
+where the number of connected UEs N is large, yet ﬁnite.
+A. Decision Threshold
+Here, we discuss the decision rule for the user activity
+detector on the AMP output. Let us examine the denoising
+function η(·) given in (9).
+Note that for any ﬁnite ǫ, ψ (θ(t)
+i ; Σ(t)) ∈ [0, 1]. Thus, by
+a closer look, one can see that the denoising function η(·, ·)
+consists of an activity indicator estimate ψ (θ(t)
+i ; Σ(t)) ∈ [0, 1]
+and a conventional MMSE estimate term Ri(Ri+Σ(t))− 1θ(t)
+i ,
+∀i ∈ N . Therefore, in order to set the decision rule for the user
+activity detector, one can use ψ (·; ·) to determine the activity
+status of each UE. More precisely, if ψ (t)
+i → 1, the ith UE is
+declared active, and if ψ (t)
+i → 0, the ith UE is declared not
+active. While the activity detection performance can be cha r-
+acterized at each iteration (t), it is typically more interesting to
+discuss performance upon AMP convergence. Thus, we omit
+the iteration index (t) in the following derivations for brevity.
+In a practical scenario, one would use a vector of pre-
+deﬁned threshold values l = [l1,...,l N ]T, such that li ∈ [0, 1],
+∀i ∈ N . The activity detector will declare the ith UE to be
+active if ψ i ≥ li, and inactive otherwise. The values of li,
+∀i ∈ N , can be selected based on the cost of miss detection
+and the cost of false alarm for each UE. This paper proposes
+the following decision rule on the UEs activity:
+ˆγi =
+{
+1, θH
+i Ξiθi≥ α i =ui − log
+(ǫ(1− li)
+li(1− ǫ)
+)
+0, θH
+i Ξiθi<α i =ui − log
+(ǫ(1− li)
+li(1− ǫ)
+) , ∀i ∈ N . (12)
+B. Probabilities of Miss Detection and False Alarm
+The activity detection performance is quantiﬁed using two
+types of error probabilities. First, the probability of fal se alarm,
+which represents the probability of declaring an inactive U E
+to be active. Second, the probability of miss detection, whi ch
+represents the probability of declaring an active UE as inac tive.
+The equivalent signal model (8) suggests that the term θi,
+∀i ∈ N , follows a zero-mean complex Gaussian distribution,
+i.e., θi ∼ CN (0, Ci). The covariance matrix Ci depends on
+the value of the true γi, and it is given as
+Ci =
+{
+Σ + Ri, γ i = 1
+Σ, γ i = 0 , ∀i ∈ N . (13)
+In order characterize the activity detection performance,
+we refer to (12) and deﬁne two complex quadratic Gaussian
+random variables Q1,i and Q0,i , ∀i ∈ N , as
+Q1,i = (θH
+i Ξiθi|γi = 1)
+Q0,i = (θH
+i Ξθi|γi = 0) , ∀i ∈ N . (14)
+Next, by using the decision rule in (12) and the random
+variables in (14), the probabilities of the miss detection a nd
+false alarm for each UE i are deﬁned, respectively, as
+P MD
+i = Pr( ˆγi = 0|γi = 1) = Pr(Q1,i ≤ α i
+)
+, ∀i ∈ N . (15)
+P F A
+i = Pr( ˆγi = 1|γi = 0) = Pr(Q0,i >α i
+)
+, ∀i ∈ N . (16)
+Now, let us consider a general complex Gaussian quadratic
+formQ = θHΞθ for a random variable θ ∼ CN (0, C) ∈ CM .
+
+=== PDF PAGE 4 ===
+By using some algebraic transformations, Q can be expressed
+as a linear combination of chi-squared random variables, as
+we show next. First, we write θ as
+Q = zHC
+1
+2
+H
+ΞC
+1
+2 z, (17)
+where θ = C
+1
+2 z for z ∼ CN (0, IM ). Let U and
+Λ = diag(λ 1,...,λ M ) denote the eigenvectors and the
+eigenvalues, respectively, associated with C
+1
+2
+H
+ΞC
+1
+2 . Thus,
+we can further express Q as
+Q = zHUΛUHz = vHΛv = ∑M
+m=1λ m|vm|2, (18)
+where v = [v1,...,v M ]T = UHz. Note that since U is a
+unitary matrix, v follows the same distribution as z, i.e.,
+v ∼ CN (0, IM ). We can rewrite vm = 1
+√
+2 (am +jbm) where
+am,b m ∼ N (0, 1), for m = 1 ,...,M . Therefore, Q can
+be ﬁnally expressed by a linear combination of zero-mean
+independent squared Gaussian random variables as
+Q = ∑M
+m=1
+1
+2λ m(a2
+m +b2
+m) = ∑M
+m=1
+1
+2λ mVm, (19)
+where Vm = a2
+m + b2
+m, m = 1 ,...,M . Note that Q can
+be viewed as a linear combination of M independent chi-
+squared random variables Vm ∼ χ 2
+2(1) with two degrees
+of freedom. Subsequently, a closed-form expression for the
+cumulative distribution function (CDF) of Q in (19) is given
+as [19, Sect. 4.3]
+FQ(α ) = Pr(Q ≤ α ) = ∑M
+m=1g(λ;m)
+¯γ (1, 2α
+λm )
+Γ(1) (20)
+where
+g(λ;m) =
+M∏
+j=1
+(− 1
+λ j
+)
+λ m lim
+k→ 1
+λm
+((
+k− 1
+λ m
+) M∏
+j=1
+(
+k− 1
+λ j
+) − 1
+)
+,
+(21)
+with Γ(·) denoting the gamma function, and ¯γ(·; ·) denoting
+the lower incomplete gamma function.
+Now after providing a closed-form expression for the CDF
+of a general complex quadratic form Q given in (17), we
+present Proposition 1 which characterizes the activity det ection
+performance based on the state evolution matrix Σ.
+Proposition 1. Consider user activity detection by the
+Bayesian AMP for mMTC in spatially correlated channels with
+ﬁnite N
+τp
+and largely enough N and τp so that the equivalent
+signal model (8) holds. Using the CDF expression (20), the
+probabilities of miss detection and false alarm per UE are
+given, respectively, as
+P MD
+i = ∑M
+m=1g(ˆλi;m)
+¯γ
+(
+1, 2α i ˆλ i,m
+)
+Γ(1) (22)
+P F A
+i = 1 − ∑M
+m=1g(¯λi;m)
+γ
+(
+1, 2α i/ ¯λ i,m
+)
+Γ(1) , (23)
+where ˆλi = [ ˆλ i, 1,..., ˆλ i,M ]T and ¯λi = [ ¯λ i, 1,..., ¯λ i,M ]T are
+the eigenvalues associated with (Ri + Σ)
+1
+2
+H
+Ξi(Ri + Σ)
+1
+2
+and Σ
+1
+2
+H
+ΞiΣ
+1
+2 , respectively.
+V. S IMULATION RESULTS
+We consider a single cell of radius of 100 m with a BS
+equipped with M antennas and surrounded by N = 1000
+uniformly distributed single-antenna UEs. We consider an
+activity level ǫ = 0. 05 at each Tc. The channel responses hi,
+for i ∈ N , are generated using a local scattering model for
+the channel covariance matrices [20, Sect. 2.2]. To mitigat e
+the channel gain differences between the UEs, we assume that
+each UE has a unit average channel gain, i.e., 1
+M Tr(Ri) = 1 ,
+∀i ∈ N . Furthermore, each UE is assigned with a normalized
+QPSK sequence φi drawn from an i.i.d. complex Bernoulli
+distribution.
+The activity detection performance is quantiﬁed in terms of
+the average miss detection P MD = 1
+N
+∑N
+i=1P MD
+i and false
+alarmP F A = 1
+N
+∑N
+i=1P F A
+i probabilities. Fig. 1 compares the
+the simulated and the predicted P MD andP F A. The simulated
+performance is obtained by running the AMP algorithm and
+deploying the decision rule (12) to detect the active UEs,
+whereas the predicted performance is obtained from the ana-
+lytical expressions (22) and (23). Fig. 1(a) shows the activ ity
+detection performance versus the pilot sequence length τp
+withM = 32 and a signal-to-noise ratio (SNR) = 10 dB. The
+obtained results suggest that increasing τp results in continual
+improvement in the activity detection performance. More
+interestingly, the results show clearly that the probabili ties of
+miss detection and false alarm derived in (22) and (23) match
+the simulation results obtained by AMP . Fig. 1(b) shows the
+same activity detection performance but with respect to the
+number of BS antennas M . As expected, the activity detec-
+tion performance improves signiﬁcantly with increasing M .
+Furthermore, similar to the results in Fig. 1(a), the simula ted
+results provide the same performance as the theoretical one s.
+Fig. 2 illustrates the channel estimation performance in
+terms of normalized average square error (NASE), deﬁned as
+E[∥XS − ˆXS ∥2
+F]
+E[∥XS ∥2
+F] , where the expectation is computed via Monte-
+Carlo averaging over all sources of randomness and S denotes
+the set of true active UEs. Fig. 2 compares AMP with two
+algorithms: 1) the oracle MMSE estimator, which is provided
+“oracle” knowledge on S, and 2) IRW-ADMM proposed in
+[8], where the JUICE is formulated as an iterative reweighte d
+ℓ2, 1-norm minimization and solved via the alternating direc-
+tion method of multipliers. Fig. 2 shows that AMP outperform s
+signiﬁcantly IRW-ADMM and it provides near-optimal NASE
+performance as it approaches the lower bound obtained by
+the oracle MMSE estimator. This result highlights the gain
+obtained by using rich side information at the BS: while IRW-
+ADMM operates only on the mere fact that the effective chan-
+nel is sparse, AMP utilizes both channel and noise statistic s,
+leading to better channel estimation performance.
+VI. C ONCLUSION
+This paper presented an AMP-based solution for the JUICE
+problem in mMTC under spatially correlated fading channels .
+By utilizing the properties of the state evolution of the AMP
+algorithm, the paper derived closed-form expression for bo th
+
+=== PDF PAGE 5 ===
+100 110 120 130 140 150 160 170 180 190 200
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12 10-4
+(a)
+10 15 20 25 30 35 40 45
+10-4
+10-3
+10-2
+10-1
+(b)
+Fig. 1: Probabilities of miss detection and false alarm obta ined by the AMP algorithm (simulation) and the derived theor etical
+results (predicted) versus: a) pilot length τp, b) number of BS antennas M .
+120 130 140 150 160 170 180 190 200
+10-1
+Fig. 2: Channel estimation performance in terms of NASE
+versus pilot length τp for M = 32, and SNR = 10 dB.
+the miss detection and false alarm probabilities. The simul ation
+experiments showed that the theoretical analysis provided in
+this paper matched the numerical results.
+ACKNOWLEDGEMENTS
+This work has been ﬁnancially supported in part by the
+Academy of Finland (grant 319485) and Academy of Finland
+6Genesis Flagship (grant 318927). The work of M. Leinonen
+has also been ﬁnancially supported in part by Infotech Oulu
+and the Academy of Finland (grant 340171 and 323698). H.
+Djelouat would like to acknowledge the support of Tauno Tön-
+ning Foundation, Riitta ja Jorma J. Takanen Foundation, and
+Nokia Foundation. L. Marata’s work is supported partially b y
+Botswana International University of Science and Technolo gy.
+REFERENCES
+[1] A. C. Cirik, N. M. Balasubramanya, L. Lampe, G. V os, and S. Bennett,
+“Toward the standardization of grant-free operation and th e associated
+NOMA strategies in 3GPP,” IEEE Commun. Stand. Mag. , vol. 3, no. 4,
+pp. 60–66, 2019.
+[2] Z. Chen, F. Sohrabi, and W. Y u, “Sparse activity detectio n for massive
+connectivity,” IEEE Trans. Signal Processing , vol. 66, no. 7, pp. 1890–
+1904, 2018.
+[3] L. Liu and W. Y u, “Massive connectivity with massive MIMO —part I:
+Device activity detection and channel estimation,” IEEE Trans. Signal
+Processing, vol. 66, no. 11, pp. 2933–2946, 2018.
+[4] ——, “Massive connectivity with massive MIMO—part II: Ac hievable
+rate characterization,” IEEE Trans. Signal Processing , vol. 66, no. 11,
+pp. 2947–2959, 2018.
+[5] K. Senel and E. G. Larsson, “Grant-free massive MTC-enab led massive
+MIMO: A compressive sensing approach,” IEEE Trans. Commun. ,
+vol. 66, no. 12, pp. 6164–6175, 2018.
+[6] M. Ke, Z. Gao, Y . Wu, X. Gao, and R. Schober, “Compressive s ensing-
+based adaptive active user detection and channel estimatio n: Massive
+access meets massive MIMO,” IEEE Trans. Signal Processing , vol. 68,
+pp. 764–779, 2020.
+[7] X. Zhang, Y .-C. Liang, and J. Fang, “Novel Bayesian infer ence algo-
+rithms for multiuser detection in M2M communications,” IEEE Trans.
+V eh. Technol., vol. 66, no. 9, pp. 7833–7848, 2017.
+[8] H. Djelouat, M. Leinonen, and M. Juntti, “Iterative rewe ighted algo-
+rithms for joint user identiﬁcation and channel estimation in spatially
+correlated massive MTC,” in Proc. IEEE Int. Conf. Acoust., Speech,
+Signal Processing, 2021, pp. 4805–4809.
+[9] H. Djelouat, M. Leinonen, L. Ribeiro, and M. Juntti, “Joi nt user identi-
+ﬁcation and channel estimation via exploiting spatial chan nel covariance
+in mMTC,” IEEE Wireless Commun. Lett , vol. 10, no. 4, pp. 887–891,
+2021.
+[10] H. Djelouat, M. Leinonen, and M. Juntti, “Spatial corre lation aware
+compressed sensing for user activity detection and channel estimation
+in massive MTC,” arXiv preprint arXiv:2104.08508 , 2021.
+[11] Y . Cui, S. Li, and W. Zhang, “Jointly sparse signal recov ery and support
+recovery via deep learning with applications in MIMO-based grant-free
+random access,” IEEE J. Select. Areas Commun. , vol. 39, no. 3, pp.
+788–803, 2021.
+[12] E. Björnson, L. Sanguinetti, and M. Debbah, “Massive MI MO with
+imperfect channel covariance information,” in Proc. Annual Asilomar
+Conf. Signals, Syst., Comp. , 2016, pp. 974–978.
+[13] Y . Cheng, L. Liu, and L. Ping, “Orthogonal AMP for massiv e access in
+channels with spatial and temporal correlations,” IEEE J. Select. Areas
+Commun., vol. 39, no. 3, pp. 726–740, 2021.
+[14] A. Laya, L. Alonso, and J. Alonso-Zarate, “Is the random access channel
+of LTE and LTE-A suitable for M2M communications? a survey of
+alternatives,” IEEE Commun. Surveys & Tutorials , vol. 16, no. 1, pp.
+4–16, 2013.
+[15] P . Schniter, “A simple derivation of AMP and its state ev olution via ﬁrst-
+order cancellation,” IEEE J. Select. Topics Signal Processing , vol. 68,
+pp. 4283–4292, 2020.
+[16] D. L. Donoho, A. Maleki, and A. Montanari, “Message-pas sing algo-
+rithms for compressed sensing,” Proceedings of the National Academy
+of Sciences , vol. 106, no. 45, pp. 18 914–18 919, 2009.
+[17] J. Ziniel and P . Schniter, “Efﬁcient high-dimensional inference in the
+multiple measurement vector problem,” IEEE Trans. Signal Processing ,
+vol. 61, no. 2, pp. 340–354, 2012.
+[18] J. Kim, W. Chang, B. Jung, D. Baron, and J. C. Y e, “Belief p ropagation
+for joint sparse recovery,” arXiv preprint arXiv:1102.3289 , 2011.
+[19] A. M. Mathai and S. B. Provost, Quadratic forms in random variables:
+theory and applications . Dekker, 1992.
+[20] E. Björnson, J. Hoydis, and L. Sanguinetti, “Massive MI MO networks:
+Spectral, energy, and hardware efﬁciency,” F oundations and Trends®
+in Signal Processing , vol. 11, no. 3-4, pp. 154–655, 2017. [Online].
+Available: http://dx.doi.org/10.1561/2000000093

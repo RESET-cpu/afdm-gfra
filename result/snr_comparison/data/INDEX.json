@@ -1,0 +1,195 @@
+{
+  "experiment": "snr_comparison",
+  "label": "SNR 对比",
+  "generated_utc": "2026-10-23T12:19:10.250586+00:00",
+  "entries": [
+    {
+      "entry": "baselines_adopted_20261025",
+      "status": "COMPLETE",
+      "original_target": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baselines_adopted_20261025",
+      "resolved_target": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baselines_adopted_20261025",
+      "summary_available": true,
+      "plan_available": false,
+      "evaluation_scenes": 1000,
+      "methods": [
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "results": 32000,
+      "completion": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baselines_adopted_20261025\\COMPLETE.json",
+      "completion_sha256": "c2b8adee448fec5f97cc81b4bce6b053e15056f048da1202a545970165db432f",
+      "summary": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baselines_adopted_20261025\\SUMMARY.json",
+      "report": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baselines_adopted_20261025\\REPORT.md",
+      "figures": "D:\\afdm-gfra\\result\\snr_comparison\\figures\\baselines_adopted_20261025\\FIGURES.json",
+      "independent_test": false,
+      "kind": "VERIFIED_EXISTING_BASELINE_REPLAY_PROJECTION"
+    },
+    {
+      "entry": "known_phase_1000_calibration1000_snr10_20261023",
+      "status": "RUNNING",
+      "original_target": "D:\\afdm-gfra\\result\\snr_comparison\\data\\known_phase_1000_calibration1000_snr10_20261023",
+      "resolved_target": "D:\\afdm-gfra\\result\\snr_comparison\\data\\known_phase_1000_calibration1000_snr10_20261023",
+      "summary_available": false,
+      "plan_available": true,
+      "evaluation_scenes": 1000,
+      "calibration_scenes": 1000,
+      "launch": "D:\\afdm-gfra\\result\\snr_comparison\\data\\known_phase_1000_calibration1000_snr10_20261023\\LAUNCH.json"
+    },
+    {
+      "entry": "current",
+      "status": "HISTORICAL_SUPERSEDED_2000_PLAN",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\snr_comparison_passive",
+      "resolved_target": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\snr_comparison_passive",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "shared",
+      "status": "SHARED_INPUTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared",
+      "resolved_target": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared",
+      "summary_available": false,
+      "plan_available": false
+    },
+    {
+      "entry": "scene_registry",
+      "status": "FROZEN_2000_SCENES",
+      "original_target": "D:\\afdm-gfra\\result\\lstmp_v3_shared2000_20261021",
+      "resolved_target": "D:\\afdm-gfra\\result\\lstmp_v3_shared2000_20261021",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "interim_193",
+      "status": "AUDITED_INTERIM_193",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\progress_snapshots\\20261023_154730",
+      "resolved_target": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\progress_snapshots\\20261023_154730",
+      "summary_available": true,
+      "plan_available": false
+    },
+    {
+      "entry": "interim_500",
+      "status": "AUDITED_INTERIM_500",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\progress_snapshots\\20261023_180346",
+      "resolved_target": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\progress_snapshots\\20261023_180346",
+      "summary_available": true,
+      "plan_available": false
+    },
+    {
+      "entry": "interim_800",
+      "status": "AUDITED_INTERIM_800",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\progress_snapshots\\20261023_202821",
+      "resolved_target": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\progress_snapshots\\20261023_202821",
+      "summary_available": true,
+      "plan_available": false
+    },
+    {
+      "entry": "history/final2000",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\final2000\\snr_comparison",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\final2000\\snr_comparison",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/known_phase500_20261022",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\known_phase500_20261022\\snr_comparison",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\known_phase500_20261022\\snr_comparison",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/lstmp_v3_formal2000_20261021",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\lstmp_v3_formal2000_20261021\\snr_comparison",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\lstmp_v3_formal2000_20261021\\snr_comparison",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_20261023",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_20261023\\snr_comparison",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_20261023\\snr_comparison",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "planned_2000_ten_layer",
+      "status": "PLANNED_NOT_STARTED",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_initialization_runtime_20261023\\snr_comparison",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_initialization_runtime_20261023\\snr_comparison",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_message_gem_20261022",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_message_gem_20261022\\snr_comparison",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_message_gem_20261022\\snr_comparison",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_runtime_20261023",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_runtime_20261023\\snr_comparison",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_runtime_20261023\\snr_comparison",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/baseline_comparison_500_20261018",
+      "status": "HISTORICAL_COMPLETE_DIFFERENT_PROTOCOL",
+      "original_target": "D:\\afdm-gfra\\result\\baseline_comparison_500_20261018",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\baseline_comparison_500_20261018",
+      "summary_available": true,
+      "plan_available": false
+    },
+    {
+      "entry": "baseline_calibration_reuse1000_20261023",
+      "status": "SUPERSEDED_HISTORICAL_DIAGNOSTIC",
+      "original_target": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_calibration_reuse1000_20261023",
+      "resolved_target": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_calibration_reuse1000_20261023",
+      "summary_available": false,
+      "plan_available": true,
+      "status_file": "STATUS.json",
+      "complete_file": "COMPLETE.json",
+      "report": "REPORT.md",
+      "frozen_readout": "FROZEN_READOUT.json",
+      "disposition": "SUPERSEDED.json"
+    },
+    {
+      "entry": "baseline_fixed_independent_20261023",
+      "status": "STOPPED_SUPERSEDED",
+      "original_target": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_fixed_independent_20261023",
+      "resolved_target": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_fixed_independent_20261023",
+      "summary_available": false,
+      "plan_available": true,
+      "status_file": "STATUS.json",
+      "frozen_readout": "FROZEN_READOUT.json",
+      "disposition": "SUPERSEDED.json"
+    },
+    {
+      "entry": "baseline_fixed_last500_20261023",
+      "status": "COMPLETE_FIXED_READOUT_FIRST1000",
+      "original_target": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_fixed_last500_20261023",
+      "resolved_target": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_fixed_last500_20261023",
+      "summary_available": true,
+      "plan_available": true,
+      "status_file": "STATUS.json",
+      "frozen_readout": "FROZEN_READOUT.json",
+      "summary": "first1000/SUMMARY.json",
+      "report": "REPORT.md",
+      "figures": "D:\\afdm-gfra\\result\\snr_comparison\\figures\\fixed_last500_first1000_20261023"
+    }
+  ],
+  "note": "Directory entries preserve source protocols; a stored plan or partial output is not a completed experiment.",
+  "updated_utc": "2026-10-25T15:59:31.511480+00:00",
+  "current_active_batch": null,
+  "previous_current_active_batch": "D:\\afdm-gfra\\result\\snr_comparison\\data\\known_phase_1000_calibration1000_snr10_20261023",
+  "current_baseline_result": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baselines_adopted_20261025"
+}

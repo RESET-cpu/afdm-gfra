@@ -1,0 +1,3530 @@
+=== PDF PAGE 1 ===
+1
+Sufficient-Statistic Memory AMP
+Lei Liu, Member, IEEE, Shunqi Huang, Yuzhi Yang,
+Zhaoyang Zhang, Senior Member, IEEE and Brian M. Kurkoski, Member, IEEE
+Abstract—Approximate message passing (AMP) type algo-
+rithms have been widely used in the signal reconstruction of
+certain large random linear systems. A key feature of the AMP-
+type algorithms is that their dynamics can be correctly described
+by state evolution. While state evolution is a useful analytic
+tool, its convergence is not guaranteed. To solve the convergence
+problem of the state evolution of AMP-type algorithms in
+principle, this paper proposes a sufficient-statistic memory AMP
+(SS-MAMP) algorithm framework under the conditions of right-
+unitarily invariant sensing matrices, Lipschitz-continuous local
+processors and the sufficient-statistic constraint (i.e., the current
+message of each local processor is a sufficient statistic of the
+signal vector given the current and all preceding messages). We
+show that the covariance matrices of SS-MAMP are L-banded
+and convergent, which is an optimal framework (from the local
+MMSE/LMMSE perspective) for AMP-type algorithms given
+the Lipschitz-continuous local processors. Given an arbitrary
+MAMP, we can construct an SS-MAMP by damping, which not
+only ensures the convergence of the state evolution, but also
+preserves the orthogonality, i.e., its dynamics can be correctly
+described by state evolution. As a byproduct, we prove that the
+Bayes-optimal orthogonal/vector AMP (BO-OAMP/V AMP) is an
+SS-MAMP. As a result, we recover two interesting properties
+of BO-OAMP/V AMP for large systems in the literature: 1)
+the covariance matrices are L-banded and are convergent, and
+2) damping and memory are not needed (i.e., do not bring
+performance improvement). As an example, we construct a
+sufficient-statistic Bayes-optimal MAMP (SS-BO-MAMP) whose
+state evolution converges to the minimum (i.e., Bayes-optimal)
+mean square error (MSE) predicted by replica methods when it
+has a unique fixed point. In addition, the MSE of SS-BO-MAMP
+is not worse than the original BO-MAMP. Finally, simulations
+are provided to support the theoretical results.
+Index Terms—Memory approximate message passing (AMP),
+orthogonal/vector AMP, convergence, sufficient statistic, damp-
+ing, L-banded covariance matrix, state evolution.
+I. I NTRODUCTION
+This paper studies the signal recovery of noisy linear
+systems: y = Ax + n, where y ∈ CM ×1 is the observed
+vector, A ∈ CM ×N a known matrix, x ∈ CN ×1 the signal
+vector to be recovered, and n ∈ CM ×1 a Gaussian noise
+vector. The goal is to recover x using y and A. This paper
+focuses on large-size systems with M, N → ∞ and a fixed
+δ = M/N. For non-Gaussian x, optimal recovery is in general
+NP-hard [2], [3].
+This article has been presented in part at the 2022 IEEE ISIT,
+Finland, [1]. The source code of this work is publicly available at
+sites.google.com/site/leihomepage/research.
+Lei Liu, Yuzhi Yang and Zhaoyang Zhang are with the Zhejiang Provin-
+cial Key Laboratory of Information Processing, Communication and Net-
+working, College of Information Science and Electronic Engineering, Zhe-
+jiang University, Hangzhou 310007, China. (e-mail: {lei liu, yuzhi yang,
+ning ming}@zju.edu.cn).
+Shunqi Huang and Brian M. Kurkoski are with the School of Information
+Science, Japan Institute of Science and Technology (JAIST), Nomi 923-1292,
+Japan (e-mail: {shunqi.huang, kurkoski}@jaist.ac.jp).
+A. Background
+Approximate message passing (AMP) is an approach for
+the signal recovery of high-dimensional noisy linear systems
+[4]. AMP has three crucial properties. First, the complexity of
+AMP is as low as O(M N) per iteration since it suppresses
+linear interference using a simple matched filter. Second, the
+dynamics of AMP can be tracked by state evolution [5].
+Most importantly, it was proved that AMP is minimum mean
+square error (MMSE) optimal for uncoded signaling [6], [7]
+and information-theoretically (i.e., capacity) optimal for coded
+signaling [8]. However, AMP is restricted to independent
+and identically distributed (IID) A [9], [10], which limits
+the application of AMP. To solve the weakness of AMP,
+unitarily-transformed AMP (UTAMP) was proposed in [11],
+[12], which works well for correlated matrices A. Orthog-
+onal/vector AMP (OAMP/V AMP) was established for right-
+unitarily-invariant matrices [13], [14]. The correctness of the
+state evolution of OAMP/V AMP was conjectured in [13] and
+proved in [14], [15]. The replica MMSE optimality and the
+replica information-theoretical optimality of OAMP/V AMP
+were proved respectively in [13], [16], [18] and [20], [21],
+when the state evolution has a unique fixed point. Recently,
+the correctness of the heuristic replica method was rigorously
+proved for some sub-classes of right-unitarily invariant ma-
+trices [17], [19]. However, the Bayes-optimal OAMP/V AMP
+requires linear MMSE (LMMSE) estimation whose complex-
+ity is as high as O(M2N + M3), which is prohibitive for
+large-scale systems.
+To solve the weakness of OAMP/V AMP, low-complexity
+convolutional AMP (CAMP) was proposed in [22]. However,
+CAMP may fail to converge, especially for ill-conditioned
+matrices. Apart from that, the AMP was also extended to
+solve the Thouless-Anderson-Palmer (TAP) equations in Ising
+models for unitarily-invariant matrices [23]. The results in
+[23] were justified via state evolution in [24]. More recently,
+memory AMP (MAMP) was established for unitarily-invariant
+matrices [25]. MAMP has a comparable complexity to AMP
+since it uses a low-complexity long-memory matched filter
+to suppress linear interference. In addition, the dynamics of
+MAMP can be correctly predicted by state evolution. More
+importantly, the convergence of the state evolution of MAMP
+is guaranteed by optimized damping. Apart from that, MAMP
+achieves MMSE optimality (predicted by replica method)
+when its state evolution has a unique fixed point.
+B. Motivation and Related Works
+A key feature of the AMP-type algorithms [4], [13], [14],
+[22], [23], [25]–[29] is that their dynamics can be rigorously
+described by state evolution [5], [14], [15], [24], [30]. While
+arXiv:2112.15327v4  [cs.IT]  30 Jun 2023
+
+=== PDF PAGE 2 ===
+2
+state evolution is a useful analytic tool, its convergence is not
+guaranteed [31]–[35]. Therefore, it is desired to find a new
+technique to guarantee the convergence of the state evolution
+of the AMP-type algorithms.
+Damping is generally used to improve the convergence of
+the AMP-type algorithms for finite-size systems [36]–[38].
+However, improper damping may break the orthogonality
+and Gaussianity, which may result in that the dynamics of
+damped AMP-type algorithms cannot be described by state
+evolution anymore [22]. Moreover, conventional damping in
+the literature was heuristic and empirical, and performed on the
+messages in current and last iterations. In [25], the authors first
+proposed an analytically optimized vector damping for Bayes-
+optimal MAMP (BO-MAMP) based on the current and all the
+preceding messages, which not only solves the convergence
+problem of MAMP, but also preserves orthogonality and
+Gaussianity, i.e., the dynamics of damped BO-MAMP can be
+correctly described by state evolution. Recently, the damping
+optimization in [25] has been used to analyze the convergence
+of the state evolution of Bayes-optimal OAMP/V AMP (BO-
+OAMP/V AMP) in [31] from a sufficient-statistic perspective.
+The works in [25], [31] proposed a novel principle to solve the
+convergence of the state evolution of AMP-type algorithms.
+C. Contributions
+In this paper, we try to answer a fundamental question about
+AMP-type algorithms:
+• What is the optimal framework (from the local
+MMSE/LMMSE perspective) for developing AMP-type
+algorithms given the local processors?
+Motivated by the damping optimization in [25] and its statis-
+tical interpretation in [31], this paper proposes a sufficient-
+statistic memory AMP (SS-MAMP) to solve the conver-
+gence problem of state evolution in AMP-type algorithms
+in principle. MAMP uses the current message and a history
+of preceding messages. The central idea is that the current
+message of each local processor is a sufficient statistic of x
+given the current and all preceding messages; it is a sufficient
+statistic in the MMSE/LMMSE sense. Thus, SS-MAMP is a
+MAMP [25] under a sufficient-statistic condition. We show
+that SS-MAMP has the following interesting properties.
+• SS-MAMP can be defined as a MAMP with L-banded
+covariance matrices (see Definition 3) whose elements
+in each “L band” are the same. As a result, the orig-
+inal covariance-based state evolution is reduced to a
+variance-based state evolution. Furthermore, some inter-
+esting properties are derived for the determinant and
+inverse of the L-banded covariance matrices.
+• The covariances in SS-MAMP are monotonically de-
+creasing and converge respectively to a certain value with
+the increase of the number of iterations. Hence, the state
+evolution of SS-MAMP is definitely convergent.
+• Damping is not needed, i.e., damping does not bring MSE
+improvement to SS-MAMP.
+• Memory is not needed for the Bayes-optimal local pro-
+cessor in SS-MAMP, i.e., joint estimation with preceding
+messages does not bring MSE improvement to the Bayes-
+optimal local processor in SS-MAMP.
+Given an arbitrary MAMP algorithm, we can construct an
+SS-MAMP algorithm using the optimal damping in [25]. The
+constructed SS-MAMP has the following interesting proper-
+ties.
+• The MMSE/LMMSE sufficient-statistic property (i.e., L-
+banded and convergent covariance matrices) is guaranteed
+by the optimal damping at each local processor, which
+preserves the orthogonality and Gaussianity of the origi-
+nal MAMP. Hence, the dynamics of the constructed SS-
+MAMP can be rigorously described by state evolution.
+• The MSE of the constructed SS-MAMP with optimal
+damping is not worse than the original MAMP.
+As a byproduct, we prove that the BO-OAMP/V AMP is an
+SS-MAMP using the orthogonality of local MMSE/LMMSE
+estimators. Therefore, BO-OAMP/V AMP inherits all the prop-
+erties of SS-MAMP: 1) The covariance matrices of BO-
+OAMP/V AMP are L-banded and convergent; 2) Damping is
+not needed, i.e., damping does not bring MSE improvement;
+3) Memory is not needed, i.e., step-by-step non-memory
+local estimation is optimal and jointly local estimation with
+preceding messages does not bring MSE improvement. These
+recover the main statements in [31].
+As an example, based on the BO-MAMP in [25], we
+construct a sufficient-statistic BO-MAMP (SS-BO-MAMP)
+using optimal damping for outputs of the linear estimator. We
+show that SS-BO-MAMP is an SS-MAMP, and thus inherits
+all the properties of SS-MAMP. The state evolution of SS-BO-
+MAMP is derived. We show that the MSE of SS-BO-MAMP
+is not worse than the original BO-MAMP in [25], and the
+state evolution of SS-BO-MAMP converges to the same fixed
+point as that of BO-OAMP/V AMP. Hence, SS-BO-MAMP is
+replica Bayes optimal when its state evolution has a unique
+fixed point. Numerical results are provided to verify that SS-
+BO-MAMP outperforms the original BO-MAMP in [25].
+Part of the results in this paper has been published in [1]. In
+this paper, we additionally give detailed proofs, illustrate that
+BO-OAMP/V AMP is sufficient-statistic, develop a sufficient-
+statistic Bayes-optimal memory AMP (SS-BO-MAMP), and
+provide some numerical results to verify the validity of the
+theoretical results in this paper.
+D. Connection to Existing Work
+Connection to the BO-MAMP in [25]: The optimized damp-
+ing technique is used in [25] to solve the convergence problem
+of the state evolution of BO-MAMP, which is a specific
+instance of MAMP. However, how to solve the convergence
+problem of the state evolution for arbitrary MAMP algorithms
+is still unclear. In this paper, based on the optimized damping
+technique in [25] and the sufficient-statistic technique moti-
+vated by [31], we propose an optimal SS-MAMP framework
+(from the local MMSE/LMMSE perspective) for AMP-type
+algorithms and solve the convergence problem of the state
+evolution for arbitrary MAMP algorithms in principle. Addi-
+tionally, we develop a new SS-BO-MAMP that outperforms
+
+=== PDF PAGE 3 ===
+3
+the BO-MAMP in [25], demonstrating the suboptimality of
+the BO-MAMP in [25].
+Connection to the BO-LM-MP in [31] : The convergence
+of state evolution recursions for Bayes-optimal long-memory
+message-passing (BO-LM-MP) is proved in [31] via a new
+statistical interpretation of the optimized damping technique
+in [25]. However, it only is limited to BO-LM-MP and BO-
+OAMP/V AMP which consist of the LMMSE filter and the
+Bayes-optimal denoiser. In this paper, we solve the conver-
+gence problem of the state evolution of arbitrary MAMP-
+type algorithms, i.e., the linear estimator is not limited to the
+LMMSE filter, and the denoiser is not limited to Bayes optimal
+processors, which includes but is not limited to the BO-LM-
+MP in [31] and BO-OAMP/V AMP in [13], [14]. In Section
+VI, we prove that BO-OAMP/V AMP is an instance of SS-
+MAMP based on the orthogonality of local MMSE/LMMSE
+estimators, and thus recover the main statements in [31], i.e.,
+damping and memory are not needed in BO-OAMP/V AMP,
+and the covariance matrices in BO-OAMP/V AMP are L-
+banded and convergent. Most importantly, the proposed SS-
+BO-MAMP in Section VII is a powerful example that goes
+beyond the findings in [31] because SS-BO-MAMP is based
+on a Bayes-suboptimal long-memory matched filter rather
+than the Bayes-optimal LMMSE linear estimator discussed in
+[31]. In the relevant sections, the similarities and differences
+between the specific results in this paper and those in [31] are
+clarified in detail.
+E. Other Related Work
+To solve a generalized linear model y = Q(Ax, n), where
+Q(·) can be non-linear such as clipping and quantization, a
+low-complexity generalized AMP (GAMP) [26] was devel-
+oped for A. Generalized V AMP (GV AMP) was proposed for
+the generalized linear model with unitarily-invariant A [27].
+The dynamics of GV AMP can be predicted by state evolution,
+based on which the MMSE optimality (predicted by replica
+methods) of GV AMP is proved in [30]. The information-
+theoretic limit (i.e., maximum achievable rate) of GV AMP
+was studied in [39]. Like OAMP/V AMP, GV AMP requires
+high-complexity LMMSE. Therefore, a low-complexity gen-
+eralized MAMP (GMAMP) was proposed for the generalized
+linear model with unitarily-invariant A [28]. The dynamics
+of GMAMP can be described by state evolution. In addition,
+it was proved that the state evolution fixed point of GMAMP
+coincides with the MMSE predicted by replica methods. Based
+on the AMP framework in [23], [24], a rotationally invariant
+AMP was designed in [29] for the generalized linear model
+with unitarily-invariant transformation matrices.
+The long-memory AMP algorithms can be classified into
+two categories. First, the CAMP [22], long-memory AMP
+[23], [24] and rotationally invariant AMP [29] consist of
+NLEs and a matched filter with Onsager correction terms,
+whose structure is similar to that of AMP [4] or GAMP [26].
+Second, the MAMP [25] and GMAMP [28] were consisted
+of orthogonal NLEs and an orthogonal long-memory matched
+filter, whose structure is similar to that of OAMP/V AMP [13],
+[14] or GV AMP [27].
+AMP-type algorithms have been successfully extended to
+handle various statistical signal processing problems such as
+low-rank matrix recovery [40], phase retrieval [41], commu-
+nity detection in graphs [42], general matrices in linear layers
+[43], and the multiple measurement vector (MMV) problem
+[44]–[46]. An overview of AMP’s applications was provided
+in [47]. Moreover, these techniques were found in a wide
+range of engineering applications such as imaging [48], deep
+learning [49], multiple-input multiple-output detection [50]
+and coded systems [8], [51]–[53]. The advantages of AMP-
+type algorithms over conventional turbo receivers [54]–[56]
+are demonstrated in [8], [20], [21], [53].
+F . Notation
+Bold upper (lower) letters denote matrices (column vec-
+tors). (·)T, (·)∗ and (·)H denote transpose, conjugate and
+conjugate transpose, respectively. E{·} denotes expectation.
+We let var{x|Y } = 1
+N ∥x − E{x|Y }∥2 and var{x|Y } =
+E
+
+var{x|Y }
+	
+. We say that x = xRe + xIm·i, where i = √−1
+represents the imaginary unit, is circularly-symmetric complex
+Gaussian if xRe and xIm are two independent Gaussian
+distributed random variables with E{xRe} = E{xIm} = 0
+and var{xRe} = var{xIm}. We define var{x} ≡ var{xRe} +
+var{xIm}. CN (µ, Σ) denotes the complex Gaussian distribu-
+tion of a vector with mean vector µ and covariance matrix Σ.
+AM ×N = [ai,j]M ×N , ⟨AM ×N |BM ×N ⟩ ≡ 1
+N AH
+M ×N BM ×N ,
+⟨a⟩ = 1
+N
+PN
+1 an represents the arithmetic mean of the
+elements, ∥ · ∥ denotes the ℓ2-norm, | · | the absolute value
+or modulus, X ∼ Y that X follows the distribution Y , and
+a.s.
+= almost sure equivalence (as N → ∞ unless otherwise
+specified). diag{·}, det{·} and tr(·) respectively denote the
+diagonal vector, the determinant and the trace of a matrix.
+min(·) and max(·) denotes the minimum and maximum value
+of a set. I, 1 and 0 are identity matrix, all-one matrix (or
+vector), and zero matrix (or vector) with the proper size,
+respectively. We letAI:J = [AI , AI+1, . . . ,AJ]. A matrix is
+said to be row-wise IID and column-wise jointly Gaussian if
+it has IID rows and each row is jointly Gaussian.
+Unbiased LMMSE: Let Xt = [x1, . . . ,xt] be the estimates
+of x and y = Ax + n be the noisy linear observation of x.
+An unbiased LMMSE estimation is defined as:
+LMMSE{x|y, xt} = Q⋆y +Pt
+i=1 P ⋆
+i xi, (1a)
+where
+[Q⋆, P ⋆
+1:t]= arg min
+[Q,P1:t],QA+Pt
+i=1Pi=I
+E
+
+∥Qy+Pt
+i=1P ⋆
+i xi −x∥2	
+.
+(1b)
+The MSE of the LMMSE estimation in (1) is given by
+lmmse{x|y, xt} = 1
+N ∥LMMSE{x|y, xt} − x∥2, (2)
+and the expectation MSE is given by
+lmmse{x|y, xt} = E
+
+lmmse{x|y, xt}
+	
+, (3)
+Intuitively, the LMMSE{·}, lmmse{·} and lmmse{·} above
+can be viewed as a type of a posteriori estimation E{·} and a
+posteriori variance var{·} and the expected variance var{·},
+respectively, under the condition that the a priori distribution
+
+=== PDF PAGE 4 ===
+4
+𝛾𝑡 𝜙𝑡
+𝒙!⋯𝒙"
+𝒓"⋯𝒓!𝑹"
+𝑿"
+Γ Φx(a)
+(b)
+Fig. 1. Graphic illustrations for (a) a system model with two constraints Γ
+and Φ, and (b) a memory iterative process involving two local processors γt
+(for Γ) and ϕt (for Φ) [25].
+p(x) of x is unknown. We will show that LMMSE{·},
+lmmse{·} and lmmse{·} inherits many properties of E{·},
+var{·} and var{·}, such as the orthogonality and sufficient-
+statistic properties. See Section IV for more details.
+G. Paper Outline
+This paper is organized as follows. Section II gives the
+preliminaries including problem formulation and memory
+AMP (MAMP). Section III introduces L-banded matrices.
+Section IV introduces the sufficient statistic and its proper-
+ties. Section V proposes a sufficient-statistic memory AMP
+(SS-MAMP). We prove that BO-OAMP/V AMP is sufficient-
+statistic in Section VI. A sufficient-statistic Bayes-optimal
+memory AMP (SS-BO-MAMP) is developed in Section VII.
+Numerical results are shown in Section VIII.
+II. P RELIMINARIES
+In this section, we first give the problem formulation and
+assumptions. Then, we briefly introduce the memory AMP and
+its properties.
+A. Problem Formulation
+Fig. 1(a) illustrates the noisy linear system with two con-
+straints:
+Γ : y = Ax + n, (4a)
+Φ : xi ∼ Px, ∀i, (4b)
+where n ∼ CN (0, σ2I), x is a length-N IID vector following
+a distribution Px, and A is an M × N measurement matrix. In
+addition, we assume that M, N → ∞ with a fixed δ = M/N.
+Assumption 1. The entries of x are IID with zero mean. The
+variance of x is normalized, i.e., lim
+N →∞
+1
+N E{∥x∥2}
+a.s.
+= 1 , and
+the (2 + ϵ)th moments of x are finite for some ϵ.
+Assumption 2. Let the singular value decomposition (SVD)
+of A be A = UΣV H, where U ∈ CM ×M and V ∈ CN ×N
+are unitary matrices, and Σ is a rectangular diagonal matrix.
+We assume that M,N → ∞ with a fixed δ = M/ N, and A
+is known and is right-unitarily-invariant, i.e., UΣ and V
+are independent, and V is Haar distributed (or equivalently,
+isotropically random). Furthermore, the empirical eigenvalue
+distribution of AAH converges almost surely to a compactly
+supported deterministic distribution with unit first moment in
+the large system limit, i.e., 1
+N tr{AAH}
+a.s.
+= 1 [22].
+B. Memory AMP
+Definition 1 (Memory Iterative Process) . A memory iterative
+process consists of a memory linear estimator (MLE) and
+a memory non-linear estimator (MNLE) defined as: Starting
+with t = 1,
+MLE : rt = γt(y, Xt) = Qty +Pt
+i=1 P t,ixi, (5a)
+MNLE : xt+1 = ϕt(Rt) , (5b)
+where Xt = [ x1 . . . xt], Rt = [ r1 . . . rt], QtA and P t,i
+are polynomials in AHA. Without loss of generality, we
+assume that the norms of Qt and {P t,i} are finite, and
+Qt +Pt
+i=1 P t,i = I (i.e., γt is unbiased). Hence, γt(·) in
+(5a) is Lipschitz-continuous [25].
+Fig. 1(b) gives a graphical illustration of a memory iterative
+process. The memory iterative process is degraded to the con-
+ventional non-memory iterative process if γt(Xt) = γt (xt)
+and ϕt(Rt) = ϕt (rt). Let
+Rt = X + Gt, (6a)
+Xt = X + Ft, (6b)
+where X = x · 1T, 1 is an all-ones vector with the proper
+size, and Gt = [ g1 . . . gt] and Ft = [ f1 . . . ft] indicate
+the estimation errors with zero means and the covariances as
+follows:
+V γ
+t ≡ ⟨Gt|Gt⟩, (7a)
+V ϕ
+t ≡ ⟨Ft|Ft⟩. (7b)
+Let {vγ
+i,j} and {vϕ
+i,j} be the elements of V γ
+t and V ϕ
+t ,
+respectively. We define the diagonal vectors of the covariance
+matrices as
+vγ
+t ≡ [vγ
+1 . . . v γ
+t ]T, (8a)
+vϕ
+t ≡ [vϕ
+1 . . . v ϕ
+t ]T, (8b)
+where vγ
+i = vγ
+i,i and vϕ
+i = vϕ
+i,i.
+Definition 2 (Memory AMP [25]) . The memory iterative
+process in (5) is said to be a memory AMP (MAMP) if the
+following orthogonal constraint holds for t ≥ 1:
+⟨gt|x⟩
+a.s.
+= 0 , (9a)
+⟨gt|Ft⟩
+a.s.
+= 0, (9b)
+⟨ft+1|Gt⟩
+a.s.
+= 0. (9c)
+The following lemma shows the asymptotically IID Gaus-
+sian property of MAMP.
+Lemma 1 (Asymptotically IID Gaussian) . Suppose that As-
+sumptions 1-2 hold, ˜γt(Ft, n, λ) : CN ×(t+2) → CN is a
+Lipschitz-continuous function and ˜ϕt(Gt, x):CN ×(t+1)→CN
+is a separable-and-Lipschitz-continuous function. Let ¯Gt =
+[¯g1, . . . ,¯gt], ¯Ft = [ ¯f1, . . . , ¯ft], and λ be the vector of
+eigenvalues of AHA. Then, we have [22, Theorem 1]
+
+˜γt(Ft, n, λ)
+ a.s.
+= E
+
+˜γt( ¯Ft, ¯n, λ)
+	
+, (10a)
+
+˜ϕt(Gt, x)
+ a.s.
+= E
+
+˜ϕt( ¯Gt, ¯x)
+	
+, (10b)
+where ¯n denotes the noise sampled from the same distribution
+
+=== PDF PAGE 5 ===
+5
+as that of n, ¯x denotes the signal sampled from the same
+distribution as that of x, and ¯Ft and ¯Gt are row-wise IID,
+column-wise jointly Gaussian and independent of ¯n and ¯x,
+i.e., for i = 1, . . . t,
+[ ¯fi,1, . . . ¯fi,t]
+IID
+∼ CN (0, V ϕ
+t ), (11a)
+[¯gi,1, . . .¯gi,t]
+IID
+∼ CN (0, V γ
+t ). (11b)
+If we let ˜γt and ˜ϕt be the performance measurement
+function of {γt} and {ϕt}, we obtain the following state
+evolution of MAMP Lemma 1.
+Lemma 2 (Asymptotically IID Gaussian) . Suppose that As-
+sumptions 1-2 hold. For MAMP with the orthogonality in (9),
+the {γt(·)} in (5a) and separable-and-Lipschitz-continuous
+{ϕt(·)} [57], the covariance matrices can be calculated by
+the following state evolution recursion [22, Theorem 1]:
+∀1 ≤ t′ ≤ t,
+vγ
+t,t′
+a.s.
+= E
+
+γt
+ ¯y, ¯X+ ¯Gt
+
+− ¯x
+γt′
+ ¯y, ¯X+ ¯Gt′
+
+− ¯x
+	
+, (12a)
+vϕ
+t+1,t′+1
+a.s.
+= E
+
+ϕt
+  ¯X+ ¯Ft
+
+− ¯x
+ϕt′
+  ¯X+ ¯Ft′
+
+− ¯x
+	
+, (12b)
+where ¯X = ¯x · 1T, ¯y = A¯x + ¯n, ¯n denotes the noise
+sampled from the same distribution as that of n, ¯x denotes the
+signal sampled from the same distribution as that of x, and
+¯Ft and ¯Gt are row-wise IID, column-wise jointly Gaussian
+and independent of ¯n and ¯x, i.e., for i = 1, . . . t,
+[ ¯fi,1, . . . ¯fi,t]
+IID
+∼ CN (0, V ϕ
+t ), (13a)
+[¯gi,1, . . .¯gi,t]
+IID
+∼ CN (0, V γ
+t ). (13b)
+Note that we can not strictly claim that the error matrices Gt
+and Ft are row-wise IID and column-wise jointly Gaussian,
+which is too strong. However, as it is shown in Lemma
+2, when evaluating the covariance matrices of the MAMP
+iterates, we can replace Gt and Ft by row-wise IID and
+column-wise jointly Gaussian matrices ¯Gt and ¯Ft with the
+same covariance matrices, respectively. To avoid confusion,
+we use different notations to refer to the MAMP iterates (i.e.,
+{x, y, Xt, Rt, Ft, Gt, n}) and the state evolution random
+variables (i.e., {¯x, ¯y, ¯Xt, ¯Rt, ¯Ft, ¯Gt, ¯n}).
+Lemma 3 (MAMP Construction [25]) . Given an arbitrary
+differentiable, separable and Lipschitz-continuous ˆϕt(Rt), and
+!𝛾𝑡 !𝜙𝑡
+𝜙𝑡𝛾𝑡
+𝒓!⋯𝒓"𝑹"
+𝒙"⋯𝒙!𝑿"
+−
+−Orth Orth
+1/𝜀!"
+1/𝜀"#pt
+ut
+Fig. 2. Graphic illustration of MAMP involving two local orthogonal
+processors γt (for Γ) and ϕt (for Φ), which are realized by orthogonalization
+for ˆγt and ˆϕt (see (15)) [25].
+a general {ˆγt} below
+ˆγt(y, Xt) = Qty +Pt
+i=1 Pt,ixi, (14)
+where QtA and Pt,i are polynomials in AHA, we can
+construct {γt} and {ϕt} for MAMP via orthogonalization:
+Orth : γt(y, Xt) = 1
+εγ
+t
+ 
+ˆγt(y, Xt) − Xtpt
+
+, (15a)
+Orth : ϕt(Rt) = 1
+εϕ
+t
+ ˆϕt(Rt) − Rtut
+
+, (15b)
+where
+εγ
+t = 1
+N tr
+
+QtA
+	
+, (15c)
+pt =
+ 1
+N tr{Pt,1} · · · 1
+N tr{Pt,t}
+T
+, (15d)
+ut =
+
+E
+ ∂ ˆϕt
+∂r1
+	
+· · · E
+ ∂ ˆϕt
+∂rt
+	T
+, (15e)
+and εϕ
+t is an arbitrary constant and generally is determined
+by minimizing the MSE of ϕt(·).
+Note that {γt(·)} and {ϕt(·)} in (15a) and (15b) satisfies
+the orthogonality in (9). Hence, (15) is a MAMP. Fig. 2 gives
+a graphic illustration of MAMP constructed by (15).
+The error covariance matrices of MAMP can be tracked by
+the following state evolution: Starting with vϕ
+1,1 = 1,
+MLE : vγ
+t,1:t = γSE
+t (V ϕ
+t ), (16a)
+NLE : vϕ
+t+1,1:t+1 = ϕSE
+t (V γ
+t ), (16b)
+where vγ
+t,1:t=[ vγ
+t,1, . . . , vγ
+t,t], vγ
+t+1,1:t+1=[ vγ
+t+1,1, . . . , vϕ
+t+1,t+1],
+and γSE
+t (·) and ϕSE
+t (·) are the MSE transfer functions given
+in (12) corresponds to γt(·) and ϕt(·), respectively. Without
+loss of generality, we assume that the transfer functions γSE
+t
+and ϕSE
+t satisfy the following assumption.
+Assumption 3. For any finite integer I, we have
+lim
+t→∞
+vγ
+t,t
+a.s.
+= [ γSE
+t (V ϕ
+I→t)]t,t, (17a)
+lim
+t→∞
+vϕ
+t+1,t+1
+a.s.
+= [ ϕSE
+t (V γ
+I→t)]t+1,t+1, (17b)
+where V ϕ
+I→t and V γ
+I→t are the covariance matrices of
+[xI . . . xt] and [rI . . . rt], respectively.
+The intuition behind Assumption 3 is as follows: When
+the number of iterations is very large, the initial finite es-
+timates have a negligible effect on the current estimation.
+For example, in the Bayes-optimal OAMP/V AMP [13], [14]:
+vϕ
+t+1,t+1 = ϕSE
+t (vγ
+t,t) and vϕ
+t+1,t+1 = γSE
+t (vϕ
+t,t) since both the
+NLE and LE are non-memory (See Section VI-B for more
+details). Therefore, Assumption 3 holds for the Bayes-optimal
+OAMP/V AMP. Apart from that, in Bayes-optimal MAMP
+[25]: vϕ
+t+1,t+1 = ϕSE
+t (vγ
+t,t) since the NLE is non-memory, and
+limt→∞ vγ
+t,t
+a.s.
+= [ γSE
+t (V ϕ
+I→t)]t,t since the inputs [x1 . . . xI] of
+MLE correspond to the high-order (i.e., t−1 to t−I) terms of
+the Taylor series, which tend to zero as t → ∞ (see Appendix
+G-B in [25]). That is, the transfer functions of Bayes-optimal
+MAMP in [25] satisfy Assumption 3.
+III. L-B ANDED MATRICES
+In this section, we introduce the L-banded covariance, L-
+banded matrix, and their properties that will be used.
+
+=== PDF PAGE 6 ===
+6
+A. Properties of L-Banded Covariance
+The following lemma is motivated by the optimal long-
+memory damping in [25]. A similar result was provided in
+[31, Lemma 4] independently.
+Lemma 4 (Damping is not Needed for L-Banded Covariance).
+Let st = x1t×1 + nt, where nt is zero mean with covariance
+matrix Vt (can be singular). If the elements in the last row
+and the last column of Vt are the same, i.e.,
+vt,i = vi,t = vt,t, ∀1 ≤ i ≤ t, (18)
+damping is then not needed for st (i.e., does not improve the
+MSE), i.e.,
+[0 . . .0 1]T = arg min
+ζt:ζT
+t 1=1
+E
+
+∥ζT
+t st − x∥2	
+. (19)
+Proof: See Appendix A.
+Lemma 5 (Inequality of L-Banded Covariance) . Let Vt be a
+t × t covariance matrix. If the elements in last row and last
+column of Vt are the same, i.e.,
+vt,i = vi,t = vt,t, ∀1 ≤ i ≤ t, (20)
+we then have
+vt,t ≤ vi,i, ∀1 ≤ i ≤ t. (21)
+Proof: Following the covariance inequality, we have
+|vt,i| ≤ √vt,tvi,i. (22)
+Since vt,i = vt,t, ∀i ≤ t, we then have
+vt,t ≤ vi,i, ∀i ≤ t. (23)
+Therefore, we complete the proof of Lemma 5.
+Lemma 4 and Lemma 5 apply to any covariance matrices
+for which only the elements in the last row and last column
+are the same, even if they are not invertible. Hence they
+are more general than [31, Lemma 4], which is limited to
+invertible L-banded covariance matrices (i.e., the elements in
+each “L band” of the matrix are the same (see Definition
+3)). In addition, [31, Lemma 4] was proved via its positive
+determinate, while the proof of Lemma 5 is based on the
+covariance inequality.
+B. L-Banded Matrix
+The analytically optimized vector damping (See Section
+III-C) was first proposed in [25], and plays a significant role in
+BO-MAMP. It was found that the covariance matrix of damped
+estimates exhibits a special structure where the entries in each
+“L band” are identical. Meanwhile, the covariance matrix with
+this special structure was also implicitly found by Takeuchi
+independently for the convergence proof of OAMP/V AMP
+in [31]. We refer to any matrix (not necessarily covariance
+matrix) with the special structure as an L-banded matrix.
+Definition 3 (L-Banded Matrix [25], [31]) . An t × t matrix
+Vt = {vi,j} is said to be L-banded if the elements in each “L
+band” of the matrix are the same, i.e.,
+vi,j = vmax(i,j), ∀1 ≤ i ≤ t, ∀1 ≤ j ≤ t. (24)
+That is,
+Vt =
+v1 v2 · · · vt
+v2 v2 · · · vt
+... ... ... ...
+vt vt · · · vt
+
+
+
+
+. (25)
+The following lemma provides the analytic expression of
+the inverse of an L-banded matrix, which can avoid the high-
+complexity matrix inverse.
+Lemma 6 (Inverse of L-Banded Matrix ). Let Vt be an t×t in-
+vertible L-banded matrix with diagonal elements {v1, . . . , vt},
+and V −1
+t = {v†
+i,j} be the inverse of Vt. Let v0 ≡ ∞, vt+1 ≡ 0
+and δi = vi − vi+1. Then, V −1
+t is a tridiagonal matrix given
+by
+v†
+i,j =
+
+
+
+δ−1
+i−1 + δ−1
+i , if 1 ≤ i = j ≤ t
+−δ−1
+min(i,j), if |i − j| = 1
+0, otherwise
+, (26)
+i.e.,
+V −1
+t =
+
+
+δ−1
+1 −δ−1
+1
+−δ−1
+1 δ−1
+1 +δ−1
+2 −δ−1
+2 0
+... ... ...
+0 −δ−1
+t−2 δ−1
+t−2+δ−1
+t−1 −δ−1
+t−1
+−δ−1
+t−1 δ−1
+t−1+v−1
+t
+
+
+.
+(27)
+Furthermore,
+1TV −1
+t = [V −11]T =
+
+0, . . . ,0, v−1
+t
+
+, (28a)
+1TV −1
+t 1 = v−1
+t , (28b)
+det(Vt) =
+tY
+i=1
+δi. (28c)
+From (28c), Vt is invertible if and only if
+vi ̸= vi+1, i = 1, . . . , t. (29)
+Proof: See Appendix B.
+Appendix B proves the inverse part in (27) by verifying
+that V −1
+t Vt = I. We also provided an inductive proof in
+[58, Appendix G]. The analytic expressions in (28) were also
+independently proposed in [31, Lemma 3]. In this paper, we
+obtain (28) straightforwardly from (27), while [31, Lemma 3]
+derived them by statistics and linear algebra. The following
+lemma gives the monotonicity and convergence of L-banded
+covariance matrices.
+Lemma 7 (Monotony and Convergence of L-Banded Co-
+variance Matrices) . Suppose that Vt is an t × t L-banded
+covariance matrix with diagonal elements {v1, . . . , vt}. Then,
+the sequence (v1, . . . , vt) is monotonically decreasing and
+converges to a certain value v⋆, i.e.,
+vi ≤ vj, if j ≤ i ≤ t, (30a)
+vt → v⋆, if t → ∞. (30b)
+
+=== PDF PAGE 7 ===
+7
+Proof: Since Vt is L-banded, following Lemma 5,
+vi ≤ vj, ∀j ≤ i. (31)
+That is, {vt} is monotonically decreasing with t. Furthermore,
+vi > 0, ∀i ≤ t, i.e., sequence (v1, . . . , vt) has a lower bound 0.
+Hence, if t → ∞, sequence {vt} converges to a certain value,
+i.e., limt→∞ vt → v⋆. Therefore, we complete the proof of
+Lemma 7.
+Similar to Lemma 5, since it applies to any L-banded covari-
+ance matrices, Lemma 7 is more general than [31, Lemma 3],
+which is limited to invertible L-banded covariance matrices.
+Moreover, the convergence of L-banded covariance matrices
+(i.e., vt → v⋆, if t → ∞) in Lemma 7 was not provided in [31,
+Lemma 3]. More fundamental and interesting properties of
+L-banded matrices, such as definiteness, LDL decomposition,
+Cholesky decomposition, minors and cofactors, were provided
+in [58].
+C. Construction of L-Banded Error Covariance Matrix
+1) Invertible Error Covariance Matrix: Given a Gaussian
+observation sequence with an invertible covariance matrix, the
+lemma below constructs a new sequence with an L-banded
+error covariance matrix, which was also provided in [31, Eqs.
+(5)-(9)] motivated by the optimal long-memory damping in
+[25].
+Lemma 8 (Damping for L-Banded Covariance Matrices) . Let
+zt = x1t×1 + ˜nt, where ˜nt is zero mean with invertible
+covariance matrix ˜Vt, which is not necessarily L-banded. We
+can construct a new sequence: For 1 ≤ i ≤ t,
+si = ζT
+i zi, (32a)
+where
+ζi =
+˜V −1
+i 1
+1T ˜V −1
+i 1
+. (32b)
+Then, we have st = x1t×1 + nt, where nt is zero mean with
+L-banded covariance matrix Vt.
+Proof: We prove Lemma 8 by induction.
+• When t = 1, ˜V1 is invertible since v1,1 > 0. From (32),
+we have s1 = z1. Therefore, V1 = ˜v1,1 is L-banded.
+• For 1 < τ ≤ t, assume that Vτ −1 is L-banded, we then
+prove that Vτ is L-banded. From (32), for i ≤ τ,
+vτ,i = E{n∗
+τ ni} (33a)
+= E{(ζT
+τ ˜nτ)∗ ˜nT
+i ζi} (33b)
+= ζH
+τ E{˜n∗
+τ ˜nT
+i }ζi (33c)
+= ζH
+τ [ ˜Vτ]1:τ,1:iζi (33d)
+= vτ,τ 1Tζi (33e)
+= vτ,τ , (33f)
+where (33e) follows (32) and Lemma 11 (which implies
+ζH
+τ [ ˜Vτ]1:τ,1:i = vτ,τ 1T), and (33f) follows ζT
+i 1 = 1 .
+Since Vτ −1 is L-banded and vτ,i = vi,τ = vτ,τ (see
+(33)), Vt is L-banded.
+Therefore, we complete the proof of Lemma 8.
+Intuitively, the i-th damping si = ζT
+i zi in (32) ensures that
+the elements in the i-th L-band of Vt are the same. Hence,
+the step-by-step damping in (32) results in an L-banded Vt.
+2) Singular Error Covariance Matrix: In Lemma 8, it
+assumes that ˜Vt is invertible. When ˜Vt is singular and ˜vi,i >
+0, ∀1 ≤ i ≤ t, we can construct st with an L-banded error
+covariance matrix as follows.
+For simplicity, we let It be an index set for effective
+elements whose covariance matrix is invertible, and its com-
+plementary set ¯It be the index set of the trivial elements.
+Hence, we have It ∩ ¯It = ∅ and It ∪ ¯It = {1, . . . , t}. We
+can obtain It using the following recursion: Starting from
+I1 = {1} and i = 2,
+Ii =
+(
+{Ii−1, i}, if ˜V{Ii−1,i} is invertible
+Ii−1, otherwise
+, (34)
+where ˜VS denotes the covariance matrix of {zi, i ∈ S} . For
+example, consider [z1, . . . , z4] and assume that ˜V1 and ˜V{1,3}
+are invertible, and ˜V{1,2} and ˜V{1,3,4} are singular. We have
+I4 = {1, 3} and ¯I4 = {2, 4}.
+We do not allow the trivial elements to join the damping
+process as they do not improve the MSE performance. Hence,
+{ζt,i = 0 , i ∈ ¯It}, i.e., ζ¯It = 0. Therefore, it only needs
+to optimize ζIt = [ ζt,i, i ∈ I t] for the effective elements.
+From (34), ˜VIt is invertible. Similarly to (32b), we then have
+ζIt = ˜V −1
+It 1/
+
+1T ˜V −1
+It 1
+
+. Therefore, we obtain the following
+lemma.
+Lemma 9 (Damping for L-Banded Covariance Matrices) . Let
+zt = x1t×1 + ˜nt, where ˜nt is zero mean with covariance
+matrix ˜Vt and ˜vi,i > 0, ∀1 ≤ i ≤ t. We can construct a new
+sequence: For 1 ≤ i ≤ t,
+si = ζT
+i zi, (35a)
+where
+ζIt =
+˜V −1
+It 1
+1T ˜V −1
+It 1
+, ζ¯It = 0. (35b)
+Then, we have st = x1t×1 + nt, where nt is zero mean with
+L-banded covariance matrix Vt. Furthermore, following (35),
+for all 1 ≤ i ≤ t − 1,
+si+1 = si, if V ϕ
+{Iϕ
+i ,i+1} is singular. (36)
+IV. S UFFICIENT STATISTIC
+In this section, we introduce the sufficient statistic and its
+properties.
+A. Sufficient Statistic
+Definition 4 (Sufficient Statistic). For any st = [s1 . . . st]T,
+st is a sufficient statistic of x given st, if st−1 — st — x is
+a Markov chain, i.e.,
+p(x|st) = p(x|st). (37)
+A sufficient statistic has the following straightforward
+proposition.
+
+=== PDF PAGE 8 ===
+8
+Proposition 1. We assume that st is a sufficient statistic of x
+given st, i.e., (37) holds for any st. Then, we have
+E{x|st} = E{x|st}. (38)
+Proposition 1 shows that if st is a sufficient statistic of
+x given the Gaussian observations st, the a-posterior (i.e.,
+MMSE) estimation of x based on st is equivalent to the a-
+posterior estimation based on st.
+The following lemma provides a sufficient statistic of Gaus-
+sian observations.
+Lemma 10 (L-Banded Covariance of Sufficient Statistics). Let
+st = x1t×1+nt, where st = [s1 . . . st]T and nt ∼ CN (0, Vt)
+with invertible Vt. For any st, st is a sufficient statistic of x
+given st if and only if
+vt,i = vi,t = vt,t, ∀1 ≤ i ≤ t. (39)
+That is, the elements in the last row and the last column of
+Vt are the same.
+Proof: See Appendix C.
+[31, Lemma 4] also provides the sufficiency for the whole
+L-banded covariance matrix Vt (see Definition 3). In contrast,
+Lemma 10 provides both sufficiency and necessity for a looser
+condition that only the elements in the last row and last column
+of Vt are identical.
+The following lemma gives the construction of a sufficient
+statistic given the Gaussian observations, which was also
+provided in [31, Eqs. (5)-(9)] motivated by the optimal long-
+memory damping in [25].
+Lemma 11 (Damping for a Sufficient Statistic) . Let zt =
+x1t×1 + nt, where zt = [ z1 . . . zt]T and nt ∼ CN (0, Vt)
+with invertible Vt. Then, a sufficient statistic of x given zt
+can be constructed by optimal damping [25]:
+st = ζT
+t zt, (40a)
+where
+ζt = V −1
+t 1
+1TV −1
+t 1 , (40b)
+because for i = 1, . . . , t,
+E{(st − x)∗ni}= E{(st − x)∗(st − x)}= 1
+1TV −1
+t 1 . (40c)
+Proof: Eqn. (40c) is derived by
+E{(st − x)∗nT
+t } = ζH
+t E{n∗
+t nT
+t } (41a)
+= ζH
+t Vt (41b)
+= 1T
+1TV −1
+t 1 , (41c)
+E{(st − x)∗(st − x)} = ζH
+t E{n∗
+t nT
+t }ζt (41d)
+= ζH
+t Vtζt (41e)
+= 1
+1TV −1
+t 1 , (41f)
+where (41a) and (41d) follow (40a), (41b) and (41e) follow
+E{n∗
+t nT
+t } = Vt, (41c) and (41f) follow (40b). From Lemma
+10 and (40c), st is a sufficient statistic of x given zt.
+B. MMSE/LMMSE Sufficient Statistic
+The rigorous sufficient statistic in (37) is defined on the ex-
+act a posteriori probabilities, which are generally unavailable
+in the iterative process including the AMP-type algorithms. To
+solve this issue, we generalize the sufficient statistic as follows
+from the MMSE and LMMSE perspectives.
+Definition 5 (MMSE Sufficient Statistic) . Suppose that As-
+sumptions 1-2 hold. We say rt is an MMSE sufficient statistic
+of x given Rt if
+var{x|Rt}
+a.s.
+= var {x|rt}. (42)
+Definition 6 (LMMSE Sufficient Statistic) . Suppose that
+Assumptions 1-2 hold. Let y = Ax + n. We say xt is an
+LMMSE sufficient statistic of x given Xt if
+lmmse{x|y, Xt}
+a.s.
+= lmmse {x|y, xt}, (43)
+where lmmse(·) is defined in (2).
+Typically, the MMSE sufficient statistic is employed when
+the asymptotic joint distribution p(x, Gt) is approximately
+known, which is the case when Rt is the input of the
+non-linear estimator ϕt. The LMMSE sufficient statistic is
+commonly used when we only know the mean and covariance
+matrix of Ft while the distributions (or joint distribution) of x
+and Ft are unknown, which is the case when Xt is the input
+of the linear estimator γt.
+Lemma 12 and Lemma 13 below show that Lemma 10 also
+applies to MMSE/LMMSE sufficient statistic, i.e., L-banded
+covariance is a sufficient condition for MMSE/LMMSE suffi-
+cient statistic.
+Lemma 12. Suppose that Assumptions 1-2 hold. In MAMP ,
+rt is an MMSE sufficient statistic of x given Rt if
+vγ
+t,i = vγ
+i,t = vγ
+t,t, ∀1 ≤ i ≤ t. (44)
+Proof: Following Lemma 1, we have
+var{x|Rt}
+a.s.
+= var{¯x| ¯Rt} (45a)
+var{x|rt}
+a.s.
+= var{¯x|¯rt} (45b)
+where ¯Rt = ¯X + ¯Gt, and ¯Gt is row-wise IID, column-wise
+jointly Gaussian and independent of ¯x, i.e.,
+[¯gi,1, . . .¯gi,t]
+IID
+∼ CN (0, V γ
+t ), i = 1, . . . t. (46)
+Since both ¯x and ¯Gt are row-wise IID, we can apply Lemma
+10 to ¯Rt row-by-row. Therefore, based on {vγ
+t,i = vγ
+i,t =
+vγ
+t,t, ∀1 ≤ i ≤ t}, we have var{¯x| ¯Rt}
+a.s.
+= var{¯x|¯rt}. Fur-
+thermore, following (45), we have var{x|Rt}
+a.s.
+= var {x|rt}.
+Then, following Definition 5, rt is an MMSE sufficient
+statistic of x given Rt.
+Lemma 13. Suppose that Assumptions 1-2 hold. In MAMP ,
+xt is an LMMSE sufficient statistic of x given Xt if
+vϕ
+t,i = vϕ
+i,t = vϕ
+t,t, ∀1 ≤ i ≤ t. (47)
+Proof: See Appendix D.
+Intuitively,lmmse{·} can be viewed as a type ofa posteriori
+variance var{·} under the condition that the a priori distribu-
+
+=== PDF PAGE 9 ===
+9
+tion p(x) of x is unknown. Therefore, lmmse{·} inherits the
+sufficient-statistic property of var{·}.
+The following Lemma shows that Lemma 11 also ap-
+plies to the MMSE/LMMSE sufficient statistic, i.e., an
+MMSE/LMMSE sufficient statistic can be constructed by
+optimal damping.
+Lemma 14. Suppose that Assumptions 1-2 hold, and V γ
+t and
+V ϕ
+t are invertible. In MAMP , an MMSE sufficient statistic of
+x given Rt can be constructed by optimal damping [25]:
+rss
+t = Rtζγ
+t , ζγ
+t = [V γ
+t ]−11
+1T[V γ
+t ]−11 , (48)
+and an LMMSE sufficient statistic of x given Xt can be
+constructed by optimal damping [25]:
+xss
+t = Xtζϕ
+t , ζϕ
+t = [V ϕ
+t ]−11
+1T[V ϕ
+t ]−11 . (49)
+Proof: The proof is omitted since it is the same as the
+proof of Lemma 11.
+C. Orthogonality of MMSE/LMMSE Estimators
+Lemma 15 and Lemma 16 below show the orthogonality
+of MMSE/LMMSE estimation for the sufficient-statistic mes-
+sages in MAMP.
+Lemma 15 (Orthogonality of MMSE Estimation) . Suppose
+that Assumptions 1-2 hold. In MAMP , if rt is an MMSE
+sufficient statistic of x given Rt, for any Lipschitz-continuou
+ϕ(·), we have
+
+E{x|rt} − x|ϕ(Rt)
+ a.s.
+= 0 , (50)
+which implies
+
+E{x|rt} − x|E{x|rt} − ϕ(Rt)
+ a.s.
+= 0 . (51)
+Proof: We prove (50) as follows.
+
+E{x|rt} − x
+ϕ(Rt)
+
+a.s.
+= E
+
+E{¯x|¯x + ¯gt} − ¯x
+ϕ( ¯X + ¯Gt)
+	
+(52a)
+a.s.
+= E
+
+E{¯x| ¯X + ¯Gt} − ¯x
+ϕ( ¯X + ¯Gt)
+	
+(52b)
+a.s.
+= 0 , (52c)
+where (52a) follows Lemma 1, (52b) follows Proposition 1
+and Lemma 10 and the fact that rt is an MMSE sufficient
+statistic of x given Rt, (52c) follows the orthogonal property
+of MMSE estimation.
+Lemma 16 (Orthogonality of LMMSE Estimation) . Suppose
+that Assumptions 1-2 hold. In MAMP , if xt is an LMMSE
+sufficient statistic of x given Xt, for any linear estimation
+γ(·) in (5a), we have
+
+LMMSE{x|y, xt}− x
+LMMSE{x|y, xt}− γ(y, Xt)
+a.s.
+= 0.
+(53)
+Proof: See Appendix E.
+Remark 1. Lemma 15 and Lemma 16 may not be limited
+to the MMSE/LMMSE estimation, which is only one of the
+sufficient conditions of the orthogonality. For MAMP with
+other estimators, Lemma 15 and Lemma 16 may also hold.
+V. S UFFICIENT -STATISTIC MAMP (SS-MAMP)
+The state evolution of MAMP may not converge or even
+diverge if it is not properly designed. In this section, using
+the sufficient-statistic technique in Section IV, we construct
+an SS-MAMP to solve the convergence problem of the state
+evolution of MAMP in principle.
+A. Definition and Properties of SS-MAMP
+We define a sufficient-statistic memory AMP as follows.
+Definition 7 (SS-MAMP). Suppose that Assumptions 1-2
+hold. A MAMP is said to be sufficient-statistic if ∀t,
+var{x|Rt}
+a.s.
+= var {x|rt}, (54a)
+lmmse{x|y, Xt}
+a.s.
+= lmmse {x|y, xt}. (54b)
+That is, in SS-MAMP , rt and xt are respectively sufficient
+statistics of x given Rt and Xt from the MMSE/LMMSE
+perspective.
+Remark 2. Notice that (54) is a weak sufficient statis-
+tic from the MMSE/LMMSE perspective (see Section IV-B),
+which is different from the strict sufficient statistic defined
+on the probability in (37). It should be emphasized that even
+though the SS-MAMP is defined from the local MMSE/LMMSE
+perspective, the local MNLE and MLE can be arbitrary
+Lipschitz-continuous processors and are not limited to lo-
+cal MMSE/LMMSE estimators. Therefore, the SS-MAMP in
+the paper is more general than the long-memory OAMP
+in [31], which focused on the local Bayes-optimal (i.e.,
+LMMSE/MMSE) estimators. Consequently, the results in this
+section (e.g., Lemmas 17-22 and Theorem 1) are more general
+than those in [31].
+In SS-MAMP, the MSE of the local MMSE/LMMSE esti-
+mation using the current message is the same as that using
+the current and preceding messages. In other words, jointly
+estimation with preceding messages (called memory) does not
+bring improvement in the MSE of local MMSE/LMMSE es-
+timation, i.e., memory is not needed in local MMSE/LMMSE
+estimators in SS-MAMP. Therefore, we have the following
+lemma.
+Lemma 17 (Memory is not Needed in SS-MAMP) . Suppose
+that Assumptions 1-2 hold. In SS-MAMP , memory is not
+needed for the Bayes-optimal local estimator (e.g., LMMSE
+estimator ˆγt or MMSE estimator ˆϕt), i.e., joint estimation with
+preceding messages does not bring improvement in MSE.
+If the MLE and MNLE in SS-MAMP are both locally
+Bayes-optimal, i.e., LMMSE ˆγt and MMSE ˆϕt (e.g., the
+OAMP/V AMP in Section VI), then Lemma 17 degrades into
+the long-memory OAMP in [31]. Nevertheless, Lemma 17
+also applies to the SS-MAMP in which one local estimator
+is Bayes-optimal (MMSE/LMMSE) but the other is not (e.g.,
+the SS-BO-MAMP in Section VII), which goes beyond the
+results in [31].
+Following Lemma 12 and Lemma 13, we give a sufficient
+condition of SS-MAMP in the following.
+
+=== PDF PAGE 10 ===
+10
+Lemma 18 (Sufficient Conditions of SS-MAMP) . Suppose
+that Assumptions 1-2 hold. A MAMP is sufficient-statistic if
+the covariance matrices V γ
+t (of Rt) and V ϕ
+t (of Xt) are L-
+banded, i.e., for all t, 1 ≤ i ≤ t and 1 ≤ j ≤ t,
+vγ
+i,j = vγ
+max(i,j), (55a)
+vϕ
+i,j = vϕ
+max(i,j), (55b)
+and for all 1 ≤ τ ≤ t − 1
+rτ+1 = rτ , if V γ
+{Iγ
+τ ,τ+1} is singular, (56a)
+xτ+1 = xτ , if V ϕ
+{Iϕ
+τ ,τ+1} is singular, (56b)
+where I γ
+τ and I ϕ
+τ are defined the same as that in (34).
+Proof: Intuitively, under the condition (56), following
+Lemma 12 and Lemma 13, in i-th iteration, ri (or xi) is an
+MMSE (or LMMSE) sufficient statistic of x given Ri (or Xi)
+if the elements in the i-th L-band of V γ
+t (or V ϕ
+t ) are the same.
+Since the sufficient-statistic property holds for all iterations in
+SS-MAMP, it is equivalent to that the elements in each L-band
+of V γ
+t (or V ϕ
+t ) are the same.
+In general, (55) and (56) are sufficient (not necessary)
+conditions of SS-MAMP. However, in this paper, we only
+focus on the specific SS-MAMP under (55) and (56). For
+convenience, in the rest of this paper, the specific SS-MAMP
+under (55) and (56) is simply referred to as SS-MAMP.
+Lemma 19 (State Evolution of SS-MAMP) . Suppose that
+Assumptions 1-2 hold. In SS-MAMP , the covariance matrices
+V γ
+t and V ϕ
+t are determined by their diagonal sequences
+vγ
+t = [ vγ
+1 . . . v γ
+t ]T and vϕ
+t = [ vϕ
+1 . . . v ϕ
+t ]T, respectively. The
+state evolution of SS-MAMP can be simplified to: Starting with
+t = 1 and vϕ
+1 = 1,
+vγ
+t = γSE
+t (vϕ
+t )
+a.s.
+= 1
+N E
+
+∥γt
+ ¯y, ¯X + ¯Ft
+
+− ¯x∥2	
+, (57a)
+vϕ
+t+1 = ϕSE
+t (vγ
+t )
+a.s.
+= 1
+N E
+
+∥ϕt
+  ¯X + ¯Gt
+
+− ¯x∥2	
+, (57b)
+where ¯X = ¯x · 1T, ¯y = A¯x + ¯n, ¯n denotes the noise
+sampled from the same distribution as that of n, ¯x denotes the
+signal sampled from the same distribution as that of x, and
+¯Ft and ¯Gt are row-wise IID, column-wise jointly Gaussian
+and independent of ¯n and ¯x, i.e., for i = 1, . . . t,
+[ ¯fi,1, . . . ¯fi,t]
+IID
+∼ CN (0, V ϕ
+t ), (58a)
+[¯gi,1, . . .¯gi,t]
+IID
+∼ CN (0, V γ
+t ). (58b)
+The lemma below follows Lemma 7 and Lemma 18.
+Lemma 20 (Convergence of SS-MAMP) . The diagonal se-
+quences [vγ
+1 , vγ
+2 , . . .] and [vϕ
+1 , vϕ
+2 , . . .] in SS-MAMP are mono-
+tonically decreasing and converge respectively to a certain
+value, i.e.,
+vγ
+t ≤ vγ
+t′, ∀t′ ≤ t, lim
+t→∞
+vγ
+t → vγ
+⋆ , (59a)
+vϕ
+t ≤ vϕ
+t′, ∀t′ ≤ t, lim
+t→∞
+vϕ
+t → vϕ
+⋆ . (59b)
+Therefore, the state evolution of SS-MAMP is convergent.
+Remark 3. Note that one-side sufficient-statistic outputs (of
+{γt} or {ϕt}, e.g., V γ
+t or V ϕ
+t is L-banded) are sufficient to
+guarantee the convergence of the state evolution of MAMP .
+BO-MAMP [25] is such an example whose convergence is
+guaranteed by the sufficient-statistic outputs of NLE ϕt using
+damping, while the outputs of MLE γt in BO-MAMP are not
+sufficient statistics. However, as shown in Section VII (see
+also Section VIII-C), the performance or convergence speed
+of MAMP can be further improved if the outputs of γt and ϕt
+are both sufficient statistics.
+The lemma below follows Lemma 4 and Lemma 18.
+Lemma 21 (Damping is not Needed in SS-MAMP). Damping
+is not needed (i.e., has no MSE improvement) in SS-MAMP .
+Specifically, the optimal damping of Rt (or Xt) has the same
+MSE as that of rt (or xt), i.e.,
+vγ
+t = min
+ζt:ζT
+t 1=1
+1
+N ∥Rtζt − x∥2, (60a)
+vϕ
+t = min
+ζt:ζT
+t 1=1
+1
+N ∥Xtζt − x∥2. (60b)
+B. Construction of SS-MAMP
+Given an arbitrary MAMP, the following theorem constructs
+an SS-MAMP using damping.
+Theorem 1 (SS-MAMP Construction). Suppose that Assump-
+tions 1-2 hold. Given an arbitrary MAMP:
+˜rt = γt
+
+y, ˜Xt
+
+, (61a)
+˜xt+1 = ϕt
+
+˜Rt
+
+, (61b)
+where γt(·) is given in (5a), ϕt(·) is a separable-and-Lipschitz-
+continuous, and the orthogonality in (9) holds. Let ˜Rt =
+[˜r1 . . . ˜rt] and ˜Xt+1 = [˜x1 . . . ˜xt+1]. Then, following Lemmas
+9 and 18 and based on (61), we can always construct an SS-
+MAMP via damping: Starting with t=1 and X1 =0,
+rt = γss
+t (y, Xt) = ˜Rtζγ
+t , (62a)
+xt+1 = ϕss
+t (Rt) = ˜Xtζϕ
+t+1, (62b)
+where
+ζγ
+Iγ
+t
+=
+ ˜V γ
+Iγ
+t
+−1
+1
+1T ˜V γ
+Iγ
+t
+−1
+1
+, ζγ
+¯Iγ
+t
+= 0, (62c)
+ζϕ
+Iϕ
+t+1
+=
+ ˜V ϕ
+Iϕ
+t+1
+−1
+1
+1T ˜V ϕ
+Iϕ
+t+1
+−1
+1
+, ζϕ
+¯Iϕ
+t+1
+= 0, (62d)
+˜V γ
+Iγ
+t
+=
+
+ ˜RIγ
+t
+− X
+ ˜RIγ
+t
+− X
+
+, (62e)
+˜V ϕ
+Iϕ
+t+1
+=
+
+ ˜XIϕ
+t+1
+− X
+ ˜XIϕ
+t+1
+− X
+
+, (62f)
+˜RIγ
+t
+= [˜ri, i ∈ I γ
+t ] and ˜XIϕ
+t+1
+= [ ˜xi, i ∈ I ϕ
+t+1]. Fig. 3 gives
+a graphic illustration of SS-MAMP constructed by (62). In
+addition, the following hold for the SS-MAMP in (62).
+(a) The SS-MAMP in (62) is a memory iterative process given
+in Definition 1. That is, the γss
+t and ϕss
+t in (62) can be writ-
+ten in the form of (5). Furthermore, damping preserves
+
+=== PDF PAGE 11 ===
+11
+!𝛾𝑡 #𝜙𝑡
+𝜙𝑡
+𝛾𝑡
+𝒓!⋯𝒓"𝑹"
+𝒙"⋯𝒙!𝑿" Orth
+Orth
+𝜙"##𝛾"##
+damping
+damping
+𝜻!"
+𝜻!#
+Fig. 3. Graphic illustration of SS-MAMP involving two local sufficient-
+statistic orthogonal processors γss
+t (for Γ) and ϕss
+t (for Φ), which are realized
+by damping for γt and ϕt (see (62)).
+the orthogonality, i.e., the following orthogonality holds:
+∀t ≥ 1,
+⟨gt|x⟩
+a.s.
+= 0 , ⟨gt|Ft⟩
+a.s.
+= 0, ⟨ft+1|Gt⟩
+a.s.
+= 0. (63)
+That is, the SS-MAMP in (62) is still a MAMP .
+(b) The covariance matrices V γ
+t and V ϕ
+t of the SS-MAMP
+in (62) are L-banded and are determined by sequences
+vγ
+t = [vγ
+1 . . . v γ
+t ]T and vϕ
+t = [vϕ
+1 . . . v ϕ
+t ]T, respectively. In
+detail,
+vγ
+t = 1
+1T ˜V γ
+Iγ
+t
+−1
+1
+, (64a)
+vϕ
+t+1 = 1
+1T ˜V ϕ
+Iϕ
+t+1
+−1
+1
+. (64b)
+Furthermore, the state evolution of the SS-MAMP in (62)
+converges to a fixed point, i.e.,
+lim
+t→∞
+vγ
+t
+a.s.
+= vγ
+⋆ , (65a)
+lim
+t→∞
+vϕ
+t
+a.s.
+= vγ
+⋆ . (65b)
+(c) Damping is not needed (i.e., has no MSE improvement)
+for the SS-MAMP in (62). In other words, the SS-MAMP
+in (62) obtains the lowest MSE among all the damped
+MAMP given {γt} and {ϕt}.
+(d) Suppose that Assumption 3 holds for γss
+t (·) and ϕss
+t (·).
+Then, the state-evolution fixed points of the SS-MAMP in
+(62) are given by
+vγ
+⋆
+a.s.
+= lim
+t→∞
+[γSE−ss
+t (vϕ
+⋆1)]t,t, (66a)
+vϕ
+⋆
+a.s.
+= lim
+t→∞
+[ϕSE−ss
+t (vγ
+⋆1)]t+1,t+1, (66b)
+where 1 is an all-one matrix with the proper size, and
+γSE−ss
+t (·) and ϕSE−ss
+t (·) are the MSE transfer functions
+corresponds to γss
+t (·) and ϕss
+t (·), respectively.
+(e) The MSE of the SS-MAMP in (62) is not worse than that
+of the original MAMP in (61).
+Proof: We prove the points (a)-(e) one by one as follows.
+(a) From (62), we have
+γss
+t (y, Xt)=[ γ1 (y, X1) , . . . , γt (y, Xt)]ζγ
+t , (67a)
+ϕss
+t (Rt)=[ x1, ϕ1 (R1) , . . . , ϕt (Rt)]ζϕ
+t+1, (67b)
+where x1 is an given initialization. Since {γi} and {ϕi}
+are the local processors in MAMP (i.e., they can be written
+in the form of memory iterative process), following (61)
+and (67), it is obvious that the γss
+t and ϕss
+t in (62) can
+be written in the form of (5). Therefore, the SS-MAMP
+in (62) is a memory iterative process given in Definition
+1. Since {γt(·)} and {ϕt(·)} come from MAMP, from
+Definition 2, we have
+⟨˜gt|x⟩
+a.s.
+= 0 ,
+
+˜gt| ˜Ft⟩
+a.s.
+= 0,
+
+ ˜ft+1| ˜Gt⟩
+a.s.
+= 0. (68)
+Since ζγ
+t 1 = 1 and ζϕ
+t+11 = 1, we have
+gt = ˜Gtζγ
+t , (69a)
+ft+1 = ˜Ft+1ζϕ
+t+1. (69b)
+That is, {gt} and {ft} are the linear combination of {˜gt}
+and { ˜ft}, respectively. Since linear combination preserves
+the orthogonality in (68), we have the orthogonality in
+(63), i.e., damping preserves the orthogonality. That is,
+the SS-MAMP in (62) is a MAMP.
+(b) The L-banded V γ
+t and V ϕ
+t follows Lemma 8, (64) follows
+Lemma 14, and (65) follows Lemma 20.
+(c) See Lemma 21.
+(d) Suppose that the SS-MAMP has converged at I-th it-
+eration. Following (64) and (65), the covariance matri-
+ces in SS-MAMP satisfy limt→∞ V γ
+I→t
+a.s.
+= vγ
+⋆1 and
+limt→∞ V ϕ
+I→t
+a.s.
+= vϕ
+⋆1. Therefore, following Assumption
+3, the state evolution fixed point of SS-MAMP can be
+solved by (66).
+(e) Following (a) and (b), the algorithm in (62) is SS-MAMP.
+Then, following Lemma 21, damping is not needed for
+the SS-MAMP in (62). That is, the damping used in (62)
+is optimal, which is not worse than the undamped MAMP
+in (61) (e.g., ζγ
+t = [0, . . . ,0, 1] and ζϕ
+t+1 = [0, . . . ,0, 1]).
+Therefore, the MSE of the SS-MAMP in (62) is not worse
+than the MAMP in (61).
+Hence, we complete the proof of Theorem 1.
+Remark 4. Intuitively, in each iteration, the damping oper-
+ation in (62) scales the previous messages with a damping
+factor of less than one. When the number of iterations is very
+large, the initial finite estimates are scaled by the product of
+an infinite number of numbers less than 1 and thus have a neg-
+ligible effect on the current estimation. Therefore, Assumption
+3 applies generically to SS-MAMP .
+Remark 5. The damping operation in (62) follows the discus-
+sions in Section III-C, motivated by the damping optimization
+in [25]. That is, damping is performed on the effective inputs
+˜RIγ
+t
+= [ ˜ri, i ∈ I γ
+t ] and ˜XIϕ
+t+1
+= [ ˜xi, i ∈ I ϕ
+t+1], whose
+covariance matrices ˜V γ
+Iγ
+t
+and ˜V ϕ
+Iϕ
+t+1
+are always positive.
+The following lemma shows that the damping is unneces-
+sary if the local processor in the original MAMP is MMSE.
+Lemma 22 (Orthogonal MMSE/LMMSE Functions are
+MMSE/LMMSE Sufficient-Statistic) . Suppose that Assump-
+tions 1-2 hold.
+
+=== PDF PAGE 12 ===
+12
+• Consider the following ϕt(·) in MAMP:
+ϕt(Rt) = ϕt(rt) = cϕ
+t ˆϕt(rt) + (1 − cϕ
+t )rt, (70)
+where ˆϕt(rt) = E {x|rt} and cϕ
+t = [1 −
+var{x|rt}/vγ
+t ]−1. Then, damping is unnecessary for the
+ϕss
+t (·) (see (62b)) in SS-MAMP , i.e.,
+ϕss
+t (rt) = ϕt(rt), (71a)
+and the variance in (64b) is reduced to
+vϕ
+t+1
+a.s.
+=
+ 1
+var{x|x + ¯gt} − 1
+vγ
+t
+−1
+, (71b)
+where ¯gt∼ CN(0, vγ
+t I) is independent of x.
+• Consider the following γt(·) in MAMP:
+γt(y, Xt) = γt(y, xt) = cγ
+t ˆγt(y, xt)+(1 −cγ
+t )xt, (72)
+where ˆγt(y, xt) = LMMSE {x|y, xt} and cγ
+t = [1 −
+lmmse{x|y, xt}/vϕ
+t ]−1. Then, damping is unnecessary
+for the γss
+t (·) (see (62a)) in SS-MAMP , i.e.,
+γss
+t (y, xt) = γt(y, xt), (73a)
+and the variance in (64a) is reduced to
+vγ
+t
+a.s.
+=
+"
+1
+lmmse{x|y, x + ¯ft} − 1
+vϕ
+t
+#−1
+, (73b)
+where ¯ft∼ CN(0, vϕ
+t I) is independent of x.
+Proof: See Appendix F.
+If the ˆγt and ˆϕt are both Bayes-optimal (e.g., the BO-
+OAMP/V AMP in Section VI), then Lemma 22 degrades into
+the results in [31]. Nevertheless, Lemma 22 also applies to
+the SS-MAMP in which one local estimator is Bayes-optimal
+but the other is not (e.g., the SS-BO-MAMP in Section VII),
+which goes beyond the long-memory OAMP in [31].
+C. Low-Complexity Calculation of
+ ˜V γ
+Iγ
+t
+−1
+and
+ ˜V ϕ
+Iϕ
+t
+−1
+The optimal damping in (62c) and (62d) need to calculate ˜V γ
+Iγ
+t
+−1
+and
+ ˜V ϕ
+Iϕ
+t
+−1
+, respectively. It will cost high complex-
+ity if we calculate them straightforwardly. Using real block
+matrix inversion
+"
+A b
+bH c
+#−1
+=
+"
+A−1 + αββH −αβ
+−αβH α
+#
+, (74)
+where α = (c−bHA−1b)−1 and β = A−1b, we can calculate ˜V γ
+Iγ
+t
+−1
+and
+ ˜V ϕ
+Iϕ
+t
+−1
+based on
+ ˜V γ
+Iγ
+t−1
+−1
+and
+ ˜V ϕ
+Iϕ
+t−1
+−1
+calculated in the last iteration. Therefore, the matrix inverses
+only cost time complexity O(t2) per iteration.
+VI. BO-OAMP/VAMP IS SUFFICIENT -STATISTIC
+Bayes-optimal orthogonal/vector AMP (BO-OAMP/V AMP)
+[13], [14] is a non-memory iterative process that solves the
+problem in (4) with a right-unitarily-invariant matrix. In this
+section, suppose that Assumptions 1-2 hold, we answer the
+following fundamental questions about BO-OAMP/V AMP:
+• If damping is performed on each local processor’s
+outputs, can we further improve the MSE of BO-
+OAMP/V AMP?
+• If the preceding messages (i.e., memory) are used in
+local estimation, can we further improve the MSE of BO-
+OAMP/V AMP?
+• Are the covariance matrices in BO-OAMP/V AMP con-
+vergent?
+In this section, by proving that BO-OAMP/V AMP is sufficient-
+statistic, we recover the main statements in [31], i.e., damping
+and memory are not needed in BO-OAMP/V AMP, and the
+covariance matrices in BO-OAMP/V AMP are L-banded and
+convergent. Different from the linear algebra proof in [31],
+we prove the sufficient-statistic property of BO-OAMP/V AMP
+by the orthogonality of local MMSE/LMMSE estimators in
+Lemma 22 (see also Lemmas 15 and 16).
+A. Review of BO-OAMP/VAMP
+The following is the BO-OAMP/V AMP algorithm.
+BO-OAMP/VAMP [13], [14]: Let st = vϕ
+t,t/σ2, and
+ˆγt(·) and ˆϕt(·) be estimates of x at t-th iteration:
+ˆγt (y, xt) ≡LMMSE{x|y, xt}
+=
+ 
+stI+AHA
+−1
+(stAHy+xt), (75a)
+ˆϕt(rt) ≡ E{x|rt}. (75b)
+A BO-OAMP/V AMP is then defined as: Starting witht =
+1, vϕ
+1 = 1 and x1 = 0,
+LE : rt = γt (y, xt) ≡ 1
+1−ˆγ′
+t
+
+ˆγt (y, xt) − ˆγ′
+txt
+
+, (75c)
+NLE : xt+1 = ϕt (rt) ≡ 1
+1−ˆϕ′
+t
+ˆϕt(rt) − ˆϕ′
+trt
+
+, (75d)
+where
+ˆγ′
+t = 1
+N tr
+ 
+stI + AAH−1	
+, (75e)
+vγ
+t = γSE
+t (vϕ
+t ) ≡ vϕ
+t [(ˆγ′
+t)−1−1], (75f)
+ˆϕ′
+t = 1
+N vγ
+t
+E
+
+∥ˆϕt(x +
+q
+vγ
+t η) − x∥2	
+, (75g)
+vϕ
+t+1 = ϕSE
+t (vγ
+t ) ≡ vγ
+t [(ˆϕ′
+t)−1−1], (75h)
+and η ∼ CN (0, I) is independent of x. The final
+estimation is ˆϕt(rt).
+Assumption 4. Each posterior variance E{|xn|2|rt,n} −
+|ˆϕt(rt,n)|2, ∀n is almost surely bounded, where xn, rt,n and
+Φn denote the n-th entry/constraint of x, rt and Φ, respec-
+tively [15].
+The asymptotic IID Gaussian property of a non-memory
+iterative process was conjectured in [13] and proved in [14],
+[15] based on the error orthogonality below.
+Lemma 23 (Orthogonality and Asymptotically IID Gaussian) .
+Suppose that Assumptions 1-2 and 4 hold. Then, the orthogo-
+nality below holds for BO-OAMP/VAMP: For all 1 ≤ t′ ≤ t,
+⟨gt|x⟩
+a.s.
+= 0 , ⟨gt|Ft⟩
+a.s.
+= 0, ⟨ft+1|Gt⟩
+a.s.
+= 0. (76)
+
+=== PDF PAGE 13 ===
+13
+Furthermore, we have [22, Theorem 1]: ∀1 ≤ t′ ≤ t,
+vγ
+t,t′
+a.s.
+= E
+
+γt
+ ¯y, ¯x+ ¯ft
+
+− ¯x,
+γt′
+ ¯y, ¯x + ¯ft′
+
+− ¯x
+	
+, (77a)
+vϕ
+t+1,t′+1
+a.s.
+= E
+
+ϕt
+ ¯x+¯gt
+
+− ¯x
+ϕt′
+ ¯x+¯gt′
+
+− ¯x
+	
+, (77b)
+where ¯y = A¯x + ¯n, ¯n denotes the noise sampled from the
+same distribution as that of n, ¯x denotes the signal sampled
+from the same distribution as that of x, and ¯Gt = [¯g1 . . . ¯gt]
+and ¯Ft = [ ¯f1 . . . ¯ft] are row-wise IID, column-wise jointly
+Gaussian and independent of ¯n and ¯x, i.e., for i = 1, . . . t,
+[ ¯fi,1, . . . ¯fi,t]
+IID
+∼ CN (0, V ϕ
+t ), (78a)
+[¯gi,1, . . .¯gi,t]
+IID
+∼ CN (0, V γ
+t ). (78b)
+State Evolution of BO-OAMP/VAMP: The iterative per-
+formance of BO-OAMP/V AMP can be predicted by state
+evolution as follows: Starting with t = 1 and vϕ
+1 = 1,
+LE : vγ
+t = γSE
+t (vϕ
+t ), (79a)
+NLE : vϕ
+t+1 = ϕSE
+t (vγ
+t ), (79b)
+where γSE
+t (·) and ϕSE
+t (·) are defined in (75f) and (75h),
+respectively.
+B. BO-OAMP/VAMP is Sufficient-Statistic
+Since the local processors in BO-OAMP/V AMP are MMSE,
+we have the theorem below following Lemma 22.
+Theorem 2 (BO-OAMP/V AMP is Sufficient-Statistic). Sup-
+pose that Assumptions 1-2 and 4 hold. The BO-OAMP/VAMP
+in (75) is an SS-MAMP .
+Proof: Using Taylor series expansion,
+ 
+stI +AHA
+−1
+in
+(75a) can be rewritten to a polynomial in AHA. Therefore, the
+BO-OAMP/V AMP-LE in (75c) is a special case of the MLE
+in (5a). In addition, the orthogonal MMSE NLE in (75d) is
+Lipschitz-continuous for x under Assumption 1 and an equiva-
+lent Gaussian observation1 rt (see [15, Lemma 2]). Following
+Definitions 1-2 and (76), BO-OAMP/V AMP is a special in-
+stance of MAMP. Furthermore, in BO-OAMP/V AMP, the LE
+γt(·) in (75a) coincides with that in (72), and the NLE ϕt(·)
+in (75d) coincides with that in (70). Then, from Lemma 22,
+γss
+t (y, xt) = γt(y, xt), (80a)
+ϕss
+t (rt) = ϕt(rt). (80b)
+That is, BO-OAMP/V AMP is an SS-MAMP.
+Therefore, BO-OAMP/V AMP inherits all the properties of
+SS-MAMP. The following is a corollary of Theorem 2.
+Corollary 1 (Memory is not Needed in BO-OAMP/V AMP) .
+Suppose that Assumptions 1-2 and 4 hold. Then, memory
+is not needed in BO-OAMP/VAMP , i.e., for any t, rt and
+xt are sufficient statistics of x given Rt and Xt (from the
+MMSE/LMMSE perspective), respectively:
+vγ
+t = lmmse{x|y, xt}
+a.s.
+= lmmse {x|y, Xt}, (81a)
+vϕ
+t+1 = var{x|rt}
+a.s.
+= var {x|Rt}. (81b)
+1In BO-OAMP/V AMP, rt can be treated as Gaussian observation of x,
+which can be guaranteed by the orthogonality in (76) (see Lemma 23).
+The following is a corollary of Lemma 18, Lemma 20 and
+Theorem 2.
+Corollary 2 (Monotony and Convergence of
+BO-OAMP/V AMP). Suppose that Assumptions 1-2 and
+4 hold. Then, the covariance matrices {V γ
+t } and {V ϕ
+t }
+in BO-OAMP/VAMP are L-banded (see Definition 3).
+In addition, the state evolution of BO-OAMP/VAMP is
+convergent. In detail, {vγ
+t } and {vϕ
+t } in BO-OAMP/VAMP
+are respectively monotonically decreasing and converge
+respectively to a certain value, i.e.,
+vγ
+t ≤ vγ
+t′, ∀t′ ≤ t, lim
+t→∞
+vγ
+t → vγ
+⋆ , (82a)
+vϕ
+t ≤ vϕ
+t′, ∀t′ ≤ t, lim
+t→∞
+vϕ
+t → vϕ
+⋆ . (82b)
+The following is a corollary of Lemma 21 and Theorem 2.
+Corollary 3 (Damping is is not Needed in BO-OAMP/V AMP).
+Suppose that Assumptions 1-2 and 4 hold. Then, damping
+is not needed in BO-OAMP/VAMP . Specifically, the optimal
+damping of Rt and Xt have the same MSE as that of rt and
+xt, respectively, i.e.,
+vγ
+t = min
+ζt:ζT
+t 1=1
+1
+N ∥Rtζt − x∥2, (83a)
+vϕ
+t = min
+ζt:ζT
+t 1=1
+1
+N ∥Xtζt − x∥2. (83b)
+Remark 6. Theorem 2 is based on the assumption that the
+system size is infinite. For finite-size matrix A, Assumption 2
+does not hold. As a result, the IID Gaussian property in (77),
+the state evolution in (80) and Corollary 1 do not rigorously
+hold. Therefore, Corollary 3 also does not rigorously hold,
+i.e., damping may have significant improvement in the MSE of
+AMP and OAMP/VAMP for finite-size matrix A [36]–[38].
+VII. S UFFICIENT -STATISTIC BAYES-O PTIMAL MAMP
+In this section, based on the Bayes-Optimal MAMP (BO-
+MAMP) in [25], we design a sufficient statistic BO-MAMP
+(SS-BO-MAMP) using the sufficient-statistic technique dis-
+cussed in Section V. Different from the BO-MAMP in [25]
+that considers optimal damping only for the NLE outputs,
+the SS-BO-MAMP in this paper considers optimal damping
+only for the MLE outputs. SS-BO-MAMP obtains a faster
+convergence speed than the original BO-MAMP in [25]. In
+addition, the state evolution of SS-BO-MAMP is further sim-
+plified using the sufficient-statistic property. Most significantly,
+the proposed SS-BO-MAMP in this section is a powerful
+illustration of the fact that the key findings in this paper go
+beyond those of the literature [31] because the SS-BO-MAMP
+in this section is based on a Bayes-suboptimal long-memory
+matched filter, while the results in [31] are limited to the
+Bayes-optimal LMMSE linear estimator.
+A. SS-BO-MAMP Algorithm
+Assumption 5. Let λt = 1
+N tr{(AAH)t} and λ† ≡ [λmax +
+λmin]/2, where λmin and λmax denote the minimal and
+maximal eigenvalues of AAH, respectively. Without loss of
+generality, we assume that {λmin, λmax} and {λt, ∀t ≤ 2T }
+are known, where T is the maximum number of iterations.
+
+=== PDF PAGE 14 ===
+14
+In practice, if {λt, λmin, λmax} are unavailable, we can set
+[25]
+λlow
+min = 0, λ up
+max = (N λ2T )1/2T , (84)
+and {λt} can be approximated by [25]
+λt
+a.s.
+= lim
+N →∞
+∥st∥2, for t = 1, 2, . . . (85a)
+where
+st =
+(
+Ast−1, if t is odd
+AHst−1, if t is even , (85b)
+and s0 ∼ CN (0N×1, 1
+N IN×N). Let B = λ†I − AAH. For
+t ≥ 0, we define 2
+Wt ≡ AHBtA, (86a)
+bt ≡ 1
+N tr{Bt} =Pt
+i=0
+ t
+i
+
+(−1)i(λ†)t−iλi, (86b)
+wt ≡ 1
+N tr{Wt} = λ†bt − bt+1. (86c)
+For 1 ≤ i ≤ t,
+ϑt,i ≡
+(
+ξt, i = t
+ξi
+Qt
+1=i+1 θτ , i < t , (87a)
+pt,i ≡ −ϑt,iwt−i, (87b)
+εγ
+t ≡ −Pt
+i=1 pt,i, (87c)
+¯wi,j ≡ λ†wi+j − wi+j+1 − wiwj. (87d)
+Furthermore, ϑt,i = 1 if i > t . The following is an SS-BO-
+MAMP algorithm.
+SS-BO-MAMP Algorithm: Consider
+zt = θtBzt−1 + ξt(y − Axt). (88a)
+Let ˜Rt = [˜r1 . . . ˜rt]. We construct an SS-BO-MAMP as:
+Starting with t = 1 and x1 = z0 = 0,
+˜rt = γt (y, Xt) = 1
+εγ
+t
+ 
+AHzt − Xtpt
+
+, (88b)
+rt = ˜Rtζγ
+t , (88c)
+xt+1 = ϕt(rt), (88d)
+where
+ζγ
+Iγ
+t
+=
+ ˜V γ
+Iγ
+t
+−1
+1
+1T ˜V γ
+Iγ
+t
+−1
+1
+, ζγ
+¯Iγ
+t
+= 0, (88e)
+and ϕt(·) is the same as that in OAMP/V AMP (see (75d)).
+The convergence of SS-BO-MAMP is optimized with re-
+laxation parameters {θt}, weights {ξt} and damping vectors
+{ζγ
+t }. We provide some intuitive interpretations of SS-BO-
+MAMP below. Please refer to [25] for the details of BO-
+MAMP.
+• The normalization parameter {εγ
+t } and Xtpt in MLE is
+used for the orthogonality in (9).
+• The relaxation parameter θt = 1 /(λ† + vϕ
+t,t/σ2) mini-
+mizes the spectral radius of θtB to improve the conver-
+2If the eigenvalue distribution pλ is available, bt can be calculated by
+bt =
+R λmax
+λmin
+(λ† − λ)tpλ d λ.
+gence of SS-BO-MAMP and ensure that SS-BO-MAMP
+has a replica Bayes-optimal fixed point if converges.
+• The optimal damping vector ζγ
+t ensures the sufficient-
+statistic property (see Theorem 1), which ensures and
+further improves the convergence of SS-BO-MAMP.
+• The weight ξt adjusts the contribution of xt to the
+estimation rt. Hence, the optimized ξt accelerates the
+convergence of SS-BO-MAMP. However, the choice ofξt
+does not affect the state-evolution fixed point (i.e., replica
+Bayes optimality) of SS-BO-MAMP. The optimal ξt is
+given by [25]: ξ1 = 1 and for t ≥ 2,
+ξt =
+
+
+
+ct,2ct,0 + ct,3
+ct,1ct,0 + ct,2
+, if ct,1ct,0 + ct,2 ̸= 0
++∞, otherwise
+, (89)
+where
+ct,0 = −
+t−1P
+i=1
+pt,i/w0, (90a)
+ct,1 = σ2w0 + vϕ
+t ¯w0,0, (90b)
+ct,2 = −
+t−1P
+i=1
+ϑt,i(σ2wt−i + vϕ
+t ¯w0,t−i), (90c)
+ct,3 =
+t−1P
+i=1
+t−1P
+j=1
+ϑt,iϑt,j
+ 
+σ2w2t−i−j +vϕ
+max(i,j) ¯wt−i,t−j
+
+,
+(90d)
+and {εγ
+t , pt,i, ϑt,i, wi, ¯wi,j} in (86) and (87). Further-
+more, we find that ξt = 1/(σ2 + vγ
+t ) yields the perfor-
+mance close to that of the optimal ξt.
+Remark 7. Note that the NLE in BO-MAMP is the same as
+that of BO-OAMP/VAMP and is a local MMSE estimator. From
+Lemma 22, damping is unnecessary for the NLE in BO-MAMP .
+This is why damping is not used for the NLE in SS-BO-MAMP .
+In contrast, the MLE in BO-MAMP is not a local LMMSE
+estimator, and thus damping is required for the MLE in SS-
+BO-MAMP .
+B. State Evolution
+Following Theorem 1, we know that the orthogonality in
+(9) and the asymptotically IID Gaussianity hold for SS-BO-
+MAMP. Therefore, we obtain the state evolution of SS-BO-
+MAMP as follows.
+Lemma 24 (State Evolution). Suppose that Assumptions 1-2, 4
+and 5 hold. Then, SS-BO-MAMP is an SS-MAMP . Therefore,
+the covariance matrices {V γ
+t } and {V ϕ
+t } in SS-BO-MAMP
+are L-banded, and can be predicted by state evolution: Starting
+with vϕ
+1 = 1,
+vγ
+t = γSE−SS
+t (vϕ
+t ), v ϕ
+t+1 = ϕSE
+t (vγ
+t ), (91)
+where {vϕ
+t } are defined in(8), and ϕSE
+t (·) is given in (79b) i.e.,
+the same as that of BO-OAMP/VAMP . In addition, following
+(64a), γSE−SS
+t (·) is given by
+vγ
+t = 1
+1T ˜V γ
+Iγ
+t
+−1
+1
+. (92)
+
+=== PDF PAGE 15 ===
+15
+For 1 ≤ t′ ≤ t,
+˜vγ
+t,t′ = 1
+εγ
+t εγ
+t′
+tX
+i=1
+t′
+X
+j=1
+ϑt,iϑt′,j[σ2wt+t′−i−j +vϕ
+max(i,j) ¯wt−i,t′−j],
+(93)
+where wi is defined in (86c) and {εγ
+t , ϑt,i, ¯wi,j} in (87).
+Eqn. (93) in Lemma 24 follows the γSE
+t in [25]. To avoid
+the high-complexity matrix inverse in (92), we can calculate ˜V γ
+Iγ
+t
+−1
+based on
+ ˜V γ
+Iγ
+t−1
+−1
+in the last iteration using the
+block matrix inversion in (74).
+C. Improvement and Replica Bayes Optimality
+The following lemma follows Theorem 1 straightforwardly.
+Lemma 25 (MSE Improvement of SS-BO-MAMP) . Suppose
+that Assumptions 1-2, 4 and 5 hold. The MSE of SS-BO-MAMP
+is not worse than that of the original BO-MAMP in [25].
+Lemma 26 (Convergence and Bayes Optimality) . Suppose
+that Assumptions 1-2, 4 and 5 hold. The state evolution of
+SS-BO-MAMP converges to the same fixed point as that of
+OAMP/VAMP . That is, the SS-BO-MAMP is replica Bayes
+optimal if its state evolution has a unique fixed point.
+Proof: Following Theorem 1(b), there exists a finite inte-
+ger I such that limt→∞ V ϕ
+I→t
+a.s.
+= vϕ
+⋆1. The inputs [x1 . . . xI]
+of γSE
+t correspond to the high-order (i.e., t−1 to t−I) terms of
+the Taylor series, which tend to zero as t → ∞ (see Appendix
+G-B in [25]). Then, following Theorem 1(b), we have
+˜vγ
+⋆ = lim
+t→∞
+˜vγ
+t,t
+a.s.
+= lim
+t→∞
+[γSE
+t (vϕ
+⋆1)]t,t. (94)
+Since ϕt is non-memory, following Theorem 1(b), we have
+vϕ
+⋆
+a.s.
+= lim
+t→∞
+ϕSE
+t (vγ
+⋆ ). (95)
+Furthermore, when SS-MAMP converges (i.e., t ≥ I), the
+damping operation in (88) follows a back-off mechanism. That
+is, rt = rI , ∀t ≥ I. Therefore, xt = xI+1 = x⋆, ∀t ≥ I + 1.
+As a result,
+lim
+t→∞
+γt(y, Xt)
+a.s.
+→ lim
+t→∞
+γt(y, x⋆11×t), (96)
+The right term is in fact a Taylor expansion of the LMMSE-
+LE γt(y, x⋆) of BO-OAMP/V AMP in (75). Then, following
+the second point in Lemma 22, when t → ∞ , damping is
+unnecessary for SS-BO-MAMP, i.e., ˜vγ
+⋆ = vγ
+⋆ . Therefore, the
+state evolution of SS-BO-MAMP converges the fixed point
+given by
+vγ
+⋆ = lim
+t→∞
+[γSE
+t (vϕ
+⋆1)]t,t, (97a)
+vϕ
+⋆ = lim
+t→∞
+ϕSE
+t (vγ
+⋆ ), (97b)
+which is the same as the fixed-point equations of
+OAMP/V AMP (see Appendix G in [25]). In addition, the
+Bayes optimality of OAMP/V AMP is proven via the replica
+methods in [13], [18], and lately rigorously for right-unitarily-
+invariant A when its state evolution has a unique fixed point
+in [19]. Therefore, we obtain Lemma 26.
+D. Complexity of SS-BO-MAMP
+We assume that A has no special structures, such as DFT
+or sparse matrices. Let T be the number of iterations.
+• SS-BO-MAMP costs O(M NT ) time complexity for
+matrix-vector multiplications 3 {AAHzt} and {Axt},
+O
+ 
+(N +M)T 2
+for {Pt
+i=1 pt,ixi} and O(T 4) for cal-
+culating {V γ
+t } (see (93)). The number of matrix-vector
+multiplications can be reduced by storing an intermediate
+variable to avoid the recalculation of Azt.
+• SS-BO-MAMP needs O(M N) space to store A,
+O
+ 
+(M +N)T
+
+space for {xt, rt}, and O
+ 
+T 2
+for {V γ
+t }.
+VIII. S IMULATION RESULTS
+Consider a compressed sensing problem: ∀i,
+xi ∼
+ 0, probability = 1 − µ
+N (0, µ−1), probability = µ . (98)
+The power of xi is normalized to 1. The SNR is defined as
+SNR = 1 /σ2. Let A = UΣV H be the SVD of A. We
+rewritten the system in (4) to y = UΣV Hx + n. Note that
+U Hn has the same distribution as n. Thus, we can assume
+U = I without loss of generality. To reduce the complexity
+of OAMP/V AMP, unless otherwise specified, we approximate
+a large random unitary matrix by V H = ΠF , where Π is
+a random permutation matrix and F is a DFT matrix. Note
+that all the algorithms involved here admit fast implementation
+for this matrix model. The entries {di} of diagonal matrix Σ
+are generated as: di/di+1 = κ1/J for i = 1 , . . . , J − 1 andPJ
+i=1 d2
+i = N, where J = min {M, N } [10]. Here, κ ≥ 1
+controls the condition number of A. Note that BO-MAMP
+does not require the SVD structure of A. BO-MAMP only
+needs the right-unitarily invariance of A.
+A. BO-OAMP/VAMP is Sufficient-Statistic
+To verify that BO-OAMP/V AMP is sufficient-statistic, we
+plot the covariance matrices V γ
+t and V ϕ
+t of BO-OAMP/V AMP
+in Fig. 4. As can be seen, the covariance matrices in BO-
+OAMP/V AMP are L-banded, i.e., the elements in each L
+band of the covariance matrix are almost the same. Therefore,
+following Lemma 18, we know that BO-OAMP/V AMP is
+sufficient-statistic, which coincides with the theoretical result
+in Theorem 2.
+B. SS-BO-MAMP is Sufficient-Statistic
+To verify that SS-BO-OAMP/V AMP is sufficient-statistic,
+we plot the covariance matrices V γ
+t and V ϕ
+t of SS-BO-MAMP
+in Fig. 6. As can be seen, the covariance matrices in SS-BO-
+MAMP are L-banded, i.e., the elements in each L band of the
+covariance matrix are almost the same. Therefore, following
+Lemma 18, we know that SS-BO-MAMP is sufficient-statistic.
+3The number of matrix-vector multiplications can be reduced by storing an
+intermediate variable for Aˆrt to prevent its double computation.
+
+=== PDF PAGE 16 ===
+16
+-6
+-5
+-4
+-3
+-2
+-1
+0
+-8
+-7
+-6
+-5
+-4
+-3
+-2
+-1
+0
+(a) log(V γ
+10) in BO-OAMP/V AMP (b) log(V ϕ
+10) in BO-OAMP/V AMP
+Fig. 4. Covariance matrices V γ
+t and V ϕ
+t in BO-OAMP/V AMP.N = 16384,
+δ = M/N = 0.5, µ = 0.1, SN R = 30 dB and κ = 10 and t = 10.
+0 10 20 30 40 50 60
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-MAMP (L=3)
+BO-MAMP (L=t)
+SS-BO-MAMP
+BO-MAMP (L=3, SE)
+BO-MAMP (L=t, SE)
+SS-BO-MAMP (SE)
+Fig. 5. MSE versus the number of iterations for SS-BO-MAMP and BO-
+MAMP in [25]. N = 16384, δ = M/N = 0.5, µ = 0.1, SN R = 30 dB
+and κ = 100. SE denotes state evolution.
+C. Comparison of BO-MAMP and SS-BO-MAMP
+Fig. 5 shows the MSEs versus the number of iterations for
+SS-BO-MAMP and BO-MAMP. On the one hand, as can be
+seen in Fig. 5, the MSE of SS-BO-MAMP is slightly better
+than those of BO-MAMPs in [25] (with damping length L = 3
+and L = t). This coincides with the theoretical result in
+Lemma 25 that the MSE of SS-BO-MAMP is not worse than
+that of BO-MAMP. Furthermore, since the BO-MAMP in [25]
+is replica Bayes optimal, SS-BO-MAMP is also replica Bayes
+optimal as it converges to the same performance as that of BO-
+MAMP. This coincides with the theoretical result in Lemma
+26. On the other hand, compared to the BO-MAMP with
+damping length L = 3, the improvements of SS-BO-MAMP
+and the fully damped BO-MAMP (e.g., L = t) are negligible.
+Therefore, due to its low complexity and stability, the BO-
+MAMP with L = 3 in [25] is more attractive in practice than
+SS-BO-MAMP and the fully damped BO-MAMP. However,
+it would be meaningful to use the state evolution of SS-BO-
+MAMP as the limit (or a lower bound) for the performance
+of the damped BO-MAMP.
+Instability of SS-MAMP: Based on our numerical results, for
+small-to-medium size systems or when the condition number
+of A is very large, the full damping in SS-MAMP is unstable.
+As a result, SS-MAMP may fail to converge. How to solve the
+instability of the full damping in SS-MAMP is an interesting
+and important future work.
+-6
+-5
+-4
+-3
+-2
+-1
+0
+1
+-8
+-7
+-6
+-5
+-4
+-3
+-2
+-1
+0
+(a) log(V γ
+16) in SS-BO-MAMP (b) log(V ϕ
+16) in SS-BO-MAMP
+Fig. 6. Covariance matrices V γ
+t and V ϕ
+t in SS-BO-MAMP. N = 16384,
+δ = M/N = 0.5, µ = 0.1, SN R = 30 dB, κ = 10 and t = 16.
+0 50 100 150 200 250
+Number of iterations
+10-3
+10-2
+10-1
+100
+MSE
+Damping at NLE
+Damping at MLE
+Fig. 7. MSE versus the number of iterations for BO-MAMP with short-
+memory damping ( L = 2 ). N = 16384 , δ = M/N = 0 .5, µ = 0 .1,
+SN R = 30 dB and κ = 500.
+D. Damping at MLE in BO-MAMP
+Lemma 22 implies that when the NLE is locally Bayes-
+optimal, damping at MLE is preferable to damping at NLE
+in BO-MAMP, even for short-memory damping (i.e., L < t ),
+which is commonly used in practice since MAMP is more
+stable with smaller L. To validate this claim, Fig. 7 compares
+the MSE of BO-MAMP with short-memory damping ( L = 2)
+at MLE and that at NLE. It shows that damping at MLE in BO-
+MAMP converges much faster than damping at NLE, while
+their per-iteration complexities are the same.
+IX. C ONCLUSION
+This paper proposes an optimal sufficient-statistic
+memory AMP (SS-MAMP) framework (from the local
+MMSE/LMMSE perspective) for AMP-type algorithms
+and solves the convergence problem of the state evolution
+for AMP-type algorithms in principle. We show that
+the covariance matrices of SS-MAMP are L-banded and
+convergent. Given an arbitrary MAMP, we construct an SS-
+MAMP by optimal damping. The dynamics of the constructed
+SS-MAMP can be rigorously described by state evolution.
+We prove that the BO-OAMP/V AMP is an SS-MAMP.
+As a result, we reveal two interesting properties of BO-
+OAMP/V AMP for large systems: 1) the covariance matrices
+of BO-OAMP/V AMP are L-banded and are convergent, and 2)
+damping and memory are not needed (i.e., do not bring per-
+formance improvement) in BO-OAMP/V AMP. These recover
+the main statements in [31].
+
+=== PDF PAGE 17 ===
+17
+An SS-BO-MAMP is constructed based on the BO-MAMP.
+We show that 1) the SS-BO-MAMP is replica Bayes optimal,
+and 2) the MSE of SS-BO-MAMP is not worse than the origi-
+nal BO-MAMP in [25]. Numerical results are provided to ver-
+ify that BO-OAMP/V AMP and SS-BO-MAMP are sufficient-
+statistic, and verify the fact that SS-BO-MAMP outperforms
+the original BO-MAMP.
+The sufficient-statistic technique proposed in this paper not
+only applies to OAMP/V AMP and MAMP, but also applies
+to more general iterative algorithms. It is an interesting future
+work to apply the sufficient-statistic technique in this paper
+to other well-known iterative algorithms, including AMP [4],
+UTAMP [11], [12], CAMP [22], long-memory AMP [23],
+[24], rotationally invariant AMP [29], GMAMP [28], et al.
+ACKNOWLEDGMENT
+The authors thank Ramji Venkataramanan (Associate Ed-
+itor) and the anonymous reviewers for their comments that
+have improved the quality of the manuscript greatly.
+APPENDIX A
+PROOF OF LEMMA 4
+Since st = x1t×1+nt and nt is zero mean with covariance
+matrix Vt, we have
+E
+
+∥ζT
+t st − x∥2	
+= ζH
+t Vtζt. (99)
+The damping optimization is equivalent to solving the follow-
+ing quadratic programming problem.
+min
+ζt
+1
+2 ζH
+t Vtζt, (100a)
+s.t. 1Tζt = 1. (100b)
+Since Vt is positive semi-definite, it is a convex function with
+respect to ζt. We write the Lagrangian function as
+L(ζt, c) = 1
+2 ζH
+t Vtζt + c(1 − 1Tζt). (101)
+Therefore, the solutions of the following equations minimize
+the objective function.
+∇ζt L(ζt, c) = 0, (102a)
+∂L(ζt, c)/∂c = 0. (102b)
+That is,
+Vtζt = c1, 1Tζt = 1. (103)
+Since v1,t = v2,t · · · = vt,t, it is easy to verify that {ζt =
+[0 . . . 0, 1]T, c = vt,t} is a solution of (103). Hence, ζt =
+[0 . . .0, 1] minimizes the MSE, i.e.,
+[0 . . .0 1]T = arg minζT
+t 1=1 ∥ζT
+t st − x∥2. (104)
+Therefore, we complete the proof of Lemma 4.
+APPENDIX B
+PROOF OF LEMMA 6
+Define D ≡ V −1
+t Vt = {di,j}. Following (24) and (26), we
+have the following.
+• First, we consider the diagonal elements of D. For any
+1 < i < t ,
+di,i = v†
+i,i−1vi−1,i + v†
+i,ivi,i + v†
+i,i+1vi+1,i
+= vi
+vi −vi−1
++
+ vi
+vi−1 −vi
++ vi
+vi −vi+1
+
++ vi+1
+vi+1 −vi
+= 1. (105a)
+In addition,
+d1,1 = v†
+1,1v1,1 + v†
+1,2v2,1
+= v1
+v1 − v2
++ v2
+v2 − v1
+= 1, (106a)
+dt,t = v†
+t,t−1vt−1,t + v†
+t,tvt,t
+= vt
+vt − vt−1
++
+ vt
+vt−1 − vt
++ vt
+vt
+
+= 1. (106b)
+Following (105) and (106), we have
+di,i = 1, ∀1 ≤ i ≤ t. (107)
+• Then, we consider the non-diagonal elements of D. For
+any 1 < j ≤ t,
+dj,1 = d1,j = v†
+1,1v1,j +v†
+1,2v2,j = vj −vj
+v1 −v2
+=0 . (108)
+For any 1 < i < j ≤ t,
+dj,i = di,j
+= v†
+i,i−1vi−1,j + v†
+i,ivi,j + v†
+i,i+1vi+1,j
+= vj
+vi − vi−1
++
+ vj
+vi−1 −vi
++ vj
+vi −vi+1
+
++ vj
+vi+1 −vi
+= 0. (109)
+Following (108) and (109), we have
+di,j = 0, ∀i ̸= j. (110)
+From (107) and (110), we have D = I. That is, V −1
+t in
+(26) is the inverse of Vt. The remainder of Lemma 6 follows
+straightforwardly from (26). Thus, we complete the proof of
+Lemma 6.
+APPENDIX C
+PROOF OF LEMMA 10
+Since st = x1 + nt and nt ∼ CN (0, Vt), we have
+p(x|st) = p(x)p(st|x)
+p(st) (111a)
+∝ p(x)e
+− ∥st −x∥2
+vt,t (111b)
+∝ p(x)e−(st−x)∗v−1
+t,t (st−x) (111c)
+= p(x)e−v−1
+t,t ∥x∥2 + v−1
+t,t s∗
+t x + v−1
+t,t x∗st , (111d)
+
+=== PDF PAGE 18 ===
+18
+p(x|st) = p(x)p(st|x)
+p(st) (111e)
+∝ p(x)e−(st−x1)HV −1
+t (st−x1) (111f)
+∝ p(x)e−1TV −1
+t 1∥x∥2 + sH
+t V −1
+t 1x + xH1TV −1
+t st . (111g)
+From (111), for any st, p(x|st) = p(x|st) if and only if
+V −1
+t 1 =
+
+0, . . . ,0, v−1
+t,t
+T
+, (112)
+which is equivalent to
+Vt
+
+0, . . . ,0, 1
+T
+= vt,t1, (113)
+i.e.,
+vt,i = vi,t = vt,t, ∀1 ≤ i ≤ t, (114)
+Therefore, we complete the proof of Lemma 10.
+APPENDIX D
+PROOF OF LEMMA 13
+Following Lemma 1, we have
+lmmse{x|y, Xt}
+a.s.
+= lmmse{¯x|¯y, ¯Xt} (115a)
+lmmse{x|y, xt}
+a.s.
+= lmmse{¯x|¯y, ¯xt} (115b)
+where ¯y = A¯x + ¯n, ¯Xt = ¯X + ¯Ft, and ¯Ft is row-wise IID,
+column-wise jointly Gaussian, and independent of ¯n, i.e.,
+[ ¯fi,1, . . . ¯fi,t]
+IID
+∼ CN (0, V ϕ
+t ), i = 1, . . . t. (116)
+Define ζt ≡ [ζ1, . . . , ζt]T and ζ⋆
+t ≡ [ζ ⋆
+1 , . . . , ζ⋆
+t ]T.
+Lemma 27. Any optimal solution {Q⋆, P ⋆, {ζ ⋆
+i }} of
+P1 : min
+Q,P ,{ζi}
+E
+
+∥Q¯y + PPt
+i=1 ζi ¯xi − ¯x∥2
+2
+	
+(117a)
+s.t. QA + P = I, (117b)Pt
+i=1 ζi = 1, (117c)
+derives an optimal solution of
+P2 : min
+Q,P1:t
+E
+
+∥Q¯y +Pt
+i=1 Pi ¯xi − ¯x∥2
+2
+	
+(118a)
+s.t. QA +Pt
+i=1 Pi = I, (118b)
+by letting Q = Q⋆ and Pi = ζ ⋆
+i P ⋆.
+Proof: See Appendix D-A.
+Lemma 28. Solving P1 is equivalent to solving
+P3 : min
+Q,P
+E
+
+∥Q¯y + P ¯Xtζ⋆
+t − ¯x∥2
+2
+	
+(119a)
+s.t. QA + P = I, (119b)
+where ζ⋆
+t is an optimal solution of
+P4 : min
+ζt
+ζH
+t V ϕ
+t ζt (120a)
+s.t. ζT
+t 1 = 1, (120b)
+by letting Q = Q⋆ and Pi = ζ ⋆
+i P ⋆.
+Proof: See Appendix D-B.
+Following Lemma 4 (see also Appendix A), when {vϕ
+t,i =
+vϕ
+i,t = vϕ
+t,t, ∀1 ≤ i ≤ t}, ζ⋆
+t = [0 . . .0, 1] is an optimal solution
+of P4. Therefore, ¯Xtζ⋆
+t = ¯xt. Then, following Lemma 27 and
+Lemma 28, we know that any optimal solution {Q⋆, P ⋆} of
+P5 : min
+Q,P
+E
+
+∥Q¯y + P ¯xt − ¯x∥2
+2
+	
+(121a)
+s.t. QA + P = I, (121b)
+derives an optimal solution of P2 by letting Q = Q⋆, Pt =
+P ⋆ and P1 = · · · = Pt−1 = 0. That is, the minimums of
+the objective functions in problems P2 and P5 are the same.
+Following the definition of lmmse(·) in (3), we have
+lmmse{¯x|¯y, ¯Xt} = lmmse{¯x|¯y, ¯xt}. (122)
+Furthermore, following (115), we have
+lmmse{x|y, Xt}
+a.s.
+= lmmse {x|y, xt}. (123)
+Then, following Definition 6, xt is an LMMSE sufficient
+statistic of x given Xt. Hence, we complete the proof of
+Lemma 13.
+A. Proof of Lemma 27
+Before proving Lemma 27, we first recall the following
+property of Kronecker products.
+Lemma 29 (Theorem 4.2.12 in [59]) . Let A ∈ Cm×m and
+B ∈ Cn×n. Furthermore, let λA be an eigenvalue of A with
+corresponding eigenvector ξA, and let λB be an eigenvalue
+of B with corresponding eigenvector ξB. Then λAλB is
+an eigenvalue of A ⊗ B with corresponding eigenvector
+ξA ⊗ ξB, where ⊗ denotes the Kronecker matrix product. Any
+eigenvalue of A ⊗ B arises as such a product of eigenvalues
+of A and B.
+We denote Pt as the vertical concatenation of {Pi}, i.e.,
+Pt ≜ [P H
+1 · · · P H
+t ]H. (124)
+Let λ ≥ 0 be a number that V ϕ
+t − λ1 is positive semidefinite.
+Such λ exists for any covariance matrix V ϕ
+t , since V ϕ
+t is
+positive definite.
+We simplify the objective function in P2 as follows.
+E
+
+∥Q¯y +Pt
+i=1 Pi ¯xi − ¯x∥2
+2
+	
+= E
+
+∥Qn +
+tP
+i=1
+Pi ¯fi + (QA +
+tP
+i=1
+Pi − I)¯x∥2
+2
+	
+= σ2tr
+
+QHQ
+	
++ tr
+Pt
+i=1
+Pt
+j=1 vϕ
+ijP H
+i Pj
+	
+= σ2tr
+
+QHQ
+	
++ tr
+
+PH
+t [V ϕ
+t ⊗ I]Pt
+	
+= σ2tr
+
+QHQ
+	
++ tr
+
+λPH
+t [1 ⊗ I]Pt
+	
++ tr
+
+PH
+t [(V ϕ
+t − λ1) ⊗ I]Pt
+	
+= σ2tr
+
+QHQ
+	
++ λ · tr
+
+(Pt
+i=1 Pi)H(Pt
+i=1 Pi)
+	
++ tr
+
+PH
+t [(V ϕ
+t − λ1) ⊗ I]Pt
+	
+. (125)
+Therefore, the following problem P6 is equivalent to P2.
+P6 : min
+Q,P ,P1:t
+σ2tr
+
+QHQ
+	
++ λtr
+
+P HP
+	
++ tr
+
+PH
+t [(V ϕ
+t − λ1) ⊗ I]Pt
+	
+s.t. QA + P = I,
+P =Pt
+i=1 Pi.
+(126)
+
+=== PDF PAGE 19 ===
+19
+Since V ϕ
+t − λ1 is positive semidefinite, from Lemma 29,
+(V ϕ
+t − λ1) ⊗ I is also positive semidefinite and its any eigen-
+vectors corresponding to eigenvalue 0 can be decomposed
+to w ⊗ η where w ∈ Ct×1 is an eigenvector of V ϕ
+t − λ1
+corresponding to eigenvalue 0 and η ∈ CN ×1 is an arbitrary
+vector. Therefore, we have
+tr
+
+PH
+t [(V ϕ
+t − λ1) ⊗ I]Pt
+	
+≥ 0, (127)
+where the equality takes when each column of Pt is an
+eigenvector of V ϕ
+t − λ1 corresponding to eigenvalue 0.
+For any given P , let Pi = ζ ⋆
+i P where Pt
+i=1 ζ ⋆
+i = 1
+and ζ⋆ is an eigenvector of V ϕ
+t − λ1. Obviously, it satisfies
+the conditions of P6, and the objective function takes the
+minimum regarding {Pi}. Moreover, the objective function
+also takes the minimum at ζ⋆ regarding ζ when Pi = ζiP andPt
+i=1 ζi = 1. As a result, each solution to problem P1 derives
+a solution to problem P2 by Pi = ζiP , which completes the
+proof of Lemma 27.
+B. Proof of Lemma 28
+We demonstrate that P1 can be solved by independently
+solving P3 and P4. The objective function of P1 can be
+transformed to
+E
+
+∥Q¯y + PPt
+i=1 ζi ¯xi − ¯x∥2
+2
+	
+= σ2tr
+
+QHQ
+	
++ tr
+
+ζH
+t V ϕ
+t ζtP HP
+	
+= σ2tr
+
+QHQ
+	
++ ζH
+t V ϕ
+t ζttr
+
+P HP
+	
+.
+(128)
+As we always have tr
+
+P HP
+	
+≥ 0, problem P1 can be
+decomposed to two problems regarding {Q, P } (problem P3)
+and ζt (problem P4).
+APPENDIX E
+PROOF OF LEMMA 16
+For simplicity, define ˆrt ≡ LMMSE{¯x|¯y, ¯xt} = ¯x + ˆgt.
+Following Lemma 1, we have
+
+LMMSE{x|y, xt}− x
+LMMSE{x|y, xt}− γ(y, Xt)
+
+a.s.
+= E
+
+ˆrt − ¯x
+ˆrt − γ(¯y, ¯Xt)
+	
+, (129)
+where ¯y = A¯x+ ¯n and ¯Xt = ¯X + ¯Ft, and ¯Ft is independent
+of ¯n and for i = 1, . . . t,
+[ ¯fi,1, . . . ¯fi,t]
+IID
+∼ CN (0, V ϕ
+t ). (130)
+Let ˆrt = ¯x + ˆgt. Consider the following unbiased linear
+estimation
+˜γ(¯y, ¯Xt) = (α + 1)ˆrt − αγ(¯y, ¯Xt) (131a)
+= ¯x + (α + 1)ˆgt − α¯gt, (131b)
+whose MSE is given by
+1
+N E
+
+∥α(ˆgt − ¯gt) + ˆgt∥2	
+. (132)
+Since xt is an LMMSE sufficient statistic of x given Xt, from
+Definition 6, we know that LMMSE{¯x|¯y, ¯xt} achieves the
+lowest MSE among all the unbiased linear estimates γ(¯y, ¯Xt).
+Therefore, E
+
+∥α(ˆgt − ¯gt) +ˆgt∥2} ≥ E
+
+∥ˆgt∥2	
+holds for any
+α ∈ C, i.e., α = 0 minimizes (132), which happens if and
+only if (see Appendix E-A)
+E
+
+ˆgt
+ˆgt − ¯gt
+	
+= 0. (133)
+Following (133) and (129), we get the desired (53). Otherwise,
+we can always find a α ∈ C such that E
+
+∥α(ˆgt − ¯gt) +
+ˆgt∥2} < E
+
+∥ˆgt∥2}, which is contradictory to the condition
+that “LMMSE{¯x|¯y, ¯xt} achieves the lowest MSE among all
+the unbiased linear estimates γ(¯y, ¯Xt)”. Hence, we complete
+the proof of Lemma 16.
+A. Proof of (133)
+First, we show “ α = 0 minimizes E
+
+∥α(ˆgt − gt) + ˆgt∥2	
+if E
+
+ˆgt
+ˆgt − gt
+	
+= 0”. Following E
+
+ˆgt
+ˆgt − gt
+	
+= 0,
+we have
+E
+
+∥α(ˆgt − gt)+ ˆgt∥2	
+= E
+
+∥(ˆgt − gt)∥2∥α∥2+∥ˆgt∥2	
+,
+which is obviously minimized by α = 0.
+Then, we prove “ E
+
+ˆgt
+ˆgt − gt
+	
+= 0 if α = 0 minimizes
+E
+
+∥α(ˆgt − gt) + ˆgt∥2	
+”. Let α = ℜ(α) + ℑ(α)i, where
+ℜ(α) and ℑ(α) denote the real and imaginary parts of α,
+respectively. Then,
+h(α) ≡ E
+
+∥α(ˆgt − gt) + ˆgt∥2 − ∥ˆgt∥2	
+(134a)
+= E
+
+∥α(ˆgt − gt)∥2 + 2ℜ{αˆgH
+t (ˆgt − gt)}
+	
+(134b)
+= E
+
+∥ˆgt − gt∥2ℜ(α)2 + 2N ℜ
+
+ˆgt
+ˆgt − gt
+	
+ℜ(α)
++ ∥ˆgt −gt∥2ℑ(α)2 −2N ℑ
+
+ˆgt
+ˆgt −gt
+	
+ℑ(α)
+	
+. (134c)
+If E
+
+ˆgt
+ˆgt − gt
+
+} ̸ = 0 , then E
+
+ℜ{⟨ˆgt
+ˆgt − gt⟩}
+	
+and
+E
+
+ℑ{⟨ˆgt
+ˆgt − gt⟩}
+	
+do not all equal to zeros, and E
+
+∥ˆgt −
+gt∥2	
+> 0. Thus, there always exists α ∈ C such that
+h(α) < 0 = h(0). That is, α = 0 does not minimize h(α), and
+thus it does not minimize E
+
+∥α(ˆgt − gt) + ˆgt∥2	
+. Therefore,
+E
+
+ˆgt
+ˆgt −gt
+	
+=0 if α=0 minimizes E
+
+∥α(ˆgt −gt)+ ˆgt∥2	
+.
+APPENDIX F
+PROOF OF LEMMA 22
+From Lemma 18, to prove Lemma 22, it is sufficient to
+prove:
+1⃝ V γ
+t is L-banded and rt = rt−1 if V γ
+{Iγ
+t−1,t} is singular
+given (72), and
+2⃝ V ϕ
+t+1 is L-banded and xt+1 = xt if V ϕ
+{Iϕ
+t ,t+1} is singular
+given (70),
+under the condition that {V γ
+t−1, V ϕ
+t } are L-banded and
+ri+1 = ri, if V γ
+{Iγ
+i ,i+1} is singular, 1 ≤ i ≤ t − 2, (135a)
+xi+1 = xi, if V ϕ
+{Iϕ
+i ,i+1} is singular, 1 ≤ j ≤ t − 1. (135b)
+Due to the symmetry of 1⃝ and 2⃝, we only prove 1⃝, and the
+same proof applies to 2⃝.
+In the following, given (72), we first prove V γ
+t is L-banded
+in 1), and then prove rt = rt−1 if V γ
+{Iγ
+t−1,t} is singular in 2).
+1) For simplicity, we let
+ˆgt ≡ ˆγt(y, xt) − x. (136)
+
+=== PDF PAGE 20 ===
+20
+Then, for all 1 ≤ t′ ≤ t,
+vγ
+t′,t = vγ
+t,t′ (137a)
+= ⟨gt|gt′⟩ (137b)
+= ⟨cγ
+t ˆgt + (1 − cγ
+t )ft|gt′⟩ (137c)
+a.s.
+= cγ
+t ⟨ˆgt|gt′⟩ (137d)
+= cγ
+t ⟨ˆgt|γt′(y, xt′) − x⟩ (137e)
+a.s.
+= cγ
+t ⟨ˆgt|ˆγt(y, xt) − x⟩ (137f)
+= cγ
+t ⟨ˆgt|ˆgt⟩ (137g)
+a.s.
+= vγ
+t , (137h)
+where (137d) follows ⟨ft|gt′⟩
+a.s.
+= 0 (see (9)), (137f) follows
+⟨ˆgt|ˆγt(y, xt) − γt′(y, xt′)⟩
+a.s.
+= 0 based on Lemma 16 and the
+L-banded V ϕ
+t , (137h) follows ⟨ˆgt|ˆgt⟩
+a.s.
+= lmmse{x|y, xt} =
+vγ
+t /cγ
+t . From (137) and the L-banded V γ
+t−1, we have that V γ
+t
+is L-banded.
+2) Since V γ
+Iγ
+t−1
+is invertible (following the definition of
+I γ
+t−1) and V γ
+{Iγ
+t−1,t} is L-Banded (following (137)), we have
+vγ
+t,t = vγ
+t−1,t−1 if V γ
+{Iγ
+t−1,t} is singular. Since ˆγt is a local
+MMSE function, the variance transfer function γSE
+t is a
+strictly monotonic increasing function [13, Lemma 2]. That
+is, vγ
+t,t = vγ
+t−1,t−1 means vϕ
+t,t = vϕ
+t−1,t−1, which means that
+V ϕ
+{Iϕ
+t−1,t} is singular since V ϕ
+t is L-Banded. Finally, from
+(135b), we have xt = xt−1 and rt = rt−1 following (72).
+REFERENCES
+[1] L. Liu, S. Huang, and B. M. Kurkoski, “Sufficient statistic memory
+approximate message passing,” in Proc. IEEE Int. Symp. Inf. Theory
+(ISIT), Espoo, Finland, Jul. 2022.
+[2] D. Micciancio, “The hardness of the closest vector problem with prepro-
+cessing,” IEEE Trans. Inf. Theory , vol. 47, no. 3, pp. 1212–1215, 2001.
+[3] S. Verd ´u, “Optimum multi-user signal detection,” Ph.D. dissertation,
+Department of Electrical and Computer Engineering, University of Illinois
+at Urbana-Champaign, Urbana, IL, Aug. 1984.
+[4] D. L. Donoho, A. Maleki, and A. Montanari, “Message-passing algo-
+rithms for compressed sensing,” in Proc. Nat. Acad. Sci., vol. 106, no. 45,
+Nov. 2009.
+[5] M. Bayati and A. Montanari, “The dynamics of message passing on
+dense graphs, with applications to compressed sensing,” IEEE Trans. Inf.
+Theory, vol. 57, no. 2, pp. 764–785, Feb. 2011.
+[6] G. Reeves and H. D. Pfister, “The replica-symmetric prediction for
+random linear estimation with Gaussian matrices is exact,” IEEE Trans.
+Inf. Theory, vol. 65, no. 4, pp. 2252-2283, April 2019.
+[7] J. Barbier, N. Macris, M. Dia, and F. Krzakala, “Mutual information and
+optimality of approximate message-passing in random linear estimation,”
+IEEE Trans. Inf. Theory , vol. 66, no. 7, pp. 4270–4303, July 2020.
+[8] L. Liu, C. Liang, J. Ma, and L. Ping, “Capacity optimality of AMP in
+coded linear systems”, IEEE Trans. Inf. Theory, vol. 67, no. 7, 4929-4445,
+July 2021.
+[9] S. Rangan, A. K. Fletcher, P. Schniter, and U. S. Kamilov, “Inference for
+generalized linear models via alternating directions and bethe free energy
+minimization,”IEEE Trans. Inf. Theory, vol. 63, no. 1, pp. 676–697, 2017.
+[10] J. Vila, P. Schniter, S. Rangan, F. Krzakala, and L. Zdeborov ´a, “Adaptive
+damping and mean removal for the generalized approximate message
+passing algorithm,” inAcoustics, Speech and Signal Processing (ICASSP),
+2015 IEEE International Conference on , 2015, pp. 2021–2025.
+[11] Q. Guo and J. Xi, “Approximate message passing with unitary
+transformation,” CoRR, vol. abs/1504.04799 , 2015. [Online]. Available:
+http://arxiv.org/abs/1504.04799
+[12] Z. Yuan, Q. Guo and M. Luo, “Approximate message passing with
+unitary transformation for robust bilinear recovery,” IEEE Trans. Signal
+Process., vol. 69, 617–630, 2021.
+[13] J. Ma and L. Ping, “Orthogonal AMP,” IEEE Access, vol. 5, pp. 2020–
+2033, 2017, preprint arXiv:1602.06509, 2016.
+[14] S. Rangan, P. Schniter, and A. Fletcher, “Vector approximate message
+passing,” IEEE Trans. Inf. Theory , vol. 65, no. 10, pp. 6664-6684, 2019.
+[15] K. Takeuchi, “Rigorous dynamics of expectation-propagation-based sig-
+nal recovery from unitarily invariant measurements,” IEEE Trans. Inf.
+Theory, vol. 66, no. 1, 368–386, Jan. 2020.
+[16] A. M. Tulino, G. Caire, S. Verd ´u, and S. Shamai (Shitz), “Support
+recovery with sparsely sampled free random matrices,” IEEE Trans. Inf.
+Theory, vol. 59, no. 7, pp. 4243–4271, Jul. 2013.
+[17] J. Barbier, N. Macris, A. Maillard, F. Krzakala, “The mutual infor-
+mation in random linear estimation beyond i.i.d. matrices,” preprint
+arXiv:1802.08963, 2018.
+[18] K. Takeda, S. Uda, and Y . Kabashima, “Analysis of cdma systems that
+are characterized by eigenvalue spectrum,” EPL (Europhysics Letters) ,
+vol. 76, no. 6, p. 1193, 2006.
+[19] Y . Li, Z. Fan, S. Sen, and Y . Wu, “Random linear estimation with
+rotationally-invariant designs: Asymptotics at high temperature,” arXiv
+preprint arXiv:2212.10624, 2022.
+[20] L. Liu, S. Liang, and L. Ping, “Capacity optimality of OAMP in coded
+large unitarily invariant systems,” in Proc. IEEE Int. Symp. Inf. Theory
+(ISIT), Espoo, Finland, 2022.
+[21] L. Liu, S. Liang, and L. Ping, “Capacity optimality of OAMP: Beyond
+IID sensing matrices and Gaussian signaling,”preprint arXiv:2108.08503,
+Aug. 2021.
+[22] K. Takeuchi, “Bayes-optimal convolutional AMP,” IEEE Trans. Inf.
+Theory, vol. 67, no. 7, pp. 4405-4428, July 2021.
+[23] M. Opper, B. C ¸ akmak, and O. Winther, “A theory of solving TAP
+equations for Ising models with general invariant random matrices,”
+J.Phys. A: Math. Theor. , vol. 49, no. 11, p. 114002, Feb. 2016.
+[24] Z. Fan, “Approximate message passing algorithms for rotationally in-
+variant matrices,” preprint arXiv:2008.11892, 2020.
+[25] L. Liu, S. Huang, and B. M. Kurkoski, “Memory AMP,” IEEE Trans.
+Inf. Theory, vol. 68, no. 12, pp. 8015-8039, Dec. 2022.
+[26] S. Rangan, “Generalized approximate message passing for estimation
+with random linear mixing,” preprint arXiv:1010.5141, 2010.
+[27] P. Schniter, S. Rangan, and A. K. Fletcher, “Vector AMP for the
+generalized linear model,” Proc. Asilomar Conf. on Signals, Systems, and
+Computers (Pacific Grove, CA), Nov. 2016.
+[28] F. Tian, L. Liu, and X. Chen, “Generalized memory approximate
+message passing,” preprint arXiv:2110.06069, Oct. 2021.
+[29] R. Venkataramanan, K. K ¨ogler, and M. Mondelli, “Estimation in ro-
+tationally invariant generalized linear models via approximate message
+passing,” International Conference on Machine Learning , 22120-22144,
+June 2022.
+[30] P. Pandit, M. Sahraee, S. Rangan, and A. K. Fletcher, “Inference with
+deep generative priors in high dimensions,”IEEE J. Sel. Areas Inf. Theory,
+vol. 1, no. 1, pp. 336–347, May 2020.
+[31] K. Takeuchi, “On the convergence of orthogonal/vector AMP: Long-
+memory message-passing strategy,” IEEE Trans. Inf. Theory, vol. 68, no.
+12, pp. 8121-8138, Dec. 2022.
+[32] L. Liu, C. Yuen, Y . L. Guan, Y . Li, and Y . Su, “Convergence analysis
+and assurance for Gaussian message passing iterative detector in massive
+MU-MIMO systems,” IEEE Trans. Wireless Commun. , vol. 15, no. 9,
+6487–6501, Sept. 2016.
+[33] L. Liu, C. Yuen, Y . L. Guan, Y . Li, and C. Huang, “Gaussian message
+passing for overloaded massive MIMO-NOMA,” IEEE Trans. Wireless
+Commun., vol. 18, no. 1, 210–226, Jan. 2019.
+[34] C. Gerbelot, A. Abbara, and F. Krzakala, “Asymptotic errors for teacher-
+student convex generalized linear models (or : How to prove Kabashima’s
+replica formula),” [Online]. Available: https://arxiv.org/abs/2006.06581.
+[35] M. Mondelli and R. Venkataramanan, “PCA initialization for approxi-
+mate message passing in rotationally invariant models,” [Online]. Avail-
+able: https://arxiv.org/abs/2106.02356.
+[36] S. Rangan, P. Schniter, A. Fletcher, and S. Sarkar, “On the convergence
+of approximate message passing with arbitrary matrices,” IEEE Trans.
+Inf. Theory, vol. 65, no. 9, pp. 5339–5351, Sep. 2019.
+[37] S. Sarkar, R. Ahmad, and P. Schniter, “MRI Image Recovery using
+Damped Denoising Vector AMP,” preprint arXiv:2010.11321, Oct. 2021.
+[38] K. Mimura and J. Takeuchi, “Dynamics of damped approximate message
+passing algorithms,” in Proc. 2019 IEEE Inf. Theory Workshop , Visby,
+Sweden, Aug. 2019.
+[39] L. Liu, Y . Chi, Y . Li, and Z. Yang, ”Generalized Linear Systems with
+OAMP/V AMP Receiver: Achievable Rate and Coding Principle,” inProc.
+IEEE Int. Symp. Inf. Theory (ISIT) , Taiwan, China, 2022,
+[40] Y . Kabashima, F. Krzakala, M. M ´ezard, A. Sakata, and L. Zdeborov ´a,
+“Phase transitions and sample complexity in Bayes optimal matrix
+factorization,” IEEE Trans. Inf. Theory , vol. 62, 4228-4265, 2016.
+
+=== PDF PAGE 21 ===
+21
+[41] P. Schniter, and S. Rangan, ”Compressive phase retrieval via general-
+ized approximate message passing,” IEEE Trans. Signal Process. , 63,
+1043–1055, 2015.
+[42] Y . Deshpande, E. Abbe, and E. Abbe, ”Asymptotic mutual information
+for the balanced binary stochastic block model, ” Inf. Inference, vol. 6,
+125–170, 2016.
+[43] A. Manoel, F. Krzakala, M. M ´azard, and L. Zdeborov ´a, “Multi-layer
+generalized linear estimation,” Proc. IEEE Int. Symp. Inf. Theory, 2017,
+pp. 2098–2102.
+[44] L. Liu and W. Yu, “Massive connectivity with massive MIMO—part
+I: Device activity detection and channel estimation,” IEEE Trans. Signal
+Process., vol. 66, no. 11, pp. 2933-2946, June 2018.
+[45] Y Cheng, L. Liu and L. Ping, “Orthogonal AMP for massive access
+in channels with spatial and temporal correlations” IEEE J. Sel. Areas
+Commun., vol. 39, no. 3, 726-740, March 2021.
+[46] Y Cheng, L. Liu and L. Ping, “Orthogonal AMP for Problems with Mul-
+tiple Measurement Vectors and/or Multiple Transforms” arXiv preprint:
+arXiv:2304.08038, March 2023.
+[47] O. Y . Feng, R. Venkataramanan, C. Rush, R. J. Samworth, A unifying
+tutorial on approximate message passing , now, 2022.
+[48] A. K. Fletcher, and S. Rangan, “Scalable inference for neuronal connec-
+tivity from calcium imaging,” Advances in Neural Information Processing
+Systems, vol. 27, 2843-2851, 2014.
+[49] M. Emami, M. Sahraee-Ardakan, P. Pandit, S. Rangan, and A. K.
+Fletcher, “Generalization error of generalized linear models in high
+dimensions,” Proc. Mach. Learn. Res. , 119, 2892-2901, 2020.
+[50] B. Jeon, R. Ghods, A. Maleki, and C. Studer. “Optimality of large
+MIMO detection via approximate message passing,” IEEE International
+Symposium on Information Theory , pp. 1227-1231, 2015.
+[51] J. Barbier and F. Krzakala, “Approximate message-passing decoder and
+capacity achieving sparse superposition codes,” IEEE Trans. Inf. Theory ,
+vol. 63, no. 8, pp. 4894-4927, Aug. 2017.
+[52] C. Rush, A. Greig and R. Venkataramanan, “Capacity-Achieving sparse
+superposition codes via approximate message passing decoding,” IEEE
+Trans. Inf. Theory, vol. 63, no. 3, pp. 1476-1500, March 2017.
+[53] J. Ma, L. Liu, X. Yuan and L. Ping, ”On orthogonal AMP in coded
+linear vector systems,” IEEE Trans. Wireless Commun. , vol. 18, no. 12,
+pp. 5658-5672, Dec. 2019.
+[54] L. Liu, C. Yuen, Y . L. Guan, and Y . Li, “Capacity-achieving MIMO-
+NOMA: iterative LMMSE detection,” IEEE Trans. Signal Process. ,
+vol. 67, no. 7, 1758–1773, April 2019.
+[55] X. Yuan, L. Ping, C. Xu and A. Kavcic, “Achievable rates of MIMO
+systems with linear precoding and iterative LMMSE detector,” IEEE
+Trans. Inf. Theory, vol. 60, no.11, pp. 7073–7089, Oct. 2014.
+[56] X. Wang and H. V . Poor, “Iterative (Turbo) soft interference cancellation
+and decoding for coded CDMA,” IEEE Trans. Commun. , vol. 47, no. 7,
+pp. 1046–1061, Jul. 1999.
+[57] R. Berthier, A. Montanari and P.-M. Nguyen, “State evolution for ap-
+proximate message passing with non-separable functions,” Inf. Inference
+A J. IMA , vol. 9, no. 1, pp. 33-79, Mar. 2020.
+[58] S. Huang, L. Liu and B. M. Kurkoski, “Algebra of L-Banded Matrices,”
+in IEEE Access, vol. 11, pp. 17658-17664, Feb. 2023.
+[59] R.A. Horn and C.R. Johnson. Topics in Matrix Analysis. Cambridge
+University Press, Cambridge, 1991.

@@ -1,0 +1,35 @@
+{
+  "status": "PREPARATION_PASSED_NO_FORMAL_FINALIZATION",
+  "checked_utc": "2026-10-23T15:59:50.037286+00:00",
+  "synthetic_tests": {
+    "command": ".venv/Scripts/python.exe -B result/pilot_frames/data/known_phase_1000_20261023/test_finalize.py",
+    "tests": 9,
+    "passed": 9,
+    "exit_code": 0,
+    "scope": "Synthetic activity readout, original metric integrity, incomplete data and tampered evidence; no receiver inference"
+  },
+  "code_sha256": "a7c887c1061bc6078c7376ec26ffaa30a2337fc171dafcb21342aa9ba6bea570",
+  "test_sha256": "9e66848b566c9106b7ff1d8db50652629ac96ee19a496537f575e78b2c61af66",
+  "readout_sha256": "864a25c7cac57f3673d94ce2e3ad99b2d28690a37625db9f9a53d7d4c8efee6b",
+  "real_incomplete_checks": [
+    {
+      "experiment": "pilot_frames",
+      "result": "REJECTED_INCOMPLETE_WITHOUT_FINAL_OUTPUT",
+      "reason": "Raw inference is incomplete; no final readout is allowed",
+      "raw_plan_sha256": "223691108876f3af4f20fddf238c4f8fd5c7d1ef84a4399f7e95470898c56d14",
+      "application_plan_sha256": "04a4d95507de9e91f52e0786c2235a43353c63597b6191b4809dbbbc05022fc0",
+      "external_plan_sha256": "38515a3266879104bf738c4443c35700824e972d17da47eb95bdf56abb38b576"
+    },
+    {
+      "experiment": "user_count",
+      "result": "REJECTED_INCOMPLETE_WITHOUT_FINAL_OUTPUT",
+      "reason": "Raw inference is incomplete; no final readout is allowed",
+      "raw_plan_sha256": "9c205a3899da0f6fb62a1a7d00430b41e5f1784971e09984421d5f41c6ab8a68",
+      "application_plan_sha256": "3b5daf8c718e254cfcce5b2027c1f6abc5549ae3080f300ba9497f0927197e20",
+      "external_plan_sha256": "38515a3266879104bf738c4443c35700824e972d17da47eb95bdf56abb38b576"
+    }
+  ],
+  "inference_run": false,
+  "thresholds_fitted": false,
+  "formal_completion_created": false
+}

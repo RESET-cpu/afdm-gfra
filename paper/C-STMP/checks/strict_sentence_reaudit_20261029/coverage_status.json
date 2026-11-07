@@ -1,0 +1,599 @@
+{
+  "manuscript_unchanged": true,
+  "paragraphs": [
+    {
+      "id": "P01",
+      "status": "complete",
+      "sentences": 3,
+      "coverage_exact": true,
+      "counts": {
+        "OTHER_CHANGE": 1,
+        "TERM_ONLY": 1,
+        "EXACT": 1
+      },
+      "issues": [],
+      "sentence_level_pass": false,
+      "paragraph_structure": {
+        "same_original_paragraph": false,
+        "source_sequence": [
+          {
+            "draft_sentence": "P01-S01",
+            "source_key": "ding2026",
+            "source_page": 2,
+            "source_paragraph": "II节首段",
+            "source_sentence_number": 1
+          },
+          {
+            "draft_sentence": "P01-S02",
+            "source_key": "shen2025",
+            "source_page": 3,
+            "source_paragraph": "II节首段",
+            "source_sentence_number": 3
+          },
+          {
+            "draft_sentence": "P01-S03",
+            "source_key": "shen2025",
+            "source_page": 3,
+            "source_paragraph": "II节首段",
+            "source_sentence_number": 4
+          }
+        ],
+        "structure_changes": [
+          "当前首句取自 Ding，后两句取自 Shen；整段不是任一论文同一原段的完整保留。",
+          "Ding 首句后原本接 GF-RA round 内设备激活和 AFDM 发射设定，当前改接 Shen 的共享资源和 GNSS 假设。",
+          "Shen 的第3、4句在当前仍连续并保持原次序；Additionally 保留。但 Shen 在其前的系统/UPA及再生载荷说明、其后的 Following 3GPP recommendations 句均不在当前段落。",
+          "首句的 M=M_yM_z 是相对于 Ding 原句增加的本文阵列关系，不应由 Ding 引用被理解为逐字完整来源。"
+        ],
+        "paragraph_exact_or_term_only": false
+      }
+    },
+    {
+      "id": "P02",
+      "status": "complete",
+      "sentences": 16,
+      "coverage_exact": true,
+      "counts": {
+        "TERM_ONLY": 2,
+        "EXACT": 3,
+        "OTHER_CHANGE": 4,
+        "NO_SOURCE": 7
+      },
+      "issues": [],
+      "sentence_level_pass": false,
+      "paragraph_structure": {
+        "same_original_paragraph": false,
+        "source_sequence": [
+          {
+            "sentences": [
+              "P02-S01",
+              "P02-S02"
+            ],
+            "source": "Shen p3 II-A 首两句"
+          },
+          {
+            "sentences": [
+              "P02-S03",
+              "P02-S04"
+            ],
+            "source": "Huang p2 II，Doppler shift 小段；中间几何表达式及 where 定义未引入"
+          },
+          {
+            "sentences": [
+              "P02-S05"
+            ],
+            "source": "本次核查未定位完整原句"
+          },
+          {
+            "sentences": [
+              "P02-S06"
+            ],
+            "source": "Shen p3 II-A 式(1)整句的改写及本文模型"
+          },
+          {
+            "sentences": [
+              "P02-S07"
+            ],
+            "source": "Shen p3 II-A 路径增益句（原本位于时延说明之后）"
+          },
+          {
+            "sentences": [
+              "P02-S08"
+            ],
+            "source": "Shen p3 Notations 段"
+          },
+          {
+            "sentences": [
+              "P02-S09",
+              "P02-S10"
+            ],
+            "source": "Shen p3 II-A 差分及公共时延句（原本先于路径增益句）"
+          },
+          {
+            "sentences": [
+              "P02-S11",
+              "P02-S12",
+              "P02-S13",
+              "P02-S14",
+              "P02-S15",
+              "P02-S16"
+            ],
+            "source": "本次核查未定位完整原句；部分定义内容与 Shen/Li 相关"
+          }
+        ],
+        "structure_changes": [
+          "Shen II-A 首两句与其 Then 引导句之间插入 Huang 的静止参考点/共同 Doppler 说明和本文阵列向量定义。",
+          "Huang 原文在静止参考点句与 resulting Doppler 句之间还有卫星速度及式(2)几何关系的完整说明；当前删除该中间内容并删 resulting。",
+          "Shen 原序为信道式及 where、差分时延、公共时延、Additionally 路径增益、方向余弦；当前将路径增益提前，插入来自 Notations 的 delta 句。",
+          "末尾添加时间基准、方向余弦/间距/波长的简短 Let 句、独立阵列元素公式及四参数恒定假设；均非已确认的同一原段组织。"
+        ],
+        "paragraph_exact_or_term_only": false,
+        "attribution_risk": "不应将整段视为 Shen 或 Huang 原段的术语替换版；新增补偿动作、矢量化/共同 Doppler 模型、时间基准和恒定性假设需要与语言来源分开归属。"
+      }
+    },
+    {
+      "id": "P03",
+      "status": "complete",
+      "sentences": 9,
+      "coverage_exact": true,
+      "counts": {
+        "TERM_ONLY": 5,
+        "EXACT": 2,
+        "NO_SOURCE": 1,
+        "OTHER_CHANGE": 1
+      },
+      "issues": [],
+      "sentence_level_pass": false,
+      "paragraph_structure": {
+        "same_original_paragraph": false,
+        "source_sequence": [
+          {
+            "sentences": [
+              "P03-S01"
+            ],
+            "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+            "source_page": 4,
+            "location": "式 (2) 后导频段第 1 句"
+          },
+          {
+            "sentences": [
+              "P03-S02"
+            ],
+            "source_file": "D:\\afdm-gfra\\reference\\literature\\huang2026.pdf",
+            "source_page": 2,
+            "location": "系统模型首段第 2 句"
+          },
+          {
+            "sentences": [
+              "P03-S03",
+              "P03-S04"
+            ],
+            "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+            "source_page": 4,
+            "location": "返回同一导频段后续 2 句；S04 改变构造"
+          },
+          {
+            "sentences": [
+              "P03-S05",
+              "P03-S06",
+              "P03-S07"
+            ],
+            "source_file": "D:\\afdm-gfra\\reference\\literature\\ding2026.pdf",
+            "source_page": 2,
+            "location": "II 节首段式 (1)、参数定义、式 (2) 的原有相对次序；S07 改变说明对象"
+          },
+          {
+            "sentences": [
+              "P03-S08"
+            ],
+            "source_file": null,
+            "source_page": null,
+            "location": "本次核查未定位完整原句"
+          },
+          {
+            "sentences": [
+              "P03-S09"
+            ],
+            "source_file": "D:\\afdm-gfra\\reference\\literature\\ding2026.pdf",
+            "source_page": 2,
+            "location": "下一段式 (3) 后 where 从句被抽出改写"
+          }
+        ],
+        "structure_changes": [
+          "由 Cai → Huang → Cai → Ding 交替拼接；不能认定来自同一原段。",
+          "Cai 原段前 3 句之间插入 Huang 的 N 定义，并在第 3 句改变导频对象与构造。",
+          "Ding 式 (1) 至式 (2) 的局部顺序保留，但式 (2) 完整说明关系已改；其后 F/Λ 的定义未纳入当前段。",
+          "段末另加 Δf 的独立定义，再将 Ding 下一原段的采样间隔 where 从句移至此处、改成 Let 定义句。",
+          "句间顺序仅局部保留；原段所有句子和连接关系没有整体保留。"
+        ],
+        "paragraph_exact_or_term_only": false,
+        "attribution_risks": [
+          "本文 q 帧标号、列向量导频构造和 F_A 显式核不能概括成均为 Cai/Ding 原文原样提供。",
+          "S07 中 Ding 的 A^H 说明与当前 F_A 说明应区分；引用可提供背景，不证明完整句仅作术语替换。"
+        ]
+      }
+    },
+    {
+      "id": "P04",
+      "status": "complete",
+      "sentences": 3,
+      "coverage_exact": true,
+      "counts": {
+        "OTHER_CHANGE": 2,
+        "TERM_ONLY": 1
+      },
+      "issues": [],
+      "sentence_level_pass": false,
+      "paragraph_structure": {
+        "same_original_paragraph": false,
+        "source_sequence": [
+          "S01：Cai期刊版/v2 PDF第4页II-A的CP长度句骨架；Bemani PDF第8页另有允许相等的前缀条件依据。",
+          "S02：Bemani PDF第8页III-A式(19)引导句及公式；新增where的部分相关概念分散于第9-10页其他句。",
+          "S03：Huang PDF第2页II首段的帧时长句。"
+        ],
+        "structure_changes": [
+          "三句跨Cai、Bemani、Huang组织，不来自同一原段。",
+          "Cai的前缀假设原位于导频矩阵定义与去CP/DFT接收式之间，当前放在CPP延拓式之前。",
+          "Bemani式(19)前的前缀目的、CPP/CP区别、负索引发送说明及相应连接关系未保留。",
+          "Bemani式(19)后原接独立CPP/CP等同说明，当前接新增where，并转入Huang的帧时长句。",
+          "Huang帧时长句原承接子载波数并引出采样率，当前改放CPP公式之后。"
+        ],
+        "paragraph_exact_or_term_only": false,
+        "attribution_risk": "多设备最大差分时延、模延拓、正整数条件及含CPP帧时长均含本文表达/模型适配，不能由邻近引文转成来源原句原段。"
+      }
+    },
+    {
+      "id": "P05",
+      "status": "complete",
+      "sentences": 9,
+      "coverage_exact": true,
+      "counts": {
+        "OTHER_CHANGE": 2,
+        "NO_SOURCE": 5,
+        "TERM_ONLY": 2
+      },
+      "issues": [],
+      "sentence_level_pass": false,
+      "paragraph_structure": {
+        "same_original_paragraph": false,
+        "source_sequence": [
+          {
+            "draft_sentence": "P05-S01",
+            "source": "Cai期刊版PDF第4页II-A式(3)整句的开头；主句改写"
+          },
+          {
+            "draft_sentence": "P05-S02",
+            "source": "Huang PDF第2页II式(5)完整句；where替换"
+          },
+          {
+            "draft_sentence": "P05-S03至P05-S07",
+            "source": "本文G/D/B/φ及采样/附录说明；本次未定位整句来源"
+          },
+          {
+            "draft_sentence": "P05-S08",
+            "source": "Huang PDF第2页II，式(5)后下一自然段首句"
+          },
+          {
+            "draft_sentence": "P05-S09",
+            "source": "Huang PDF第3页III-A，另一自然段第二句"
+          }
+        ],
+        "structure_changes": [
+          "本段结合Cai的接收处理引导形式、Huang的三个来源句以及本文模型定义，非同一原段。",
+          "Huang式(5)句与power leakage句在原文分属前后自然段，当前中间插入G/D/B/φ等五句定义和说明。",
+          "Huang第2页power leakage句之后原有Consequently及To address this issue两句；当前未保留该段后续论证。",
+          "末句Since来自Huang第3页III-A导频设计段；它原来位于Conventional AFDM pilot designs说明之后、Meanwhile帧间近似不变说明之前，当前跨节抽取并拼接。",
+          "S08/S09句内连接词保留不代表原文段落间的顺序、上下文和连接完整保留。"
+        ],
+        "paragraph_exact_or_term_only": false,
+        "attribution_risk": "紧随Huang引文的本文张量系数、G/D/B/φ和frame 0/超NT_s定义可能被误读为Huang同式或同句；报告明确区分可定位文字、本文公式适配和未定位的新增说明。"
+      }
+    },
+    {
+      "id": "P06",
+      "status": "complete",
+      "sentences": 4,
+      "coverage_exact": true,
+      "counts": {
+        "TERM_ONLY": 3,
+        "NO_SOURCE": 1
+      },
+      "issues": [],
+      "sentence_level_pass": false,
+      "paragraph_structure": {
+        "same_original_paragraph": null,
+        "known_aligned_sentences_same_original_paragraph": true,
+        "source_sequence": [
+          {
+            "sentence_id": "P06-S01",
+            "source": "Shen，PDF第4页，II.B 同一 Note that… 原段中段"
+          },
+          {
+            "sentence_id": "P06-S02",
+            "source": "Shen，PDF第4–5页，紧接S01原句"
+          },
+          {
+            "sentence_id": "P06-S03",
+            "source": "Shen，PDF第5页，同原段末句，但与S02之间原有7句"
+          },
+          {
+            "sentence_id": "P06-S04",
+            "source": null
+          }
+        ],
+        "structure_changes": [
+          "当前段落以 Fortunately 开始，截去 Shen 原段先前关于单帧关系、三维张量及过扩展条件的3句。",
+          "S02与S03之间删去原段7句：从 In practice 开始的准静态失效条件、分辨率/变化量例子、Q增大时的说明，直到 Therefore 开始的小Q建议。",
+          "This characteristic 与 Furthermore 的字面连接词保留，但 Furthermore 在当前段落的邻接内容因删去7句而改变。",
+          "末尾加入本次未定位完整来源的 Since…公式…where 句。"
+        ],
+        "attribution_risk": "前三句确实来自 Shen 同一原段，不应虚称整段来自同一原段；S04中的共用多普勒概念在Huang可定位，但不能据此认定S04英文来源于Huang，更不能把本文跨帧公式和wrap定义归于Shen。",
+        "original_paragraph_structure_preserved": false,
+        "paragraph_exact_or_term_only": false
+      }
+    },
+    {
+      "id": "P07",
+      "status": "complete",
+      "sentences": 11,
+      "coverage_exact": true,
+      "counts": {
+        "EXACT": 1,
+        "TERM_ONLY": 5,
+        "NO_SOURCE": 4,
+        "OTHER_CHANGE": 1
+      },
+      "issues": [],
+      "sentence_level_pass": false,
+      "paragraph_structure": {
+        "same_original_paragraph": false,
+        "source_sequence": [
+          "Cai II-A 活动指示与概率（S01–S02）",
+          "本文新增活动保持假设（S03）",
+          "Cai 式 (3) 后有效信道定义被提前（S04）",
+          "本文有效导频定义（S05）",
+          "Cai 式 (3) 接收信号及 AWGN 句（S06）",
+          "Shen II-C 式 (15) 收集帧句，where 尾部改写（S07）",
+          "本文索引和导频定义（S08–S09）",
+          "Cai 式 (4) 后部分正交条件与设计转引（S10–S11）"
+        ],
+        "structure_changes": [
+          "拼接 Cai II-A 与 Shen II-C 两篇文献的不同原段。",
+          "Cai 原先在接收信号与噪声说明后定义 X_k，当前将该定义移到接收信号句之前。",
+          "Cai 原有信道/导频构造和堆叠定义链被删减或由本文定义替代。",
+          "插入四个未定位完整来源的假设或定义。",
+          "Next 的句首仍在，但后续 where 连接结构和说明关系没有保持原文。"
+        ],
+        "paragraph_exact_or_term_only": false,
+        "paragraph_language_all_exact_or_term_only": false,
+        "attribution_risk": "Cai 的句型可用于数学适配，但当前 AFDM 张量观测、有效导频、四个展平索引和能量预算等式不是已核实的 Cai 原模型；Shen 只支持 S07 的句首与原来的构造句，不支持当前维度尾句逐字沿用。"
+      }
+    },
+    {
+      "id": "P08",
+      "status": "complete",
+      "sentences": 2,
+      "coverage_exact": true,
+      "counts": {
+        "EXACT": 1,
+        "TERM_ONLY": 1
+      },
+      "issues": [],
+      "sentence_level_pass": true,
+      "paragraph_structure": {
+        "same_original_paragraph": true,
+        "source_sequence": [
+          {
+            "sentence_id": "P08-S01",
+            "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+            "source_page": 4,
+            "order": "同一原段中倒数第 3 句"
+          },
+          {
+            "sentence_id": "P08-S02",
+            "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+            "source_page": 4,
+            "order": "同一原段中倒数第 2 句，紧接 P08-S01 来源句"
+          }
+        ],
+        "structure_changes": [
+          "当前段落抽取原文同一较长段落中连续的两句，另起为独立短段；不是原文完整独立段落。",
+          "原段由 Assume that a total of T OFDM symbols are allocated for pilot transmission. 起始，涵盖导频和接收信号定义、公式 (3)/(4)、部分正交条件；当前 P08 不包含这些前文。",
+          "当前 P08 省去其后原句 Frequently used notations in this paper are summarized in Table I.。",
+          "保留的两句顺序及 Due to、Specifically、if、we have 均保留；无跨文献、跨原段或句内拼接。"
+        ],
+        "paragraph_exact_or_term_only": false,
+        "language_all_exact_or_term_only": true,
+        "connectors_preserved": true,
+        "source_attribution_risk": "两句的语言来源可确认；本文 X、X_k、H_k 的具体模型与数学对象含义不能随语言来源一起归于 Cai。",
+        "conclusion": "逐句语言通过，同一原段内连续取句；原段完整组织未保留，因此不作整段严格照搬通过结论。"
+      }
+    },
+    {
+      "id": "P09",
+      "status": "complete",
+      "sentences": 2,
+      "coverage_exact": true,
+      "counts": {
+        "EXACT": 1,
+        "NO_SOURCE": 1
+      },
+      "issues": [],
+      "sentence_level_pass": false,
+      "paragraph_structure": {
+        "same_original_paragraph": false,
+        "source_sequence": [
+          {
+            "draft_sentence": "P09-S01",
+            "source": "cai2026，PDF 第 4 页，II-B 首段第 1 句"
+          },
+          {
+            "draft_sentence": "P09-S02",
+            "source": null
+          }
+        ],
+        "structure_changes": [
+          "当前采用 Cai II-B 首段的第一句后，接上未定位来源的本文维度条件。",
+          "Cai 原段第二句讨论精确贝叶斯估计器及联合后验边缘化的高维积分，当前没有保留该句；当前第二句不是原段的后续原句。",
+          "未发现第二个已定位文献整句，因此不能称为已证实的跨文献拼接；可确认当前段落不保留 Cai 已定位原段的完整组织。"
+        ],
+        "paragraph_exact_or_term_only": false,
+        "language_all_exact_or_term_only": false,
+        "attribution_risk": "cai2026 的来源支持当前第一句；该引文不能自动扩展为支持紧随其后的 Q<KN 条件。"
+      }
+    },
+    {
+      "id": "P10",
+      "status": "complete",
+      "sentences": 4,
+      "coverage_exact": true,
+      "counts": {
+        "OTHER_CHANGE": 1,
+        "NO_SOURCE": 3
+      },
+      "issues": [],
+      "sentence_level_pass": false,
+      "paragraph_structure": {
+        "same_original_paragraph": false,
+        "source_sequence": [
+          {
+            "sentence_id": "P10-S01",
+            "source": "Shen 第7页 III-B首句（存在改写）"
+          },
+          {
+            "sentence_id": "P10-S02",
+            "source": "未定位整句；相关内容 Cai 第8页 IV-A末段及IV-B首句"
+          },
+          {
+            "sentence_id": "P10-S03",
+            "source": "未定位整句；相关内容 Cai 第3–5页 II-A/II-B式(5)"
+          },
+          {
+            "sentence_id": "P10-S04",
+            "source": "未定位整句；相关内容 Cai 第4–5页活动先验及第2页去噪器说明"
+          }
+        ],
+        "structure_changes": [
+          "从 Shen 的消息调度段摘出一句并改写，未保留原段其后的 In addition / Now / Firstly 顺序。",
+          "随后插入本文的训练先验定义、独立性假设及依赖结构解释；相关概念跨 Cai 不同章节，不是同一原段。",
+          "For inference、while 是当前组织逻辑，未定位与当前排列一致的原段连接。"
+        ],
+        "paragraph_exact_or_term_only": false,
+        "attribution_risk": "不能把整个段落归为 Shen/Cai 原文只换术语；本文前端估计说明、q_tr 定义及显式独立性/内部依赖说明须与文献概念依据分开。"
+      }
+    },
+    {
+      "id": "P11",
+      "status": "complete",
+      "sentences": 1,
+      "coverage_exact": true,
+      "counts": {
+        "TERM_ONLY": 1
+      },
+      "issues": [],
+      "sentence_level_pass": true,
+      "paragraph_structure": {
+        "same_original_paragraph": true,
+        "source_sequence": [
+          {
+            "draft_sentence": "P11-S01",
+            "source": "cai2026.pdf PDF第4页 Section II-B 第一段第2句",
+            "equivalent_version": "cai2026_stmp_v2.pdf PDF第4页对应同句"
+          }
+        ],
+        "structure_changes": [
+          "当前P11仅摘取原段第二句，独立成段；Cai原段共两句，其前的研究目标句未纳入P11。",
+          "本段没有拼接不同文献或不同原段，没有句内增删、重排或连接词变更；但原段的“目标句→困难句”两句组织未完整保留。"
+        ],
+        "original_paragraph_sentences": [
+          "In this paper, we aim to simultaneously detect the active devices and estimate the corresponding channels based on the observation $\\mathbf Y$ under a Bayesian inference framework.",
+          "Exact Bayesian estimators, e.g., the MMSE estimator, are generally intractable due to the high-dimensional integrals in the marginalization of the joint posterior distribution $p(\\mathbf X,\\{\\mathbf H_k\\}_{k=1}^{K},\\{\\alpha_k\\}_{k=1}^{K}\\mid\\mathbf Y)$."
+        ],
+        "paragraph_exact_or_term_only": false,
+        "language_exact_or_term_only": true,
+        "organization_preserved": false,
+        "attribution_risk": "不得把p→q或粗体信道对象→H_k后的本文模型与Cai模型等同；本结论只确认所审英文句来源。段内无新增本文独有英文说明被误归于来源。"
+      }
+    },
+    {
+      "id": "P12",
+      "status": "complete",
+      "sentences": 4,
+      "coverage_exact": true,
+      "counts": {
+        "EXACT": 1,
+        "OTHER_CHANGE": 2,
+        "NO_SOURCE": 1
+      },
+      "issues": [],
+      "sentence_level_pass": false,
+      "paragraph_structure": {
+        "same_original_paragraph": false,
+        "source_sequence": [
+          {
+            "draft_sentence": "P12-S01",
+            "source": "Cai II-B，PDF第4页Alternatively段第1句"
+          },
+          {
+            "draft_sentence": "P12-S02",
+            "source": "同段第2个完整句，跨PDF第4–5页，包括where列定义"
+          },
+          {
+            "draft_sentence": "P12-S03",
+            "source": "未定位整句；相关数学内容在第5页Table II"
+          },
+          {
+            "draft_sentence": "P12-S04",
+            "source": "最接近句在III-B, 1)，PDF第6页，属于另一个原段"
+          }
+        ],
+        "structure_changes": [
+          "保留Cai II-B原段开头两句的顺序和Alternatively、In message passing连接。",
+          "原段where列定义后原本继续说明factor graph、Table II及message calculation困难；当前不接这三句，而加入Here工作后验说明和估计目标句。",
+          "估计目标句最接近的完整语言对照来自III-B其他原段；两版Cai都不能作为当前四句同一原段的证明。",
+          "未发现必须归因于不同论文的拼接证据；已确认存在同一论文不同位置的近似对照及未定位来源的新说明。"
+        ],
+        "attribution_risk": "若称P12整段原样或仅替换术语，会把本文q工作后验、训练先验适配及目标定义误归为Cai该原段内容；引用Cai与逐句原样一致是两种不同判断。",
+        "paragraph_exact_or_term_only": false,
+        "sentence_language_all_exact_or_term_only": false
+      }
+    },
+    {
+      "id": "P13",
+      "status": "complete",
+      "sentences": 1,
+      "coverage_exact": true,
+      "counts": {
+        "EXACT": 1
+      },
+      "issues": [],
+      "sentence_level_pass": true,
+      "paragraph_structure": {
+        "same_original_paragraph": true,
+        "source_sequence": [
+          {
+            "draft_sentence": "P13-S01",
+            "source_key": "cai2026",
+            "source_page": 5,
+            "original_paragraph": "Section II-B 最后一段（To summarize 开头）",
+            "original_sentence_index": 2
+          }
+        ],
+        "original_sentence_sequence": [
+          "第1句：To summarize 开头，概括信道先验过于不精确或过于复杂的两难。",
+          "第2句：This paper seeks ...，即本次完整对应句。",
+          "第3句：We begin ...，先开发面向 JADCE 的 TMP 框架。",
+          "第4句：Then ...，把因子节点的信念计算解释为 AWGN 观测下的 MMSE 去噪。",
+          "第5句：This insight ...，说明引入 score-based generative networks 及免算高维积分。"
+        ],
+        "structure_changes": [
+          "当前 P13 只抽出原段第2句并独立成段；原段第1句及第3至第5句均不在 P13 中。",
+          "当前完整句内部词序、by 连接关系及 aforementioned 回指词保留；原段的 To summarize、We begin、Then、This insight 推进链没有整体保留。",
+          "没有拼接不同文献或不同原段；同一原段来源不等于复现该原段组织。"
+        ],
+        "paragraph_language_exact_or_term_only": true,
+        "paragraph_exact_or_term_only": false,
+        "attribution_risk": "本句没有新增本文特有模型或公式，未见把新增技术内容归于他文的句内变化；This paper 和 aforementioned 在当前稿中的指称需由当前上下文承接，本段单独不能证明原上下文整体保留。"
+      }
+    }
+  ]
+}

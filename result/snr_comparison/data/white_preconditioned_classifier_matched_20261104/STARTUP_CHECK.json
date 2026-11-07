@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "checked_local": "2026-11-05T07:48:11.007839+08:00",
+  "wrapper_pid": 41088,
+  "training_pid": 23620,
+  "training_process_create_time": 1793835959.451646,
+  "process_identity_matches_launch": true,
+  "training_status": {
+    "status": "TRAINING",
+    "pid": 23620,
+    "stage": "activity",
+    "updated_unix": 1793836089.674335,
+    "epoch": 3,
+    "maximum_epochs": 100,
+    "samples": 768,
+    "train_samples": 50000,
+    "optimizer_steps": 3150,
+    "loss": 0.036428433915716596,
+    "learning_rate": 0.00029969900813254667,
+    "gradient_norm_before_clip": 0.2108764797449112,
+    "elapsed_epoch_seconds": 0.7653226852416992
+  },
+  "configuration_sha256": "2a65aa4593cfc6614830ba82cc0013f80355ba7188905bcf16447cfbc96675b5",
+  "specification_sha256": "fb1a0993b2023f48ebe76580034d59a370755d0b600e16395ea99c42160c5a73",
+  "first_checkpoint_sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+  "random_initialization_unchanged": true,
+  "second_network_used": false,
+  "stderr_bytes": 0,
+  "fixed_validation_cache_complete": true,
+  "checkpoint_files": {
+    "initialization.pt": {
+      "bytes": 3505901,
+      "modified_unix": 1793818272.1700974
+    },
+    "last.pt": {
+      "bytes": 14029323,
+      "modified_unix": 1793836088.9070272
+    },
+    "evidence_best.pt": {
+      "bytes": 3700687,
+      "modified_unix": 1793836088.8891816
+    }
+  },
+  "user_notification": true,
+  "automatic_retry": false
+}

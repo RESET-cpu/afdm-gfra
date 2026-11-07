@@ -1,0 +1,435 @@
+{
+  "status": "PASS_SAVED_RECORDS",
+  "verification_status": "ANALYZED",
+  "created_utc": "2026-10-23T11:42:38.177734+00:00",
+  "commit": "4173ccc039c7630d63a320ff32e3e834b9c1121e",
+  "archive_sha256": "704a109ad5f9eb73eac975675921d9391ff1d04272ee4906ab8cfd01c6937bb9",
+  "archive_files": 37463,
+  "snapshot_files_verified": 191,
+  "git_blob_files_verified": 242,
+  "git_paths_not_in_archive": [
+    "runs/denoising_baselines_20261018/GITHUB_ASSETS.json",
+    "runs/denoising_baselines_20261018/GITHUB_DATA.txt",
+    "runs/denoising_baselines_20261018/UPLOAD_VERIFICATION.json"
+  ],
+  "python_ast_files": 339,
+  "physical_scenes": 500,
+  "channels_per_scene": 4,
+  "baseline_inferences_checked": 48000,
+  "merged_scene_method_records_checked": 15000,
+  "compact_npz_hashes_checked": 15500,
+  "paired_input_conditions": 3000,
+  "input_hash_matches": {
+    "truth_sha256_matches": 0,
+    "query_sha256_matches": 0,
+    "standard_noise_sha256_matches": 3000
+  },
+  "curve_points": 54,
+  "max_nmse_difference_db": 0.0,
+  "max_csv_difference_db": 0.0,
+  "paper_figure_sha256": "e52f2a6a582e474c93c790f444884858a621a096fae6cb386202583868b230ea",
+  "stopping_reasons": {
+    "somp:MAX_ATOMS": 5534,
+    "gamp:MEAN_CHANGE_STOP": 12000,
+    "gnn:fixed_unfolding_depth": 12000,
+    "offgrid_sbl:HYPERPARAMETER_CHANGE": 44,
+    "offgrid_sbl:MAX_ITERATIONS": 11956,
+    "somp:NOISE_DISCREPANCY": 6466
+  },
+  "warning_inferences_by_method": {
+    "somp": 12000,
+    "gamp": 12000,
+    "offgrid_sbl": 12000
+  },
+  "grid_projection_nmse_recomputed_db": -10.923145625459474,
+  "rows": [
+    {
+      "method": "gamp",
+      "snr_db": -20.0,
+      "original_nmse_db": 2.372164711656691,
+      "recomputed_nmse_db": 2.372164711656691,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gaussian",
+      "snr_db": -20.0,
+      "original_nmse_db": -0.04269955418006129,
+      "recomputed_nmse_db": -0.04269955418006129,
+      "difference_db": 0.0
+    },
+    {
+      "method": "genie_bound",
+      "snr_db": -20.0,
+      "original_nmse_db": -15.729488317916045,
+      "recomputed_nmse_db": -15.729488317916045,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gnn",
+      "snr_db": -20.0,
+      "original_nmse_db": -1.3644103895922095,
+      "recomputed_nmse_db": -1.3644103895922095,
+      "difference_db": 0.0
+    },
+    {
+      "method": "noisy",
+      "snr_db": -20.0,
+      "original_nmse_db": 20.071211114181736,
+      "recomputed_nmse_db": 20.071211114181736,
+      "difference_db": 0.0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": -20.0,
+      "original_nmse_db": -1.8077626721046207,
+      "recomputed_nmse_db": -1.8077626721046207,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed",
+      "snr_db": -20.0,
+      "original_nmse_db": -0.2678285667234517,
+      "recomputed_nmse_db": -0.2678285667234517,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed_small",
+      "snr_db": -20.0,
+      "original_nmse_db": 2.1259249870760595,
+      "recomputed_nmse_db": 2.1259249870760595,
+      "difference_db": 0.0
+    },
+    {
+      "method": "somp",
+      "snr_db": -20.0,
+      "original_nmse_db": 2.2981750058914097,
+      "recomputed_nmse_db": 2.2981750058914097,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gamp",
+      "snr_db": -10.0,
+      "original_nmse_db": -3.9807070525856902,
+      "recomputed_nmse_db": -3.9807070525856902,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gaussian",
+      "snr_db": -10.0,
+      "original_nmse_db": -0.407971326874506,
+      "recomputed_nmse_db": -0.407971326874506,
+      "difference_db": 0.0
+    },
+    {
+      "method": "genie_bound",
+      "snr_db": -10.0,
+      "original_nmse_db": -23.323573209474272,
+      "recomputed_nmse_db": -23.323573209474272,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gnn",
+      "snr_db": -10.0,
+      "original_nmse_db": -4.8292656781330265,
+      "recomputed_nmse_db": -4.8292656781330265,
+      "difference_db": 0.0
+    },
+    {
+      "method": "noisy",
+      "snr_db": -10.0,
+      "original_nmse_db": 10.071211114181738,
+      "recomputed_nmse_db": 10.071211114181738,
+      "difference_db": 0.0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": -10.0,
+      "original_nmse_db": -8.979343838088656,
+      "recomputed_nmse_db": -8.979343838088656,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed",
+      "snr_db": -10.0,
+      "original_nmse_db": -9.85470430495123,
+      "recomputed_nmse_db": -9.85470430495123,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed_small",
+      "snr_db": -10.0,
+      "original_nmse_db": -3.2346412126916144,
+      "recomputed_nmse_db": -3.2346412126916144,
+      "difference_db": 0.0
+    },
+    {
+      "method": "somp",
+      "snr_db": -10.0,
+      "original_nmse_db": -3.5128132746617577,
+      "recomputed_nmse_db": -3.5128132746617577,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gamp",
+      "snr_db": -0.0,
+      "original_nmse_db": -8.229498198577826,
+      "recomputed_nmse_db": -8.229498198577826,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gaussian",
+      "snr_db": -0.0,
+      "original_nmse_db": -2.975520370853805,
+      "recomputed_nmse_db": -2.975520370853805,
+      "difference_db": 0.0
+    },
+    {
+      "method": "genie_bound",
+      "snr_db": -0.0,
+      "original_nmse_db": -31.872702181430927,
+      "recomputed_nmse_db": -31.872702181430927,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gnn",
+      "snr_db": -0.0,
+      "original_nmse_db": -7.632640103011941,
+      "recomputed_nmse_db": -7.632640103011941,
+      "difference_db": 0.0
+    },
+    {
+      "method": "noisy",
+      "snr_db": -0.0,
+      "original_nmse_db": 0.07121111418173573,
+      "recomputed_nmse_db": 0.07121111418173573,
+      "difference_db": 0.0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": -0.0,
+      "original_nmse_db": -11.319797053656874,
+      "recomputed_nmse_db": -11.319797053656874,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed",
+      "snr_db": -0.0,
+      "original_nmse_db": -17.924736237109705,
+      "recomputed_nmse_db": -17.924736237109705,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed_small",
+      "snr_db": -0.0,
+      "original_nmse_db": -10.573029450842768,
+      "recomputed_nmse_db": -10.573029450842768,
+      "difference_db": 0.0
+    },
+    {
+      "method": "somp",
+      "snr_db": -0.0,
+      "original_nmse_db": -6.928380152125001,
+      "recomputed_nmse_db": -6.928380152125001,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gamp",
+      "snr_db": 10.0,
+      "original_nmse_db": -10.217699776792466,
+      "recomputed_nmse_db": -10.217699776792466,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gaussian",
+      "snr_db": 10.0,
+      "original_nmse_db": -10.349700163804062,
+      "recomputed_nmse_db": -10.349700163804062,
+      "difference_db": 0.0
+    },
+    {
+      "method": "genie_bound",
+      "snr_db": 10.0,
+      "original_nmse_db": -41.42136118781476,
+      "recomputed_nmse_db": -41.42136118781476,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gnn",
+      "snr_db": 10.0,
+      "original_nmse_db": -9.827366756082698,
+      "recomputed_nmse_db": -9.827366756082698,
+      "difference_db": 0.0
+    },
+    {
+      "method": "noisy",
+      "snr_db": 10.0,
+      "original_nmse_db": -9.928788885818264,
+      "recomputed_nmse_db": -9.928788885818264,
+      "difference_db": 0.0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 10.0,
+      "original_nmse_db": -11.902890104626831,
+      "recomputed_nmse_db": -11.902890104626831,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed",
+      "snr_db": 10.0,
+      "original_nmse_db": -25.363650494860053,
+      "recomputed_nmse_db": -25.363650494860053,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed_small",
+      "snr_db": 10.0,
+      "original_nmse_db": -19.13138072483416,
+      "recomputed_nmse_db": -19.13138072483416,
+      "difference_db": 0.0
+    },
+    {
+      "method": "somp",
+      "snr_db": 10.0,
+      "original_nmse_db": -9.745201853029055,
+      "recomputed_nmse_db": -9.745201853029055,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gamp",
+      "snr_db": 20.0,
+      "original_nmse_db": -10.701991498630194,
+      "recomputed_nmse_db": -10.701991498630194,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gaussian",
+      "snr_db": 20.0,
+      "original_nmse_db": -19.972895320194738,
+      "recomputed_nmse_db": -19.972895320194738,
+      "difference_db": 0.0
+    },
+    {
+      "method": "genie_bound",
+      "snr_db": 20.0,
+      "original_nmse_db": -51.31725015060138,
+      "recomputed_nmse_db": -51.31725015060138,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gnn",
+      "snr_db": 20.0,
+      "original_nmse_db": -10.691306680699098,
+      "recomputed_nmse_db": -10.691306680699098,
+      "difference_db": 0.0
+    },
+    {
+      "method": "noisy",
+      "snr_db": 20.0,
+      "original_nmse_db": -19.928788885818264,
+      "recomputed_nmse_db": -19.928788885818264,
+      "difference_db": 0.0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 20.0,
+      "original_nmse_db": -11.347922157132686,
+      "recomputed_nmse_db": -11.347922157132686,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed",
+      "snr_db": 20.0,
+      "original_nmse_db": -32.83565527992823,
+      "recomputed_nmse_db": -32.83565527992823,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed_small",
+      "snr_db": 20.0,
+      "original_nmse_db": -27.547323572948027,
+      "recomputed_nmse_db": -27.547323572948027,
+      "difference_db": 0.0
+    },
+    {
+      "method": "somp",
+      "snr_db": 20.0,
+      "original_nmse_db": -10.750915453472516,
+      "recomputed_nmse_db": -10.750915453472516,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gamp",
+      "snr_db": 30.0,
+      "original_nmse_db": -10.76802128752783,
+      "recomputed_nmse_db": -10.76802128752783,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gaussian",
+      "snr_db": 30.0,
+      "original_nmse_db": -29.933262030524972,
+      "recomputed_nmse_db": -29.933262030524972,
+      "difference_db": 0.0
+    },
+    {
+      "method": "genie_bound",
+      "snr_db": 30.0,
+      "original_nmse_db": -61.29157620893241,
+      "recomputed_nmse_db": -61.29157620893241,
+      "difference_db": 0.0
+    },
+    {
+      "method": "gnn",
+      "snr_db": 30.0,
+      "original_nmse_db": -10.823752805700032,
+      "recomputed_nmse_db": -10.823752805700032,
+      "difference_db": 0.0
+    },
+    {
+      "method": "noisy",
+      "snr_db": 30.0,
+      "original_nmse_db": -29.928788885818264,
+      "recomputed_nmse_db": -29.928788885818264,
+      "difference_db": 0.0
+    },
+    {
+      "method": "offgrid_sbl",
+      "snr_db": 30.0,
+      "original_nmse_db": -11.130928142259052,
+      "recomputed_nmse_db": -11.130928142259052,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed",
+      "snr_db": 30.0,
+      "original_nmse_db": -40.21556036516692,
+      "recomputed_nmse_db": -40.21556036516692,
+      "difference_db": 0.0
+    },
+    {
+      "method": "proposed_small",
+      "snr_db": 30.0,
+      "original_nmse_db": -34.27686666399179,
+      "recomputed_nmse_db": -34.27686666399179,
+      "difference_db": 0.0
+    },
+    {
+      "method": "somp",
+      "snr_db": 30.0,
+      "original_nmse_db": -10.87426917406294,
+      "recomputed_nmse_db": -10.87426917406294,
+      "difference_db": 0.0
+    }
+  ],
+  "input_archives_local": false,
+  "inference_rerun": false,
+  "training_rerun": false,
+  "limitations": [
+    "Reaggregated saved errors; did not rerun inference or rescore all full predictions.",
+    "Three raw-input ZIPs are available remotely; their bodies were not downloaded in this audit.",
+    "Cloud/local truth and query hashes differ; metadata and standard-noise hashes agree.",
+    "Saved diagnostic calculations were checked; diagnostic solvers were not rerun.",
+    "36,000 baseline calls carry retained numerical warnings; this audit does not resolve them."
+  ]
+}

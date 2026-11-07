@@ -1,0 +1,1713 @@
+=== PDF PAGE 1 ===
+1
+Hierarchical MTC User Activity Detection and
+Channel Estimation with Unknown Spatial
+Covariance
+Hamza Djelouat, Student Member, IEEE, Mikko J. Sillanpää, Markus
+Leinonen†, Member, IEEE, and Markku Juntti, Fellow, IEEE
+Abstract
+This paper addresses the joint user identification and channel estimation (JUICE) problem in
+machine-type communications under the practical spatially correlated channels model with unknown
+covariance matrices. Furthermore, we consider an MTC network with hierarchical user activity patterns
+following an event-triggered traffic mode. Therein the users are distributed over clusters with a structured
+sporadic activity behaviour that exhibits both cluster-level and intra-cluster sparsity patterns. To solve
+the JUICE problem, we first leverage the concept of strong priors and propose a hierarchical-sparsity-
+inducing spike-and-slab prior to model the structured sparse activity pattern. Subsequently, we derive a
+Bayesian inference scheme by coupling the expectation propagation (EP) algorithm with the expectation
+maximization (EM) framework. Second, we reformulate the JUICE as a maximum a posteriori (MAP)
+estimation problem and propose a computationally-efficient solution based on the alternating direction
+method of multipliers (ADMM). More precisely, we relax the strong spike-and-slab prior with a cluster-
+sparsity-promoting prior based on the long-sum penalty. We then derive an ADMM algorithm that solves
+the MAP problem through a sequence of closed-form updates. Numerical results highlight the significant
+performance significant gains obtained by the proposed algorithms, as well as their robustness against
+various assumptions on the users sparse activity behaviour.
+H. Djelouat and M. Juntti are are with Centre for Wireless Communications – Radio Technologies, FI-90014, University
+of Oulu, Finland. Mikko J. Sillanpää is with Research Unit of Mathematical Sciences, University of Oulu, Finland. e-mail:
+{hamza.djelouat,markus.leinonen,markku.juntti}@oulu.fi.
+This work has been financially supported in part by the Academy of Finland (grant 319485) and Academy of Finland 6G
+Flagship (grant 346208). H. Djelouat would like to acknowledge the support of Tauno Tönning Foundation. The work of M.
+Leinonen†, deceased, was also financially supported by the Academy of Finland (grant 340171).
+October 17, 2023 DRAFT
+arXiv:2310.10204v1  [eess.SP]  16 Oct 2023
+
+=== PDF PAGE 2 ===
+2
+I. I NTRODUCTION
+Machine-type communications (MTC) constitute one of the fundamental pillars in the current
+5G cellular systems [1]. In MTC networks, the base station (BS) aims to provide connectivity to
+a massive number of low-cost energy-constrained devices, known as user equipments (UEs). In
+the practical MTC, the UEs exhibit sporadic activity, generate predominantly uplink traffic and
+transmit mainly short-packet data [2]. Consequently, employing the conventional channel access
+protocols in MTC networks would result in a large signalling overhead [1]. To address this
+issue, grant-free access protocols have been introduced, enabling the UEs to access the network
+without the need for scheduling requests in advance. Therefore, utilizing grant-free access in
+MTC would result in a low signalling overhead and an extended lifespan for the UEs.
+To fully exploit the features of grant-free protocols, the BS has to accurately perform the
+task of joint UE identification and channel estimation (JUICE). Subsequently, owing to the
+sporadic nature of UEs traffic, the JUICE problem has been widely formulated as a sparse
+recovery problem. Furthermore, as the BS antennas sense the same sparse activity behaviour,
+the JUICE problem extends to the multiple measurements vector (MMV) setup. Solving the
+sparse recovery problem in MMV can be achieved via, for instance, greedy algorithms such
+as simultaneous orthogonal matching pursuit (SOMP) [3], mixed norm optimization approaches
+[4], sparse Bayesian learning (SBL) [5], and message passing algorithms [6].
+A. Related Work
+Numerous ongoing efforts to devise algorithms to solve the JUICE are presented in the
+literature. For instance, Chen et al. [7] addressed the JUICE under two scenarios, with and
+without prior knowledge of the large-scale fading. For both scenarios, they evaluated analytically
+a JUICE solution based on the AMP algorithm. Furthermore, Liu et al. [8] provided asymptotic
+performance analysis for a Bayesian AMP algorithm in terms of activity detection and channel
+estimation under the assumption of known large-scale fading. Ke et al. [9] considered an
+October 17, 2023 DRAFT
+
+=== PDF PAGE 3 ===
+3
+enhanced mobile broadband network, and investigated the performance of the generalized AMP
+algorithm that exploits the structured sparsity in the multiple-input multiple-output (MIMO)
+channels. The authors in [10], [11] proposed JUICE solutions from a non-Bayesian perspective,
+where they formulated the JUICE as a maximum likelihood problem and solved it via coordinate-
+block descend [10] and non-negative least-squares [11]. Nonetheless, these works focused on the
+JUICE only under uncorrelated fading channels , which may not accurately represent practical
+situations as the MIMO channels are typically spatially correlated [12]. In fact, JUICE solutions
+that are designed for uncorrelated channels may exhibit sensitivity to the correlation structures
+encountered in practical scenarios [13]. Thus, incorporating the spatial correlation in designing
+the JUICE solutions is of utmost importance, and it is still in its infancy in the literature.
+Recently, few works have looked into the JUICE problem under spatially correlated channels.
+For instance, Cheng et al. exploited in [14] both the spatial and temporal correlation of the
+propagation channels and proposed the orthogonal AMP algorithm to solve the JUICE problem.
+Rajoriya et al. [15] proposed a Bayesian solution that couples AMP and SBL to provide an
+algorithm that enjoys the low complexity of AMP and the good performance of SBL. Bai et al.
+[16] proposed a distributed AMP algorithm in cell-free MTC networks that aims to reduce the
+complexity of AMP by distributing the computation load over several access points. Moreover,
+we formulated the JUICE as an ℓ2,1-norm minimization problem [17], [18] and as a maximum a
+posteriori (MAP) problem in [19]. For both formulations, we derived computationally-efficient
+algorithms based on the alternating direction method of multipliers (ADMM). Furthermore,
+several theoretical analysis studies have investigated the performance of AMP for JUICE in
+correlated MIMO channels, in terms of activity detection accuracy [20], [21], channel estimation
+[21] and achievable rate [15].
+While the works in [14]–[21] address the JUICE problem under the more practical spatially
+correlated MIMO channels, they make the assumption that the channel distribution information
+(CDI) for all the UEs are fully known to the BS at any transmission instance . However, this
+October 17, 2023 DRAFT
+
+=== PDF PAGE 4 ===
+4
+assumption can be challenging to fulfill in realistic scenarios, as the BS cannot track the CDI
+of the UEs with long inactive status. Furthermore, the prior works on the JUICE consider MTC
+networks with an independent activity pattern amongst the UEs, modeling for instance, a scenario
+where each UE monitor an independent processes and thus activate randomly. Nonetheless, in
+practice, the UEs are deployed over several clusters, where the UEs within each cluster monitor
+the same phenomena, for example, leading to the paradigm of event-triggered traffic models.
+The event-triggered traffic model results in a hierarchical sparse activation pattern constituting
+in both cluster-level sparsity and intra-cluster sparsity. The cluster-level sparsity arises because
+the event epicenters are concentrated around a small subset of clusters (referred to as active
+clusters), causing only the UEs from those active clusters to be prompt for activity. On the other
+hand, each event would trigger only a subset of UEs to be active in practice, resulting in an
+intra-cluster sparsity model 1. To the best of our knowledge, only two works have investigated
+the JUICE problem with correlated UEs activity pattern. Liu et al. [22] addressed only the
+activity detection problem and proposed a solution based on preamble selection under different
+assumptions on the prior knowledge on the activity correlation distribution. Becirovic et al. [23]
+proposed two sparsity-promoting priors based on ℓ2,1-norm and total-variation and proposed a
+non-negative least squares algorithm to solve a relaxed version of an ℓ0−norm minimization.
+B. Main Contribution
+This paper makes the following two distinctions from the prior works: first, we address
+the JUICE in spatially correlated MIMO channels with no prior knowledge on the exact
+CDI. Second, in contrast to the mainstream grant-free access literature, where the traffic is
+assumed to be independent amongst the UEs, we consider an MTC network where the UEs
+are distributed into clusters with an activation pattern following an event-triggered traffic model,
+1This can occur if the UEs in the same cluster do not preform the same task, or when some of the UEs are not triggered by
+the event, in the case where they are far from the event epicentre.
+October 17, 2023 DRAFT
+
+=== PDF PAGE 5 ===
+5
+thus, introducing a correlated activity pattern amongst the UEs. For instance, this could model
+a network where the UEs form clusters based on their geographical locations and each cluster
+is associated with a common task. Here, an event could trigger a small subset of UEs belonging
+to a particular cluster to activate concurrently, leading to hierarchical UE activity pattern.
+The main contributions of our paper can be summarized as follows 2:
+• This paper proposes two Bayesian inference approaches to solve the JUICE problem in
+spatially correlated MIMO channels with a hierarchical UEs activity pattern and a limited
+or no prior knowledge of the CDI.
+• We propose a hierarchical spike-and-slab prior that incorporates both the cluster-level and
+intra-cluster sparsity patterns. Subsequently, we derive a solution based on introducing an
+expectation propagation (EP) algorithm [25] within an expectation maximization (EM) [26]
+framework. The proposed solution iteratively approximates an intractable joint posterior
+distribution and provides an estimate on the active UEs, their channels, as well as the CDI.
+• We propose an alternative solution to the JUICE problem by relaxing the spike-and-slab prior
+with a log-sum prior [27] that provides a more flexible approach to encode the hierarchical
+activity pattern. Subsequently, we formulate the JUICE as a MAP problem and derive a
+solution based on the ADMM framework in order to solve iteratively an approximated
+version of the MAP problem via a sequence of closed-form updates.
+• Numerical results demonstrate the substantial performance gains achieved by our proposed
+algorithms, as well as their robustness against different activity pattern structures.
+II. JUICE WITH CORRELATED ACTIVITY AND PARTIALLY KNOWN CDI
+A. System Model
+We consider a single-cell uplink network consisting of a set N = {1, 2, . . . , N} UEs served
+by a single BS equipped with a uniform linear array containing M antennas, as depicted in Fig.
+2Preliminary results of this paper appear in [24].
+October 17, 2023 DRAFT
+
+=== PDF PAGE 6 ===
+6
+Active 
+cluster 
+Non-active 
+cluster 
+Non-active 
+UE
+Event 
+epicentre
+Active 
+UE
+Fig. 1: Illustration of an MTC network with an activity pattern centred around few number of
+clusters.
+1. The UEs are geographically distributed over Nc clusters, where each UE belong to a unique
+cluster. We denote the index set of the lth cluster as Cl ⊆ N , l = 1, . . . , Nc, where each cluster
+contains L UEs3, such that N = LNc.
+In contrast to the majority of the literature on grant-free access that considers an independent
+UEs activation pattern, we consider in this paper an MTC network operating in an event-triggered
+traffic model inducing a correlated activation pattern between the UEs. In particular, event-
+triggered traffic model raises in the practical MTC network where the UEs are grouped into
+clusters, such that each cluster is associated with a monitoring task. Subsequently, we make
+herein the following distinctions based on technical observations on the UEs activation pattern
+under the event-triggered traffic model:
+• The UEs activity is triggered by events concentrated around a small subset of active clusters,
+thus, giving rise to a cluster-level sparsity structure. Therefore, we define the cluster-level
+vector c = [c1, . . . , Nc]T, where cl = 1 if the lth cluster is active and cl = 0, otherwise.
+• Within each active cluster, a subset containing at most Lc ≤ L UEs will be active, thus,
+inducing a correlation between the UEs activity within the same cluster, in the form of intra-
+cluster sparsity. Thus, to model the intra-cluster sparsity, we introduce γi ∈ {0, 1}, i ∈ N ,
+3For the simplicity of presentation, yet without loss of generality, we assume that all clusters contain the same number of
+UEs.
+October 17, 2023 DRAFT
+
+=== PDF PAGE 7 ===
+7
+where γi = 1 if the ith UE is active and γi = 0, otherwise. Note that intra-cluster sparsity
+imposes a special structure on γ = [γ1, . . . , γL| {z }
+Cluster 1
+, γL+1, . . . , γ2L| {z }
+Cluster 2
+, . . . ,γN −L+1, . . . ,γN| {z }
+Cluster C
+] where
+the elements belonging to a given cluster ( γi, i ∈ C l) are assumed to be correlated. The
+correlation in the UES activity will be discussed in the following sections.
+We consider that the channel response hi between the ith UE and the BS follows a local
+scattering model [28]. Thus, hi ∈ CM, ∀i ∈ N , is modeled as a zero-mean complex Gaussian
+random variable, i.e., hi ∼ CN (0, Ri), such that Ri ∈ CM ×M represents the channel covariance
+matrix computed as Ri = E[hihH
+i ]. Additionally, we adopt the common assumption that the
+channels are wide-sense stationary. Thus, the changes in the covariance matrices R = {Ri}N
+i=1
+occur less frequently compared to the variations in the channel realizations [12].
+At any coherence interval Tc, each active UE transmits a total of τc symbols to the BS over
+two phases. In the first phase, each active UE transmits a τp-length pilot sequence to the BS,
+whereas in the second phase, each active UE transmits its information data to the BS using the
+remaining τc − τp symbols. Subsequently, in order to decode the information data transmitted
+from the active UEs, the BS utilizes the received signal from the pilot transmission phase to
+perform the JUICE task. To this end, the pilot transmission phase is realized by assigning to each
+UE i, ∀i ∈ N , a unique unit-norm pilot sequence ϕi ∈ Cτp, and a transmit power pi inversely
+proportional to its average channel gain in order to to reduce the disparity in the channels gain
+amongst the UEs. [29], [30]. Consequently, the received signal during the pilot transmission
+phase Y ∈ Cτp×M is given by
+Y =
+NX
+i=1
+γi
+√piϕihT
+i + W = ΦXT + W, (1)
+where X = [x1, . . . ,xN] ∈ CM ×N represents the effective channel matrix with xi = γi
+√pihi,
+Φ = [ϕ1, . . . ,ϕN] ∈ Cτp×N is the pilot sequence matrix , and W ∈ Cτp×M is an additive white
+Gaussian noise with an i.i.d. elements, where each element is drawn from CN (0, σ 2).
+The joint detection of the active UEs and estimating their channel reduces to estimating the
+October 17, 2023 DRAFT
+
+=== PDF PAGE 8 ===
+8
+(unknown) row-sparse effective channel matrix XT based on the received pilot signal in (1).
+Thus, the JUICE can be formulated as a sparse recovery problem from an MMV setup. The
+prior works in the literature showed that sparse recovery algorithms derived from a Bayesian
+perspective yield usually the best performance [6].
+B. Bayesian Inference Setup
+In the Bayesian framework, the unknown variables to be estimated, i.e., X, is modelled using a
+prior probability distribution functions (PDF) which incorporate and encode both the prior knowl-
+edge on X as well as the prior knowledge on its hidden hyper-parameters. Subsequently, utilizing
+prior functions that promote sparsity while incorporating the hierarchical sparse structures of XT
+is the key to achieve accurate solutions for the JUICE problem. In particular, sparsity-promoting
+priors can be categorized as either weak or strong priors. For instance, the Laplace distributions
+is a weak sparsity prior as it promotes sparsity, but it does not assign strictly a zero probability
+to the case where the vector xi = 0 . On the other hand, strong sparsity priors, such as the
+spike-and-slab distributions (with delta peak at zero), are more stringent as they assign a strictly
+positive probability to the case of xi = 0 [31]. Therefore, for the JUICE problem in this paper,
+the priors should be designed in order to the encode (i) the spatial correlation of each xi, ∀i,
+(ii) the cluster-level sparsity between clusters, (iii) the intra-cluster sparsity structure. We will
+discuss next, how to design the priors to encode (i), (ii), and (iii).
+C. Hierarchical Spike-and-Slab Prior
+In the following, we leverage the concept of strong sparsity priors and we propose a hierarchi-
+cal spike-and-slab sparsity-promoting prior to model the cluster-level sparsity, the intra-cluster
+sparsity, and the spatially correlated channels. First, we introduce the following parameters:
+a) Cluster-level activity prior : In order to impose the cluster-level activity we model each
+cl as a Bernoulli random variable with p(cl = 1) = ϵ and p(cl = 0) = 1 − ϵ. Furthermore, to
+October 17, 2023 DRAFT
+
+=== PDF PAGE 9 ===
+9
+account for the independence amongst the clusters activity, we express the probability mass
+function of p(c) =QNc
+l=1 B(cl; ϵ), where B denotes the Bernoulli distribution.
+b) Intra-cluster sparsity prior: We define the hyper-parameters γi ∈ R+, ∀i, that imposes
+a row sparsity structure on X. To this end, we design p(¯γ) such that it promotes sparse solution,
+for instance, p(¯γ) can be drawn from the Laplacian distribution as p(¯γ) ∝ exp
+ 
+−PN
+i=1 ¯γi
+
+.
+c) Channels spatial correlation prior: we introduce the set of covariance matrices { ¯Ri}N
+i=1,
+such that each ¯Ri is positive definite matrix that captures the spatial correlation between the
+entries of ith row in XT. A common and physically grounded prior for an ¯Ri of the Gaussian
+random variable xi is given by the inverse Wishart distribution [26], defined as
+p( ¯Ri) ∼ IW ( ¯Ri; Bi, v) = f(Bi, v)|Σi|−d exp
+
+−Tr(Bi ¯R−1
+i )
+
+(2)
+where f(Bi, v) is a normalization constant, d = v − M + 1 > 0, v controls the degrees of free-
+dom of the distribution, and Bi ∈ CM ×M is a symmetric positive-definite matrix that represents
+the prior information for the covariance matrix ¯Ri [26].
+By utilising the definitions above, we model the effective channel xi, ∀i ∈ N , using the
+spike-and-slab prior as
+p(xi|cl, ¯γi, ¯Ri) = (1 − cl)δ(xi) + clCN (xi; 0, ¯γi ¯Ri). (3)
+The main idea in (3) can be summarized as follows:
+• If cl = 0, the vector xi would have only the spike component, i. e. , delta function, from
+(3), thus leading to an estimation of a zero-vector ( xi = 0).
+• If cl = 1 , xi would have only the slab component from (3) in the form be a Gaussian
+random vector with covariance matrix ¯γi ¯Ri. Therefore, if ¯γi ≈ 0, the covariance matrix
+¯γi ¯Ri of the slab component in (3) would be very small that we could safely estimate that
+xi ≈ 0, whereas if ¯γi > 0, xi would be a non-zero Gaussian random vector.
+Finally, to encode (ii)-(iii) into the Bayesian formulation, we propose the following Hierar-
+October 17, 2023 DRAFT
+
+=== PDF PAGE 10 ===
+10
+chical spike and slab prior on p(X|c, R) as
+p(X|c, R) =
+NcY
+l=1
+p(XCl|cl) =
+NcY
+l=1
+
+(1 − cl)δ
+ 
+XCl
+
++ cl
+Y
+i∈Cl
+CN (xi; 0, Ri)
+
+, (4)
+where δ
+ 
+XCl
+
+=Q
+i∈Cl
+δ(xi), and we denoted for simplicity Ri = ¯γi ¯Ri.
+III. JUICE V IA EM-EP
+A common approach in Bayesian inference when the hyper-parameter set Ξ = { ¯γi, ¯Ri}N
+i=1
+is not known, is to maximize the likelihood function p(Y|Ξ). However, in many cases, the
+likelihood p(Y|Ξ) is a non-convex function of Ξ and its global maximum cannot be found
+in a closed form. Thus, Ξ can be obtained through type-II maximum likelihood estimation by
+finding a local maximum using the expectation-maximization (EM) framework. The classical
+EM iteratively alternates between two steps, namely, the E-step and the M-step. In the E-step,
+the current values of the hyper-parameters are used to evaluate the posterior distribution of
+interest. Subsequently, the hyper-parameters are estimated again using the current statistics of
+the posterior distribution in the M-step [26].
+In the JUICE context, for a given Ξ, the joint posterior distribution p(X, c|Y) is expressed
+as a product for three factors, namely, f1(X), f2(X, c) and f3(c) as
+f(X, c) = p(X, c|Y) = 1
+p(Y) p(Y|X)p(X|c)p(c)
+= 1
+p(Y) CN (ΦXT, σ2Im)| {z }
+f1(X)
+NcY
+l=1
+
+(1 − cl)δ
+ 
+XCl
+
++ cl
+Y
+i∈Cl
+CN (xi; 0, Ri)
+
+| {z }
+f2(X,c)
+NcY
+l=1
+B(cl; ϵ)
+| {z }
+f3(c)
+.
+(5)
+The disadvantage of the spike-and-slab prior is that it renders the computation of the posterior
+distribution to be a computationally demanding Task. In particular, p(X, c|Y) in (5) cannot be
+computed exactly when N is large and, thus, it has to be estimated numerically. To this end,
+we resort to the expectation propagation (EP) algorithm to find a tractable approximation to the
+true posterior distribution p(X, c|Y) in (5).
+October 17, 2023 DRAFT
+
+=== PDF PAGE 11 ===
+11
+Next, we shall derive a novel JUICE solution based on coupling the EP algortihm within the
+EM framework. More precisely, at any EM iteration (k): (i) given the set of hyper-parameter
+Ξ(k−1), the EP framework is utilized to approximate the intractable posterior distributionp(X, c|Y),
+and subsequently, compute the posterior mean, denoted asm(k−1)
+i , and covariance matrix, denoted
+as Σ(k−1)
+i , of the effective channel xi, ∀i ∈ N . (ii) In the M-step, by utilizing the sufficient
+statistics of X obtained from the previous E-step, we compute the new values of the hyper-
+parameters Ξ(k) by minimizing a lower-bound on the negative log-likelihood p(Y|Ξ). Next, we
+will present the details of the proposed algorithm.
+A. Main Idea of EP
+The EP algorithm aims to approximate iteratively the true posterior distribution f(X, c) by a
+simpler distribution Q(X, c) that belongs to an exponential family. More precisely, EP aims is
+to approximate the factors f1(·), f2(·), f3(·) in (5) by q1(·), q2(·), q3(·), respectively, such that
+f(X, c) ≈ Q(X, c) = 1
+KEP q1(X)q2(X, c)q3(c). (6)
+Each factor qk(·), k = 1 , 2, 3, of the joint variations approximation Q(X, c) is obtained by
+minimizing iteratively the Kullback-Leibler divergence [26] as
+q∗
+k = min
+qk
+KL
+
+fk(·)Q\k(·)
+
+ qk(·)Q\k(·)
+
+, k = 1, 2, 3, (7)
+where Q\k(·) = Q(·)
+qk(·) is termed the cavity distribution. The optimization problem (7) is convex
+with a unique global optimum solution, that is obtained by matching the expected values of the
+sufficient statistics of qk(·)Q\k(·) to the ones of fk(·)Q\k(·) [26]. In the following section, we
+show in details how to derive the approximation factor Q(X, c) through the EP framework.
+B. E-Step: Posterior approximation Via EP
+The choice of the approximating factors in EP is not stringent, rather, it is flexible. Thus, we
+design q1(·), q2(·), q3(·) such that they: 1) offer tractability and closed-from updates, 2) capture
+the important features of the true posterior distribution such as cluster-level and intra-cluster
+sparsity. To this end, we design the approximate factors as follows
+October 17, 2023 DRAFT
+
+=== PDF PAGE 12 ===
+12
+q1(X) =
+NY
+i=1
+q1(xi) =
+NY
+i=1
+CN (xi; m1,i, Σ1,i), (8)
+q2(X, c) =
+NcY
+l=1
+q2(XCl, cl) =
+NcY
+l=1
+cl
+Y
+i∈Cl
+CN (xi; m2,i, Σ2,i), (9)
+q(c) =
+NcY
+l=1
+B(cl; ϵ). (10)
+Thus, we write the global approximation Q(X, γ, c) as
+Q(X, γ, c) ∝ q1(X)q2(X, c)q3(c) ∝
+NY
+i=1
+CN (xi; m1,i, Σ1,i)CN (xi; m2,i, Σ2,i)
+NcY
+l=1
+clB(cl; ϵ)
+∝
+NY
+i=1
+CN (xi; mi, Σi)
+NcY
+l=1
+clB(cl; ϵ),
+(11)with
+Σi =
+ 
+Σ−1
+1,i + Σ−1
+2,i
+−1
+, i = 1, · · · , N,
+mi = Σi
+ 
+Σ−1
+1,im1,i + Σ−1
+2,im2,i
+
+, i = 1, · · · , N,
+(12)
+where m = [ m1, . . . ,mN] and Σ = {Σi}N
+i=1 are obtained by applying the product of two
+Gaussian terms rule, as shown in Appendix A. We note that since q3(c) is the same as f3(x), it
+can be obtained directly and we need to estimate only q1(X) and q2(X, c) as we show next.
+1) Estimation of q1(X): We describe now how to compute the {m1,i, Σ1,i}N
+i=1 of the first
+approximate term q1(X). Note that since both the f1(X) and q1(X) has a Gaussian form, f1(X)
+can be approximated exactly by q1(X), independently of the values of the other approximate
+factors q2(·) and q3(·). Subsequently, we only have to set q1(·) = f1(·) at the start of the EP
+algorithm and it can be kept constant afterwards.
+Now, let us rewrite the vector form of the received signal as
+y = Θ¯x + w, (13)
+where x = vec(X), w = vec(WT) ∈ CτpM, y = vec(YT) ∈ CτpM, and Θ = Φ ⊗ IM ∈ CM τp×N M,
+where ⊗ denotes the Kronecker product and the operation vec(·) stacks the columns of the matrix
+vertically. Subsequently the vector-form of the likelihood function f1(·) is given by
+October 17, 2023 DRAFT
+
+=== PDF PAGE 13 ===
+13
+f1(¯x) = p(y|¯x) ∼ CN (y; Θ¯x, σ2IM τp). (14)
+Similarly, we can write the vector form of q1(X) as
+q1(¯x) ∼ CN (¯x; ¯m1, ¯Σ1), (15)
+where ¯Σ1 = diag(Σ1,1, . . . ,Σ1,N) is a block diagonal matrix and ¯m1 = [mT
+1,1, . . . ,mT
+1,N]T. Note
+that f1(¯x) is a distribution of y conditioned on ¯x, whereas q1(¯x) is a function of ¯x that depends
+on y, ¯m and ¯Σ. Thus, by writing the full Gaussian distributions in (14) and (15), and rearranging
+few terms, the first and second moments of q1(¯ x) are parameterized as follows
+¯Σ−1
+1 = 1
+σ2ΘHΘ, ¯Σ−1
+1 ¯ m1 = 1
+σ2ΘHy. (16)
+2) Estimation of q2(·): Note that q2(X, c) in (9) factorize into Nc independent mixed Gaussian-
+Bernoulli distributions q2(XCl, cl), l = 1, . . . , Nc, allowing for the parallel updates of q2(X, c).
+In the following, we present in detail how to update each term q2(XCl, cl).
+a) Update Q\2,l(·): First, we compute the marginal cavity distribution Q\2,l(XCl, cl) by
+removing the contribution of q2(XCl, cl) from the the global approximation Q(X, c) in (11) as
+Q\2,l(XCl, cl) = Q(X, c)
+q2(XCl, cl) ∝
+Y
+i∈Cl
+CN (xi; ˆm\2,l
+i , ˆΣ\2,l
+i )B(cl; ϵ), (17)
+where ˆΣ\2,l
+i and ˆm\2,l
+i are obtained by utilizing the rule of the fraction of two Gaussian terms,
+as shown in Appendix A, and they are given as
+ˆΣ\2,l
+i =
+ 
+Σ−1
+i − Σ−1
+2,i
+−1
+, ∀i ∈ C l,
+ˆm\2,l
+i = ˆΣ\2,l
+i
+ 
+Σ−1
+i mi − Σ−1
+2,im2,i
+
+, ∀i ∈ C l.
+(18)
+b) Update Qnew : Next we update Qnew(·) = q2(·)Q\2,l(·) by minimizing a KL-divergence
+distance given as KL
+
+1
+Gl,0
+f2(·)Q\2,l(·)
+ q2(·)Q\2,l(·)
+
+, where Gl,0 is the normalizing constant
+needed to ensure that the f2(·)Q\2,l(·) integrates to unity, given as (Please refer to Appendix B)
+Gl,0 =
+X
+c
+Z
+f2(XCl, cl)Q\2,l(XCl, c)dXdc = bl + al, (19)
+where bl = (1 − ϵ)
+Y
+i∈Cl
+CN (0; ˆm\2,l
+i , ˆΣ\2,l
+i ) and al = ϵ
+Y
+i∈Cl
+CN (0; ˆm\2,l
+i , ˆΣ\2,l
+i + Ri).
+Since all the terms in Q(·) and f2(·) are drawn from a Gaussian distribution, the solution to
+the previous KL-divergence is given by matching the moments of Qnew(·) and f2,l(·)Q\2,l(·).
+October 17, 2023 DRAFT
+
+=== PDF PAGE 14 ===
+14
+To this end, we compute the sufficient statistics of f2,l(·)Q\2,l(·) with respect to both cl and xi,
+i ∈ C l. Subsequently, the sufficient central moments of Qnew(·) are given as
+Ef2,lQ\2,l[cl] = al
+al + bl
+Ef2,lQ\2,l[xi] = 1
+Gl,0
+ 
+alRi(Ri + ˆΣ\2,l
+i )−1 ˆm\2,l
+i
+
+Varf2,lQ\2,l[xi] = al
+Gl,0
+  ˆΣ\2,l−1
+i + R−1
+i
+−1
++
+  1
+Gl,0al
+− 1
+
+Ef2,lQ\2,l[xi]Ef2,lQ\2,l[xi]H,
+(20)
+The details of the derivations to obtain (20) are presented in Appendix B.
+c) Update q2(XCl, cl): finally, the updated q2(·) is computed as
+q2(XCl, cl) = Q∗(X, c)
+Q\2,l(XCl, cl) ∝
+Y
+i∈Cl
+CN (xi; m2,i, Σ2,i)B
+ 
+cl| al
+al + bl
+
+(21)
+where the mean and the covariance matrices of the updated q2(XCl, cl) are computed as
+Σ2,i =
+ 
+Varf2,lQ\2,l[xi]−1 − ˆΣ\2,l−1
+2,i
+−1
+, i ∈ C l, (22)
+m2,i = Σ−1
+2,i
+ 
+Varf2,lQ\2,l[xi]−1Ef2,lQ\2,l[xi] − ˆΣ\2,l−1
+2,i ˆm\2,l
+i
+−1
+, i ∈ C l. (23)
+C. M-Step: Hyper-parameter Update
+Once q2(X, c) is updated using the previous Ξ(k−1), the new posterior mean m(k) and posterior
+covariance Σ(k) of Q(X, c) are updated using (12). Subsequently, the M-step at the kth EM
+iteration is carried out as follows
+Ξ(k) = max
+Ξ
+EX,c|Y,Ξ(k−1) log p(y, X|Ξ)
+(a)
+= max
+Ξ
+EX,c|Y,Ξ(k−1)
+
+log p(X|c, ¯γ, ¯R) + logp(¯γ) + logp( ¯R)
+
+∝ max
+Ξ
+NX
+i=1
+−M log(¯γi) − | ¯Ri| − Tr
+
+¯γ−1
+i R−1
+l EX,c|Y,Ξ[xixH
+i ]
+
+− log p(¯γ) + logp( ¯R)
+∝ max
+Ξ
+NX
+i=1
+−M log(¯γi) − | ¯Ri| − Tr
+
+γ−1
+i R−1
+i
+ 
+m(k)
+i m(k)H
+i + Σ(k)
+i
+
+− log p(¯γ) + logp( ¯R),
+(24)
+where (a) is obtained by dropping the terms that do not depend on Ξ from joint probability and
+noting that p(Ξ) = p(γ)p( ¯R) by design.
+1) ¯γ-update: Note that the final expression in (24) shows that the prior p(¯γ) plays a role in
+the M-step. However, it has been shown that even a non-uniform prior will lead to a sparse vector
+October 17, 2023 DRAFT
+
+=== PDF PAGE 15 ===
+15
+¯γ, thanks to the relevance vector machine [32]. Thus we will make the same simplification and
+drop p(¯γ) from (24). Subsequently, (24) decouples into N subproblem across ¯γ as
+¯γi
+(k) = max
+¯γi≥0
+− M log(¯γi) − Tr
+
+¯γ−1
+i R−1
+i
+ 
+m(k)
+i m(k)H
+i + Σ(k)
+i
+
+, ∀i. (25)
+Thus, the optimal solution is obtained by setting the gradients of the objective function in (25)
+with respect to ¯γi to zero, resulting in the following update rule
+¯γ(k)
+i = 1
+M Tr
+
+¯R−1
+i
+ 
+m(k)
+i m(k)H
+i + Σ(k)
+i
+
+, ∀i. (26)
+2) Covariance matrix { ¯Ri}-update: Taking inspiration from the argument presented in [33],
+we recognize that attempting to estimate all N covariance matrices ¯Ri using the data available at
+the BS would result in overfitting. Therefore, instead of estimating N covariance matrices ¯Ri, we
+estimate only Nc covariance matrices ¯RCl, l = 1, . . . , Nc. In particular, we make the assumption
+that all effective channels within a single cluster share the same spatial correlation structure 4,
+i.e., xi ∼ CN (0, ¯γi ¯RCl), ∀i ∈ C l, ∀l = 1, . . . , Nc. Consequently, the optimization problem (24)
+with respect to ¯RCl decoupled into L subproblems as
+¯R(k)
+Cl = max
+¯RCl ≽0
+−(L+ Ld) ¯RCl −Tr
+
+¯R−1
+Cl
+X
+i∈Cl
+m(k)
+i m(k)H
+i + Σ(k)
+i
+¯γi
++ LBCl
+
+, l = 1, . . . , Nc. (27)
+Therefore, by applying the first optimally condition, ¯RCl is given as
+¯R(k)
+Cl = 1
+L + Ld
+X
+i∈Cl
+m(k)
+i m(k)H
+i + Σ(k)
+i
+¯γi
++ LBCl
+
+, l = 1, . . . , Nc. (28)
+Subsequently, we set ¯R(k)
+i = ¯R(k)
+Cl , ∀i ∈ C l.
+D. Algorithm Implementation
+The details of the proposed algorithm termed EM-EP, are summarized in Algorithm 1. EM-EP
+is run until ∥X(k) − X(k−1)∥2
+F < ϵstp or until a maximum number of iterations kmax is reached.
+Next, we outline two practical implementation considerations of the EM-EP algorithm.
+4It is worth noting that this assumption is not only technical but also highly justified in the context of MIMO channels, where
+closely located UEs are expected to have approximately the same covariance matrices [34]
+October 17, 2023 DRAFT
+
+=== PDF PAGE 16 ===
+16
+Algorithm 1: EM-EP
+Input: received signal Y, pilot sequence matrix Φ, noise variance σ2, ϵ, ϵstp, {Bl}Nc
+l=1,kc.
+Initialization: m(0)
+2 , Σ(0)
+2 , k = 1
+1 Compute the ¯Σ−1
+1 = 1
+σ2 ΘHΘ V −1
+1 ¯ m1 = 1
+σ2 ΘHy
+2 while k < k max or ∥X(k) − X(k−1)∥ < ϵ stp do
+3 Compute the covariance ˆΣ\2,l
+i and the mean ˆm\2,l
+i of the cavity distribution m2 using (18),
+4 Compute the normalization term Gl,0 using (19)
+5 Compute the covariance Var f2,lQ\2,l[xi] and the mean Ef2,lQ\2,l[xi] using (20)
+6 Compute the new covariance ˆΣ2,i and the mean ˆm2,i of q2(XCl , cl) using (22) and (23), respectively
+7 update the new posterior mean mi and covariance Σi using (12)
+8 Update the set of hyper-parameters Ξ using (26) and (28)
+9 k ← k + 1
+Output: X = m
+1) Non-positive Covariance Matrix: While Q(·) and Qnew(·) have to be proper distributions in
+the EP framework, the approximated terms q1(·) and q2(·), on the other hand, are not constrained
+to be proper distributions. In practice, some factors q2(·) may become improper, resulting in non-
+positive definite covariance matrices. In this work, for any non-positive definite matrix Σ2,i, ∀i,
+we add a small regularization parameter ζ > 0 to its diagonal elements to ensures that the
+covariance matrix is positive definite. Some Alternative solutions have also been proposed [35].
+2) Pruning: In practice, to overcome the computational complexity of EM-EP, at each itera-
+tions, we reduce the search space by ignoring any non-active UEs when updating the approximate
+factors. To this end, we use the posterior mean of the activity cluster indicator Ef2,lQ\2,l[cl] as a
+measure to prune non-active clusters. More precisely, for any cluster l with Ef2,lQ\2,l[cl] < ϵ thr,
+all the effective channels are set to zero, i.e., XCl = 0, and they are pruned from the model.
+IV. A LTERNATIVE SOLUTION VIA ADMM
+Owing to the proposed the Hierarchical spike-and-slab prior, and the efficient joint posterior
+approximation obtained using the EP framework, the proposed EM-EP algorithm provides supe-
+rior performance compared to the state-of-the-art algorithm, as we will show in the simulation
+analysis. However, the EM-EP algorithm, like most of EP-based methods, comes with the burden
+of high computational complexity. Therefore, in this section, we provide an alternative solution
+October 17, 2023 DRAFT
+
+=== PDF PAGE 17 ===
+17
+to the JUICE problem by relaxing the strong spike-and-slab prior by a weak prior based on the
+log-sum penalty [27], that still captures the essence of the hierarchical structure of the UEs
+activity pattern. Furthermore, we reformulate the JUICE as a MAP estimation that is solved via
+ADMM in order to offer a computationally-efficient algorithm with closed-form updates that can
+be computed via simple analytical expressions. Next, we present in detail the proposed solution.
+A. JUICE as MAP Estimation
+In this section, we formulate the JUICE as a MAP estimation problem in order to: 1) identify
+the active clusters, and their corresponding active UEs, 2) estimate the effective channel matrix
+X, 3) estimate the unknown covariance matrices {Ri}N
+i=1. Subsequently, given the received signal
+Y, the MAP estimation problem is expressed as
+{ ˆX, ˆγ, ˆR}= max
+X,γ,R
+p(X, γ, R|Y) = max
+X,γ,R
+p(γ, R)p(X|γ, R)p(Y|X, γ, R)
+p(Y)
+(a)
+= max
+X,γ,R
+p(γ, R)p(X|γ, R)p(Y|X)
+= min
+X,γ,R
+− log p(Y|X) − log p(X|γ, R) − log p(γ, R)
+(b)
+= min
+X,γ,R
+1
+σ2 ∥Y − ΦXT∥2
+F − log p(X|γ, R) − log p(R) − log p(γ)
+(29)
+where (a) follows from the Markov chain {γ, R} → X → Y and since the maximization is
+independent from p(Y), and (b) follows from the likelihood function of the received signal
+model (1). Note that an alternative expression to the conditional PDF of X in (4) is given as
+p(X|γ, R) =
+NY
+i=1
+p(xi|γi, Ri) =
+NY
+i=1
+CN (xi; 0, piRi)I(γi=0), (30)
+where I(a) is an indicator function that takes the value 1 if a ̸= 0, and 0 otherwise. Note that
+p(xi|γi, Ri) in (30) implies that if γi = 0, then xi equals 0 with probability one, and in the case
+of γi = 1, the effective channel xi follows a complex Gaussian distribution with zero mean and
+covariance matrix piRi.
+October 17, 2023 DRAFT
+
+=== PDF PAGE 18 ===
+18
+B. Cluster-Sparsity Promoting Prior via Log-Sum
+Recall the definition of the effective channel xi = √piγihi, where the true indicator variable
+γi ∈ {0, 1} controls the sparsity of ith UE. Thus, assigning a sparsity-promoting prior to p(γ)
+is the key to obtain a sparse solution to (29). A conventional choice for a tractable sparsity-
+promoting prior p(γ) is the log-sum penalty priorPN
+i=1 log(γi + ϵ0) as it resembles most closely
+the canonical ℓ0-norm when ϵ0 → 0. Subsequently, we define the following sparsity prior p(γ)
+p(γ) ∝ Js(γ) =
+NX
+i=1
+log(γi + ϵ0). (31)
+Although the prior (31) is an appropriate choice as it: 1) promotes sparsity, 2) is separable across
+the UEs, it ignores the hierarchical structure of the UEs’ activity pattern. Therefore, to account
+for the cluster-level sparsity, we propose the cluster-sparsity-promoting prior Jc(·) that correlates
+the UE activity indicators variables belonging to the same cluster, i.e., γi, i ∈ C l with the same
+log-sum penalty. More precisely, we propose the following prior function:
+p(γ) ∝ Jc(γ) =
+NcX
+l=1
+log
+X
+i∈Cl
+γi + ϵ0
+
+. (32)
+Note that Jc(γ) promotes quite stringently solutions that have clustered sparsity as it has the
+tendency to enforce all UEs within each cluster to be detected active even if only one UE is
+active, being thereby susceptible to high false alarm error rate. Thus, Jc(γ) would face robustness
+issues in the instances where the UEs activity pattern does not exhibit a clustered structure.
+C. Proposed ADMM Solution
+Before we derive the ADMM based solution for (29), we make two technical choices: 1)
+the binary nature of γ renders the objective function in (29) intractable for large N. Thus, to
+overcome this challenge, we note that finding the index set {i | γi ̸= 0, i ∈ N } is equivalent to
+finding the index set {i | ∥ xi∥ > 0, i ∈ N }. Thus, we can eliminate the variable γ from the
+MAP problem by approximating each γi by ∥xi∥ and by relaxing p(γ) by an equivalent prior
+function p(X) which depends on ∥xi∥, ∀i ∈ N . 2) Similarly to Section III-C2, we resort to
+October 17, 2023 DRAFT
+
+=== PDF PAGE 19 ===
+19
+estimating a shared covariance matrix for all the UEs within the same cluster.
+By using the aforementioned arguments and introducing the regularization weights β1, β2, and
+β3 that control the emphasis on the priors with respect to the measurement fidelity term, the
+MAP estimation problem (29) can be equivalently rewritten as
+{ ˆX, ˆR}=min
+X,R
+1
+2 ∥Y − ΦXT∥2
+F − β1 log p(X) + β2
+NcX
+l=1
+X
+i∈Cl
+xH
+i RClxi
+pi
+−β2
+NcX
+l=1
+log |RCl|
+X
+i∈Cl
+pM
+i ∥xi∥− β3L
+NcX
+l=1
+ 
+d log |RCl|+tr(B−1
+l RCl)
+
+.
+(33)
+Now, we propose an iterative solution based on a hierarchical algorithm with two loops, an
+outer loop and an inner loop . The central idea is to alternate p(X) over Jc(·) (32) and Js(·)
+(31). More precisely, in the outer loop, the algorithm enforces the detection of active clusters
+via the cluster-level sparsity-promoting function Jc. Subsequently, the algorithm runs an inner
+loop over the just-estimated active clusters to detect the individual active UEs belonging to them
+by using the sparsity-promoting prior Js. The algorithm details are presented next.
+1) Outer Loop: As we aims to detect the set of the active clusters first, we enforcep(X) to pro-
+mote the cluster-level sparsity by − log p(X) =PNc
+l=1 log(P
+i∈Cl
+∥xi∥ + ϵ0). Since − log p(X) is
+concave, we apply a majorization-minimization (MM) approximation [36] to linearize− log p(X) ≈
+PN
+i=1 q(kc)
+i ∥xi∥, where q(kc)
+i =
+ P
+i∈Cl
+∥x(kc)
+i ∥ + ϵ0
+−1
+and kc is the MM iteration index for the
+outer loop. Thus, the relaxed version of the problem (33) can be solved iteratively as
+{ ˆX(kc+1), R(kc+1)} = min
+X,R
+1
+2 ∥Y − ΦXT∥2
+F + β1
+NX
+i=1
+q(kc)
+i ∥xi∥
++β2
+PNc
+l=1
+P
+i∈Cl
+xH
+i RClxi +PNc
+l=1 µ(kc) log |RCl| + β3LPNc
+l=1 tr(BlR−1
+Cl ),
+(34)
+where µ(kc) =
+ 
+β2
+X
+i∈Cl
+pM
+i q(kc)
+i ∥x(kc)
+i ∥ + β3Ld
+
+.
+We develop a computationally efficient ADMM solution for (34) through a set of sequential
+update rules, each computed in a closed-form. To this end, we introduce two splitting variables
+Z, V ∈ CM ×N and the Lagrange dual variable Λv, Λz and define the set of variables to be
+estimated as Ω = {X, R, Z, V, Λz, Λv}. Subsequently, we write the augmented Lagrangian as
+October 17, 2023 DRAFT
+
+=== PDF PAGE 20 ===
+20
+L(Ω) = 1
+2 ∥Y − ΦZT∥2
+F + β1
+NX
+i=1
+q(kc)
+i ∥xi∥ + β2
+NX
+i=1
+vH
+i RClvi + ρ
+2 ∥X − V + 1
+ρΛv∥2
+F
++
+NcX
+l=1
+ 
+µ(kc) log |RCl| + β3Ltr(B−1
+l RCl)
+
++ ρ
+2 ∥X − Z + 1
+ρΛz∥2
+F − ∥Λz∥2
+F
+2ρ − ∥Λv∥2
+F
+2ρ .
+(35)
+The ADMM solves to the optimization problem (34) by minimizing the augmented Lagrangian
+L(Ω) in (35) over the primal variables (Z, V, X, Σ), followed by updating the dual variables
+(Λz, Λv) [37]. The primal variable update is given as
+
+
+
+Z(kc+1) = min
+Z
+1
+2 ∥ΦZT − Y∥2
+F + ρ
+2 ∥X(kc) − Z + 1
+ρΛ(kc)
+z ∥2
+F
+V(kc+1) = min
+V
+β2
+NX
+i=1
+vH
+i R(kc)
+Cl vi + ρ
+2 ∥X(kc) − V + Λ(kc)
+v
+ρ ∥2
+F,
+X(kc+1) = min
+X
+NX
+i=1
+α(kc)
+i ∥xi∥ + ρ
+2 ∥X − C(kc+1)∥2
+F,
+R(kc+1)
+Cl =min
+RCl
+β2
+X
+i∈Cl
+v(kc+1)H
+i RClv(kc+1)
+i +µ(kc+1)log |RCl| + β3Ltr(B−1
+l RCl), ∀l,
+(36)
+where C(kc) = 1
+2
+ 
+Z(kc+1) + V(kc+1) − Λ(kc)
+z + Λ(kc)
+v
+ρ
+
+and α(kc)
+i =
+ 
+β1q(kc)
+i − β2 log |R(kc)
+Cl |q(kc)
+i
+
+.
+2) Inner Loop: After running the outer loop for some pre-defined Kc iterations, we detect
+the set of the estimated active clusters ˆS = S
+j∈J Cj, where l ∈ J if there exists i ∈ C l
+such that ∥xi∥ > ϵ thr, where ϵthr > 0 is a small predefined parameter. In the inner loop,
+the proposed algorithm aims to detect the active UEs belonging to ˆS by using the separable
+sparsity-promoting prior − log p(X) ∝P
+i∈ ˆS log(∥xi∥ + ϵ0). Furthermore, we apply the MM
+approximation to linearize the concave − log p(X) ≈ P
+i∈ ˆS g(kc)
+i ∥xi∥, where ku is inner loop
+iteration index and g(ku)
+i =
+ 
+∥x(ku)
+i ∥ + ϵ0
+−1
+. Subsequently, the optimization problem for the
+inner loop is given by
+{ ˆX(ku+1)
+ˆS , R(ku+1)
+J } = min
+X ˆS ,R
+1
+2 ∥Y − Φ ˆSXT
+ˆS∥2
+F + β1
+X
+i∈ ˆS
+g(ku)
+i ∥xi∥ + β2
+X
+l∈J
+X
+i∈ ˆSl
+xH
+i RClxi
++β2
+P
+l∈J log |RCl|
+ P
+i∈Cl
+g(ku)
+i ∥xi∥ + β3Ld
+
++ β3LP
+l∈J tr(B−1
+l RCl),
+(37)
+where Φ ˆS and X ˆS denote the matrices Φ and X, respectively, restricted to the set ˆS.
+October 17, 2023 DRAFT
+
+=== PDF PAGE 21 ===
+21
+Algorithm 2: corr-MAP-ADMM
+Input: Φ, {Bl}C
+l=1, β1,β2, β3 ,ρ, ϵ0, ϵ, kumax, kcmax, Kc.
+Initialization: X(0), V(0), Z(0), Λ(0)
+v , Λ(0)
+z , ku = 1, kc = 1.
+1 BS receives Y, compute and store
+ 
+ΦTΦ∗ + ρIN
+−1
+2 while kc < k cmax or ∥X(kc) − X(k−1)∥ < ϵ do
+3 Z(kc+1) = (ρX(kc) + Λ(kc) + YTΦ∗)(ΦTΦ∗ + ρIN)
+4 v(kc+1)
+i =
+ 
+β2Σ(kc)
+i + ρIM
+−1(ρx(k)
+i + λ(kc)
+vi ), i = 1, . . . , N
+5 x(kc+1)
+i =
+max
+
+0,∥c(kc )
+i ∥2−
+α(kc )
+i
+2ρ
+	
+c(kc )
+i
+∥c(kc )
+i ∥2
+, i = 1, . . . , N
+6 R(kc)+1
+Cl = 1
+µ(kc )
+ 
+β2
+P
+i∈Cl
+vivH
+i + β3LBl
+
+, l = 1, . . . , C
+7 Λ(kc+1)
+z = Λ(kc)
+z + ρ
+ 
+X(kc+1) − Z(kc+1)
+8 Λ(kc+1)
+v = Λ(kc)
+v + ρ
+ 
+X(kc+1) − V(kc+1)
+9 if
+ 
+kc mod Kc
+
+= 0 then
+10 ˆS=S
+j∈J Cj, {l ∈ J : ∃i ∈ C l|∥xi∥ > ϵ}
+11 while ku < k umax do
+12 Solve (37) using the similar update rules as step 3-6, but using g(ku)
+i =
+ 
+∥x(ku)
+i + ϵ0∥
+−1
+13 ku ← ku + 1
+14 X(kc )
+ˆS =X(ku)
+ˆS , Z(kc )
+ˆS =Z(ku)
+ˆS , V(kc )
+ˆS =V(ku)
+ˆS , Λ(kc )
+z ˆS
+=Λ(ku)
+z ˆS
+, Λ(kc )
+v ˆS
+=Λ(ku)
+v ˆS
+15 ku = 1,
+16 kc ← kc + 1
+3) ADMM Update Rules: The details of the proposed algorithm in section IV, termed corr-
+MAP-ADMM, is summarized in Algorithm 2. Note that owing to the proposed splitting tech-
+niques in (35), all the sub-problems in (36) are convex, thus, can be solved analytically via
+closed-form formulas . Further, the optimization over X, V, and Σ is separable over the UEs
+and the clusters, allowing for parallel updates. Thus, the exact solution to (36) is given in steps
+3-6 in Algorithm 2, and we follow the same analogy for to solve (37) in the inner loop.
+V. S IMULATION RESULT
+This section quantifies the performance and the robustness of the proposed algorithms and
+compare them to existing sparse recovery algorithms in terms of active UEs identification
+accuracy, channel estimation quality, and convergence behaviour.
+A. Simulation Setup
+We consider a network with a single BS serving a N = 200 UEs distributed equally over
+Nc = 20 clusters, with a total of active K = 16 . Each UE is assigned a unique unit-norm
+October 17, 2023 DRAFT
+
+=== PDF PAGE 22 ===
+22
+pilot sequence drawn from an i.i.d. complex Bernoulli distribution. We set each Bl, ∀l, as Bl =
+ζΨl + (1− ζ) 1
+L
+P
+i∈Cl
+Ri, where Ψl is a random positive-definite Hermitian matrix to model the
+error in the prior knowledge on the covariance matrix RCl, whereas the parameter ζ controls the
+level of average mismatch between Ri and Bl, ∀i ∈ C l, and it is set as ζ = 0.1.
+B. Metrics and Baselines
+The performance is evaluated in terms of: 1) channel estimation quality measured by the
+normalized mean square error (NMSE) given as
+E[∥X− ˆXS ∥2
+F]
+E[∥X∥2
+F] , 2) activity detection accuracy using
+the support recovery rate (SRR), defined as |S∩ ˆS|
+|S− ˆS|+K , where ˆS denotes the detected support
+by a given algorithm. We compare the performances of the proposed algorithms against three
+algorithms that solve MMV sparse recovery problem, namely, 1) iterative reweighted ℓ2,1 (IRW-
+ℓ2,1) via ADMM [18], 2) MAP-ADMM [19], and 3) T-SBL [33], where for MAP-ADMM and
+T-SBL, both the second-order statistics and the noise variance are known at the BS. Furthermore,
+For an optimal NMSE benchmark, we consider the oracle minimum mean square error (MMSE)
+estimator that is provided with an “oracle” knowledge on the true set of active UEs.
+In practice, the regularization parameters of the sparse recovery algorithms needs to be fine-
+tuned. For a fair comparison, all the parameters have been empirically tuned via cross-validation
+in advance and then fixed such that they provide their best performance.
+C. Correlated Activity Pattern
+First, we investigate the performance of the proposed EM-EP and corr-MAP-ADMM and
+compare it to the baseline algorithms. To this end, the 16 active UEs are distributed over 2
+active clusters, each with 8 active UEs.
+1) Effect of Pilot Length: First, we quantify the performance of the proposed algorithms in
+compassion to MAP-ADMM, T-SBL and IRW-ℓ2,1 for different pilot sequence lengths with fixed
+SNR = 16 dB.
+October 17, 2023 DRAFT
+
+=== PDF PAGE 23 ===
+23
+10 12 14 16 18 20 22 24 26
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+(a)
+10 12 14 16 18 20 22 24 26
+10-2
+10-1
+100 (b)
+Fig. 2: JUICE Performance for the different algorithms against pilot sequence length τp in terms
+of: (a) SRR, (b) NMSE.
+Fig. 2(a) depicts the SRR performance, where the results show clearly that the proposed
+EM-EP and corr-MAP-ADMM algorithms provide the best activity detection accuracy as they
+achieve the highest SSR compared to all other algorithms. For instance, EM-EP achieves the
+same SRR as MAP-ADMM and T-SBL using 25 % shorter pilot sequence length. Furthermore,
+the results show that the EM-EP provides a comparable gain over corr-MAP-ADMM in the
+low pilot length regime. Fig. 2(b) depicts the channel estimation performance for the different
+recovery algorithms in terms of NMSE. Again, the obtained results highlight the remarkable gains
+in channel estimation accuracy obtained by using the EM-EP, which significantly outperforms all
+other algorithms. Indeed, even with a 30% reduction in pilot length used, EM-EP achieves the
+same performance as corr-MAP-ADMM, MAP-ADMM and T-SBL. Moreover, the proposed
+corr-MAP-ADMM moderately outperforms T-SBL and provides almost similar performance
+compared to MAP-ADMM. These results can be explained by the fact that the EM-EP, using
+the hierarchical spike-and-slab prior, efficiently captures the intrinsic structure of the sparsity
+model to improve the solution in terms of recovery rate and channel estimation.
+2) Effect of SNR: Now we fix the pilot sequence length at τp = 24, and examine the impact
+of SNR on the performance of different algorithms. Fig. 3(a) illustrates the SRR for different
+algorithms, where it is evident that the proposed EM-EP and corr-MAP-ADMM provide the
+October 17, 2023 DRAFT
+
+=== PDF PAGE 24 ===
+24
+10 12 14 16 18 20 22 24 26
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+(a)
+10 14 18 22 26
+10-2
+10-1
+100 (b)
+Fig. 3: JUICE Performance for the different algorithms against SNR in terms of: (a) SRR, (b)
+NMSE.
+best activity detection accuracy, demonstrating a remarkable SRR gain in the lower SNR range.
+Additionally, Fig. 3(b) depicts the channel estimation quality in terms of NMSE and shows
+that corr-MAP-ADMM provides roughly the same performance as MAP-ADMM and T-SBL.
+Furthermore, the results emphasize the superiority of the proposed EM-EP in terms of channel
+estimation quality, providing an approximate gain of4 dB compared to MAP-ADMM and T-SBL.
+3) Effect of the Number of BS Antennas: Fig. 4 illustrates the effect of the number of BS
+antennas (M) on the performance of the proposed algorithms in terms of NMSE. As expected,
+all the algorithms experience an improvement in the channel estimation quality as M increases.
+Notably, EM-EP algorithm substantially outperforms the other sparse recovery algorithms, with
+a remarkable gains in the lower range for BS antennas, i.e., M < 12. In addition, corr-MAP-
+ADMM provide the second best performance for M < 12. However, it is important to note that
+as M increases, the performance gap between all algorithms gradually decreases. This can be
+attributed to the fact that having more measurements from additional antennas would yields more
+gains compared to incorporating any side information, such as correlated activity structure.
+In summary, the results in Fig. 2, Fig. 3, and Fig. 4 clearly demonstrate the substantial gains
+achieved by incorporating the structured activity pattern when designing solutions for the JUICE
+October 17, 2023 DRAFT
+
+=== PDF PAGE 25 ===
+25
+3 6 9 12 15 18
+10-2
+10-1
+100
+Fig. 4: JUICE performance in terms of NASE versus the number of BS antennas M for N = 200,
+τp = 20, and SNR = 15 dB.
+problem. Indeed, even with no prior knowledge on the CDI, the proposed algorithms outperform
+state-of-the-art recovery algorithms that utilizes prior knowledge on the full CDI.
+D. Robustness to Model Mismatch
+We investigate now the robustness of the proposed algorithms in scenarios of sparsity model
+mismatch where discrepancies exist between the actual scenario and the imposed algorithm
+model. A sparsity model mismatch occurs if the UEs activity is independent rather than exhibiting
+a correlated pattern. Fig. 5(a) illustrates the SRR against the pilot length for the different
+algorithms in an independent activity pattern . The results show that EM-EP and corr-MAP-
+ADMM clearly outperform IRW- ℓ2,1 and provide a slight improvement over T-SBL and match
+MAP-ADMM performance for τp > 20. Furthermore, Fig. 5(b) shows that while the proposed
+algorithms outperform IR- ℓ2,1, EM-EP is slightly inferior to MAP-ADMM, and it outperforms
+T-SBL in terms of NMSE, whereas, T-SBL provides the same performance as corr-MAP-ADMM.
+The results shown in Fig. 5 demonstrate that the proposed algorithms yield comparable results
+to state-of-the-art algorithms, even in an activity pattern model mismatch and no prior knowledge
+on the CDI. More precisely, even though the proposed strong hierarchical spike-and-slab (3) and
+the weak log-sum-based cluster-sparsity (32) priors were designed to favour clustered sparse
+solution, they are still flexible and robust to changes in the underlying sparsity structure.
+October 17, 2023 DRAFT
+
+=== PDF PAGE 26 ===
+26
+10 12 14 16 18 20 22 24 26
+0.1
+0.2
+0.3
+0.4
+0.5
+0.6
+0.7
+0.8
+0.9
+1
+(a)
+10 12 14 16 18 20 22 24 26
+10-2
+10-1
+100 (b)
+Fig. 5: JUICE Performance in independent activity pattern in terms of: (a) SRR, (b) NMSE.
+E. Convergence Behaviour
+The computational complexity per iteration of EM-EP is mainly dominated by the Σ update in
+(12) and requires O(M 3N 3) complex multiplications. In contrast, corr-MAP-ADMM’s primary
+computational complexity arises from the V and the R updates resulting in computational
+complexity in the order of O(N M2 + NcM 3). For a reference, MAP-ADMM and T-SBL require
+O(M N2 + N M2) and O(N 2M 3τp) complex multiplications, respectively. Nonetheless, despite
+being more computationally demanding compared to corr-MAP-ADMM, EM-EP exhibits a faster
+convergence rate, requiring only about 10 iterations to converge in contrast to corr-MAP-ADMM
+which takes up to 60 iterations as shown in Fig. 6.
+0 10 20 30 40 50 60 70 80
+10-2
+10-1
+100
+EM-EP, p=16
+corr-MAP-ADMM, p=16
+EM-EP, p=20
+corr-MAP-ADMM, p=20
+EM-EP, p=24
+corr-MAP-ADMM, p=24
+Fig. 6: NMSE versus number of iterations for the proposed algorithms
+October 17, 2023 DRAFT
+
+=== PDF PAGE 27 ===
+27
+VI. C ONCLUSIONS AND FUTURE WORK
+We addressed the JUICE under spatially correlated channels with a structured UEs activity
+constraints. In order to tackle this problem, we have developed two algorithms from a Bayesian
+perspective by utilizing appropriate structured sparsity-promoting priors to capture both cluster-
+level and intra-cluster sparsity. We numerically showed that the proposed algorithms provide
+a huge gain compared to state-of the art algorithms as well as exhibiting a strong robustness
+against activity pattern model mismatch.
+A potential future work would be dedicated toward designing a distributed-type EM-EP
+algorithm in order to reduce the computational complexity of the EM-EP. This can be achieved
+for instance in cell-free MTC networks, where the computation load is distributed over several
+access points. A second line of research is to quantify the quality of the estimated covariance
+matrices to be utilized, for example, in MMSE channel estimation.
+APPENDIX
+A. Product and Quotient Rules
+This section derives the product and quotient rules of two Gaussian random vector θ1 and θ2.
+1) Product:
+N (θ1; µ1, Σ1)N (θ2; µ2, Σ2) = KpN (θp; µp, Σp), (38)
+where Σp =
+ 
+Σ−1
+1 + Σ−1
+2
+−1
+, µp = Σ−1 
+Σ−1
+1 µ1 + Σ−1
+2 µ2
+
+, and Kp = N (µ1; µ2, Σ2 + Σ1).
+2) Fraction:
+N (θ1; µ1, Σ1)
+N (θ2; µ2, Σ2) = KqN (θq; µq, Σq), (39)
+where Σq =
+ 
+Σ−1
+1 − Σ−1
+2
+−1
+, µ = Σ−1 
+Σ−1
+1 µ1 − Σ−1
+2 µ2
+
+, and Kq = |Σ2Σ−1
+1 |
+N (µ1;µ2,Σ2−Σ1).
+Thus, by using (38) and (39), and few simple manipulations, we obtain straightforward the
+terms in (11),(17), (21).
+October 17, 2023 DRAFT
+
+=== PDF PAGE 28 ===
+28
+B. Derivation of q2(·) Update
+We start by computing the normalizing constant for f2(XCl, cl)Q\2,l(XCl, cl)
+Gl,0 =
+X
+cl
+Z
+f2(XCl , cl)Q\2,l(XCl , cl)dXCl dcl
+(a)
+=
+X
+cl
+Z 
+(1 − cl)
+Y
+i∈Cl
+δ
+ 
+xi
+
++ cl
+Y
+i∈Cl
+CN (xi; 0, Ri)
+
+CN (xi; ˆm\2,l
+i , ˆΣ\2,l
+i )B(cl|ϵ)dXCl
+= (1 − ϵ)
+Z Y
+i∈Cl
+δ
+ 
+xi
+
+CN (xi; ˆm\2,l
+i , Σ\2,l
+i )dXCl
++ϵ
+Z
+CN (xi; 0, Ri)CN (xi; ˆm\2,l
+i , ˆΣ\2,l
+i )dxi
+Y
+j /∈Cl
+Z
+CN (xj; 0, Rj)CN (xj; ˆm\2,l
+j , ˆΣ\2,l
+j )dxj
+(b)
+= (1 − ϵ)
+Y
+i∈Cl
+CN (0; ˆm\2,l
+i , ˆΣ\2,l
+i ) + ϵ
+Z Y
+i∈Cl
+CN (xi; Ri(Ri + ˆΣ\2,l
+i )−1 ˆm\2,l
+i ,
+ 
+R−1
+i + ˆΣ\2,l−1
+i )−1
+dxi
+| {z }
+(c)
+= 1
+Y
+i∈Cl
+CN (0; ˆm\2,l
+i , ˆΣ\2,l
+i + Ri)
+(d)
+= bl + al,
+(40)
+where (a) is obtained by plugging the densities, (b) by straightforward application of (38), (c)
+by integrating all the involved Gaussian distributions to unity, and (d) by setting bl = (1 −
+ϵ)
+Y
+i∈Cl
+CN (0; ˆm\2,l
+i , ˆΣ\2,l
+i ) and al = ϵ
+Y
+i∈Cl
+CN (0; ˆm\2,l
+i , ˆΣ\2,l
+i + Ri).
+Subsequently, by following the same steps, the nth moment with respect to xi is computed as
+Ef2Q\2,l[xn
+i ] = 1
+Gl,0
+X
+cl
+Z
+xn
+i f2(XCl , cl)Q\2,l(XCl , cl)dXCl dcl
+= al
+Gl,0
+Z
+xn
+i CN (xi; Ri(Ri + ˆΣ\2,l
+i )−1 ˆm\2,l
+i ,
+ 
+R−1
+i + ˆΣ\2,l−1
+i )−1
+dxi,
+(41)
+Note that the integral term represents the nth moment of a multivariate Gaussian random vector,
+thus the mean Ef2Q\2,l[xi] and the variance Varf2Q\2,l[xi] are deduced directly from (41) and they
+are given in (20). Finally, the posterior mean with respect to cl is computed as
+Ef2Q\2,l[cl] = 1
+Gl,0
+X
+c
+Z
+clf2(XCl , cl)Q\2,l(XCl , c)dXdc
+=
+X
+cl
+cl(1 − cl)B(cl; ϵ)dcl
+Z Y
+i∈Cl
+δ
+ 
+xi
+
+CN (xi; ˆm\2,l
+i , ˆΣ\2,l
+i )
++P
+cl
+c2
+l B(cl; ϵ)dcl
+RQ
+i∈Cl
+CN (xi; 0, Ri)CN (xi; ˆm\2,l
+i , ˆΣ\2,l
+i )dXCl
+= 1
+Gl,0
+E[cl − c2
+l ]
+Y
+i∈Cl
+CN (0; ˆm\2,l
+i , ˆΣ\2,l
+i ) + 1
+Gl,0
+E[c2
+l ]
+Y
+i∈Cl
+CN (0; ˆm\2,l
+i , ˆΣ\2,l
+i + Ri) = al
+Gl,0
+.
+(42)
+REFERENCES
+[1] M. B. Shahab, R. Abbas, M. Shirvanimoghaddam, and S. J. Johnson, “Grant-free non-orthogonal multiple access for IoT:
+A survey,” IEEE Commun. Surveys & Tutorials , 2020.
+October 17, 2023 DRAFT
+
+=== PDF PAGE 29 ===
+29
+[2] C. Bockelmann, N. Pratas, H. Nikopour, K. Au, T. Svensson, C. Stefanovic, P. Popovski, and A. Dekorsy, “Massive
+machine-type communications in 5G: Physical and MAC-layer solutions,” IEEE Commun. Mag., vol. 54, no. 9, pp. 59–65,
+2016.
+[3] J. A. Tropp, A. C. Gilbert, and M. J. Strauss, “Algorithms for simultaneous sparse approximation. part I: Greedy pursuit,”
+Signal processing, vol. 86, no. 3, pp. 572–588, 2006.
+[4] C. Steffens, M. Pesavento, and M. E. Pfetsch, “A compact formulation for the l2,1 mixed-norm minimization problem,”
+IEEE Trans. Signal Processing , vol. 66, no. 6, pp. 1483–1497, 2018.
+[5] D. P. Wipf and B. D. Rao, “An empirical Bayesian strategy for solving the simultaneous sparse approximation problem,”
+IEEE Trans. Signal Processing , vol. 55, no. 7, pp. 3704–3716, 2007.
+[6] J. Ziniel and P. Schniter, “Efficient high-dimensional inference in the multiple measurement vector problem,” IEEE Trans.
+Signal Processing, vol. 61, no. 2, pp. 340–354, 2012.
+[7] Z. Chen, F. Sohrabi, and W. Yu, “Sparse activity detection for massive connectivity,” IEEE Trans. Signal Processing ,
+vol. 66, no. 7, pp. 1890–1904, 2018.
+[8] L. Liu and W. Yu, “Massive connectivity with massive MIMO—part I: Device activity detection and channel estimation,”
+IEEE Trans. Signal Processing , vol. 66, no. 11, pp. 2933–2946, 2018.
+[9] M. Ke, Z. Gao, Y . Wu, X. Gao, and R. Schober, “Compressive sensing-based adaptive active user detection and channel
+estimation: Massive access meets massive MIMO,” IEEE Trans. Signal Processing , vol. 68, pp. 764–779, 2020.
+[10] Z. Chen, F. Sohrabi, Y .-F. Liu, and W. Yu, “Covariance based joint activity and data detection for massive random access
+with massive MIMO,” in Proc. IEEE Int. Conf. Commun. , 2019, pp. 1–6.
+[11] A. Fengler, S. Haghighatshoar, P. Jung, and G. Caire, “Non-Bayesian activity detection, large-scale fading coefficient
+estimation, and unsourced random access with a massive MIMO receiver,” IEEE Trans. Inform. Theory , vol. 67, no. 5,
+pp. 2925–2951, 2021.
+[12] L. Sanguinetti, E. Björnson, and J. Hoydis, “Towards massive MIMO 2.0: Understanding spatial correlation, interference
+suppression, and pilot contamination,” IEEE Trans. Commun. , vol. 68, no. 1, pp. 232–257, 2020.
+[13] Y . Cui, S. Li, and W. Zhang, “Jointly sparse signal recovery and support recovery via deep learning with applications in
+MIMO-based grant-free random access,” IEEE J. Select. Areas Commun. , vol. 39, no. 3, pp. 788–803, 2021.
+[14] Y . Cheng, L. Liu, and L. Ping, “Orthogonal AMP for massive access in channels with spatial and temporal correlations,”
+IEEE J. Select. Areas Commun. , vol. 39, no. 3, pp. 726–740, 2021.
+[15] A. Rajoriya and R. Budhiraja, “Joint AMP-SBL algorithms for device activity detection and channel estimation in massive
+MIMO mMTC systems,” IEEE Trans. Commun. , vol. 71, no. 4, pp. 2136–2152, 2023.
+[16] J. Bai and E. G. Larsson, “Activity detection in distributed MIMO: Distributed AMP via likelihood ratio fusion,” IEEE
+Commun. Lett., vol. 11, no. 10, pp. 2200–2204, 2022.
+[17] H. Djelouat, M. Leinonen, L. Ribeiro, and M. Juntti, “Joint user identification and channel estimation via exploiting spatial
+channel covariance in mMTC,” IEEE Wireless Commun. Lett , vol. 10, no. 4, pp. 887–891, 2021.
+October 17, 2023 DRAFT
+
+=== PDF PAGE 30 ===
+30
+[18] H. Djelouat, M. Leinonen, and M. Juntti, “Iterative reweighted algorithms for joint user identification and channel estimation
+in spatially correlated massive MTC,” in Proc. IEEE Int. Conf. Acoust., Speech, Signal Processing , 2021, pp. 4805–4809.
+[19] ——, “Spatial correlation aware compressed sensing for user activity detection and channel estimation in massive MTC,”
+IEEE Trans. Wireless Commun. , vol. 21, no. 8, pp. 6402–6416, 2022.
+[20] H. Djelouat, L. Marata, M. Leinonen, H. Alves, and M. Juntti, “User activity detection and channel estimation of spatially
+correlated channels via AMP in massive MTC,” in 2021 55th Asilomar Conference on Signals, Systems, and Computers ,
+2021, pp. 1200–1204.
+[21] J.-C. Jiang, H.-M. Wang, and H. V . Poor, “Performance analysis of joint active user detection and channel estimation for
+massive connectivity,” IEEE Trans. Signal Processing , vol. 70, pp. 3647–3662, 2022.
+[22] W. Liu, Y . Cui, F. Yang, L. Ding, and J. Sun, “Joint optimization of preamble selection and access barring for random
+access in MTC with general device activities,” IEEE Trans. Commun. , vol. 70, no. 6, pp. 3930–3946, 2022.
+[23] E. Becirovic, E. Björnson, and E. G. Larsson, “Activity detection in distributed massive MIMO with pilot-hopping and
+activity correlation,” IEEE Commun. Lett. , vol. 12, no. 2, pp. 272–276, 2023.
+[24] H. Djelouat, M. Leinonen, and M. Juntti, “Joint estimation of clustered user activity and correlated channels with unknown
+covariance in mMTC,” in ICASSP 2023 - 2023 IEEE International Conference on Acoustics, Speech and Signal Processing
+(ICASSP), 2023, pp. 1–5.
+[25] T. P. Minka, “Expectation propagation for approximate Bayesian inference,” in Proceedings of the Seventeenth Conference
+on Uncertainty in Artificial Intelligence , ser. UAI’01. San Francisco, CA, USA: Morgan Kaufmann Publishers Inc., 2001,
+p. 362–369.
+[26] C. M. Bishop and N. M. Nasrabadi, Pattern recognition and machine learning . Springer, 2006, vol. 4, no. 4.
+[27] E. J. Candes, M. B. Wakin, and S. P. Boyd, “Enhancing sparsity by reweighted ℓ1 minimization,” J .FOURIER Anal.
+Appl., vol. 14, no. 5, pp. 877–905, 2008.
+[28] E. Björnson, J. Hoydis, and L. Sanguinetti, “Massive MIMO networks: Spectral, energy, and hardware efficiency,”
+Foundations and Trends® in Signal Processing , vol. 11, no. 3-4, pp. 154–655, 2017. [Online]. Available:
+http://dx.doi.org/10.1561/2000000093
+[29] L. Marata, O. Luis Alcaraz López, H. Djelouat, M. Leinonen, H. Alves, and M. Juntti, “Joint coherent and non-coherent
+detection and decoding techniques for heterogeneous networks,” IEEE Trans. Wireless Commun., vol. 22, no. 3, pp. 1730–
+1744, 2023.
+[30] E. Björnson, L. Sanguinetti, and M. Debbah, “Massive MIMO with imperfect channel covariance information,” in Proc.
+Annual Asilomar Conf. Signals, Syst., Comp. , 2016, pp. 974–978.
+[31] M. R. Andersen, O. Winther, and L. K. Hansen, “Bayesian inference for structured spike and slab priors,” Advances in
+Neural Information Processing Systems , vol. 27, 2014.
+[32] M. E. Tipping, “Sparse Bayesian learning and the relevance vector machine,” vol. 1, no. Jun, pp. 211–244, 2001.
+October 17, 2023 DRAFT
+
+=== PDF PAGE 31 ===
+31
+[33] Z. Zhang and B. D. Rao, “Sparse signal recovery with temporally correlated source vectors using sparse Bayesian learning,”
+IEEE J. Select. Topics Signal Processing , vol. 5, no. 5, pp. 912–926, 2011.
+[34] C. Studer, S. Medjkouh, E. Gonulta¸ s, T. Goldstein, and O. Tirkkonen, “Channel charting: Locating users within the radio
+environment using channel state information,” IEEE Acc., vol. 6, pp. 47 682–47 698, 2018.
+[35] A. Vehtari, A. Gelman, T. Sivula, P. Jylänki, D. Tran, S. Sahai, P. Blomstedt, J. P. Cunningham, D. Schiminovich, and
+C. P. Robert, “Expectation propagation as a way of life: A framework for Bayesian inference on partitioned data,” vol. 21,
+no. 1, pp. 577–629, 2020.
+[36] Y . Sun, P. Babu, and D. P. Palomar, “Majorization-minimization algorithms in signal processing, communications, and
+machine learning,” IEEE Trans. Signal Processing , vol. 65, no. 3, pp. 794–816, 2017.
+[37] S. Boyd, N. Parikh, E. Chu, B. Peleato, J. Eckstein et al., “Distributed optimization and statistical learning via the alternating
+direction method of multipliers,” Foundations and Trends® in Machine learning , vol. 3, no. 1, pp. 1–122, 2011.
+October 17, 2023 DRAFT

@@ -1,0 +1,44 @@
+{
+  "scope": "P02 physical channel and UPA candidate only; canonical manuscript not edited",
+  "candidate": "physical.tex",
+  "interpretation": "完整原句架构用于必要术语/符号替换；通用Let句只作为本文参数和数学定义的句法模板，不代表原论文采用本文组合模型。不可避免的非术语变更单列，不宣称全句通过。",
+  "sources": {
+    "S1": {"file":"D:/afdm-gfra/reference/literature/shen2025.pdf","page":3,"section":"II-A, first sentence","quote":"The TSLs will experience fast variations due to the high mobility of the LEO satellite."},
+    "S2": {"file":"D:/afdm-gfra/reference/literature/shen2025.pdf","page":3,"section":"II-A, second sentence","quote":"Hence, this time variation and multipath propagation require a doubly dispersive channel model for accurate TSLs characterization."},
+    "S3": {"file":"D:/afdm-gfra/reference/literature/shen2025.pdf","page":3,"section":"II-A, equation (1) and complete where clause","quote":"Then, the delay-Doppler-space domain channel from the $u$-th device to the $(n_z+n_yN_z)$-th antenna at the satellite can be represented as [18] [equation (1)] where $u=0,\\ldots,U-1$, $n_z=0,\\ldots,N_z-1$, $n_y=0,\\ldots,N_y-1$, and $P$ is the number of physical paths."},
+    "S4": {"file":"D:/afdm-gfra/reference/literature/shen2025.pdf","page":3,"section":"II-A, following common-delay definition","quote":"Additionally, the notations $h_{i,u}$ and $\\nu_{i,u}$ are the path gain and Doppler shift of the $i$-th path from $u$-th device to the satellite, respectively."},
+    "S5": {"file":"D:/afdm-gfra/reference/literature/shen2025.pdf","page":3,"section":"Notation paragraph, left column","quote":"$\\delta(\\cdot)$ denotes the Dirac delta function."},
+    "S6": {"file":"D:/afdm-gfra/reference/literature/shen2025.pdf","page":3,"section":"II-A, differential-delay definition after equation (1)","quote":"As shown in Fig. 1, $\\tau_{i,u}=\\widetilde\\tau_{i,u}-\\tau^c$ represents the differential delay for the $i$-th path from the $u$-th device to the satellite, where $\\widetilde\\tau_{i,u}$ and $\\tau^c$ are denoted as propagation delay and common delay, respectively."},
+    "S7": {"file":"D:/afdm-gfra/reference/literature/shen2025.pdf","page":3,"section":"II-A, common-delay definition","quote":"The common delay corresponds to the propagation time between the satellite and the closest point on earth within the beam coverage [21]."},
+    "H1": {"file":"D:/afdm-gfra/reference/literature/huang2026.pdf","page":2,"section":"II, first paragraph","quote":"Let $N$ denote the number of AFDM chirp subcarriers."},
+    "H2": {"file":"D:/afdm-gfra/reference/literature/huang2026.pdf","page":2,"section":"II, Doppler shift paragraph, opening","quote":"Take the ground user as the stationary reference point."},
+    "H3": {"file":"D:/afdm-gfra/reference/literature/huang2026.pdf","page":2,"section":"II, Doppler shift paragraph, after equation (2) and its complete where clause","quote":"The resulting Doppler term $D(\\psi)$ is assumed to be common to all propagation paths within the same satellite-to-ground (S2G) link [15]."},
+    "C1": {"file":"D:/afdm-gfra/reference/literature/cai2026.pdf","page":4,"section":"II-A, after equation (3), before stacked-matrix definitions","quote":"Let $X_k\\triangleq\\alpha_kH_k$."},
+    "C2": {"file":"D:/afdm-gfra/reference/literature/cai2026.pdf","page":3,"section":"II-A, end of first paragraph","quote":"We adopt a block-fading model, i.e., all the channels remain quasi-static within a transmission block.","use":"仅作排除说明：不能用于替代本文含显式Doppler指数的路径参数冻结假设。"}
+  },
+  "sentence_map": [
+    {"id":"R02-01","target_start":"The TSLs will experience","source":"S1","kind":"EXACT"},
+    {"id":"R02-02","target_start":"Hence, this time variation","source":"S2","kind":"EXACT"},
+    {"id":"R02-03","target_start":"Take the ground device","source":"H2","kind":"TERM_ONLY","changes":["user -> device"]},
+    {"id":"R02-04","target_start":"The Doppler term","source":"H3","kind":"MINIMAL_EXCEPTION","changes":["D(psi) -> nu_k; satellite-to-ground (S2G) link -> TSL","删除 resulting 一个词；本文没有来源的卫星速度/角度公式，不能保留失去承接的 resulting，也不为恢复该词新增一套几何参数。"]},
+    {"id":"R02-05","target_start":"Let a_k denote","source":"H1","kind":"MODEL_DEFINITION_TEMPLATE","changes":["N -> a_k; the number of AFDM chirp subcarriers -> the uniform planar array (UPA) response vector of device k"],"note":"替换一个符号和一个技术名词短语；未替换整个从句。UPA术语来自Shen PDF第3页II首段；保留P01改写后仍必需的阵列类型。"},
+    {"id":"R02-06","target_start":"Then, the time-varying channel impulse response","source":"S3","kind":"MINIMAL_EXCEPTION","changes":["信道对象名与符号按本文改；完整where保留三个索引域与路径数定义","将逐天线接收对象 '(n_z+n_yN_z)-th antenna at the satellite' 改为 'satellite'，以对应保留的向量公式；这是接收量组织变化，不能声称纯术语替换。"],"formula_note":"eq:physical-channel数学表达与canonical逐字保留；公共nu_k、差分tau_kl、a_k因子均未改。"},
+    {"id":"R02-07","target_start":"Additionally, the notations","source":"S4","kind":"TERM_ONLY","changes":["h_i,u -> g_kl; nu_i,u -> nu_k; i/u -> ell/k","path gain -> complex path gain；complex gain用语在Huang PDF第2页II信道参数引入中可核验。"]},
+    {"id":"R02-08","target_start":"delta(.) denotes","source":"S5","kind":"EXACT"},
+    {"id":"R02-09","target_start":"tau_kl = tilde_tau_kl - tau_c","source":"S6","kind":"MINIMAL_EXCEPTION","changes":["设备、路径和时延符号替换","删除 As shown in Fig. 1,；本文没有对应图，不虚构图示或把公式冒称图示。"]},
+    {"id":"R02-10","target_start":"The common delay corresponds","source":"S7","kind":"EXACT"},
+    {"id":"R02-11","target_start":"Let t denote","source":"H1","kind":"MINIMAL_EXCEPTION","changes":["N -> t; number of AFDM chirp subcarriers -> time","measured from the start of the transmission block 为本文时间原点限定；不是一个源文术语，明确保留为必要自有模型约定。"]},
+    {"id":"R02-12","target_start":"Let (mu_y,k,mu_z,k) denote","source":"H1","kind":"MODEL_DEFINITION_TEMPLATE","changes":["N -> (mu_y,k,mu_z,k); number of AFDM chirp subcarriers -> directional cosines"],"terminology":"Shen PDF第3页II-A最后一句明确使用 directional cosines；此处不恢复非必要的角度变量。"},
+    {"id":"R02-13","target_start":"Let (d_y,d_z) denote","source":"H1","kind":"MODEL_DEFINITION_TEMPLATE","changes":["N -> (d_y,d_z); number of AFDM chirp subcarriers -> antenna spacings"],"note":"保留本文一般阵距参数；没有套用其他论文的半波长假设。"},
+    {"id":"R02-14","target_start":"Let lambda denote","source":"H1","kind":"MODEL_DEFINITION_TEMPLATE","changes":["N -> lambda; number of AFDM chirp subcarriers -> wavelength"]},
+    {"id":"R02-15","target_start":"Let [eq:upa]","source":"C1","kind":"MODEL_DEFINITION_TEMPLATE","changes":["完整Let数学定义句的数学对象替换为本文UPA分量定义"],"formula_note":"UPA正相位、未归一化形式、两个阵距及lambda全部保留；仅公式末逗号改为句号。其数学模型归属本文，不归为Cai原公式。"},
+    {"id":"R02-16","target_start":"Assume that the path gains","source":null,"kind":"RETAINED_MODEL_ASSUMPTION","note":"完整保留必要的路径参数块内冻结假设。C2为整信道块衰落，不能据此将本句标成术语替换；未定位可直接对应的完整原句。"}
+  ],
+  "removed_redundancy": [
+    "删除Li到达角趋同句；公共a_k的模型定义与保留的物理/UPA公式明确同设备各路径使用同一阵列响应，未改变该模型。",
+    "删除末尾由显式指数项决定时间变化的解释句；方程和路径参数冻结假设已完整保留该信息。"
+  ],
+  "minimum_nonterm_exceptions": ["R02-04: resulting删除", "R02-06: 逐天线标量对象改为卫星向量对象", "R02-09: 无对应图时删除图示引导", "R02-11: 时间原点限定", "R02-16: 独有路径参数冻结假设"],
+  "li_bemani_verbatim_words": 0,
+  "paragraph_note": "这是多个来源完整句/完整定义模板的有证据改写及显式例外；不声称它来自一个原段落，也不声称全部句子纯术语替换通过。"
+}

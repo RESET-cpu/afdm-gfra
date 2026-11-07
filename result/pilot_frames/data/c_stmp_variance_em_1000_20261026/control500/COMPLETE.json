@@ -1,0 +1,39 @@
+{
+  "status": "STOPPED_AT_REQUESTED_PREFIX",
+  "completed_utc": "2026-10-26T01:17:32.359209+00:00",
+  "fixed_prefix_scenes": 500,
+  "fixed_prefix_results": 3000,
+  "all_saved_results": 3507,
+  "extra_saved_results_retained": true,
+  "main_process_and_workers_exited": true,
+  "main_plan_sha256": "022c2b42496caa0002413a7f928a22cb77ab82ed0f58ce3b9b1cac673b3bc93c",
+  "stop_sha256": "5d1e9b62a75cd208417065e15938b0eeed90f3040eb60662636e332d01c0f4b9",
+  "final_status": {
+    "stage": "STOPPED_BY_USER",
+    "pid": 91596,
+    "started_unix": 1792965367.340173,
+    "updated_unix": 1792977450.66326,
+    "completed": 3507,
+    "planned": 6000,
+    "reused": 1000,
+    "newly_completed": 2507,
+    "failed": 0,
+    "pending": 0,
+    "workers": 6,
+    "completed_physical_scenes": 501,
+    "completed_by_frames": {
+      "8": 502,
+      "16": 1000,
+      "24": 502,
+      "32": 501,
+      "40": 501,
+      "48": 501
+    },
+    "elapsed_seconds": 12083.32308268547,
+    "estimated_remaining_seconds": 12015.845410903421,
+    "stop_reason": "USER"
+  },
+  "next_experiment": "user_count",
+  "next_scene_count": 500,
+  "next_not_started_by_this_helper": true
+}

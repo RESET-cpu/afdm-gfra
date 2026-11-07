@@ -1,0 +1,4139 @@
+=== PDF PAGE 1 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 1
+Memory AMP
+Lei Liu, Member, IEEE, Shunqi Huang, and Brian M. Kurkoski, Member, IEEE
+Abstract—Approximate message passing (AMP) is a low-
+cost iterative parameter-estimation technique for certain high-
+dimensional linear systems with non-Gaussian distributions.
+AMP only applies to independent identically distributed (IID)
+transform matrices, but may become unreliable (e.g., perform
+poorly or even diverge) for other matrix ensembles, especially
+for ill-conditioned ones. To solve this issue, orthogonal/vector
+AMP (OAMP/V AMP) was proposed for general right-unitarily-
+invariant matrices. However, the Bayes-optimal OAMP/V AMP
+(BO-OAMP/V AMP) requires a high-complexity linear mini-
+mum mean square error (MMSE) estimator. This prevents
+OAMP/V AMP from being used in large-scale systems.
+To address the drawbacks of AMP and BO-OAMP/V AMP, this
+paper offers a memory AMP (MAMP) framework based on the
+orthogonality principle, which ensures that estimation errors in
+MAMP are asymptotically IID Gaussian. To realize the required
+orthogonality for MAMP, we provide an orthogonalization pro-
+cedure for the local memory estimators. In addition, we propose
+a Bayes-optimal MAMP (BO-MAMP), in which a long-memory
+matched filter is used for interference suppression. The com-
+plexity of BO-MAMP is comparable to AMP. To asymptotically
+characterize the performance of BO-MAMP, a state evolution is
+derived. The relaxation parameters and damping vector in BO-
+MAMP are optimized based on state evolution. Most crucially,
+the state evolution of the optimized BO-MAMP converges to the
+same fixed point as that of the high-complexity BO-OAMP/V AMP
+for all right-unitarily-invariant matrices, and achieves the Bayes
+optimal MSE predicted by the replica method if its state evolution
+has a unique fixed point. Finally, simulations are provided to
+verify the theoretical results’ validity and accuracy.
+Index Terms —Approximate message passing (AMP), orthog-
+onal/vector AMP, memory AMP, compressed sensing, right-
+unitarily invariant, large system limit, state evolution, low com-
+plexity, Bayes optimality.
+I. I NTRODUCTION
+Consider the problem of signal reconstruction for a noisy
+linear system:
+y = Ax + n, (1)
+where y ∈ C𝑀×1 is a vector of observations, A ∈ C𝑀×𝑁
+is a transform matrix, x is a vector to be estimated and
+n ∼ CN ( 0, 𝜎2I𝑀 ) is a vector of Gaussian additive noise
+samples. The entries of x are independent and identically
+distributed (IID). In this paper, we consider a large system
+with 𝑀, 𝑁 → ∞ and a fixed compression ratio 𝛿 = 𝑀/𝑁.
+This model covers a wide range of applications, including
+compressed sensing, multiple-input multiple-output (MIMO),
+multiple-access system (MAC), random access, deep neural
+networks, etc. In the special case when x is Gaussian, the op-
+timal solution can be obtained using standard linear minimum
+This article has been presented in part at the 2021 IEEE ISIT,
+Australia, [1]. The source code of this work is publicly available at
+sites.google.com/site/leihomepage/research.
+Lei Liu, Shunqi Huang and Brian M. Kurkoski are with the School of
+Information Science, Japan Institute of Science and Technology (JAIST),
+Nomi 923-1292, Japan (e-mail: {leiliu, shunqi.huang, kurkoski }@jaist.ac.jp).
+mean square error (MMSE) methods. Otherwise, the problem
+is in general NP-hard [2], [3].
+A. Background
+Approximate message passing (AMP), derived from belief-
+propagation (BP) with Gaussian approximation and the first-
+order Taylor approximation, has attracted extensive research
+interest for the problem in (1) [4], [5]. AMP adopts a low-
+complexity matched filter (MF), so its complexity is as low as
+O (𝑀 𝑁) per iteration if A has no special structure, such as the
+discrete Fourier transform (DFT) matrix or sparse matrices.
+Remarkably, the asymptotic performance of AMP can be
+described by a scalar recursion called state evolution, derived
+heuristically in [5] and proved rigorously in [4]. State evolution
+is similar to density evolution [6], except that state evolution
+was developed for dense graphs while density evolution is
+only accurate for sparse graphs. State evolution analysis in
+[7] implies that AMP is Bayes-optimal for zero-mean IID
+sub-Gaussian sensing matrices when the compression rate is
+larger than a certain threshold [8]. Spatial coupling [8]–[11]
+is used for the optimality of AMP for any compression rate.
+The capacity optimality of AMP was proved in [12] based on
+matched forward error correction (FEC) coding.
+A basic assumption of AMP is that A has IID Gaussian
+entries [4], [5]. For matrices with correlated entries, AMP may
+perform poorly or even diverge [13]–[15]. It was discovered
+in [16], [17] that a variant of AMP based on a unitary
+transformation, called UTAMP, performs well for difficult
+(e.g., correlated) matrices A. Independently, orthogonal AMP
+(OAMP) was proposed in [18] (see also closely-related earlier
+works in [19], [20]) for right-unitarily-invariant A (see Defi-
+nition 1 in I-E). OAMP involves two local processors: a so-
+called linear estimator (LE) and a non-linear estimator (NLE)
+under certain orthogonality constraints, i.e., the input and
+output estimation errors of each processor are orthogonal. In
+particular, an MMSE-derived OAMP can be constructed based
+on the locally optimal MMSE principle. OAMP is related to a
+variant of the expectation propagation algorithm [21] (called
+diagonally-restricted expectation consistent inference in [22]
+or scalar expectation propagation in [23]), as observed in
+[24], [25]. A closely related algorithm, an MMSE-based vector
+AMP (V AMP) [25], is equivalent to expectation propagation
+in its diagonally-restricted form [22]. The accuracy of state
+evolution for such expectation propagation type algorithms
+(including V AMP and OAMP) was conjectured in [18] and
+proved in [24], [25]. Based on state evolution, the replica
+Bayes optimality of OAMP was derived in [18], [24], [25]
+when the compression rate is larger than a certain threshold.
+The capacity optimality of OAMP was proved in [26], [27]
+based on matched FEC coding. The advantages of AMP-type
+
+=== PDF PAGE 2 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 2
+algorithms over conventional turbo receivers [28], [29] are
+demonstrated in [12], [27], [30].
+The main weakness of Bayes-optimal OAMP/V AMP (BO-
+OAMP/V AMP) is the high-complexityO (𝑀3 + 𝑀2𝑁) incurred
+by the linear MMSE (LMMSE) estimator if A has no special
+structure. Singular-value decomposition (SVD) was used to
+avoid the high-complexity LMMSE in each iteration [25],
+but the complexity of the SVD itself is as high as that of
+the LMMSE estimator. The performance of OAMP/V AMP
+degrades significantly when the LMMSE estimator is replaced
+by the low-complexity matched filter [18] used in AMP. This
+limits the application of OAMP/V AMP to large-scale systems
+for which LMMSE is too complex.
+In summary, the existing replica Bayes-optimal AMP-type
+algorithms are either limited to IID matrices (e.g., AMP)
+or need high-complexity LMMSE (e.g., BO-OAMP/V AMP).
+Hence, a low-complexity replica Bayes-optimal message pass-
+ing algorithm for right-unitarily-invariant matrices is desired.
+Recently, Takeuchi proposed convolutional AMP (CAMP),
+in which AMP is modified by replacing the Onsager term
+with a convolution of all preceding messages [31]. Similar to
+AMP, CAMP consists of an a-posteriori NLE and a matched
+filter with a correction term. The CAMP has low complexity
+and applies to right-unitarily-invariant matrices. It was proved
+that the CAMP is replica Bayes-optimal if its state evolution
+converges to a unique fixed point [31]. However, the CAMP
+has a relatively low convergence speed and may fail to
+converge [32] (even if empirical damping is used), particularly
+for matrices with high condition numbers. A heuristic damping
+was used to improve the convergence of CAMP. However,
+the damping used in CAMP is performed on the a-posteriori
+NLE outputs, which breaks orthogonality and the asymptotic
+Gaussianity of estimation errors [31].
+B. Motivation and Related Works
+As mentioned, the potential (e.g., replica) Bayes optimal-
+ity generally requires locally optimal MMSE estimators. To
+avoid the high-complexity LMMSE in BO-OAMP/V AMP, a
+straightforward way is to approach the LMMSE by using
+inner iterative methods, such as inner Gaussian message
+passing [33], [34], inner conjugate gradient method [35],
+[36]. However, these strategies have relatively high complexity
+since they involve inner iterations. A warm-start technique
+was proposed to accelerate the convergence of the reset-start
+conjugate gradient V AMP (CG-V AMP) [36].
+Iterative LMMSE receiver for coded MIMO systems [29],
+[30] provides an important inspiration to avoid the high-
+complexity inner iteration. High-complexity inner belief-
+propagation decoding is replaced by a low-complexity memory
+decoding, where the decoder is initialized by a memory in the
+previous states and the decoder only updates once at each outer
+iteration. Therefore, it is natural to ask: can we avoid the high-
+complexity inner iteration at LE in [33]–[35] using memory?
+Fortunately, the answer is quite positive. AMP is such an
+implicit example, where the memory Onsager term assists the
+matched filter in approaching the locally optimal LMMSE.
+That is the key point why AMP is Bayes-optimal (in unique
+fixed-point state evolution) as well as low-complexity. More
+recently, the concept of long-memory message passing, where
+all the preceding messages are used for current estimation,
+was clearly revealed in [31], [37], [38]. Specifically, a long-
+memory AMP algorithm was constructed in [37] to solve the
+Thouless-Anderson-Palmer equations for Ising models with
+general invariant random matrices. The results in [37] were
+rigorously justified via state evolution in [38].
+C. Contributions
+To overcome the difficulties in AMP, OAMP/V AMP and
+CAMP, we propose a memory AMP (MAMP) framework
+under the orthogonality principle, which guarantees the asymp-
+totic IID Gaussianity of estimation errors in MAMP. Due to the
+memory involved in MAMP, stricter orthogonality (compared
+to the orthogonality of non-memory OAMP/V AMP) is re-
+quired for MAMP to guarantee the asymptotic IID Gaussianity
+of estimation errors in MAMP [24], [31]. In detail, the step-
+by-step orthogonalization between the current input and output
+estimation errors in non-memory AMP (e.g., OAMP/V AMP) is
+not sufficient, and instead, the current output estimation error
+is required to be orthogonal to all input estimation errors. We
+present an orthogonalization procedure for the local memory
+estimators to realize the required orthogonality for MAMP.
+We propose a Bayes-optimal MAMP (BO-MAMP) us-
+ing a low-complexity long-memory matched filter for in-
+terference suppression. Using the asymptotic IID Gaussian-
+ity, a covariance-matrix state evolution is established for
+BO-MAMP. Based on state evolution, relaxation parameters
+and damping vectors, preserving the orthogonality (e.g., the
+asymptotic Gaussianity of estimation errors), are analytically
+optimized to improve and guarantee the convergence of BO-
+MAMP. BO-MAMP has the following two properties.
+• The complexity of BO-MAMP is comparable to AMP
+and much lower than BO-OAMP/V AMP.
+• The state evolution of the optimized BO-MAMP con-
+verges to the same fixed point as that of the high-
+complexity BO-OAMP/V AMP for all right-unitarily-
+invariant matrices. Hence, the optimized BO-MAMP
+achieves the Bayes-optimal MSE predicted by the replica
+method if its state evolution has a unique fixed point.
+Part of the results in this paper has been published in [1].
+In this paper, we additionally provide the derivation of state
+evolution, detailed proofs and more numerical results.
+D. Comparisons with Existing Works
+Table I gives an overview of the key properties of the
+past and present AMP-type algorithms including AMP, BO-
+OAMP/V AMP, MF-OAMP/V AMP, CAMP and BO-MAMP,
+which are summarized as follows.
+• AMP is potentially Bayes-optimal, and has low complex-
+ity as it uses a memory MF-LE. However, it is limited
+to IID matrices, and has a low convergence speed since
+only a single memory in last iteration is used [5].
+• CAMP is potentially Bayes-optimal, applies to right-
+unitarily-invariant matrices, and has low complexity as
+
+=== PDF PAGE 3 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 3
+TABLE I
+AN OVERVIEW OF THE AMP-T YPE ALGORITHMS
+Algorithms Matrix
+prerequisite Linear Estimator Optimality State-evolution
+convergence
+Relative
+speed
+AMP [5] IID Memory MF
+(low complexity)
+Bayes-optimal
+(potential) Converges 4
+BO-OAMP/V AMP
+[18], [25]
+Right unitarily
+invariant
+Non-memory LMMSE
+(high complexity )
+Bayes-optimal
+(potential) Converges 1
+(best)
+MF-OAMP/V AMP
+[18], [25]
+Right unitarily
+invariant
+Non-memory MF
+(low complexity)
+Sub-optimal in
+ill-conditioned matrices Converges 5
+(worst)
+CAMP [31] Right unitarily
+invariant
+Long-memory MF
+(low complexity)
+Bayes-optimal
+(potential)
+Fails to converge in
+high condition numbers 3
+BO-MAMP
+(proposed)
+Right unitarily
+invariant
+Long-memory MF
+(low complexity)
+Bayes-optimal
+(potential) Converges 2
+Notes: The properties in bold indicate weakness. The relative speed means the number of iterations to achieve the same MSE performance for right-unitarily-
+invariant matrices (except IID Gaussian and identical-singular-value matrices in IV-E). “MF” means matched filter, and “potential” means that the algorithm
+achieves the Bayes-optimal MSE predicted by the replica method if its state evolution has a unique fixed point. For zero-mean IID Gaussian matrices, the
+convergence speeds of AMP, CAMP and BO-MAMP are almost the same. For identical-singular-value matrices, MF-OAMP/V AMP, BO-OAMP/V AMP and
+BO-MAMP are equivalent.
+it uses an MF-LE. Since long memory is considered,
+its convergence speed is higher than AMP and MF-
+OAMP/V AMP for general non-IID and ill-conditioned
+matrices. However, it fails to converge for matrices with
+high condition numbers [31], [32].
+• MF-OAMP/V AMP applies to right-unitarily-invariant ma-
+trices, and has low complexity as it uses a non-memory
+MF-LE. However, it is sub-optimal, i.e., the performance
+is poor for ill-conditioned matrices [18].
+• BO-OAMP/V AMP is potentially Bayes-optimal and ap-
+plies to right-unitarily-invariant matrices. It has the
+highest convergence speed as locally optimal LE (i.e.,
+LMMSE) is used, which costs high complexity [18], [25].
+• BO-MAMP proposed in this paper is potentially Bayes-
+optimal, applies to right-unitarily-invariant matrices, and
+has low complexity since it uses an MF-LE. BO-MAMP
+solves the convergence problem of CAMP. We prove
+that the state evolution of the optimized BO-MAMP
+converges to the same fixed point as BO-OAMP/V AMP.
+Furthermore, for general ill-conditioned matrices, the
+convergence speed of BO-MAMP is higher than AMP,
+CAMP and MF-OAMP/V AMP, but relatively lower than
+BO-OAMP/V AMP.
+More specifically, distinct from the AMP, CAMP and long-
+memory AMP in [37], [38] that consist of an a-posteriori
+NLE and a matched filter with a correction term, the proposed
+MAMP consists of an orthogonal NLE and an orthogonal long-
+memory matched filter, which is similar to the structure of
+OAMP/V AMP. Apart from that, distinct from AMP and CAMP
+that perform a heuristic scalar damping on the a-posteriori
+NLE outputs and break the orthogonality and Gaussianity, an
+analytically optimized vector damping for the orthogonal NLE
+outputs is derived for BO-MAMP to guarantee and improve
+the convergence as well as preserve the orthogonality and
+Gaussianity.
+Recently, Skuratovs and Davies proposed a warm-start CG-
+V AMP (WS-CG-V AMP) to accelerate the convergence of CG-
+V AMP in [36]. However, the state evolution of WS-CG-V AMP
+was not provided in the first preprint version of [36] on arXiv.
+After we posted the preprint of this work (which provided
+a rigorous state evolution for BO-MAMP) [39], a rigorous
+state evolution was derived for WS-CG-V AMP in the latest
+version of [36]. In addition, the convergence and replica Bayes
+optimality of the state evolution for WS-CG-V AMP have not
+yet been rigorously proved, while the convergence and replica
+Bayes optimality of the state evolution for the proposed BO-
+MAMP are rigorously proved in this paper.
+More recently, the damping optimization technique in this
+paper has been used to analyze the convergence of BO-
+OAMP/V AMP in [40], [41] from a sufficient statistic perspec-
+tive. Motivated by the damping optimization in this paper and
+its statistical interpretation in [40], [41], a sufficient statistic
+memory AMP (SS-MAMP) is proposed in [58], [59] to ensure
+the convergence of any MAMP-type algorithms in principle.
+E. Notation and Definitions
+Boldface lowercase letters represent vectors and boldface
+uppercase symbols denote matrices. E{·} is the expectation
+operation over all random variables involved in the brackets,
+except when otherwise specified, e.g., E{𝑎} is the expectation
+of 𝑎. Var{𝑎} is E
+
+∥𝑎 − E{𝑎}∥ 2	
+, sign(𝑎) is the sign of 𝑎. We
+say that 𝑥 = 𝑥Re + 𝑖𝑥Im is circularly-symmetric complex Gaus-
+sian if 𝑥Re and 𝑥Im are two independent Gaussian distributed
+random variables with E{𝑥Re} = E{𝑥Im} = 0 and Var{𝑥Re} =
+Var{𝑥Im}. We define Var{𝑥} ≡ Var{𝑥Re} + Var{𝑥Im}. I is the
+identity matrix of appropriate size, 0 the zero matrix/vector,
+1 the all one matrix/vector, A∗ the conjugate of A, AT the
+transpose of A, AH the conjugate transpose of A, ∥a∥ the ℓ2-
+norm of a, and CN (µ, 𝚺) the circularly-symmetric complex
+Gaussian distribution with mean µ and covariance 𝚺. For an
+𝑁-by-𝑁 matrix A = [𝑎𝑖, 𝑗 ] 𝑁 ×𝑁 , diag{A} ≡ [ 𝑎1,1, . . . , 𝑎𝑁 , 𝑁]T
+denotes the diagonal vector, det(A) the determinant of A, and
+tr{A} the trace of A. A matrix is said to be column-wise
+IID if the elements in each of its columns are IID and row-
+wise joint-Gaussian if the elements in each of its rows are
+jointly Gaussian. The notation 𝑋 ∼𝑌 means that 𝑋 follows the
+
+=== PDF PAGE 4 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 4
+same distribution as 𝑌. min{S} and max{S} respectively takes
+the minimum and maximum value in set S. The notation
+a.s.
+=
+denotes almost sure equivalence,  𝑛
+𝑘
+ = 𝑛/( 𝑘!(𝑛 − 𝑘)!) denotes
+𝑛 choose 𝑘.
+Throughout this paper, unless stated otherwise, we will
+assume that the length of a vector is 𝑁 and x is normalized,
+i.e., 1
+𝑁 E{∥ x∥2} = 1. For simplicity, in this paper, unless stated
+otherwise, BO-OAMP/V AMP refers to the MMSE variant
+where the LE uses LMMSE and NLE uses MMSE.
+Definition 1 (Haar Matrix): Let U𝑛 be the space of all 𝑛×𝑛
+unitary matrices. A unitary random matrix U ∈ U𝑛 is called
+a Haar matrix if U is uniformly distributed on U𝑛.
+F . Paper Outline
+This paper is organized as follows. Section II gives the
+preliminaries including problem formulation and the review of
+OAMP/V AMP. Section III proposes a memory AMP under an
+orthogonality principle. A Bayes-optimal memory AMP (BO-
+MAMP) is developed in Section IV . Parameter optimization
+for BO-MAMP is given in Section V . Numerical results are
+shown in Section VI.
+II. P RELIMINARIES
+In this section, we first give the problem formulation and
+assumptions. Then, we introduce a non-memory iterative pro-
+cess and review OAMP/V AMP and its properties.
+A. Problem Formulation
+Fig. 1(a) illustrates the system in (1) with two constraints:
+Γ : y = Ax + n, (2a)
+Φ : 𝑥𝑖 ∼ 𝑃𝑥, ∀𝑖. (2b)
+Our aim is to use the AMP-type iterative approach in
+Fig. 1(b) to find an MMSE estimate of x. That is, its MSE
+converges to [42]
+mmse{x|y, A, Γ, Φ} ≡ 1
+𝑁 E{∥ ˆxpost − x∥2}, (3)
+where ˆxpost = E{x|y, A, Γ, Φ} is the a-posteriori mean of x.
+Definition 2 (Bayes Optimality): An iterative approach is
+said to be Bayes optimal if its MSE converges to the MMSE
+of the system in (1).
+ΓΦx
+𝛾𝑡 𝜙𝑡xtrt
+(a)
+(b)
+Fig. 1. Graphic illustrations for (a) a system model with two constraints Φ
+and Γ, and (b) a non-memory iterative process involving two local processors
+𝛾𝑡 and 𝜙𝑡.
+B. Assumptions
+Assumption 1: The entries of x are IID with zero mean.
+The variance of x is normalized, i.e., 1
+𝑁 E{∥ x∥2}=1, and the
+(2 + 𝜖)th moments of x are finite for some 𝜖.
+Assumption 2: Let the singular value decomposition of A
+be A = U 𝚺V H, where U ∈ C𝑀×𝑀 and V ∈ C𝑁 ×𝑁 are
+unitary matrices, and 𝚺 is a rectangular diagonal matrix.
+We assume that 𝑀,𝑁 → ∞ with a fixed 𝛿 = 𝑀/𝑁, and A
+is known and is right-unitarily-invariant, i.e., U 𝚺 and V
+are independent, and V is Haar distributed (or equivalently,
+isotropically random). Furthermore, the empirical eigenvalue
+distribution of AAH converges almost surely to a compactly
+supported deterministic distribution with unit first moment in
+the large system limit, i.e., lim𝑁 →∞ 1
+𝑁 tr{AAH}
+a.s.
+= 1 [31].
+Let 𝜆𝑡 = 1
+𝑁 tr{( AAH)𝑡 } and 𝜆† ≡ [ 𝜆max + 𝜆min]/2, where
+𝜆min and 𝜆max denote the minimal and maximal eigenvalues
+of AAH, respectively. Without loss of generality, we assume
+that {𝜆min, 𝜆max} and {𝜆𝑡 , ∀𝑡 ≤ 2T } are known, where T is
+the maximum number of iterations.
+For specific random matrices such as IID Gaussian, Wigner
+and Wishart matrices, {𝜆min, 𝜆max, 𝜆𝑡 } can be calculated from
+the eigenvalue distribution 𝑃𝜆 [43]. Otherwise, the following
+approximations can be used.
+• {𝜆𝑡 } can be approximated as follows. The complexity is
+as low as O (𝑀 𝑁) per iteration.
+Proposition 1: The {𝜆𝑡 } can be approximated by
+𝜆𝑡
+a.s.
+= lim
+𝑁 →∞
+∥s𝑡 ∥2, for 𝑡 = 1, 2, . . . (4a)
+where s𝑡 is given by the following recursion: Starting
+with 𝑡 = 1 and s0 ∼ CN ( 0𝑁×1, 1
+𝑁 I𝑁×𝑁 ),
+s𝑡 =
+(
+As𝑡−1, if 𝑡 is odd
+AHs𝑡−1, if 𝑡 is even
+. (4b)
+Proof: Following (4b), we can expand s𝑡 to
+s𝑡 =
+(
+A(AHA)
+𝑡−1
+2 s0, if 𝑡 = 1, 3, 5, · · ·
+(AHA)
+𝑡
+2 s0, if 𝑡 = 2, 4, 6, · · ·
+. (5)
+Since s0 ∼ CN ( 0𝑁×1, 1
+𝑁 I𝑁×𝑁 ), we have
+lim
+𝑁 →∞
+∥s𝑡 ∥2 a.s.
+= 1
+𝑁 tr{( AHA)𝑡 } = 𝜆𝑡 . (6)
+Thus, we complete the proof of Proposition 1.
+• 𝜆min and 𝜆max can be replaced respectively by a lower
+bound 𝜆low
+min of the minimal eigenvalue and an upper bound
+𝜆up
+max of the maximal eigenvalue of AAH. Theorem 2 in
+Subsection V-E needs {𝜆min, 𝜆max} to satisfy 𝜌(𝜃𝑡 B) < 1,
+which does not change by using the bounds {𝜆low
+min, 𝜆up
+max}
+(see Remark 1 in V-A). Therefore, Theorem 2 still holds
+with the bounds {𝜆low
+min, 𝜆up
+max}. Loose bounds may decrease
+the convergence speed of BO-MAMP. Since 𝜆min ≥ 0 and
+𝜆𝜏
+max ≤ 𝑁𝜆 𝜏, we can set
+𝜆low
+min = 0, 𝜆 up
+max = (𝑁𝜆 𝜏)1/𝜏 . (7a)
+The 𝜆up
+max is tighter for larger 𝜏. In practice, we set 𝜏 =
+2T , where T is the maximum number of iterations.
+As is shown in Fig. 13, the performance of BO-MAMP with
+
+=== PDF PAGE 5 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 5
+approximate {𝜆𝑡 } in Proposition 1 and bounds 𝜆low
+min = 0 and
+𝜆up
+max = (𝑁𝜆 𝜏)1/𝜏 are almost the same as that with the exact
+values of {𝜆𝑡 , 𝜆min, 𝜆max}.
+C. Non-memory Iterative Process and Orthogonality
+Non-memory Iterative Process: Fig. 1(b) illustrates a non-
+memory iterative process1 consisting of a linear estimator (LE)
+and a non-linear estimator (NLE): Starting with 𝑡 = 1,
+LE : r𝑡 = 𝛾𝑡 (x𝑡 ) = Q𝑡 y + P𝑡 x𝑡 , (8a)
+NLE : x𝑡+1 = 𝜙𝑡 (r𝑡 ) , (8b)
+where 𝛾𝑡 (·) and 𝜙𝑡 (·) process the two constraints Γ and Φ
+separately, and Q𝑡 A and P𝑡 are polynomials in AHA. Without
+loss of generality, we assume that the norms of Q𝑡 and P𝑡 are
+finite. For any x𝑡 ,1, x𝑡 ,2 ∈ C𝑁 ,
+∥𝛾𝑡
+ x𝑡 ,1
+ − 𝛾𝑡
+ x𝑡 ,2
+ ∥ = ∥P𝑡
+ x𝑡 ,1 − x𝑡 ,2
+ ∥ (9a)
+≤ ∥ P𝑡 ∥ ∥x𝑡 ,1 − x𝑡 ,2 ∥, (9b)
+where ∥P𝑡 ∥ is finite. Hence, 𝛾𝑡 (·) is Lipschitz-continuous.
+We call (8) a non-memory iterative process since both 𝛾𝑡 (·)
+and 𝜙𝑡 (·) are memoryless, depending only on their current
+inputs x𝑡 and r𝑡 respectively. Let
+r𝑡 = x + g𝑡 , (10a)
+x𝑡 = x + f𝑡 , (10b)
+where g𝑡 and f𝑡 indicate the estimation errors with zero means
+and variances:
+𝑣 𝛾
+𝑡 = 1
+𝑁 E{∥ g𝑡 ∥2}, 𝑣 𝜙
+𝑡 = 1
+𝑁 E{∥ f𝑡 ∥2}. (10c)
+The asymptotic IID Gaussian property of a non-memory
+iterative process was conjectured in [18] and proved in [24],
+[25] based on the following error orthogonality. For more
+details, refer to Section V-D and Section V-E in [24] for the
+proof of asymptotically IID Gaussian properties (see A1 and
+B1 in Theorem 4 in [24]) using the orthogonality (see A2 and
+B2 in Theorem 4 in [24]), which does not rely on the explicit
+constructions of 𝛾𝑡 (·) and 𝜙𝑡 (·).
+Lemma 1 (Orthogonality and Asymptotic IID Gaussianity):
+Suppose that Assumptions 1-2 and the following orthogonality
+holds: for all 𝑡 ≥ 1,
+lim
+𝑁 →∞
+1
+𝑁 xHg𝑡
+a.s.
+= 0, (11a)
+lim
+𝑁 →∞
+1
+𝑁 f H
+𝑡 g𝑡
+a.s.
+= 0, (11b)
+lim
+𝑁 →∞
+1
+𝑁 gH
+𝑡 f𝑡+1
+a.s.
+= 0. (11c)
+Then, for the {𝛾𝑡 (·)} in (8a) and separable-and-Lipschitz-
+continuous [44] {𝜙𝑡 (·)}, we have: ∀𝑡 ≥ 1,
+lim
+𝑁 →∞
+𝑣 𝛾
+𝑡
+a.s.
+= 1
+𝑁 E
+
+∥𝛾𝑡 (x + η 𝜙
+𝑡 ) − x∥2	
+, (12a)
+lim
+𝑁 →∞
+𝑣 𝜙
+𝑡+1
+a.s.
+= 1
+𝑁 E
+
+∥𝜙𝑡 (x + η𝛾
+𝑡 ) − x∥2	
+, (12b)
+1The V transformed error recursion of a non-memory iterative process in
+(8) coincides with that in [24]. (See also Point 2 in Subsection III-D for more
+details)
+where η 𝜙
+𝑡 ∼ CN ( 0, 𝑣 𝜙
+𝑡 I) and η𝛾
+𝑡 ∼ CN ( 0, 𝑣 𝛾
+𝑡 I) are indepen-
+dent of x.
+Lemma 1 is a special case of Lemma 4 for the memory
+iterative process in III-A. In fact, the sufficient condition of
+IID Gaussian property for an iterative process is the “full
+orthogonality” in (20), i.e., the current output estimation error
+is orthogonal to all preceding input estimation errors in each
+estimation. For a non-memory iterative process, this condition
+is relaxed to the “step-by-step orthogonality” in (11), i.e., the
+current input and output estimation errors are orthogonal in
+each estimation, following the generalized Stein’s lemma [31],
+[45] below. Note that in general, “step-by-step orthogonality”
+in (11) is much looser than “full orthogonality” in (20), except
+for the non-memory iterative process discussed above.
+Lemma 2 (Generalized Stein’s Lemma): Let z =
+[𝑧1 · · ·𝑧𝑡 ]T ∼ CN ( 0, 𝚺𝑧). Any Lipschitz-continuous function
+𝜓 : C → C satisfies: For 1 ≤ 𝑖 ≤ 𝑡 and 1 ≤ 𝑗 ≤ 𝑡,
+E{𝑧∗
+𝑗 𝜓(𝑧𝑖)} =
+E{𝑧∗
+𝑗 𝑧𝑖 }
+E{∥ 𝑧𝑖 ∥2} E{𝑧∗
+𝑖 𝜓(𝑧𝑖)} . (13a)
+Furthermore, any differentiable 2 and Lipschitz-continuous
+function 𝜙 : C𝑡 → C satisfies: For 1 ≤ 𝑖 ≤ 𝑡,
+E{𝑧∗
+𝑖 𝜙(z)} = Í𝑡
+𝑗=1 E{𝑧∗
+𝑖 𝑧 𝑗 }E{𝜕𝜙 (z)/𝜕𝑧 𝑗 }. (13b)
+The generalized Stein’s lemma has been widely used in the
+design of orthogonal iterative processes (e.g., OAMP/V AMP
+and expectation propagation algorithm).
+D. Overview of BO-OAMP/VAMP
+The following BO-OAMP/V AMP [18], [25] is a non-
+memory iterative process that solves the problem in (2) with
+right-unitarily-invariant matrix.
+BO-OAMP/VAMP [18], [25]: Let 𝜌𝑡 = 𝜎2/𝑣 𝜙
+𝑡 , ˆ𝜙𝑡 (·)
+be a separable and Lipschitz-continuous estimator, and
+define ˆ𝛾𝑡 (·) as an estimate of x at 𝑡-th iteration:
+ˆ𝛾𝑡 (x𝑡 ) ≡ AH 𝜌𝑡 I + AAH −1(y − Ax𝑡 ). (14)
+A BO-OAMP/V AMP is then defined as: Starting with 𝑡 =
+1, 𝑣 𝜙
+1 = 1 and x1 = 0,
+LE : r𝑡 = 𝛾𝑡 (x𝑡 ) ≡ 1
+𝜖 𝛾
+𝑡
+ˆ𝛾𝑡 (x𝑡 ) + x𝑡 , (15a)
+NLE : x𝑡+1 = 𝜙𝑡 (r𝑡 ) ≡ 1
+𝜖 𝜙
+𝑡+1
+ ˆ𝜙𝑡 (r𝑡 ) + ( 𝜖 𝜙
+𝑡+1 −1)r𝑡
+
+, (15b)
+where
+𝜖 𝛾
+𝑡 = 1
+𝑁 tr
+
+AH 𝜌𝑡 I + AAH−1A
+	
+, (15c)
+𝑣 𝛾
+𝑡 = 𝛾SE (𝑣 𝜙
+𝑡 ) ≡ 𝑣 𝜙
+𝑡 [( 𝜖 𝛾
+𝑡 )−1 − 1], (15d)
+𝜖 𝜙
+𝑡+1 = 1 − 1
+𝑁 𝑣𝛾
+𝑡
+∥ ˆ𝜙𝑡 (x +
+√︃
+𝑣 𝛾
+𝑡 η) − x∥2, (15e)
+𝑣 𝜙
+𝑡+1 = 𝜙SE (𝑣 𝛾
+𝑡 ) ≡ 𝑣 𝛾
+𝑡 [( 𝜖 𝜙
+𝑡+1)−1 − 1], (15f)
+2For a complex number 𝑧 = 𝑥 + i𝑦, the complex derivative is defined as
+𝜕/𝜕𝑧 = 1/2 (𝜕/𝜕𝑥 − i · 𝜕/𝜕𝑦 ). For a complex function 𝜙: C → C, we write
+(𝜕/𝜕𝑧) (Re[ 𝜙] + i ·Im[ 𝜙]) as 𝜕𝜙 /𝜕𝑧.
+
+=== PDF PAGE 6 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 6
+and η ∼ CN ( 0, I) is independent of x. The final estimate
+is ˆ𝜙𝑡 (r𝑡 ).
+Using Taylor series expansion,  𝜌𝑡 I + AAH −1 in (14) can
+be rewritten to a polynomial in AHA. Therefore, the BO-
+OAMP/V AMP LE in (15a) is a special case of the NIM-LE
+in (8a). Without loss of generality, throughout this paper, we
+assume that the ˆ𝜙𝑡 (·) in NLE is a symbol-by-symbol MMSE
+estimator given by
+ˆ𝜙𝑡 (r𝑡 ) ≡ E{x|r𝑡 , Φ}. (16)
+Assumption 3: Each posterior variance E{| 𝑥𝑛|2|𝑟𝑡 ,𝑛, Φ𝑛} −
+| ˆ𝜙𝑡 (𝑟𝑡 ,𝑛)| 2, ∀𝑛 is almost surely bounded, where 𝑥𝑛, 𝑟𝑡 ,𝑛 and Φ𝑛
+are the 𝑛-th entry/constraint of x, r𝑡 and Φ, respectively [24].
+The MMSE estimator ˆ𝜙𝑡 (·) in (16) is Lipschitz-continuous
+for x under Assumption 1, Assumption 3 and an equivalent
+Gaussian observation3 r𝑡 (see [24, Lemma 2]). It was proved
+in [24] that BO-OAMP/V AMP satisfies the orthogonality in
+(11). Hence, the IID Gaussian property in (12) holds for BO-
+OAMP/V AMP, which results in the following state evolution.
+Proposition 2 (State Evolution): Suppose that Assumptions
+1-3 hold. The iterative performance of BO-OAMP/V AMP can
+be tracked by state evolution: Starting with 𝑡 = 1 and 𝑣 𝜙
+1 = 1,
+LE : 𝑣 𝛾
+𝑡 = 𝛾SE(𝑣 𝜙
+𝑡 ), (17a)
+NLE : 𝑣 𝜙
+𝑡+1 = 𝜙SE(𝑣 𝛾
+𝑡 ), (17b)
+where 𝛾SE (·) and 𝜙SE(·) are defined in (15d) and (15f),
+respectively.
+The compression limit was analyzed by replica method for
+right-unitarily-invariant matrices in [47], [48]. Based on state
+evolution, it was proved in [18], [25] that the fixed points
+of BO-OAMP/V AMP are consistent with the replica predicted
+MMSE. Recently, the replica method is proved in [49] for
+a sub-class of right-unitarily-invariant matrices A = U W,
+where W are IID Gaussian, U is a product of a finite number
+of independent matrices, each with IID matrix-elements that
+are either bounded or standard Gaussian, and U and W are
+independent. Therefore, we have the following lemma.
+Lemma 3 (Potential Bayes Optimality): Suppose that
+Assumptions 1-3 hold and the state evolution of BO-
+OAMP/V AMP has a unique fixed point. Then, BO-
+OAMP/V AMP achieves the Bayes optimal MSE predicted by
+the replica method.
+In general, the NLE in BO-OAMP/V AMP is a symbol-
+by-symbol estimator, whose time complexity is as low as
+O (𝑁). The complexity of BO-OAMP/V AMP is dominated
+by LMMSE-LE, which costs O (𝑀2𝑁 + 𝑀3) time complexity
+per iteration for matrix multiplication and matrix inversion.
+Therefore, to reduce the complexity, it is desired to design a
+low-complexity potentially Bayes-optimal LE for the message
+passing algorithm.
+3In OAMP/V AMP and MAMP,r𝑡 can be treated as Gaussian observation of
+x, which can be guaranteed by the orthogonality in (11) or (20) (see Lemma
+1 and Lemma 4).
+III. M EMORY AMP
+In this section, we propose a memory AMP (MAMP) under
+an orthogonal principle. We construct a kind of local orthog-
+onal memory estimators to realize the required orthogonality
+for MAMP.
+A. Memory AMP
+Definition 3 (Memory Iterative Process): A memory itera-
+tive process4 consists of a memory linear estimator (LE) and
+a memory non-linear estimator (NLE): Starting with 𝑡 = 1,
+Memory LE : r𝑡 = 𝛾𝑡 (x1, · · ·, x𝑡 ) = Q𝑡 y +Í𝑡
+𝑖=1 P𝑡 ,𝑖x𝑖, (18a)
+Memory NLE : x𝑡+1 = 𝜙𝑡 (r1, · · ·, r𝑡 ) , (18b)
+where Q𝑡 A and P𝑡 ,𝑖 are polynomials in AHA. Without loss
+of generality, we assume that the norms of Q𝑡 and {P𝑡 ,𝑖} are
+finite. Let x(1)
+𝑡 ≡ [ xT
+1,1, · · ·, xT
+𝑡 ,1]T, x(2)
+𝑡 ≡ [ xT
+1,2, · · ·, xT
+𝑡 ,2]T
+and P𝑡 ≡ diag{P𝑡 ,1, · · ·, P𝑡 ,𝑡} (a block diagonal matrix). For
+any x(1)
+𝑡 , x(2)
+𝑡 ∈ C𝑁 𝑡,
+∥𝛾𝑡
+ x(1)
+𝑡
+ − 𝛾𝑡
+ x(2)
+𝑡
+ ∥ = ∥P𝑡
+ x(1)
+𝑡 − x(2)
+𝑡
+ ∥ (19a)
+≤ ∥ P𝑡 ∥ ∥x(1)
+𝑡 − x(2)
+𝑡 ∥, (19b)
+where ∥P𝑡 ∥ is finite since {∥ P𝑡 ,𝑖∥, ∀𝑖} are finite. Hence, 𝛾𝑡 (·)
+in (18a) is Lipschitz-continuous.
+We call (18) a memory iterative process since 𝛾𝑡 (·) and
+𝜙𝑡 (·) contain memories {x𝑖, 1 ≤ 𝑖 < 𝑡 } and {r𝑖, 1 ≤ 𝑖 < 𝑡 },
+respectively. Fig. 2 give a graphical illustration of the memory
+iterative process. The memory iterative process is degraded to
+the classic non-memory iterative process if 𝛾𝑡 (x1, · · ·, x𝑡 ) =
+𝛾𝑡 (x𝑡 ) and 𝜙𝑡 (r1, · · ·, r𝑡 ) = 𝜙𝑡 (r𝑡 ).
+Definition 4 (Memory AMP): The memory iterative process
+in III-A is said to be a memory AMP (MAMP) if the following
+orthogonal constraints hold for 1 ≤ 𝑡 ′ ≤ 𝑡:
+lim
+𝑁 →∞
+1
+𝑁 xHg𝑡
+a.s.
+= 0, (20a)
+lim
+𝑁 →∞
+1
+𝑁 f H
+𝑡′ g𝑡
+a.s.
+= 0, (20b)
+lim
+𝑁 →∞
+1
+𝑁 gH
+𝑡′ f𝑡+1
+a.s.
+= 0. (20c)
+Specifically, 𝛾𝑡 (·) and 𝜙𝑡 (·) can be partial memory estima-
+tors such as
+𝛾𝑡 (x1, · · ·, x𝑡 ) = 𝛾𝑡 (x𝜏𝛾𝑡 , · · ·, x𝑡 ), 1 ≤ 𝜏𝛾𝑡 ≤ 𝑡, (21a)
+𝜙𝑡 (x1, · · ·, x𝑡 ) = 𝜙𝑡 (r𝜏𝜙𝑡 , · · ·, r𝑡 ), 1 ≤ 𝜏𝜙𝑡 ≤ 𝑡. (21b)
+4The V -transformed error recursion of the memory iterative process in (18)
+coincides with that in [31] (See Point 2 in Subsection III-D).
+𝛾𝑡 𝜙𝑡
+𝒙!⋯𝒙"𝒓"⋯𝒓!
+Fig. 2. Graphic illustration for a memory iterative process.
+
+=== PDF PAGE 7 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 7
+In this case, based on the generalized Stein’s lemma in Lemma
+2, the full orthogonality in (20b) and (20c) can be reduced to
+the following partial orthogonality.
+lim
+𝑁 →∞
+1
+𝑁 f H
+𝑡′ g𝑡
+a.s.
+= 0, 𝜏 𝛾𝑡 ≤ 𝑡 ′ ≤ 𝑡, (22a)
+lim
+𝑁 →∞
+1
+𝑁 gH
+𝑡′ f𝑡+1
+a.s.
+= 0, 𝜏 𝜙𝑡 ≤ 𝑡 ′ ≤ 𝑡. (22b)
+When 𝜏𝛾𝑡 = 𝜏𝜙𝑡 = 𝑡, the MAMP degenerates to the non-
+memory process discussed in Section II.
+Note that in general, the full orthogonalization in (20) is
+stricter than the step-by-step orthogonalization in (11), except
+for the non-memory iterative process in Subsection II-C. For
+example, the step-by-step orthogonalization in (11) in a non-
+memory iterative process (e.g., OAMP/V AMP) is not sufficient
+to guarantee the asymptotic IID Gaussianity for MAMP. Thus,
+a stricter orthogonality is required, i.e., the error of 𝛾𝑡 (·) is
+required to be orthogonal to all input estimation errors. This
+is the main difference between MAMP and the non-memory
+AMP-type algorithms (e.g., OAMP/V AMP). In III-B and III-C,
+we will show how to construct a memory LE and a memory
+NLE to satisfy the orthogonality in (20).
+Define the covariances as follows:
+𝑣 𝛾
+𝑡 ,𝑡′ = (𝑣 𝛾
+𝑡′,𝑡 )∗ ≡ 1
+𝑁 E{gH
+𝑡 g𝑡′ }, (23a)
+𝑣 𝜙
+𝑡 ,𝑡′ = (𝑣 𝜙
+𝑡′,𝑡 )∗ ≡ 1
+𝑁 E{f H
+𝑡 f𝑡′ }. (23b)
+The following lemma is proved in [31], [46] (see “Proof of
+Property (A1)” in Appendix A-D in [31]). It is important for
+the state evolution of MAMP.
+Lemma 4 (Orthogonality and Asymptotic IID Gaussianity):
+Suppose that Assumptions 1-2 hold. For MAMP with the
+orthogonality in (20), the {𝛾𝑡 (·)} in (18a) and separable-and-
+Lipschitz-continuous [44] {𝜙𝑡 (·)}, we have ∀1 ≤ 𝑡 ′ ≤ 𝑡,
+lim
+𝑁 →∞
+𝑣 𝛾
+𝑡 ,𝑡′
+a.s.
+= 1
+𝑁 E
+n
+𝛾𝑡
+ x + η 𝜙
+1 , . . . , x + η 𝜙
+𝑡
+ − x
+H
+
+𝛾𝑡′
+ x + η 𝜙
+1 , . . . , x + η 𝜙
+𝑡′
+ − x
+o
+, (24a)
+lim
+𝑁 →∞
+𝑣 𝜙
+𝑡+1,𝑡 ′+1
+a.s.
+= 1
+𝑁 E
+n
+𝜙𝑡
+ x + η𝛾
+1 , . . . , x + η𝛾
+𝑡
+ −x
+H
+
+𝜙𝑡′
+ x + η𝛾
+1 , . . . , x + η𝛾
+𝑡′
+ − x
+o
+, (24b)
+where [η𝛾
+1 . . . η𝛾
+𝑡 ] and [η 𝜙
+1 . . . η 𝜙
+𝑡 ] are column-wise IID
+Gaussian, row-wise joint-Gaussian and independent of x. In
+addition, η 𝜙
+𝑡 ∼ CN ( 0, 𝑣 𝜙
+𝑡 ,𝑡I) with E{η 𝜙
+𝑡 (η 𝜙
+𝑡′ )H} = 𝑣 𝜙
+𝑡′,𝑡 I and
+η𝛾
+𝑡 ∼ CN (0, 𝑣 𝛾
+𝑡 ,𝑡I) with E{η𝛾
+𝑡 (η𝛾
+𝑡′)H} = 𝑣 𝛾
+𝑡′,𝑡 I.
+B. Orthogonal Memory LE
+We construct an orthogonal memory LE 𝛾𝑡 (·) to satisfy the
+orthogonality in (20a) and (20b).
+Definition 5 (Orthogonal Memory LE): A general orthogo-
+nal memory LE is defined as
+𝛾𝑡 (x1, · · ·, x𝑡 ) = Q𝑡 y + Í𝑡
+𝑖=1 P𝑡 ,𝑖x𝑖, (25a)
+where Q𝑡 A and P𝑡 ,𝑖 are polynomials in AHA, and
+1
+𝑁 tr
+
+Q𝑡 A
+	
+= 1, (25b)
+tr
+
+P𝑡 ,𝑖
+	
+= 0, 𝑖 = 1, . . . , 𝑡. (25c)
+Recall g𝑡 = 𝛾𝑡 (x1, · · ·, x𝑡 )− x and f𝑖 = x𝑖 −x, ∀𝑖, and assume5
+that F𝑡 = [f1 · · ·f𝑡 ] is column-wise IID with zero mean and
+independent of n. Then, the memory LE in (25) satisfies the
+orthogonalization:
+lim
+𝑁 →∞
+1
+𝑁 xHg𝑡
+a.s.
+= 0, (26a)
+lim
+𝑁 →∞
+1
+𝑁 f H
+𝑡′ g𝑡
+a.s.
+= 0, ∀1 ≤ 𝑡 ′ ≤ 𝑡. (26b)
+Proof: First, we rewrite (25) to
+𝛾𝑡 (x1, · · ·, x𝑡 ) = Q𝑡 (Ax + n) + Í𝑡
+𝑖=1 P𝑡 ,𝑖(x + f𝑖). (27)
+Then, we have
+g𝑡 = (Q𝑡 A − I + Í𝑡
+𝑖=1 P𝑡 ,𝑖
+|                      {z                      }
+L𝑡
+)x + Í𝑡
+𝑖=1 P𝑡 ,𝑖f𝑖 + Q𝑡 n. (28)
+For 1 ≤ 𝑡 ′ ≤ 𝑡,
+lim
+𝑁 →∞
+1
+𝑁 xHg𝑡
+a.s.
+= 1
+𝑁
+h
+E
+n
+tr
+
+xxHL𝑡
+	o
++
+𝑡Í
+𝑖=1
+E
+n
+tr
+
+f𝑖xHP𝑡 ,𝑖
+	o
++ E
+n
+tr
+
+nxHQ𝑡
+	oi
+(29a)
+= 0, (29b)
+lim
+𝑁 →∞
+1
+𝑁 f H
+𝑡′ g𝑡
+a.s.
+= 1
+𝑁
+h
+E
+n
+tr
+
+xf H
+𝑡′ L𝑡
+	o
++
+𝑡Í
+𝑖=1
+E
+n
+tr
+
+f𝑖f H
+𝑡′ P𝑡 ,𝑖
+	
++ E
+n
+tr
+
+nf H
+𝑡′ Q𝑡
+	oi
+(29c)
+= 0, (29d)
+where (29a) and (29c) follow that E{xxH} = I, E{nxH} =
+E{nf H
+𝑡′ } = 0, E{f𝑖xH}
+a.s.
+= 1
+𝑁 (xHf𝑖)I, E{xf H
+𝑡′ }
+a.s.
+= 1
+𝑁 (f H
+𝑡′ x)I
+and E{f𝑖f H
+𝑡′ } = 𝑣 𝜙
+𝑡′,𝑖 I, and (29b) and (29d) follow tr
+
+Q𝑡 A −
+I
+	
+= tr
+
+P𝑡 ,𝑖
+	
+= 0 (see (25)).
+The orthogonal memory LE in (25) is a generalization of the
+de-correlated LE in OAMP [18]. The lemma below constructs
+an orthogonal memory LE based on a general memory LE.
+Lemma 5 (Orthogonal Memory LE Construction): Given a
+general memory LE (not necessary orthogonal)
+ˆ𝛾𝑡 (x1, · · ·, x𝑡 ) = Q𝑡 y + Í𝑡
+𝑖=1 P𝑡 ,𝑖x𝑖, (30a)
+where Q𝑡 A and P𝑡 ,𝑖 are polynomials in AHA, we can
+construct an orthogonal memory LE by
+𝛾𝑡 (x1, · · ·, x𝑡 ) = 1
+𝜀𝛾
+𝑡
+  ˆ𝛾𝑡 (x1, · · ·, x𝑡 ) − [ x1 · · ·x𝑡 ]p𝑡
+, (30b)
+where
+𝜀𝛾
+𝑡 = 1
+𝑁 tr
+
+Q𝑡 A
+	
+, p𝑡 =
+ 1
+𝑁 tr{P𝑡 ,1} · · · 1
+𝑁 tr{P𝑡 ,𝑡}
+T. (30c)
+It is easy to verify that 𝛾𝑡 (·) in (30) satisfies (25), i.e., it is
+an orthogonal memory LE.
+C. Orthogonal Memory NLE
+We construct an orthogonal memory NLE 𝜙𝑡 (·) to satisfy
+the orthogonality in (20c).
+5The assumption that F is column-wise IID with zero mean and indepen-
+dent of n is guaranteed by the orthogonal memory NLE given in III-C by
+induction [31].
+
+=== PDF PAGE 8 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 8
+Definition 6 (Orthogonal Memory NLE): Recall f𝑡+1 =
+𝜙𝑡 (r1, · · ·, r𝑡 ) − x and g𝑖 = r𝑖 − x, ∀𝑖. An memory NLE
+𝜙𝑡 (r1, · · ·, r𝑡 ) is called orthogonal memory NLE if
+lim
+𝑁 →∞
+1
+𝑁 f H
+𝑡+1g𝑡′
+a.s.
+= 0, ∀1 ≤ 𝑡 ′ ≤ 𝑡. (31)
+The orthogonal memory NLE in (31) is a generalization of
+the divergence-free NLE in OAMP [18]. The lemma below
+constructs an orthogonal memory NLE based on an arbitrary
+memory NLE.
+Lemma 6: Assume6 that G𝑡 = [g1 · · ·g𝑡 ] are column-wise
+IID Gaussian and row-wise joint Gaussian with zero mean
+and lim𝑁 →∞ 1
+𝑁 GH
+𝑡 x
+a.s.
+= 0. Given an arbitrary separable-and-
+Lipschitz-continuous ˆ𝜙𝑡 (r1, · · ·, r𝑡 ) (not necessary orthogo-
+nal), we can construct an orthogonal memory NLE by
+𝜙𝑡 (r1, · · ·, r𝑡 ) = 1
+𝜀 𝜙
+𝑡
+  ˆ𝜙𝑡 (r1, · · ·, r𝑡 ) − [ r1 · · ·r𝑡 ]u𝑡
+, (32a)
+where
+u𝑡 = (GH
+𝑡 G𝑡 )−1GH
+𝑡 ˆ𝜙𝑡 (r1, · · ·, r𝑡 ), (32b)
+and 𝜀 𝜙
+𝑡 is an arbitrary constant.
+Proof: We prove that 𝜙𝑡 (·) in (32) satisfies the orthogo-
+nalization in (31) as follows.
+lim
+𝑁 →∞
+1
+𝑁 GH
+𝑡 f𝑡+1
+= lim
+𝑁 →∞
+1
+𝑁 GH
+𝑡
+
+𝜙𝑡 (r1, · · ·, r𝑡 ) − x
+
+(33a)
+a.s.
+= lim
+𝑁 →∞
+1
+𝑁 GH
+𝑡 𝜙𝑡 (r1, · · ·, r𝑡 ) (33b)
+= lim
+𝑁 →∞
+1
+𝑁 𝜀 𝜙
+𝑡
+
+GH
+𝑡
+  ˆ𝜙𝑡 (r1, · · ·, r𝑡 ) − [ r1 · · ·r𝑡 ]u𝑡
+
+(33c)
+a.s.
+= 1
+𝑁 𝜀 𝜙
+𝑡
+ GH
+𝑡 ˆ𝜙(r1, · · ·, r𝑡 ) − GH
+𝑡 G𝑡 u𝑡
+ (33d)
+= 0, (33e)
+where (33b) and (33d) follow lim
+𝑁 →∞
+1
+𝑁 GH
+𝑡 x
+a.s.
+= 0, (33c)
+follows (32a), and (33e) follows (32b).
+In general, 𝜀 𝜙
+𝑡 in (32a) is determined by minimizing the
+MSE of 𝜙𝑡 (·).
+Lemma 7: Assume that G𝑡 = [g1 · · ·g𝑡 ] are column-wise
+IID Gaussian and row-wise joint Gaussian with zero mean
+and lim𝑁 →∞ 1
+𝑁 GH
+𝑡 x
+a.s.
+= 0. For an arbitrary separable-and-
+Lipschitz-continuous and differentiable ˆ𝜙𝑡 (r1, · · ·, r𝑡 ), using
+generalized Stein’s Lemma [45] (see Lemma 2), we have
+lim
+𝑁 →∞
+1
+𝑁 GH
+𝑡 ˆ𝜙𝑡
+a.s.
+= 1
+𝑁 GH
+𝑡 G𝑡
+
+E
+ 𝜕 ˆ𝜙𝑡
+𝜕𝑟1
+	
+· · ·E
+ 𝜕 ˆ𝜙𝑡
+𝜕𝑟𝑡
+	 T. (34)
+Then, u𝑡 in (32b) can be rewritten to
+u𝑡 =
+
+E
+ 𝜕 ˆ𝜙𝑡
+𝜕𝑟1
+	
+· · ·E
+ 𝜕 ˆ𝜙𝑡
+𝜕𝑟𝑡
+	 T. (35)
+Fig. 3 gives a graphic illustration of MAMP with orthogonal
+𝛾𝑡 constructed in III-B and orthogonal 𝜙𝑡 constructed in III-C.
+D. Connection to Related Frameworks and Algorithms
+1) Connection to the Non-Memory Iterative Process in II-C:
+In (18), let P𝑡 ,𝑖 = 0, ∀𝑖 < 𝑡 and 𝜙𝑡 (r1, · · ·, r𝑡 ) = 𝜙𝑡 (r𝑡 ). Then
+6The assumption that lim𝑁 →∞ 1
+𝑁 GH
+𝑡 x a.s.= 0 and G𝑡 are column-wise IID
+Gaussian and row-wise joint Gaussian with zero mean are guaranteed by the
+orthogonal memory LE given in III-B by induction [31].
+!𝛾𝑡 !𝜙𝑡
+𝜙𝑡𝛾𝑡
+−
+−Orth Orth
+1/𝜀!"
+1/𝜀"#pt
+ut
+𝒙$⋯𝒙%
+𝒓%⋯𝒓$
+Fig. 3. Graphic illustration of MAMP involving two local orthogonal
+processors 𝛾𝑡 (for Γ) and 𝜙𝑡 (for Φ), which are realized by orthogonalization
+for ˆ𝛾𝑡 (see (30)) and ˆ𝜙𝑡 (see (32)).
+the MIP is reduced to the non-memory iterative process in
+(8). In this case, the full orthogonality in (20) for MAMP can
+be reduced to the step-by-step orthogonality in (11) using the
+generalized Stein’s lemma in Lemma 2. As a result, Lemma
+4 is reduced to Lemma 1.
+2) Connection to the Unified Framework: MAMP basically
+coincides with the unified framework in [31], [46].
+• Assumptions 1-2 in this paper correspond to Assumptions
+1-2 in [31], respectively. Assumption 3 in [31] holds
+in this paper, since we consider an AWGN vector n ∼
+CN (0, 𝜎2I). In addition, the Lipschitz-continuous 𝛾𝑡 (·)
+in (18a) and separable-and-Lipschitz-continuous 𝜙𝑡 (·)
+satisfy the Lipschitz continuous conditions in Assumption
+4 in [31]. In addition, the nonlinear condition in Assump-
+tion 4 in [31] is un-necessary in this paper, since we
+consider a noisy recovery for un-coded non-trivial IID x,
+in which error-free recovery is impossible, i.e., the norms
+of error vectors are non-zero in MAMP.
+• The unified framework in [31], [46] is defined on a
+general error model under V transform (see (9)-(12) in
+[31]), while the MAMP in this paper is straightforwardly
+defined on the estimation recursion. Recall A = U 𝚺V H,
+and let y′ = U Hy, n′ = U Hn and x′ = V Hx. Thus,
+y′ = 𝚺x′ + n′. Then, the memory iterative process can
+be rewritten to
+Memory LE : x′
+𝑡 = V Hx𝑡 , (36a)
+r′
+𝑡 = 𝚺Q𝑡 𝐴y′+Í𝑡
+𝑖=1 𝚺P𝑡 ,𝑖x′
+𝑖, (36b)
+r𝑡 = V r ′
+𝑡 , (36c)
+NLE : x𝑡+1 = 𝜙𝑡 (r1, . . . , r𝑡 ), (36d)
+where 𝚺Q𝑡 A and 𝚺P𝑡 ,𝑖 are the diagonal matrices corre-
+sponding to Q𝑡 A and P𝑡 ,𝑖, respectively. Based on (36),
+we then obtain an equivalent error recursion under V
+transform as that in [31].
+• The unified framework in [31], [46] used two derivative
+correction terms to realize the orthogonality in (20),
+which results in the asymptotic error Gaussianity in
+Lemma 4. The MAMP in this paper is straightforwardly
+defined on the orthogonality in (20). Since the derivative
+correction is a sufficient (not necessary) condition of the
+orthogonality, the MAMP is more general than that in
+[31], [46] (e.g., for non-differentiable processors [50]).
+3) Connection to AMP and CAMP: Both AMP and CAMP
+
+=== PDF PAGE 9 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 9
+are instances of the unified framework in [31], [46]. As
+mentioned above, MAMP basically coincides with the unified
+framework in [31], [46]. Hence, AMP and CAMP can be
+treated as instances of MAMP.
+4) Connection to OAMP/VAMP: An OAMP/V AMP is an
+instance of MAMP as shown below.
+• Let P𝑡 ,𝑡 = −Q𝑡 A and P𝑡 ,𝑡′ = 0, ∀𝑡 ′ < 𝑡 . Then, the
+orthogonal memory LE in (30b) is degraded to the de-
+correlated LE in OAMP.
+• Let u𝑡 =
+
+0, · · ·, 0, E
+ 𝑑 ˆ𝜙𝑡
+𝑑𝑟𝑡
+	
+. In this case, the orthogonal
+memory NLE in (32) is degraded to the divergence-free
+NLE in OAMP.
+Furthermore, BO-OAMP/V AMP is an instance of MAMP as
+shown below.
+• Let Q𝑡 = AH(𝜌𝑡 I + AHA)−1, P𝑡 ,𝑡 = −Q𝑡 A and
+P𝑡 ,𝑡′ = 0, ∀𝑡 ′ < 𝑡 . Then, the orthogonal memory LE in
+(30b) is degraded to the LMMSE-LE in (15a) of BO-
+OAMP/V AMP.
+• Let 𝜀 𝜙
+𝑡 = 1−E
+ 𝑑 ˆ𝜙𝑡
+𝑑𝑟𝑡
+	
+, ˆ𝜙𝑡 be an MMSE estimator given by
+ˆ𝜙𝑡 (r𝑡 ) ≡ E{x|r𝑡 , Φ}. Then, u𝑡 =
+
+0, · · ·, 0, E
+ 𝑑 ˆ𝜙𝑡
+𝑑𝑟𝑡
+	
+and
+E
+ 𝑑 ˆ𝜙𝑡
+𝑑𝑟𝑡
+	 a.s.
+= lim
+𝑁 →∞
+∥ ˆ𝜙𝑡 (r𝑡 )−x ∥2
+∥r𝑡 −x ∥2 . In this case, the orthogonal
+memory NLE in (32) is degraded to the MMSE-NLE in
+(15b) of BO-OAMP/V AMP.
+IV. B AYES-OPTIMAL MEMORY AMP
+In this section, we construct a Bayes-optimal MAMP (BO-
+MAMP) using a long-memory MF-LE, and provide some
+properties of BO-MAMP such as orthogonality and asymptotic
+IID Gaussianity, based on which we derive the state evolution
+of BO-MAMP. Interestingly, with the assistance of memory,
+we prove that the state evolution of the optimized BO-MAMP
+converges to the same fixed point as that of BO-OAMP/V AMP
+even if a low-complexity matched filter is used.
+A. Bayes-Optimal Memory AMP (BO-MAMP)
+The following is a BO-MAMP algorithm. The convergence
+of BO-MAMP is optimized with relaxation parameters {𝜃𝑡 },
+weights {𝜉𝑡 } and damping vectors {ζ𝑡 }.
+Bayes-Optimal MAMP (BO-MAMP): Let B = 𝜆†I −
+AAH. Consider a long-memory linear estimation:
+ˆr𝑡 = 𝜃𝑡 B ˆr𝑡−1 + 𝜉𝑡 (y − Ax𝑡 ). (37)
+A BO-MAMP is: Starting with 𝑡 = 1 and x1 = ˆr0 = 0,
+Memory LE : r𝑡 = 𝛾𝑡 (x1, · · ·, x𝑡 )
+≡ 1
+𝜀𝛾
+𝑡
+ AH ˆr𝑡 − Í𝑡
+𝑖=1 𝑝𝑡 ,𝑖x𝑖
+, (38a)
+NLE : x𝑡+1 = ¯𝜙𝑡 (r𝑡 )
+= [x1, . . . , x𝑡 , 𝜙𝑡 (r𝑡 )] · ζ𝑡+1, (38b)
+where ζ𝑡+1 = [𝜁𝑡+1,1, . . . , 𝜁𝑡+1,𝑡 +1]T, and 𝜙𝑡 (·) is the same
+as that in BO-OAMP/V AMP (see (15b)).
+See Algorithm 1 in Appendix H for more details of BO-
+MAMP. The following are some intuitive interpretations of the
+parameters in BO-MAMP. We will optimize these parameters
+in Section V.
+• In a memory LE, all preceding messages are utilized
+in Í𝑡
+𝑖=1 𝑝𝑡 ,𝑖x𝑖 to guarantee the orthogonality in (20). In
+NLE, the preceding messages {x1, . . . , x𝑡 } are used for
+damping to guarantee and improve the convergence of
+BO-MAMP.
+• The relaxation parameter 𝜃𝑡 = (𝜆† + 𝜌𝑡 )−1, optimized in
+Subsection V-A, minimizes the spectral radius of 𝜃𝑡 B
+to improve the convergence speed of BO-MAMP and
+ensure that BO-MAMP has a potentially Bayes-optimal
+fixed point if converges.
+• The weight 𝜉𝑡, optimized in Subsection V-B, adjusts the
+contribution of x𝑡 to the estimate r𝑡. Higher weight 𝜉𝑡
+means that the contribution of x𝑡 to r𝑡 increases. As a
+result, the optimized 𝜉𝑡 accelerates the convergence of
+BO-MAMP. However, the choice of 𝜉𝑡 does not affect
+the convergence and fixed point (i.e., potential Bayes
+optimality) of the state evolution for BO-MAMP. See
+Theorem 2 and its proof in Appendix G.
+• The normalization parameters {𝜀𝛾
+𝑡 } and the orthogonal-
+ization parameters {𝑝𝑡 ,𝑖}, given in (40), guarantee the
+orthogonality in (20) (see Theorem 1).
+• The damping vector ζ𝑡 = [𝜁𝑡 ,1, · · ·, 𝜁𝑡 ,𝑡]T, optimized in
+Subsection V-C (see (61)), is under the constraint ofÍ𝑡
+𝑖=1 𝜁𝑡 ,𝑖 = 1. We optimize the linear combination of
+all the messages {x𝑡 } to guarantee and improve the
+convergence of BO-MAMP. In particular, no damping is
+applied for ζ𝑡 = [0, · · ·, 0, 1]T. In practice, we consider a
+maximum damping length 𝐿, i.e., the number of non-zero
+entries in ζ𝑡. In general, we set 𝐿 = 3 or 2.
+We call (38) memory AMP as it involves a process with
+memory {x𝑖, 𝑖 < 𝑡 } at LE which is distinct from the non-
+memory LE in OAMP/V AMP. Intuitively, AH ˆr𝑡 is an esti-
+mate of x that converges to the LMMSE estimate in BO-
+OAMP/V AMP. As can be seen, matrix-vector multiplications
+instead of matrix inverse are involved in each iteration. Thus,
+the time complexity of BO-MAMP is as low as O (𝑀 𝑁) per
+iteration, which is comparable to AMP.
+B. Orthogonality and Asymptotic IID Gaussianity
+For 𝑡 ≥ 0, we define 7
+W𝑡 ≡ AHB𝑡 A, (39a)
+𝑏𝑡 ≡ 1
+𝑁 tr{B𝑡 } = Í𝑡
+𝑖=0
+ 𝑡
+𝑖
+ (−1)𝑖 (𝜆†)𝑡−𝑖𝜆𝑖, (39b)
+𝑤 𝑡 ≡ 1
+𝑁 tr{W𝑡 } = 𝜆†𝑏𝑡 − 𝑏𝑡+1, (39c)
+¯𝑤 𝑖, 𝑗 ≡ 𝜆†𝑤 𝑖+ 𝑗 − 𝑤 𝑖+ 𝑗+1 − 𝑤 𝑖𝑤 𝑗 , 𝑖 ≥ 0, 𝑗 ≥ 0. (39d)
+For 1 ≤ 𝑖 ≤ 𝑡,
+𝜗𝑡 ,𝑖 ≡
+(
+𝜉𝑡 , 𝑖 = 𝑡
+𝜉𝑖
+Î𝑡
+𝜏=𝑖+1 𝜃 𝜏, 𝑖 < 𝑡 , (40a)
+7If the eigenvalue distribution 𝑝𝜆 is available, 𝑏𝑡 can be calculated by
+𝑏𝑡 =
+∫ 𝜆max
+𝜆min
+(𝜆† − 𝜆) 𝑡 𝑝𝜆 𝑑 𝜆.
+
+=== PDF PAGE 10 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 10
+𝑝𝑡 ,𝑖 ≡ −𝜗𝑡 ,𝑖𝑤 𝑡−𝑖, (40b)
+𝜀𝛾
+𝑡 ≡ − Í𝑡
+𝑖=1 𝑝𝑡 ,𝑖. (40c)
+Furthermore, 𝜗𝑡 ,𝑖 = 1 if 𝑖 > 𝑡 .
+Proposition 3: The {r𝑡 } in (38) and the corresponding errors
+can be expanded to
+r𝑡 = 1
+𝜀𝛾
+𝑡
+ Q𝑡 y + Í𝑡
+𝑖=1 H𝑡 ,𝑖x𝑖
+, (41a)
+g𝑡 = 1
+𝜀𝛾
+𝑡
+ Q𝑡 n + Í𝑡
+𝑖=1 H𝑡 ,𝑖f𝑖
+, (41b)
+where g𝑡 and f𝑖 are respectively the estimation errors of r𝑡
+and x𝑖 (see (10)), and
+Q𝑡 ≡ Í𝑡
+𝑖=1 𝜗𝑡 ,𝑖AHB𝑡−𝑖, (41c)
+H𝑡 ,𝑖 ≡ 𝜗𝑡 ,𝑖(𝑤 𝑡−𝑖I − W𝑡−𝑖). (41d)
+Proof: By expanding (38a) one by one, we can obtain
+(41a) directly. Following (41a), the errors of a memory LE
+are given by
+g𝑡 = 1
+𝜀𝛾
+𝑡
+ Q𝑡 y + Í𝑡
+𝑖=1 H𝑡 ,𝑖x𝑖
+ − x (42a)
+= 1
+𝜀𝛾
+𝑡
+
+Q𝑡 (Ax + n) + Í𝑡
+𝑖=1 H𝑡 ,𝑖(x + f𝑖)
+
+− x (42b)
+= 1
+𝜀𝛾
+𝑡
+ Q𝑡 n +
+𝑡Í
+𝑖=1
+H𝑡 ,𝑖f𝑖
+ +  𝑡Í
+𝑖=1
+H𝑡 ,𝑖 + Q𝑡 A − 𝜀𝛾
+𝑡 Ix
+
+(42c)
+= 1
+𝜀𝛾
+𝑡
+ Q𝑡 n + Í𝑡
+𝑖=1 H𝑡 ,𝑖f𝑖
+, (42d)
+where (42b) is from (10), and (42d) from (39)-(41).
+The theorem below follows Lemma 4 and Proposition 3.
+Theorem 1 (Orthogonality and Asymptotic IID Gaussianity):
+Suppose that Assumptions 1-3 hold. Then, the orthogonality
+in (20) holds for BO-MAMP. Furthermore, the limits in (24)
+hold for BO-MAMP.
+Proof: See Appendix A.
+Using Theorem 1, we can track the MSE of BO-MAMP
+using the state evolution discussed in the following subsection.
+C. State Evolution
+Using the IID Gaussian property in Theorem 1, we can
+establish a state evolution equation for the dynamics of the
+MSE of BO-MAMP. The main challenge is the correlation be-
+tween the long-memory inputs of the memory LE. It requires
+a covariance-matrix state evolution to track the dynamics
+of MSE, which is different from AMP/OAMP/V AMP whose
+MSE can be tracked by a scalar state evolution.
+Define the covariance vectors and covariance matrices as:
+v𝛾
+𝑡 ≡ [ 𝑣 𝛾
+𝑡 ,1, · · ·, 𝑣 𝛾
+𝑡 ,𝑡]T, V 𝛾
+𝑡 ≡ [ 𝑣 𝛾
+𝑖, 𝑗 ]𝑡×𝑡 , (43a)
+v
+¯𝜙
+𝑡 ≡ [ 𝑣
+¯𝜙
+𝑡 ,1, · · ·, 𝑣
+¯𝜙
+𝑡 ,𝑡]T, V
+¯𝜙
+𝑡 ≡ [ 𝑣
+¯𝜙
+𝑖, 𝑗 ]𝑡×𝑡 , (43b)
+where 𝑣 𝛾
+𝑖, 𝑗 and 𝑣
+¯𝜙
+𝑖, 𝑗 is defined in (23). Furthermore, define the
+error covariance matrix of {x1, · · ·, x𝑡 , 𝜙𝑡 (r𝑡 )} (inputs of ¯𝜙𝑡)
+as
+V𝑡+1 ≡
+
+V
+¯𝜙
+𝑡
+𝑣 𝜙
+1,𝑡 +1
+...
+𝑣 𝜙
+𝑡+1,1 · · · 𝑣 𝜙
+𝑡+1,𝑡 +1
+ (𝑡+1)×( 𝑡+1)
+, (44a)
+where
+𝑣 𝜙
+𝑡+1,𝑡 ′ ≡ 1
+𝑁 E
+
+[𝜙𝑡 (r𝑡 ) − x]Hf𝑡′
+	
+. (44b)
+Proposition 4 (State Evolution): Suppose that Assumptions
+1-3 hold. The error covariance matrices of BO-MAMP can be
+tracked by state evolution: Starting with 𝑣
+¯𝜙
+1,1 = 1,
+Memory LE : v𝛾
+𝑡 = 𝛾SE (V
+¯𝜙
+𝑡 ), (45a)
+NLE : v
+¯𝜙
+𝑡+1 = ¯𝜙SE (V 𝛾
+𝑡 ), (45b)
+where {v𝛾
+𝑡 , v
+¯𝜙
+𝑡 , V 𝛾
+𝑡 , V
+¯𝜙
+𝑡 } are defined in (43), and 𝛾SE (·) and
+¯𝜙SE (·) are given as follows.
+• From (23a), Proposition 3 and Theorem 1, 𝛾SE(·) is given
+by: For 1 ≤ 𝑡 ′ ≤ 𝑡,
+𝑣 𝛾
+𝑡 ,𝑡′ = 1
+𝜀𝛾
+𝑡 𝜀𝛾
+𝑡′
+Í𝑡
+𝑖=1
+Í𝑡′
+𝑗=1𝜗𝑡 ,𝑖𝜗𝑡′, 𝑗 [𝜎2𝑤 𝑡+𝑡′−𝑖− 𝑗
++ 𝑣
+¯𝜙
+𝑖, 𝑗 ¯𝑤 𝑡−𝑖,𝑡 ′− 𝑗 ], (46)
+where {𝑤 𝑖, ¯𝑤 𝑖, 𝑗 } are defined in (39) and {𝜀𝛾
+𝑡 , 𝜗𝑡 ,𝑖} in (40).
+Proof: See Appendix B.
+• From (38b), (23b) and Theorem 1, ¯𝜙SE (·) is given by
+(v
+¯𝜙
+𝑡+1)T = ζH
+𝑡+1V𝑡+1
+
+I(𝑡+1)×𝑡 ζ𝑡+1
+
+, (47a)
+where V𝑡+1 is defined in (44), ζ𝑡+1 = [𝜁𝑡+1,1, · · ·, 𝜁𝑡+1,𝑡 +1]T
+is a damping vector, I(𝑡+1)×𝑡 is a (𝑡 + 1) × 𝑡 sub-matrix
+of I(𝑡+1)×( 𝑡+1) excluding the last column, and
+v 𝜙
+𝑡+1 ≡ E
+
+[𝜙𝑡 (𝑥 +𝜂𝑡 ) − 𝑥]∗ [ ˜x𝑡+1 − 𝑥1]
+	
+, (47b)
+with ˜x𝑡+1 = [𝑥1 · · · 𝑥𝑡 𝜙𝑡 (𝑥 + 𝜂𝑡 )] T and [𝜂1 · · ·𝜂𝑡 ] ∼
+CN (0, V 𝛾
+𝑡 ) being independent of 𝑥 ∼ 𝑃𝑥. The expec-
+tation in (47b) can be evaluated by Monte Carlo method.
+See Algorithm 2 in Appendix H and Appendix C for more
+details.
+In practice, {𝑣 𝜙
+𝑡 ,𝑡′ } can be simply estimated using the fol-
+lowing proposition.
+Proposition 5: Define z𝑡 ≡ y − A 𝜙𝑡−1 (r𝑡−1) and ¯z𝑡′ ≡ y −
+Ax𝑡′. Then, {𝑣 𝜙
+𝑡 ,𝑡′ } can be approximated by: For 1 ≤ 𝑡 ′ < 𝑡 ,
+𝑣 𝜙
+𝑡 ,𝑡
+a.s.
+= lim
+𝑁 →∞
+[ 1
+𝑁 zH
+𝑡 z𝑡 − 𝛿𝜎2]/𝑤0, (48a)
+𝑣 𝜙
+𝑡 ,𝑡′ = (𝑣 𝜙
+𝑡′,𝑡 )∗ a.s.
+= lim
+𝑁 →∞
+[ 1
+𝑁 zH
+𝑡 ¯z𝑡′ − 𝛿𝜎2]/𝑤0. (48b)
+Proof: See Appendix D.
+To reduce the time complexity, we calculate { ¯z𝑡 } by ¯z𝑡 =
+[ ¯z1 . . . ¯z𝑡−1 z𝑡 ]ζ𝑡, and store { ¯z𝑡 } to avoid the unnecessarily
+repetitive calculation in each iteration. The calculation of z𝑡
+costs O (𝑀 𝑁) time complexity.
+After we posted the preprint of this work [39], a rigorous
+state evolution was derived for WS-CG-V AMP in the latest
+version of [36]. The expanded output of WS-CG in Theorem
+3 in [36] corresponds to the expanded output of memory LE
+in (41) in this paper, and the output covariance of WS-CG
+in Theorem 4 in [36] corresponds to the output covariance
+of memory LE in (46) in this paper. Moreover, the output
+covariance of NLE in (59) in [36] is the same as (48) in this
+paper, but this work wasn’t cited in the latest version of [36].
+
+=== PDF PAGE 11 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 11
+TABLE II
+TIME AND SPACE COMPLEXITY COMPARISON BETWEEN AMP,
+BO-OAMP/VAMP, CAMP AND BO-MAMP
+Algorithms Time complexity Space complexity
+AMP [5] O (𝑀 𝑁 T) O (𝑀 𝑁)
+BO-OAMP/V AMP
+(SVD) [18], [25] O (𝑀2 𝑁 + 𝑀 𝑁 T) O (𝑁 2 + 𝑀 𝑁)
+BO-OAMP/V AMP
+(matrix inverse)
+[18], [25]
+O ( 𝑀2 𝑁 + 𝑀3) T O (𝑀 𝑁)
+CAMP [31] O (𝑀 𝑁 T +𝑀 T2 + T4) O (𝑀 𝑁 + 𝑀 T + T2)
+BO-MAMP
+(proposed) O 𝑀 𝑁 T +𝑁 T2 + T3 + 𝐿3 T O 𝑀 𝑁 + 𝑁 T + T2
+D. Complexity Comparison
+We assume that A has no special structures, such as DFT
+or sparse matrices. Let T be the number of iterations. The
+time and space complexity of BO-MAMP is given below.
+• BO-MAMP costs O (𝑀 𝑁T ) time complexity for matrix-
+vector multiplications {AAH ˆr𝑡 } and {Ax𝑡 }, which is
+dominant for the case T ≪ 𝑁, O (𝑁 + 𝑀)T 2 for
+{Í𝑡
+𝑖=1 𝑝𝑡 ,𝑖x𝑖 } and {zH
+𝑡 ¯z𝑡′, 1 ≤ 𝑡 ′ ≤ 𝑡}, O (T 3) for
+calculating {𝑣 𝛾
+𝑡 ,𝑡}, and O (𝐿3T ) for calculating {ζ𝑡 } (see
+V-C), which is negligible for 𝐿 ≪ T ≪ 𝑁, where 𝐿 is
+damping length.
+• BO-MAMP needs O (𝑀 𝑁) space complexity to store A,
+which is dominant for the case T ≪ 𝑁, O (𝑀 + 𝑁)T 
+space for {x𝑡 } and {z𝑡 }, and O T 2 for {V 𝜙
+𝑡 }.
+Table II compares the time and space complexity of BO-
+MAMP, BO-OAMP/V AMP, AMP and CAMP. BO-MAMP and
+CAMP have similar time and space complexity. For BO-
+OAMP/V AMP that uses matrix inverse LMMSE, the time
+complexity is as high as O (𝑀2𝑁 + 𝑀3)T  due to the matrix
+multiplication and matrix inverse in each iteration. For SVD-
+BO-OAMP/V AMP, the SVD ofA requires time complexity of
+O 𝑀2𝑁 unless A has a special structure that can use efficient
+SVD. Hence, BO-OAMP/V AMP has higher complexity than
+AMP, CAMP and BO-MAMP, while BO-MAMP and CAMP
+have comparable complexity to AMP for T ≪ 𝑁.
+E. BO-MAMP for Identical-Singular-Value Matrices
+1) Over-Loaded Systems: Consider the over-loaded case
+𝑁 ≥ 𝑀 and the rectangular diagonal matrix of the SVD of
+A is 𝚺 =
+√︃
+𝑁
+𝑀 [I𝑀 0𝑀×( 𝑁 −𝑀) ]. Therefore, we have 𝜆† = 1
+and B = 0. In this case, the performance of BO-MAMP is
+independent of 𝜉𝑡. Thus, we can set 𝜉𝑡 = 𝜀𝛾
+𝑡 = 1. In addition,
+for 1 ≤ 𝑖 ≤ 𝑡,
+𝑤 𝑡 =
+ 1, 𝑡 = 0
+0, 𝑡 > 1 , (49a)
+𝑝𝑡 ,𝑖 =
+ −1, 𝑖 = 𝑡
+0, otherwise . (49b)
+Then, BO-MAMP can be simplified to: Starting with 𝑡 = 1
+and x1 = 0,
+r𝑡 = 𝛾𝑡 (x𝑡 ) ≡ AH(y − Ax𝑡 ) + x𝑡 , (50a)
+x𝑡+1 = 𝜙𝑡 (r𝑡 ) . (50b)
+2) Under-Loaded Systems: Consider the under-loaded case
+𝑁 ≤ 𝑀 and the rectangular diagonal matrix of the SVD of A
+is 𝚺 = [I𝑁 0𝑁 ×( 𝑀−𝑁 ) ]T. Therefore, we have 𝜆† = 1, B = 0
+and AHA = I. Following (50), BO-MAMP can be further
+simplified to:
+r = AHy, (51a)
+ˆx = ˆ𝜙 (r) , (51b)
+where ˆ𝜙(·) is given in (16). In this case, one step LE and one
+step NLE is sufficient, and the iteration between LE and NLE
+is un-necessary.
+Comparing (50) and (51) with the BO-OAMP/V AMP in
+(15), we obtain the following.
+Proposition 6: BO-MAMP is equivalent to BO-
+OAMP/V AMP (MF-OAMP/V AMP) when matrix A has
+identical singular values.
+V. O PTIMIZATION , C ONVERGENCE AND POTENTIAL
+BAYES OPTIMALITY OF BO-MAMP
+In this section, we optimize {𝜃𝑡 , 𝜉𝑡 , ζ𝑡+1} step-by-step for
+each iteration assuming that the parameters {𝜃𝑡′, 𝜉𝑡′, ζ𝑡′+1, 𝑡′ <
+𝑡} in previous iterations are fixed. More specifically, we first
+optimize 𝜃𝑡. Given 𝜃𝑡, we optimize 𝜉𝑡. Then, given 𝜃𝑡 and 𝜉𝑡,
+we optimize ζ𝑡+1.
+A. Optimization of 𝜃𝑡
+Proposition 7 gives a Taylor series expansion for matrix
+inverse.
+Proposition 7 (Taylor Series Expansion): Assume that the
+matrix I − C is invertible and 𝜌(C) < 1, where 𝜌(C) is the
+spectral radius of C. Then,
+lim
+𝑡→∞
+Í𝑡
+𝑖=0 C𝑖 = (I − C)−1. (52)
+The convergence condition and convergence speed mainly
+depend on the spectral radius of 𝜃𝑡 B. Next, we optimize 𝜃𝑡
+to minimize the spectral radius of 𝜃𝑡 B.
+Consider the 𝑡-th iteration, the goal of a memory LE
+is to approach the matrix inverse  𝜌𝑡 I + AAH −1, where
+𝜌𝑡 = 𝜎2/𝑣
+¯𝜙
+𝑡 ,𝑡. Following Proposition 7, we need to construct
+an iterative matrix ˜C𝑡 = I − ( 𝜌𝑡 I + AAH), which may not
+satisfy the convergence condition 𝜌( ˜C𝑡 ) < 1, where 𝜌( ˜C𝑡 ) is
+the spectral radius of ˜C𝑡. To solve this problem, we introduce a
+relaxation parameter 𝜃𝑡 and construct C𝑡 = I −𝜃𝑡 (𝜌𝑡 I +AAH)
+for the matrix inverse [𝜃𝑡 (𝜌𝑡 I + AAH)] −1. The spectral radius
+of C𝑡 is then minimized by [33], [34]
+𝜃𝑡 = (𝜆† + 𝜌𝑡 )−1, (53)
+where 𝜆† = [𝜆max + 𝜆min]/2 and 𝜌𝑡 = 𝜎2/𝑣
+¯𝜙
+𝑡 ,𝑡. As a result,
+𝜌(𝜃𝑡 B) = 𝜌(C𝑡 ) (54a)
+= 𝜆max − 𝜆min
+𝜆max + 𝜆min + 2𝜌𝑡
+(54b)
+< 1. (54c)
+Therefore, the convergence condition holds with the optimized
+𝜃𝑡 in (53). Furthermore, the convergence speed of BO-MAMP
+decreases with 𝜌(𝜃𝑡 B), i.e., the smaller 𝜌(𝜃𝑡 B) is, the faster
+
+=== PDF PAGE 12 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 12
+convergence speed it has. That is, the 𝜃𝑡 in (53) optimizes the
+convergence speed of BO-MAMP.
+Remark 1: When 𝜆min and 𝜆max are unavailable, we can
+replace 𝜆min with a lower bound 𝜆low
+min and 𝜆max with an upper
+bound 𝜆up
+max. By doing so, the condition 𝜌(𝜃𝑡 B) < 1 still holds.
+In detail, since 𝜃𝑡 B = I − 𝜃𝑡 (𝜌𝑡 I + AAH), we have 𝜆 𝜃𝑡 B =
+1 − 𝜃𝑡 (𝜌𝑡 + 𝜆AAH ). Since 0 ≤ 𝜆min ≤ 𝜆AAH ≤ 𝜆max, we have
+𝜌(𝜆 𝜃𝑡 B) < 1 if and only if
+0 < 𝜃 𝑡 < 2
+𝜌𝑡 + 𝜆max
+. (55)
+Let 𝜆†
+approx = (𝜆low
+min + 𝜆up
+max)/2. Then,
+𝜃approx
+𝑡 ≡ 1
+𝜌𝑡 + 𝜆†
+approx
+(56a)
+= 2
+2𝜌𝑡 + 𝜆low
+min + 𝜆up
+max
+(56b)
+< 2
+𝜌𝑡 + 𝜆max
+, (56c)
+where (56c) follows 𝜌𝑡 > 0, 𝜆low
+min ≥ 0 and 𝜆up
+max ≥ 𝜆max > 0.
+Theorem 2 needs {𝜆min, 𝜆max} to satisfy 𝜌(𝜃𝑡 B) < 1, which
+does not change by using the bounds {𝜆low
+min, 𝜆up
+max}. That is,
+Theorem 2 still holds with the bounds {𝜆low
+min, 𝜆up
+max}. Loose
+bounds may decrease the convergence speed of BO-MAMP
+since the spectral radius of 𝜃𝑡 B is not minimized. In Fig. 13,
+the performance of BO-MAMP with bounds 𝜆low
+min = 0 and
+𝜆up
+max = (𝑁𝜆 𝜏)1/𝜏 are almost the same as that with the exact
+values of {𝜆min, 𝜆max}.
+Remark 2: The value of 𝜆𝑡 increases exponentially with
+𝑡, while 𝜗𝑡 ,𝑖 decreases exponentially with 𝑡 − 𝑖. To avoid the
+overflow, we can store{𝜗𝑡 ,𝑖𝜆𝑡−𝑖 } or {𝜗𝑡 ,𝑖𝑤 𝑡−𝑖 } for BO-MAMP.
+B. Optimization of 𝜉𝑡
+Given 𝜃𝑡, we optimize 𝜉𝑡 to minimize the MSE 𝑣 𝛾
+𝑡 ,𝑡 of r𝑡
+in BO-MAMP. From (46), we have
+𝑣 𝛾
+𝑡 ,𝑡 (𝜉𝑡 )
+= 1
+( 𝜀𝛾
+𝑡 )2
+𝑡Í
+𝑖=1
+𝑡Í
+𝑗=1
+𝜗𝑡 ,𝑖𝜗𝑡 , 𝑗
+ 𝜎2𝑤2𝑡−𝑖− 𝑗 + 𝑣
+¯𝜙
+𝑖, 𝑗 ¯𝑤 𝑡−𝑖,𝑡 − 𝑗
+ (57a)
+= 𝑐𝑡 ,1𝜉2
+𝑡 − 2𝑐𝑡 ,2𝜉𝑡 + 𝑐𝑡 ,3
+𝑤2
+0 (𝜉𝑡 + 𝑐𝑡 ,0)2 , (57b)
+where
+𝑐𝑡 ,0 = −
+𝑡−1Í
+𝑖=1
+𝑝𝑡 ,𝑖/𝑤0, (58a)
+𝑐𝑡 ,1 = 𝜎2𝑤0 + 𝑣
+¯𝜙
+𝑡 ,𝑡 ¯𝑤0,0, (58b)
+𝑐𝑡 ,2 = −
+𝑡−1Í
+𝑖=1
+𝜗𝑡 ,𝑖(𝜎2𝑤 𝑡−𝑖 + Re(𝑣
+¯𝜙
+𝑡 ,𝑖) ¯𝑤0,𝑡 −𝑖), (58c)
+𝑐𝑡 ,3 =
+𝑡−1Í
+𝑖=1
+𝑡−1Í
+𝑗=1
+𝜗𝑡 ,𝑖𝜗𝑡 , 𝑗
+ 𝜎2𝑤2𝑡−𝑖− 𝑗 + 𝑣
+¯𝜙
+𝑖, 𝑗 ¯𝑤 𝑡−𝑖,𝑡 − 𝑗
+, (58d)
+𝑣
+¯𝜙
+𝑖, 𝑗 is defined in (23b), {𝜀𝛾
+𝑡 , 𝑝 𝑡 ,𝑖, 𝜗𝑡 ,𝑖, 𝑤 𝑖, ¯𝑤 𝑖, 𝑗 } are defined
+in (39) and (40), and Re(·) denotes real value operation.
+Proposition 8 gives an optimized 𝜉𝑡.
+Proposition 8: For a fixed 𝜃𝑡, a 𝜉𝑡 that minimizes the MSE
+𝑣 𝛾
+𝑡 ,𝑡 of r𝑡 in BO-MAMP is given by: 𝜉opt
+1 = 1 and for 𝑡 ≥ 2,
+𝜉opt
+𝑡 =
+ 
+
+𝑐𝑡 ,2𝑐𝑡 ,0 + 𝑐𝑡 ,3
+𝑐𝑡 ,1𝑐𝑡 ,0 + 𝑐𝑡 ,2
+, if 𝑐𝑡 ,1𝑐𝑡 ,0 + 𝑐𝑡 ,2 ≠ 0
++∞, otherwise
+, (59)
+where {𝑐𝑡 ,0, 𝑐𝑡 ,1, 𝑐𝑡 ,2, 𝑐𝑡 ,3} are given in (58).
+Proof: See Appendix E.
+When 𝑐𝑡 ,1𝑐𝑡 ,0 + 𝑐𝑡 ,2 is equal to or close to zero, to avoid
+overflow in simulation, we can set 𝜉opt
+𝑡 = sign{𝜉opt
+𝑡 } · 𝐶max if
+|𝜉opt
+𝑡 | > 𝐶max, where 𝐶max is a sufficiently large number.
+C. Optimization of ζ𝑡+1
+For simplicity, we let I𝑡 be an index set for the non-trivial
+(or effective) memories, and its complementary set ¯I𝑡 be the
+index set of the trivial memories ¯I𝑡 = {𝜏 : x𝜏 = x𝜏′, 𝜏′ <
+𝜏 ≤ 𝑡}. Hence, we have I𝑡 ∩ ¯I𝑡 = ∅ and I𝑡 ∪ ¯I𝑡 = {1, . . . , 𝑡}.
+For example, consider 𝑡 = 5 and a sequence [x1, . . . , x5] with
+x2 = x3 and x4 = x5. We have I5 = {1, 2, 4} and ¯I5 = {3, 5}.
+We do not allow the trivial memories join the damping
+process since they do not improve the MSE performance, i.e.,
+𝜁𝑡+1,𝑖 = 0, 𝑖 ∈ ¯I𝑡 . (60)
+Therefore, we only need to optimize ζI
+𝑡+1 = [𝜁𝑡+1,𝑖 , 𝑖 ∉ ¯I𝑡 ]
+for the effective inputs, i.e., 𝜙𝑡 (r𝑡 ) and non-trivial memories
+{x𝑖, 𝑖 ∈ I 𝑡 }, whose covariance matrix is denoted as V I
+𝑡+1.
+Lemma 8 gives an optimized damping vector ζI
+𝑡+1.
+Lemma 8 (Optimal Damping): For a fixed 𝜃𝑡 and 𝜉𝑡, a ζI
+𝑡+1
+that minimizes the MSE 𝑣
+¯𝜙
+𝑡+1,𝑡 +1 of x𝑡+1 in BO-MAMP is
+given by
+ζI
+𝑡+1 =
+ 
+
+[V I
+𝑡+1]−11
+1T [V I
+𝑡+1]−11
+, if V I
+𝑡+1 is invertible
+[0, · · ·, 1, 0]T, otherwise
+, (61)
+where [V I
+𝑡+1]−1 is the inverse of V I
+𝑡+1. Furthermore, if V I
+𝑡+1
+is invertible, we have 𝑣
+¯𝜙
+𝑡+1,𝑡 +1 < 𝑣
+¯𝜙
+𝑡 ,𝑡.
+Proof: See Appendix F.
+Following (47) and (61), v
+¯𝜙
+𝑡+1 can be rewritten to
+v
+¯𝜙
+𝑡+1 =
+ 
+
+1
+1T [VI
+𝑡+1 ]−11 , if V I
+𝑡+1 is invertible
+𝑣
+¯𝜙
+𝑡 ,𝑡1, otherwise
+. (62)
+That is 𝑣
+¯𝜙
+𝑡+1,𝑡 ′ = 𝑣
+¯𝜙
+𝑡+1,𝑡 +1, ∀1 ≤ 𝑡 ′ ≤ 𝑡. Furthermore, the
+MSE of current iteration (i.e., x𝑡+1) with optimized damp-
+ing is not worse than that of the previous iterations (e.g.,
+ζ𝑡+1 = [0, · · ·, 1, 0]T). Therefore, the MSE of BO-MAMP with
+optimized {ζ𝑡 } is monotonically decreasing in the iterations,
+i.e., {𝑣
+¯𝜙
+𝑡 ,𝑡} is a monotonically decreasing sequence. Besides,
+{𝑣
+¯𝜙
+𝑡 ,𝑡} has a lower bound 0. Thus, sequence {𝑣
+¯𝜙
+𝑡 ,𝑡} converges
+to a certain value, i.e., lim𝑡→∞ 𝑣
+¯𝜙
+𝑡 ,𝑡 → 𝑣
+¯𝜙
+∗ . In other words,
+the optimized ζ𝑡+1 guarantees the convergence of BO-MAMP
+as well as improving the convergence speed of BO-MAMP.
+Therefore, we have the following lemma.
+
+=== PDF PAGE 13 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 13
+Lemma 9 (Convergence of {V
+¯𝜙
+𝑡 }): For the BO-MAMP with
+optimized {ζ𝑡 } in (61), the covariance matrix {V
+¯𝜙
+𝑡 } has the
+following properties.
+• Covariance matrix V
+¯𝜙
+𝑡 is L-banded, i.e., the elements in
+each “L band” of the matrix are the same:
+𝑣
+¯𝜙
+𝑡′, 𝜏 = 𝑣
+¯𝜙
+𝜏,𝑡 ′ = 𝑣
+¯𝜙
+𝑡′,𝑡 ′, ∀1 ≤ 𝜏 ≤ 𝑡 ′, ∀𝑡 ′ ≤ 𝑡. (63)
+That is,
+V
+¯𝜙
+𝑡 =
+𝑣
+¯𝜙
+1,1 𝑣
+¯𝜙
+2,2 . . . 𝑣
+¯𝜙
+𝑡 ,𝑡
+𝑣
+¯𝜙
+2,2 𝑣
+¯𝜙
+2,2 . . . 𝑣
+¯𝜙
+𝑡 ,𝑡
+... ... . . . ...
+𝑣
+¯𝜙
+𝑡 ,𝑡 𝑣
+¯𝜙
+𝑡 ,𝑡 . . . 𝑣
+¯𝜙
+𝑡 ,𝑡
+©­­­­­­­­­­­­
+«
+ª®®®®®®®®®®®®
+¬
+. (64)
+• Sequence {𝑣
+¯𝜙
+𝑡 ,𝑡} is monotonically decreasing and con-
+verges to a certain value, i.e.,
+𝑣
+¯𝜙
+𝑡 ,𝑡 ≤ 𝑣
+¯𝜙
+𝑡′,𝑡 ′, ∀𝑡 ′ ≤ 𝑡, and lim
+𝑡→∞
+𝑣
+¯𝜙
+𝑡 ,𝑡 → 𝑣
+¯𝜙
+∗ . (65)
+Therefore, the convergence of {V
+¯𝜙
+𝑡 } is guaranteed in the
+optimized BO-MAMP.
+Remark 3: In Lemma 8, if V I
+𝑡+1 is singular, we have x𝑡+1 =
+x𝑡, which will lead to the damping covariance matrix in the
+next iterations be singular. To avoid this, we will not allow
+x𝑡+1 join the damping in the next iterations if x𝑡+1 = x𝑡.
+By doing so, we can always ensure that the covariance matrix
+V
+¯𝜙I
+𝑡 of the non-trivial memories in each damping is invertible.
+Proof: We prove Remark 3 by induction as follows.
+• For 𝑡 = 1, we have V
+¯𝜙I
+1 = 𝑣
+¯𝜙
+1,1 = 1, which is invertible.
+• Assume that V
+¯𝜙I
+𝑡 is invertible, we next prove V
+¯𝜙I
+𝑡+1 is
+invertible.
+– If V I
+𝑡+1 is singular, x𝑡+1 will not join the damping in
+the next iterations. In this case, V
+¯𝜙I
+𝑡+1 = V
+¯𝜙I
+𝑡 , which
+is invertible since V
+¯𝜙I
+𝑡 is invertible.
+– If V I
+𝑡+1 is invertible, from Lemma 8 and Lemma 9,
+𝑣
+¯𝜙
+𝑡+1,𝑡 +1 < 𝑣
+¯𝜙
+𝑡′,𝑡 ′, ∀𝑡 ′ ≤ 𝑡. (66)
+Furthermore, since V
+¯𝜙I
+𝑡 is invertible, we have
+𝑣
+¯𝜙
+𝑖,𝑖 < 𝑣
+¯𝜙
+𝑗, 𝑗 , ∀ 𝑗 < 𝑖, 𝑖 ∈ I𝑡 , 𝑗 ∈ I𝑡 . (67)
+Otherwise there must exists one 𝑖 ∈ I 𝑡 that 𝑣
+¯𝜙
+𝑖,𝑖 =
+𝑣
+¯𝜙
+𝑖+1,𝑖+1 (see (65)). Then, det  V
+¯𝜙I
+𝑡
+ = 0 (see Lemma
+8 in [58], [59]), which contradicts the fact that V
+¯𝜙I
+𝑡
+is invertible. Following (66) and (67), we have
+𝑣
+¯𝜙
+𝑖,𝑖 < 𝑣
+¯𝜙
+𝑗, 𝑗 , ∀ 𝑗 < 𝑖, 𝑖 ∈ I𝑡+1, 𝑗 ∈ I𝑡+1. (68)
+Then, following Lemma 8 in [58], [59], we have
+det  V
+¯𝜙I
+𝑡+1
+ > 0, i.e., V
+¯𝜙I
+𝑡+1 is invertible.
+Therefore, we complete the proof of Remark 3.
+Lemma 10: Following Remark 3, we can always assume
+that the memory covariance matrix V
+¯𝜙I
+𝑡 in each damping is
+invertible. Then, from Lemma 8 and (62), we have
+(V
+¯𝜙I
+𝑡 )−11 =
+
+0, . . . , 0, 1/𝑣
+¯𝜙
+𝑡 ,𝑡
+T, (69a)
+1T (V
+¯𝜙I
+𝑡 )−11 = 1/𝑣
+¯𝜙
+𝑡 ,𝑡. (69b)
+Proof: Since V
+¯𝜙I
+𝑡 is invertible and denotes the covariance
+matrix of the optimally damped estimates, following Lemma
+8 and (62), we have
+𝑣
+¯𝜙
+𝑡 ,𝑡 = [1T (V
+¯𝜙I
+𝑡 )−11]−1, (70a)
+ζI
+𝑡 = (V
+¯𝜙I
+𝑡 )−11[1T (V
+¯𝜙I
+𝑡 )−11]−1 = [0, · · ·, 0, 1]T, (70b)
+where (70b) follows the fact that the optimal damping of
+[x1 . . . x𝑡 ] is x𝑡. Eq. (69) straightforwardly follows (70).
+Therefore, we complete the proof of Lemma 10.
+The calculation of {ζI
+𝑡 } in (61) costs time complexity 8 of
+O (T 4) due to the matrix inverse {( V I
+𝑡 )−1}, where T is the
+number of iterations. In practice, to reduce the computational
+complexity, instead of doing the full damping, the maximum
+damping length is generally set as 𝐿 (see Subsection V-D and
+the simulation results in Section VI), which is much less than
+T . In this case, the time complexity is reduced to O (𝐿3T ).
+In general, the best choice of 𝐿 is less than or equal to 3 (see
+the simulation results in Section VI). Therefore, O (𝐿3T ) is
+negligible in the complexity of BO-MAMP as 𝐿 ≪ T ≪ 𝑀.
+D. Revision for Fixed Maximum Damping Length
+Let 𝐿 be the maximum damping length of BO-MAMP.
+Then, the following should be revised. The NLE of BO-
+MAMP in (38b) is reduced to
+x𝑡+1 = ¯𝜙𝑡 (r𝑡 ) = [x𝑡+2−𝑙𝑡+1, . . . , x𝑡 , 𝜙𝑡 (r𝑡 )] · ζ𝑡+1, (71)
+where 𝑙𝑡+1 = min{𝐿, 𝑡 + 1} and ζ𝑡+1 = [𝜁𝑡+1,1, . . . , 𝜁𝑡+1,𝑙𝑡+1]T.
+The 𝑙𝑡+1 × 𝑙𝑡+1 covariance matrix V𝑡+1 in (44a) is changed to
+V𝑡+1 ≡
+
+𝑣
+¯𝜙
+𝑡−𝑙𝑡+1+2,𝑡 −𝑙𝑡+1+2 · · · 𝑣
+¯𝜙
+𝑡−𝑙𝑡+1+2,𝑡 𝑣 𝜙
+𝑡−𝑙𝑡+1+2,𝑡 +1
+... . . . ... ...
+𝑣
+¯𝜙
+𝑡 ,𝑡−𝑙𝑡+1+2 · · · 𝑣
+¯𝜙
+𝑡 ,𝑡 𝑣 𝜙
+𝑡 ,𝑡+1
+𝑣 𝜙
+𝑡+1,𝑡 −𝑙𝑡+1+2 · · · 𝑣 𝜙
+𝑡+1,𝑡 𝑣 𝜙
+𝑡+1,𝑡 +1
+
+. (72)
+The NLE state evolution function ¯𝜙SE(·) in (47a) is changed
+to
+𝑣
+¯𝜙
+𝑡+1,𝑡 ′ =
+ 
+
+𝜁∗
+𝑡+1,𝑙𝑡+1
+𝑣 𝜙
+𝑡+1,𝑡 ′ + Í𝑙𝑡+1−1
+𝑖=1 𝜁∗
+𝑡+1,𝑖 𝑣
+¯𝜙
+𝑡−𝑙𝑡+1+1+𝑖,𝑡 ′, 1 ≤ 𝑡 ′ ≤ 𝑡
+ζH
+𝑡+1V𝑡+1ζ𝑡+1, 𝑡 ′ = 𝑡 + 1
+.
+(73)
+Eqn. (62) is changed to
+𝑣
+¯𝜙
+𝑡+1, 𝜏 = 1
+1T [V I
+𝑡+1]−11
+, 𝑡 + 2 − 𝑙𝑡+1 ≤ 𝜏 ≤ 𝑡 + 1. (74)
+E. Convergence and Potential Bayes Optimality of BO-MAMP
+The following theorem gives the convergence and potential
+Bayes optimality of BO-MAMP.
+8The time complexity of calculating { [VI
+𝑡+1 ]−1 } can be reduced to
+O ( T3) if we calculate it based on { (V
+¯𝜙
+𝑡 ) −1 } instead of calculating it
+straightforwardly.
+
+=== PDF PAGE 14 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 14
+Theorem 2 (Convergence and Potential Bayes optimality):
+Suppose that Assumptions 1-3 hold. For any 9 non-zero 𝜉∗ and
+{𝜉𝑡 = 𝜉∗, ∀𝑡}, the state evolution of BO-MAMP with optimized
+{𝜃𝑡 , ζ𝑡 } (see Section V) converges to the same fixed point as
+that of BO-OAMP/V AMP. That is, the optimized BO-MAMP
+achieves the Bayes optimal MSE predicted by the replica
+method if its state evolution has a unique fixed point.
+Proof: See Appendix G. The following are the key
+points. Damping guarantees the convergence of state evolution
+of the optimized BO-MAMP (see Lemma 9). The fixed
+points of the optimized BO-MAMP are the same as those
+of BO-OAMP/V AMP. Therefore, the optimized BO-MAMP
+converges to the same fixed point as that of BO-OAMP/V AMP.
+Finally, following with the potential Bayes optimality of BO-
+OAMP/V AMP (see Lemma 3), the optimized BO-MAMP
+achieves the Bayes optimal MSE predicted by the replica
+method if its state evolution has a unique fixed point.
+VI. S IMULATION RESULTS
+We study a compressed sensing problem where x follows
+a symbol-wise Bernoulli-Gaussian distribution, i.e. ∀𝑖,
+𝑥𝑖 ∼
+ 0, probability = 1 − 𝜇
+N (0, 𝜇−1), probability = 𝜇 . (75)
+The variance of 𝑥𝑖 is normalized to 1. The signal-to-noise ratio
+(SNR) is defined as SNR = 1/𝜎2.
+Let the SVD of A be A = U 𝚺V H. The system model in
+(1) is rewritten as:
+y = U 𝚺V Hx + n. (76)
+Note that U Hn has the same distribution as n. Thus, we
+can assume U = I without loss of generality. To reduce the
+calculation complexity of BO-OAMP/V AMP, unless otherwise
+specified, we approximate a large random unitary matrix by
+V H = 𝚷F , where 𝚷 is a random permutation matrix and F
+is a DFT matrix. Note that all the algorithms involved here
+admit fast implementation for this matrix model. The entries
+{𝑑𝑖 } of diagonal matrix 𝚺 are generated as: 𝑑𝑖/𝑑𝑖+1 = 𝜅1/𝐽
+for 𝑖 = 1, . . . , 𝐽 − 1 and Í𝐽
+𝑖=1 𝑑2
+𝑖 = 𝑁, where 𝐽 = min{𝑀, 𝑁 }.
+Here, 𝜅 ≥ 1 controls the condition number of A. Note that
+BO-MAMP does not require the SVD structure of A. BO-
+MAMP only needs the right-unitarily invariance of A.
+A. Influence of Relaxation Parameters and Damping
+Fig. 4 shows MSE as a function of iterations and the influ-
+ence of the relaxation parameters {𝜆†, 𝜃𝑡 , 𝜉𝑡 } and damping. As
+can be seen, without damping (e.g., 𝐿 = 1) the convergence
+of BO-MAMP is not guaranteed, and the optimization of
+{𝜆†, 𝜃𝑡 , 𝜉𝑡 } has significant improvement in the MSE of BO-
+MAMP. The following observations can be made from Fig. 4.
+(i) Damping guarantees the convergence of BO-MAMP.
+(ii) The relaxation parameters {𝜆†, 𝜃𝑡 , 𝜉𝑡 } do not change the
+convergence and fixed point of BO-MAMP, but they can
+be optimized to improve the convergence speed.
+9Theorem 2 shows that the choice of 𝜉∗ does not affect the state-evolution
+fixed point (i.e., potential Bayes optimality) of BO-MAMP. However, as is
+shown in V-B and Fig. 4, { 𝜉𝑡 } can be optimized to improve the convergence
+speed of BO-MAMP.
+0 10 20 30 40 50
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+optimal
++= t=1t=1
+L=1 (no damping)
+Fig. 4. MSE versus the number of iterations for BO-MAMP with different
+parameters {𝜆†, 𝜃 𝑡 , 𝜉 𝑡 , 𝐿 }. 𝑀 = 4096, 𝑁 = 8192, 𝜇 = 0.1, 𝜅 = 10 and
+SNR = 30 dB. “optimal” denotes BO-MAMP with optimized {𝜆†, 𝜃 𝑡 , 𝜉 𝑡 }
+and 𝐿 = 3 (damping length). The other curves denote BO-MAMP with the
+same parameters as the “optimal” except the one marked on each curve.
+5 10 15 20 25
+Number of iterations
+100
+101
+102
+103
+t
+opt
+5 10 15 20 25
+Number of iterations
+0.45
+0.5
+0.6
+0.7
+0.8
+0.9
+1t
+opt
+Fig. 5. 𝜉 opt
+𝑡 and 𝜁 opt
+𝑡 versus the number of iterations for BO-MAMP. 𝑀 =
+4096, 𝑁 = 8192, 𝜇 = 0.1, 𝜅 = 10 and SNR = 30 dB. Left sub-figure: 𝐿 = 3;
+Right sub-figure: 𝐿 = 2.
+The left subfigure of Fig. 5 shows the optimal relaxation
+parameter 𝜉opt
+𝑡 versus the number of iterations for BO-MAMP.
+As can be seen, 𝜉opt
+𝑡 is monotone increasing with the number
+of iterations. Since 𝜉opt
+𝑡 is the weight of the current input
+of a memory LE, it means that as the number of iterations
+increases, the current input becomes more and more important,
+while the previous inputs (memory terms) become less and
+less important. In addition, when BO-MAMP converges (e.g.,
+𝑡 ≥ 16, see the “optimal” curve in Fig. 4), the sequence {𝜉opt
+𝑡 }
+also converges to a fixed value. We currently can not explain
+why the curve is not smooth at the point 𝑡 = 3.
+The right subfigure of Fig. 5 shows the optimal damping
+parameter {𝜁opt
+𝑡 } versus the number of iterations for BO-
+MAMP. As can be seen, before BO-MAMP converges (e.g.,
+𝑡 ≤ 17, see the curve 𝐿 = 2 in Fig. 9(a)), the values of {𝜁opt
+𝑡 }
+are around 0.8. After BO-MAMP converges (e.g., 𝑡 ≥ 18), 𝜁opt
+𝑡
+is monotone decreasing with the number of iterations, but in
+this case the value of 𝜁𝑡 does not impact the performance of
+BO-MAMP significantly (since it has converged).
+
+=== PDF PAGE 15 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 15
+0 2 4 6 10 12 14 168
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+AMP
+SE for AMP 
+BO-MAMP
+SE for BO-MAMP 
+SE for BO-OAMP/VAMP 
+BO-OAMP/VAMP
+0 2 4 6 10 12 14 166
+Number of iterations 
+Times
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+AMP
+SE for AMP 
+BO-OAMP/VAMP
+SE for BO-
+OAMP/VAMP 
+BO-MAMP
+SE for BO-MAMP
+(a) Well-conditioned matrix ( 𝜅 = 1) (b) Zero-mean IID Gaussian matrix
+Fig. 6. MSE versus the number of iterations for AMP, BO-OAMP/V AMP and BO-MAMP. 𝑀 = 8192, 𝑁 = 16384, 𝜇 = 0.1 and SNR = 30 dB. SE denotes
+state evolution. (a) Well-conditioned A with 𝜅 = 1 and 𝐿 = 1 (no damping); (b) zero-mean IID Gaussian A with
+
+E{𝑎2
+𝑖 𝑗 } = 1/𝑀
+	
+and 𝐿 = 3.
+0 10 20 30 40 50
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-OAMP/VAMP
+SE BO-OAMP/VAMP 
+BO-MAMP
+SE BO-MAMP
+AMP
+CAMP
+SE CAMP
+Fig. 7. MSE versus the number of iterations for AMP, CAMP, BO-
+OAMP/V AMP and BO-MAMP. 𝑀 = 8192, 𝑁 = 16384, 𝜇 = 0.1, 𝜅 = 10,
+𝐿 = 3 and SNR = 30 dB. SE denotes state evolution. The AMP and CAMP
+curves are from Fig. 2 in [31].
+B. Comparison with AMP and CAMP
+Fig. 6 shows MSE versus the number of iterations for AMP,
+BO-OAMP/V AMP and BO-MAMP with (a) well-conditioned
+A (e.g., 𝜅 = 1) and (b) zero-mean IID Gaussian A. As can
+be seen, for well-conditioned A with 𝜅 = 1, the MSEs of BO-
+OAMP/V AMP and BO-MAMP overlap, which is consistent
+with Proposition 6, i.e., BO-OAMP/V AMP and BO-MAMP
+are equivalent for matrices with identical eigenvalues. BO-
+MAMP and OAMP/V AMP converge faster than AMP. For
+zero-mean IID Gaussian A, the MSEs of AMP and BO-
+MAMP overlap, i.e., they have almost the same convergence
+speed, and BO-OAMP/V AMP converges faster than AMP and
+BO-MAMP. Furthermore, the state evolution of BO-MAMP
+matches well with the simulated MSE in both cases.
+Fig. 7 shows MSE versus the number of iterations for AMP,
+CAMP, BO-OAMP/V AMP and BO-MAMP. To improve the
+convergence, both AMP and CAMP are damped. As can be
+seen, for an ill-conditioned matrix with 𝜅 = 10, the MSE
+performance of AMP is poor. CAMP converges to the same
+performance as that of BO-OAMP/V AMP. However, the state
+10-4 10-2 100 102
+Running Time (s)
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+AMP
+OAMP/VAMP
+BO-MAMP
+N=256
+N=16384
+N=4096
+Fig. 8. Running time comparison between AMP, BO-OAMP/V AMP
+(SVD) and BO-MAMP for zero-mean IID Gaussian matrices with 𝑁 ∈
+{256, 4096, 16384},
+
+E{𝑎2
+𝑖 𝑗 } = 1/𝑀
+	
+, 𝛿 = 0.5, 𝜇 = 0.1, 𝐿 = 3 and
+SNR = 30 dB.
+evolution of CAMP is inaccurate since the damping is made on
+the a-posteriori NLE outputs, which breaks the orthogonality
+and Gaussianity of the estimation errors. The proposed BO-
+MAMP in this paper converges faster than CAMP to BO-
+OAMP/V AMP. Furthermore, the state evolution of BO-MAMP
+is accurate since the damping is made on the orthogonal NLE
+outputs, which preserves the orthogonality and Gaussianity of
+the estimation errors.
+Fig. 8 shows MSE versus the MATLAB program run-
+ning time of AMP, BO-OAMP/V AMP (SVD) and BO-
+MAMP for zero-mean IID Gaussian matrix A with 𝑁 ∈
+{256, 4096, 16384} and 𝛿 = 0.5. As can be seen, the running
+time of BO-MAMP is lower than BO-OAMP/V AMP. The time
+complexity improvement of BO-MAMP is more significant for
+larger matrix sizes. The running time of MAMP is relatively
+higher than (about double of) AMP. The reason is that, for
+zero-mean IID Gaussian A, the convergence speed of AMP
+and BO-MAMP are almost the same, but the matrix-vector
+multiplications per iteration in BO-MAMP is double of AMP.
+
+=== PDF PAGE 16 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 16
+0 5 10 15 20 25
+Number of iterations
+10-5
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-MAMP
+BO-OAMP/VAMP 
+BO-MAMP (SE) 
+BO-OAMP/VAMP (SE)
+L=3 L=2
+0 20 40 60 80 100
+Number of iterations
+10-5
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-MAMP
+BO-OAMP/VAMP 
+BO-MAMP (SE) 
+BO-OAMP/VAMP (SE)
+L=2L=3
+(a) 𝜅 = 10 (b) 𝜅 = 102
+0 50 100 150 200 250 300 350 400 450
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-MAMP 
+BO-OAMP/VAMP
+L=2L=3
+0 500 1000 1500 2000 2500
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-MAMP 
+BO-OAMP/VAMP
+L=2L=3
+(c) 𝜅 = 103 (d) 𝜅 = 104
+Fig. 9. MSE versus the number of iterations for BO-MAMP and BO-OAMP/V AMP with different condition numbers of A. 𝑀 = 8192, 𝑁 = 16384, 𝜇 = 0.1,
+SNR = 40 dB and 𝜅 ∈ { 10, 102, 103, 104 }. SE denotes state evolution. We did not show the SEs of 𝜅 = 103 and 𝜅 = 104 since Algorithm 2 becomes unstable
+in these cases.
+C. Influence of Condition Number and Damping Length
+Fig. 9 shows MSE versus the number of iterations for BO-
+MAMP with different condition numbers and damping lengths.
+As can be seen, BO-MAMP converges to BO-OAMP/V AMP
+for all the condition number shown. However, for matrices
+with larger condition numbers, BO-MAMP needs more iter-
+ations to converge. Note that CAMP fails to converge when
+𝜅 > 15 (see Fig. 4 in [31]). The state evolution of BO-MAMP
+matches well with the simulated MSE when 𝜅 = 10 and
+𝜅 = 102. We did not show the SEs of 𝜅 = 103 and 𝜅 = 104 since
+Algorithm 2 becomes unstable in these cases. The reason is
+that for large 𝜅, V 𝛾
+𝑡 may become nearly singular, which results
+in unstable 𝜂𝑡. In detail, numerical calculations of (V 𝛾
+𝑡 )−1 in
+(87b) become inaccurate. We are still working on this issue.
+In addition, BO-MAMP with 𝐿 = 3 (damping length) has
+significant improvement in convergence speed compared with
+𝐿 = 2 when the condition number of A is large (e.g., 𝜅 ≥ 50).
+It should be mentioned that 𝐿 = 3 is generally sufficient for
+BO-MAMP convergence, since the MSEs of BO-MAMP are
+almost the same when 𝐿 ≥ 3. Thus, we did not show the
+MSE curves of BO-MAMP with 𝐿 ≥ 4. This is an interesting
+observation, but we still have no mathematical explanation for
+this phenomenon.
+D. Influence of Compression Ratio
+Fig. 10 shows MSE versus the number of iterations for BO-
+MAMP with 𝑁 = 16384, 𝜇 = 0.1, 𝜅 = 10, SNR = 30 dB and
+𝛿 = 𝑀/𝑁 ∈ { 0.2, 0.25, 0.4, 0.7, 1} (compression ratios). As
+can be seen, BO-MAMP converges to BO-OAMP/V AMP for
+all the matrices with small-to-large compression ratios, and the
+state evolution of BO-MAMP matches well with the simulated
+MSE. For the matrices with small compression ratios, BO-
+MAMP needs more iterations to converge. Damping length
+𝐿 = 2 is enough for compression ratios 𝛿 ∈ { 0.2, 0.7, 1}, and
+𝐿 = 3 is enough for compression ratio 𝛿 ∈ { 0.25, 0.4}.
+Under-loaded systems: In under-loaded case (i.e., 𝑁 ≤ 𝑀),
+we let
+A =
+ 𝚺 𝑁 ×𝑁
+0( 𝑀−𝑁 )× 𝑁
+
+𝚷F . (77)
+Hence, 𝜆min = 0 when 𝑁 < 𝑀 . Here, we let Í𝑁
+𝑖=1 𝑑2
+𝑖 = 𝑀,
+i.e., the measurement energy increases with 𝑀. Fig. 11 shows
+MSE versus the number of iterations for BO-MAMP with 𝛿 ∈
+{1, 24, 32, 64}. As can be seen, BO-MAMP converges fast to
+BO-OAMP/V AMP in under-loaded case with small-to-large
+compression ratios. In addition, the state evolution of BO-
+MAMP matches well with the simulated MSE.
+
+=== PDF PAGE 17 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 17
+0 20 40 60 80 100 120 140 160
+Number of iterations
+10-3
+10-2
+10-1
+100
+MSE
+BO-MAMP
+BO-OAMP/VAMP 
+BO-MAMP (SE)
+BO-OAMP/VAMP (SE)
+=0.2
+=0.25
+L=2
+L=2L=3
+0 5 10 15 20 25 30
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-MAMP
+BO-OAMP/VAMP 
+BO-MAMP (SE) 
+BO-OAMP/VAMP (SE)
+L=2L=3
+(a) 𝛿 = 0.2 and 𝛿 = 0.25 (b) 𝛿 = 0.4
+0 5 10 15 20
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-MAMP
+BO-OAMP/VAMP 
+BO-MAMP (SE) 
+BO-OAMP/VAMP (SE)
+L=2
+0 2 4 6 8 10
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-MAMP
+BO-OAMP/VAMP
+BO-MAMP (SE) 
+BO-OAMP/VAMP (SE)
+L=2
+(c) 𝛿 = 0.7 (d) 𝛿 = 1
+Fig. 10. MSE versus the number of iterations for BO-MAMP and BO-OAMP/V AMP with different compression ratios. 𝑁 = 16384, 𝜇 = 0.1, 𝜅 = 10,
+SNR = 30 dB and 𝛿 = 𝑀/𝑁 ∈ { 0.2, 0.25, 0.4, 0.7, 1}. SE denotes state evolution. Damping length 𝐿 = 2 is good enough for 𝛿 = 𝑀/𝑁 ∈ { 0.2, 0.7, 1},
+and 𝐿 = 3 is good enough for 𝛿 = 𝑀/𝑁 ∈ { 0.25, 0.4}.
+0 5 10 15 20 25
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-OAMP/VAMP 
+BO-MAMP 
+BO-OAMP/VAMP (SE) 
+BO-MAMP (SE)
+=1
+=4
+=16
+=64
+Fig. 11. MSE versus the number of iterations for BO-MAMP with different
+compression ratios 𝛿 ∈ { 1, 24, 32, 64}. 𝑁 = 512, 𝜇 = 0.3, 𝜅 = 10, 𝐿 = 3
+and SNR = 15 dB. SE denotes state evolution.
+E. Influence of System Size
+Fig. 12 shows MSE versus the number of itera-
+tions for BO-MAMP with different system sizes 𝑁 ∈
+{512, 1024, 2048, 4096, 8192} and 𝛿 = 0.5. As can be seen,
+0 20 40 60 80 100
+Number of iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+45 50 55
+4
+5
+6
+7
+10-4 N=1024
+N=512
+N=2048N=4096
+N=8192
+Fig. 12. MSE versus the number of iterations for BO-MAMP with different
+system sizes 𝑁 ∈ { 512, 1024, 2048, 4096, 8192}. 𝛿 = 0.5, 𝜇 = 0.1, 𝜅 = 80,
+𝐿 = 3 and SNR = 30 dB.
+BO-MAMP works well for 𝑁 as small as 512 when 𝜅 = 80.
+However, for very small system size (e.g., 𝑁 < 100) and very
+large condition number (e.g., 𝜅 > 103), the state evolution and
+the parameters of BO-MAMP may be inaccurate. In this case,
+BO-MAMP becomes unstable, i.e., fails to converge.
+
+=== PDF PAGE 18 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 18
+0 20 40 60 80 100
+Number of Iterations
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+BO-MAMP
+BO-MAMP: App. t + Bound +
+=2
+=20
+=50
+=100
+=200
+Fig. 13. MSE versus the number of iterations for (1) BO-MAMP with exact
+{𝜆𝑡 , 𝜆min, 𝜆max } and (2) BO-MAMP with the approximate {𝜆𝑡 } in (4) in
+Proposition 1 and the bounds 𝜆low
+min = 0 and 𝜆up
+max = ( 𝑁 𝜆2T )
+1
+2T , where T ∈
+{14, 30, 50, 80, 100} correspond to 𝜅 ∈ { 2, 20, 50, 100, 200}, respectively.
+𝑁 = 16384, 𝛿 = 0.5, 𝜇 = 0.1, 𝐿 = 3 and SNR = 30 dB.
+F . Influence of Approximate {𝜆𝑡 } and Bounds of {𝜆min, 𝜆max}
+Fig. 13 compares the BO-MAMP with exact {𝜆min, 𝜆max, 𝜆𝑡 }
+and the BO-MAMP with approximate {𝜆𝑡 } in (4) in Proposi-
+tion 1 and bounds 𝜆low
+min = 0 and 𝜆up
+max = (𝑁𝜆 2T)
+1
+2T , where T ∈
+{14, 30, 50, 80, 100} correspond to 𝜅 ∈ { 2, 20, 50, 100, 200},
+respectively. As can be seen, the MSEs of BO-MAMP with
+the approximate {𝜆𝑡 } in (4) and the bounds {𝜆low
+min, 𝜆up
+max} are al-
+most the same as that with the exact values of {𝜆𝑡 , 𝜆min, 𝜆max}.
+VII. C ONCLUSIONS
+This paper proposes an MAMP for high-dimensional linear
+systems with right-unitarily transform matrices under the or-
+thogonality principle, which guarantees asymptotic IID Gaus-
+sianity of estimation errors in MAMP. A kind of orthogonal
+memory LE and orthogonal memory NLE are developed to
+realize the required orthogonality for MAMP. In addition, we
+propose a low-cost BO-MAMP. The proposed BO-MAMP
+achieves the Bayes-optimal MSE predicted by the replica
+method for right-unitarily-invariant matrices (under the unique
+fixed point assumption), and has comparable complexity to
+AMP. Specifically, the techniques of long memory and orthog-
+onalization are used to achieve the potentially Bayes-optimal
+solution of the problem with a low-complexity matched filter.
+The convergence of BO-MAMP is optimized with relax-
+ation parameters at LE and a damping vector at NLE. It is
+proved that the optimized BO-MAMP converges to the high-
+complexity BO-OAMP/V AMP for all right-unitarily-invariant
+matrices.
+Recently, the MAMP was extended to solve the generalized
+linear problem in [51]. Apart from that, iterative LMMSE and
+AMP/OAMP/V AMP have been extended to handle the coded
+linear system [29], [30], [52], the intersymbol interference
+(ISI) channels [28], [52], a more general class of matrices
+in the linear layers [53], [54], and MMV problems [55], [56].
+MAMP can be naturally extended to such problems, which is
+an interesting future work.
+ACKNOWLEDGMENT
+The authors would like to thank Keigo Takeuchi, Ramji
+Venkataramanan (Associate Editor), Yao Ge, Qinghua Guo,
+Junjie Ma and the anonymous reviewers for their comments
+or discussions that have improved the quality of the manuscript
+greatly. The authors also appreciate Keigo Takeuchi’s source
+code and simulation data for CAMP.
+APPENDIX A
+PROOF OF THEOREM 1
+We first prove the orthogonality in (20) for BO-MAMP.
+Then, following Lemma 4, we get the asymptotic IID Gaus-
+sianity in (24) for BO-MAMP.
+First, following Proposition 3, we have
+r𝑡 = 1
+𝜀𝛾
+𝑡
+Q𝑡 y + 1
+𝜀𝛾
+𝑡
+Í𝑡
+𝑖=1 H𝑡 ,𝑖x𝑖, (78a)
+with
+1
+𝑁 tr{ 1
+𝜀𝛾
+𝑡
+Q𝑡 A} = 1
+𝜀𝛾
+𝑡
+Í𝑡
+𝑖=1 𝜗𝑡 ,𝑖 1
+𝑁 tr{AHB𝑡−𝑖A} (78b)
+= 1Í𝑡
+𝑖=1 𝜗𝑡 ,𝑖𝑤 𝑡−𝑖
+Í𝑡
+𝑖=1 𝜗𝑡 ,𝑖 1
+𝑁 tr{W𝑡−𝑖 } (78c)
+= 1, (78d)
+tr{ 1
+𝜀𝛾
+𝑡
+H𝑡 ,𝑖} = 1
+𝜀𝛾
+𝑡
+𝜗𝑡 ,𝑖(tr{𝑤 𝑡−𝑖I − W𝑡−𝑖 }) (78e)
+= 0, 𝑖 = 1, . . . , 𝑡, (78f)
+where (78b) follows Q𝑡 = Í𝑡
+𝑖=1 𝜗𝑡 ,𝑖AHB𝑡−𝑖 (see (41c)),
+(78e) follows H𝑡 ,𝑖 = 𝜗𝑡 ,𝑖(𝑤 𝑡−𝑖I − W𝑡−𝑖) (see (41d)), (78c)
+follows 𝜀𝛾
+𝑡 = Í𝑡
+𝑖=1 𝜗𝑡 ,𝑖𝑤 𝑡−𝑖 (see (40b) and (40c)) and W𝑡−𝑖 =
+AHB𝑡−𝑖A (see (39a)), and (78d) and (78f) follow 𝑤 𝑡−𝑖 =
+1
+𝑁 tr{W𝑡−𝑖 } (see (39c)). From (78), we know that the memory
+LE in BO-MAMP is an instance of orthogonal memory
+LE (see Definition 5). Therefore, from (26), the following
+orthogonality holds: For 1 ≤ 𝑡 ′ ≤ 𝑡,
+lim
+𝑁 →∞
+1
+𝑁 xHg𝑡
+a.s.
+= 0, (79a)
+lim
+𝑁 →∞
+1
+𝑁 f H
+𝑡′ g𝑡
+a.s.
+= 0. (79b)
+Second, since 𝜙𝑡 (·) is the same as the NLE in (15b) of
+BO-OAMP/V AMP, the following orthogonality holds for the
+orthogonal 𝜙𝑡 (·) [24]: ∀𝑡 ≥ 1,
+lim
+𝑁 →∞
+1
+𝑁 gH
+𝑡 (𝜙𝑡 (r𝑡 ) − x)
+a.s.
+= 0. (80)
+In addition, following (79), we have
+lim
+𝑁 →∞
+1
+𝑁 gH
+𝑡 f𝑡′
+a.s.
+= 0, 1 ≤ 𝑡 ′ ≤ 𝑡. (81)
+Therefore,
+lim
+𝑁 →∞
+1
+𝑁 gH
+𝑡 f𝑡+1
+= lim
+𝑁 →∞
+1
+𝑁 gH
+𝑡 ( ¯𝜙𝑡 (r𝑡 ) − x) (82a)
+= lim
+𝑁 →∞
+1
+𝑁 gH
+𝑡
+ [x1, . . . , x𝑡 , 𝜙𝑡 (r𝑡 )] · ζ𝑡+1 − x (82b)
+= lim
+𝑁 →∞
+1
+𝑁 gH
+𝑡 [f1, . . . , f𝑡 , 𝜙𝑡 (r𝑡 ) − x] · ζ𝑡+1 (82c)
+a.s.
+= 0, (82d)
+
+=== PDF PAGE 19 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 19
+where (82b) follows (38b), (82c) follows the damping con-
+straint Í𝑡
+𝑖=1 𝜁𝑡 ,𝑖 = 1, and (82d) follows (80) and (81). Fur-
+thermore, since [g1 · · ·g𝑡 ] are column-wise IID and row-wise
+joint Gaussian with zero mean (which is guaranteed by the
+orthogonality in (78) for the memory LE in (38a) by induction
+[31], see also III-C), following the Stein’s lemma (see Lemma
+2), we have: ∀1 ≤ 𝑡 ′ ≤ 𝑡,
+lim
+𝑁 →∞
+1
+𝑁 gH
+𝑡′ f𝑡+1
+a.s.
+= lim
+𝑁 →∞
+1
+𝑁
+𝑣 𝛾
+𝑡′,𝑡
+𝑣 𝛾
+𝑡 ,𝑡
+gH
+𝑡 f𝑡+1
+a.s.
+= 0. (83)
+Finally, combining (79) and (83), we obtain the orthogo-
+nality in (20) for BO-MAMP. Following (20) and Lemma 4,
+we then get the asymptotic IID Gaussianity in (24) for BO-
+MAMP. Thus, we complete the proof of Theorem 1.
+APPENDIX B
+POOF OF (46)
+Following the definition in (23a), we have
+𝑣 𝛾
+𝑡 ,𝑡′ ≡ 1
+𝑁 E{gH
+𝑡 g𝑡′ } (84a)
+a.s.
+= lim
+𝑁 →∞
+1
+𝑁 𝜀 𝛾
+𝑡 𝜀𝛾
+𝑡′
+ Q𝑡 n +
+𝑡Í
+𝑖=1
+H𝑡 ,𝑖f𝑖
+H Q𝑡′n +
+𝑡′
+Í
+𝑖=1
+H𝑡′,𝑖 f𝑖
+ (84b)
+a.s.
+= 1
+𝑁 𝜀 𝛾
+𝑡 𝜀𝛾
+𝑡′
+
+𝜎2tr{QH
+𝑡 Q𝑡′ } +
+𝑡Í
+𝑖=1
+𝑡′
+Í
+𝑗=1
+𝑣
+¯𝜙
+𝑖, 𝑗 tr{HH
+𝑡 ,𝑖H𝑡′, 𝑗 }
+
+(84c)
+= 1
+𝜀𝛾
+𝑡 𝜀𝛾
+𝑡′
+Í𝑡
+𝑖=1
+Í𝑡′
+𝑗=1𝜗𝑡 ,𝑖𝜗𝑡′, 𝑗 [𝜎2𝑤 𝑡+𝑡′−𝑖− 𝑗 + 𝑣
+¯𝜙
+𝑖, 𝑗 ¯𝑤 𝑡−𝑖,𝑡 ′− 𝑗 ], (84d)
+where (84b) follows (41b) in Proposition 3, (84c) follows that
+n is independent with {f𝑖 } and {n, f𝑖 } are column-wise IID
+(see Theorem 1), and (84d) follows
+1
+𝑁 tr{QH
+𝑡 Q𝑡′ }
+= Í𝑡
+𝑖=1
+Í𝑡′
+𝑗=1𝜗𝑡 ,𝑖𝜗𝑡′, 𝑗 1
+𝑁 tr{B𝑡−𝑖AAHB𝑡′− 𝑗 } (85a)
+= Í𝑡
+𝑖=1
+Í𝑡′
+𝑗=1𝜗𝑡 ,𝑖𝜗𝑡′, 𝑗 1
+𝑁 tr{AHB𝑡+𝑡′−𝑖− 𝑗 A} (85b)
+= Í𝑡
+𝑖=1
+Í𝑡′
+𝑗=1𝜗𝑡 ,𝑖𝜗𝑡′, 𝑗 𝑤 𝑡+𝑡′−𝑖− 𝑗 , (85c)
+and
+1
+𝑁 tr{HH
+𝑡 ,𝑖H𝑡′, 𝑗 }
+= 𝜗𝑡 ,𝑖𝜗𝑡′, 𝑗 1
+𝑁 tr{( W𝑡−𝑖 − 𝑤 𝑡−𝑖I)H(W𝑡′− 𝑗 − 𝑤 𝑡′− 𝑗 I)} (85d)
+= 𝜗𝑡 ,𝑖𝜗𝑡′, 𝑗 1
+𝑁 tr{W𝑡−𝑖W𝑡′− 𝑗 −𝑤 𝑡−𝑖W𝑡′− 𝑗
+− 𝑤 𝑡′− 𝑗 W𝑡−𝑖 + 𝑤 𝑡−𝑖𝑤 𝑡′− 𝑗 I } (85e)
+= 𝜗𝑡 ,𝑖𝜗𝑡′, 𝑗
+  1
+𝑁 tr{W𝑡−𝑖W𝑡′− 𝑗 } − 𝑤 𝑡−𝑖𝑤 𝑡′− 𝑗
+− 𝑤 𝑡−𝑖𝑤 𝑡′− 𝑗 + 𝑤 𝑡−𝑖𝑤 𝑡′− 𝑗
+ (85f)
+= 𝜗𝑡 ,𝑖𝜗𝑡′, 𝑗
+ 𝜆†𝑤 𝑡+𝑡′−𝑖− 𝑗 − 𝑤 𝑡+𝑡′−𝑖− 𝑗+1 − 𝑤 𝑡−𝑖𝑤 𝑡′− 𝑗
+ (85g)
+= 𝜗𝑡 ,𝑖𝜗𝑡′, 𝑗 ¯𝑤 𝑡−𝑖,𝑡 ′− 𝑗 , (85h)
+where (85a) follows (41c), (85c) follows (39a) and (39c), (85d)
+follows (41d), (85f) follows (39c), (85h) follows (39d), and
+(85g) follows
+1
+𝑁 tr{W𝑡−𝑖W𝑡′− 𝑗 } (86a)
+= 1
+𝑁 tr{AHB𝑡−𝑖AAHB𝑡′− 𝑗 A} (86b)
+= 1
+𝑁 tr{AHB𝑡−𝑖 (𝜆†I − B)B𝑡′− 𝑗 A} (86c)
+= 1
+𝑁 tr{𝜆†AHB𝑡+𝑡′−𝑖− 𝑗 A − AHB𝑡+𝑡′−𝑖− 𝑗+1A} (86d)
+= 𝜆†𝑤 𝑡+𝑡′−𝑖− 𝑗 − 𝑤 𝑡+𝑡′−𝑖− 𝑗+1, (86e)
+where (86b) follows (39a), (86c) follows B = 𝜆†I − AHA,
+and (86e) follows (39a) and (39c). Therefore, we complete the
+proof of (46).
+APPENDIX C
+CORRELATED NOISE VECTOR GENERATION FOR NLE
+In the state evolution of BO-MAMP (see Algorithm 2), it
+is slightly unstable if we generate η𝑡 = [𝜂1 · · ·𝜂𝑡 ]T based on
+CN (0, V 𝛾
+𝑡 ) in each iteration. For example, it may result in a
+non-positive semidefinite V𝑡. It is more stable to generate 𝜂𝑡
+one by one in each iteration as follows.
+In the first iteration, we generate 𝜂1 based on CN (0, 𝑣 𝛾
+1,1).
+In the next iterations, we generate 𝜂𝑡 given η𝑡−1 by induction
+as follows.
+𝜂𝑡 = αT
+𝑡 η𝑡−1 + 𝑔𝑡 , (87a)
+where
+α𝑡 = [V 𝛾
+𝑡−1]−1 [𝑣 𝛾
+1,𝑡 · · ·𝑣 𝛾
+𝑡−1,𝑡 ]T, (87b)
+𝑔𝑡 ∼ CN  0, 𝑣 𝑔𝑡
+, (87c)
+𝑣 𝑔𝑡 = 𝑣 𝛾
+𝑡 ,𝑡 − [𝑣 𝛾
+𝑡 ,1 · · ·𝑣 𝛾
+𝑡 ,𝑡−1]α𝑡 . (87d)
+Then, we can verify that
+E{∥ 𝜂𝑡 ∥2} = αH
+𝑡 E{η∗
+𝑡−1ηT
+𝑡−1}α𝑡 + E{∥ 𝑔𝑡 ∥2} (88a)
+= [𝑣 𝛾
+𝑡 ,1 · · ·𝑣 𝛾
+𝑡 ,𝑡−1] [V 𝛾
+𝑡−1]−1V 𝛾
+𝑡−1α𝑡 + 𝑣 𝑔𝑡 (88b)
+= 𝑣 𝛾
+𝑡 ,𝑡, (88c)
+and
+E{𝜂∗
+𝑡 ηT
+𝑡−1} = αH
+𝑡 E{η∗
+𝑡−1ηT
+𝑡−1} (88d)
+= [𝑣 𝛾
+1,𝑡 · · ·𝑣 𝛾
+𝑡−1,𝑡 ]∗ [V 𝛾
+𝑡−1]−1V 𝛾
+𝑡−1 (88e)
+= [𝑣 𝛾
+𝑡 ,1 · · ·𝑣 𝛾
+𝑡 ,𝑡−1]. (88f)
+That is, 𝜂𝑡 satisfies the required covariance constraint of η𝑡−1.
+APPENDIX D
+PROOF OF PROPOSITION 5
+The following asymptotic IID Gaussianity proposition can
+be proved via [31], [46].
+Proposition 9 (Asymptotically IID Gaussianity): Under the
+orthogonality in (20), we have
+lim
+𝑁 →∞
+1
+𝑁 ∥A(𝜙𝑡−1(r𝑡−1) − x) − n∥2
+a.s.
+= 1
+𝑁 E{∥ Aη𝑡 − n∥2}, (89a)
+lim
+𝑁 →∞
+1
+𝑁 [A(𝜙𝑡−1 (r𝑡−1) −x) −n]H [A(x𝑡′ −x) −n]
+a.s.
+= 1
+𝑁 E{( Aη𝑡 −n)H(A ¯η𝑡′ −n)} , (89b)
+where 𝑡 ′ < 𝑡 , and η𝑡 and ¯η𝑡′ are Gaussian random vectors with
+E{η𝑡 ηH
+𝑡 } = 𝑣 𝜙
+𝑡 ,𝑡I and E{η𝑡 ¯ηH
+𝑡′ } = 𝑣 𝜙
+𝑡′,𝑡 I. Besides, η𝑡 and ¯η𝑡′
+are independent of A and n.
+Following Proposition 9, we have
+lim
+𝑁 →∞
+1
+𝑁 zH
+𝑡 z𝑡 = lim
+𝑁 →∞
+1
+𝑁 ∥A(𝜙𝑡−1 (r𝑡−1) − x) − n∥2 (90a)
+a.s.
+= 1
+𝑁 E{∥ Aη𝑡 − n∥2} (90b)
+= 1
+𝑁 tr{AHA}𝑣 𝜙
+𝑡 ,𝑡 + 𝛿𝜎2, (90c)
+
+=== PDF PAGE 20 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 20
+and
+lim
+𝑁 →∞
+1
+𝑁 zH
+𝑡 ¯z𝑡′
+= lim
+𝑁 →∞
+1
+𝑁 [A(𝜙𝑡−1 (r𝑡−1) − x) − n]H [A(x𝑡′ − x) − n] (91a)
+a.s.
+= 1
+𝑁 E{( Aη𝑡 − n)H(A ¯η𝑡′ − n)} (91b)
+= 1
+𝑁 tr{AHA}𝑣 𝜙
+𝑡 ,𝑡′ + 𝛿𝜎2. (91c)
+Therefore, we complete the proof of Proposition 5.
+APPENDIX E
+PROOF OF PROPOSITION 8
+Note that 𝑣 𝛾
+1,1 is independent of 𝜉1. For simplicity, we can
+set 𝜉1 = 1. Thus, it only needs to consider the case 𝑡 ≥ 2.
+Since 𝑣 𝛾
+𝑡 ,𝑡 (𝜉𝑡 ) = 1
+𝑁 E{∥ r𝑡 − x∥2} > 0, we have 𝑣 𝛾
+𝑡 ,𝑡 (−𝑐𝑡 ,0) > 0,
+i.e.,
+𝑐𝑡 ,1𝑐2
+𝑡 ,0 + 2𝑐𝑡 ,2𝑐𝑡 ,0 + 𝑐𝑡 ,3 ≥ 0. (92)
+In addition, we can see that 𝑣 𝛾
+𝑡 ,𝑡 is differentiable with respect
+to 𝜉𝑡 except at the point 𝜉𝑡 = −𝑐𝑡 ,0, but 𝑣 𝛾
+𝑡 ,𝑡 (−𝑐𝑡 ,0) = +∞.
+Therefore, the optimal 𝜉𝑡 is either ±∞ or 𝜕𝑣 𝛾
+𝑡 ,𝑡/𝜕𝜉 𝑡 = 0, i.e.,
+(𝑐𝑡 ,1𝑐𝑡 ,0 + 𝑐𝑡 ,2)𝜉𝑡 − (𝑐𝑡 ,2𝑐𝑡 ,0 + 𝑐𝑡 ,3) = 0. Fig. 14 gives a graphic
+illustration of 𝑣 𝛾
+𝑡 ,𝑡 (𝜉𝑡 ). Then, the optimal 𝜉opt
+𝑡 can be solved
+as follows.
+• As shown in Fig. 14(a), when 𝑐𝑡 ,1𝑐𝑡 ,0 + 𝑐𝑡 ,2 = 0, there is
+no solution of 𝜕𝑣 𝛾
+𝑡 ,𝑡/𝜕𝜉 𝑡 = 0. In this case, we can set
+𝜉opt
+𝑡 = +∞. (93)
+• As shown in Fig. 14(b), when 𝑐𝑡 ,1𝑐𝑡 ,0 + 𝑐𝑡 ,2 ≠ 0, there is
+one solution of 𝜕𝑣 𝛾
+𝑡 ,𝑡/𝜕𝜉 𝑡 = 0, i.e.,
+𝜉𝑡 = 𝑐𝑡 ,2𝑐𝑡 ,0 + 𝑐𝑡 ,3
+𝑐𝑡 ,1𝑐𝑡 ,0 + 𝑐𝑡 ,2
+. (94)
+Furthermore,
+𝑣 𝛾
+𝑡 ,𝑡 (±∞) − 𝑣 𝛾
+𝑡 ,𝑡 (𝜉opt
+𝑡 )
+= 1
+𝑤2
+0
+h
+𝑐𝑡 ,1 − 𝑐𝑡 ,1(𝜉opt
+𝑡 )2 − 2𝑐𝑡 ,2𝜉opt
+𝑡 +𝑐𝑡 ,3
+(𝜉opt
+𝑡 + 𝑐𝑡 ,0)2
+i
+(95a)
+=
+𝑐𝑡 ,1𝑐2
+𝑡 ,0 + 2𝑐𝑡 ,2𝑐𝑡 ,0 + 𝑐𝑡 ,3
+𝑤2
+0 (𝜉opt
+𝑡 + 𝑐𝑡 ,0)2 (95b)
+≥ 0, (95c)
+where (95a) follows (57), (95b) follows (94), and (95c)
+follows (92). Therefore, the optimal 𝜉opt
+𝑡 is given by (94).
+Thus, we complete the proof of Proposition 8.
+𝜉!
+`
+−𝑐!,#𝜉!$%&
+𝑣!,!'
+0𝑐!,(𝑤#)𝜉!−𝑐!,#𝜉!"#$=+∞
+𝑣!,!'
+0𝑐!,(w#)
+a𝑐!,(𝑐!,#+ 𝑐!,)=0 (b)𝑐!,(𝑐!,#+ 𝑐!,)≠0
+Fig. 14. Graphic illustration of 𝑣 𝛾
+𝑡 ,𝑡 with respect to 𝜉𝑡.
+APPENDIX F
+PROOF OF LEMMA 8
+From (47), we have the following quadratic programming
+problem.
+min
+ζ I
+𝑡+1
+1
+2 [ζI
+𝑡+1]HV I
+𝑡+1ζI
+𝑡+1, (96a)
+s.t. 1TζI
+𝑡+1 = 1. (96b)
+Since V I
+𝑡+1 is positive semi-definite, 𝑣
+¯𝜙
+𝑡+1,𝑡 +1 is a convex
+function with respect to ζI
+𝑡+1. We write the Lagrangian function
+as
+L (ζI
+𝑡+1, 𝛽) = 1
+2 [ζI
+𝑡+1]HV I
+𝑡+1ζI
+𝑡+1 + 𝛽(1 − 1TζI
+𝑡+1). (97)
+We solve the problem by
+∇ζ I
+𝑡+1
+L (ζI
+𝑡+1, 𝛽) = 0, (98a)
+𝜕L (ζI
+𝑡+1, 𝛽)/𝜕 𝛽 = 0. (98b)
+That is,
+
+V I
+𝑡+1
+1T
+
+ζI
+𝑡+1 =
+ 𝛽1
+1
+
+. (99)
+Since V I
+𝑡+1 is positive semi-definite, [ζI
+𝑡+1]HV I
+𝑡+1ζI
+𝑡+1 ≥ 0,
+i.e., the problem in (96) is bounded. Therefore, (99) must
+be solvable, otherwise the problem in (96) is unbounded [57,
+Chapter 10.1], which contradicts [ζI
+𝑡+1]HV I
+𝑡+1ζI
+𝑡+1 ≥ 0. In this
+case, any solution of (99) is optimal, i.e., minimizes objective
+function [ζI
+𝑡+1]HV I
+𝑡+1ζI
+𝑡+1.
+Eq. (99) can be solved in two cases.
+1) When V I
+𝑡+1 is invertible, the problem has a unique
+optimal solution given by
+ζI
+𝑡+1 = [V I
+𝑡+1]−11/
+
+1T [V I
+𝑡+1]−11
+
+, (100)
+where [V I
+𝑡+1]−1 is the inverse of V I
+𝑡+1. In this case, since
+the optimal solution is unique, we have 𝑣
+¯𝜙
+𝑡+1,𝑡 +1 < 𝑣
+¯𝜙
+𝑡 ,𝑡.
+2) When V I
+𝑡+1 is singular, there are infinite optimal so-
+lutions, and we now prove that ζI
+𝑡+1 = [0 . . . 1 0 ]T is
+one of the optimal solutions. First, 𝛽 = 0 is impossible
+otherwise we obtain a error-free recovery by damping
+(i.e., 𝑣
+¯𝜙
+𝑡+1,𝑡 +1 = 0), which is not true. If it happens, we
+can stop the iteration since we obtain a perfect estimate
+of x. In other words, we only need to consider that
+"
+V I
+𝑡+1
+1T
+#
+ζI
+𝑡+1 =
+ 0
+1
+
+. (101)
+is unsolvable. Furthermore, without loss of generality, we
+assume that V
+¯𝜙I
+𝑡 is invertible (see Remark 3). Since V I
+𝑡+1
+is singular, and (101) is unsolvable, we have
+1T (V
+¯𝜙I
+𝑡 )−1v
+𝜙I𝑡
+𝑡+1 = 1, (102)
+where v
+𝜙I𝑡
+𝑡+1 = [𝑣 𝜙
+𝑖,𝑡 +1, 𝑖 ∈ I 𝑡 ]T. The proof of (102) is
+provided in Appendix F-A. Following Lemma 10, we
+have 1T (V
+¯𝜙I
+𝑡 )−1 = [0 . . . 0 (𝑣
+¯𝜙
+𝑡 ,𝑡)−1]. Then, Eq. (102)
+is simplified to
+𝑣 𝜙
+𝑡+1,𝑡 = 𝑣 𝜙
+𝑡 ,𝑡+1 = 𝑣
+¯𝜙
+𝑡 ,𝑡. (103)
+
+=== PDF PAGE 21 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 21
+Following (63) in Lemma 9, we further have
+𝑣
+¯𝜙
+𝑖,𝑡 = 𝑣
+¯𝜙
+𝑡 ,𝑡, 𝑖 = 1, . . . , 𝑡. (104)
+From (103) and (104), we know that
+ζI
+𝑡+1 = [0 . . . 1 0]T (105)
+is an solution of (99), i.e., minimizes objective function
+[ζI
+𝑡+1]HV I
+𝑡+1ζI
+𝑡+1. As a by product, we have 𝑣 𝜙
+𝑡+1,𝑡 +1 ≥ 𝑣
+¯𝜙
+𝑡 ,𝑡
+when V I
+𝑡+1 is singular, otherwise ζI
+𝑡+1 = [0 . . . 0 1 ]T is
+better than ζI
+𝑡+1 = [0 . . . 1 0]T, which contradicts (105).
+Thus, we complete the proof of Lemma 8.
+A. Proof of (102)
+Since V I
+𝑡+1 is singular, we have rank(V I
+𝑡+1) = 𝑡. In addition,
+since (101) is unsolvable, we obtain
+𝑡 ≤ rank
+
+V I
+𝑡+1
+1T
+
+< rank
+
+V I
+𝑡+1 0
+1T 1
+
+≤ 𝑡 + 1. (106)
+In other words, there exists non-all-zero {𝛼1, ..., 𝛼𝑡 } such thatÍ𝑡
+𝑖=1 𝛼𝑖 ˜v𝑖 = ˜v𝑡+1, where ˜v𝑖 represents the 𝑖-th column of ˜V =
+[V I
+𝑡+1, 1]T. It is easy to verify that Í𝑡
+𝑖=1 𝛼𝑖 = 1 (see last row
+of ˜V ) and [𝛼1, ..., 𝛼𝑡 ]T = (V
+¯𝜙I
+𝑡 )−1v
+𝜙I𝑡
+𝑡+1 (see the first 𝑡 rows
+of ˜V ), where v
+𝜙I𝑡
+𝑡+1 = [𝑣 𝜙
+𝑖,𝑡 +1, 𝑖 ∈ I 𝑡 ]T. Thus, we can obtain
+1T (V
+¯𝜙I
+𝑡 )−1v
+𝜙I𝑡
+𝑡+1 = 1.
+APPENDIX G
+PROOF OF THEOREM 2
+We prove Theorem 2 by two steps. First, we prove Lemma
+11 that the state-evolution fixed points of BO-OAMP/V AMP
+and BO-MAMP are the same. Then, following Lemma 3
+and Lemma 9, we can say that the optimized BO-MAMP
+achieves the Bayes optimal MSE predicted by the replica
+method for all right-unitarily-invariant transform matrices if
+its state evolution has a unique fixed point. Thus, we complete
+the proof of Theorem 2.
+Lemma 11 (Consistency of Fixed Points): The state-
+evolution fixed points of BO-OAMP/V AMP and BO-MAMP
+with optimized {𝜃𝑡 , ζ𝑡 } are the same. It is given by
+𝑣 𝛾
+∗ = 𝛾SE (𝑣 𝜙
+∗ ) = 1
+( 𝜀𝛾
+∗ )2
+∞Í
+𝑗=0
+∞Í
+𝑖=0
+𝜃𝑖+ 𝑗+2 𝜎2𝑤 𝑖+ 𝑗 + 𝑣 𝜙
+∗ ¯𝑤 𝑖, 𝑗
+, (107a)
+𝑣 𝜙
+∗ = 𝜙SE(𝑣 𝛾
+∗ ), (107b)
+where 𝜙SE (·) given in (15f), and
+𝜃 = (𝜆† + 𝜌∗)−1, (107c)
+𝜀𝛾
+∗ =Í∞
+𝑖=0 𝜃𝑖+1 (𝜆†𝑏𝑖 − 𝑏𝑖+1). (107d)
+Proof: In Appendix G-A, we show that the state-evolution
+fixed point of BO-OAMP/V AMP is given by (107). In Ap-
+pendix G-B, we show that the state-evolution fixed point of
+BO-MAMP is given by (107). Hence, we complete the proof
+of Lemma 11.
+A. State Evolution Fixed Point of BO-OAMP/VAMP
+The convergence of SE for BO-OAMP/V AMP has been
+rigorously proved in [40], [41], [58], [59] (see Theorem 3 in
+[40], [41] and Corollary 3 in [58], [59]). Define 𝑣 𝜙
+∗ ≡ lim
+𝑡→∞
+𝑣 𝜙
+𝑡 ,
+𝑣 𝛾
+∗ ≡ lim
+𝑡→∞
+𝑣 𝛾
+𝑡 , 𝜌∗ ≡ lim
+𝑡→∞
+𝜌𝑡 = 𝜎2/𝑣 𝜙
+∗ and 𝜀𝛾
+∗ ≡ lim
+𝑡→∞
+𝜀𝛾
+𝑡 . We give
+a Taylor series expansion for the state evolution function of
+LE in BO-OAMP/V AMP as follows. Note that {r𝑡 , x𝑡 , g𝑡 , f𝑡 }
+are not required to converge.
+Let C = 𝜃B = 𝜃 (𝜆†I − AAH), where 𝜃 = (𝜆† + 𝜌∗)−1. Since
+𝜌∗ > 0 and AAH is non-negative, the matrix 𝜌∗I + AAH is
+invertible. From (107c), we then have
+ 𝜌∗I + AAH −1 = 𝜃 (I − C)−1. (108)
+Furthermore, the spectral radius of C is given by
+𝜌(C) = 𝜆max − 𝜆min
+𝜆max + 𝜆min + 2𝜌∗
+< 1. (109)
+Following Proposition 7, we have
+(I − C)−1 = Í∞
+𝑖=0C𝑖 = Í∞
+𝑖=0 𝜃𝑖B𝑖. (110)
+Following B = 𝜆†I − AAH, (108) and (110), we have
+𝜀𝛾
+∗ = 1
+𝑁 tr
+
+AH 𝜌∗I + AAH−1A
+	
+(111a)
+= Í∞
+𝑖=0
+𝜃 𝑖+1
+𝑁 tr{𝜆†B𝑖 − B𝑖+1} (111b)
+= Í∞
+𝑖=0 𝜃𝑖+1 (𝜆†𝑏𝑖 − 𝑏𝑖+1) (111c)
+= Í∞
+𝑖=0 𝜃𝑖+1𝑤 𝑖. (111d)
+Therefore, we have
+𝑣 𝛾
+∗
+a.s.
+= lim
+𝑡→∞
+lim
+𝑁 →∞
+1
+𝑁 ∥r𝑡 − x∥2 (112a)
+= lim
+𝑡→∞
+lim
+𝑁 →∞
+1
+𝑁
+ 1
+𝜀𝛾
+𝑡
+AH 𝜌𝑡 I +AAH −1 (n−Af𝑡 ) +f𝑡
+2 (112b)
+= lim
+𝑁 →∞
+1
+𝑁
+ 1
+𝜀𝛾
+∗
+AH 𝜌∗I + AAH −1n
++ lim
+𝑡→∞
+[I − 1
+𝜀𝛾
+∗
+AH 𝜌∗I + AAH −1A]f𝑡
+2 (112c)
+= lim
+𝑁 →∞
+1
+𝑁
+Í∞
+𝑖=0
+𝜃 𝑖+1
+𝜀𝛾
+∗
+AHB𝑖n
++ lim
+𝑡→∞
+[I − Í∞
+𝑖=0
+𝜃 𝑖+1
+𝜀𝛾
+∗
+(𝜆†B𝑖 − B𝑖+1)] f𝑡
+2 (112d)
+= 𝜎2
+( 𝜀𝛾
+∗ )2
+∞Í
+𝑗=0
+∞Í
+𝑖=0
+𝜃𝑖+ 𝑗+2 (𝜆†𝑏𝑖+ 𝑗 − 𝑏𝑖+ 𝑗+1
+|              {z              }
+𝑤𝑖+ 𝑗
+)
++ 𝑣 𝜙
+∗
+( 𝜀𝛾
+∗ )2
+h ∞Í
+𝑗=0
+∞Í
+𝑖=0
+𝜃𝑖+ 𝑗+2
+(𝜆†)2𝑏𝑖+ 𝑗 −2𝜆†𝑏𝑖+ 𝑗+1 +𝑏𝑖+ 𝑗+2
+|                                 {z                                 }
+𝜆†𝑤𝑖+ 𝑗 −𝑤𝑖+ 𝑗+1
+
+− ( 𝜀𝛾
+∗ )2
+|{z}
+Í∞
+𝑗=0
+Í∞
+𝑖=0 𝜃 𝑖+ 𝑗+2𝑤𝑖 𝑤 𝑗
+i
+(112e)
+= 𝜎2
+( 𝜀𝛾
+∗ )2
+∞Í
+𝑗=0
+∞Í
+𝑖=0
+𝜃𝑖+ 𝑗+2𝑤 𝑖+ 𝑗
++ 𝑣 𝜙
+∗
+( 𝜀𝛾
+∗ )2
+∞Í
+𝑗=0
+∞Í
+𝑖=0
+𝜃𝑖+ 𝑗+2(𝜆†𝑤 𝑖+ 𝑗 − 𝑤 𝑖+ 𝑗+1 − 𝑤 𝑖𝑤 𝑗
+|                          {z                          }
+¯𝑤𝑖, 𝑗
+)
+
+(112f)
+= 1
+( 𝜀𝛾
+∗ )2
+∞Í
+𝑗=0
+∞Í
+𝑖=0
+𝜃𝑖+ 𝑗+2 𝜎2𝑤 𝑖+ 𝑗 + 𝑣 𝜙
+∗ ¯𝑤 𝑖, 𝑗
+, (112g)
+where (112a) follows 𝑣 𝛾
+∗ ≡ lim
+𝑡→∞
+𝑣 𝛾
+𝑡 and 𝑣 𝛾
+𝑡 = 1
+𝑁 ∥r𝑡 − x∥2,
+(112b) follows (14) and (15a), (112c) follows 𝜌∗ ≡ lim
+𝑡→∞
+𝜌𝑡
+
+=== PDF PAGE 22 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 22
+and 𝜀𝛾
+∗ ≡ lim
+𝑡→∞
+𝜀𝛾
+𝑡 , (112d) follows (108), (110) and AAH =
+𝜆†I − B, (112e) follows (39b) and that n is independent with
+{f𝑖 } and {n, f𝑖 } are column-wise IID (see Theorem 1), (112f)
+follows (39c) and (111), and (112g) follows (39d). Thus, the
+transfer function of LE in BO-OAMP/V AMP converges to
+𝑣 𝛾
+∗ = 𝛾SE(𝑣 𝜙
+∗ )
+a.s.
+= 1
+( 𝜀𝛾
+∗ )2
+∞Í
+𝑗=0
+∞Í
+𝑖=0
+𝜃𝑖+ 𝑗+2 𝜎2𝑤 𝑖+ 𝑗 + 𝑣 𝜙
+∗ ¯𝑤 𝑖, 𝑗
+. (113)
+From (17b) and (113), we get the state-evolution fixed point
+of BO-OAMP/V AMP in (107).
+B. State Evolution Fixed Point of BO-MAMP
+For the BO-MAMP with optimized {𝜃𝑡 , ζ𝑡 }, from Lemma
+9, we have
+lim
+𝑡→∞
+𝑣
+¯𝜙
+𝑡 ,𝑖 = 𝑣
+¯𝜙
+∗ , ∀𝑖 ≤ 𝑡. (114)
+Since {𝜉𝑡 = 𝜉∗, ∀𝑡}, we then have
+lim
+𝑡→∞
+𝜌𝑡 = 𝜌∗ = 𝜎2/𝑣
+¯𝜙
+∗ , (115a)
+lim
+𝑡→∞
+𝜃𝑡 = 𝜃 = (𝜆† + 𝜌∗)−1, (115b)
+lim
+𝑖→∞
+𝜗𝑡 ,𝑖 = 𝜉∗𝜃𝑡−𝑖, for 𝑖 ≤ 𝑡. (115c)
+In addition, for finite 𝑖 and 𝑗,
+lim
+𝑡→∞
+𝜗𝑡 ,𝑖𝑤 𝑡−𝑖 = lim
+𝑡→∞
+1
+𝑁 tr{𝜗𝑡 ,𝑖W𝑡−𝑖 } → 0, (116a)
+lim
+𝑡→∞
+𝜃𝑡−𝑖𝑤 𝑡−𝑖 = lim
+𝑡→∞
+1
+𝑁 tr{𝜃𝑡−𝑖W𝑡−𝑖 } → 0, (116b)
+lim
+𝑡→∞
+𝜗𝑡 ,𝑖𝜗𝑡 , 𝑗𝑤2𝑡−𝑖− 𝑗 = lim
+𝑡→∞
+1
+𝑁 tr{𝜗𝑡 ,𝑖𝜗𝑡 , 𝑗W2𝑡−𝑖− 𝑗 } → 0,
+(116c)
+lim
+𝑡→∞
+𝜗𝑡 ,𝑖𝜗𝑡 , 𝑗 ¯𝑤 𝑡−𝑖,𝑡− 𝑗 = lim
+𝑡→∞
+1
+𝑁 tr{𝜗𝑡 ,𝑖𝜗𝑡 , 𝑗H𝑡 ,𝑖H𝑡 , 𝑗} → 0,
+(116d)
+lim
+𝑡→∞
+𝜃2𝑡−𝑖− 𝑗 𝑤2𝑡−𝑖− 𝑗 = lim
+𝑡→∞
+1
+𝑁 tr{𝜃2𝑡−𝑖− 𝑗 W2𝑡−𝑖− 𝑗 } → 0,
+(116e)
+lim
+𝑡→∞
+𝜃2𝑡−𝑖− 𝑗 ¯𝑤 𝑡−𝑖,𝑡− 𝑗 = lim
+𝑡→∞
+1
+𝑁 tr{𝜃2𝑡−𝑖− 𝑗 H𝑡 ,𝑖H𝑡 , 𝑗} → 0,
+(116f)
+since 𝜗𝑡 ,𝑖W𝑡−𝑖, 𝜗𝑡 ,𝑖𝜗𝑡 , 𝑗W2𝑡−𝑖− 𝑗 , 𝜗𝑡 ,𝑖𝜗𝑡 , 𝑗H𝑡,𝑖H𝑡 , 𝑗, 𝜃𝑡−𝑖W𝑡−𝑖,
+𝜃2𝑡−𝑖− 𝑗 W2𝑡−𝑖− 𝑗 and 𝜃2𝑡−𝑖− 𝑗 H𝑡 ,𝑖H𝑡 , 𝑗 are all products of infinite
+matrices whose spectral radiuses are less than 1 (see (54)).
+Therefore, we can obtain the following limits.
+lim
+𝑡→∞
+𝜀𝛾
+𝑡
+a.s.
+= lim
+𝑡→∞
+Í𝑡
+𝑖=1 𝜉∗𝜃𝑡−𝑖𝑤 𝑡−𝑖 (117a)
+= 𝜉∗
+Í∞
+𝑖′=0 𝜃𝑖′
+𝑤 𝑖′ (117b)
+= 𝜉∗𝜀𝛾
+∗ /𝜃, (117c)
+and
+𝑣 𝛾
+∗ ≡ lim
+𝑡→∞
+𝑣 𝛾
+𝑡 ,𝑡 (117d)
+a.s.
+= lim
+𝑡→∞
+𝜃2
+( 𝜉∗ 𝜀𝛾
+∗ )2
+𝑡Í
+𝑖=1
+𝑡Í
+𝑗=1
+𝜉2
+∗ 𝜃2𝑡−𝑖− 𝑗 𝜎2𝑤2𝑡−𝑖− 𝑗 + 𝑣
+¯𝜙
+∗ ¯𝑤 𝑡−𝑖,𝑡 + 𝑗
+
+(117e)
+= 1
+( 𝜀𝛾
+∗ )2
+Í∞
+𝑖′=0
+Í∞
+𝑗′=0 𝜃𝑖′+ 𝑗′+2 𝜎2𝑤 𝑖′+ 𝑗′ + 𝑣
+¯𝜙
+∗ ¯𝑤 𝑖′, 𝑗′
+, (117f)
+where (117a) follows (40), (115c), (116a) and (116b), (117b)
+follows 𝑖′ = 𝑡 − 𝑖, (117c) follows (111), (117e) follows (46)
+and (114)-(116), and (117f) follows 𝑖′ = 𝑡 − 𝑖 and 𝑗 ′ = 𝑡 − 𝑗.
+Thus, the state evolution function of LE in BO-MAMP
+converges to:
+𝑣 𝛾
+∗ = 𝛾SE (𝑣
+¯𝜙
+∗ )
+a.s.
+= 1
+( 𝜀𝛾
+∗ )2
+∞Í
+𝑗=0
+∞Í
+𝑖=0
+𝜃𝑖+ 𝑗+2 𝜎2𝑤 𝑖+ 𝑗 + 𝑣
+¯𝜙
+∗ ¯𝑤 𝑖, 𝑗
+. (118)
+In addition, 𝜙𝑡 (·) in BO-OAMP/V AMP and BO-MAMP are
+the same. From (38b) and Í𝑡+1
+𝑖=1 𝜁𝑡+1,𝑖 = 1, the state evolution
+function of NLE in BO-MAMP converges to
+𝑣
+¯𝜙
+∗ = 𝜙SE(𝑣 𝛾
+∗ ), (119)
+where 𝜙SE (·) is the same as that of BO-OAMP/V AMP in (15f)
+and (17b). Replacing 𝑣
+¯𝜙
+∗ by 𝑣 𝜙
+∗ in (118) and (119), we obtain
+the state-evolution fixed point of BO-MAMP in (107).
+APPENDIX H
+ALGORITHM SUMMARY
+We summarize BO-MAMP and the state evolution of BO-
+MAMP in the following algorithms. Note that the subscript𝑡 of
+some variables (e.g., 𝜃, 𝜗𝑖, 𝜉, 𝜀, 𝑐 𝑖 · · ·) is omitted in Algorithms
+1 and 2 to reduce the storage in the program.
+Algorithm 1 BO-MAMP
+Input: { ˆ𝜙𝑡 (·)}, A, y, 𝑃𝑥, {𝜆min, 𝜆max, 𝜆𝑡 }, 𝜎2, T , 𝐿.
+Initialization: z1 = y, ˆr = 0, 𝜗1 = 𝜉 = 1, 𝜆† = 𝜆max+𝜆min
+2 ,
+{𝑤 𝑖, 0 ≤ 𝑖 < 2T } by (39c), { ¯𝑤 𝑖, 𝑗 , 0 ≤ 𝑖, 𝑗 ≤ T } by (39d),
+𝑣 𝜙
+1,1 = ( 1
+𝑁 yHy − 𝛿𝜎2)/𝑤0.
+1: for 𝑡 = 1 to T do
+2: % Memory LE
+𝜃 =  𝜆† + 𝜎2/𝑣 𝜙
+𝑡 ,𝑡
+−1,
+
+𝜗𝑖 = 𝜃𝜗𝑖, 𝑝 𝑖 = −𝜗𝑖 𝑤 𝑡−𝑖, 1 ≤ 𝑖 < 𝑡
+	
+{𝑐𝑖, 0 ≤ 𝑖 ≤ 3} by (58),
+
+𝑡 ≥ 2 : 𝜉 = 𝜗𝑡 = 𝑐2𝑐0+𝑐3
+𝑐1𝑐0+𝑐2
+	
+% 𝜉
+{𝑝𝑡 = −𝜉𝑤 0, 𝜀 = 𝑤0𝑐0 − 𝑝𝑡 }, 𝑣 𝛾 = 1
+𝜀2 (𝑐1𝜉2 − 2𝑐2𝜉 + 𝑐3)
+ˆr = 𝜉z𝑡 + 𝜃 (𝜆† ˆr − AAH ˆr), r = 1
+𝜀
+ AH ˆr − Í𝑡
+𝑖=1 𝑝𝑖x𝑖
+
+3: % NLE
+( ˆx𝑡+1, ˆ𝑣 𝑡+1) = ˆ𝜙𝑡 (r, 𝑣 𝛾), x𝑡+1 = ( 1
+ˆ𝑣𝑡+1
+− 1
+𝑣𝛾 )−1  ˆx𝑡+1
+ˆ𝑣𝑡+1
+− r𝑡
+𝑣𝛾
+
+z𝑡+1 = y − Ax𝑡+1
+
+𝑣 𝜙
+𝑡+1,𝑡 ′ = (
+
+𝑣 𝜙
+𝑡′,𝑡 +1)∗ = 1
+𝑤0
+ 1
+𝑁 zH
+𝑡+1z𝑡′ − 𝛿𝜎2
+, 1 ≤ 𝑡 ′ ≤ 𝑡 + 1
+	
+4: % Damping
+𝑙𝑡+1 =min{𝐿, 𝑡 + 1},
+
+ζ = V−1
+𝑡+11, 𝑣 𝜙 = 1
+1Tζ , ζ = 𝑣 𝜙ζ
+	
+% ζ
+x𝑡+1 = Í𝑙𝑡+1
+𝑖=1 𝜁 𝑖x𝑡−𝑙𝑡+1+1+𝑖, z𝑡+1 = Í𝑙𝑡+1
+𝑖=1 𝜁 𝑖z𝑡−𝑙𝑡+1+1+𝑖
+𝑣 𝜙
+𝑡+1,𝑡 +1 = 𝑣 𝜙
+
+𝑣 𝜙
+𝑡+1,𝑡 ′ = (𝑣 𝜙
+𝑡′,𝑡 +1)∗ = Í𝑙𝑡+1
+𝑖=1 𝜁 𝑖𝑣 𝜙
+𝑡−𝑙𝑡+1+1+𝑖,𝑡 ′ , 1 ≤ 𝑡 ′ ≤ 𝑡
+	
+5: end for
+Output: { ˆx𝑡+1, ˆ𝑣 𝑡+1}.
+
+=== PDF PAGE 23 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 23
+Algorithm 2 State Evolution (SE) of BO-MAMP
+Input: A, { ˆ𝜙𝑡 (·)}, 𝑥 ∼ 𝑃𝑥, {𝜆min, 𝜆max, 𝜆𝑡 }, 𝜎2, T , 𝐿.
+Initialization: 𝜗1,1 = 𝜉 = 1, 𝜆† = 𝜆max+𝜆min
+2 , {𝑤 𝑖, 0 ≤ 𝑖 < 2T } by
+(39c), { ¯𝑤 𝑖, 𝑗 , 0 ≤ 𝑖, 𝑗 < T } by (39d), 𝑣 𝜙
+1,1 = E{𝑥2}, ˜x1 = 0.
+1: for 𝑡 = 1 to T do
+2: % Memory LE
+
+𝜗𝑡 ,𝑖 = 𝜗𝑡−1,𝑖 / 𝜆† + 𝜎2/𝑣 𝜙
+𝑡 ,𝑡
+, 𝑝 𝑖 = −𝜗𝑡 ,𝑖𝑤 𝑡−𝑖, 1 ≤ 𝑖 < 𝑡
+	
+{𝑐𝑖, 0 ≤ 𝑖 ≤ 3} by (58), 𝜀𝑡 = 𝑤0 (𝜉 + 𝑐0)
+{If 𝑡 ≥ 2 : 𝜉 = 𝜗𝑡 ,𝑡 = (𝑐2𝑐0 + 𝑐3) (𝑐1𝑐0 + 𝑐2)}
+
+𝑣 𝛾
+𝑡 ,𝑡′ = (𝑣 𝛾
+𝑡′,𝑡 )∗, 1 ≤ 𝑡 ′ ≤ 𝑡 − 1
+	
+by (46)
+𝑣 𝛾
+𝑡 ,𝑡 = (𝑐1𝜉2 − 2𝑐2𝜉 + 𝑐3)/𝜀2
+𝑡 ,
+
+𝜂𝑡 by (87), 𝑟 = 𝑥 + 𝜂𝑡
+	
+3: % NLE
+( ˆ𝑥, ˆ𝑣) = ˆ𝜙𝑡 (𝑟, 𝑣 𝛾
+𝑡 ,𝑡), 𝑥 𝑡+1 = ( 1
+ˆ𝑣 − 1
+𝑣 𝛾
+𝑡 ,𝑡
+)−1 ( ˆ𝑥
+ˆ𝑣 − 𝑟
+𝑣 𝛾
+𝑡 ,𝑡
+)
+v 𝜙
+𝑡+1 = E
+
+(𝑥𝑡+1 − 𝑥)∗ ( [ ˜x𝑡 𝑥𝑡+1]T − 𝑥1)
+	
+4: % Damping
+𝑙𝑡+1 =min{𝐿, 𝑡+1},
+
+ζ = V−1
+𝑡+11, 𝑣 𝜙
+𝑡+1,𝑡 +1 = 1
+1Tζ , ζ = 𝑣 𝜙
+𝑡+1,𝑡 +1ζ
+	
+
+𝑣 𝜙
+𝑡+1,𝑡 ′ = (𝑣 𝜙
+𝑡′,𝑡 +1)∗ = Í𝑙𝑡+1
+𝑖=1 𝜁 𝑖𝑣 𝜙
+𝑡−𝑙𝑡+1+1+𝑖,𝑡 ′ , 1 ≤ 𝑡 ′ ≤ 𝑡
+	
+˜x𝑡+1 =
+
+˜x𝑡
+Í𝑙𝑡+1
+𝑖=1 𝜁 𝑖𝑥𝑡−𝑙𝑡+1+1+𝑖
+
+5: end for
+Output: ˆv.
+REFERENCES
+[1] L. Liu, S. Huang, and B. M. Kurkoski, “Memory approximate message
+passing,” in Proc. IEEE Int. Symp. Inf. Theory (ISIT) , Melbourne,
+Australia, pp. 1379–1384, Jul. 2021.
+[2] D. Micciancio, “The hardness of the closest vector problem with prepro-
+cessing,” IEEE Trans. Inf. Theory , vol. 47, no. 3, pp. 1212–1215, Mar.
+2001.
+[3] S. Verd ´u, “Optimum multi-user signal detection,” Ph.D. dissertation,
+Department of Electrical and Computer Engineering, University of Illinois
+at Urbana-Champaign, Urbana, IL, Aug. 1984.
+[4] M. Bayati and A. Montanari, “The dynamics of message passing on
+dense graphs, with applications to compressed sensing,” IEEE Trans. Inf.
+Theory, vol. 57, no. 2, pp. 764–785, Feb. 2011.
+[5] D. L. Donoho, A. Maleki, and A. Montanari, “Message-passing algo-
+rithms for compressed sensing,” in Proc. Nat. Acad. Sci., vol. 106, no. 45,
+Nov. 2009.
+[6] T. Richardson and R. Urbanke, Modern Coding Theory. New York:
+Cambridge University Press, 2008.
+[7] M. Bayati, M. Lelarge, and A. Montanari, “Universality in polytope phase
+transitions and message passing algorithms,” Ann. Appl. Probab., vol. 25,
+no. 2, pp. 753–822, Apr. 2015.
+[8] K. Takeuchi, T. Tanaka, and T. Kawabata, “Performance improvement of
+iterative multiuser detection for large sparsely-spread CDMA systems by
+spatial coupling,” IEEE Trans. Inf. Theory, vol. 61, no. 4, pp. 1768–1794,
+Apr. 2015.
+[9] S. Kudekar, T. Richardson, and R. Urbanke, “Threshold saturation via
+spatial coupling: Why convolutional LDPC ensembles perform so well
+over the BEC,” IEEE Trans. Inf. Theory, vol. 57, no. 2, pp. 803–834, Feb.
+2011.
+[10] F. Krzakala, M. M ´ezard, F. Sausset, Y . F. Sun, and L. Zdeborov ´a,
+“Statistical-physics-based reconstruction in compressed sensing,” Phys.
+Rev. X, vol. 2, no. 2, p. 021005, May 2012.
+[11] D. L. Donoho, A. Javanmard, and A. Montanari, “Information-
+theoretically optimal compressed sensing via spatial coupling and ap-
+proximate message passing,” IEEE Trans. Inf. Theory , vol. 59, no. 11,
+pp. 7434–7464, Nov. 2013.
+[12] L. Liu, C. Liang, J. Ma, and L. Ping, “Capacity optimality of AMP in
+coded systems,” IEEE Trans. Inf. Theory, vol. 67, no. 7, 4929–4445, July
+2021.
+[13] A. Manoel, F. Krzakala, E. W. Tramel, and L. Zdeborov ´a, “Sparse
+estimation with the swept approximated message-passing algorithm,”
+arXiv preprint arXiv:1406.4311 , 2014.
+[14] S. Rangan, A. K. Fletcher, P. Schniter, and U. S. Kamilov, “Inference for
+generalized linear models via alternating directions and bethe free energy
+minimization,” IEEE Trans. Inf. Theory , vol. 63, no. 1, pp. 676–697, Jan
+2017.
+[15] J. Vila, P. Schniter, S. Rangan, F. Krzakala, and L. Zdeborov ´a, “Adaptive
+damping and mean removal for the generalized approximate message
+passing algorithm,” inAcoustics, Speech and Signal Processing (ICASSP),
+2015 IEEE International Conference on , 2015, pp. 2021–2025.
+[16] Q. Guo and J. Xi, “Approximate message passing with unitary
+transformation,” CoRR, vol. abs/1504.04799 , 2015. [Online]. Available:
+http://arxiv.org/abs/1504.04799
+[17] Z. Yuan, Q. Guo and M. Luo, “Approximate message passing with
+unitary transformation for robust bilinear recovery,” IEEE Trans. Signal
+Process., vol. 69, 617–630, 2021.
+[18] J. Ma and L. Ping, “Orthogonal AMP,” IEEE Access, vol. 5, pp. 2020–
+2033, 2017, arXiv:1602.06509, 2016.
+[19] J. Ma, X. Yuan and L. Ping, “Turbo compressed sensing with partial
+DFT sensing matrix,” IEEE Signal Process. Lett., vol. 22, no. 2, pp. 158–
+161, Feb. 2015.
+[20] J. Ma, X. Yuan and L. Ping, “On the performance of Turbo signal
+recovery with partial DFT sensing matrices,” IEEE Signal Process. Lett. ,
+vol. 22, no. 10, pp. 1580–1584, Oct. 2015.
+[21] T. P. Minka, “Expectation propagation for approximate bayesian infer-
+ence,” in Proceedings of the Seventeenth conference on Uncertainty in
+artificial intelligence, 2001, pp. 362–369.
+[22] M. Opper and O. Winther, “Expectation consistent approximate infer-
+ence,” Journal of Machine Learning Research, vol. 6, no. Dec, pp. 2177–
+2204, 2005.
+[23] B. C ¸ akmak and M. Opper, “Expectation propagation for approximate
+inference: Free probability framework,” arXiv:1801.05411, 2018.
+[24] K. Takeuchi, “Rigorous dynamics of expectation-propagation-based sig-
+nal recovery from unitarily invariant measurements,” IEEE Trans. Inf.
+Theory, vol. 66, no. 1, 368–386, Jan. 2020.
+[25] S. Rangan, P. Schniter, and A. Fletcher, “Vector approximate message
+passing,” IEEE Trans. Inf. Theory , vol. 65, no. 10, pp. 6664–6684, Oct.
+2019.
+[26] L. Liu, S. Liang, and L. Ping, “Capacity optimality of OAMP in coded
+large unitarily invariant systems,” in Proc. IEEE Int. Symp. Inf. Theory
+(ISIT), Espoo, Finland, 2022.
+[27] L. Liu, S. Liang, and L. Ping, “Capacity optimality of OAMP: Beyond
+IID sensing matrices and Gaussian signaling,” arXiv:2108.08503, Aug.
+2021.
+[28] M. Tuchler, A. C. Singer and R. Koetter, “Minimum mean squared error
+equalization using a priori information,” IEEE Trans. Signal Process., vol.
+50, no. 3, pp. 673–683, March 2002.
+[29] L. Liu, Y . Chi, C. Yuen, Y . L. Guan, and Y . Li, “Capacity-achieving
+MIMO-NOMA: Iterative LMMSE detection,” IEEE Trans. Signal Pro-
+cess., vol. 67, no. 7, 1758–1773, April 2019.
+[30] J. Ma, L. Liu, X. Yuan and L. Ping, “On orthogonal AMP in coded
+linear vector systems,” IEEE Trans. Wireless Commun. , vol. 18, no. 12,
+pp. 5658–5672, Dec. 2019.
+[31] K. Takeuchi, “Bayes-optimal convolutional AMP,” IEEE Trans. Inf.
+Theory, vol. 67, no. 7, pp. 4405-4428, July 2021.
+[32] K. Takeuchi, “On the convergence of convolutional approximate
+message-passing for Gaussian signaling,” IEICE Trans. Fundamentals. ,
+doi: 10.1587/transfun.2021EAP1056.
+[33] L. Liu, C. Yuen, Y . L. Guan, Y . Li, and Y . Su, “Convergence analysis
+and assurance for Gaussian message passing iterative detector in massive
+MU-MIMO systems,” IEEE Trans. Wireless Commun. , vol. 15, no. 9,
+6487–6501, Sept. 2016.
+[34] L. Liu, C. Yuen, Y . L. Guan, Y . Li, and C. Huang, “Gaussian message
+passing for overloaded massive MIMO-NOMA,” IEEE Trans. Wireless
+Commun., vol. 18, no. 1, 210–226, Jan. 2019.
+[35] K. Takeuchi and C. Wen, “Rigorous dynamics of expectation-
+propagation signal detection via the conjugate gradient method,” IEEE
+SPAWC, Sapporo, 2017, pp. 1–5.
+[36] N. Skuratovs and M. Davies “Compressed sensing with upscaled vector
+approximate message passing,” IEEE Trans. Inf. Theory , March 2022
+(early access), arXiv:2011.01369v1, Nov. 2020.
+
+=== PDF PAGE 24 ===
+IEEE TRANSACTIONS ON INFORMATION THEORY 24
+[37] M. Opper, B. C ¸ akmak, and O. Winther, “A theory of solving TAP
+equations for Ising models with general invariant random matrices,”
+J.Phys. A: Math. Theor. , vol. 49, no. 11, p. 114002, Feb. 2016.
+[38] Z. Fan, “Approximate message passing algorithms for rotationally in-
+variant matrices,” The Annals of Statistics , vol. 50, no. 1, pp197-224,
+2022, arXiv:2008.11892, 2020.
+[39] L. Liu, S. Huang, and B. M. Kurkoski, “Memory AMP,”
+arXiv:2012.10861v1, Dec. 2020.
+[40] K. Takeuchi, “On the convergence of orthogonal/vector AMP: Long-
+memory message-passing strategy,” in Proc. IEEE Int. Symp. Inf. Theory
+(ISIT), Espoo, Finland, 2022.
+[41] K. Takeuchi, “On the convergence of orthogonal/vector AMP: Long-
+memory message-passing strategy,” arXiv:2111.05522, 2021.
+[42] S. Kay. Fundamentals of Statistical Signal Processing: Estimation
+Theory. Englewood Cliffs, NJ: Prentice-Hall, 1993.
+[43] A. M. Tulino and S. Verd ´u, “Random matrix theory and wireless
+communications.” Commun. and Inf. theory , 2004.
+[44] R. Berthier, A. Montanari, and P. M. Nguyen, “State evolu-
+tion for approximate message passing with non-separable functions,”
+arXiv:1708.03950, 2017.
+[45] C. M. Stein, “Estimation of the mean of a multivariate normal distribu-
+tion,” The Annals of Statistics , 1981, V ol. 9, No. 6, 1135–1151.
+[46] K. Takeuchi, “A unified framework of state evolution for message-
+passing algorithms,” in Proc. Proc. IEEE Int. Symp. Inf. Theory (ISIT) ,
+pp. 151-155, 2019, arXiv:1901.03041, 2019.
+[47] A. M. Tulino, G. Caire, S. Verd ´u, and S. Shamai (Shitz), “Support
+recovery with sparsely sampled free random matrices,” IEEE Trans. Inf.
+Theory, vol. 59, no. 7, pp. 4243–4271, Jul. 2013.
+[48] K. Takeda, S. Uda, and Y . Kabashima, “Analysis of CDMA systems that
+are characterized by eigenvalue spectrum,” Europhys. Lett., vol. 76, no.
+6, pp. 1193–1199, 2006.
+[49] J. Barbier, N. Macris, A. Maillard, and F. Krzakala, “The mu-
+tual information in random linear estimation beyond i.i.d. matrices,”
+arXiv:1802.08963, 2018.
+[50] Y . Cheng, L. Liu, L. Ping, “An integral-based approach to orthogonal
+AMP,”IEEE Signal Processing Letters , vol. 28, 194–198, Dec. 2020.
+[51] F. Tian, L. Liu, and X. Chen, “Generalized memory approximate
+message passing,” arXiv:2110.06069, Oct. 2021.
+[52] Q. Guo, D. Huang, S. Nordholm, J. Xi and Y . Yu, “Iterative frequency
+domain equalization with generalized approximate message passing,”
+IEEE Signal Process. Lett. , vol. 20, no. 6, pp. 559–562, June 2013.
+[53] A. Manoel, F. Krzakala, M. M ´azard, and L. Zdeborov ´a, “Multi-layer
+generalized linear estimation,” arXiv:1701.06981, 2017.
+[54] P. Pandit, M. Sahraee, S. Rangan, and A. K. Fletcher, “Inference with
+deep generative priors in high dimensions,”IEEE J. Sel. Areas Inf. Theory,
+vol. 1, no. 1, pp. 336–347, May 2020
+[55] L. Liu and W. Yu, “Massive connectivity with massive MIMO—part
+I: Device activity detection and channel estimation,” IEEE Trans. Signal
+Process., vol. 66, no. 11, pp. 2933-2946, June 2018.
+[56] Y . Cheng, L. Liu and L. Ping, “Orthogonal AMP for massive access
+in channels with spatial and temporal correlations,” IEEE J. Sel. Areas
+Commun., vol. 39, no. 3, 726–740, March 2021.
+[57] S. Boyd and L. Vandenberghe, Convex Optimization. Cambridge, U.K.:
+Cambridge Univ. Press, 2004.
+[58] L. Liu, S. Huang, and B. M. Kurkoski, “Sufficient statistic memory
+approximate message passing,” in Proc. IEEE Int. Symp. Inf. Theory
+(ISIT), Espoo, Finland, 2022.
+[59] L. Liu, S. Huang, and B. M. Kurkoski, “Sufficient statistic memory
+AMP,”arXiv:2112.15327, Jan. 2022.

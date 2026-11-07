@@ -1,0 +1,8 @@
+[
+  {
+    "variant": "gaussian_prior",
+    "scene": 0,
+    "index": 0,
+    "traceback": "concurrent.futures.process._RemoteTraceback: \n\"\"\"\nTraceback (most recent call last):\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\concurrent\\futures\\process.py\", line 254, in _process_worker\n    r = call_item.fn(*call_item.args, **call_item.kwargs)\n  File \"D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\run.py\", line 197, in execute\n    inputs = ReceiverInput(public['observation'],public['operator'],1.,float(public['activity_prior']))\n                           ~~~~~~^^^^^^^^^^^^^^^\nKeyError: 'observation'\n\"\"\"\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\run.py\", line 250, in consume\n    row = future.result()\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\concurrent\\futures\\_base.py\", line 449, in result\n    return self.__get_result()\n           ~~~~~~~~~~~~~~~~~^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\concurrent\\futures\\_base.py\", line 401, in __get_result\n    raise self._exception\nKeyError: 'observation'\n"
+  }
+]

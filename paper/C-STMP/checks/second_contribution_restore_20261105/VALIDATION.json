@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "changed_files": [
+    "paper/C-STMP/main.tex",
+    "paper/C-STMP/main.pdf",
+    "paper/C-STMP/main_full.pdf",
+    "paper/C-STMP/sections/00_abstract_zh.md",
+    "paper/C-STMP/sections/01_introduction.tex"
+  ],
+  "all_other_snapshot_files_unchanged": true,
+  "abstract_first_and_third_points_unchanged": true,
+  "introduction_contributions_1_and_3_unchanged": true,
+  "pdfs": {
+    "main": {
+      "pages": 13,
+      "changed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "references": 43,
+      "sha256": "389355ac8cf4a9062ffa203d78a1648c96900a3d497ceed610d6848f17031489"
+    },
+    "main_full": {
+      "pages": 14,
+      "changed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "references": 43,
+      "sha256": "9d4eef2eb96354466496f705385f37c28b1b354f574d8bf55c0478082e227028"
+    }
+  },
+  "visual_inspection": {
+    "status": "PASS",
+    "checked": [
+      "Main abstract and introduction at 110 dpi",
+      "Main full-document contact sheet",
+      "Both versions retain identical rendered pages 11 onward"
+    ],
+    "no_overlap_or_clipping": true
+  },
+  "documentation_updated_after_manuscript_validation": [
+    "README.md",
+    "docs/REVIEW_DECISIONS.md",
+    "docs/TERMINOLOGY.md"
+  ]
+}

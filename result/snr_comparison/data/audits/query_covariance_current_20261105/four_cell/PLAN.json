@@ -1,0 +1,90 @@
+{
+  "created_unix": 1793854989.6488717,
+  "source_sha256": "1d26fe75c158ded137fe475d19b0010de685555dcceceabfa480292afd6827e6",
+  "helper_sha256": "588c40230e21e882bd13724741219d6b3cdae1fc47537404fa2dfeb91d736feb",
+  "capture_plan_sha256": "79baea6777ace25f98081b15b3b0c5992f4894be07d4ce0ffd991fde1d68fc94",
+  "replays_sha256": "a07504b1b18f9c70fe5ac7f741c7c4ea36dd2ced45f6a5cc97634de707eebe6e",
+  "methods": [
+    "white_vI",
+    "white_C",
+    "colored_vI",
+    "colored_C"
+  ],
+  "stages": [
+    "iteration001",
+    "iteration020",
+    "final"
+  ],
+  "cases": [
+    {
+      "scene": 0,
+      "index": 0,
+      "snr_db": -4
+    },
+    {
+      "scene": 0,
+      "index": 2,
+      "snr_db": 0
+    },
+    {
+      "scene": 0,
+      "index": 5,
+      "snr_db": 6
+    },
+    {
+      "scene": 10,
+      "index": 0,
+      "snr_db": -4
+    },
+    {
+      "scene": 10,
+      "index": 2,
+      "snr_db": 0
+    },
+    {
+      "scene": 10,
+      "index": 5,
+      "snr_db": 6
+    },
+    {
+      "scene": 20,
+      "index": 0,
+      "snr_db": -4
+    },
+    {
+      "scene": 20,
+      "index": 2,
+      "snr_db": 0
+    },
+    {
+      "scene": 20,
+      "index": 5,
+      "snr_db": 6
+    }
+  ],
+  "powers": "All four cells retain the same original per-query v. Only covariance shape changes.",
+  "shape": "Fit rank4+identity factors (alpha<=0.5) on even/odd output-row truth errors and score the opposite rows. Average both folds.",
+  "covariance_status": "ORACLE_DIAGNOSTIC: truth-assisted, dependent within-message row folds; not an online estimator.",
+  "runtime": {
+    "device": "cuda",
+    "matmul_tf32": false,
+    "cudnn_tf32": false,
+    "threads": 2
+  },
+  "weights": {
+    "white": {
+      "path": "result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt",
+      "sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446"
+    },
+    "colored": {
+      "path": "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt",
+      "sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91"
+    }
+  },
+  "primary": "Active-user denoising pooled NMSE by SNR and stage; inactive output energy also retained.",
+  "limitations": [
+    "Three physical scenes, reused across three SNRs and stages; exploratory.",
+    "White_C is an out-of-training-distribution stress test. White_vI remains the intended white baseline.",
+    "No density-ratio or feedback update is tested; no end-to-end AER or receiver gain claim."
+  ]
+}

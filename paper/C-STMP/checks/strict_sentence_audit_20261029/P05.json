@@ -1,0 +1,353 @@
+{
+  "paragraph_id": "P05",
+  "source_file": "D:/afdm-gfra/paper/C-STMP/sections/02_system_model.tex",
+  "source_lines": [
+    107,
+    145
+  ],
+  "manifest_sha256": "bb94e3a63b6a85779285b7ffffe7bae89bcba05d919df132983b1ae0ee0a24a7",
+  "scope": "只核查完整句原句存在性和仅必要术语替换；不修改稿件、不判断模型数学正确性。",
+  "sentence_boundary": "按完整语法单元计10句；S02包括式(5)，S05包括式(6)三个等式，S06的with从句及S07的including从句均随所属句检查，不重复计数。",
+  "evidence_method": {
+    "search_corpus": [
+      "shen2025.clean.pages.txt",
+      "cai2026.clean.pages.txt",
+      "cai2026_stmp_v2.clean.pages.txt",
+      "ding2026.clean.pages.txt",
+      "huang2026.clean.pages.txt",
+      "li2023.clean.pages.txt",
+      "bemani2022.clean.pages.txt"
+    ],
+    "pdf_visual_checks": [
+      {
+        "file": "D:/afdm-gfra/reference/literature/huang2026.pdf",
+        "page": 2
+      },
+      {
+        "file": "D:/afdm-gfra/reference/literature/ding2026.pdf",
+        "page": 2
+      },
+      {
+        "file": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "page": 4
+      },
+      {
+        "file": "D:/afdm-gfra/reference/literature/cai2026_stmp_v2.pdf",
+        "page": 4
+      }
+    ],
+    "normalization": "只规范化抽取层断行、行末连字符、数学符号与TeX显示；原PDF已确认the channel matrix、of (5)、the sparsity of H_eff及CP/DFT原句。",
+    "search_terms": [
+      "better capture",
+      "channel dynamics",
+      "fractional delay",
+      "fractional Doppler",
+      "power leakage",
+      "After removing",
+      "applying the",
+      "starting at",
+      "input symbols",
+      "all other",
+      "equals 1",
+      "waveform when",
+      "gain 1",
+      "unit gain",
+      "normalized delay",
+      "For frame",
+      "including delays",
+      "exceeding",
+      "retain",
+      "full channel",
+      "full matrix"
+    ],
+    "limitations": "NO_SOURCE仅表示本次7份来源核查未定位可对齐整句，不宣称所有论文都不存在。Li/Bemani未在报告中直接摘引英文原句。"
+  },
+  "sentences": [
+    {
+      "id": "P05-S01",
+      "source_lines": [
+        107,
+        109
+      ],
+      "draft": "After removing the CPP and applying the DAFT, let $H_k^{(q)}\\in\\mathbb C^{M\\times N\\times N}$ denote the effective channel of device $k$ in frame $q$, with $H_k=H_k^{(0)}$.",
+      "category": "OTHER_CHANGE",
+      "source_file": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+      "source_page": 4,
+      "source_section": "II-A System Model，式(3)引出句；期刊页3578右栏",
+      "source_quote": "After removing the CP and applying the DFT, the received signal $\\mathbf Y_t\\in\\mathbb C^{N\\times M}$ during the $t$-th OFDM symbol is given by",
+      "source_locator": "该引出句续接式(3)及 where 噪声定义；Cai v2 PDF第4页II-A式(3)措辞相同。Ding PDF第2页II节在式(4)前说移除CPP、式(5)前说DAFT，不能拼为当前整句。",
+      "changes": {
+        "necessary_terminology_substitutions": [
+          "CP → CPP",
+          "DFT → DAFT"
+        ],
+        "other_changes": [
+          "原主句“the received signal … during the t-th OFDM symbol is given by”改成“let … denote the effective channel of device k in frame q”。",
+          "增加“with H_k=H_k^(0)”的基准帧定义。",
+          "将原接收信号表达式引出句改成有效信道张量定义句；不只是符号或维度替换。"
+        ]
+      },
+      "reason": "Cai的前置状语可直接定位，但主谓结构和说明目的已改写，完整句不能逐词对齐。",
+      "minimal_action": "若必须满足原句约束，重新选择与定义目的相符的完整原句；否则将此句明确登记为本文模型定义，不能判作仅术语替换。",
+      "additional_sources": [
+        {
+          "source_file": "D:/afdm-gfra/reference/literature/cai2026_stmp_v2.pdf",
+          "source_page": 4,
+          "source_section": "II-A，式(3)前",
+          "source_locator": "同一 CP/DFT 引出句，左栏下部，已回看PDF。"
+        },
+        {
+          "source_file": "D:/afdm-gfra/reference/literature/ding2026.pdf",
+          "source_page": 2,
+          "source_section": "II，式(4)、(5)前",
+          "source_quote": "After removing the CPP from the time-domain signal, the received signal at the m-th antenna can be written as",
+          "source_locator": "式(4)前；式(5)前为另一句：Finally, the received signal can be obtained after the DAFT operation, as。两句均引出接收信号，未定义当前H_k^(q)。"
+        }
+      ]
+    },
+    {
+      "id": "P05-S02",
+      "source_lines": [
+        110,
+        119
+      ],
+      "draft": "To better capture the LEO channel dynamics, we incorporate fractional delay and fractional Doppler effects, and the resulting expression for the elements of $H_k$ is given as follows \\cite{huang2026}: $H_{kmrn}=[\\mathbf a_k]_m\\sum_{\\ell=1}^{L_k}g_{k\\ell}[\\mathbf G(\\tau_{k\\ell}/T_s,\\nu_k;N_{\\rm CPP})]_{rn}$.",
+      "category": "OTHER_CHANGE",
+      "source_file": "D:/afdm-gfra/reference/literature/huang2026.pdf",
+      "source_page": 2,
+      "source_section": "II System Model，式(5)前；期刊页2950右栏",
+      "source_quote": "To better capture the LEO channel dynamics, we incorporate fractional delay and fractional Doppler effects, and the resulting expression for the elements of the channel matrix $\\mathbf H_i$ is given as follows",
+      "source_locator": "原句续接单径矩阵元素式(5)，其后同一语法单元还以where定义equivalent delay、C及L_{m,q}；本文式(5)后以句号结束，没有保留该where说明。",
+      "changes": {
+        "necessary_terminology_substitutions": [
+          "原符号 H_i → 当前 H_k（作为拟议对象映射列出，不抵销其余删改）。"
+        ],
+        "other_changes": [
+          "删除“the channel matrix”四个英文词，而非仅把H_i换为H_k。",
+          "原公式之后where定义的附属解释没有保留；当前模型另以S03—S08解释。",
+          "当前公式描述多路径、天线响应的设备信道；原式(5)为单径H_i的闭式元素公式。公式本体不按逐字同式计，但内容不可称为原式仅换符号。"
+        ]
+      },
+      "reason": "长段引导文字确有直接原句，但删去普通词组并重组附属说明，最严格标准下不是TERM_ONLY。",
+      "minimal_action": "要声称仅术语替换，至少须保留可对齐的完整名词短语与说明结构；对本模型独有公式及定义单独说明来源边界，不将其归为Huang原句。",
+      "formula_scope": "当前式(5)不要求与来源同式；其张量索引、阵列响应及G算子是本文模型内容，仍须审查附带说明句。"
+    },
+    {
+      "id": "P05-S03",
+      "source_lines": [
+        120,
+        122
+      ],
+      "draft": "Here, $H_{kmrn}$ is the channel coefficient from transmitted DAFT-domain symbol $n$ to received DAFT-domain symbol $r$ at antenna $m$.",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "source_locator": "本次核查未定位可对齐整句。核查Huang II第2页、Ding II第2页、Cai两版II-A第4页，并搜索全部7份clean.pages文本。Cai第4页的h_knm频响定义仅为相关概念对照，不能据此确认当前句来源。",
+      "changes": {
+        "necessary_terminology_substitutions": [],
+        "other_changes": [
+          "没有可对齐整句，不能可靠列出原句逐词替换；当前句加入发送索引n、接收索引r及天线索引m的系数释义。"
+        ]
+      },
+      "reason": "“channel coefficient”等术语和一般定义句式不构成含双DAFT符号索引的完整原句证据。",
+      "minimal_action": "保留为本文符号定义时应明确它未通过原句一致性标准；若每句必须有原句，需要提供或重新定位完整出处。"
+    },
+    {
+      "id": "P05-S04",
+      "source_lines": [
+        122,
+        124
+      ],
+      "draft": "$\\mathbf G(d,\\nu;N_{\\rm CPP})$ denotes the effective channel matrix of a path with gain $1$, normalized delay $d$, and Doppler shift $\\nu$ in frame $0$.",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "source_locator": "本次核查未定位可对齐整句。Huang第2页式(4)只定义H_eff；Ding第2页式(5)用Phi表示联合时延多普勒作用，未给出当前G、单位增益及frame 0整句。",
+      "changes": {
+        "necessary_terminology_substitutions": [],
+        "other_changes": [
+          "无完整原句可建立替换表。",
+          "当前单位增益、归一化时延d及第0帧限定是该G算子的本文定义，不能把整个定义短语视作一个可替换术语。"
+        ]
+      },
+      "reason": "原文的有效信道术语和路径参数不能覆盖本句全部限定条件及连接结构。",
+      "minimal_action": "将其登记为本文算子定义；若要求原句形式，须补充能逐词对齐且含这些限定的真实来源。"
+    },
+    {
+      "id": "P05-S05",
+      "source_lines": [
+        125,
+        134
+      ],
+      "draft": "For the $N$ samples after CPP removal, starting at sample $g$, this matrix is given by $\\mathbf G(d,\\nu;g)=\\mathbf F_{\\rm A}\\mathbf D_{\\nu,g}\\mathbf B_d,\\quad\\mathbf D_{\\nu,g}=\\diag\\{e^{j2\\pi\\nu T_s(g+t)}\\}_{t=0}^{N-1},\\quad[\\mathbf B_d]_{tn}=\\varphi_n(t-d)$.",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "source_locator": "本次核查未定位可对齐整句。Ding第2页式(4)—(5)的CPP/Doppler/cyclic-shift算子是相关数学结构，未出现当前“starting at sample g”采样起点说明。Bemani PDF第9页IV-B式(22)—(23)、第10页IV-C式(25)仅作公式结构对照，不摘录原文。",
+      "changes": {
+        "necessary_terminology_substitutions": [],
+        "other_changes": [
+          "无可逐词对齐原句。",
+          "当前g起始采样及G/D/B分解是本文模型陈述，不能因式中矩阵结构相似而豁免其说明句。"
+        ]
+      },
+      "reason": "现有文献的CPP移除和矩阵形式不构成这一含g及三个算子定义的完整句来源。",
+      "minimal_action": "将该引出句与式(6)标为本文定义/推导，并保留未通过原句约束的结论；不凭算子相似补造原句。",
+      "formula_scope": "式(6)三个等式与引出句合计一个语法单元；不另外重复计算公式。"
+    },
+    {
+      "id": "P05-S06",
+      "source_lines": [
+        135,
+        137
+      ],
+      "draft": "Here, $\\varphi_n$ is the transmitted waveform when the $n$th DAFT-domain symbol equals $1$ and all other input symbols are zero, with the CPP defined in \\eqref{eq:cpp}.",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "source_locator": "本次核查未定位可对齐整句。搜索waveform、equals 1、all other、input symbols及相关变体，复核Huang/Ding第2页调制定义；Bemani第8页IV-A式(18)定义基函数，但没有当前单位符号激励+其余全零+CPP从句的整句。",
+      "changes": {
+        "necessary_terminology_substitutions": [],
+        "other_changes": [
+          "无完整原句可建立术语替换表。",
+          "单位输入、其余输入为零和with CPP从句是完整操作性定义，不能整块按“技术术语”豁免。"
+        ]
+      },
+      "reason": "公式中出现基函数不等于文中存在这一完整波形解释句。",
+      "minimal_action": "登记为本文单位激励波形定义；不能标EXACT/TERM_ONLY。"
+    },
+    {
+      "id": "P05-S07",
+      "source_lines": [
+        137,
+        140
+      ],
+      "draft": "Its expression and the derivation of \\eqref{eq:path-operator-system} for fractional delays, including delays exceeding $NT_s$, are given in Appendix~\\ref{app:afdm-model}.",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "source_locator": "本次核查未定位可对齐整句。检索including delays/exceeding/derivation及相关短语，未找到这一指向本文附录并覆盖超过NT_s的分数时延推导句。Huang第2页式(5)不能替代该句的语言证据。",
+      "changes": {
+        "necessary_terminology_substitutions": [],
+        "other_changes": [
+          "无完整来源句可对齐。",
+          "“including delays exceeding NT_s”是实质模型范围，不是章节编号替换；指向本文附录也不自动构成原句。"
+        ]
+      },
+      "reason": "这是本文推导与适用范围的内部说明；不能以附录号可替换为由将整句视为合格。",
+      "minimal_action": "将本文独有推导指引列为未找到原句，或提供确实包含同样完整句式的出处；本轮不审查推导正确性。"
+    },
+    {
+      "id": "P05-S08",
+      "source_lines": [
+        140,
+        140
+      ],
+      "draft": "For frame $0$, $g=N_{\\rm CPP}$.",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "source_locator": "本次核查未定位可对齐整句。核心文献无当前g起点与frame 0配对的此句；只在本文G(d,nu;g)定义中出现。",
+      "changes": {
+        "necessary_terminology_substitutions": [],
+        "other_changes": [
+          "无完整来源句可对齐；本句设定当前模型的基准采样起点。"
+        ]
+      },
+      "reason": "简短等式说明仍在核查范围内，能够由模型推出不等于存在来源原句。",
+      "minimal_action": "明确登记为本文约定；不得因句短或符号多而自动判TERM_ONLY。"
+    },
+    {
+      "id": "P05-S09",
+      "source_lines": [
+        141,
+        144
+      ],
+      "draft": "In practical propagation environments, fractional Doppler shifts and fractional time delays can introduce significant power leakage in the effective channel matrix, thereby weakening its sparsity \\cite{huang2026}.",
+      "category": "OTHER_CHANGE",
+      "source_file": "D:/afdm-gfra/reference/literature/huang2026.pdf",
+      "source_page": 2,
+      "source_section": "II System Model末段，式(5)后；期刊页2950右栏",
+      "source_quote": "In practical propagation environments, fractional Doppler shifts and fractional time delays can introduce significant power leakage in the effective channel matrix of (5), thereby weakening the sparsity of $\\mathbf H_{\\rm eff}$.",
+      "changes": {
+        "necessary_terminology_substitutions": [],
+        "other_changes": [
+          "删除“of (5)”；即便宽免公式定位这一显示层变化，下一项仍构成普通措辞改写。",
+          "把“the sparsity of H_eff”改为“its sparsity”，删去the和of，改变词序，并将显式对象改成代词。"
+        ]
+      },
+      "reason": "来源整句已确认，但“its sparsity”不是仅替换H_eff数学符号，最严格词序/词语标准不通过。",
+      "minimal_action": "若要满足仅术语替换，应保留“the sparsity of …”结构，只替换与本文一致的对象；本轮不修改原稿。"
+    },
+    {
+      "id": "P05-S10",
+      "source_lines": [
+        144,
+        145
+      ],
+      "draft": "To address this issue, we retain the full $N\\times N$ channel matrix at each antenna.",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "source_locator": "本次核查未定位可对齐整句。Huang第2页II末段有相同通用起句，但其主句为develop a diffusion framework等，而不是retain the full N×N channel matrix at each antenna；共享通用引导语不确认整句来源。",
+      "changes": {
+        "necessary_terminology_substitutions": [],
+        "other_changes": [
+          "没有支持当前完整句子的可对齐原句。",
+          "若强行以Huang相邻句作来源，将需要把develop a diffusion framework改成retain the full N×N channel matrix at each antenna，并删除关系从句和enabling结果分句；这不是术语替换。"
+        ]
+      },
+      "reason": "原文有相邻的讨论语境和通用连接语，但未找到当前“保留每根天线完整矩阵”的完整句证据。",
+      "minimal_action": "作为本文建模选择陈述并登记NO_SOURCE；不要将通用开头视作原句已定位。",
+      "contextual_comparison": {
+        "source_file": "D:/afdm-gfra/reference/literature/huang2026.pdf",
+        "source_page": 2,
+        "source_section": "II末段",
+        "source_quote": "To address this issue, we develop a diffusion framework that directly learns the distribution of the AFDM effective channel, enabling precise estimation of off-grid $\\mathbf H_{\\rm eff}$.",
+        "status": "仅上下文对照，不作为当前整句来源证据"
+      }
+    }
+  ],
+  "counts": {
+    "total": 10,
+    "EXACT": 0,
+    "TERM_ONLY": 0,
+    "OTHER_CHANGE": 3,
+    "NO_SOURCE": 7,
+    "UNVERIFIED": 0,
+    "passing": 0,
+    "failing": 10
+  },
+  "paragraph_structure": {
+    "same_original_paragraph": false,
+    "source_sequence": [
+      "S01可定位Cai CP/DFT前置状语，主体为本文有效信道定义。",
+      "S02来自Huang II式(5)引导语，存在删改。",
+      "S03—S08为本次未找到整句来源的本文H/G/D/B/phi和长时延说明。",
+      "S09回到Huang II后续另一个段落的泄漏句，存在改写。",
+      "S10仅在Huang末段有通用连接语相同的上下文对照。"
+    ],
+    "order_and_connectives": "Huang的局部先后顺序（分数参数表达式→泄漏现象）仍可见，但本文在中间加入六个定义/推导说明句；Huang原文在泄漏句与To address之间还有Consequently引导的CS估计器退化句，当前未保留。因此不存在同一原段、同样顺序和全部连接关系的证据。",
+    "attribution_risk": "Huang引用紧接本文式(5)的引出句，后续G/D/B/phi、g起点及超过NT_s范围是本文模型叙述，不能把Huang近原句的存在扩展为这些定义也有相同原句；Ding/Bemani类似矩阵结构也不能提供语言豁免。",
+    "independent_formula_content": [
+      "式(5)：设备k、多天线索引m与阵列响应乘多路径G之和。",
+      "式(6)：带绝对起始样点g的D_nu,g、延迟采样B_d及单位激励phi_n。",
+      "超过NT_s的时延范围、frame 0时g=N_CPP。"
+    ]
+  },
+  "verdict": "不通过最严格标准：10句中没有一句可确认EXACT或TERM_ONLY；3句能定位原句但超出术语替换，7句本次未定位可对齐整句。也不能确认本段来自同一原段。"
+}

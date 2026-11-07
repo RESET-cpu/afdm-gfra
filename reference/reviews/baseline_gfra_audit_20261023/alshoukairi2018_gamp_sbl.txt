@@ -1,0 +1,1593 @@
+=== PDF PAGE 1 ===
+294 IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 66, NO. 2, JANUARY 15, 2018
+A GAMP-Based Low Complexity Sparse Bayesian
+Learning Algorithm
+Maher Al-Shoukairi , Student Member , IEEE, Philip Schniter , Fellow, IEEE, and Bhaskar D. Rao , Fellow, IEEE
+Abstract—In this paper, we present an algorithm for the sparse
+signal recovery problem that incorporates damped Gaussian gen-
+eralized approximate message passing (GGAMP) into expectation-
+maximization-based sparse Bayesian learning (SBL). In particular,
+GGAMP is used to implement the E-step in SBL in place of ma-
+trix inversion, leveraging the fact that GGAMP is guaranteed to
+converge with appropriate damping. The resulting GGAMP-SBL
+algorithm is much more robust to arbitrary measurement matrix
+A than the standard damped GAMP algorithm while being much
+lower complexity than the standard SBL algorithm. We then ex-
+tend the approach from the single measurement vector case to the
+temporally correlated multiple measurement vector case, leading
+to the GGAMP-TSBL algorithm. We verify the robustness and
+computational advantages of the proposed algorithms through nu-
+merical experiments.
+Index Terms —Compressed sensing, approximate message
+passing (AMP), sparse Bayesian learning (SBL), expectation-
+maximization algorithms, Gaussian scale mixture, multiple mea-
+surement vectors (MMV).
+I. I NTRODUCTION
+A. Sparse Signal Recovery
+T
+HE problem of sparse signal recovery (SSR) and the re-
+lated problem of compressed sensing have received much
+attention in recent years [1]–[6]. The SSR problem, in the sin-
+gle measurement vector (SMV) case, consists of recovering a
+sparse signal x ∈ RN from M ≤ N noisy linear measurements
+y ∈ RM :
+y = Ax + e, (1)
+where A ∈ RM ×N is a known measurement matrix and e ∈
+RM is additive noise modeled by e ∼N (0,σ2I). Despite the
+difﬁculty in solving this problem [7], an important ﬁnding in
+recent years is that for a sufﬁciently sparse x and a well de-
+signed A, accurate recovery is possible by techniques such as
+Manuscript received March 2, 2017; revised June 18, 2017 and August 29,
+2017; accepted October 2, 2017. Date of publication October 19, 2017; date
+of current version December 4, 2017. The associate editor coordinating the
+review of this manuscript and approving it for publication was Prof. Yimin
+D. Zhang. The work of M. Al-Shoukairi and B. D. Rao was supported by the
+Ericsson Endowed Chair Funds. The work of P . Schniter was supported by the
+National Science Foundation Grant 1527162. (Corresponding author: Maher
+Al-Shoukairi.)
+M. Al-Shoukairi and B. D. Rao are with the Department of Electrical and
+Computer Engineering, University of California at San Diego, San Diego, CA
+92093 USA (e-mail: malshouk@ucsd.edu; brao@ucsd.edu).
+P . Schniter is with the Department of Electrical and Computer Engi-
+neering, The Ohio State University, Columbus, OH 43210 USA (e-mail:
+schniter@ece.osu.edu).
+Color versions of one or more of the ﬁgures in this paper are available online
+at http://ieeexplore.ieee.org.
+Digital Object Identiﬁer 10.1109/TSP .2017.2764855
+basis pursuit and orthogonal matching pursuit [8]–[10]. The
+SSR problem has seen considerable advances on the algorith-
+mic front and they include iteratively reweighted algorithms
+[11]–[13] and Bayesian techniques [14]–[20], among others.
+Two Bayesian techniques related to this work are the gener-
+alized approximate message passing (GAMP) and the sparse
+Bayesian learning (SBL) algorithms. We brieﬂy discuss both
+algorithms and some of their shortcomings that we intend to
+address in this work.
+B. Generalized Approximate Message Passing Algorithm
+Approximate message passing (AMP) algorithms apply
+quadratic and Taylor series approximations to loopy belief
+propagation to produce low complexity algorithms. Based on
+the original AMP work in [21], a generalized AMP (GAMP)
+algorithm was proposed in [22]. The GAMP algorithm provides
+an iterative Bayesian framework under which the knowledge
+of the matrix A and the densities p(x) and p(y|x) can be
+used to compute the maximum a posteriori (MAP) estimate
+ˆxMAP = arg minx∈ RN p(x|y) when it is used in its max-sum
+mode, or approximate the minimum mean-squared error
+(MMSE) estimate ˆxMMSE =
+∫
+RN xp(x|y)dx = E(x|y)
+when it is used in its sum-product mode.
+The performance of AMP/GAMP algorithms in the large sys-
+tem limit (M,N →∞ ) under an i.i.d zero-mean sub-Gaussian
+matrix A is characterized by state evolution [23], whose ﬁxed
+points, when unique, coincide with the MAP or the MMSE es-
+timate. However, when A is generic, GAMP’s ﬁxed points can
+be strongly suboptimal and/or the algorithm may never reach
+its ﬁxed points. Previous work has shown that even mild ill-
+conditioning or small mean perturbations inA can cause GAMP
+to diverge [24]–[26]. To overcome the convergence problem in
+AMP algorithms, a number of AMP modiﬁcations have been
+proposed. A “swept” GAMP (SwAMP) algorithm was pro-
+posed in [27], which replaces parallel variable updates in the
+GAMP algorithm with serial ones to enhance convergence. But
+SwAMP is relatively slow and still diverges for certain A.A n
+adaptive damping and mean-removal procedure for GAMP was
+proposed in [26] but it too is somewhat slow and still diverges
+for certain A. An alternating direction method of multipliers
+(ADMM) version of AMP was proposed in [28] with improved
+robustness but even slower convergence.
+In the special case that the prior and likelihood are both
+independent Gaussian, [24] was able to provide a full charac-
+terization of GAMP’s convergence. In particular, it was shown
+that Gaussian GAMP (GGAMP) algorithm will converge if and
+only if the peak to average ratio of the squared singular values
+in A is sufﬁciently small. When this condition is not met, [24]
+1053-587X © 2017 IEEE. Personal use is permitted, but republication/redistribution requires IEEE permission.
+See http://www.ieee.org/publications standards/publications/rights/index.html for more information.
+
+=== PDF PAGE 2 ===
+AL-SHOUKAIRI et al.: GAMP-BASED LOW COMPLEXITY SPARSE BA YESIAN LEARNING ALGORITHM 295
+proposed a damping technique that guarantees convergence of
+GGAMP at the expense of slowing its convergence rate. Al-
+though the case of Gaussian prior and likelihood is not enough
+to handle the sparse signal recovery problem directly, it is sufﬁ-
+cient to replace the costly matrix inversion step of the standard
+EM-based implementation of SBL, as we describe below.
+C. Sparse Bayesian Learning Algorithm
+To understand the contribution of this paper, we give a very
+brief description of SBL [14], [15], saving a more detailed
+description for Section II. Essentially, SBL is based on a
+Gaussian scale mixture (GSM) [29]–[31] prior on x. That
+is, the prior is Gaussian conditioned on a variance vector γ,
+which is then controlled by a suitable choice of hyperprior
+p(γ). A large of number of sparsity-promoting priors, like
+the Student-t and Laplacian priors, can be modeled using a
+GSM, making the approach widely applicable [29]–[32]. In the
+SBL algorithm, the expectation-maximization (EM) algorithm
+is used to alternate between estimating γ and estimating the
+signal x under ﬁxed γ. Since the latter step uses a Gaussian
+likelihood and Gaussian prior, the exact solution can be
+computed in closed form via matrix inversion. This matrix
+inversion is computationally expensive, limiting the algorithms
+applicability to large scale problems.
+D. Paper’s Contribution 1
+In this paper, we develop low-complexity algorithms for
+sparse Bayesian learning (SBL) [14], [15]. Since the traditional
+implementation of SBL uses matrix inversions at each itera-
+tion, its complexity is too high for large-scale problems. In this
+paper we circumvent the matrix inverse using the generalized
+approximate message passing (GAMP) algorithm [21], [22],
+[24]. Using GAMP to implement the E step of EM-based SBL
+provides a signiﬁcant reduction in complexity over the classical
+SBL algorithm. This work is a beneﬁciary of the algorithmic
+improvements and theoretical insights that have taken place in
+recent work in AMP [21], [22], [24], where we exploit the fact
+that using a Gaussian prior on p(x) can provide guarantees for
+the GAMP E-step to not diverge when sufﬁcient damping is used
+[24], even for a non-i.i.d.-Gaussian A. In other words, the en-
+hanced robustness of the proposed algorithm is due to the GSM
+prior used on x, as opposed to other sparsity promoting priors
+for which there are no GAMP convergence guarantees when A
+is non-i.i.d.-Gaussian. The resulting algorithm is the Gaussian
+GAMP SBL (GGAMP-SBL) algorithm, which combines the
+robustness of SBL with the speed of GAMP .
+To further illustrate and expose the synergy between the AMP
+and SBL frameworks, we also propose a new approach to the
+multiple measurement vector (MMV) problem. The MMV prob-
+lem extends the SMV problem from a single measurement and
+signal vector to a sequence of measurement and signal vec-
+tors. Applications of MMV include direction of arrival (DOA)
+estimation and EEG/MEG source localization, among others.
+In our treatment of the MMV problem, all signal vectors are
+assumed to share the same support. In practice it is often the
+case that the non-zero signal elements will experience tem-
+1Part of this work was presented in the 2014 Asilomar conference on Signals,
+Systems and Computers [33]
+poral correlation, i.e., each non-zero row of the signal matrix
+can be treated as a correlated time series. If this correlation
+is not taken into consideration, the performance of MMV al-
+gorithms can degrade quickly [34]. Extensions of SBL to the
+MMV problem have been developed in [34]–[36], such as the
+time varying sparse Bayesian learning (TSBL) and TMSBL al-
+gorithms [34]. Although TMSBL has lower complexity than
+TSBL, it still requires an order of O(NM 2) operations per it-
+eration, making it unsuitable for large-scale problems. To over-
+come the complexity problem, [37] and [33] proposed AMP-
+based Bayesian approaches to the MMV problem. However,
+similar to the SMV case, these algorithms are only expected
+to work for i.i.d zero-mean sub-Gaussian A. We therefore ex-
+tend the proposed GGAMP-SBL to the MMV case, to produce
+a GGAMP-TSBL algorithm that is more robust to generic A,
+while achieving linear complexity in all problem dimensions.
+The organization of the paper is as follows. In Section II, we
+review SBL. In Section III, we combine the damped GGAMP
+algorithm with the SBL approach to solve the SMV problem
+and investigate its convergence behavior. In Section IV, we use
+a time-correlated multiple measurement factor graph to derive
+the GGAMP-TSBL algorithm. In Section V, we present numer-
+ical results to compare the performance and complexity of the
+proposed algorithms with the original SBL and with other AMP
+algorithms for the SMV case, and with TMSBL for the MMV
+case. The results show that the new algorithms maintained the
+robustness of the original SBL and TMSBL algorithms, while
+signiﬁcantly reducing their complexity.
+II. S PARSE BAY E S I A NLEARNING FOR SSR
+A. GSM Class of Priors
+We will assume that the entries of x are independent and
+identically distributed, i.e. p(x)=Π n p(xn ). The sparsity pro-
+moting prior p(xn ) will be chosen from the GSM class and so
+will admit the following representation
+p(xn )=
+∫
+N(xn ;0,γn )p(γn )dγn , (2)
+where N(xn ;0,γn ) denotes a Gaussian density with mean zero
+and variance γn . The mixing density on hyperprior p(γn ) con-
+trols the prior on xn . For instance, if a Laplacian prior is desired
+for xn , then an exponential density is chosen for p(γn ) [29].
+In the empirical Bayesian approach, an estimate of the hyper-
+parameter vector γ is iteratively estimated, often using evidence
+maximization. For a given estimate ˆγ, the posterior p(x|y) is
+approximated as p(x|y; ˆγ), and the mean of this posterior is
+used as a point estimate for ˆx. This mean can be computed
+in closed form, as detailed below, because the approximate
+posterior is Gaussian. It was shown in [38] that this empiri-
+cal Bayesian method, also referred to as a Type II maximum
+likelihood method, can be used to formulate a number of al-
+gorithms for solving the SSR problem by changing the mix-
+ing density p(γn ). There are many computational methods that
+can be employed for computing γ in the evidence maximiza-
+tion framework, e.g, [14], [15], [39]. In this work, we utilize
+the EM-SBL algorithm because of its synergy with the GAMP
+framework, as will be apparent below.
+
+=== PDF PAGE 3 ===
+296 IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 66, NO. 2, JANUARY 15, 2018
+B. SBL’s EM Algorithm
+In EM-SBL, the EM algorithm is used to learn the un-
+known signal variance vector γ [40]–[42], and possibly also the
+noise variance σ2 . We focus on learning γ, assuming the noise
+variance σ2 is known. We later state the EM update rule for the
+noise variance σ2 for completeness.
+The goal of the EM algorithm is to maximize the posterior
+p(γ|y) or equivalently2 to minimize − log p(y,γ). For the GSM
+prior (2) and the additive white Gaussian noise model, this
+results in the SBL cost function [14], [15],
+χ(γ)= − log p(y,γ)
+= 1
+2 log |Σy | + 1
+2y⊤Σ−1
+y y − log p(γ), (3)
+Σy = σ2I + AΓA⊤, Γ ≜ Diag(γ).
+In the EM-SBL approach, x is treated as the hidden variable
+and the parameter estimate is iteratively updated as follows:
+γi+1 = argmax
+γ
+Ex|y;γi [log p(y,x,γ)], (4)
+where p(y,x,γ) is the joint probability of the complete data
+and p(x|y;γi) is the posterior under the old parameter estimate
+γi, which is used to evaluate the expectation. In each iteration,
+an expectation has to be computed (E-step) followed by a max-
+imization step (M-step). It is easy to show that at each iteration,
+the EM algorithm increases a lower bound on the log posterior
+log p(γ|y) [40], and it has been shown in [42] that the algorithm
+will converge to a stationary point of the posterior under a fairly
+general set of conditions that are applicable in many practical
+applications.
+Next we detail the implementation of the E and M steps of
+the EM-SBL algorithm.
+SBL’s E-step: The Gaussian assumption on the additive noise
+e leads to the following Gaussian likelihood function:
+p(y|x;σ2)= 1
+(2πσ2)
+M
+2
+exp
+(
+− 1
+2σ2 ∥y − Ax∥2
+)
+. (5)
+Due to the GSM prior (2), the density of x conditioned on γ is
+Gaussian:
+p(x|γ)=
+N∏
+n=1
+1
+(2πγn )
+1
+2
+exp
+(
+− x2
+n
+2γn
+)
+. (6)
+Putting (5) and (6) together, the density needed for the E-step is
+Gaussian:
+p(x|y,γ)= N(x; ˆx,Σx) (7)
+ˆx = σ−2ΣxA⊤y (8)
+Σx =( σ−2A⊤A + Γ−1)−1
+= Γ − ΓA⊤(σ2I + AΓA⊤)−1AΓ. (9)
+We refer to the mean vector as ˆx since it will be used as the
+SBL point estimate of x. In the sequel, we will use τx when
+2Using Bayes rule, p(γ|y)= p(y, γ)/p(y) where p(y) is a constant with
+respect to γ. Thus for MAP estimation of γ we can maximize p(y, γ),o r
+minimize − log p(y, γ).
+referring to the vector composed from the diagonal entries of
+the covariance matrixΣx. Although both ˆx and τx change with
+the iteration i, we will sometimes omit their i dependence for
+brevity. Note that the mean and covariance computations in (8)
+and (9) are not affected by the choice of p(γ). The mean and
+diagonal entries of the covariance matrix are needed to carry out
+the M-step as shown next.
+SBL’s M-Step: The M-step is then carried out as follows.
+First notice that
+Ex|y;γi ,σ2
+[
+− log p(y,x,γ;σ2)
+]
+=
+Ex|y;γi ,σ2
+[
+− log p(y|x;σ2) − log p(x|γ) − log p(γ)
+]
+. (10)
+Since the ﬁrst term in (10) does not depend on γ, it will not be
+relevant for the M-step and thus can be ignored. Similarly, in
+the subsequent steps we will drop constants and terms that do
+not depend on γ and therefore do not impact the M-step. Since
+Ex|y;γi ,σ2 [x2
+n ]=ˆ x2
+n + τxn ,
+Ex|y;γi ,σ2 [− log p(x|γ) − log p(γ)] =
+N∑
+n=1
+(( ˆx2
+n + τxn
+2γn
+)
++ 1
+2 log γn − log p(γn )
+)
+. (11)
+Note that the E-step only requires ˆxn , the posterior mean from
+(8), and τxn ,the posterior variance from (9), which are statistics
+of the marginal densities p(xn |y,γi). In other words, the full
+joint posterior p(x|y,γi) is not needed. This facilitates the use
+of message passing algorithms.
+As can be seen from (7)–(9), the computation of ˆx and τx in-
+volves the inversion of anN × N matrix, which can be reduced
+to M × M matrix inversion by the matrix inversion lemma.
+The complexity of computing ˆx and τx can be shown to be
+O(NM 2) under the assumption that M ≤ N . This makes the
+EM-SBL algorithm computationally prohibitive and impractical
+to use with large dimensions.
+From (4) and (11), the M-step for each iteration is as follows:
+γi+1 = argmin
+γ
+[ N∑
+n=1
+( ˆx2
+n + τxn
+2γn
++ log γn
+2 − log p(γn )
+) ]
+.
+(12a)
+This reduces to N scalar optimization problems,
+γi+1
+n = argmin
+γn
+[ ˆx2
+n + τxn
+2γn
++ 1
+2 log γn − log p(γn )
+]
+. (12b)
+The choice of hyperprior p(γ) plays a role in the M-step,
+and governs the prior for x. However, from the computational
+simplicity of the M-step, as evident from (12b), the hyperprior
+rarely impacts the overall algorithmic computational complex-
+ity, which is mainly that of computing the quantities ˆx and τx
+in the E-step.
+Often a non-informative prior is used in SBL. For the purpose
+of obtaining the M-step update, we will also simplify and drop
+p(γ) and compute the Maximum Likelihood estimate of γ.
+From (12b), this reduces to, γi+1
+n =ˆx2
+n + τxn .
+
+=== PDF PAGE 4 ===
+AL-SHOUKAIRI et al.: GAMP-BASED LOW COMPLEXITY SPARSE BA YESIAN LEARNING ALGORITHM 297
+Fig. 1. GAMP Factor Graph.
+Similarly, if the noise variance σ2 is unknown, it can be
+estimated using:
+(σ2)
+i+1
+= argmax
+σ2
+Ex|y,γ;(σ2 )
+i [p(y,x,γ;σ2)]
+=
+∥y − Ax∥2 +( σ2)i ∑N
+n=1
+(
+1 − τx n
+γn
+)
+M . (13)
+We note here that estimates obtained by (13) can be highly
+inaccurate as mentioned in [35]. Therefore, it suggests that ex-
+perimenting with different values of σ2 or using some other
+application based heuristic will probably lead to better results.
+III. D AMPED GAUSSIAN GAMP SBL
+We now show how damped GGAMP can be used to sim-
+plify the E-step above, leading to the damped GGAMP-SBL
+algorithm. Then we examine the convergence behavior of the
+resulting algorithm.
+A. GGAMP-SBL
+Above we showed that, in the EM-SBL algorithm, the M-step
+is computationally simple but the E-step is computationally de-
+manding. The GAMP algorithm can be used to efﬁciently ap-
+proximate the quantitiesˆx andτx needed in the E-step, while the
+M-step remains unchanged. GAMP is based on the factor graph
+in Fig. 1, where for a given prior fn (x)= p(xn ) and a likeli-
+hood function gm = p(ym |x), GAMP uses quadratic approx-
+imations and Taylor series expansions, to provide approxima-
+tions of MAP or MMSE estimates of x. The reader can refer to
+[22] for detailed derivation of GAMP . The E-step in Table I, uses
+the damped GGAMP algorithm from [24] because of its ability
+to enhance traditional GAMP algorithm divergence issues with
+non-i.i.d.-Gaussian A. The damped GGAMP algorithm has an
+important modiﬁcation over the original GAMP algorithm and
+also over the previously proposed AMP-SBL [33], namely the
+introduction of damping factors θs,θx ∈ (0,1] to slow down
+updates and enhance convergence. Setting θs = θx =1 in the
+damped GGAMP algorithm will yield no damping, and reduces
+the algorithm to the original GAMP algorithm. We note here
+that the damped GGAMP algorithm from [24] is referred to by
+GGAMP , and therefore we will be using the terms GGAMP and
+damped GGAMP interchangeably in this paper. Moreover, when
+TABLE I
+GGAMP-SBL ALGORITHM
+the components of the matrix A are not zero-mean, one can in-
+corporate the same mean removal technique used in [26]. The
+input and output functionsgs(p,τp) and gx(r,τr ) in Table I are
+deﬁned based on whether the max-sum or the sum-product ver-
+sion of GAMP is being used. The intermediate variables r and
+p are interpreted as approximations of Gaussian noise corrupted
+versions of x and z = Ax, with the respective noise levels of
+τr and τp . In the max-sum version, the vector MAP estimation
+problem is reduced to a sequence of scalar MAP estimates given
+r and p using the input and output functions, where they are
+deﬁned as:
+[gs(p,τp)]m = pm − τpm prox −1
+τp m ln p(ym |zm )
+( pm
+τpm
+)
+(14)
+[gx(r,τr )]n = prox−τr n ln p(xn )(rn ) (15)
+proxf (r) ≜ argmin
+x
+f(x)+ 1
+2 |x − r|2. (16)
+Similarly, in the sum-product version of the algorithm, the
+vector MMSE estimation problem is reduced to a sequence of
+scalar MMSE estimates givenr and p using the input and output
+functions, where they are deﬁned as:
+[gs(p,τp)]m =
+∫
+zm p(ym |zm )N(zm ; pm
+τp m
+, 1
+τp m
+)dzm
+∫
+p(ym |zm )N(zm ; pm
+τp m
+, 1
+τp m
+)dzm
+(17)
+[gx(r,τr )]n =
+∫
+xn p(xn )N(xn ;rn ,τrn )dxn∫
+p(xn )N(xn ;rn ,τrn )dxn
+. (18)
+For the parametrized Gaussian prior we imposed on x in (2),
+both sum-product and max-sum versions of gx(r,τr ) yield the
+
+=== PDF PAGE 5 ===
+298 IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 66, NO. 2, JANUARY 15, 2018
+Fig. 2. Cost functions on SBL and GGAMP-SBL algorithms versus number of EM iterations. (a) Cost functions for i.i.d.-Gaussian A. (b) Cost functions fo r
+column correlated A.
+same updates for ˆx and τx [22], [24]:
+gx(r,τr )= γ
+γ + τr
+r (19)
+g′
+x(r,τr )= γ
+γ + τr
+. (20)
+Similarly, in the case of the likelihood p(y|x) given in (5),
+the max-sum and sum-product versions of gs(p,τp) yield the
+same updates for s and τs [22], [24]:
+gs(p,τp)= (p/τp − y)
+(σ2 +1 /τp) (21)
+g′
+s(p,τp)= σ−2
+σ−2 + τp
+. (22)
+We note that, in (19), (20), (21) and (22), and for all equations
+in Table I, all vector squares, divisions and multiplications are
+taken element wise.
+In Table I, Kmax is the maximum allowed number of GAMP
+algorithm iterations, ϵgamp is the GAMP normalized tolerance
+parameter, Imax is the maximum allowed number of EM itera-
+tions and ϵem is the EM normalized tolerance parameter. Upon
+the convergence of GAMP algorithm based E-step, estimates
+for the mean ˆx and covariance diagonal τx are obtained. These
+estimates can be used in the M-step of the algorithm, given by
+(12b). These estimates, along with thes vector estimate, are also
+used to initialize the E-step at the next EM iteration to accelerate
+the convergence of the overall algorithm.
+Deﬁning S as the component wise magnitude squared of A,
+the complexity of the GGAMP-SBL algorithm is dominated
+by the E-step, which in turn (from Table I) is dominated by
+the matrix multiplications by A, A⊤, S and S⊤ at each iter-
+ation, implying that the computational cost of the algorithm is
+O(NM ) operations per GAMP algorithm iteration multiplied
+by the total number of GAMP algorithm iterations. For largeM ,
+this is much smaller than O(NM 2), the complexity of standard
+SBL iteration.
+In addition to the complexity of each iteration, for the pro-
+posed GGAMP-SBL algorithm to achieve faster runtimes it is
+important for GGAMP-SBL total number of iterations to not
+be too large, to the point where it over weighs the reduction
+in complexity per iteration, especially when heavier damping is
+used. We point out here that while SBL provides a one step exact
+solution for the E-step, GGAMP-SBL provides an approximate
+iterative solution. Based on that, the total number of SBL iter-
+ations is the number of EM iterations needed for convergence,
+while the total number of GGAMP-SBL iterations is based on
+the number of EM iterations it needs to converge and the number
+of E-step iterations for each EM iteration. First we consider the
+number of EM iterations for both algorithms. As explained in
+Section III-B2, the E-step of GGAMP-SBL algorithm provides a
+good approximation of the true posterior [43]. In addition to that
+the number of EM iterations is not affected by damping, since
+damping only affects the number of iterations of GGAMP in
+the E-step, but it does not affect its outcome upon convergence.
+Based on these two points, we can expect the number of EM
+iterations for GGAMP-SBL to be generally in the same range as
+the original SBL algorithm. This is also shown in Section III-B2
+Fig. 2(a) and (b), where we can see the two cost functions be-
+ing reduced to their minimum values using approximately the
+same number of EM iterations, even when heavier damping is
+used. As for the GGAMP-SBL E-step iterations, because we are
+warm starting each E-step with x and s values from the previ-
+ous EM iteration, it was found through numerical experiments
+that the number of required E-step iterations is reduced each
+time, to the point where the E-step converges to the required
+tolerance within 2–3 iterations towards the ﬁnal EM iterations.
+When averaging the total number of E-step iterations over the
+number of EM iterations, it was found that for medium to large
+problem sizes the average number of E-step iterations was just
+a fraction of the measurements number M , even in the cases
+where heavier damping was used. Moreover, it was observed
+that the number of iterations required for the E-step to converge
+is independent of the problem size, which gives the algorithm a
+bigger advantage at larger problem sizes. Finally, based on the
+complexity reduction per iteration and the total number of itera-
+tions required for GGAMP-SBL, we can expect it to have lower
+runtimes than SBL for medium to large problems, even when
+heavier damping is used. This runtime advantage is conﬁrmed
+through numerical experiments in Section V.
+B. GGAMP-SBL Convergence
+We now examine the convergence of the GGAMP-SBL algo-
+rithm. This involves two steps; the ﬁrst step is to show that the
+approximate message passing algorithm employed in the E-step
+converges and the second step is to show that the overall EM
+algorithm, which consists of several E and M-steps, converges.
+For the second step, in addition to convergence of the E-step
+(ﬁrst step), the accuracy of the resulting estimates is important.
+Therefore, in the second step of our convergence investigation,
+we use results from [43], in addition to numerical results to show
+that the GGAMP-SBL’s E and M steps are actually descending
+on the original SBL’s cost function (3) at each EM iteration.
+1) Convergence of the E-step With Generic Transformations:
+For the ﬁrst step, we use the analysis from [24] which shows
+that, in the case of generic A, the damped GGAMP algorithm is
+guaranteed to globally converge (to some valuesˆx andτx ) when
+
+=== PDF PAGE 6 ===
+AL-SHOUKAIRI et al.: GAMP-BASED LOW COMPLEXITY SPARSE BA YESIAN LEARNING ALGORITHM 299
+sufﬁcient damping is used. In particular, since γi is ﬁxed in the
+E-step, the prior is Gaussian and so based on results in [24],
+starting with an initial estimate τx ≥ γi the variance updates
+τx , τs , τr and τp will converge to a unique ﬁxed point. In
+addition, any ﬁxed point (s, ˆx) for GGAMP is globally stable if
+θsθx || ˜A||2
+2 < 1, where the matrix ˜A is deﬁned as given below
+and is based on the ﬁxed-point values of τp and τr :
+˜A := Diag1/2(τpqs)A Diag1/2(τr qx)
+qs = σ−2
+σ−2 + τp
+, qx = γ
+γ + τr
+.
+While the result above establishes that the GGAMP algorithm
+is guaranteed to converge when sufﬁcient amount of damping is
+used at each iteration, in practice we do not recommend build-
+ing the matrix ˜A at each EM iteration and calculating its spec-
+tral norm. Rather, we recommend choosing sufﬁciently small
+damping factors θx and θs and ﬁxing them for all GGAMP-
+SBL iterations. For this purpose, the following result from [24]
+for an i.i.d.-Gaussian prior p(x)= N(x;0,γxI) can provide
+some guidance on choosing the damping factors. For the i.i.d.-
+Gaussian prior case, the damped GAMP algorithm is shown to
+converge if
+Ω(θs,θx) > ∥A∥2
+2/∥A∥2
+F , (23)
+where Ω(θs,θx) is deﬁned as
+Ω(θs,θx): = 2[(2 − θx)N + θxM]
+θxθsMN . (24)
+Experimentally, it was found that using a threshold Ω(θs,θx)
+that is 10% larger than (24) is sufﬁcient for the GGAMP-SBL
+algorithm to converge in the scenarios we considered.
+2) GGAMP-SBL Convergence: The result above guarantees
+convergence of the E-step to some vectors ˆx and τx but it does
+not provide information about the overall convergence of the
+EM algorithm to the desired SBL ﬁxed points. This convergence
+depends on the quality of the mean ˆx and varianceτx computed
+by the GGAMP algorithm. It has been shown that for an arbitrary
+A matrix, the ﬁxed-point value of ˆx will equal the true mean
+given in (8) [43]. As for the variance updates, based on the state
+evolution in [23], the vector τx will equal the true posterior
+variance vector, i.e., the diagonal of (9), in the case that A is
+large and i.i.d. Gaussian, but otherwise will only approximate
+the true quantity.
+The approximation of τx by the GGAMP algorithm in the
+E-step introduces an approximation in the GGAMP-SBL algo-
+rithm compared to the original EM-SBL algorithm. Fortunately,
+there is some ﬂexibility in the EM algorithm in that the M-step
+need not be carried out to minimize the objective stated in (12a)
+but it is sufﬁcient to decrease the objective function as discussed
+in the generalized EM algorithm literature [41], [42]. Given that
+the mean is estimated accurately, EM iterations may be tolerant
+to some error in the variance estimate. Some ﬂexibility in this
+regards can also be gleaned from the results in [44], where it
+is shown how different iteratively reweighted algorithms corre-
+spond to a different choice in the variance. However, we have not
+been able to prove rigorously that the GGAMP approximation
+will guarantee descent of the original cost function given in (3).
+Nevertheless, our numerical experiments suggest that the
+GGAMP approximation has negligible effect on algorithm
+convergence and ability to recover sparse solutions. We se-
+lect two experiments to illustrate the convergence behavior and
+demonstrate that the approximate variance estimates are sufﬁ-
+cient to decrease SBL’s cost function (3). In both experimentsx
+is drawn from a Bernoulli-Gaussian distribution with a non-zero
+probability λ set to 0.2, and we set N = 1000 and M = 500.
+Fig. 2 shows a comparison between the original SBL and the
+GGAMP-SBL’s cost functions at each EM iteration of the algo-
+rithms. A in Fig. 2(a) is i.i.d.-Gaussian, while in Fig. 2(b) it is a
+column correlated transformation matrix, which is constructed
+according to the description given in Section V, with correlation
+coefﬁcient ρ=0 .9.
+The cost functions in Fig. 2(a) and (b) show that, although
+we are using an approximate variance estimate to implement
+the M-step, the updates are decreasing the SBL’s cost function
+at each iteration. As noted previously, it is not necessary for
+the M-step to provide the maximum cost function reduction,
+it is sufﬁcient to provide some reduction in the cost function
+for the EM algorithm to be effective. The cost function plots
+conﬁrm this principle, since GGAMP-SBL eventually reaches
+the same minimal value as the original EM-SBL. While the
+two numerical experiments do not provide a guarantee that the
+overall GGAMP-SBL algorithm will converge, they suggest that
+the performance of the GGAMP-SBL algorithm often matches
+that of the original EM-SBL algorithm, which is supported by
+the more extensive numerical results in Section V.
+IV . GGAMP-TSBL FOR THE MMV PROBLEM
+In this section, we apply the damped GAMP algorithm to the
+MMV empirical Bayesian approach to derive a low complexity
+algorithm for the MMV case as well. Since the GAMP algorithm
+was originally derived for the SMV case using an SMV factor
+graph [22], extending it to the MMV case requires some more
+effort and requires going back to the factor graphs that are the
+basis of the GAMP algorithm, making some adjustments, and
+then utilizing the GAMP algorithm.
+Once again we use an empirical Bayesian approach with a
+GSM model, and we focus on the ML estimate ofγ. We assume a
+common sparsity proﬁle between all measured vectors, and also
+account for the temporal correlation that might exist between
+the non-zero signal elements. Previous Bayesian algorithms that
+have shown good recovery performance for the MMV problem
+include extensions of the SMV SBL algorithm, such as MSBL
+[35], TSBL and TMSBL [34]. MSBL is a straightforward ex-
+tension of SMV SBL, where no temporal correlation between
+non-zero elements is assumed, while TSBL and TMSBL ac-
+count for temporal correlation. Even though the TMSBL algo-
+rithm has lower complexity compared to the TSBL algorithm,
+the algorithm still has complexity of O(NM 2), which can limit
+its utility when the problem dimensions are large. Other AMP
+based Bayesian algorithms have achieved linear complexity in
+the problem dimensions, like AMP-MMV [37]. However AMP-
+MMV’s robustness to generic A matrices is expected to be out-
+performed by an SBL based approach.
+A. MMV Model and Factor Graph
+The MMV model can be stated as:
+y(t) = Ax(t) + e(t),t =1 ,2, ..., T,
+
+=== PDF PAGE 7 ===
+300 IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 66, NO. 2, JANUARY 15, 2018
+where we have T measurement vectors [y(1) ,y(2) ...,y(T )]
+with y(t) ∈ RM . The objective is to recover X =
+[x(t),x(2) ...,x(T )] with x(t) ∈ RN , where in addition to the
+vectors x(t) being sparse, they share the same sparsity pro-
+ﬁle. Similar to the SMV case, A ∈ RM ×N is known, and
+[e(1) ,e(2) ...,e(T )] is a sequence of i.i.d. noise vectors modeled
+as e(t) ∼N (0,σ2I). This model can be restated as:
+¯y = D(A)¯x +¯e,
+where ¯y≜[y(1) ⊤
+,y(2) ⊤
+...,y(T )⊤
+]⊤, ¯x≜[x(1) ⊤
+,x(2) ⊤
+...,x(T )⊤
+]⊤,
+¯e ≜ [e(1) ⊤
+,e(2) ⊤
+...,e(T )⊤
+]⊤ and D(A) is a block-diagonal ma-
+trix constructed from T replicas of A.
+The posterior distribution of ¯x is given by:
+p(¯x | ¯y) ∝
+T∏
+t=1
+[ M∏
+m=1
+p(y(t)
+m | x(t))
+N∏
+n=1
+p(x(t)
+n | x(t−1)
+n )
+]
+,
+where
+p(y(t)
+m | x(t))= N(y(t)
+m ;a⊤
+m,. x(t),σ2),
+where a⊤
+m,. is the mth row of the matrix A. Similar to the
+previous work in [36], [37], [45], we use an AR(1) process to
+model the correlation between x(t)
+n and x(t−1)
+n , i.e.,
+x(t)
+n = βx(t−1)
+n +
+√
+1 − β2v(t)
+n
+p(x(t)
+n | x(t−1)
+n )= N(x(t)
+n ;βx(t−1)
+n ,(1 − β2)γn ),t> 1
+p(x(1)
+n )= N(x(1)
+n ;0,γn ),
+where β ∈ (−1,1) is the temporal correlation coefﬁcient and
+v(t)
+n ∼N (0,γn ). Following an empirical Bayesian approach
+similar to the one proposed for the SMV case, the hyperparam-
+eter vector γ is then learned from the measurements using the
+EM algorithm. The EM algorithm can also be used to learn the
+correlation coefﬁcient β and the noise variance σ2 . Based on
+these assumptions we use the sum-product algorithm [46] to
+construct the factor graph in Fig. 3, and derive the MMV algo-
+rithm GGAMP-TSBL. In the MMV factor graph, the factors are
+g(t)
+m (x)= p(y(t)
+m | x(t)), f(t)
+n (x(t)
+n )= p(x(t)
+n | x(t−1)
+n ) for t> 1
+and f(1)
+n (x(1)
+n )= p(x(1)
+n ).
+B. GGAMP-TSBL Message Phases and Scheduling (E-Step)
+Due to the similarities between the factor graph for each time
+frame of the MMV model and the factor graph of the SMV
+model, we will use the algorithm in Table I as a building block
+and extend it to the MMV case. We divide the message updates
+into three steps as shown in Fig. 4.
+For each time frame the “within” step in Fig. 4 is very similar
+to the SMV GAMP iteration, with the only difference being
+that each x(t)
+n is connected to the factor nodes f(t)
+n and f(t+1)
+n ,
+while it is connected to one factor node in the SMV case. This
+difference is reﬂected in the calculation of the output function
+Fig. 3. GGAMP-TSBL factor graph.
+Fig. 4. Message passing phases for GGAMP-TSBL.
+gx and therefore in ﬁnding the mean and variance estimates for
+¯x. The details of ﬁnding gx and therefore the update equations
+for τ(t)
+x and ˆx(t) are shown in Appendix A. The input function
+gs is the same as (21), and the update equations for τ(t)
+s and s(t)
+are the same as (A3) and (A4) from Table I, because an AWGN
+model is assumed for the noise. The second type of updates are
+passing messages forward in time from x(t−1)
+n to x(t)
+n through
+f(t)
+n . And the ﬁnal type of updates is passing messages backward
+in time from x(t+1)
+n to x(t)
+n through f(t)
+n . The details for ﬁnding
+the “forward” and “backward” message passing steps are also
+shown in Appendix A.
+We schedule the messages by moving forward in time ﬁrst,
+where we run the “forward” step starting at t =1 all the way to
+t = T . We then perform the “within” step for all time frames,
+this step updates r(t),τ(t)
+r , x(t) and τ(t)
+x that are needed for the
+“forward ”and “backward” message passing steps. Finally we
+pass the messages backward in time using the “backward” step,
+starting at t = T and ending at t =1 . Based on this message
+γi+1
+n = 1
+T
+[
+|ˆx(1)
+n |2 + τ(1)
+xn + 1
+1 − β2
+T∑
+t=2
+|ˆx(1)
+n |2 + τ(t)
+xn + β(|ˆx(t−1)
+n |2 + τ(t−1)
+xn ) − 2β(ˆx(t)
+n ˆx(t−1)
+n + βτ(t−1)
+xn )
+]
+. (25)
+
+=== PDF PAGE 8 ===
+AL-SHOUKAIRI et al.: GAMP-BASED LOW COMPLEXITY SPARSE BA YESIAN LEARNING ALGORITHM 301
+TABLE II
+GGAMP-TSBL ALGORITHM
+schedule, the GAMP algorithm E-step computation is summa-
+rized in Table II. In Table II we use the unparenthesized su-
+perscript to indicate the iteration index, while the parenthesized
+superscript indicates the time frame index. Similar to Table I,
+Kmax is the maximum allowed number of GAMP iterations,
+ϵgamp is the GAMP normalized tolerance parameter, Imax is the
+maximum allowed number of EM iterations and ϵem is the EM
+normalized tolerance parameter. In Table II all vector squares,
+divisions and multiplications are taken element wise.
+The algorithm proposed can be considered an extension of
+the previously proposed AMP TSBL algorithm in [33]. The
+extension to GGAMP-TSBL includes removing the averaging
+of the matrixA in the derivation of the algorithm, and it includes
+introducing the same damping strategy used in the SMV case
+to improve convergence. The complexity of the GGAMP-TSBL
+algorithm is also dominated by the E-step which in turn is domi-
+nated by matrix multiplications by A, A⊤, S and S⊤, implying
+that the computational cost is O(MN ) ﬂops per iteration per
+frame. Therefore the complexity of the proposed algorithm is
+O(TMN ) multiplied by the total number of GAMP algorithm
+iterations.
+C. GGAMP-TSBL M-Step
+Upon the convergence of the E-step, the M-step learnsγ from
+the data by treating x as a hidden variable and then maximizing
+E¯x|¯y;γi ,σ2 ,β[log p(¯y, ¯x,γ;σ2,β)].
+γi+1 = argmin
+γ
+E¯x|¯y;γi ,σ2 ,β[− log p(¯y, ¯x,γ;σ2,β)].
+The derivation of γi+1
+n M-step update follows the same steps
+as the SMV case. The derivation is omitted here due to space
+limitation, and γi+1
+n update is given in (25) at the bottom of the
+previous page. We note here that the M-step γ learning rule in
+(25) is the same as the one derived in [36]. Both algorithms use
+the same AR(1) model for x(t) , but they differ in the implemen-
+tation of the E-step. In the case that the correlation coefﬁcient
+β or the noise variance σ2 are unknown, the EM algorithm can
+be used to estimate their values as well.
+V. N UMERICAL RESULTS
+In this section we present a numerical study to illustrate the
+performance and complexity of the proposed GGAMP-SBL and
+GGAMP-TSBL algorithms. The performance and complexity
+were studied through two metrics. The ﬁrst metric studies the
+ability of the algorithm to recover x,f o rw h i c hw eu s et h e
+normalized mean squared error NMSE in the SMV case:
+NMSE ≜ ∥ˆx − x∥2/∥x∥2,
+and the time-averaged normalized mean squared error TNMSE
+in the MMV case:
+TNMSE ≜ 1
+T
+T∑
+t=1
+∥ˆx(t) − x(t) ∥2/∥x(t) ∥2.
+The second metric studies the complexity of the algorithm by
+tracking the time the algorithm requires to compute the ﬁnal
+estimate ˆx. We measure the time in seconds. While the absolute
+runtime could vary if the same experiments were to be run on
+a different machine, the runtimes of the algorithms of interest
+in relationship to each other is a good estimate of the relative
+computational complexity.
+Several types of non-i.i.d.-Gaussian matrix were used to ex-
+plore the robustness of the proposed algorithms relative to the
+standard SBL and TMSBL. The four different types of matrices
+are similar to the ones previously used in [26] and are described
+as follows:
+-Column correlated matrices: The rows of A are indepen-
+dent zero-mean Gaussian Markov processes with the following
+correlation coefﬁcient ρ= E{a⊤
+.,n a.,n +1 }/E{|a.,n |2 }, where
+
+=== PDF PAGE 9 ===
+302 IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 66, NO. 2, JANUARY 15, 2018
+a.,n is the nth column of A. In the experiments the correla-
+tion coefﬁcient ρ is used as the measure of deviation from the
+i.i.d.-Gaussian matrix.
+-Low rank product matrices: We construct a rank deﬁcient A
+by A = 1
+N HG with H ∈ RM ×R , G ∈ RR ×N and R<M .
+The entries of H and G are i.i.d.-Gaussian with zero mean and
+unit variance. The rank ratio R/N is used as the measure of
+deviation from the i.i.d.-Gaussian matrix.
+-Ill conditioned matrices: we construct A with a condition
+number κ> 1 as follows. A = UΣV ⊤, where U and V ⊤ are
+the left and right singular vector matrices of an i.i.d.-Gaussian
+matrix, and Σ is a singular value matrix with Σi,i /Σi+1 ,i+1 =
+κ1/(M −1) for i =1 ,2, ...., M− 1. The condition number κ is
+used as the measure of deviation from the i.i.d.-Gaussian matrix.
+-Non-zero mean matrices: The elements of A are am,n ∼
+N(μ, 1
+N ). The mean μ is used as a measure of deviation from
+the zero-mean i.i.d.-Gaussian matrix. It is worth noting that in
+the case of non-zero mean A, convergence of the GGAMP-
+SBL is not enhanced by damping but more by the mean removal
+procedure explained in [26]. We include it in the implementation
+of our algorithm, and we include it in the numerical results to
+make the study more inclusive of different types of generic A
+matrices.
+Although we have provided an estimation procedure, based
+on the EM algorithm, for the noise variance σ2 in (13), in all
+experiments we assume that the noise variance σ2 is known. We
+also found that the SBL algorithm does not necessarily have the
+best performance when the exact σ2 is used, and in our case, it
+was empirically found that using an estimate ˆσ2 =3 σ2 yields
+better results. Therefore ˆσ2 is used for SBL, TMSBL, GGAMP-
+SBL and GGAMP-TSBL throughout our experiments.
+A. SMV GGAMP-SBL Numerical Results
+In this section we compare the proposed SMV algorithm
+(GGAMP-SBL) against the original SBL and against two AMP
+algorithms that have shown improvement in robustness over the
+original AMP/GAMP , namely the SwAMP algorithm [27] and
+the MADGAMP algorithm [26]. As a performance benchmark,
+we use a lower bound on the achievable NMSE which is similar
+to the one in [26]. The bound is found using a “genie” that
+knows the support of the sparse vector x. Based on the known
+support, ¯A is constructed from the columns of A corresponding
+to non-zero elements of x, and an MMSE solution using ¯A is
+computed.
+ˆx = ¯A
+⊤
+( ¯A ¯A
+⊤
++ σ2I)−1y.
+In all SMV experiments, x had exactly K non-zero elements in
+random locations, and the nonzero entires were drawn indepen-
+dently from a zero-mean unit-variance Gaussian distribution. In
+accordance with the model (1), an AWGN channel was used
+with the SNR deﬁned by:
+SNR ≜ E{∥Ax∥2 }/E{∥y − Ax∥2 }.
+1) Robustness to Generic Matrices at High SNR: The ﬁrst
+experiment investigates the robustness of the proposed algo-
+rithm to generic A matrices. It compares the algorithms of
+interest using the four types of matrices mentioned above, over
+a range of deviation from the i.i.d.-Gaussian case. For each
+Fig. 5. NMSE comparison of SMV algorithms under non-i.i.d.-Gaussian A
+matrices with SNR = 60 dB.
+matrix type, we start with an i.i.d.-Gaussian A and increase the
+deviation over 11 steps. We monitor how much deviation the
+different algorithms can tolerate, before we start seeing signif-
+icant performance degradation compared to the “genie” bound.
+The vector x was drawn from a Bernoulli-Gaussian distribution
+with non-zero probability λ =0 .2, with N = 1000, M = 500
+and SNR = 60 dB.
+The NMSE results in Fig. 5 show that the performance of
+GGAMP-SBL was able to match that of the original SBL even
+for A matrices with the most deviation from the i.i.d.-Gaussian
+case. Both algorithms nearly achieved the bound in most cases,
+with the exception when the matrix is low rank with a rank ratio
+less than 0.45 where both algorithms fail to achieve the bound.
+This supports the evidence we provided before for the conver-
+gence of the GGAMP-SBL algorithm, which predicted its abil-
+ity to match the performance of the original SBL. As for other
+AMP implementations, despite the improvement in robustness
+they provide over traditional AMP/GAMP , they cannot guaran-
+tee convergence beyond a certain point, and their robustness is
+surpassed by GGAMP-SBL in most cases. The only exception
+is when A is non-zero mean, where the GGAMP-SBL and the
+MADGAMP algorithms share similar performance. This is due
+to the fact that both algorithms use mean removal to transform
+the problem into a zero-mean equivalent problem, which both
+algorithms can handle well.
+The complexity of the GGAMP-SBL algorithm is studied
+in Fig. 6. The ﬁgure shows how the GGAMP-SBL was able
+to reduce the complexity compared to the original SBL imple-
+mentation. It also shows that even when the algorithm is slowed
+
+=== PDF PAGE 10 ===
+AL-SHOUKAIRI et al.: GAMP-BASED LOW COMPLEXITY SPARSE BA YESIAN LEARNING ALGORITHM 303
+Fig. 6. Runtime comparison of SMV algorithms under non-i.i.d.-Gaussian A
+matrices with SNR = 60 dB.
+down by heavier damping, the algorithm still has faster runtimes
+than the original SBL.
+2) Robustness to Generic Matrices at Lower SNR: In this
+experiment we examine the performance and complexity of the
+proposed algorithm at a lower SNR setting than the previous ex-
+periment. We lower the SNR to 30 dB and collect the same data
+points as in the previous experiment. The results in Fig. 7 show
+that the performance of the GGAMP-SBL algorithm is still gen-
+erally matching that of the original SBL algorithm with slight
+degradation. The MADGAMP algorithm provides slightly bet-
+ter performance than both SBL algorithms when the deviation
+from the i.i.d.-sub-Gaussian case is not too large. This can be
+due to the fact that we choose to run the MADGAMP algo-
+rithm with exact knowledge of the data model rather than learn
+the model parameters, while both SBL algorithms have infor-
+mation about the noise variance only. As the deviation in A
+increases, GGAMP-SBL’s performance surpasses MADGAMP
+and SW AMP algorithms, providing better robustness at lower
+SNR.
+On the complexity side, we see from Fig. 8 that the GGAMP-
+SBL continues to have reduced complexity compared to the
+original SBL.
+3) Performance and Complexity V ersus Problem Dimen-
+sions: To show the effect of increasing the problem dimensions
+on the performance and complexity of the different algorithms,
+we plot the NMSE and runtime against N , while we keep an
+M/N ratio of 0.5, a K/N ratio of 0.2 and an SNR of 60 dB.
+We run the experiment using column correlated matrices with
+ρ=0 .9.
+Fig. 7. NMSE comparison of SMV algorithms under non-i.i.d.-Gaussian A
+matrices with SNR = 30 dB.
+Fig. 8. Runtime comparison of SMV algorithms under non-i.i.d.-Gaussian A
+matrices with SNR = 30 dB.
+
+=== PDF PAGE 11 ===
+304 IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 66, NO. 2, JANUARY 15, 2018
+Fig. 9. Performance and complexity comparison for SMV algorithms versus
+problem dimensions.
+As expected from previous experiments, Fig. 9(a) shows that
+only GGAMP-SBL and SBL algorithms can recoverx when we
+use column correlated matrices with a correlation coefﬁcient of
+ρ=0 .9. The comparison between the performance of SBL and
+GGAMP-SBL show almost identical NMSE.
+As problem dimensions grow, Fig. 9(b) shows that the differ-
+ence in runtimes between the original SBL and GGAMP-SBL
+algorithms grows to become more signiﬁcant, which suggests
+that the GGAMP-SBL is more practical for large size problems.
+4) Performance V ersus Undersampling Ratio M/N : In this
+section we examine the ability of the proposed algorithm to
+recover a sparse vector from undersampled measurements at
+different undersampling ratios M/N . In the below experiments
+we ﬁx N at 1000 and vary M . We set the Bernoulli-Gaussian
+non-zero probability λ so that M/K has an average of three
+measurements for each non-zero component. We plot the NMSE
+versus the undersampling ratio M/N for i.i.d.-Gaussian matri-
+ces A and for column correlated A with ρ=0 .9.W er u nt h e
+experiments at SNR= 60 dB and at SNR= 30 dB. In Fig. 10 we
+ﬁnd that for SNR = 60 dB and i.i.d.-Gaussian A, all algorithms
+meet the SKS bound when the undersampling ratio is larger than
+or equal to 0.25, while all algorithms fail to meet the bound at any
+ratio smaller than that. When A is column correlated, SBL and
+GGAMP-SBL are able to meet the SKS bound at M/N ≥ 0.3,
+while MADGAMP and SwAMP do not meet the bound even
+at M/N =0 .5. We also note the MADGAMP’s NMSE slowly
+improves with increased underasampling ratio, while SwAMP’s
+NMSE does not. At SNR = 30 dB, with i.i.d.-Gaussian A all
+algorithms are close to the SKS bound when the undersampling
+ratio is larger than 0.3. At M/N ≤ 0.3, SBL and GGAMP-
+Fig. 10. NMSE comparison of SMV algorithms versus the undersampling
+rate M/N.
+SBL are slightly outperformed by MADGAMP , while SwAMP
+seems to have the best performance in this region. When A is
+column correlated, NMSE of SBL and GGAMP-SBL outper-
+form the other two algorithms, and similar to the SNR = 60 dB
+case, MADGAMP’s NMSE seems to slowly improve with in-
+creased undersampling ratio, while SwAMP’s NMSE does not
+improve.
+B. MMV GGAMP-TSBL Numerical Results
+In this section, we present a numerical study to illustrate the
+performance and complexity of the proposed GGAMP-TSBL
+algorithm. Although the AMP MMV algorithm in [37] can be
+extended to incorporate damping, the current implementation of
+AMP MMV does not include damping and will diverge when
+used with the type of generic A matrices we are considering for
+our experiments. Therefore, we restrict the comparison of the
+performance and complexity of the GGAMP-TSBL algorithm
+to the TMSBL algorithm. We also compare the recovery per-
+formance against a lower bound on the achievable TNMSE by
+extending the support aware Kalman smoother (SKS) from [37]
+to include damping and hence be able to handle generic A ma-
+trices. The implementation of the smoother is straight forward,
+and is exactly the same as the E-step part in Table II, when the
+true values of σ2 , γ and β are used, and when A is modiﬁed
+to include only the columns corresponding to the non-zero ele-
+ments in x(t) . An AWGN channel was also assumed in the case
+of MMV .
+1) Robustness to Generic Matrices at High SNR: The ex-
+periment investigates the robustness of the proposed algorithm
+
+=== PDF PAGE 12 ===
+AL-SHOUKAIRI et al.: GAMP-BASED LOW COMPLEXITY SPARSE BA YESIAN LEARNING ALGORITHM 305
+Fig. 11. TNMSE comparison of MMV algorithms under non-i.i.d.-Gaussian
+A matrices with SNR = 60 dB.
+by comparing it to the TMSBL and the support aware smoother.
+Once again we use the four types of matrices mentioned at the
+beginning of this section, over the same range of deviation from
+the i.i.d.-Gaussian case. For this experiment we set N = 1000,
+M = 500, λ =0 .2,S N R= 60 dB and the temporal correla-
+tion coefﬁcient β to 0.9. We choose a relatively high value for
+β to provide large deviation from the SMV case. This is due
+to the fact that the no correlation case is reduced to solving
+multiple SMV instances in the E-step, and then applying the
+M-step to update the hyperparameter vector γ, which is com-
+mon across time frames [35]. The TNMSE results in Fig. 11
+show that the performance of GGAMP-TSBL was able to match
+that of TMSBL in all cases and they both achieved the SKS
+bound.
+Once again Fig. 12 shows that the proposed GGAMP-TSBL
+was able to reduce the complexity compared to the TMSBL
+algorithm, even when damping was used. Although the com-
+plexity reduction does not seem to be signiﬁcant for the selected
+problem size and SNR, we will see in the following experiments
+how this reduction becomes more signiﬁcant as the problem size
+grows or as a lower SNR is used.
+2) Robustness to Generic Matrices at Lower SNR: The per-
+formance and complexity of the proposed algorithm are exam-
+ined at a lower SNR setting than the previous experiment. We
+set the SNR to 30 dB and collect the same data points collected
+as in the 60 dB SNR case. Fig. 13 shows that the GGAMP-TSBL
+performance matches that of the TMSBL and almost achieves
+the bound in most cases.
+Similar to the previous cases, Fig. 14 shows that the complex-
+ity of GGAMP-TSBL is lower than that of TMSBL.
+Fig. 12. Runtime comparison of MMV algorithms under non-i.i.d.-Gaussian
+A matrices with SNR = 60 dB.
+Fig. 13. TNSME comparison of MMV algorithms under non-i.i.d.-Gaussian
+A matrices with SNR = 30 dB.
+
+=== PDF PAGE 13 ===
+306 IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 66, NO. 2, JANUARY 15, 2018
+Fig. 14. Runtime comparison of MMV algorithms under non-i.i.d.-Gaussian
+A matrices with SNR = 30 dB.
+Fig. 15. Performance and complexity comparison for MMV algorithms versus
+problem dimensions.
+3) Performance and Complexity V ersus Problem Dimension:
+To validate the claim that the proposed algorithm is more suited
+to deal with large scale problems we study the algorithms’ per-
+formance and complexity against the signal dimension N .W e
+keep an M/N ratio of 0.5, a K/N ratio of 0.2 and an SNR of
+60 dB. We run the experiment using column correlated matri-
+ces with ρ=0 .9. In addition, we set β to 0.9, high temporal
+correlation. In terms of performance, Fig. 15(a) shows that the
+proposed GGAMP-TSBL algorithm was able to match the per-
+formance of TMSBL. However, in terms of complexity, similar
+to the SMV case, Fig. 15(b) shows that the runtime difference
+becomes more signiﬁcant as the problem size grows, making
+the GGAMP-SBL a better choice for large scale problems.
+VI. C ONCLUSION
+In this paper, we presented a GAMP based SBL algorithm
+for solving the sparse signal recovery problem. SBL uses spar-
+sity promoting priors on x that admit a Gaussian scale mixture
+representation. Because of the Gaussian embedding offered by
+the GSM class of priors, we were able to leverage the Gaussian
+GAMP algorithm along with it’s convergence guarantees given
+in [24], when sufﬁcient damping is used, to develop a reliable
+and fast algorithm. We numerically showed how this damped
+GGAMP implementation of the SBL algorithm also reduces the
+cost function of the original SBL approach. The algorithm was
+then extended to solve the MMV SSR problem in the case of
+generic A matrices and temporal correlation, using a similar
+GAMP based SBL approach. Numerical results show that both
+the SMV and MMV proposed algorithms were more robust to
+generic A matrices when compared to other AMP algorithms. In
+addition, numerical results also show the signiﬁcant reduction in
+complexity the proposed algorithms offer over the original SBL
+and TMSBL algorithms, even when sufﬁcient damping is used
+to slow down the updates to guarantee convergence. Therefore
+the proposed algorithms address the convergence limitations in
+AMP algorithms as well as the complexity challenges in tra-
+ditional SBL algorithms, while retaining the positive attributes
+namely the robustness of SBL to generic A matrices, and the
+low complexity of message passing algorithms.
+APPENDIX A
+DERIV A TION OFGGAMP-TSBL UPDA TES
+A. The Within Step Updates
+To make the factor graph for the within step in Fig. 4 exactly
+the same as the SMV factor graph we combine the product of
+the two messages incoming from f(t)
+n and f(t+1)
+n to x(t)
+n into
+one message as follows:
+Vf (t )
+n → x(t )
+n
+∝N (x(t)
+n ;η(t)
+n ,ψ (t)
+n )
+Vf (t +1)
+n → x(t )
+n
+∝N (x(t)
+n ;θ(t)
+n ,φ(t)
+n )
+V¯f (t )
+n → x(t )
+n
+∝N (x(t)
+n ;ρ(t)
+n ,ζ(t)
+n )
+∝N
+⎛
+⎜⎝ x(t)
+n ;
+η(t )
+n
+ψ(t )
+n
++ θ(t )
+n
+φ(t )
+n
+1
+ψ(t )
+n
++ 1
+φ(t )
+n
+, 1
+1
+ψ(t )
+n
++ 1
+φ(t )
+n
+⎞
+⎟⎠ . (26)
+
+=== PDF PAGE 14 ===
+AL-SHOUKAIRI et al.: GAMP-BASED LOW COMPLEXITY SPARSE BA YESIAN LEARNING ALGORITHM 307
+Combining these two messages reduces each time frame factor
+graph to an equivalent one to the SMV case with a modiﬁed
+prior on x(t)
+n of (26). Applying the damped GAMP algorithm
+from [24] with p(x(t)
+n ) given in (26):
+g(t)
+x =
+r(t )
+τ(t )
+r
++ ρ(t )
+ζ(t )
+1
+τ(t )
+r
++ 1
+ζ(t )
+=
+r(t )
+τ(t )
+r
++ η(t )
+ψ (t ) + θ(t )
+φ(t )
+1
+τ(t )
+r
++ 1
+ψ (t ) + 1
+φ(t )
+τ(t)
+x = 1
+1
+τ(t )
+r
++ 1
+ζ(t )
+= 1
+1
+τ(t )
+r
++ 1
+ψ (t ) + 1
+φ(t )
+.
+B. F orward Message Updates
+Vf (1)
+n → x(1)
+n
+∝N (x(1)
+n ;0,γn )
+Vf (t )
+n → x(t )
+n
+∝N (x(t)
+n ;η(t)
+n ,ψ (t)
+n )
+∝
+∫ ( M∏
+l=1
+Vg(t −1)
+l → x(t −1)
+n
+)
+Vf (t −1)
+n → x(t −1)
+n
+P(x(t)
+n | x(t−1)
+n )dx(t−1)
+n
+∝
+∫
+N(x(t−1)
+n ;r(t−1)
+n ,τ(t−1)
+rn )
+N(x(t−1)
+n ;η(t−1)
+n ,ψ (t−1)
+n )
+N(x(t)
+n ;βx(t−1)
+n ,(1 − β2)γn )dx(t−1)
+n .
+Using rules for Gaussian pdf multiplication and convolution we
+get the η(t)
+n and ψ(t)
+n updates given in Table II (E3) and (E4).
+C. Backward Message Updates
+Vf (t +1)
+n → x(t )
+n
+∝N (x(t)
+n ;θ(t)
+n ,φ(t)
+n )
+∝
+∫ ( M∏
+l=1
+Vg(t +1)
+l → x(t +1)
+n
+)
+Vf (t +2)
+n → x(t +1)
+n
+P(x(t+1)
+n | x(t)
+n )dx(t+1)
+n
+∝
+∫
+N(x(t+1)
+n ;r(t+1)
+n ,τ(t+1)
+rn )
+N(x(t+1)
+n ;θ(t+1)
+n ,φ(t+1)
+n )
+N(x(t+1)
+n ;βx(t)
+n ,(1 − β2)γn )dx(t+1)
+n .
+Using rules for Gaussian pdf multiplication and convolution
+we get the θ(t)
+n and φ(t)
+n updates given in Table II (E13) and
+(E14).
+REFERENCES
+[1] D. L. Donoho, “Compressed sensing,” IEEE Trans. Inf. Theory , vol. 52,
+no. 4, pp. 1289–1306, Apr. 2006.
+[2] E. J. Candes and T. Tao, “Near-optimal signal recovery from random
+projections: Universal encoding strategies?,” IEEE Trans. Inf. Theory ,
+vol. 52, no. 12, pp. 5406–5425, Dec. 2006.
+[3] R. G. Baraniuk, “Compressive sensing,” IEEE Signal Process. Mag. ,
+vol. 24, no. 4, pp. 118–121, Jul. 2007.
+[4] M. Elad, Sparse and Redundant Representations: From Theory to Appli-
+cations in Signal and Image Processing . New Y ork, NY , USA: Springer,
+2010.
+[5] S. Foucart and H. Rauhut, A Mathematical Introduction to Compressive
+Sensing (Applied and Numerical Harmonic Analysis) . Cambridge, MA,
+USA: Birkh ¨auser, 2013.
+[6] Y . C. Eldar and G. Kutyniok, eds., Compressed Sensing: Theory and
+Applications. Cambridge, U.K.: Cambridge Univ. Press, 2012.
+[7] B. K. Natarajan, “Sparse approximate solutions to linear systems,” SIAM
+J. Comput., vol. 24, no. 2, pp. 227–234, 1995.
+[8] E. J. Candes and T. Tao, “Decoding by linear programming,” IEEE Trans.
+Inf. Theory, vol. 51, no. 12, pp. 4203–4215, Dec. 2005.
+[9] S. S. Chen, D. L. Donoho, and M. A. Saunders, “Atomic decom-
+position by basis pursuit,” SIAM Rev. , vol. 43, no. 1, pp. 129–159,
+2001.
+[10] J. A. Tropp and A. C. Gilbert, “Signal recovery from random measure-
+ments via orthogonal matching pursuit,” IEEE Trans. Inf. Theory, vol. 53,
+no. 12, pp. 4655–4666, Dec. 2007.
+[11] M. A. Figueiredo, J. M. Bioucas-Dias, and R. D. Nowak, “Majorization-
+minimization algorithms for wavelet-based image restoration,” IEEE
+Trans. Image Process., vol. 16, no. 12, pp. 2980–2991, Dec. 2007.
+[12] E. J. Candes, M. B. Wakin, and S. P . Boyd, “Enhancing sparsity by
+reweighted ℓ1 minimization,” J. F ourier Anal. Appl. , vol. 14, no. 5–6,
+pp. 877–905, 2008.
+[13] R. Chartrand and W. Yin, “Iteratively reweighted algorithms for compres-
+sive sensing,” in Proc. IEEE Int. Conf. Acoust., Speech Signal Process. ,
+2008, pp. 3869–3872.
+[14] M. E. Tipping, “Sparse Bayesian learning and the relevance vector ma-
+chine,” J. Mach. Learn. Res. , vol. 1, pp. 211–244, Sept. 2001.
+[15] D. P . Wipf and B. D. Rao, “Sparse Bayesian learning for basis selection,”
+IEEE Trans. Signal Process., vol. 52, pp. 2153–2164, Aug. 2004.
+[16] J. P . Vila and P . Schniter, “Expectation-maximization Gaussian-mixture
+approximate message passing,” IEEE Trans. Signal Process. , vol. 61,
+no. 19, pp. 4658–4672, Oct. 2013.
+[17] S. D. Babacan, R. Molina, and A. K. Katsaggelos, “Bayesian compressive
+sensing using laplace priors,” IEEE Trans. Image Process., vol. 19, no. 1,
+pp. 53–63, Jan. 2010.
+[18] L. He and L. Carin, “Exploiting structure in wavelet-based Bayesian com-
+pressive sensing,” IEEE Trans. Signal Process., vol. 57, no. 9, pp. 3488–
+3497, Sep. 2009.
+[19] S. Ji, Y . Xue, and L. Carin, “Bayesian compressive sensing,” IEEE Trans.
+Signal Process., vol. 56, no. 6, pp. 2346–2356, Jun. 2008.
+[20] D. Baron, S. Sarvotham, and R. G. Baraniuk, “Bayesian compressive
+sensing via belief propagation,” IEEE Trans. Signal Process. , vol. 58,
+no. 1, pp. 269–280, Jan. 2010.
+[21] D. L. Donoho, A. Maleki, and A. Montanari, “Message passing algorithms
+for compressed sensing: I. motivation and construction,” in Proc. IEEE
+Inf. Theory Workshop Inf. Theory, Jan 2010, pp. 1–5.
+[22] S. Rangan, “Generalized approximate message passing for estimation with
+random linear mixing,” in Proc. IEEE Int. Symp. Inf. Theory , Jul. 2011,
+pp. 2168–2172.
+[23] M. Bayati and A. Montanari, “The dynamics of message passing on dense
+graphs, with applications to compressed sensing,”IEEE Trans. Inf. Theory,
+vol. 57, no. 2, pp. 764–785, Feb. 2011.
+[24] S. Rangan, P . Schniter, and A. Fletcher, “On the convergence of approxi-
+mate message passing with arbitrary matrices,” in Proc. IEEE Int. Symp.
+Inf. Theory, Jun. 2014, pp. 236–240.
+[25] F. Caltagirone, L. Zdeborova, and F. Krzakala, “On convergence of ap-
+proximate message passing,” in Proc. IEEE Int. Symp. Inf. Theory , Jun.
+2014, pp. 1812–1816.
+[26] J. Vila, P . Schniter, S. Rangan, F. Krzakala, and L. Zdeborov, “Adaptive
+damping and mean removal for the generalized approximate message pass-
+ing algorithm,” in Proc. IEEE Int. Conf. Acoust. Speech Signal Process. ,
+Apr. 2015, pp. 2021–2025.
+[27] A. Manoel, F. Krzakala, E. Tramel, and L. Zdeborov`a, “Swept approximate
+message passing for sparse estimation,” in Proc. 32nd Int. Conf. Mach.
+Learn., 2015, pp. 1123–1132.
+[28] S. Rangan, A. K. Fletcher, P . Schniter, and U. S. Kamilov, “Infer-
+ence for generalized linear models via alternating directions and bethe
+free energy minimization,” in Proc. IEEE Int. Symp. Inf. Theory , 2015,
+pp. 1640–1644.
+[29] D. F. Andrews and C. L. Mallows, “Scale mixtures of normal distribu-
+tions,” J. Roy. Stat. Soc. Series B (Methodological) , vol. 36, pp. 99–102,
+1974.
+[30] J. Palmer, K. Kreutz-Delgado, B. D. Rao, and D. P . Wipf, “V ariational EM
+algorithms for non-Gaussian latent variable models,” in Proc. Adv. Neural
+Inf. Process. Syst., 2005, pp. 1059–1066.
+[31] K. Lange and J. S. Sinsheimer, “Normal/independent distributions and
+their applications in robust regression,” J. Comput. Graph. Stat. ,v o l .2 ,
+no. 2, pp. 175–198, 1993.
+
+=== PDF PAGE 15 ===
+308 IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 66, NO. 2, JANUARY 15, 2018
+[32] N. L. Pedersen, C. N. Manch ´on, M.-A. Badiu, D. Shutin, and B. H. Fleury,
+“Sparse estimation using Bayesian hierarchical prior modeling for real and
+complex linear models,” Signal Process., vol. 115, pp. 94–109, 2015.
+[33] M. Al-Shoukairi and B. Rao, “Sparse Bayesian learning using approxi-
+mate message passing,” in Proc. IEEE 48th Asilomar Conf. Signals Syst.
+Comput., 2014, pp. 1957–1961.
+[34] Z. Zhang and B. D. Rao, “Sparse signal recovery with temporally corre-
+lated source vectors using sparse Bayesian learning,” IEEE J. Sel. Top.
+Signal Process., vol. 5, no. 5, pp. 912–926, Sep. 2011.
+[35] D. P . Wipf and B. D. Rao, “An empirical Bayesian strategy for solv-
+ing the simultaneous sparse approximation problem,” IEEE Trans. Signal
+Process., vol. 55, no. 7, pp. 3704–3716, Jul. 2007.
+[36] R. Prasad, C. R. Murthy, and B. D. Rao, “Joint approximately sparse
+channel estimation and data detection in OFDM systems using sparse
+Bayesian learning,”IEEE Trans. Signal Process., vol. 62, no. 14, pp. 3591–
+3603, Jul. 2014.
+[37] J. Ziniel and P . Schniter, “Efﬁcient high-dimensional inference in the mul-
+tiple measurement vector problem,” IEEE Trans. Signal Process., vol. 61,
+no. 2, pp. 340–354, Jan. 2013.
+[38] R. Giri and B. D. Rao, “Type I and type II Bayesian methods for sparse
+signal recovery using scale mixtures,” IEEE Trans. Signal Process. ,v o l .
+64, no. 13, pp. 3418–3428, 2016.
+[39] M. E. Tipping et al. , “Fast marginal likelihood maximisation for sparse
+Bayesian models,” in Proc. 9th Int. Workshop Artif. Intell. Stat. , 2003.
+[Online]. Available: http://dblp.org/db/conf/aistats/aistats2003.html
+[40] C. M. Bishop, Pattern Recognition and Machine Learning (Information
+Science and Statistics). Secaucus, NJ, USA: Springer, 2006.
+[41] G. McLachlan and T. Krishnan, The EM Algorithm and Extensions ,
+vol. 382. New Y ork, NY , USA: Wiley, 2007.
+[42] C. J. Wu, “On the convergence properties of the EM algorithm,” Ann.
+Stat., vol. 11, pp. 95–103, 1983.
+[43] S. Rangan, P . Schniter, E. Riegler, A. Fletcher, and V . Cevher, “Fixed
+points of generalized approximate message passing with arbitrary matri-
+ces,” in Proc. IEEE Int. Symp. Inf. Theory , 2013, pp. 664–668.
+[44] D. Wipf and S. Nagarajan, “Iterative reweighted ℓ1 and ℓ2 methods for
+ﬁnding sparse solutions,” IEEE J. Sel. Top. Signal Process. , vol. 4, no. 2,
+pp. 317–329, Apr. 2010.
+[45] Z. Zhang and B. D. Rao, “Sparse signal recovery in the presence of
+correlated multiple measurement vectors,” inProc. IEEE Int. Conf. Acoust.
+Speech Signal Process., 2010, pp. 3986–3989.
+[46] F. R. Kschischang, B. J. Frey, and H.-A. Loeliger, “Factor graphs and the
+sum-product algorithm,” IEEE Trans. Inf. Theory, vol. 47, no. 2, pp. 498–
+519, Feb. 2001.
+Maher Al-Shoukairi (S’17) received the B.Sc. de-
+gree in electrical engineering from the University of
+Jordan, Amman, Jordan, in 2005. He received the
+M.S. degree in electrical engineering from Texas
+A&M University, College Station, TX, USA, in 2008,
+after which he joined Qualcomm Inc. on the same
+year to date. He is currently working toward the Ph.D.
+degree in electrical engineering at the University of
+California at San Diego, San Diego, CA, USA.
+Philip Schniter (S’92–M’93–SM’05–F’14) received
+the B.S. and M.S. degrees in electrical engineering
+from the University of Illinois at Urbana-Champaign,
+Champaign, IL,USA, in 1992 and 1993, respectively,
+and the Ph.D. degree in electrical engineering from
+Cornell University in Ithaca, NY , USA, in 2000. After
+receiving the Ph.D. degree, he joined the Department
+of Electrical and Computer Engineering, The Ohio
+State University, Columbus, OH, USA, where he is
+currently a Professor. From 1993 to 1996, he was a
+Systems Engineer at Tektronix Inc. in Beaverton, OR,
+USA. During 2008–2009, he was a Visiting Professor at Eurecom, Sophia An-
+tipolis, France, and Supelec, Gif-sur-Yvette, France. During 2016–2017, he was
+a Visiting Professor at Duke University, Durham, NC, USA. His research inter-
+est include signal processing, wireless communications, and machine learning.
+Bhaskar D. Rao (F’00) received the B.Tech. de-
+gree in electronics and electrical communication en-
+gineering from the Indian Institute of Technology of
+Kharagpur, Kharagpur, India, in 1979, and the M.S.
+and Ph.D. degrees from the University of Southern
+California, Los Angeles, CA, USA, in 1981 and 1983,
+respectively. Since 1983, he has been at the Univer-
+sity of California at San Diego, San Diego, CA, USA,
+where he is currently a Distinguished Professor in the
+Department of Electrical and Computer Engineering.
+He is the holder of the Ericsson Endowed Chair in
+Wireless Access Networks and was the Director of the Center for Wireless
+Communications (2008–2011). His research interests include digital signal pro-
+cessing, estimation theory, and optimization theory, with applications to digital
+communications, speech signal processing, and biomedical signal processing.
+He was a Fellow of IEEE in 2000 for his contributions to the statistical anal-
+ysis of subspace algorithms for harmonic retrieval. His received several paper
+awards: 2013 Best Paper Award at the Fall 2013, IEEE V ehicular Technology
+Conference for the paper “Multicell Random Beamforming with CDF-based
+Scheduling: Exact Rate and Scaling Laws,” by Yichao Huang and Bhaskar D
+Rao, 2012 Signal Processing Society best paper award for the paper “An Em-
+pirical Bayesian Strategy for Solving the Simultaneous Sparse Approximation
+Problem,” by D. P . Wipf and B. D. Rao published in IEEE T RANSACTION ON
+SIGNAL PROCESSING, vol. 55, no. 7, July 2007, 2008 Stephen O. Rice Prize paper
+award in the ﬁeld of communication systems for the paper “Network Duality for
+Multiuser MIMO Beamforming Networks and Applications,” by B. Song, R.
+L. Cruz, and B. D. Rao that appeared in the IEEE T RANSACTIONS ON COMMU-
+NICA TIONS, vol. 55, no. 3, pp. 618–630, March 2007. (http://www.comsoc.org/
+awards/rice.html), among others. He also received the 2016 IEEE Signal Pro-
+cessing Society Technical Achievement Award.

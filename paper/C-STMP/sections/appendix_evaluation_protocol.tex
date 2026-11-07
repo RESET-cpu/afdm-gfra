@@ -1,0 +1,129 @@
+\section{Receiver Configurations and Evaluation Protocol}
+\label{app:evaluation-protocol}
+
+\subsection{Learned Receiver Configurations}
+\label{app:receiver-configurations}
+
+The STMP baseline adapts \cite{cai2026} to the AFDM model, replacing
+the Gaussian-message-based activity-probability update with learned
+density-ratio estimation. It uses a white-noise-trained first-order score network, a
+learned second-order score network, and a classifier for density ratio estimation.
+GP-MP uses a denoiser trained with white Gaussian noise of covariance
+$v\I_D$ and the scalar preconditioning
+in Section~\ref{sec:network-settings}, its derivative-based variance
+estimate, the corresponding activity classifier, and the input
+variance update in Section~\ref{sec:variance-update}.
+The two configurations use the same clean training channels and number of
+denoiser training epochs.
+The network versions used for the reported results are specified
+at the start of Section~\ref{sec:simulations}.
+The activity-probability comparison in Section~\ref{sec:activity-evidence}
+changes only the probability calculation within each receiver.
+GP-MP-EP uses the same weights and conditional receiver as the
+corresponding known-phase GP-MP configuration, with
+the one-time phase estimate in Section~\ref{sec:phase-estimation}.
+
+\subsection{Paired Scenes and Parameter Selection}
+
+The comparisons in Section~\ref{sec:simulations} use saved, paired physical
+scenes. The SNR figure uses scenes $0$--$999$ at each point for all
+nine configurations. GP-MP-EP uses estimated phases, and the other eight
+use known phases.
+The pilot comparison uses $500$ paired scenes.
+The device-count, activity-probability, and cross-profile
+comparisons also use scenes $0$--$499$ at each condition.
+Some evaluation scenes were used during method development and
+selection of baseline activity thresholds; the adopted baseline activity decision rules are
+reused without refitting. The reported SNR range was narrowed after
+interim inspection; the earlier $8$ and $10$~dB results remain archived.
+All finite outputs are included in the reported metrics, including those that
+reach the iteration limit.
+
+\subsection{Activity Probability Comparison}
+\label{app:activity-evidence-protocol}
+
+Table~\ref{tab:activity-evidence} uses the first completed paired scenes,
+with the sample size given in Section~\ref{sec:receiver-settings}.
+All four variants use the same saved observations, known phases, and
+noise variances estimated from the observations, with single-precision
+inference and TF32 disabled.
+The subset was adopted after interim inspection; the six SNR conditions
+reuse the same physical scenes.
+
+The limit rate is the fraction of runs that execute $600$ iterations.
+
+\subsection{Device-Count-Specific Damping}
+
+STMP uses damping factor $0.2$ at $K=20,40$ and $0.1$ at
+$K=60,80,100$. The latter was selected after inspecting the original
+$500$-scene results with damping factor $0.2$ and a diagnostic test with $12$ inputs at
+damping factor $0.1$. All $12$ diagnostic inputs are included in the reported panels.
+With the original damping factor, $498$, $479$, and $500$ runs reached the
+iteration limit at $K=60,80,100$, respectively; those outputs remain
+archived. Under the adopted settings, all $500$ runs satisfy the stopping criterion at
+$K=20,40,60$, while $3$ and $14$ reach the limit at $K=80$ and $100$.
+
+For GP-MP, the damping factor was reduced from $0.4$ to $0.2$ for all
+$K=100$ scenes after preliminary inspection. At $K=80$, only scene~372
+was rerun with damping factor $0.2$ after its original run reached the iteration
+limit; this selected replacement is used in the reported panel. Other
+$K=80$ scenes retain damping factor $0.4$. Both receivers retain the same
+$60$--$600$ iteration limits and stopping criteria.
+These damping factors were selected retrospectively.
+
+\subsection{Convergence and Channel-Profile Evaluation}
+
+Figure~\ref{fig:cstmp-convergence} uses the first $30$ paired scenes
+at $0$~dB. For this experiment, GP-MP uses the AWGN-trained denoiser
+and its matched activity classifier. GP-MP, STMP, and the baseline Off-grid SBL configuration
+each execute $300$ iterations with early stopping disabled; the figure
+shows the first $150$ iterations. At each iteration, NMSE is computed
+from the total error energy divided by the total active-channel energy
+over these scenes, followed by conversion to dB.
+
+In the $1{,}000$-scene-per-SNR experiment displayed in
+Fig.~\ref{fig:cstmp-snr}, STMP and GP-MP reach the iteration limit
+in one and three runs, respectively, all at $-4$~dB. GP-MP-EP reaches
+the limit in two runs, one at $-4$~dB and one at $-2$~dB. The remaining
+outputs of these three configurations satisfy the stopping criterion.
+At $Q=8$, STMP and GP-MP reach the iteration limit in
+$462$ and two out of $500$ scenes, respectively;
+all runs at the evaluated $Q\geq16$ satisfy the stopping criterion.
+
+The activity-probability and cross-profile sweeps retain damping factors $0.2$
+for STMP and $0.4$ for GP-MP. All $2{,}500$ proposed-receiver
+runs in the activity-probability experiment meet the stopping criterion. STMP reaches the limit in one
+scene at each of $p=0.20$ and $0.25$.
+The activity sampling and receiver prior are as defined in
+Section~\ref{sec:simulation-settings}; the horizontal axis denotes
+the nominal probability $p$.
+
+For the cross-profile comparison, all $12{,}000$ outputs of each learned
+receiver satisfy the receiver stopping criterion.
+The experiment varies the tabulated power delay profiles and
+fading distributions at fixed geometry, without retraining or changing the
+stopping rules. Path gains remain fixed within each block, so the comparison concerns
+the evaluated delay and fading profiles.
+
+\subsection{Additional Implementation Settings}
+\label{app:implementation-settings}
+
+The normalization constant is $s=0.2647966453$.
+The tolerances for changes in activity probabilities and site parameters,
+and for deviations from the moving average of activity probabilities
+are $10^{-3}$, $0.1$, and $10^{-3}$, respectively, with
+$\zeta_{\rm hist}=0.2$, $L_s=5$, and $L_d=10$.
+
+The stopping rule monitors relative changes in $\widehat{\mathbf X}$ and $v$,
+the maximum change in activity probability $\max_k|p_k^{(i)}-p_k^{(i-1)}|$, and
+$d_{\rm var}^{(i)}=|v_{\rm tar}^{(i)}-v^{(i)}|/
+\max\{v_{\rm tar}^{(i)},v^{(i)}\}$.
+It also requires accepted site updates with stable precision
+$(\tau_k^{\rm ext})^{-1}$ and natural parameter $\mathbf E_k/\tau_k^{\rm ext}$, together with a small difference from the previous exponential moving average, $\max_k|p_k^{(i)}-w_k^{(i-1)}|$.
+After this comparison, update
+$w_k^{(i)}=(1-\zeta_{\rm hist})w_k^{(i-1)}+\zeta_{\rm hist} p_k^{(i)}$, starting from
+$w_k^{(0)}=\rho$.
+After $I_{\min}$ iterations, all these conditions must hold for $L_s$
+consecutive iterations and hard activity decisions must remain unchanged
+for $L_d$ iterations; otherwise, return the last iterate at $I_{\max}$.
+

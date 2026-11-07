@@ -1,0 +1,68 @@
+[
+  {
+    "phrase": "resources for pilot transmission",
+    "source": "cai2026",
+    "pdf_page": 1,
+    "context": "oad data reception. However, due to the large number of devices and the limited resources for pilot transmission, it is impractical for the pilot sequences to be mutually orthogonal. As a result, the received pilots suffer from significant co-channel interference, which necessitates the development of advanced algorithms"
+  },
+  {
+    "phrase": "delay compensation",
+    "source": "li2023",
+    "pdf_page": 4,
+    "context": "irectly computed with the help of the ephemeris. By using the Doppler shift and delay compensation techniques, the time domain transmit signal of UT k after compensation is given by xcps k,s (t) = xk,s (t + τcps k )e− j2πν cps k (t+τ cps k ). The time domain received signal at the satellite in the sth OFDM "
+  },
+  {
+    "phrase": "angles-of-arrival",
+    "source": "li2023",
+    "pdf_page": 4,
+    "context": "ing environment around U T k. Let θk,q = ( θx k,q , θ y k,q ) denote the paired angles-of-arrival (AoAs) for the qth path of UT k’s channel. Then, the array response vector gk,q can be written as gk,q = g(θk,q ). For arbitrary θ = ( θx, θ y), the vector g(θ) is defined as g(θ) = aMx (sin θy cos θx) ⊗ aMy ("
+  },
+  {
+    "phrase": "Transmission Scheme",
+    "source": "shen2025",
+    "pdf_page": 4,
+    "context": " channel estimation. This limitation moti vates the development of our proposed transmission scheme. B. Transmission Scheme The spreading-based multi-frame OTFS transmission scheme is proposed to handle the large differential delay an d Doppler shift. In this scheme, each device is assigned an unique spreadi"
+  },
+  {
+    "phrase": "pilot matrix",
+    "source": "cai2026",
+    "pdf_page": 4,
+    "context": "ice during the t-th OFDM symbol on the n-th subcarrier. We construct a diagonal pilot matrix as Qkt ≜ diag{qkt1,...,q ktN}∈ CN×N ,∀k,t . Assume that the cyclic prefix (CP) length exceeds the maximum channel delay spread. After removing the CP and applying the DFT, the received signal Yt∈ CN×M during t"
+  },
+  {
+    "phrase": "known at the receiver",
+    "source": "wei2026",
+    "pdf_page": 2,
+    "context": "s an AWGN matrix with the power of each element beingσ 2. The pilot symbols are known at the receiver and have constant modulus with unit power, i.e.,|x k|= 1,∀k. Normalizing the received signal by right-multiplyingX H removes the pilot term and yields Y=BH+N,(3) whereY∈C M×N sc, andN= eNXH remains i.i.d. comp"
+  },
+  {
+    "phrase": "Each AFDM frame spans a duration",
+    "source": "huang2026",
+    "pdf_page": 2,
+    "context": "-antenna LEO satellite (Rx). Let N denote the number of AFDM chirp subcarriers. Each AFDM frame spans a duration of T = N∆t. The sampling rate is given by 1/∆t, and the subcarrier spacing to ∆f = 1 /T . The DAFT-domain symbol vector is mapped to the time domain via an N-point inverse IDAFT [14], which can be compactly ex"
+  },
+  {
+    "phrase": "transmitted symbols",
+    "source": "bemani2022",
+    "pdf_page": 10,
+    "context": "ion From (25), we see that the received symbols are a linear combination of the transmitted symbols. Moreover, we know that features, such as diversity order, detection complexity, and channel estimation, are determined by the input-output relation, i.e, the structure of the effective channel. For example, t"
+  },
+  {
+    "phrase": "received symbols",
+    "source": "bemani2022",
+    "pdf_page": 10,
+    "context": "ame statistical properties. D. Input-Output relation From (25), we see that the received symbols are a linear combination of the transmitted symbols. Moreover, we know that features, such as diversity order, detection complexity, and channel estimation, are determined by the input-output relation, i.e, th"
+  },
+  {
+    "phrase": "phase rotation",
+    "source": "shen2025",
+    "pdf_page": 5,
+    "context": "referred to maintain the quasi-static property of the channel. Furthermore, the phase rotation φ u,q [l′] caused by fractional Doppler accumulates across multiple frames and will be addressed carefully in ou r algorithm design. To exploit the sparsity in the angular domain, the two- dimensional discrete"
+  },
+  {
+    "phrase": "accumulates across multiple frames",
+    "source": "shen2025",
+    "pdf_page": 5,
+    "context": "hannel. Furthermore, the phase rotation φ u,q [l′] caused by fractional Doppler accumulates across multiple frames and will be addressed carefully in ou r algorithm design. To exploit the sparsity in the angular domain, the two- dimensional discrete Fourier transform is applied along th e space dimension to obtain the inpu"
+  }
+]

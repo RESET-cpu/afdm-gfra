@@ -1,0 +1,65 @@
+{
+  "status": "PASS",
+  "checked_local": "2026-11-05T19:08:24.712093+08:00",
+  "new_outputs": 12000,
+  "reused_baseline_outputs": 6000,
+  "paired_rows": 18000,
+  "coverage": "3 budgets x 1000 scenes x 6 SNRs",
+  "verified_prediction_and_record_hashes": 24000,
+  "original_reference_json_and_compact_hashes_verified": 6000,
+  "full_automatic_rescoring_verified": true,
+  "automatic_rescoring_source": "src/evaluation/offgrid_budget_20261105/run.py:summarize (frozen SHA256 verified)",
+  "independent_stratified_prediction_rescores": 12,
+  "independently_reaggregated_summary_rows": 18,
+  "process_exit_evidence": "PROCESS_EXIT_CHECK.json",
+  "processes_exited": true,
+  "all_finite_iteration_limit_outputs_retained": true,
+  "frozen_assets_verified": 64,
+  "no_inference_or_training_started": true,
+  "no_main_figure_changed": true,
+  "files": {
+    "SUMMARY.json": "08385c60fa09bb4b35ce318b8264296a9b9d6a04c86fe8aee3779e5588eaba9c",
+    "PAIRED_CASES.csv": "a4ba36caeb6a3d147652edffa8d29b16391d8fb8a0d601f69195a71ede1b1f72",
+    "OUTPUT_HASHES.json": "12f5656ee059b47a5e1ceed01667b59b7c913ed71fe8d764943e6aabc3cd5c03",
+    "COMPLETION.json": "d2846cee0bdc99815378f9bdd11fdab4bf90ff7c6537bffc4d144d281ddc3aec",
+    "PROCESS_EXIT_CHECK.json": "e2699534737075c0c83513619777825e801f49a8c35d2fb7fd69dc806df1058a"
+  },
+  "pooled": [
+    {
+      "misses": 376,
+      "false_alarms": 79,
+      "full_error": 1041625.9001307618,
+      "signal_energy": 7025728.996956281,
+      "active": 24474,
+      "inactive": 215526,
+      "iteration_caps": 6000,
+      "budget": 7,
+      "nmse_db": -8.289796236293054,
+      "aer": 0.0018958333333333334
+    },
+    {
+      "misses": 303,
+      "false_alarms": 290,
+      "full_error": 1089076.3085710155,
+      "signal_energy": 7025728.996956281,
+      "active": 24474,
+      "inactive": 215526,
+      "iteration_caps": 6000,
+      "budget": 13,
+      "nmse_db": -8.096330831252603,
+      "aer": 0.002470833333333333
+    },
+    {
+      "misses": 282,
+      "false_alarms": 687,
+      "full_error": 1232825.1606472423,
+      "signal_energy": 7025728.996956281,
+      "active": 24474,
+      "inactive": 215526,
+      "iteration_caps": 6000,
+      "budget": 25,
+      "nmse_db": -7.5578990447462004,
+      "aer": 0.0040375
+    }
+  ]
+}

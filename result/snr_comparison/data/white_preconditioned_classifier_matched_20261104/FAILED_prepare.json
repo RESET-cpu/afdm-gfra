@@ -1,0 +1,6 @@
+{
+  "status": "FAILED",
+  "pid": 96860,
+  "updated_unix": 1793818273.5858636,
+  "error": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\src\\training\\colored_activity_20261025\\run.py\", line 390, in main\n    spec=prepare(cfg,out)\n  File \"D:\\afdm-gfra\\src\\training\\colored_activity_20261025\\run.py\", line 89, in prepare\n    check_hashes(protected)\n    ~~~~~~~~~~~~^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\training\\colored_activity_20261025\\run.py\", line 40, in check_hashes\n    if sha256(repository_path(name)) != expected:\n       ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\utils.py\", line 11, in sha256\n    with Path(path).open('rb') as stream:\n         ~~~~~~~~~~~~~~~^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: 'D:\\\\afdm-gfra\\\\result\\\\channel_denoising\\\\data\\\\colored_second_50000_20261025\\\\second_best.pt'\n"
+}

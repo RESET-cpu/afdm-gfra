@@ -1,0 +1,20 @@
+{
+  "status": "PASSED",
+  "scene": 200,
+  "snr_db": 0,
+  "iteration": 1,
+  "users": 40,
+  "first_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+  "direct_old_vs_adapter_relative": 8.487053782353149e-10,
+  "float32_vs_float64_relative": 1.9171571064064607e-06,
+  "mean_noise_power_range": [
+    67.71834040666658,
+    16142.179864366002
+  ],
+  "condition_range": [
+    189.45436286390728,
+    95202.15628953387
+  ],
+  "no_training": true,
+  "scope": "Only verifies actual first-query adapter numerics; does not establish closed-loop stability or classifier calibration"
+}

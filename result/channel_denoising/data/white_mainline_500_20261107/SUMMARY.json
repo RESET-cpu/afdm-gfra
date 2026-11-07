@@ -1,0 +1,107 @@
+{
+  "status": "VERIFIED",
+  "experiment": "channel_denoising",
+  "rows": [
+    {
+      "method": "pretrained_white_first",
+      "variance": 0.001,
+      "snr_db": 30.0,
+      "scenes": 500,
+      "samples": 2000,
+      "error": 967.5028399403072,
+      "energy": 8060745.029172385,
+      "nmse_db": -39.207229356352876,
+      "parameters": {
+        "variance": 0.001,
+        "snr_db": 30.0
+      },
+      "condition": 0
+    },
+    {
+      "method": "pretrained_white_first",
+      "variance": 0.01,
+      "snr_db": 20.0,
+      "scenes": 500,
+      "samples": 2000,
+      "error": 5464.210198447579,
+      "energy": 8060745.029172385,
+      "nmse_db": -31.688477865947235,
+      "parameters": {
+        "variance": 0.01,
+        "snr_db": 20.0
+      },
+      "condition": 1
+    },
+    {
+      "method": "pretrained_white_first",
+      "variance": 0.1,
+      "snr_db": 10.0,
+      "scenes": 500,
+      "samples": 2000,
+      "error": 29868.36640103256,
+      "energy": 8060745.029172385,
+      "nmse_db": -24.311637138624413,
+      "parameters": {
+        "variance": 0.1,
+        "snr_db": 10.0
+      },
+      "condition": 2
+    },
+    {
+      "method": "pretrained_white_first",
+      "variance": 1.0,
+      "snr_db": -0.0,
+      "scenes": 500,
+      "samples": 2000,
+      "error": 121412.11155275466,
+      "energy": 8060745.029172385,
+      "nmse_db": -18.22113171866287,
+      "parameters": {
+        "variance": 1.0,
+        "snr_db": -0.0
+      },
+      "condition": 3
+    },
+    {
+      "method": "pretrained_white_first",
+      "variance": 10.0,
+      "snr_db": -10.0,
+      "scenes": 500,
+      "samples": 2000,
+      "error": 515544.5675932204,
+      "energy": 8060745.029172385,
+      "nmse_db": -11.941089691655122,
+      "parameters": {
+        "variance": 10.0,
+        "snr_db": -10.0
+      },
+      "condition": 4
+    },
+    {
+      "method": "pretrained_white_first",
+      "variance": 100.0,
+      "snr_db": -20.0,
+      "scenes": 500,
+      "samples": 2000,
+      "error": 5056047.351511152,
+      "energy": 8060745.029172385,
+      "nmse_db": -2.025640515248059,
+      "parameters": {
+        "variance": 100.0,
+        "snr_db": -20.0
+      },
+      "condition": 5
+    }
+  ],
+  "inputs": 3000,
+  "channel_queries": 12000,
+  "scenes": 500,
+  "plan_sha256": "ec9fe0cc2566a136a7458f17d62ecbbc4754601c1228c80a6ad68ce6a8f086bf",
+  "saved_predictions_rescored": true,
+  "all_input_array_hashes_match": true,
+  "limitations": [
+    "Retrospective fixed historical scenes, not an untouched test set.",
+    "Historical other-platform baselines share scene/noise identities; their array hashes can differ.",
+    "This evaluates the conditional mean on AWGN; it is not a receiver or classifier test."
+  ]
+}

@@ -1,0 +1,149 @@
+[
+  {
+    "source": "cai",
+    "excerpt": "TMP interprets the message updates on the factor graph in Fig. 2 as iterations between two modules",
+    "text_match": true
+  },
+  {
+    "source": "shen",
+    "excerpt": "the soft information is exchanged iteratively among them by careful scheduling",
+    "text_match": true
+  },
+  {
+    "source": "wei",
+    "excerpt": "the linear MMSE estimate",
+    "text_match": true
+  },
+  {
+    "source": "wei",
+    "excerpt": "removes the incoming prior information and generates the prior of Module B",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "the product of two Gaussian pdfs, which is also a Gaussian pdf",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "a shared scalar variance",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "conditioning on the active case",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "The outputs from these two sub-modules are then combined",
+    "text_match": true
+  },
+  {
+    "source": "shen",
+    "excerpt": "obtained as the means of their respective estimated posterior distributions",
+    "text_match": true
+  },
+  {
+    "source": "huang",
+    "excerpt": "without imposing sparsity assumptions",
+    "text_match": true
+  },
+  {
+    "source": "ding",
+    "excerpt": "the likelihood ratio between the nonzero and zero components",
+    "text_match": false,
+    "manual_verification": "原文 PDF p.3 最后一行与 p.4 第一行连续组成该句；页脚插入导致文本匹配中断。已核对两侧原文。"
+  },
+  {
+    "source": "ding",
+    "excerpt": "Based on the approximate posterior distribution in (14), an MMSE estimator is employed",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "the expression inside the Gaussian projection operator is a Bernoulli-Gaussian pdf",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "due to the complicated and high-dimensional integrals",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "we introduce score-based representations of (22) and (23) to circumvent the intractable high-dimensional integrals involved in posterior message calculation",
+    "text_match": true
+  },
+  {
+    "source": "huang",
+    "excerpt": "Since the AFDM effective channel matrix is complex-valued, we adopt a two-channel real–imaginary representation",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "Tweedie’s formula bridges MMSE denoising and the score of the perturbed data distribution through a simple equation",
+    "text_match": true
+  },
+  {
+    "source": "wei",
+    "excerpt": "the score network refines the channel mean through a Tweedie-form correction",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "is the Hessian of the log-density function, referred to as the second-order score function",
+    "text_match": true
+  },
+  {
+    "source": "huang",
+    "excerpt": "we parameterize the score function ... with learnable weights θ",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "Eqn. (46) cannot be directly used as the loss function since ... does not have an analytical form.",
+    "text_match": true,
+    "manual_verification": "改为以省略号标明数学记号，两个英文片段均在 IV-B 式(46)后原文中。"
+  },
+  {
+    "source": "cai",
+    "excerpt": "The equivalence is in the sense that (46) and (47) share the same optimal solution",
+    "text_match": true
+  },
+  {
+    "source": "shen",
+    "excerpt": "the expectation is calculated over Θ",
+    "text_match": true
+  },
+  {
+    "source": "cai",
+    "excerpt": "the score-based MMSE denoiser is required to operate effectively across a range of noise levels",
+    "text_match": true
+  },
+  {
+    "source": "huang",
+    "excerpt": "we corrupt the clean channel realizations ... from the training set by adding complex Gaussian noise at the specific level",
+    "text_match": true
+  },
+  {
+    "source": "huang",
+    "excerpt": "a two-channel real–imaginary representation",
+    "text_match": true
+  },
+  {
+    "source": "shen",
+    "excerpt": "the cross entropy is utilized as the loss function",
+    "text_match": true
+  },
+  {
+    "source": "shen",
+    "excerpt": "exploit this statistical information",
+    "text_match": true
+  },
+  {
+    "source": "ding",
+    "excerpt": "with parameters of other layers kept fixed",
+    "text_match": true
+  }
+]

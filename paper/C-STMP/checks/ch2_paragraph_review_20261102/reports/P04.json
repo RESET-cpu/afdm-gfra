@@ -1,0 +1,68 @@
+{
+  "paragraph_id": "P04",
+  "source_line_range": [63, 74],
+  "sentence_counts": {"A": 4, "B": 1, "C": 1, "D": 0},
+  "sentence_classifications": [
+    {"id": "S1", "lines": [63, 64], "category": "A", "basis": "Cai journal PDF p.3 §II-A resource-sharing sentence; chirp subcarriers terminology independently confirmed in Huang PDF p.2 §II."},
+    {"id": "S2", "lines": [65, 65], "category": "A", "basis": "Cai journal PDF p.4 §II-A allocation of OFDM pilot symbols; T/OFDM symbols replaced with Q/AFDM frames."},
+    {"id": "S3", "lines": [66, 68], "category": "A", "basis": "Cai journal PDF p.4 pilot symbol definition retains device/time/subcarrier roles."},
+    {"id": "S4", "lines": [68, 70], "category": "B", "basis": "Cai's diagonal pilot matrix becomes the manuscript's IDAFT input vector; generic construction syntax preserved, but operation and object differ. Pilot vectors term independently read in Arvinte PDF p.3."},
+    {"id": "S5", "lines": [71, 71], "category": "A", "basis": "Wei v1 PDF p.2 §II-A known-pilot clause retained with satellite added; constant-modulus/unit-power clause omitted."},
+    {"id": "S6", "lines": [72, 74], "category": "C", "basis": "Q by KN pilot packing and entry formula are manuscript-specific; generic Let/denote and pilot matrix terminology do not establish a complete original source sentence."}
+  ],
+  "overall_source_verdict": "四句有任务相近的直接原句；一处仅能确认构造句式和名称；一处为本文矩阵排列定义。不能将整段认定为单一原段的最小替换。数学定义与后续用途一致，未发现须改变模型的错误。",
+  "findings": [
+    {
+      "id": "P04-F01",
+      "severity": "medium",
+      "lines": [68, 74],
+      "issue": "向量构造与全局矩阵定义不能统一归为原句最小替换。",
+      "evidence": "Cai PDF p.4 defines a diagonal pilot matrix Q_kt used in Q_kt H_k; this paragraph defines an IDAFT input vector and a Q×KN global pilot packing. Wei PDF p.2 defines an analog spatial compression matrix, not this pilot matrix.",
+      "reason": "技术对象、运算用途或矩阵排列发生实质变化；通用定义句式及术语相同不足以支持完整原句归属。",
+      "minimal_action": "明确将 S4/S6 记录为 B/C；若严格要求完整母句，另找调制输入向量与同类矩阵排列的相近原段，不改变本文公式来迁就来源。"
+    },
+    {
+      "id": "P04-F02",
+      "severity": "medium",
+      "lines": [63, 74],
+      "issue": "新传输方案的小节起首缺少具体发送与接收过程的简短总览。",
+      "evidence": "Shen PDF p.4 §II-B introduces code assignment, Q consecutive frames, per-frame modulation/demodulation and collection at the receiver before symbol formulas. Here P04 defines pilots, while consecutiveness and common H_k appear in P10 and joint multi-frame observations in P13.",
+      "reason": "局部导频定义清楚，但读者须跨越后续波形细节自行拼接多帧方案，复现了此前只介绍部件而未建立操作关系的部分问题。",
+      "minimal_action": "以技术相近原段为依据补足极短流程总览；发送连续帧导频与接收端使用多帧观测的关系先交代，跨帧相位证明和算法动机留在相应位置，不移入 Shen 的数据扩频机制。"
+    }
+  ],
+  "strengths": [
+    "资源数量到逐符号导频再到向量/矩阵的局部定义顺序清楚。",
+    "Cai 的同步条件、Wei 的恒模/单位功率及可消去导频条件均未被错误移植。",
+    "p_qk 供后续 IDAFT 使用，P 供紧接的约束使用，定义有用途。",
+    "相邻 a total of 重复已修正；没有不必要的程度词、因果或性能承诺。"
+  ],
+  "recurrence": [
+    {"problem": "传输方案未说清具体操作关系", "status": "partial", "detail": "已有明确发送索引，但起首仍缺发送与多帧观测的简短联系。"},
+    {"problem": "机械罗列", "status": "mild_structural_risk", "detail": "定义较密集，与 Cai 的定义段相似；不能按 Let/Assume 次数认定错误，核心是段落任务不足。"},
+    {"problem": "相邻 a total of 重复", "status": "resolved", "detail": "第二句已删除。"},
+    {"problem": "拼接 notations/denotes、空壳连接词及含糊技术名称", "status": "not_found", "detail": "未发现此前所列的具体表达。"},
+    {"problem": "防御性赘述", "status": "not_found", "detail": "已知导频属于正常建模条件。"},
+    {"problem": "把通用句式算作完整母句", "status": "present_in_provenance_claim", "detail": "S4 和 S6 不应按 A 级宣传。"}
+  ],
+  "granularity": {
+    "verdict": "作为导频定义段详略适当，作为新方案起首少一层流程说明；无需将本段内容搬到附录。",
+    "cai_comparison": "Cai 的局部三句定义后接 CP/接收模型；本文增加共享资源、已知导频和全局矩阵，共六句，未明显过细。",
+    "shen_comparison": "Shen 先给完整发送/接收操作总览，再给符号和调制；本文起首以符号定义替代该层级。",
+    "early_matrix_definition": "P 在下一段立即使用，不能判为无用提前定义；若考虑调整全章组织，P 和约束应整体评估，不应孤立移动。"
+  },
+  "sources_read": [
+    {"key": "cai", "version": "current cited journal PDF, not cai_v2", "pdf_pages": [3, 4], "sections": ["II-A"], "path": "reference/literature/cai2026.pdf"},
+    {"key": "wei", "version": "arXiv v1, 2026-10-13", "pdf_pages": [2], "sections": ["II-A"], "path": "reference/literature/wei_yuan_2026_lstmp_v1.pdf"},
+    {"key": "shen", "version": "local cited PDF", "pdf_pages": [4], "sections": ["II-A ending", "II-B opening"], "path": "reference/literature/shen2025.pdf"},
+    {"key": "huang", "version": "local journal PDF", "pdf_pages": [2, 3], "sections": ["II", "III-A"], "path": "reference/literature/huang2026.pdf"},
+    {"key": "arvinte", "version": "local author manuscript, extracted directly this turn", "pdf_pages": [3], "sections": ["II-A"], "path": "paper/C-STMP/checks/full_terminology_audit_20261030/downloaded_sources/arvinte2023.pdf"},
+    {"key": "ding", "version": "local accepted author manuscript, scope comparison only", "pdf_pages": [2], "sections": ["II", "III-A"], "path": "reference/literature/ding2026.pdf"},
+    {"key": "xu", "version": "provided official author manuscript web excerpt, scope comparison only", "sections": ["II"], "path": "paper/C-STMP/checks/ch2_paragraph_review_20261102/sources/xu_web_excerpt.txt"}
+  ],
+  "limitations": [
+    "未声称遍历全部已有文献。",
+    "出处分类按六个显式句子统计，不是原创度或自然程度评分。",
+    "未修改正文、公式、术语账本或已批准写作规范；未运行实验。"
+  ]
+}

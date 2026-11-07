@@ -1,0 +1,115 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Low Earth orbit (LEO) satellites extend Internet-of-Things (IoT)
+services to remote areas, where grant-free random access (GFRA) can
+reduce signaling overhead by allowing active devices to transmit
+without first obtaining a grant. Since device activities are unknown
+and limited pilot resources preclude mutually orthogonal pilots,
+the receiver must perform joint activity detection and channel
+estimation (JADCE) \cite{liu2018}, which is further complicated by
+large propagation delays and Doppler shifts in LEO links.
+
+The new radio non-terrestrial network (NR-NTN) framework in Release~17
+of the 3rd Generation Partnership Project (3GPP) uses position information
+from a global navigation satellite system (GNSS) receiver, satellite
+ephemeris, and a broadcast common timing advance for uplink delay and
+Doppler pre-compensation \cite{3gpp38300}. To support devices without
+GNSS receivers or access to GNSS services, Release~19 includes a study
+of GNSS-independent operation \cite{3gpp22865}. Handling differential
+delays and Doppler shifts at the satellite reduces the GNSS hardware
+and pre-compensation burden on IoT devices, but these offsets can
+exceed one symbol duration and one subcarrier spacing, respectively.
+Consequently, terrestrial orthogonal frequency division multiplexing
+(OFDM)-based GFRA schemes designed for small offsets and block-fading
+channels cannot be directly applied.
+
+Waveforms for doubly selective channels offer a starting point:
+orthogonal time-frequency space (OTFS) modulation exploits diversity
+through a delay--Doppler representation \cite{hadani2017}, whereas
+affine frequency division multiplexing (AFDM) uses a one-dimensional
+discrete affine Fourier transform (DAFT) whose chirp parameters can
+separate multipath components. Requiring only an inverse fast Fourier
+transform and chirp multiplications, AFDM is suitable for terminals
+with limited computational resources \cite{bemani2022}. The multi-frame
+OTFS scheme in \cite{shen2025} collects additional observations of a
+shared channel; applying this principle to AFDM requires an input--output
+relationship that retains the prefix phase under long delays and
+the effects of fractional delay and Doppler.
+
+Beyond the waveform, JADCE requires a channel model suited to limited
+pilot observations. Compressed sensing methods exploit sparse user
+activity and channel structure, as in the joint activity and virtual
+angular-domain sparsity model for massive multiple-input multiple-output
+(MIMO) JADCE in \cite{ke2020}. For LEO AFDM access, a graph neural
+network refines a sparse delay--Doppler prior in \cite{ding2026}.
+When physical delays and Doppler shifts fall between grid points,
+however, each path spreads over several coefficients. A finer grid
+increases the dictionary size, while estimating continuous offsets
+introduces additional unknowns coupled with the path gains.
+
+Score-based generative models learn the channel distribution from
+samples \cite{arvinte2023}. By learning the score directly on AFDM
+effective channels that include fractional delay and Doppler effects,
+\cite{huang2026} represents these effects without prescribing a
+sparsity pattern. In multiuser GFRA, such a score-based generative
+channel prior must be combined with the activity prior to recover
+channels and identify active users from their superimposed signals.
+
+In \cite{cai2026}, a turbo message-passing (MP) receiver for MIMO-OFDM
+JADCE combines linear estimation, score-based channel denoising, and
+an activity update without online reverse diffusion sampling. The
+equivalent Gaussian observation used for denoising is an approximation
+whose accuracy depends on the sensing matrix and system dimensions
+\cite{cai2026}. We therefore use score pretraining to learn the channel
+prior and receiver training to adapt the denoisers to the messages
+encountered during multiuser inference.
+
+Deep unfolding converts the MP iterations into a trainable network
+\cite{he2020}. Since the activity probability weights the conditional
+channel mean \cite{cai2026}, both estimates determine the observation
+residual and the message returned to the linear estimator. An inaccurate
+activity probability can thus distort interference estimation even
+when the conditional channel estimate is accurate, motivating joint
+training of the channel denoisers, activity classifiers, and message
+parameters from received pilots.
+
+In this paper, we investigate GNSS-independent GFRA in multiuser
+MIMO-AFDM satellite IoT systems, for which we develop a multi-frame
+AFDM transmission scheme and a deep-unfolded MP receiver with a
+score-based generative channel prior.
+The main contributions are summarized as follows.
+\begin{enumerate}[label=\arabic*)]
+\item We propose a multi-frame AFDM transmission scheme and derive its
+input--output relationship, retaining the prefix phase for delays beyond
+the useful symbol interval and including fractional delay and Doppler
+in the channel operator. Under the blockwise channel model, separating
+the inter-frame phase yields a multiple measurement vector (MMV) model
+with one shared effective channel, so that additional pilot frames
+increase observations without increasing the channel dimension.
+
+\item We learn a score-based generative channel prior on the multiantenna
+AFDM effective channel for JADCE, using samples generated with
+continuous delays and Doppler shifts to account for off-grid effects.
+The denoiser jointly processes each user's complete channel tensor,
+exploiting dependence across DAFT input and output coordinates and
+receive antennas to estimate the channel under the active hypothesis.
+
+\item We develop a deep-unfolded MP receiver from the factorized posterior,
+combining linear estimation with channel and activity denoising through
+Gaussian extrinsic messages. Since the two estimates jointly determine
+subsequent messages, we jointly optimize the denoisers, classifiers,
+and message parameters using channel and activity supervision. Progressive
+training initializes each new layer's score network from the pretrained
+network and jointly fine-tunes the available layers at each depth.
+\end{enumerate}
+
+We also analyze the computational complexity of the complete receiver,
+including phase and noise estimation.
+
+% TWC-2 numerical conclusions await independent evaluation of the new receiver.
+
+Section~\ref{sec:system} presents the system model.
+Sections~\ref{sec:algorithm}--\ref{sec:overall} develop the receiver,
+its training procedure, and complexity analysis. Sections~VI and VII
+present numerical results and conclusions, respectively.

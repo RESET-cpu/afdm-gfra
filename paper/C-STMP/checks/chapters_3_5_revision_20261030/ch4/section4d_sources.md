@@ -1,0 +1,29 @@
+# IV-D Offline Training: author draft and evidence
+
+Scope: only `section4d.tex` and this note were written. Canonical sections, references, terminology records, model code, configurations, and results were not modified. No training, inference, compilation, or new experiments were performed.
+
+## Prose and preserved definitions
+
+- Organized the subsection as sample construction and network representation, sequential training and classifier inputs, then fixed-weight receiver use and scope across K and Q.
+- Retained clean channels sampled before activity masking; disjoint training and validation scenes; uniform sampling of log v; the same covariance expression and antenna–output–input ordering; 2M real input channels; the N-by-N DAFT plane; the 128 base-channel width; covariance conditioning; random classifier initialization after fixing the channel network; one logit per terminal; and fixed M,N with shared weights across K,Q.
+- Retained the classifier map scaling sqrt(2/(1+v)). Clarified that the real inner product has a sign-preserving logarithmic transform, rather than leaving the earlier phrase “log-transformed ... real inner product” ambiguous when that quantity is negative. This is a prose clarification of the existing implementation, not a feature change.
+- Referenced the existing mean-preconditioning and classifier-loss equations to connect implementation to the preceding theory. No numbered equation, equation label, mathematical definition, citation key, or cross-chapter target was removed or changed. No subsection label existed in canonical IV-D.
+- Dataset counts, optimizer settings, epochs, and selected checkpoints remain in VI-A1. The 128 base-channel width remains in IV-D because VI does not currently state it.
+
+## Primary reference and terminology
+
+**Song and Ermon, Generative Modeling by Estimating Gradients of the Data Distribution**, arXiv:1907.05600v3 (10 October 2020 version of the NeurIPS 2019 paper), [original PDF](https://arxiv.org/pdf/1907.05600), PDF p.14, Appendix A.3 “U-Net architecture.” The original passage states that its score network uses a four-cascade RefineNet with conditional normalization, residual blocks, and refinement blocks. Appendix A.1 on the same page defines the authors' modified conditional instance normalization. Appendix A.3 also states the 128-filter first cascade for the image settings, but the manuscript's current width is supported independently by its local implementation; the citation does not claim that our tensor layout, continuous covariance conditioning, preconditioning, or classifier reproduces the complete Song architecture or training recipe. The original reference [32], PDF p.11, identifies Lin et al., RefineNet, CVPR 2017. The existing `song2019` key is retained and narrowed to Appendix A.3. Original source read in this authoring session, rather than inferred solely from TERMINOLOGY.md.
+
+The terms “RefineNet,” “conditional,” and “backbone” describe the network family and its conditioned implementation. The sampling distribution, tensor packing, covariance inputs, and classifier features are project design choices, described directly rather than given invented method names. No claim of statistical optimality, convergence, or performance benefit is added here.
+
+## Implementation checks
+
+1. `src/training/colored_preconditioned_20261024/model.py`, `PreconditionedScore.raw` and `from_raw`: input shape `[B,2,antenna,output,input]`; packing into `2*antennas` channels; conditioned trunk; real reference variance 0.5; preconditioned mean output. `load_checkpoint` constructs the `DirectCaiNetwork` path. This subsection does not redefine the real/complex variance convention from IV-A.
+2. `src/training/colored_score_20261024/model.py`, `ColoredScore.__init__`: inherits the direct conditional backbone and expands its conditioner to the variance plus covariance-factor entries. `forward` confirms tensor order and packing.
+3. `src/networks/score.py`, `DirectCaiConfig`, `ContinuousCaiBackbone`, and `DirectCaiNetwork`: base_channels=128; `NCSN(settings)` trunk; continuous condition mapping; input channels=2M. `src/networks/cai_models/ncsn_channel_diffusion.py`, `NCSN`, lines 9–96, contains conditional residual and four refinement blocks. `src/networks/channel_score.py` was also inspected: that file defines a different residual-convolution/coordinate-projection branch, and is not used as evidence for the current RefineNet claim.
+4. `src/algorithm/STMP/activity.py`, `EvidenceNetwork.inputs`, lines 63–98: same-query detached mean features; concatenated maps of R and F scaled by sqrt(2/(1+v)); five scalar features are log(v)/5, log(1+||R||_F^2/(Dv)), log(1+||F||_F^2/(Dv)), sign(rf)log(1+|rf|) with rf=Re(<R,F>)/(Dv), and log(1+||R-F||_F^2/(Dv)). The subsection faithfully summarizes these transforms without introducing another display equation or expanding the numerical settings.
+5. `paper/C-STMP/sections/06_simulation_results.tex`, VI-A1 “Channel Samples and Training”: pre-mask channel bank and disjoint scenes; fixed training coordinates; covariance distribution; fixed mean network followed by the classifier from random initialization. Numerical training settings are already given there and are not repeated.
+
+## Limits and source gaps
+
+No unresolved gap for the wording retained in this subsection. The implementation checks are read-only source inspection, not execution or checkpoint re-validation. The same-weight statement describes the existing per-terminal input dimensions at fixed M,N; it does not assert guaranteed accuracy for arbitrary K,Q. The sampled covariance and exact feature transforms are supported by project sources, not attributed to Song and Ermon. Section VI, weights, and their historic training provenance were not re-audited in this limited language revision.

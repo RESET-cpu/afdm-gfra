@@ -1,0 +1,120 @@
+{
+  "status": "PASS",
+  "checked_unix": 1793933659.421197,
+  "checks": [
+    "Real 100-scene receipt, exact paired coverage, hashes and process-exit gate pass",
+    "Missing completion rejects worker before torch import or output creation",
+    "Live predecessor rejects launch despite completed receipts",
+    "Per-SNR 99 instead of 100 is rejected",
+    "Mismatched completion/summary hash is rejected",
+    "Entire inference worker AST unchanged apart from equivalent Receiver import",
+    "Original plan and frozen source hashes preserved"
+  ],
+  "no_torch_import": true,
+  "original_plan_sha256": "dd02a7ae8ace3339e23b4e364e32a36304d9ede5c99ac56a35ca8b9b6f3f5140",
+  "amendment_sha256": "e2a010cdd156d154c759c2ad3fed63838c451e2c4a69bc1b56dadd40a6e1590d",
+  "source_audit_sha256": "bacc8ead2e6245f9c1fbacf59babedaef82014b67026e9e01c85c47b7ab241f7",
+  "original_cpu_binding_checks": "b2cd2f798d03c474aa3c3078b6271b21f0adcd08c7ac1dadd3a66f997c62bb88",
+  "dependencies": {
+    "status": "PASS",
+    "checked_unix": 1793933628.5147862,
+    "reasons": [],
+    "receipts": {
+      "white_known_phase": {
+        "completion_sha256": "9288b71f9447d0176e2ad74edad42e717df53a621174dd704e3b2c68f7f01cb8",
+        "summary_sha256": "5bd9f97c02754e00d29f0cc95633a84031a06dc5907748a0c37e8bd03f8869f9",
+        "paired_sha256": "1fd9a313ec093b5af9aa1922f293261bb0511b4d13d0e5e9a2be3e3e36443b00"
+      },
+      "ablation": {
+        "completion_sha256": "d49f8b80d2b8441a70a10e3c8e4def8ca6073c1c021d04a5cecdd5e920fa4003",
+        "summary_sha256": "f5c6fa2195f9812599219232044ae801c1f967911f4f751fa055674ba729ef9d",
+        "paired_sha256": "f43f74efdcfde06262ff9b97c211d1d289f7c540ffb4b4d78a5f1c9c88bd32a9",
+        "source_hashes_sha256": "7d992a0081b1daf51d7b4aa2bafdbe62e0f474c9b206ce3bd88ef35c95b7fed6",
+        "adopted_scenes_per_snr": 100,
+        "new_inferences": 1200,
+        "reused_inferences": 1200
+      }
+    },
+    "live_processes": [],
+    "amendment_sha256": "e2a010cdd156d154c759c2ad3fed63838c451e2c4a69bc1b56dadd40a6e1590d"
+  },
+  "receiver_configuration": {
+    "scale": 0.2647966452702405,
+    "batch_size": 40,
+    "conditional_variance_floor_checkpoint_normalized": 0.0001,
+    "decision_threshold": 0.5,
+    "site_damping": 1.0,
+    "ep": {
+      "iterations": 600,
+      "damping": 0.4,
+      "min_iterations": 60,
+      "convergence_tolerance": 0.0005,
+      "convergence_patience": 5,
+      "variance_fraction_floor": 1e-06,
+      "variance_fraction_ceiling": 0.999999,
+      "covariance_mode": "isotropic",
+      "activity_convergence_tolerance": 0.001,
+      "raw_site_residual_tolerance": 0.1,
+      "activity_weight_residual_tolerance": 0.001,
+      "decision_stability_window": 10,
+      "activity_stopping_reference": "smoothed"
+    },
+    "initialization": {
+      "kind": "activity_prior_times_training_power",
+      "normalized_training_second_moment": 1.0004404181394917,
+      "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+    },
+    "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+    "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+    "first_checkpoint": "result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt",
+    "first_checkpoint_sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+    "schema": "white-matched-receiver-binding-v1",
+    "implementation": "colored_conditional_mean",
+    "activity_evidence": "classifier",
+    "evidence_checkpoint": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/evidence_best.pt",
+    "evidence_checkpoint_sha256": "2fb9977d68ede2b451dc0ba712a8106f002f889d2e529147aa2eb271a337d854",
+    "method": "GP-MP",
+    "query_covariance": "vI",
+    "classifier_policy": "matched_white_mean_vI",
+    "first_epoch": 200,
+    "classifier_training_binding": {
+      "first_sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+      "second_sha256": null
+    },
+    "variance_estimator": {
+      "probes": 1,
+      "epsilon": 0.01,
+      "seed": 2026102407
+    },
+    "limitations": [
+      "Historical research scenes; not untouched test data.",
+      "White-trained denoiser and its matched classifier; all numerical receiver controls unchanged.",
+      "Derivative-trace variance remains an approximation."
+    ],
+    "classifier_training_record": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/complete.json",
+    "classifier_training_record_sha256": "a58b5da831ad58dad13e0d8fb164fa4f643a2d144a9e652c5182ff1df0936fa7",
+    "classifier_training_specification": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/specification.json",
+    "classifier_training_specification_sha256": "fb1a0993b2023f48ebe76580034d59a370755d0b600e16395ea99c42160c5a73",
+    "classifier_execution_record": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/LAUNCH.json",
+    "classifier_execution_record_sha256": "da68f3b0026ba09a2293759b61e4537339e615753d337e0ddf5ca75c2e36d791",
+    "classifier_epoch": 79,
+    "query_variance_update": {
+      "enabled": true,
+      "formula": "mean(abs(r-joint_mean)^2)+mean(trace(joint_covariance))/M",
+      "schedule": "one update per outer iteration; ratio damped with existing beta; separate raw linear-query covariance history",
+      "stop": "also require relative posterior-residual variance update below original convergence tolerance"
+    },
+    "first_training_record": "result/channel_denoising/data/white_preconditioned_matched_20261104/complete.json",
+    "first_training_record_sha256": "6b71af29467551d7939cae196df7c22739c0c236976df77e76454b6fbb7449f1",
+    "first_training_specification": "result/channel_denoising/data/white_preconditioned_matched_20261104/specification.json",
+    "first_training_specification_sha256": "327e85315a7b6845500e13c090699ac2f63a9ab11db67e6c6378d740d8e42d03",
+    "classifier_history": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/history.json",
+    "classifier_history_sha256": "4803949cf61b3fddca615326fea6c172ae4cedd1d24f3a8ec80f48eec15f0c04",
+    "classifier_initialization": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/initialization.pt",
+    "classifier_initialization_sha256": "8630e5196c3611842d360bc60a107351202c0b1ff226eecd640986fa6c63ce9b",
+    "base_receiver_configuration": "src/configs/candidates/C_STMP_variance_em_20261025.json",
+    "base_receiver_configuration_sha256": "044d906052bf9150b9dbc09a64efaa545af6f70972cd96fd18f75a8e840f23b8",
+    "evaluation_plan": "result/channel_denoising/data/white_preconditioned_matched_20261104/EVALUATION_PLAN.json",
+    "evaluation_plan_sha256": "124f6e1bf100dd2a37e7f3939c24329b130153fe63290a5d012deafbc2706fd0"
+  }
+}

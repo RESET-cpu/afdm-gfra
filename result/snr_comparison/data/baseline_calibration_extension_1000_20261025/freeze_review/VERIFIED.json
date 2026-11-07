@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "created_utc": "2026-10-25T22:17:11.176210+00:00",
+  "frozen_policy_sha256": "02145acc2e4b4cd785ad7536f39a010369ec7c4d60bb4d629718915862d3cb6c",
+  "plan_sha256": "255eb8d74dc6c69aa565160a791de8058697b645c0bc9a24e0e071e5f72a4e1f",
+  "calibration_archive_sha256": "9401c78e6f94013b867e19a6c5e465bed140f9543dc847bd7ccbd553e16b942c",
+  "old_calibration_archive_sha256": "4b2bd38f86a642ef6c7a84c3261c18c963e844ebe8a3f2333a484bd6cfce6536",
+  "calibration_scenes": 1700,
+  "new_calibration_scenes": 700,
+  "independent_verification_scenes": 300,
+  "formal_comparison_0_999_excluded": true,
+  "calibration_and_verification_disjoint": true,
+  "verification_outputs_observed": 110,
+  "first_verification_pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\baseline_calibration_extension_1000_20261025\\results\\scene2003\\condition00\\offgrid_sbl.json",
+  "verification_outputs_saved_after_freezing": true,
+  "thresholds": {
+    "offgrid_sbl": {
+      "old_six_snr_threshold": 0.07078474396974002,
+      "extended_six_snr_threshold": 0.06469673817866867
+    },
+    "gnn": {
+      "old_six_snr_threshold": 0.03390470519661904,
+      "extended_six_snr_threshold": 0.03390470519661904
+    },
+    "gamp": {
+      "old_six_snr_threshold": 0.0741134513442958,
+      "extended_six_snr_threshold": 0.07397594492453889
+    },
+    "somp": {
+      "old_six_snr_threshold": 0.13139987342535986,
+      "extended_six_snr_threshold": 0.131896961421988
+    }
+  },
+  "interpretation": "Frozen thresholds only; independent validation and resampling stability analysis remain incomplete. No official policy adoption."
+}

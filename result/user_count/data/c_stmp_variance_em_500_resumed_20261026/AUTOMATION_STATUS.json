@@ -1,0 +1,23 @@
+{
+  "automation_id": "snr-c-stmp",
+  "status": "ACTIVE",
+  "resumed_unix": 1792979876.5995414,
+  "schedule": "FREQ=MINUTELY;INTERVAL=30",
+  "user_request": "现在权限放开了，你再试一下恢复自动跟进，跑完500场景后把图给我看看，然后暂停。",
+  "completion_action": "Verify all five 500-scene conditions, show image, then pause this automation; no later experiment",
+  "previous_attempt": {
+    "automation_id": "snr-c-stmp",
+    "status": "PAUSED",
+    "resume_attempt": "REJECTED",
+    "tool_reason": "MCP tool call requires approval, but approval policy is never",
+    "experiment_continues": true,
+    "driver_automatically_summarizes": true,
+    "automatic_chat_followup": false,
+    "created_unix": 1792979653.1591244
+  },
+  "current_execution_plan": "D:\\afdm-gfra\\result\\user_count\\data\\c_stmp_variance_em_500_resumed_20261026\\parallel7\\PLAN.json",
+  "execution_plan_sha256": "7833c0dcd87c94dc6633ebacf61d572dc40ed65b185b155105179ad990340a2d",
+  "current_start": "D:\\afdm-gfra\\result\\user_count\\data\\c_stmp_variance_em_500_resumed_20261026\\parallel7\\START.json",
+  "parallelism_update_unix": 1792980766.335275,
+  "workers": 7
+}

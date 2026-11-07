@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "checks": [
+    "syntax/import",
+    "startup-memory growth reserved for already launched workers",
+    "refuse new dispatch below free-RAM headroom",
+    "fully allocated workers do not double-count RAM"
+  ],
+  "inference_run_for_this_check": false
+}

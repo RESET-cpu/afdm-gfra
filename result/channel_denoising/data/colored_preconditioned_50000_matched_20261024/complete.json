@@ -1,0 +1,81 @@
+{
+  "status": "COMPLETED",
+  "epochs": 200,
+  "optimizer_steps": 156400,
+  "selected_epoch": 200,
+  "validation": {
+    "loss": 0.07892885320186616,
+    "samples": 5000,
+    "nmse_db": -12.731492535789242,
+    "error": 1088632.5987269282,
+    "signal": 20418817.54943657,
+    "bands": {
+      "snr_-20_to_-15_db": {
+        "samples": 465,
+        "error": 554109.8960418701,
+        "signal": 1916811.4076385498,
+        "nmse_db": -5.389834789148091
+      },
+      "snr_-15_to_-10_db": {
+        "samples": 513,
+        "error": 204511.6932373047,
+        "signal": 2153868.7277240753,
+        "nmse_db": -10.22501086296801
+      },
+      "snr_-5_to_0_db": {
+        "samples": 519,
+        "error": 91320.50045394897,
+        "signal": 2086415.4892578125,
+        "nmse_db": -13.588325153632894
+      },
+      "snr_5_to_10_db": {
+        "samples": 480,
+        "error": 39015.21285057068,
+        "signal": 1861624.5019073486,
+        "nmse_db": -16.78658105729135
+      },
+      "snr_10_to_15_db": {
+        "samples": 509,
+        "error": 19861.4940700531,
+        "signal": 2123812.8083724976,
+        "nmse_db": -20.291043206792313
+      },
+      "snr_15_to_20_db": {
+        "samples": 511,
+        "error": 7342.180843114853,
+        "signal": 2022063.5167236328,
+        "nmse_db": -24.39969716175022
+      },
+      "snr_20_to_25_db": {
+        "samples": 503,
+        "error": 2499.1540541648865,
+        "signal": 2165468.1975250244,
+        "nmse_db": -29.377587820220832
+      },
+      "snr_25_to_30_db": {
+        "samples": 536,
+        "error": 928.5932707190514,
+        "signal": 2216303.0875701904,
+        "nmse_db": -33.778036193607726
+      },
+      "snr_-10_to_-5_db": {
+        "samples": 471,
+        "error": 101397.1157875061,
+        "signal": 1908955.091430664,
+        "nmse_db": -12.747701098565818
+      },
+      "snr_0_to_5_db": {
+        "samples": 493,
+        "error": 67646.75811767578,
+        "signal": 1963494.7212867737,
+        "nmse_db": -14.62782749600926
+      }
+    }
+  },
+  "stopping_reason": "EXACT_200_EPOCH_BUDGET",
+  "optimization_converged_proven": false,
+  "specification_sha256": "61344549f8646fb1bd105e7476c0990428e689150d7c4e6e88a6e208bdbe75a8",
+  "weight_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+  "final_weight_sha256": "43e3c5d4cf305d82d9be016831dbd90ccbd47cf51481ff9005490e52946e1d1a",
+  "receiver_evaluation_completed": false
+}

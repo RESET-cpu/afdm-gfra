@@ -1,0 +1,26 @@
+{
+  "schema": "afdm-experiment-v1",
+  "experiment": "activity_probability",
+  "methods": [
+    "GP_MP",
+    "STMP",
+    "offgrid_sbl",
+    "gnn",
+    "gamp",
+    "somp"
+  ],
+  "scenes": 500,
+  "timing_repeats": 1,
+  "reference_method": "GP_MP",
+  "include_stmp": true,
+  "execution_status": "READY",
+  "values": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25
+  ],
+  "phase_mode": "known",
+  "noise_mode": "estimated"
+}

@@ -1,0 +1,252 @@
+{
+  "paragraph_id": "P10",
+  "source_file": "D:/afdm-gfra/paper/C-STMP/sections/02_system_model.tex",
+  "source_lines": {
+    "start": 227,
+    "end": 235
+  },
+  "manifest_sha256": "bb94e3a63b6a85779285b7ffffe7bae89bcba05d919df132983b1ae0ee0a24a7",
+  "audit_scope": "只核查逐句语言一致性与必要术语替换边界；不修改正文，不作一般性审稿。四个完整说明句，未拆分后重复计数。",
+  "evidence_method": "检索七份 sources/*.clean.pages.txt，并回看用户提供PDF的相关整页。PDF页码均为1-based；Cai期刊印刷页码另列。只规范化抽取层断行、断词、空格及数学排版。",
+  "search_scope": [
+    "shen2025",
+    "cai2026",
+    "cai2026_stmp_v2",
+    "ding2026",
+    "huang2026",
+    "li2023",
+    "bemani2022"
+  ],
+  "search_terms": [
+    "In this subsection, we assume",
+    "which will be updated later",
+    "For inference",
+    "Let ... denote the prior distribution",
+    "represented by the channel samples",
+    "independence across devices",
+    "between each device's activity and channel",
+    "The activities follow",
+    "retains the dependence",
+    "q_tr",
+    "training",
+    "independent",
+    "Bernoulli",
+    "channel correlations"
+  ],
+  "sentences": [
+    {
+      "id": "P10-S01",
+      "source_lines": {
+        "start": 227,
+        "end": 229
+      },
+      "draft": "In this subsection, we assume that the estimates $\\widehat{\\mathbf A}$ and $\\widehat\\sigma^2$ are known, which are obtained from $\\mathbf Y$ as described in Section~\\ref{sec:frontend}.",
+      "category": "OTHER_CHANGE",
+      "source_file": "D:/afdm-gfra/reference/literature/shen2025.pdf",
+      "source_page": 7,
+      "source_section": "III-B. Message Scheduling，首句",
+      "source_quote": "In this subsection, we assume that the phase rotation caused by fractional Doppler, the noise variance, and the parameters of BGM are known, which will be updated later.",
+      "evidence_ids": [
+        "E1"
+      ],
+      "changes": {
+        "necessary_term_substitutions": [
+          {
+            "from": "the noise variance",
+            "to": "$\\widehat\\sigma^2$",
+            "qualification": "可识别的噪声方差名称至估计符号对应；仅此局部对应不能使整句成为TERM_ONLY。"
+          }
+        ],
+        "other_changes": [
+          "把已知量的三项列举（phase rotation caused by fractional Doppler / noise variance / parameters of BGM）改成 the estimates Ahat and sigmahat^2 的两项估计量列举，加入 estimates 并删去 BGM 参数；不是逐项保留的对象名称替换。",
+          "phase rotation caused by fractional Doppler 至 Ahat 的对应不是直接同一对象换符号：本稿将有效导频矩阵估计放入该位置，不能把整个名词列表视为一个术语。",
+          "which will be updated later 改为 which are obtained from Y：will be updated 的将来更新机制改为 are obtained 的观测获取机制，并删除 later。",
+          "新增 from Y 和 as described in Section~ref{sec:frontend}；这是一整段新增来源/流程说明，不是单纯章节号显示差异。"
+        ],
+        "retained_frame": "In this subsection, we assume that the ... are known, which ... 保留了框架，但关系从句的谓语、时间和操作含义均改变。"
+      },
+      "reason": "可明确定位 Shen 原句，但存在列表删改、谓语与估计机制改写及新增解释，超过必要术语替换。",
+      "minimal_action": "标为改写句，不计入仅术语替换通过项；如坚持该严格标准，应逐项恢复可对齐的原句结构，并将本文由Y获得估计量的说明明确单列为本文表述，而非把新增从句豁免为术语。"
+    },
+    {
+      "id": "P10-S02",
+      "source_lines": {
+        "start": 230,
+        "end": 231
+      },
+      "draft": "Let $q_{\\rm tr}$ denote the prior distribution of $H_k$ represented by the channel samples used for training.",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_locator": "本次核查未定位可逐词对齐整句。最相关概念见 Cai期刊版及v2 PDF第8页 IV-A末段（合并训练集）和 IV-B首句（p(H)为总K个设备信道的混合分布）；参见E2/E3。",
+      "evidence_ids": [
+        "E2",
+        "E3"
+      ],
+      "changes": {
+        "necessary_term_substitutions": [],
+        "other_changes": [
+          "未找到可作为完整原句的来源，故不能批准 p(H)→q_tr 为足以通过的单一符号替换。",
+          "相对E3：With a slight abuse of notation, let ... be ... 改成 Let ... denote ...；删除 mixture、total K devices 和函数域/值域描述；新增 represented by the channel samples used for training。",
+          "E2描述将不同设备的训练样本合成一个训练集；本句将训练样本与先验定义合为一句，原文E2没有该句型或 q_tr 定义。上述为相关段落比较，不能冒称已找到直接改写原句。"
+        ]
+      },
+      "reason": "Cai的训练样本与混合分布概念有关，但本次未找到保留本句句式、词序与连接关系的完整原句。",
+      "minimal_action": "作为本文训练先验的自定义句单列，不计为原句术语替换；若要求所有句子严格通过，需要另找真正可对齐整句，否则如实保留未定位结论。"
+    },
+    {
+      "id": "P10-S03",
+      "source_lines": {
+        "start": 232,
+        "end": 233
+      },
+      "draft": "For inference, we assume independence across devices and between each device's activity and channel.",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_locator": "本次核查未定位可逐词对齐整句。相关模型证据为 Cai期刊版及v2 PDF第4页 II-B式(5)，其引导句仅概称 conditional independence relationships；设备活动的i.i.d.描述位于II-A跨第3–4页，均非本句。",
+      "evidence_ids": [
+        "E4"
+      ],
+      "changes": {
+        "necessary_term_substitutions": [],
+        "other_changes": [
+          "本次未定位含 For inference, we assume independence across devices and between each device's activity and channel 的完整原句。",
+          "Cai式(5)按设备相乘并分别使用p(H_k)、p(alpha_k)，属于相关先验分解；公式所表达的假设不能充当本句英文原句。",
+          "Cai式(5)引导句使用 In message passing, we factorize ... according to ... and ... expressed as，主语后的谓语及组织均不同；跨设备/每设备活动与信道两个明确独立性范围是本句自行写出的说明，不能视作数学符号更换。"
+        ]
+      },
+      "reason": "能够找到相关因子分解，但概念或公式一致不等于找到本句可逐词对齐的文字来源。",
+      "minimal_action": "标为本文推断假设说明；不要因Cai式(5)有类似分解而将其标为TERM_ONLY。"
+    },
+    {
+      "id": "P10-S04",
+      "source_lines": {
+        "start": 233,
+        "end": 235
+      },
+      "draft": "The activities follow Bernoulli priors, while $q_{\\rm tr}(H_k)$ retains the dependence among the coefficients within $H_k$.",
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_locator": "本次核查未定位由 while 连接这两个分句的完整原句。相关概念分散于 Cai期刊版PDF第5页Table II（活动先验）、第2页I-A（non-separable denoisers及channel correlations），训练分布另见第8页IV-A/B；参见E5/E6。",
+      "evidence_ids": [
+        "E5",
+        "E6"
+      ],
+      "changes": {
+        "necessary_term_substitutions": [],
+        "other_changes": [
+          "The activities follow Bernoulli priors 只有活动先验的概念依据，Table II为分布公式，不是该英文说明句。",
+          "while引入的对照结构与q_tr(H_k) retains the dependence among the coefficients within H_k未找到完整对应原句。",
+          "Cai第2页讨论将spatial-frequency channel matrix作为super node、引入non-separable denoisers以利用channel correlations；本句改成训练先验保留块内系数依赖的陈述，不能将原文整段架构解释当作一个必要术语替换。",
+          "若以E5/E6支撑整句，属于汇总不同位置的相关内容，不能按原句语言一致性通过。"
+        ]
+      },
+      "reason": "Bernoulli先验与信道相关性的概念可定位，但本次未定位包含本句两分句及while连接关系的整句。",
+      "minimal_action": "作为本文先验说明保留独立身份；严格核查表维持NO_SOURCE，不将相关概念等同于完整原句来源。"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E1",
+      "source_file": "D:/afdm-gfra/reference/literature/shen2025.pdf",
+      "source_page": 7,
+      "source_section": "III-B. Message Scheduling，首句",
+      "source_quote": "In this subsection, we assume that the phase rotation caused by fractional Doppler, the noise variance, and the parameters of BGM are known, which will be updated later.",
+      "pdf_visually_verified": true
+    },
+    {
+      "id": "E2",
+      "source_file": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+      "source_page": 8,
+      "printed_page": 3582,
+      "source_section": "IV-A末段",
+      "source_quote": "Instead, we train only two networks, namely the first- and the second-order score networks, in which all the training samples from different devices are combined into a single training set.",
+      "parallel_version": {
+        "source_file": "D:/afdm-gfra/reference/literature/cai2026_stmp_v2.pdf",
+        "source_page": 8,
+        "source_section": "IV-A末段",
+        "pdf_visually_verified": true
+      },
+      "pdf_visually_verified": true,
+      "evidence_role": "仅为相关训练概念，不是S02的对齐原句。"
+    },
+    {
+      "id": "E3",
+      "source_file": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+      "source_page": 8,
+      "printed_page": 3582,
+      "source_section": "IV-B. First-Order Score Matching，首句",
+      "source_quote": "With a slight abuse of notation, let p(H): C^{N×M} → R be the mixture distribution of the channels for the total K devices.",
+      "parallel_version": {
+        "source_file": "D:/afdm-gfra/reference/literature/cai2026_stmp_v2.pdf",
+        "source_page": 8,
+        "source_section": "IV-B首句",
+        "pdf_visually_verified": true
+      },
+      "pdf_visually_verified": true,
+      "evidence_role": "仅为相关分布定义，不能支持S02仅换q_tr符号的判定。"
+    },
+    {
+      "id": "E4",
+      "source_file": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+      "source_page": 4,
+      "printed_page": 3578,
+      "source_section": "II-B，式(5)及引导句",
+      "source_quote": "In message passing, we factorize the joint posterior distribution according to Baye’s theorem and the conditional independence relationships among the variables, expressed as",
+      "source_locator": "式(5)在k=1,...,K上相乘p(X_k|H_k,alpha_k)p(H_k)p(alpha_k)；保留原文拼写Baye’s。",
+      "parallel_version": {
+        "source_file": "D:/afdm-gfra/reference/literature/cai2026_stmp_v2.pdf",
+        "source_page": 4,
+        "source_section": "II-B，式(5)",
+        "pdf_visually_verified": true
+      },
+      "pdf_visually_verified": true,
+      "evidence_role": "公式与引导句仅为独立性相关证据，不是S03文字原句。"
+    },
+    {
+      "id": "E5",
+      "source_file": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+      "source_page": 5,
+      "printed_page": 3579,
+      "source_section": "Table II，p(alpha_k)行",
+      "source_locator": "p(alpha_k)的分布为(1-lambda)delta(alpha_k)+lambda delta(1-alpha_k)。",
+      "pdf_visually_verified": true,
+      "evidence_role": "活动的Bernoulli先验概念证据，不是S04整句。"
+    },
+    {
+      "id": "E6",
+      "source_file": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+      "source_page": 2,
+      "printed_page": 3576,
+      "source_section": "I-A. Contributions，右栏开头长段",
+      "source_quote": "Moreover, unlike the separable denoisers in [5], [6], [11], and [27] that operate element-wise for channel denoising, our TMP framework models the spatial-frequency channel matrix as a super node in the factor graph, enabling the incorporation of score-based generative models as non-separable denoisers for more effective exploitation of channel correlations.",
+      "pdf_visually_verified": true,
+      "evidence_role": "信道相关性概念证据，不是q_tr保留系数依赖这一完整句子的来源。"
+    }
+  ],
+  "counts": {
+    "total_sentences": 4,
+    "EXACT": 0,
+    "TERM_ONLY": 0,
+    "OTHER_CHANGE": 1,
+    "NO_SOURCE": 3,
+    "UNVERIFIED": 0,
+    "strict_pass": 0,
+    "strict_fail": 4
+  },
+  "paragraph_structure": {
+    "same_original_paragraph": false,
+    "assessment": "P10不是可确认来自同一原段并保持句序的段落：S01取Shen III-B的开头框架却改了关系从句；S02–S04在Cai有分散的概念关联，但本次未定位对应整句。",
+    "order_and_connectors": "Shen原首句后接 In addition, 对消息符号作定义，再接 Now, we describe...；本稿改接 Let q_tr...、For inference...和while结构，原段后续顺序与连接关系未保留。Cai的训练集与分布描述位于IV-A/IV-B，活动先验与信道相关性位于II-B/Table II及I-A，无法确认当前顺序来自一个原段。",
+    "source_mixing": "能确认Shen句架与Cai相关概念出自不同文献/不同原段；不能反推S02–S04一定由某些原句拼接，因其整句来源未定位。",
+    "attribution_risk": "不能把本文Ahat/sigmahat由Y获取、q_tr训练先验定义、显式独立性说明及while对照句统称为他文原句的术语替换；技术相关性不豁免文字新增。",
+    "formula_specificity": "P10无显示公式；q_tr的定义与推断假设属于本文建模说明，须单独识别。"
+  },
+  "verdict": "不通过最严格“只有必要术语替换，其余词语/句式/连接词不变”标准。4句中0句可判EXACT/TERM_ONLY，1句OTHER_CHANGE，3句本次核查未定位可对齐整句。正文未改。",
+  "limitations": "NO_SOURCE仅指本次给定核心文献及相关来源核查范围，不断言所有论文都不存在；未以项目术语表、旧代理结论或技术合理性作原文证据。"
+}

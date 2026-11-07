@@ -1,0 +1,39 @@
+{
+  "status": "COMPLETE",
+  "completed": 48,
+  "total": 48,
+  "scene": 974,
+  "snr_db": 0,
+  "group": "failure_enriched",
+  "replay_passed": true,
+  "query_recompute_passed": true,
+  "last_case_seconds": 30.122768700006418,
+  "updated_utc": "2026-10-24T01:18:21.257758+00:00",
+  "elapsed_seconds": 1678.315769500041,
+  "completed_utc": "2026-10-24T01:18:21.617162+00:00",
+  "report": "REPORT.json",
+  "summary": "SUMMARY.json",
+  "verification": {
+    "replay_all_passed": true,
+    "iterations_all_equal": true,
+    "converged_cases": 47,
+    "not_converged_cases": [
+      {
+        "scene": 736,
+        "snr_db": -4,
+        "iterations": 600,
+        "converged": false,
+        "stopping_reason": "MAX_ITERATIONS"
+      }
+    ],
+    "decisions_all_equal": true,
+    "maximum_probability_difference": 0.0,
+    "maximum_nmse_difference_db": 0.0,
+    "query_checks_all_passed": true,
+    "maximum_query_mean_relative_norm": 0.0,
+    "maximum_query_probability_absolute": 0.0,
+    "unsupported_probe_rows": 0,
+    "total_probe_rows": 103680,
+    "frozen_assets_unchanged": true
+  }
+}

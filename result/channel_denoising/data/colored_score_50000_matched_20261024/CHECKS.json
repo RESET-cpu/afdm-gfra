@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "cpu_tests": 12,
+  "command": "python -B -m pytest -q src/tests/test_colored_score_20261024.py src/tests/test_colored_score_formal_batches_20261024.py src/tests/test_colored_score_formal_resume_20261024.py",
+  "checks": [
+    "Covariance algebra and score conversion",
+    "Original white-noise batch and RNG exactness",
+    "Colored loss and gradient agreement",
+    "Mid-epoch resume preserves model, EMA, Adam, RNG and validation exactly"
+  ],
+  "gpu_preflight": "PREFLIGHT.json",
+  "independent_read_only_review": {
+    "status": "NO_BLOCKING_ISSUE",
+    "scope": "Formula, initialization, RNG draw order, tail batch, 200 epoch schedule, EMA, checkpoint resume, CUDA graph boundary",
+    "limitations": [
+      "Different-noise validation DSM losses are not a direct superiority comparison",
+      "Preflight memory does not include the formal EMA resident model"
+    ]
+  }
+}

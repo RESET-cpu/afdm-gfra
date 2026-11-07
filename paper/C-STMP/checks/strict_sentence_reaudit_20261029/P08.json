@@ -1,0 +1,146 @@
+{
+  "paragraph_id": "P08",
+  "source_file": "D:\\afdm-gfra\\paper\\C-STMP\\sections\\02_system_model.tex",
+  "source_lines": [
+    237,
+    240
+  ],
+  "input_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_reaudit_20261029\\P08.input.txt",
+  "scope": "仅当前 P08；仅语言来源、必要替换和段落组织核查，不修改论文或判定技术正确性。",
+  "verification": {
+    "local_pdf_visually_checked": true,
+    "pdf_pages": [
+      {
+        "file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+        "page_1_based": 4,
+        "printed_page": 3578
+      }
+    ],
+    "source_text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026.clean.pages.txt",
+    "source_text_lines": [
+      431,
+      435
+    ],
+    "search_queries": [
+      "Due to the sporadic",
+      "Specifically, if",
+      "block-sparsity"
+    ],
+    "searched_sources": [
+      "cai2026.clean.pages.txt",
+      "cai2026_stmp_v2.clean.pages.txt"
+    ],
+    "source_use_note": "主要判定取自 Cai 期刊版本地 PDF；v2 仅检索定位，不用其他审查结果。"
+  },
+  "sentences": [
+    {
+      "id": "P08-S01",
+      "draft": "Due to the sporadic access of the devices, matrix $\\mathbf X$ exhibits a block-sparsity structure.",
+      "draft_tex": "Due to the sporadic access of the devices, matrix $\\mathbf X$\nexhibits a block-sparsity structure.",
+      "category": "EXACT",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 4,
+      "source_printed_page": 3578,
+      "source_section": "II. System Model and Problem Statement / A. System Model；公式 (4) 后，同一原段的末部",
+      "source_quote": "Due to the sporadic access of the devices, matrix $\\mathbf X$ exhibits a block-sparsity structure.",
+      "source_locator": "第 4 页右栏，公式 (4) 后，The design of partial orthogonal Q ... 句之后。",
+      "changes": {
+        "necessary_substitutions": [],
+        "other_changes": [],
+        "display_normalizations": [
+          "仅将 PDF 断行恢复为空格，并用 TeX 表示粗体 X。"
+        ]
+      },
+      "formula_adaptation": [
+        {
+          "source": "原文 X 为堆叠的设备信道矩阵，维数 NK×M。",
+          "draft": "本句仍写 matrix X；本文 X 的具体维数和元素由本文定义。",
+          "assessment": "本句数学标记未变；数学对象语境的适配不改变本句英文，不能据此声称两文的模型相同。"
+        }
+      ],
+      "reason": "完整英文词语、词序和因果连接 Due to 均与原句一致。",
+      "minimal_recommendation": "本句语言无需调整；保留对 Cai 的来源标注。"
+    },
+    {
+      "id": "P08-S02",
+      "draft": "Specifically, if the $k$th device is inactive, we have $X_k=\\alpha_kH_k=\\mathbf 0$ \\cite{cai2026}.",
+      "draft_tex": " Specifically, if the $k$th\ndevice is inactive, we have $X_k=\\alpha_kH_k=\\mathbf 0$\n\\cite{cai2026}.\n",
+      "category": "TERM_ONLY",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 4,
+      "source_printed_page": 3578,
+      "source_section": "II. System Model and Problem Statement / A. System Model；公式 (4) 后，同一原段的末部",
+      "source_quote": "Specifically, if the $k$-th device is inactive, we have $\\mathbf X_k = \\alpha_k \\mathbf H_k = \\mathbf 0$.",
+      "source_locator": "第 4 页右栏，紧接 Due to ... block-sparsity structure.；下接 Frequently used notations ... Table I.。",
+      "changes": {
+        "necessary_substitutions": [
+          {
+            "source": "矩阵符号 \\mathbf X_k、\\mathbf H_k",
+            "draft": "本文对象符号 X_k、H_k",
+            "kind": "数学对象/符号适配，另见 formula_adaptation"
+          }
+        ],
+        "other_changes": [],
+        "display_normalizations": [
+          "原文 k-th 与当前 $k$th 按序数写法的排版差异处理，不存在词语替换。",
+          "恢复 PDF 的 Specifi- / cally 断行连字。",
+          "当前增加 \\cite{cai2026} 为来源标注，按协议属于引用显示层差异。"
+        ]
+      },
+      "formula_adaptation": [
+        {
+          "source": "\\mathbf X_k=\\alpha_k\\mathbf H_k=\\mathbf 0；原文 X_k、H_k 为 N×M 矩阵。",
+          "draft": "X_k=\\alpha_kH_k=\\mathbf 0；本文采用对应的 X_k、H_k 数学对象及记号。",
+          "assessment": "等式链及零活动含义的英文关系未改；仅数学对象/字体记号适配。此语言结论不认证本文张量模型、维数或稀疏块划分与来源相同。"
+        }
+      ],
+      "reason": "保留了 Specifically, if ... is inactive, we have ... 的完整原句；仅数学对象记号适配，无新增解释、谓语改写或条件改动。",
+      "minimal_recommendation": "无需为语言一致性重写；来源只能支持该句表述，不应据此将本文模型定义归于 Cai。"
+    }
+  ],
+  "counts": {
+    "total": 2,
+    "EXACT": 1,
+    "TERM_ONLY": 1,
+    "OTHER_CHANGE": 0,
+    "NO_SOURCE": 0,
+    "UNVERIFIED": 0
+  },
+  "paragraph_structure": {
+    "same_original_paragraph": true,
+    "source_sequence": [
+      {
+        "sentence_id": "P08-S01",
+        "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+        "source_page": 4,
+        "order": "同一原段中倒数第 3 句"
+      },
+      {
+        "sentence_id": "P08-S02",
+        "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+        "source_page": 4,
+        "order": "同一原段中倒数第 2 句，紧接 P08-S01 来源句"
+      }
+    ],
+    "structure_changes": [
+      "当前段落抽取原文同一较长段落中连续的两句，另起为独立短段；不是原文完整独立段落。",
+      "原段由 Assume that a total of T OFDM symbols are allocated for pilot transmission. 起始，涵盖导频和接收信号定义、公式 (3)/(4)、部分正交条件；当前 P08 不包含这些前文。",
+      "当前 P08 省去其后原句 Frequently used notations in this paper are summarized in Table I.。",
+      "保留的两句顺序及 Due to、Specifically、if、we have 均保留；无跨文献、跨原段或句内拼接。"
+    ],
+    "paragraph_exact_or_term_only": false,
+    "language_all_exact_or_term_only": true,
+    "connectors_preserved": true,
+    "source_attribution_risk": "两句的语言来源可确认；本文 X、X_k、H_k 的具体模型与数学对象含义不能随语言来源一起归于 Cai。",
+    "conclusion": "逐句语言通过，同一原段内连续取句；原段完整组织未保留，因此不作整段严格照搬通过结论。"
+  },
+  "verdict": {
+    "language_pass": true,
+    "paragraph_strict_pass": false,
+    "summary": "2/2 句语言符合 EXACT/TERM_ONLY；同一原段连续取句，但当前短段不保留完整原段组织。"
+  },
+  "coverage_check": {
+    "ordered_draft_tex_exactly_reconstructs_input": true,
+    "note": "包含原始引用、空格、换行及末尾换行，未省略或重复。"
+  }
+}

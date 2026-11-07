@@ -1,0 +1,51 @@
+{
+  "stage": "RUNNING",
+  "pid": 36180,
+  "updated_unix": 1793966673.0384655,
+  "planned": 6000,
+  "completed": 2574,
+  "active_workers": 2,
+  "workers": [
+    {
+      "position": 2574,
+      "preflight": false,
+      "pid": 50112,
+      "created_unix": 1793966657.9187477,
+      "started_unix": 1793966657.9221563,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_adopted100_20261106.run",
+        "worker",
+        "--position",
+        "2574"
+      ],
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\logs\\scene0429_condition00.out",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\logs\\scene0429_condition00.err"
+    },
+    {
+      "position": 2575,
+      "preflight": false,
+      "pid": 127700,
+      "created_unix": 1793966673.0346637,
+      "started_unix": 1793966673.0373585,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_adopted100_20261106.run",
+        "worker",
+        "--position",
+        "2575"
+      ],
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\logs\\scene0429_condition01.out",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\logs\\scene0429_condition01.err"
+    }
+  ],
+  "failed": 0
+}

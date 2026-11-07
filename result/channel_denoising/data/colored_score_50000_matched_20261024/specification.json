@@ -1,0 +1,122 @@
+{
+  "schema": "colored-first-score-matched-training-v1",
+  "configuration": {
+    "schema": "colored-first-score-matched-training-v1",
+    "base_config": "src/configs/final/STMP.json",
+    "original_training": "result/runs/proposed_50000_cuda_graph_20261018/training.json",
+    "original_training_sha256": "bc93359b3c2d5c0bc481d42b3f0f628e6eeaeae2116e419d466fc7b4885b911d",
+    "output": "result/channel_denoising/data/colored_score_50000_matched_20261024",
+    "scale": 0.2647966452702405,
+    "train_samples": 50000,
+    "validation_samples": 5000,
+    "evaluation_scenes": 1000,
+    "first": {
+      "initial_checkpoint": "result/runs/proposed_50000_cuda_20261018/initialization/first.pt",
+      "initial_checkpoint_sha256": "1ff7105ad62ba3bb0d509501fe7fbd317a7361286649c74ade53404e9230fd63",
+      "objective": "Conditional colored Gaussian DSM; original scalar weighting generalized to Sigma",
+      "seed": 202610180720001,
+      "validation_seed": 202610180720002,
+      "batch_size": 64,
+      "microbatch_size": 16,
+      "learning_rate": 0.0001,
+      "minimum_learning_rate": 1e-06,
+      "ema_decay": 0.999,
+      "gradient_clip": 1.0,
+      "checkpoint_seconds": 120,
+      "maximum_epochs": 200,
+      "minimum_epochs": 200,
+      "validation_patience": 201,
+      "meaningful_relative_improvement": 0.001,
+      "selection": "Minimum fixed-noise validation objective, including initial baseline",
+      "stopping": "Exactly 200 complete data epochs; no validation early stop"
+    },
+    "noise": {
+      "snr_db": [
+        -20,
+        30
+      ],
+      "max_strength": 0.5,
+      "rank": 4
+    },
+    "shape_seed": 2026102403,
+    "validation_shape_seed": 2026102404,
+    "runtime": {
+      "device": "cuda",
+      "threads": 1,
+      "execution_batch_size": 64,
+      "cuda_graph": true,
+      "precision": "float32"
+    },
+    "differences": [
+      "Online covariance factors and correlated noise; independent shape RNG leaves original base-noise/shuffle stream unchanged.",
+      "Exact covariance condition added with zero initialized new weights; original backbone initialization is reused.",
+      "Covariance weighted DSM and conditional mean replace scalar formulas."
+    ],
+    "scope": "First-score training only. Same original random initializer and 200 complete epochs; no auxiliary training or receiver binding."
+  },
+  "configuration_sha256": "37ce1ebeb561fbda20fb6e4eebe85bb822bbe4c134bb2e4fa4dd0e4140aa8297",
+  "data_sha256": {
+    "result\\data\\proposed\\train_channel.npy": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f",
+    "result\\data\\proposed\\train_identities.npy": "445f4ade5fb30dc5e07fe23a2b276e7c8abc115eeeac236a2e20944eb5b7c96b",
+    "result\\data\\proposed\\validation_channel.npy": "2b3cd347df5a869948bbd40c74d119764880a998bb82a39ffae8301a7f9f8b0a",
+    "result\\data\\proposed\\validation_identities.npy": "a7c065dc608db8914cdaa430e3172db015e2020514e9f998e23cce91773e9434"
+  },
+  "environment": {
+    "python": "3.13.1",
+    "torch": "2.7.1+cu128",
+    "numpy": "2.2.1",
+    "cuda": "12.8",
+    "gpu": "NVIDIA GeForce RTX 5080",
+    "matmul_precision": "highest",
+    "cudnn_allow_tf32": true,
+    "matmul_allow_tf32": false
+  },
+  "source_sha256": {
+    "src\\networks\\__init__.py": "c788cc62f3138f14a9ac034cee5246828b8b0ea87536b856e15770376ead38e1",
+    "src\\networks\\array_transforms.py": "fdc5d51115317c2d57ede29eb459f4667292fe1d538cc18e669094745be308dd",
+    "src\\networks\\cai_models\\__init__.py": "a1ce7f50e3aa8a680f7e041c195392ad91a47cca596378eb5322ef7ee160e4d8",
+    "src\\networks\\cai_models\\layers.py": "40ece1a54cf43e8687a41979d7b0b874f56950f622c15f88f4e289dd98c823ab",
+    "src\\networks\\cai_models\\ncsn_channel_diffusion.py": "8e9c9614dad8813a21562915903e480f6d21b3ac4ba45d938f84593e5a0c527a",
+    "src\\networks\\cai_models\\normalization.py": "f0bd151174513a7523d820b1c8257c10d581e76bf810eaf5adce2e64550e267d",
+    "src\\networks\\channel_score.py": "c67f30310f218e0cddaf7c5efe7e0bfba039317b4fced9036f0920d5f81f0fc1",
+    "src\\networks\\score.py": "2c815fd43f48be6b3f3d95e6bb89c80adde232cfccc048625f9bf57057b2318d",
+    "src\\project.py": "c35cad42ffe9731351236226621f4b7be9ad5a1f21fe8663480e51093c7d0b52",
+    "src\\training\\colored_score_20261024\\__init__.py": "be92fd9ca23538f232f3878c6fbe5bca67a304fa8d9111ad45a05a1633bd31ab",
+    "src\\training\\colored_score_20261024\\formal.py": "ce035af907b5e228b2dc603648c737b05275554950c8984029a16209f5cee930",
+    "src\\training\\colored_score_20261024\\formal_batches.py": "dcc3717fbc1b5aeba6353c357f01f1ec1fcdc52bda261c93155c910120211a3f",
+    "src\\training\\colored_score_20261024\\model.py": "d4a1b32e3f670bc2ef149b94c216e59110cd57503f6ea72a4b5fbf8cb1f845a1",
+    "src\\training\\colored_score_20261024\\noise.py": "05100bf3928706b9aef4f238d8a63ab561ade82d8fb2c6d4c546fcf75afa9f2d",
+    "src\\training\\colored_score_20261024\\run.py": "0a64992c21660891f7b467dee4f472b7ff9c8e646e6036f59691d1efc5125673",
+    "src\\training\\scores\\__init__.py": "f7062f41983045d817533906b3d933a6eebf35418efc2d0f9bc9fd3647e2ee28",
+    "src\\training\\scores\\checkpoints.py": "97105daf0860953414e1403e834eb6fc4302c0ae806811d8b854f27ca8763c22",
+    "src\\training\\scores\\cuda_execution.py": "6fd13922d52097b47ba25972b51d71e1e38d41178226b172e953435603ae89af",
+    "src\\training\\scores\\cuda_graph_auxiliary.py": "71b8eb18492fc367cf453435a131d588b45347dbba0a868f368349079d9db115",
+    "src\\training\\scores\\cuda_graph_first.py": "99f9885cfae35a7aadcca2109dcaa709c4e83ff774634253e0a18096f4936a9b",
+    "src\\training\\scores\\device.py": "6035b4f56d9449cd50a4149687475fb871e7f24d71482c2670f651ac25a6f933",
+    "src\\training\\scores\\direct_objectives.py": "d00efe5e5f44e59cc4830f6f224b5bbdfbf76bed81a1ef985e59893cc21c6f5e",
+    "src\\training\\scores\\score_matching.py": "4c765466866adb7c50f90d2a14fc694c7b18625dc77357311fc9951a1799bc65",
+    "src\\training\\scores\\trainer.py": "2dacbc4af0a3069ccae70f1cdedae717b14032d12f9161190b68711b10426fcd",
+    "src\\training\\STMP\\first.py": "c705076d7060f89b3ba433b79fad190070ed152725f8d94f6638e8ac00a2f5ef",
+    "src\\utils.py": "2af8cfccf251817ac389b5777735f1dce18d5f352a2bfc14f518cce370964200"
+  },
+  "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+  "original_specification": "result/runs/proposed_50000_cuda_graph_20261018/model/first/specification.json",
+  "validation_scope": "Same 5000 internal validation samples in 1250 scenes, not the separate 1000-scene performance experiment.",
+  "matched_settings": [
+    "seed",
+    "validation_seed",
+    "batch_size",
+    "microbatch_size",
+    "learning_rate",
+    "minimum_learning_rate",
+    "ema_decay",
+    "gradient_clip",
+    "checkpoint_seconds",
+    "maximum_epochs",
+    "minimum_epochs",
+    "validation_patience",
+    "meaningful_relative_improvement",
+    "initial_checkpoint_sha256"
+  ],
+  "planned_optimizer_steps": 156400
+}

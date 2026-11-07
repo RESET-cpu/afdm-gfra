@@ -1,0 +1,72 @@
+{
+  "checker": "ars-acronym-check/1.0",
+  "input": "paper\\C-STMP\\checks\\ch5_prose_revision_20261102\\draft.md",
+  "input_sha256": "0da28e161e25db19b0d68c651f344c5710721042a1388fd30ebe782264b70b0a",
+  "status": "partial",
+  "allowlist": {
+    "default": 29,
+    "user": [
+      "JADCE"
+    ]
+  },
+  "coverage": {
+    "body": "checked",
+    "abstract_en": "not_requested",
+    "abstract_zh": "not_requested"
+  },
+  "scope_lines": {
+    "body": [
+      [
+        1,
+        168
+      ]
+    ]
+  },
+  "unread_sections": [],
+  "coverage_limits": [
+    {
+      "scope": "body",
+      "line": 11,
+      "acronym": "CCD",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 13,
+      "acronym": "MFLE",
+      "reason": "unconfirmed_definition"
+    },
+    {
+      "scope": "body",
+      "line": 16,
+      "acronym": "GPJD",
+      "reason": "unconfirmed_definition"
+    }
+  ],
+  "findings": [
+    {
+      "scope": "body",
+      "line": 1,
+      "rule": "defined_after_use",
+      "acronym": "DRE",
+      "expansion": "density ratio estimation",
+      "occurrences": 3
+    },
+    {
+      "scope": "body",
+      "line": 1,
+      "rule": "defined_after_use",
+      "acronym": "GP",
+      "expansion": "generative prior",
+      "occurrences": 3
+    },
+    {
+      "scope": "body",
+      "line": 1,
+      "rule": "defined_after_use",
+      "acronym": "MP",
+      "expansion": "message passing",
+      "occurrences": 3
+    }
+  ]
+}

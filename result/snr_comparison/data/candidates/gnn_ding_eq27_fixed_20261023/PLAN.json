@@ -1,0 +1,23 @@
+{
+  "status": "FIXED_BEFORE_REPLAY",
+  "method": "gnn",
+  "purpose": "Restore Ding Eq.(27) with the project's historical fixed eta and compare on the same archived outputs",
+  "formula": "E_k=mean(|Z_k|^2); score_k=E_k/max_j(E_j); active=(score_k>=eta), except all-zero output is inactive",
+  "threshold": 0.0878782570362091,
+  "threshold_source": "paper/docs/history/results/ding_reproduction_20261009/independent_snr8/VERIFICATION.json",
+  "threshold_source_sha256": "fadcf6a1dbfc5140cbef30fab806b6a72709ff2eaf55d4dced8d47b04c79a948",
+  "threshold_is_published_by_ding": false,
+  "threshold_transfer_limitation": "Historical SNR8 calibration used a different checkpoint and scenario; not a calibration certificate for the current network",
+  "snr_dispatch": false,
+  "evaluation_snr_db": [-4, -2, 0, 2, 4, 6],
+  "scene_ids": {"first": 0, "last_inclusive": 799},
+  "input_archive": "result/snr_comparison/data/audits/baseline_gfra_20261023/READOUT_INPUTS.npz",
+  "input_archive_sha256": "49999218cbf301c8acd80d2a37c8485369632d55ba9ea087b0ce66dfff01e9a9",
+  "phase_mode": "known",
+  "noise_mode": "estimated",
+  "fit_threshold_to_evaluation": false,
+  "new_receiver_inference": false,
+  "new_training": false,
+  "update_running_main_experiment": false,
+  "bootstrap": {"unit": "paired physical scene across all SNR", "replicates": 10000, "seed": 20261023027, "interval": "pointwise percentile 95%; no simultaneous significance claim"}
+}

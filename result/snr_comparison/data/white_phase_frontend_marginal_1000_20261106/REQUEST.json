@@ -1,0 +1,88 @@
+{
+  "schema": "authorized-deferred-white-phase-snr-request-v1",
+  "created_at": "2026-11-06T00:48:47+08:00",
+  "status": "WAITING_FOR_PREDECESSORS",
+  "authorization": "User explicitly requested on 2026-11-06: wait for current white known-phase batch, then the other thread activity-evidence ablation, then launch main-SNR estimated-phase inference with the existing white networks.",
+  "owner_thread_id": "01a1a931-af65-7f83-a065-bf11e845322d",
+  "predecessors": [
+    {
+      "order": 1,
+      "directory": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_matched_fp32_1000_snr_20261105",
+      "required": "6000/6000, COMPLETION.json PASS, SUMMARY.json VERIFIED, matching completion hashes, coordinator and workers exited"
+    },
+    {
+      "order": 2,
+      "directory": "D:\\afdm-gfra\\result\\snr_comparison\\data\\activity_evidence_500_20261105",
+      "owner_thread_id": "01a1ac08-2adf-7bc2-80c4-f60aace615b1",
+      "owner_thread_title": "查看进行中的实验",
+      "automation_id": "500-stmp",
+      "required": "Four variants, each 500 paired scenes x 6 SNRs, including 6000 new Gaussian-evidence inferences; completion and coverage verified, coordinator and workers exited. Missing output directory means not started, never completed."
+    }
+  ],
+  "scenes": 1000,
+  "scene_ids_inclusive": [
+    0,
+    999
+  ],
+  "snrs": [
+    -4,
+    -2,
+    0,
+    2,
+    4,
+    6
+  ],
+  "planned_inferences": 6000,
+  "receiver_binding": "src/configs/candidates/GP_MP_white_phase_frontend_marginal_20261106.json",
+  "receiver_factory": "algorithm.C_STMP_phase_frontend_marginal_20261104.receiver:Receiver",
+  "phase_policy": "Same frozen marginal-likelihood initializer as colored estimated-phase reference; estimate once from observations, hold fixed during receiver iterations; no true phase supplied.",
+  "network_policy": "Existing white-trained conditional mean denoiser plus its matched density-ratio classifier; no training.",
+  "inference_precision": {
+    "dtype": "float32",
+    "tf32": false,
+    "cudnn_tf32": false,
+    "cudnn_benchmark": false
+  },
+  "receiver_controls": "Use the existing white known-phase configuration unchanged: covariance vI, damping 0.4, maximum 600 iterations, minimum 60, threshold 0.5 and all stopping rules unchanged.",
+  "suggested_workers": 2,
+  "native_directory": "E:/afdm-gfra-results/white_phase_frontend_marginal_1000_20261106",
+  "runner_reference": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_marginal_1000_20261104\\run.py",
+  "report_reference": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_marginal_1000_20261104\\report.py",
+  "white_runner_reference": "src/evaluation/white_matched_fp32_20261105/run.py",
+  "comparisons": [
+    "white estimated phase vs colored estimated phase, same 6000 inputs",
+    "white estimated phase vs white known phase, same 6000 inputs"
+  ],
+  "output_requirements": [
+    "All saved predictions and failures retained",
+    "Re-score arrays, verify input/weight/configuration hashes and exact paired coverage",
+    "Pooled-energy NMSE and all-device AER per SNR; misses/false alarms and iteration-cap counts",
+    "Preserve old data; update main SNR GP-MP and GP-MP-EP curves only after complete verification; retain other methods and current styles"
+  ],
+  "future_scope_not_dispatched": [
+    "Gradually replace remaining colored-network plots with white-network results",
+    "Add estimated-phase curves for pilot frames, user count and activity probability",
+    "Add Off-grid SBL budgets 13 and 25 for those remaining sweeps"
+  ],
+  "manuscript_decision": "If ablation supports the method claims and paired estimated-phase performance remains close, freeze the core narrative as a working manuscript; final submission figures and protocol must match actual networks and data. Do not label pending replacements as complete.",
+  "assets": {
+    "result/snr_comparison/data/white_preconditioned_matched_fp32_1000_snr_20261105/PLAN.json": "0beee36c3141edfdc7872eeb93408249faf9615ce51698e97c47eb64f73e0829",
+    "result/snr_comparison/data/white_preconditioned_matched_fp32_1000_snr_20261105/INPUTS.json": "9b5c367571a0d3773420217d158c442947268151797bfb0bfa77142cb1bfb571",
+    "result/snr_comparison/data/white_preconditioned_matched_fp32_1000_snr_20261105/REFERENCES.json": "67a285618604c2f200330d4ce94c0e9377ac62ded1cb0c14e303ff4a9e912e28",
+    "result/snr_comparison/data/c_stmp_phase_frontend_marginal_1000_20261104/PLAN.json": "4e190d01eef1bc4288e89ef554a32401f520995cb5f15c1c3bc3214564199ff1",
+    "result/snr_comparison/data/c_stmp_phase_frontend_marginal_1000_20261104/COMPLETION.json": "f3e7893fb174b7dab70bbc2081b4542e22b3537a72f1039d980016ed2398eea5",
+    "src/configs/candidates/c_stmp_phase_frontend_marginal_20261104/fixed.json": "2b28c9a67c8cd52ebaf4bad6da615b9ac46eff2084f3119007a1837e0375ad40",
+    "src/configs/candidates/GP_MP_white_preconditioned_matched_20261104.json": "98953511f77f8f9612e4fe129bdaa36ce55c674335e097749d6e4667533872eb",
+    "src/configs/candidates/GP_MP_white_phase_frontend_marginal_20261106.json": "953e40a4bd56951d299a36cde895cdb21e27ad1dcd7dca89d8e8735eac81f1de",
+    "result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+    "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/evidence_best.pt": "2fb9977d68ede2b451dc0ba712a8106f002f889d2e529147aa2eb271a337d854"
+  },
+  "checks": {
+    "white_configuration_matches_current_plan": true,
+    "frozen_phase_bindings_verified": true,
+    "white_weights_hash_verified": true,
+    "gpu_preflight_run": false,
+    "inference_started": false,
+    "training_started": false
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "status": "PASS_STARTUP_ONLY",
+  "time": 1793334356.7845173,
+  "state": {
+    "stage": "RUNNING",
+    "planned": 3000,
+    "completed": 35,
+    "reused": 25,
+    "new_completed": 10,
+    "dispatched_new": 14,
+    "pending": 4,
+    "failed": 0,
+    "failures": [],
+    "completed_by_snr": {
+      "-4": 12,
+      "-2": 5,
+      "0": 6,
+      "2": 3,
+      "4": 3,
+      "6": 6
+    },
+    "nonconverged": 0,
+    "active": [
+      {
+        "scene": 3,
+        "index": 3
+      },
+      {
+        "scene": 3,
+        "index": 4
+      },
+      {
+        "scene": 4,
+        "index": 1
+      },
+      {
+        "scene": 4,
+        "index": 3
+      }
+    ],
+    "elapsed_seconds": 119.02884244918823,
+    "updated_unix": 1793334347.2839017,
+    "stop_reason": null
+  },
+  "coordinator_alive": true,
+  "worker_count": 4,
+  "workers": [
+    {
+      "pid": 116040,
+      "create_time": 1793334228.2628071,
+      "scene": 4,
+      "index": 3,
+      "started_unix": 1793334347.284356,
+      "stage": "RUNNING",
+      "rss_gib": 2.2500038146972656
+    },
+    {
+      "pid": 122768,
+      "create_time": 1793334251.4290683,
+      "scene": 4,
+      "index": 1,
+      "started_unix": 1793334339.0151868,
+      "stage": "RUNNING",
+      "rss_gib": 1.7469558715820312
+    },
+    {
+      "pid": 86248,
+      "create_time": 1793334251.4380565,
+      "scene": 3,
+      "index": 3,
+      "started_unix": 1793334328.289872,
+      "stage": "RUNNING",
+      "rss_gib": 1.7526473999023438
+    },
+    {
+      "pid": 99040,
+      "create_time": 1793334251.4332266,
+      "scene": 3,
+      "index": 4,
+      "started_unix": 1793334328.8142805,
+      "stage": "RUNNING",
+      "rss_gib": 1.7465667724609375
+    }
+  ],
+  "available_ram_gib": 1.9870529174804688,
+  "partial_audit_inputs": 31,
+  "partial_audit_sha256": "da260455cefcac3d4edd2233ffc6a8ea48729141c4b6c27274813c233880299a",
+  "batch_complete": false
+}

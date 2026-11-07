@@ -1,0 +1,90 @@
+{
+  "status": "PASS",
+  "results": [
+    {
+      "stage": "iteration001",
+      "kind": "new_I",
+      "users": [
+        0,
+        1
+      ],
+      "autograd_tau": [
+        -0.22152046822335955,
+        -0.053691285281843824
+      ],
+      "finite_difference_tau": [
+        -0.221424355909506,
+        -0.05345585920967205
+      ],
+      "linear_skip_contribution": [
+        0.9248904062673091,
+        0.9248904062673091
+      ],
+      "max_relative_error": 0.00438480976821361
+    },
+    {
+      "stage": "iteration001",
+      "kind": "new_C",
+      "users": [
+        0,
+        1
+      ],
+      "autograd_tau": [
+        -0.44268815615991575,
+        -0.43871004717774087
+      ],
+      "finite_difference_tau": [
+        -0.44256657673919414,
+        -0.438550824483506
+      ],
+      "linear_skip_contribution": [
+        0.8926224113824215,
+        0.8926952454612431
+      ],
+      "max_relative_error": 0.00036293377655502505
+    },
+    {
+      "stage": "final",
+      "kind": "new_I",
+      "users": [
+        0,
+        1
+      ],
+      "autograd_tau": [
+        0.02887379365470182,
+        0.03358878941233238
+      ],
+      "finite_difference_tau": [
+        0.028905455736164175,
+        0.033679696022643126
+      ],
+      "linear_skip_contribution": [
+        0.895164075672028,
+        0.895164075672028
+      ],
+      "max_relative_error": 0.00270645688341989
+    },
+    {
+      "stage": "final",
+      "kind": "new_C",
+      "users": [
+        0,
+        1
+      ],
+      "autograd_tau": [
+        -0.053374029613287466,
+        -0.1677441928153176
+      ],
+      "finite_difference_tau": [
+        -0.05320018976060186,
+        -0.16752666531926325
+      ],
+      "linear_skip_contribution": [
+        0.8524582234073862,
+        0.8519171376458939
+      ],
+      "max_relative_error": 0.0032570119577841894
+    }
+  ],
+  "conclusion": "Negative response is present in automatic differentiation, not explained by finite-difference implementation."
+}

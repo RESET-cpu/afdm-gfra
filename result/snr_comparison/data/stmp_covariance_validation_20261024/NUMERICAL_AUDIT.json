@@ -1,0 +1,465 @@
+{
+  "status": "ANALYZED",
+  "threshold": 67108864.0,
+  "interpretation": "All users retained. The threshold flags loss of relative information in Ak^H Ak, not numerical rank deficiency or exact nullity. Raw extreme means and variances are not reliable physical magnitudes. SVD comparisons are supplementary and do not replace accepted results.",
+  "summary": [
+    {
+      "snr_db": -4,
+      "all_users": 40000,
+      "svd_rank_below_16": 0,
+      "flagged_users": 8,
+      "flagged_scenes": [
+        22
+      ],
+      "all_mse_ratio_median": 27.000530082635464,
+      "supplementary_unflagged_mse_ratio_median": 26.99409940935405,
+      "max_block_condition": 193990668555381.44
+    },
+    {
+      "snr_db": 0,
+      "all_users": 40000,
+      "svd_rank_below_16": 0,
+      "flagged_users": 8,
+      "flagged_scenes": [
+        22
+      ],
+      "all_mse_ratio_median": 26.750681812079446,
+      "supplementary_unflagged_mse_ratio_median": 26.743515027864618,
+      "max_block_condition": 193990668555381.44
+    }
+  ],
+  "svd_comparison": [
+    {
+      "scene": 0,
+      "user": 0,
+      "block_condition": 43.33617623354715,
+      "svd_mean_variance_amplification": 46.74021575173858,
+      "gram_eigh_mean_variance_amplification": 46.74021575173877,
+      "svd_max_tau": 10435.262300035072,
+      "gram_eigh_max_tau": 10435.26230003512
+    },
+    {
+      "scene": 0,
+      "user": 1,
+      "block_condition": 63.577926651150115,
+      "svd_mean_variance_amplification": 87.20444542445125,
+      "gram_eigh_mean_variance_amplification": 87.20444542445206,
+      "svd_max_tau": 19825.205309729827,
+      "gram_eigh_max_tau": 19825.205309730027
+    },
+    {
+      "scene": 0,
+      "user": 2,
+      "block_condition": 38.197364154935556,
+      "svd_mean_variance_amplification": 35.06880581185199,
+      "gram_eigh_mean_variance_amplification": 35.068805811851966,
+      "svd_max_tau": 7581.573775709963,
+      "gram_eigh_max_tau": 7581.573775709955
+    },
+    {
+      "scene": 0,
+      "user": 3,
+      "block_condition": 45.73723516724112,
+      "svd_mean_variance_amplification": 47.112402313027005,
+      "gram_eigh_mean_variance_amplification": 47.11240231302724,
+      "svd_max_tau": 10737.645628529286,
+      "gram_eigh_max_tau": 10737.645628529344
+    },
+    {
+      "scene": 0,
+      "user": 4,
+      "block_condition": 27.626085604107892,
+      "svd_mean_variance_amplification": 17.543293936735633,
+      "gram_eigh_mean_variance_amplification": 17.543293936735555,
+      "svd_max_tau": 3403.5616146629923,
+      "gram_eigh_max_tau": 3403.5616146629727
+    },
+    {
+      "scene": 0,
+      "user": 5,
+      "block_condition": 30.7889951864743,
+      "svd_mean_variance_amplification": 24.69670771926864,
+      "gram_eigh_mean_variance_amplification": 24.696707719268623,
+      "svd_max_tau": 4972.24561848509,
+      "gram_eigh_max_tau": 4972.245618485089
+    },
+    {
+      "scene": 0,
+      "user": 6,
+      "block_condition": 34.39296628645705,
+      "svd_mean_variance_amplification": 29.89829029111395,
+      "gram_eigh_mean_variance_amplification": 29.898290291114048,
+      "svd_max_tau": 5823.010707778714,
+      "gram_eigh_max_tau": 5823.010707778738
+    },
+    {
+      "scene": 0,
+      "user": 7,
+      "block_condition": 37.762304383138606,
+      "svd_mean_variance_amplification": 34.444623990991445,
+      "gram_eigh_mean_variance_amplification": 34.4446239909915,
+      "svd_max_tau": 7621.3514984493695,
+      "gram_eigh_max_tau": 7621.351498449385
+    },
+    {
+      "scene": 0,
+      "user": 8,
+      "block_condition": 78.75739421442931,
+      "svd_mean_variance_amplification": 128.9954269887046,
+      "gram_eigh_mean_variance_amplification": 128.995426988705,
+      "svd_max_tau": 31253.415924968023,
+      "gram_eigh_max_tau": 31253.41592496812
+    },
+    {
+      "scene": 0,
+      "user": 9,
+      "block_condition": 35.645867128521985,
+      "svd_mean_variance_amplification": 26.089426428484998,
+      "gram_eigh_mean_variance_amplification": 26.089426428485,
+      "svd_max_tau": 5305.115870404445,
+      "gram_eigh_max_tau": 5305.115870404446
+    },
+    {
+      "scene": 0,
+      "user": 10,
+      "block_condition": 71.72502256387035,
+      "svd_mean_variance_amplification": 113.19417485255696,
+      "gram_eigh_mean_variance_amplification": 113.19417485255826,
+      "svd_max_tau": 26304.73807284241,
+      "gram_eigh_max_tau": 26304.738072842734
+    },
+    {
+      "scene": 0,
+      "user": 11,
+      "block_condition": 19.77960425000778,
+      "svd_mean_variance_amplification": 12.275218308732358,
+      "gram_eigh_mean_variance_amplification": 12.275218308732335,
+      "svd_max_tau": 2107.1787974891745,
+      "gram_eigh_max_tau": 2107.1787974891695
+    },
+    {
+      "scene": 0,
+      "user": 12,
+      "block_condition": 17.602080265852692,
+      "svd_mean_variance_amplification": 10.352483329162308,
+      "gram_eigh_mean_variance_amplification": 10.352483329162293,
+      "svd_max_tau": 1618.1880310032834,
+      "gram_eigh_max_tau": 1618.1880310032802
+    },
+    {
+      "scene": 0,
+      "user": 13,
+      "block_condition": 24.976818191112876,
+      "svd_mean_variance_amplification": 17.44672631699715,
+      "gram_eigh_mean_variance_amplification": 17.44672631699711,
+      "svd_max_tau": 3352.776057802069,
+      "gram_eigh_max_tau": 3352.7760578020593
+    },
+    {
+      "scene": 0,
+      "user": 14,
+      "block_condition": 41.074154887179766,
+      "svd_mean_variance_amplification": 44.32447973059583,
+      "gram_eigh_mean_variance_amplification": 44.32447973059573,
+      "svd_max_tau": 8967.614284822079,
+      "gram_eigh_max_tau": 8967.614284822052
+    },
+    {
+      "scene": 0,
+      "user": 15,
+      "block_condition": 29.007708251393527,
+      "svd_mean_variance_amplification": 24.99619738360885,
+      "gram_eigh_mean_variance_amplification": 24.99619738360891,
+      "svd_max_tau": 3754.721937154978,
+      "gram_eigh_max_tau": 3754.7219371549913
+    },
+    {
+      "scene": 0,
+      "user": 16,
+      "block_condition": 28.297634682681373,
+      "svd_mean_variance_amplification": 18.6108283956927,
+      "gram_eigh_mean_variance_amplification": 18.610828395692625,
+      "svd_max_tau": 3446.202336032434,
+      "gram_eigh_max_tau": 3446.2023360324133
+    },
+    {
+      "scene": 0,
+      "user": 17,
+      "block_condition": 23.678879488983306,
+      "svd_mean_variance_amplification": 17.92326555704777,
+      "gram_eigh_mean_variance_amplification": 17.923265557047788,
+      "svd_max_tau": 2787.297740578492,
+      "gram_eigh_max_tau": 2787.2977405784936
+    },
+    {
+      "scene": 0,
+      "user": 18,
+      "block_condition": 32.74122608802468,
+      "svd_mean_variance_amplification": 32.63676794074119,
+      "gram_eigh_mean_variance_amplification": 32.63676794074128,
+      "svd_max_tau": 5249.620665472894,
+      "gram_eigh_max_tau": 5249.620665472925
+    },
+    {
+      "scene": 0,
+      "user": 19,
+      "block_condition": 23.301989520159736,
+      "svd_mean_variance_amplification": 14.384628780852488,
+      "gram_eigh_mean_variance_amplification": 14.384628780852513,
+      "svd_max_tau": 2478.6422575348683,
+      "gram_eigh_max_tau": 2478.6422575348747
+    },
+    {
+      "scene": 0,
+      "user": 20,
+      "block_condition": 15.849181592170707,
+      "svd_mean_variance_amplification": 8.723988213632209,
+      "gram_eigh_mean_variance_amplification": 8.723988213632216,
+      "svd_max_tau": 1172.977033049045,
+      "gram_eigh_max_tau": 1172.9770330490464
+    },
+    {
+      "scene": 0,
+      "user": 21,
+      "block_condition": 26.235495939392482,
+      "svd_mean_variance_amplification": 17.604016775480396,
+      "gram_eigh_mean_variance_amplification": 17.604016775480346,
+      "svd_max_tau": 3512.5555148145695,
+      "gram_eigh_max_tau": 3512.5555148145572
+    },
+    {
+      "scene": 0,
+      "user": 22,
+      "block_condition": 24.715363907482935,
+      "svd_mean_variance_amplification": 19.805623478345908,
+      "gram_eigh_mean_variance_amplification": 19.805623478345932,
+      "svd_max_tau": 3196.4523734582344,
+      "gram_eigh_max_tau": 3196.4523734582453
+    },
+    {
+      "scene": 0,
+      "user": 23,
+      "block_condition": 77.8586652546738,
+      "svd_mean_variance_amplification": 120.90882803832139,
+      "gram_eigh_mean_variance_amplification": 120.90882803832223,
+      "svd_max_tau": 29478.086183300096,
+      "gram_eigh_max_tau": 29478.086183300307
+    },
+    {
+      "scene": 0,
+      "user": 24,
+      "block_condition": 35.99336164154957,
+      "svd_mean_variance_amplification": 32.87576354181839,
+      "gram_eigh_mean_variance_amplification": 32.8757635418184,
+      "svd_max_tau": 5844.321085652474,
+      "gram_eigh_max_tau": 5844.321085652483
+    },
+    {
+      "scene": 0,
+      "user": 25,
+      "block_condition": 48.758329725902314,
+      "svd_mean_variance_amplification": 51.8879136798305,
+      "gram_eigh_mean_variance_amplification": 51.887913679830305,
+      "svd_max_tau": 11530.82270666626,
+      "gram_eigh_max_tau": 11530.822706666211
+    },
+    {
+      "scene": 0,
+      "user": 26,
+      "block_condition": 40.41507086997434,
+      "svd_mean_variance_amplification": 41.656912616255966,
+      "gram_eigh_mean_variance_amplification": 41.65691261625597,
+      "svd_max_tau": 8654.510816356238,
+      "gram_eigh_max_tau": 8654.510816356245
+    },
+    {
+      "scene": 0,
+      "user": 27,
+      "block_condition": 19.299188522195422,
+      "svd_mean_variance_amplification": 13.459120467839385,
+      "gram_eigh_mean_variance_amplification": 13.459120467839421,
+      "svd_max_tau": 2140.633036377428,
+      "gram_eigh_max_tau": 2140.633036377437
+    },
+    {
+      "scene": 0,
+      "user": 28,
+      "block_condition": 24.57164183473586,
+      "svd_mean_variance_amplification": 16.096644543271854,
+      "gram_eigh_mean_variance_amplification": 16.096644543271857,
+      "svd_max_tau": 2597.3308527191625,
+      "gram_eigh_max_tau": 2597.3308527191625
+    },
+    {
+      "scene": 0,
+      "user": 29,
+      "block_condition": 55.96182485976257,
+      "svd_mean_variance_amplification": 71.44153759912973,
+      "gram_eigh_mean_variance_amplification": 71.44153759912969,
+      "svd_max_tau": 16500.563500828168,
+      "gram_eigh_max_tau": 16500.563500828157
+    },
+    {
+      "scene": 0,
+      "user": 30,
+      "block_condition": 32.10521466731958,
+      "svd_mean_variance_amplification": 22.616854514467718,
+      "gram_eigh_mean_variance_amplification": 22.61685451446773,
+      "svd_max_tau": 4698.675813909654,
+      "gram_eigh_max_tau": 4698.675813909657
+    },
+    {
+      "scene": 0,
+      "user": 31,
+      "block_condition": 22.549549431028385,
+      "svd_mean_variance_amplification": 16.330194404712397,
+      "gram_eigh_mean_variance_amplification": 16.330194404712348,
+      "svd_max_tau": 2187.9537773967445,
+      "gram_eigh_max_tau": 2187.9537773967368
+    },
+    {
+      "scene": 0,
+      "user": 32,
+      "block_condition": 31.42856379119731,
+      "svd_mean_variance_amplification": 22.801242629975707,
+      "gram_eigh_mean_variance_amplification": 22.80124262997566,
+      "svd_max_tau": 4755.496102818483,
+      "gram_eigh_max_tau": 4755.496102818473
+    },
+    {
+      "scene": 0,
+      "user": 33,
+      "block_condition": 9.694624710236557,
+      "svd_mean_variance_amplification": 5.2100314716785805,
+      "gram_eigh_mean_variance_amplification": 5.210031471678581,
+      "svd_max_tau": 514.4719100264056,
+      "gram_eigh_max_tau": 514.4719100264056
+    },
+    {
+      "scene": 0,
+      "user": 34,
+      "block_condition": 33.94339397875778,
+      "svd_mean_variance_amplification": 27.334569074125714,
+      "gram_eigh_mean_variance_amplification": 27.3345690741257,
+      "svd_max_tau": 5659.496843520803,
+      "gram_eigh_max_tau": 5659.496843520799
+    },
+    {
+      "scene": 0,
+      "user": 35,
+      "block_condition": 64.35080614379211,
+      "svd_mean_variance_amplification": 82.24455142344691,
+      "gram_eigh_mean_variance_amplification": 82.24455142344684,
+      "svd_max_tau": 18721.244418232796,
+      "gram_eigh_max_tau": 18721.244418232778
+    },
+    {
+      "scene": 0,
+      "user": 36,
+      "block_condition": 77.72241431281994,
+      "svd_mean_variance_amplification": 111.29356361183672,
+      "gram_eigh_mean_variance_amplification": 111.29356361183794,
+      "svd_max_tau": 26774.40187730426,
+      "gram_eigh_max_tau": 26774.401877304565
+    },
+    {
+      "scene": 0,
+      "user": 37,
+      "block_condition": 24.371210571438905,
+      "svd_mean_variance_amplification": 17.535859098254182,
+      "gram_eigh_mean_variance_amplification": 17.53585909825416,
+      "svd_max_tau": 2838.62686502545,
+      "gram_eigh_max_tau": 2838.626865025444
+    },
+    {
+      "scene": 0,
+      "user": 38,
+      "block_condition": 20.663558431034325,
+      "svd_mean_variance_amplification": 16.286685660924203,
+      "gram_eigh_mean_variance_amplification": 16.286685660924196,
+      "svd_max_tau": 2012.7219015951548,
+      "gram_eigh_max_tau": 2012.7219015951541
+    },
+    {
+      "scene": 0,
+      "user": 39,
+      "block_condition": 37.09944119291314,
+      "svd_mean_variance_amplification": 31.570145657084268,
+      "gram_eigh_mean_variance_amplification": 31.57014565708447,
+      "svd_max_tau": 6908.994238191375,
+      "gram_eigh_max_tau": 6908.994238191427
+    },
+    {
+      "scene": 22,
+      "user": 3,
+      "block_condition": 66975608611750.734,
+      "svd_mean_variance_amplification": 8.84036385920597e+25,
+      "gram_eigh_mean_variance_amplification": 8.819645603928818e+25,
+      "svd_max_tau": 1.5126810454121482e+28,
+      "gram_eigh_max_tau": 1.5091359297867182e+28
+    },
+    {
+      "scene": 22,
+      "user": 4,
+      "block_condition": 26017676196370.832,
+      "svd_mean_variance_amplification": 1.3356087178771532e+25,
+      "gram_eigh_mean_variance_amplification": 1.3352214713004775e+25,
+      "svd_max_tau": 2.2853697243650062e+27,
+      "gram_eigh_max_tau": 2.2847071039505445e+27
+    },
+    {
+      "scene": 22,
+      "user": 6,
+      "block_condition": 168973841152128.7,
+      "svd_mean_variance_amplification": 5.062298086357e+26,
+      "gram_eigh_mean_variance_amplification": 5.041933314555851e+26,
+      "svd_max_tau": 8.662134820937364e+28,
+      "gram_eigh_max_tau": 8.62728851281209e+28
+    },
+    {
+      "scene": 22,
+      "user": 10,
+      "block_condition": 193990668555381.38,
+      "svd_mean_variance_amplification": 7.098894493568812e+26,
+      "gram_eigh_mean_variance_amplification": 6.807188602945985e+26,
+      "svd_max_tau": 1.214696964381138e+29,
+      "gram_eigh_max_tau": 1.1647829587352376e+29
+    },
+    {
+      "scene": 22,
+      "user": 15,
+      "block_condition": 72440686494496.31,
+      "svd_mean_variance_amplification": 8.698793116665195e+25,
+      "gram_eigh_mean_variance_amplification": 8.649701476864033e+25,
+      "svd_max_tau": 1.4884567733983505e+28,
+      "gram_eigh_max_tau": 1.4800566674527013e+28
+    },
+    {
+      "scene": 22,
+      "user": 17,
+      "block_condition": 114393794047707.69,
+      "svd_mean_variance_amplification": 2.087595463405821e+26,
+      "gram_eigh_mean_variance_amplification": 2.0687403750046608e+26,
+      "svd_max_tau": 3.572099676297725e+28,
+      "gram_eigh_max_tau": 3.539836598342733e+28
+    },
+    {
+      "scene": 22,
+      "user": 27,
+      "block_condition": 79242306335043.05,
+      "svd_mean_variance_amplification": 1.1940850691537967e+26,
+      "gram_eigh_mean_variance_amplification": 1.1795875856035083e+26,
+      "svd_max_tau": 2.0432075867981744e+28,
+      "gram_eigh_max_tau": 2.0184008379788273e+28
+    },
+    {
+      "scene": 22,
+      "user": 35,
+      "block_condition": 43422647433831.984,
+      "svd_mean_variance_amplification": 3.528582222587706e+25,
+      "gram_eigh_mean_variance_amplification": 3.54629018833043e+25,
+      "svd_max_tau": 6.037782528293028e+27,
+      "gram_eigh_max_tau": 6.068082756381413e+27
+    }
+  ]
+}

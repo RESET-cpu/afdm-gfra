@@ -1,0 +1,113 @@
+{
+  "created_utc": "2026-10-23T13:52:07.807186+00:00",
+  "review_scope": "Targeted primary-source verification; not exhaustive systematic review",
+  "sources": [
+    {
+      "id": "zhou2023",
+      "authors": "Xingyu Zhou et al.",
+      "title": "Active Terminal Identification, Channel Estimation, and Signal Detection for Grant-Free NOMA-OTFS in LEO Satellite Internet-of-Things",
+      "url": "https://arxiv.org/pdf/2201.02084v2",
+      "local_path": "reference/baseline_gfra_audit_20261023/zhou2023_somp_gfra.pdf",
+      "location": "PDF p.10, IV-C, Eq.(27), footnote 3",
+      "verified_finding": "Fixed normalized-energy factor beta=0.1; absolute threshold scales with the maximum recovered user energy.",
+      "applicability_limit": "Direct GFRA/SOMP; does not establish transfer-optimal value in AFDM.",
+      "sha256": "9a13675e19f86e70bb6a5fa7b4b66f5affff897326a7f6be1e87cea630b0129d"
+    },
+    {
+      "id": "zhang2019",
+      "authors": "Zhaoji Zhang et al.",
+      "title": "DNN-Aided Block Sparse Bayesian Learning for User Activity Detection and Channel Estimation in Grant-Free Non-Orthogonal Random Access",
+      "url": "https://arxiv.org/pdf/1910.02953v1",
+      "local_path": "reference/baseline_gfra_audit_20261023/zhang2019_mp_bsbl.pdf",
+      "location": "II-B, III-D; PDF p.10 Table IV",
+      "verified_finding": "User variance (inverse precision) compared to threshold 0.1; noise precision learned.",
+      "applicability_limit": "Threshold statistic differs from normalized coefficient energy.",
+      "sha256": "1f5ad779320c40f36fc3f92ed46e250c9efb8b6a1c1bee8da2c01e71967a498f"
+    },
+    {
+      "id": "ke2020",
+      "authors": "Malong Ke et al.",
+      "title": "Compressive Sensing-Based Adaptive Active User Detection and Channel Estimation: Massive Access Meets Massive MIMO",
+      "url": "https://arxiv.org/pdf/1906.09867v4",
+      "local_path": "reference/baseline_gfra_audit_20261023/ke2020_gmmv_amp.pdf",
+      "location": "III-B, PDF p.7, Eqs.(39)-(41), footnote 3",
+      "verified_finding": "Spatial BI-AD uses per-coefficient probability cutoff 0.5 and vote proportion 0.9.",
+      "applicability_limit": "Structured user model and domain matter; neither generic coefficient averaging nor equal AER error costs alone implies equal conditional miss and false-alarm rates.",
+      "sha256": "d51e7c2575cd1b35720c7e55e8b5d9ae555ccb148b800f1f3757c5306d5cdbde"
+    },
+    {
+      "id": "liu2018",
+      "authors": "Liang Liu and Wei Yu",
+      "title": "Massive Connectivity With Massive MIMO—Part I: Device Activity Detection and Channel Estimation",
+      "url": "https://arxiv.org/pdf/1706.06438v2",
+      "local_path": "reference/activity_threshold_review_20261023/liu2018_amp.pdf",
+      "location": "PDF p.6, III-E Definition 1, Eq.(30) and following threshold; Eqs.(27)-(28)",
+      "verified_finding": "Analytic user/iteration-specific energy threshold depends on effective noise variance tau_t^2 and beta_n.",
+      "applicability_limit": "This is a fixed analytic rule, not SNR-bin calibration; effective AMP noise is not physical noise alone. HTML numbering differs from PDF.",
+      "sha256": "66d3cded3d7b2efb108e56d1615855c3546005baab7dfda8e7779ee40d53cfe9"
+    },
+    {
+      "id": "quayum2018",
+      "authors": "Ayon Quayum, Hlaing Minn, Yuichi Kakishima, Haralabos Papadopoulos",
+      "title": "Non-Orthogonal Pilot Designs with Collision Detection Capability for Grant-Free Access",
+      "url": "https://personal.utdallas.edu/~hxm025000/GrantFreePilots_ICC2018.pdf",
+      "local_path": "reference/activity_threshold_review_20261023/quayum2018_grantfree_pilots.pdf",
+      "location": "PDF p.4, IV-A Eqs.(4)-(9), Fig.5",
+      "verified_finding": "Derives SNR/noise-dependent optimum pilot-tone energy threshold; explicitly compares fixed and dynamic rules.",
+      "applicability_limit": "Pilot tone/collision detection, not four AFDM JADCE solvers; performance claim restricted to their model and objective.",
+      "sha256": "612de896fea209fb5cf30feabf554f25b0c9f61b4004709ed44ce7882a8ceb80"
+    },
+    {
+      "id": "shen2025",
+      "authors": "Boxiao Shen et al.",
+      "title": "LEO Satellite-Enabled Random Access With Large Differential Delay and Doppler Shift",
+      "url": "https://arxiv.org/pdf/2412.20806v1",
+      "local_path": "reference/baseline_gfra_audit_20261023/shen2025_mrf_mp_gamp.pdf",
+      "location": "PDF p.7, III-A Eq.(21)",
+      "verified_finding": "User aggregate energy compared to an empirical predefined threshold.",
+      "applicability_limit": "No reproduced numerical threshold schedule or calibration protocol found; a single symbol does not prove a common value across every SNR.",
+      "sha256": "49ba5402794cb29bdbd39c10ed5146e10291e15d2db222e4e57f8b13ae3f7abd"
+    },
+    {
+      "id": "ding2026",
+      "authors": "Chao Ding et al.",
+      "title": "Learning Sparsity Pattern: An Adaptive Joint Detection for AFDM Grant-Free System in LEO Satellites Communication",
+      "url": "https://openresearch.surrey.ac.uk/esploro/outputs/journalArticle/Learning-Sparsity-Pattern-An-Adaptive-Joint/991155194002346?institution=44SUR_INST",
+      "local_path": "reference/literature/ding2026.pdf",
+      "location": "PDF p.4 Eq.(27); p.5 IV-A",
+      "verified_finding": "Normalized coefficient-block energy compared to eta; per-SNR network training is separately described.",
+      "applicability_limit": "Numerical eta, SNR schedule and calibration protocol not specified; historical project eta is not author eta.",
+      "sha256": "22dceda0036c892f44e961ce9ab6d094930e610befe0d51c18c3357aa1890ec5"
+    },
+    {
+      "id": "cai2026",
+      "authors": "Chang Cai, Wenjun Jiang, Xiaojun Yuan, Ying-Jun Angela Zhang",
+      "title": "Joint Activity Detection and Channel Estimation for Massive Connectivity: Where Message Passing Meets Score-Based Generative Priors",
+      "url": "https://arxiv.org/html/2506.00581v2",
+      "local_path": "reference/literature/cai2026.pdf",
+      "location": "Local PDF p.7, III-B2, Eqs.(29)-(31)",
+      "verified_finding": "Threshold applied to user posterior activity probability, including prior and effective Gaussian message variances.",
+      "applicability_limit": "Do not identify posterior probability with max-normalized energy; numerical cutoff is not established by this excerpt.",
+      "sha256": "78854ee24bd4a67a2ce574855a1205cdf4484eb6ff4b0568fe8479d4ea69bc68"
+    },
+    {
+      "id": "ohshita2026",
+      "authors": "Shimpei Ohshita and Teruyuki Miyajima",
+      "title": "Multiuser Detection Using Interference Suppression Filters in Uplink LDS-OFDM",
+      "url": "https://globals.ieice.org/en_transactions/communications/10.23919/transcom.2025CEP0005/_f",
+      "local_path": null,
+      "location": "Publisher full text Section 4, Fig.4 paragraph",
+      "verified_finding": "Per-SNR search over epsilon in [1,2] for a normalized-amplitude threshold benchmark; authors explicitly call selection impractical.",
+      "applicability_limit": "An optimized performance reference is not the same as independently calibrated receiver-available SNR dispatch."
+    }
+  ],
+  "search_families": [
+    "grant-free activity detection fixed threshold",
+    "user activity detection optimal threshold SNR",
+    "grant-free threshold each SNR",
+    "SOMP GAMP SBL user activity detection threshold",
+    "Ding Shen Cai posterior energy activity threshold"
+  ],
+  "quality_note": "Primary formulas and experimental protocols, theoretical assumptions and directness assessed separately; clinical evidence ranking not applied.",
+  "main_experiment_changed": false
+}

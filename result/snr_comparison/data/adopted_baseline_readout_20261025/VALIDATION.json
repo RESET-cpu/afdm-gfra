@@ -1,0 +1,821 @@
+{
+  "status": "PASS",
+  "policy_sha256": "6962b3f99e72532b1962a69dc2a0fabb933da4b59fd280c2e0b900211f89b4bb",
+  "historical_results_reproduced": 24000,
+  "historical_user_decisions_reproduced": 960000,
+  "current_user_count_saved_results_checked": 80,
+  "current_users40_historical_decisions_exact": true,
+  "midpoints_to_lower_node": true,
+  "out_of_range_to_endpoint": true,
+  "zero_energy_guard": true,
+  "float64_greater_equal_comparator": true,
+  "inference_started": false,
+  "thresholds_refitted": false,
+  "implementation_sha256": {
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\adopted_baseline_readout_20261025\\readout.py": "351af11854f4e7beadf2831672c30dbeb23de4b818a6fe9b9d92e1791591571f",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\adopted_baseline_readout_20261025\\validate.py": "bbe0f358ca7708a89fb87682543c14943e28c344705b59231b213ad81137a25a",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\adopted_baseline_readout_20261025\\finalize_user_count.py": "73367b946afedf3c61e6bb64453ef41e2659971d2f1748ce1ff582c3a0eedaff"
+  },
+  "samples": [
+    {
+      "scene": 0,
+      "condition": 0,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\2ff64f6b48b985a3c32b1cd7e7afafec29bc73487e6a67982db97fd1bcebe1f0.json",
+      "result_sha256": "427564173364896beb6917ec2d02a748452ad9f3e7ad7832b0ef3cdfe468d1fb",
+      "compact_sha256": "0421cf6cadffc15fae3e045f4ff312973ad0eb68c48b141fbea0bee78cf9b5d1",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.37151635441194986
+    },
+    {
+      "scene": 0,
+      "condition": 0,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\01210ad1143b0b9e8665127a3f937cfc97d8868068493f581faf6c0052e649e4.json",
+      "result_sha256": "d4e2fa18a755e587ba8d35210d2c3cf7bb767916b4fdbece0232fbf8a241f5c8",
+      "compact_sha256": "3357a5dedac11a7cd57135580678f16f85101d999f4a45461892aed39d9a2114",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": 0.02112624930747256
+    },
+    {
+      "scene": 0,
+      "condition": 0,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\399a0964b3992a5813470348b266a0e7de7327a1447e07c8dd91e8f2ec1e4012.json",
+      "result_sha256": "112363cbd9f0cb4a27347a29bbaca9c7a2d051b18bc70ab0d900bf6ebcee8eac",
+      "compact_sha256": "95d4dca67c4601eb2b651c745f213202bdeb4fa01c2207e249d4f51ad78bb047",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.0516993994918002
+    },
+    {
+      "scene": 0,
+      "condition": 0,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\b357ec9ad6c68f0a2cb9040b09ccebc99fba4f29bfc6d200b0305beaa3678894.json",
+      "result_sha256": "6127b6fa0936936efc5f665dbfb5027a01d22b45d70f6d9223f99e3a5491e85d",
+      "compact_sha256": "2eef31bf0cddb8503aa6978894cdcb3da903b245909a2133870b8f736aee8d25",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": 0.02112624930747256
+    },
+    {
+      "scene": 1,
+      "condition": 0,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\3ca73f25c38b22bdf9ce50ed5eb68e7dd8cb9f152d4ec84f5e919d30ab0ee2d8.json",
+      "result_sha256": "f977bbd21dcdd1f0247d0d231d0b04b1165653122b307a80c80e5609eb952e10",
+      "compact_sha256": "45bba256f96bad19d6b99e1869668d725d40c860bd9455df24bd30ed417e649e",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.26643765828549204
+    },
+    {
+      "scene": 1,
+      "condition": 0,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\e8c5effb54d68047441e8499ec70535d194a27bab48ef0b8181e8abbed164a22.json",
+      "result_sha256": "61e3914a76772d21285880c25f7683cebf4025f6a126523b4e6c925d2e04cfc8",
+      "compact_sha256": "aee9d750a25ca499ceb2fe65f247d4bc3947dcb9cd4e7a09605a9ce30e8f1af8",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": -0.13322434271116523
+    },
+    {
+      "scene": 1,
+      "condition": 0,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\430aac7fa6fe158f071a3cb882ec6b092cf76e86ae40dfb5b4ae049fead2f3c3.json",
+      "result_sha256": "ecf180f4c0ddaa79d7a2513c6e8e67f1b9ba3d0cc2fe25e18781d80cb58d34f7",
+      "compact_sha256": "75f3f5127dd0ad7c60bedacc447c49b86ff53de9eac089a564534a7d8c8599fb",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 0.9161001466570455
+    },
+    {
+      "scene": 1,
+      "condition": 0,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\6fbae3ef3aa066ac1fad0749c8b08d10bdfdb056ae4cec6b6d403cb311b06507.json",
+      "result_sha256": "fb2d989b41c7de6b0bc2d77857188ffea3f15080b3903be99eb16f4544b70b32",
+      "compact_sha256": "e2f45146caccb30c75db43a6c0c003bec4ef3197cc36bc593fe6b9a520fe3622",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": -0.13322434271116523
+    },
+    {
+      "scene": 10,
+      "condition": 0,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\3269d79f42ce804cfae23c3950e75978d48dc45af127a49ef7de7438665d7ee6.json",
+      "result_sha256": "665bc796a2c1125a776b2c465d266c7822274d829922b2fde583c5da0889e8a4",
+      "compact_sha256": "f8192b39abc4be3449755706a5ca9a84ecbb112f2652a92189731603a82db471",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.4674015681253502
+    },
+    {
+      "scene": 10,
+      "condition": 0,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\2b46f219d10b6bc8dc1148aef2594e4ae07e0e92a16fc7135d7fea3e978e18ea.json",
+      "result_sha256": "64268f985e97c738249ed75649ae4eaa978484b325ba02815aa53c9fb9eab6fe",
+      "compact_sha256": "5e75b2471e581f1b42d7bd45fb400c8cbb8e399fc90014f61037a7ce1f35c97b",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": 0.04822187082746523
+    },
+    {
+      "scene": 10,
+      "condition": 0,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\14b3e48d28b3a79b065367eeba005e3b3480280174282acae6a46337585c03a5.json",
+      "result_sha256": "99159b5c01fd8722e92d5d7b0e3da2b8f579ecbc14adc6179b99ef14e0d60fd8",
+      "compact_sha256": "285fa389320ac002ec46b5eba2f99d627f1e515f656c49ad5ec829547e6fcb45",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.0424524880903792
+    },
+    {
+      "scene": 10,
+      "condition": 0,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\7165a4e7b226b354f2c7d57d6625084904721f7375c0aeef397297396c1cee2c.json",
+      "result_sha256": "7caf446d27df03b627f36f8a6418b9fc7d8210cb14c596427acba17e54ef880c",
+      "compact_sha256": "b2680c7d7f7c7e0e95d256be8a3cbffaa902245cb8c5b9ac5299925905b2f288",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": 0.04822187082746523
+    },
+    {
+      "scene": 100,
+      "condition": 0,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\57996ec8765339d9bb7cd8373d10ff633ec73ce4475fe0aa0239d259798b3119.json",
+      "result_sha256": "992fe627d5285209dcb0d3d44126599e6d3a4095da4ec5802fbfa8da476e6963",
+      "compact_sha256": "3dea0af9eb03482defe058807a4c460d213aae2655aaf48fee988a5bfb270741",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.32112337716377326
+    },
+    {
+      "scene": 100,
+      "condition": 0,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\d149b368f8ef4c4520863915e97ea2ea2482833178bfe741764f009b336802ef.json",
+      "result_sha256": "9d72ef533c0721363315d3424b4a574dff87c2061fede3d2872f5c4a3314e196",
+      "compact_sha256": "71b000de87d26522e192776cd78685a2d23e208a3a4f2c5738fc876ccf21ee00",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": -0.002194023714738217
+    },
+    {
+      "scene": 100,
+      "condition": 0,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\20df20ab12ba51ca3b21a1cd2db1c6a9e21a0590cda4dc19349e673e71683222.json",
+      "result_sha256": "de3159f2c4a5e056bef7772da8927d7dd71dd09dffaed2995a8191b749035ea8",
+      "compact_sha256": "5ec5f33a97c772fe7bf4b28b6c3f99ff89db0ac0cd10dce8c30eab58d02e9b4e",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.0738349811078254
+    },
+    {
+      "scene": 100,
+      "condition": 0,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\d0574be98eaeeac1e0e29d9dc405870ca4098a100ac7de38b68ff70319565234.json",
+      "result_sha256": "2b5e7573b3d112ecdf56bd02a2c0d534f8552b234630a2af8f71ebf685b8fcb8",
+      "compact_sha256": "911e23fa964dfbdeb4ac221d8cb261ddfaa3d9d7b8fa9818a5aab63a53a9929c",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": -0.002194023714738217
+    },
+    {
+      "scene": 0,
+      "condition": 1,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\c85aac728fd845119487f3d99db8730275d21fd644a09705bfd4188189ee6382.json",
+      "result_sha256": "2168d8cdb31d97a4b727735ccf771a298732d30a0902aeef3e7605dbdaa57c01",
+      "compact_sha256": "ada79af1f95b2811a4d0b7a0550d761f2bf11b1ed231c087387861dcc0f6ee1c",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.35244340387388545
+    },
+    {
+      "scene": 0,
+      "condition": 1,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\5008c5b99fc9830b8cd311bae71456a5cb66e54d837effaed51358fff792bdb5.json",
+      "result_sha256": "2c63fdfc0a0811f8a9eef11221d0c42e4f4dbdf679a8761f44c661cf61b868ae",
+      "compact_sha256": "3bc2db74a59c57b1d8d2b87caa2aa9e76622f229c4d4c5ae9de672614e065552",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": -0.3916777891052743
+    },
+    {
+      "scene": 0,
+      "condition": 1,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\f68ff1174b68a77d67d45d164e020a2b35409cebac33fd3d93ec721813b01940.json",
+      "result_sha256": "e94873fc1ec23f4e702f0bab2f7c64e15e661d0c849f6ef6996da9f4fb8e9fcb",
+      "compact_sha256": "52f46af9029d515b0404b04ebb828c8167e36553be575fbfbe1221456767eb36",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 0.9038892578728588
+    },
+    {
+      "scene": 0,
+      "condition": 1,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\d2f1808a0bdf3ead17e5193c521e75e04fe274b84c126e219b32d6c197710ff8.json",
+      "result_sha256": "5edbd9363f1c196662bfa322d7bd427e44791c636637a085abd6e98b5fb5b20a",
+      "compact_sha256": "b1fee397b3dc2e44d6267d51514db00c106196c2e2be8390d04bedb33b040fb6",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": -0.3916777891052743
+    },
+    {
+      "scene": 1,
+      "condition": 1,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\8e924d4fe3a655e52f68dcc662d22127daa52a764bf302455cf78947865acefe.json",
+      "result_sha256": "8f9bd8c10c7195ffcbebefaeae58d2c970434f22af844480f05741d91dc6fca9",
+      "compact_sha256": "a57606ca61fea77bffcb94bdcc834f8b2d8963cc2eede14eea1bfd9df3c3ee58",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.7111107632841565
+    },
+    {
+      "scene": 1,
+      "condition": 1,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\5387bf15686b6e377301ac26697c1f129d32b1da55ff6c4718e487077d8233f7.json",
+      "result_sha256": "2eac924fe3564f6fd7665a98938d12cb40ec17b243fb3be5e5c54644b31cd053",
+      "compact_sha256": "da5d815f467e0231df2e868ca6e965a4df85c123a8c36d81f9c6ab55127936d7",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": 0.007896761912017117
+    },
+    {
+      "scene": 1,
+      "condition": 1,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\331005d41df11df841fd8714c2114fe28a3516a967b6be66a32a2a42488b0fbe.json",
+      "result_sha256": "2c036adb1f8415cf363d0a89b3448da2a9ebd8df2d39a4c096ceef4aa950339f",
+      "compact_sha256": "e23187b3f3e5847278b5e05eed94acc15f657dc359e273ead736cb83f2cb25a5",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.1613808861555812
+    },
+    {
+      "scene": 1,
+      "condition": 1,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\73c653f9cbad467cc2a5ea5a57d298e9e5f4074a028ebd528c6279216cb71dbf.json",
+      "result_sha256": "aaa5334fda77971fabc8a8528463f24ca077fd4ac8c949261bf6514901d87dad",
+      "compact_sha256": "ccbb3058cbd6fbaf39caea7d2ec1339d6382aedbd6e16a840106d3d4c6099c60",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": 0.007896761912017117
+    },
+    {
+      "scene": 10,
+      "condition": 1,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\36c180a0a757c72b5f05e1b76bf8d69ddc2b880eb716470ce0492fcb8d9e22c7.json",
+      "result_sha256": "25cee37c1e412740f6abff728ab8013dfc0c1fd86145066f64f494256159b7ce",
+      "compact_sha256": "bc39418ce01dfccef2e7b1f58d6b073d8280c5e282721fd841e9fb97b6570bcb",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.400337653950816
+    },
+    {
+      "scene": 10,
+      "condition": 1,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\bfa38722d5c23202202eed7026521c7ee05c9f680a0852547f3ddaf41da3294b.json",
+      "result_sha256": "3e8b56307dd7048c4eda6df2ea6bec430479cc59faf37057c0d967a6195cfe23",
+      "compact_sha256": "3fb9aec670d62fb3e0bb34537445e1dac2e7024ea39d9de903cf2fc66ab8a0e6",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": -0.37975682913269904
+    },
+    {
+      "scene": 10,
+      "condition": 1,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\5b5bf9e353e92e23af4d903568fffd7da82512eec5dcb07176a1b939074c7f63.json",
+      "result_sha256": "c1c6f753ea91e9ffbadaf41327b0413d7aa9f092dbaef24f9a2d9792cd6353f1",
+      "compact_sha256": "9009497782aa0277afa831e95657ce9971a9de9aa7bbc52254ed93346c9d71a4",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 0.896122549378505
+    },
+    {
+      "scene": 10,
+      "condition": 1,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\c298b48ba72a200c00e5f742b58809ef724c5679a4d993fb121b56ee14a2e466.json",
+      "result_sha256": "9b3db69db5c5d629f07219919692b73b9084321ceffe7b4e608324ccc0a18c33",
+      "compact_sha256": "9d4a525b5f9a46164a8980413f6d2792f1877ff32a3bc73187c886a2abb0f9ce",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": -0.37975682913269904
+    },
+    {
+      "scene": 100,
+      "condition": 1,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\018aa339930113e8fb6ce3508c749860dfe70e617414e7d18af038689d04a172.json",
+      "result_sha256": "c132b9c9c728bed207ea38356d7df75868a816689883da619e28035ec7ca5a62",
+      "compact_sha256": "0fb9cdf1e5c0820ad302b9b8387864c25e97f60c40b1144af3866d8ec73fa447",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.6623395321407931
+    },
+    {
+      "scene": 100,
+      "condition": 1,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\4b03fe54beb60bf444f6129aa957ce7cda7d74e0428fa58c75c3fd9430d118a5.json",
+      "result_sha256": "1b147cefd7689dc64a0df320f1e563c25a84269ccebaa0582d0f4714ae1cab84",
+      "compact_sha256": "5a3a8b5cb2af8221b4f310ed83e6bafbff3bd04e744fa55b39359f27e96c152e",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": 0.1158094191818672
+    },
+    {
+      "scene": 100,
+      "condition": 1,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\9793723231fa5a40e5f235d7a0192b3c34a758125d7e303f2cf2a9ee4ff39161.json",
+      "result_sha256": "9a43fc95cb7875323d3fc16b8277da3024b7b949dfadccfb78ee62e14b93be2e",
+      "compact_sha256": "e38f7726538c9ec8733d2379b97a0a35128e3bf239dfdb0c4ae0fed017474fdc",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.327775537437188
+    },
+    {
+      "scene": 100,
+      "condition": 1,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023\\imported_results\\86139528b0e0bc8a68314122a387c234cf9bfc4711e0f19737d0316f1a81c6e3.json",
+      "result_sha256": "c47ebf6c028f5832c5a88fef815fac25ffae79de7e0c089facbf4312cf707dc0",
+      "compact_sha256": "1ccd3821b103302bfd0dcb9dddc588254ccee3c2508090e972e011913ec413b0",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": 0.1158094191818672
+    },
+    {
+      "scene": 0,
+      "condition": 2,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\bb37ebd4cea6b0eea07b3a4d19b94e76590879b6769d79163c66c38615e98929.json",
+      "result_sha256": "e1a80ea32705e88e64e63fa96157f1dafc49c7a03fcd633295f58cd297b3e3a2",
+      "compact_sha256": "8e0e5efd0b67fb0c1b0dcaff1df852e33ba772fad7ff7bf4d12d55cedc235ef9",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.7447573695671501
+    },
+    {
+      "scene": 0,
+      "condition": 2,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\d827ddc595fe33485be1f74757ba1819560f142c5780b8c23d709a92dc87d7a3.json",
+      "result_sha256": "99a7d0de0fb68d2031e4eb60ecc65f4defd74f61d062e3caf258943958758ae2",
+      "compact_sha256": "6ad966bfdae9f902b523a93612c26a18453e08132e014f7515593bc704cc3bdc",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": -0.08433700985103032
+    },
+    {
+      "scene": 0,
+      "condition": 2,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\75ba5527f2415f903203909a5225074c797479bed422c2dcd7c103a3482d60b0.json",
+      "result_sha256": "b30b8b1ade26e8de9531b85fdf0e90a50a81fea4c925a00bddea62dd9dc15447",
+      "compact_sha256": "36609e41575123db1a6feb210f53a508e5f76745ebca7bf090b98746d72f2c71",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.2300194872244405
+    },
+    {
+      "scene": 0,
+      "condition": 2,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\0793774e1e3d36a33c3165c916853e1ade368ead4b73f45be57d9687b65a7aee.json",
+      "result_sha256": "c24751b923b55d362e1488255f85cca8b498391726d33565f6a30c6d601f5668",
+      "compact_sha256": "838ba1576005991fdc5124f216f29a1c42656c83209f4b8339fdf0fd619d7266",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": -0.08433700985103032
+    },
+    {
+      "scene": 1,
+      "condition": 2,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\de59325fba67b4466446baf35e870b779ce75d64f3b1c69529bcb21a07b3a4b1.json",
+      "result_sha256": "25dbe44700c52726a430d4eed7056cccc61f1438f6dc9f1832bfee0462d968af",
+      "compact_sha256": "ec3165162b5418dedfaaa7b1454ad1ceba97a623d97c9ab57e8122ed06c62136",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.806286940569799
+    },
+    {
+      "scene": 1,
+      "condition": 2,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\2b88cb4b4a75821c35763f4b36969b5a7a160adefe0343190bae65852fc57d24.json",
+      "result_sha256": "d58bc7d93ed46ea9eddb99ddd903a727b708fdd3664aeffebc309118d6f11ead",
+      "compact_sha256": "ae27d8bb9b06ea3115c96b4d8ae44a667de337629fa3a21f33aaa156edc6511d",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": 0.012401391659010531
+    },
+    {
+      "scene": 1,
+      "condition": 2,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\c1199907c26887276579f2bab66b735d2981a0fc25d4fa68229f90e83cd7624b.json",
+      "result_sha256": "678caa3a8e3be7d4b8fbac47451e3c7f9144d284cb492df6ed5f73ef1558b4fe",
+      "compact_sha256": "a00cef491e8ef25409f687c932bd2f6136adceddc829b9ebdaa7eadfb5eaea52",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.2578856130227225
+    },
+    {
+      "scene": 1,
+      "condition": 2,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\68314f27f8080b1b6df6dae13db94ece9bd097439e851fa08c24125751280f84.json",
+      "result_sha256": "313667605df0dbb4eee2ed1e826adde638abd761c6f1ef3ddc3dc32cb320b07b",
+      "compact_sha256": "7ac0963f87ad17c5be52f8fbd5b27ba61a38e574eaebb6867d3379032bb9f781",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": 0.012401391659010531
+    },
+    {
+      "scene": 10,
+      "condition": 2,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\2adef38dd84699f735b26edd91f014302f56932bb3a404ff0a79342868038645.json",
+      "result_sha256": "aafa70d44fadd9c1da63770ea62c84d0f284450f15cc0cc452ddc3ed3eaa793e",
+      "compact_sha256": "70f1108520a56aee6c4b0177d67ef59ca2b876c35a5b9ada187e5601781067b2",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.5953191692931845
+    },
+    {
+      "scene": 10,
+      "condition": 2,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\8395fda0837624da7217f4d4923e49fd948563abcd2b263cb1fc9ab4302ab019.json",
+      "result_sha256": "4c02d58b4d813938450b362c02042ffe8efae97ea644c441a85a5ddc8a225462",
+      "compact_sha256": "0b7cf157e12e46bb72c367b0974ac92f7155198e600ebdd07a428c04bc3d4640",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": -0.1888016939871146
+    },
+    {
+      "scene": 10,
+      "condition": 2,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\5d0b0b81b68b6389b27c6760064a91fda4e501531ffb0111953a1de17a9fe105.json",
+      "result_sha256": "e10cf923dffc1536b96f7f1e6cbc2cf943b76dcb54a9d3e68d6018f9c732471a",
+      "compact_sha256": "f197341df213778b3f4f6961abfdccd37c8e6cc0887b0b4729fcef0351197e29",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.0851222593754533
+    },
+    {
+      "scene": 10,
+      "condition": 2,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\933e7362fbe6e5ae40a95a6ed7e59e7e3991f18fe947e2155ddc0b4b00519ccf.json",
+      "result_sha256": "a60c1d197b14062ff4119a38bebd84f63b98aeb72894844a2cf5b2d1b088e001",
+      "compact_sha256": "c8e601805e168552b70c1762a04b8bcfa74c3eaa560a2b376933f05dd5f510d4",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": -0.1888016939871146
+    },
+    {
+      "scene": 100,
+      "condition": 2,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\452b92c26b259b2984b1d36f6ab080f6b7c2bb21a7ea80899c1698321e453dea.json",
+      "result_sha256": "207a32e31d0be026fde3244b8269531b3adc0e9d0c02c28db3bf5830b7447d3f",
+      "compact_sha256": "50ad1882910d394b1f133f76d1e129f4ce7b79b39502fa68546e928bf9005562",
+      "threshold": 0.02707026715713882,
+      "estimated_snr_db": 1.0435550262369044
+    },
+    {
+      "scene": 100,
+      "condition": 2,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\10e0e32510ba4e13926941833b228a9ca85234e91858638264f7283c8c7f6130.json",
+      "result_sha256": "abd32e0235ca90aea0b984e20ba2d788d341a7a3d4c01b1ff57c98c51f08a2b8",
+      "compact_sha256": "84104f232e3a02ce2134f333d8485f08adda41d7bb28dd87662c03a1afbadc79",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": 0.3268539120344232
+    },
+    {
+      "scene": 100,
+      "condition": 2,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\a4df24da9933f32afaad91e1d27fc377615f02adbfac36ac15630ec4530c3a7f.json",
+      "result_sha256": "7473feefc7ff9fd7b50eaa1cc026c333f3438827b83a5d2b1643af7e4a036e54",
+      "compact_sha256": "a62a385570134338e97180aec8b51620804eec573504ca6a31d577ab9c39abe2",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.5467992391641499
+    },
+    {
+      "scene": 100,
+      "condition": 2,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\05470cb6ff81c98ec254a2611ee2366ba2461dec8d360a4d8673bff5a2f322d4.json",
+      "result_sha256": "ef26c2f8e715c5db12d7fd5be77152b4a2842aac79ce0aad73cc8e6a869b92d7",
+      "compact_sha256": "e0a6e10d359564d2ad9d84d2141b8d48d166d8c6220170d0622be01115b37483",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": 0.3268539120344232
+    },
+    {
+      "scene": 0,
+      "condition": 3,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\0297e279dfcf5bc3428ef0ae99cc29feddbffc6dc7dc2ec8488ed83f190c5d2e.json",
+      "result_sha256": "c81e74d670d96a72c537b980d6c6d0318a401b3a7ea21ad486722899494af4f3",
+      "compact_sha256": "7f51eb057f1c020619a6e8546f14b47bb7c357a9f46913767298f2ff143e5874",
+      "threshold": 0.02707026715713882,
+      "estimated_snr_db": 1.0097657333704513
+    },
+    {
+      "scene": 0,
+      "condition": 3,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\c388f0eb59454d48b72ce6e68e360806de769d39331d2be2a4bf07ff3c699e9f.json",
+      "result_sha256": "5ebbb4e31e174b7958552341eef2ab8e7391c474c103ef0f458c3f6d9c148489",
+      "compact_sha256": "327e7f0e2ecc6cbc5a20a17d0f14f395c1e26574fa0a101b42e18bcafb6fc511",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": 0.20968789618686512
+    },
+    {
+      "scene": 0,
+      "condition": 3,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\a9981896c185864934b6ee9fa911c032133579759402ace1677f3306665c239c.json",
+      "result_sha256": "07528c1fe6bbcf029e040dab10fcbf5674fb491a0781c1e5317f7d592cc38302",
+      "compact_sha256": "b410b93600593ca6b65e5a93a1d229b3a6df8b140dc8045181e49e80e7bb8692",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.4676639635144197
+    },
+    {
+      "scene": 0,
+      "condition": 3,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\de044092dba1fb8c4b1258a4f5e8554d0a3e3bb4913ea86a7fccc74e1519264a.json",
+      "result_sha256": "bcb381ab18972ef50f293f9b8f7953b4580ed201e4bb823fd41ff3ca20aade86",
+      "compact_sha256": "cfc66f0856ce4135461364397d3a176eca46244e9d2ab43ba38b94f36bcf9d49",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": 0.20968789618686512
+    },
+    {
+      "scene": 1,
+      "condition": 3,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\74e6ad8ead08c631ebc2810ce379fd8b54dea68d1a5bf4defeeb1cd067904830.json",
+      "result_sha256": "4886120eb8e312d58154e8c27ef7646f1690e23b190e41ae27d5ad1a876401d0",
+      "compact_sha256": "05e3bee64b698ac1604729083c3e15cdbac761c929ad86a89f815afcfd656727",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.7026993673643543
+    },
+    {
+      "scene": 1,
+      "condition": 3,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\eb323cfa17935c3b7356b0f81af8ea604fe6d2e3509e91e420e508de87d814f5.json",
+      "result_sha256": "3f4f3b3e12bda4db2c8ca069234b9b49d2d347e6e23d5fef5e9ecbfef9fb72fd",
+      "compact_sha256": "4f59edd7f718983556b0f3a8ff6f8a4c20f30ee999bb2589451a2de052f3b9f4",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": -0.2957019377873056
+    },
+    {
+      "scene": 1,
+      "condition": 3,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\8ae38cf912b27c730677511e62f62a3e668dec1282f56be03a2b353ea69e46c8.json",
+      "result_sha256": "6b003c8fb4cdede3f919fa10dde87247372b8ef5ae8fff345d02b348d8f3d85a",
+      "compact_sha256": "3417878187b9971c1c548b0cb6c4909fdddf8f5dd8b822df15541c23ef255ab7",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.0460993689985782
+    },
+    {
+      "scene": 1,
+      "condition": 3,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\bed20163579edf46391205f36e4c637018211bdd2514e05c44550c219b55ba22.json",
+      "result_sha256": "fc5173771455da20c3f3b7fa3454a29eb854b35fece5e6999971ad7a21e453fa",
+      "compact_sha256": "3377204301a945085fe13db11d74f59ef742d4e9c45b41178511ba02f4c22b5c",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": -0.2957019377873056
+    },
+    {
+      "scene": 10,
+      "condition": 3,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\a96fea27356389804d41fd9684e0392a2b707439a66ceadb4cd30ac78abb0db2.json",
+      "result_sha256": "8308c7be241f47d539e405097b21640bc06991ef65ab638786ed4ceec056ffa6",
+      "compact_sha256": "eaed8153664cd99a966a9571f309c64b3110e1cb18da1b878af7ec399b5ed9d3",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.733234816818022
+    },
+    {
+      "scene": 10,
+      "condition": 3,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\3d3ea1219585a4b1f095c5e5e266f7b54e8e04c1ef635573aa4d6a4533081c73.json",
+      "result_sha256": "77e7246e412e52ec6cc42a568f2c0443ee42a9a2575c5f8e90e6cf463363bc8a",
+      "compact_sha256": "415a7ce011f2108f0b2979bfe40df625f1426e2fe9fc0993d80a8bca622eaf0c",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": -0.22680220708020926
+    },
+    {
+      "scene": 10,
+      "condition": 3,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\330fbd309082bc467c068a1b4cae334415938459055397dd727f8915f6e9b050.json",
+      "result_sha256": "c52482e6df40632144f3809e21554bdf59a284d9bedee2a7935381186b5bde2d",
+      "compact_sha256": "ffd380e1cf1de4d583ed235add6b56cec2c0e7e75b7834e4d2db1c2513553e9a",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.1144065431459778
+    },
+    {
+      "scene": 10,
+      "condition": 3,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\08182253d7025c55142c15acc0607c10c34a08b695120bc000f6b03b46b2ec17.json",
+      "result_sha256": "fa3021b63938227872741b920936850e17eea07b2c1f13001baf24d068e04ce0",
+      "compact_sha256": "ea053b9f75f27af28c8887226483f7f65fc91b491cfe266001fd119b96988b2b",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": -0.22680220708020926
+    },
+    {
+      "scene": 100,
+      "condition": 3,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\7afc750afce8464282f36f274ec3d78bdc5678bb4895a3c015094adb5efcb28b.json",
+      "result_sha256": "0b3fddff0c2764b82691ed780b5ebed380b614b9010fd2532f742a5c40604059",
+      "compact_sha256": "9b0806a4641cfdb0627af591481fe70df4f28933fc453f3413071070168d3eb1",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.9715291185182462
+    },
+    {
+      "scene": 100,
+      "condition": 3,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\b5c3c366dcda3e90705f4b93538e0eab0074f10ce88a975e41a710d08c6e6e1c.json",
+      "result_sha256": "d210244f1bb23ab596982435f61c71db688a4981df4493778a0640f7d8f7a2bd",
+      "compact_sha256": "d30da94b2edf6d7a07c4a9f565ce951039dbf769224a81a4357b0cdd433fb19e",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": 0.12596195267884605
+    },
+    {
+      "scene": 100,
+      "condition": 3,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\2bbf0f3f5d92cf4c79dac277e10dc94117c97726dafd1917a14ba09eb994b498.json",
+      "result_sha256": "ecdc17c8491a340a3e701fe982ea486f1c65f8ca272e355c22d96c1f1e0fc62f",
+      "compact_sha256": "ef69fce83664f0339aa8b09ee0bd350ea7582b06d28f8a6382a0d1316eef25b8",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.4203526711251842
+    },
+    {
+      "scene": 100,
+      "condition": 3,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\87d3d1d95181c33e835c32ff80cac6c4489e8ec6f1f6b430e7c050dfebf30fb2.json",
+      "result_sha256": "5530670eb50a14689d8ca14672f290b5fed20c59a9d59aba2bacf40a68df0bbb",
+      "compact_sha256": "ae2ea413c92988e7800420c96b09ea1822ec4d16be8e1fd833163bda2117eb43",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": 0.12596195267884605
+    },
+    {
+      "scene": 0,
+      "condition": 4,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\ed0073803f911748c7c5130f4c52ff0636a3c6611c02e8adc6270e13d4b9aed3.json",
+      "result_sha256": "66599fbce8d3dd16c4379508669ba0e7614be966c8040da8e47a044c66754b5c",
+      "compact_sha256": "9497a98afb8208998368272d8b64164eefb7e895c1d0bae4f401cade8f1edf03",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.9737462873633078
+    },
+    {
+      "scene": 0,
+      "condition": 4,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\b63ab52c50b872e25e602e70ceecbc4247dae13e207e4936cdf7a7c4340ffee6.json",
+      "result_sha256": "57d05b76b87bccefac5a504ea72a4deb5ccfa248f82cb8d014334c2a686e98d1",
+      "compact_sha256": "12b0892ff48d23a0800441347cec721cb059eb4598238d6a23c018ca27239d27",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": 0.02378201412506444
+    },
+    {
+      "scene": 0,
+      "condition": 4,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\537ce1518cca1839de28fc9ab93c2126fb9435eef8473f939f392c06f0d89e37.json",
+      "result_sha256": "721e46db5b3abfd2d0459d5f610464026663aaf958d0c012fe350f382b25a50c",
+      "compact_sha256": "81c1d23a98423787f76597a640c03b1dc44804ebd9e00d5904d1de4030507fd6",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.3234503805322373
+    },
+    {
+      "scene": 0,
+      "condition": 4,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\4bca2629fa0bcaee1424be0888c729f1d584152fe67403e171d1ed9fe49ad126.json",
+      "result_sha256": "7880891d311ccb4d551f86e8078ceb50bb07b3e732c9345316710a1571f4f4bb",
+      "compact_sha256": "39e0eab11d489ad6da4834781e9a50ebfb62b32d96cbf39820c94d3e29f33aa4",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": 0.02378201412506444
+    },
+    {
+      "scene": 1,
+      "condition": 4,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\9b2c038331ef8f9f6e76206eed978a8d76d0ee806477cdd5de21b22ad5b0144f.json",
+      "result_sha256": "a1db08a8af3474a6f528058e91725c39d66079b1a04f6c6a3c794fc75dd1438c",
+      "compact_sha256": "767bc1e35b5cecfa9d95ee4cafc398920aa7e43bb06fed6b907e96c3966b6c17",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.8719793645308348
+    },
+    {
+      "scene": 1,
+      "condition": 4,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\1ce5dc50b9f8069995c10cacb55fcaf0283370d9843ea22f809694d44f225277.json",
+      "result_sha256": "5635d29bd62e9e216099595a32c0dd728ca5f1e3f57b0362bc6a08220d2c5a57",
+      "compact_sha256": "05d23dc90bd56c64aea83accf045b26be74e9bbe8a26733485f7f222a4b3b271",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": -0.18872673608876592
+    },
+    {
+      "scene": 1,
+      "condition": 4,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\e7638c2fd087375fe194169d4d4164366e7f4e2f4cb78b2e63d3ec013897527d.json",
+      "result_sha256": "f430fb1f743ebbb6222c07496c3cf5095b08ae1df345e93c324bd15fe9bd2937",
+      "compact_sha256": "9178451aaed3286d1f691fb4ab79438ef2e3b5c00e1aee388847f3cb8ceebd91",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.16353885696448
+    },
+    {
+      "scene": 1,
+      "condition": 4,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\c5031ac6eaace3df3b6e32e547641557995fe93e2db98ef9de68fdae42f2ccd3.json",
+      "result_sha256": "d3ec83b37d0c712c0c4bcb5926257cee64bec3e47a8c1571751334c3b8f6eca4",
+      "compact_sha256": "c36e0b8b3bf2ce133fdd5b5e0c96c554fc20e27138d9aa87fd4cc8742b18fe1d",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": -0.18872673608876592
+    },
+    {
+      "scene": 10,
+      "condition": 4,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\06e62e3f3fe2279c90dcc9ba77291ab94e1b508f189d291f670449679bd0ed62.json",
+      "result_sha256": "246d68f9d5c5d7663a2c2599b76acc3e506daab948872b616d58a2b1385d3d16",
+      "compact_sha256": "25f209101158a81d8063b31431f68f927539d04d0ebb33ec7043cebac3a515d8",
+      "threshold": 0.029999978304126155,
+      "estimated_snr_db": 0.7011387845331323
+    },
+    {
+      "scene": 10,
+      "condition": 4,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\68b745d9c1bfecc3543283421356e77da928409c2579e5ff37768689b1983af7.json",
+      "result_sha256": "c042a5cf9554d22c63e61d5da24037708480029309989ea3f3bede21e0b0be96",
+      "compact_sha256": "1d80949a67fdbfa9282c9e94c35a563cc10bcbca625b25c9c789c203dc89a0c8",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": -0.38935777386014714
+    },
+    {
+      "scene": 10,
+      "condition": 4,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\40481dddc201bee157ac3d27db928c0c83b391a9a90e133e237cfd4f37d4b15b.json",
+      "result_sha256": "01f0f4c1d0f1b6025e77807e142b1539c4fa7f75d7b4976f88e7ecec47f026b4",
+      "compact_sha256": "9ce85b67424327db169a75c4bf69413c865381e643c1e10f5fc17883294ac269",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 0.9906579798168573
+    },
+    {
+      "scene": 10,
+      "condition": 4,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\2ac87fd7466c889ac6c189b8bb473af3dedd1c79dcb073b58f45ab77beddd75e.json",
+      "result_sha256": "bed5b8d8245e3035a65e3897dcc73fca37dca53c27d5731efbdd7397c4272f06",
+      "compact_sha256": "dfb70108421d4108b35fb99e419aa42ea744ff98e6dca6659ffd5032edf73a63",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": -0.38935777386014714
+    },
+    {
+      "scene": 100,
+      "condition": 4,
+      "method": "offgrid_sbl",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\d10623b45603c9d332b2cebac70a92d6bfb09df62ad365d3d22bcccceca874eb.json",
+      "result_sha256": "cebed2b40b200644575c9eb60d9c56d9b5e54fc2fb31e14b11cbf34b68497a04",
+      "compact_sha256": "c7f59c8667947a1f1ce52c3b077e8113a4097068bac830389ede799571a02f82",
+      "threshold": 0.02707026715713882,
+      "estimated_snr_db": 1.2642801722297037
+    },
+    {
+      "scene": 100,
+      "condition": 4,
+      "method": "gnn",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\35b7262952c8eff0c52d296e55e536ff2897bce3007101cb24db993080943ec6.json",
+      "result_sha256": "310f1203be5bc73a358b62eb5a3350f40b56e368140ade74ad80fa5eb937dc74",
+      "compact_sha256": "921cdeba10b7dd97cb18c65127aecd6aa367750849e4bca38cc5f5dae68b868e",
+      "threshold": 0.027625354006886486,
+      "estimated_snr_db": 0.3182761339246676
+    },
+    {
+      "scene": 100,
+      "condition": 4,
+      "method": "gamp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\9db876f7279509740c40d496ffad4d8b0735a8b5e76bf352204934dd34703d16.json",
+      "result_sha256": "6504b803ade478e34b1d6cb58b8e9d6461ecba21cbbfad9e256ba70a873c7b2f",
+      "compact_sha256": "af757e31e4df4f13583dc150df94af36797dd6e4fbc0ba45c83d9a3f7191a516",
+      "threshold": 0.06753045555230983,
+      "estimated_snr_db": 1.6185869779715756
+    },
+    {
+      "scene": 100,
+      "condition": 4,
+      "method": "somp",
+      "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\0d2bb8f497be34f7d41e76f34dd2e010a30ad081e5f83791fd0d02f825bea797.json",
+      "result_sha256": "61abb0f6a307452b6af3c03a555fdff909d83ad1281faee917db48c7963c6882",
+      "compact_sha256": "b3b8d6e74e04ac0f3df94deb4fad8b60bc3ee7ec0839a522198404c2b7974400",
+      "threshold": 0.12263444909760307,
+      "estimated_snr_db": 0.3182761339246676
+    }
+  ]
+}

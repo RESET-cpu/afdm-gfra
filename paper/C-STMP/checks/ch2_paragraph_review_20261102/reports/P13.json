@@ -1,0 +1,75 @@
+{
+  "paragraph_id": "P13",
+  "source_line_range": [221, 245],
+  "sentence_counts": {"A": 4, "B": 0, "C": 2, "D": 0},
+  "counting_note": "6个审查单元，式后维度解释单列，公式随引出句检查。A为主要句子来源分类，不把本文公式或条件自动归给原文；独立结构问题另列。数量不是写作评分。",
+  "overall_source_verdict": "Cai正式版p.4直接支持紧凑表达引出句及设备块稀疏两句；Q×MN排列和索引是本文定义。Wei v1 p.2支持按观测/未知维度说明欠定性的句式和逻辑，但Q<KN必须是本文条件。维度、索引和块稀疏含义核验正确。主要缺口是未在此明确多帧共同估计同一个X及Q增加仅增加观测行数。",
+  "sentence_audit": [
+    {"id": "P13-S1", "lines": [221, 226], "category": "A", "evidence": "Cai正式版PDF p.4 §II-A式(4)前的We express...in a more compact form as", "boundary": "引出句必要替换；本文矩阵公式由自身AFDM双求和及相位吸收得到。"},
+    {"id": "P13-S2", "lines": [227, 229], "category": "C", "evidence": "Cai式(4)前后给NT×M、NT×NK、NK×M，本稿为Q×MN、Q×KN、KN×MN", "boundary": "技术排列不同，不能登记为原式或单纯符号替换。"},
+    {"id": "P13-S3", "lines": [230, 240], "category": "C", "evidence": "Shen v1 PDF p.5 §II-C式(14)后用矩阵元素对应张量，但未核到当前完整引出句", "boundary": "本文四个索引定义；原段只提供相近说明任务。"},
+    {"id": "P13-S4", "lines": [241, 242], "category": "A", "evidence": "Cai正式版PDF p.4 §II-A式(4)后的Due to the sporadic access...block-sparsity structure", "boundary": "设备块尺寸按本文改变；活动稀疏含义保持。"},
+    {"id": "P13-S5", "lines": [243, 244], "category": "A", "evidence": "Cai同段紧随Specifically...X_k=alpha_k H_k=0", "boundary": "整设备块为零，不是活动信道内部元素稀疏。"},
+    {"id": "P13-S6", "lines": [245, 245], "category": "A", "evidence": "Wei–Yuan v1 PDF p.2 §II-B式(4)后Since M≪N_r...severely underdetermined", "boundary": "观测少于自由未知量的技术任务相近；改为Q<KN并删除severely合理，范围本身仍由本文规定。"}
+  ],
+  "findings": [
+    {
+      "id": "P13-F1",
+      "severity": "medium",
+      "lines": [221, 240],
+      "issue": "缺少多帧共同观测同一X以及Q增加仅增加观测行数的直接说明。",
+      "evidence": "当前仅写compact form、尺寸和索引；Shen v1 §II-B PDF pp.4–5从跨帧近似不变明确接到增加观测，§II-C p.5式(15)后再次说明收集观测的作用。当前引言贡献也已承诺这一关系。",
+      "reason": "数学已包含共享关系，但文字将关键方案作用留给读者推断，使本段更像记号重排。",
+      "minimal_action": "在矩阵式后补一句或改引出句，说明在既有跨帧假设下各帧共同估计同一个X，固定K/M/N时增加Q增加观测行数而不改变X尺寸；保留公式，不新增实验或算法说明。"
+    },
+    {
+      "id": "P13-F2",
+      "severity": "low",
+      "lines": [245, 245],
+      "issue": "Q<KN作为新工作范围由Since句引入，条件来源可更清楚。",
+      "evidence": "前文PP^H=KE_p I_Q只要求Q≤KN；Wei原文在问题段之前已明确M≪N_r的压缩设置。",
+      "reason": "现句可理解为在此声明范围，因此不是确认的数学错误；但严格不等式不能由先前导频约束推出。",
+      "minimal_action": "改为For Q<KN的条件式，或同句明确所考虑范围。无需加入可辨识性长段或活动概率展开。"
+    }
+  ],
+  "mathematical_checks": {
+    "dimensions": "Y,W为Q×MN；A为Q×KN；X为KN×MN，乘积成立。",
+    "indexing": "列mN+r覆盖0至MN−1；设备及发射符号合并为(k−1)N+n覆盖0至KN−1；乘积逐项复现第215行双求和，无需共轭。",
+    "device_block": "每设备在X中对应连续N行及全部MN列；alpha_k=0令整个设备块为零，对H_k内部无稀疏要求。",
+    "underdetermination": "给定A且Q<KN时rank(A)≤Q<KN，任意自由矩阵X的线性恢复欠定；不等价于有结构/先验时无法恢复。",
+    "pilot_condition": "非零导频能量下行正交仅蕴含Q≤KN，严格不等式是额外工作范围。",
+    "multiframe": "相位进入A且块内活动不变，使X不带q；在该模型有效且K/M/N固定时，Q增加行数而不改变X尺寸。"
+  },
+  "strengths": [
+    "单帧双求和到矩阵式等价，且自然衔接下一段按列似然和按设备先验。",
+    "Cai块稀疏两句的原因与具体解释顺序被保留，连接词承担真实关系。",
+    "设备块稀疏和完整H_k无稀疏假设已通过不同对象及alpha_k H_k分清，无需重复免责声明。",
+    "索引式明确n/r的发射与接收方向，有实际复现用途。",
+    "未从Q<KN夸大到severely或结构化信道不可恢复。"
+  ],
+  "recurrence": [
+    {"check": "仅列定义而未说明作用", "status": "partly_recurred", "detail": "多帧共同估计与增加观测的作用缺直接文字，见F1。"},
+    {"check": "辅助细节遮住重点", "status": "minor_imbalance", "detail": "需要补用途句，不据公式数量删索引。"},
+    {"check": "机械定义及无意义重复", "status": "not_found", "detail": "维度与entries属于同一任务；Due to/Specifically关系成立。"},
+    {"check": "活动稀疏与信道稀疏混淆", "status": "not_found", "detail": "X与H_k层级清晰。"},
+    {"check": "来源相似性与本文差异失衡", "status": "record_boundary_needed", "detail": "尺寸和索引属本文定义，旧逐句记录不能替代原句核验。"},
+    {"check": "防御性赘述", "status": "not_found", "detail": "必要数学条件应保留，不增加通用免责声明。"}
+  ],
+  "granularity": {
+    "comparison": "Cai正式版p.4用堆叠定义给矩阵尺寸；Shen p.5较详细解释元素和块矩阵，再说明Q帧增加观测；Wei p.2先给观测范围再论欠定。本文三维信道的n/r排列需要较Cai更细的元素说明。Xu式(16)的未知X为数据，不能直接移作本文信道模型母本。",
+    "retain": "至少保留Y和X的元素映射，四行索引整体也可保留正文。",
+    "optional_compression": "若版面确有压力，可压缩W与Y相同排列、A与前文P相同排列的说明，不是必改项。",
+    "minimal_priority": "补共享X及更多观测的用途，明确Q<KN条件；无需移附录或添加MMV术语解释。"
+  },
+  "sources_read": [
+    {"key": "cai", "version": "IEEE JSAC正式发表版，2026，非cai_v2", "pdf": "reference/literature/cai2026.pdf", "pages": [3, 4], "sections": ["II-A", "II-B起始"], "equations": [3, 4], "extraction": "sources/cai.reading.txt"},
+    {"key": "shen", "version": "arXiv:2412.20806v1", "pdf": "reference/literature/shen2025.pdf", "pages": [4, 5], "sections": ["II-B", "II-C"], "equations": [8, 9, 10, 14, 15], "extraction": "sources/shen.reading.txt"},
+    {"key": "wei", "version": "arXiv:2610.17785v1", "pdf": "reference/literature/wei_yuan_2026_lstmp_v1.pdf", "pages": [2], "sections": ["II-A", "II-B"], "equations": [1, 2, 3, 4], "extraction": "sources/wei.reading.txt"},
+    {"key": "xu", "version": "Surrey官方作者稿在线节选", "pages": [5], "printed_pages": [4], "sections": ["II-C"], "equations": [16], "extraction": "sources/xu_web_excerpt.txt", "limit": "非完整本地PDF，列间抽取可能交错，仅作矩阵化任务比较。"}
+  ],
+  "limitations": [
+    "未执行仿真、训练或数值恢复测试；仅作逐元素等价与维度/秩核验。",
+    "未宣称遍历全部参考文献，未据尺寸推出结构化恢复性能或不可辨识结论。",
+    "历史SENTENCE_ALIGNMENT和TERMINOLOGY仅作线索，不替代本轮原段读取。"
+  ]
+}

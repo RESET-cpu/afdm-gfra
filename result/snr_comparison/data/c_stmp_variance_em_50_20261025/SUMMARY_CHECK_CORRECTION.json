@@ -1,0 +1,10 @@
+{
+  "initial_check": "first_network_samples == iterations * 40 * 3",
+  "initial_check_outcome": "Failed for four high-SNR inputs because the frozen denoiser has an existing out-of-support branch that skips network inference and reuses the previous Gaussian site.",
+  "affected_inputs": [[7,10],[12,8],[12,10],[42,10]],
+  "unsupported_iterations": 8,
+  "corrected_check": "first_network_samples == 3 * sum(trace.moment_samples), with exact per-iteration moment/classifier/unsupported-user counts and fallback-source consistency checks.",
+  "preserved_script": "summarize_before_call_count_check.py",
+  "receiver_or_output_changed": false,
+  "inference_repeated": false
+}

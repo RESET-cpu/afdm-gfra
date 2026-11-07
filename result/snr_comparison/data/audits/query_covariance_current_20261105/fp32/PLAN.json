@@ -1,0 +1,430 @@
+{
+  "created_unix": 1793854791.955041,
+  "authorization": "User requested checking actual query correlation and whether networks need retraining after replacing vI.",
+  "selection": "Scenes 0,10,20; SNR -4,0,6, fixed before inspecting query errors. Nine diagnostic replays, no training.",
+  "configuration": {
+    "scale": 0.2647966452702405,
+    "batch_size": 40,
+    "conditional_variance_floor_checkpoint_normalized": 0.0001,
+    "decision_threshold": 0.5,
+    "site_damping": 1.0,
+    "ep": {
+      "iterations": 600,
+      "damping": 0.4,
+      "min_iterations": 60,
+      "convergence_tolerance": 0.0005,
+      "convergence_patience": 5,
+      "variance_fraction_floor": 1e-06,
+      "variance_fraction_ceiling": 0.999999,
+      "covariance_mode": "isotropic",
+      "activity_convergence_tolerance": 0.001,
+      "raw_site_residual_tolerance": 0.1,
+      "activity_weight_residual_tolerance": 0.001,
+      "decision_stability_window": 10,
+      "activity_stopping_reference": "smoothed"
+    },
+    "initialization": {
+      "kind": "activity_prior_times_training_power",
+      "normalized_training_second_moment": 1.0004404181394917,
+      "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+    },
+    "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+    "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+    "first_checkpoint": "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt",
+    "first_checkpoint_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+    "schema": "colored-stmp-candidate-v1",
+    "implementation": "colored_conditional_mean",
+    "activity_evidence": "classifier",
+    "evidence_checkpoint": "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/evidence_best.pt",
+    "evidence_checkpoint_sha256": "2b3bb9a3e48e5304e6e1bcef9af2649ac635c4bdf7f6fa9200e9aa10c4f9251c",
+    "method": "C-STMP",
+    "query_covariance": "vI",
+    "classifier_policy": "retrained_colored_mean_vI",
+    "first_epoch": 200,
+    "classifier_training_binding": {
+      "first_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+      "second_sha256": null
+    },
+    "variance_estimator": {
+      "probes": 1,
+      "epsilon": 0.01,
+      "seed": 2026102407
+    },
+    "limitations": [
+      "Colored-trained first queried at C=vI; scalar feedback.",
+      "Classifier trained from random initialization for 100 epochs on same-prior Gaussian queries using this first mean; receiver residuals need not be Gaussian.",
+      "Derivative trace is a working variance, not calibrated conditional MSE."
+    ],
+    "classifier_training_record": "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/complete.json",
+    "classifier_training_record_sha256": "d054d3df9142314404121077b70f00cabbb2d320533efc7f2fc46f5640056b94",
+    "classifier_training_specification": "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/specification.json",
+    "classifier_training_specification_sha256": "40a0c1ba0914bf30993684bd1a68f9bbd306656a2bbe895b66bf48b57397aa10",
+    "classifier_execution_record": "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/acceleration_20261025/EXECUTION.json",
+    "classifier_execution_record_sha256": "a79bf0df1db884cc06e6435619b77b832d4a77e4af421c179a54de6ec591265b",
+    "classifier_epoch": 90,
+    "query_variance_update": {
+      "enabled": true,
+      "formula": "mean(abs(r-joint_mean)^2)+mean(trace(joint_covariance))/M",
+      "schedule": "one update per outer iteration; ratio damped with existing beta; separate raw linear-query covariance history",
+      "stop": "also require relative posterior-residual variance update below original convergence tolerance"
+    }
+  },
+  "cases": [
+    {
+      "scene": 0,
+      "index": 0,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100001\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "03da61ffb875b8bf9df2f41ee50a52a43f7b25573ee97ed60c3f766fade546a3",
+      "files": {
+        "public.npz": "09427b205961229a6c3e57c4f7e8d9482b4ddbaaca6dcfd1c2b87f6bda9b6203",
+        "raw.npz": "569ed11a5fbc0d01db0599d34b84b49af4122760b56b1661d5c2e53e20a39e36",
+        "truth.npz": "93a6894712f6205fc60a7fc04888323157be4facd2c7d92cdf338af7ca19c2e4",
+        "phase.npz": "99211b2518bd3479bc8faf6bc9b29d02842f63daf9a47cfe853505a50d6fe1c3",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\648fb5e8e0867cad7cf15a6fd2ef78d964cd199d6b2e2a7827e8e4611033d8cd.json",
+      "STMP_sha256": "9271a4d5d03bb40620daa5fcfa0c48aab6b8028bae9f49e5a36c79b993abd8d5",
+      "snr_db": -4
+    },
+    {
+      "scene": 0,
+      "index": 2,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100001\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "91b15434f9c89b1688f42876b6ee5bc18df36b3be0b4daf7facf4213aedc37e7",
+      "files": {
+        "public.npz": "4af44b9b994d05fb37d373e80211602bb5f01281d893f8ab721cb61c5d7264ec",
+        "raw.npz": "cb873019a08264aa091b4a4accf65e95edeb65bed25b60dbc3e8b7dc557ae908",
+        "truth.npz": "93a6894712f6205fc60a7fc04888323157be4facd2c7d92cdf338af7ca19c2e4",
+        "phase.npz": "99211b2518bd3479bc8faf6bc9b29d02842f63daf9a47cfe853505a50d6fe1c3",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\71a05011723f330bab020c4a382fa91f9fce88acd98d7f430cb038d642747810.json",
+      "STMP_sha256": "ea7b56a5c0252ed964e4a342a9496368b7deae6152b2f63902f55f0f29253df7",
+      "snr_db": 0
+    },
+    {
+      "scene": 0,
+      "index": 5,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100001\\K40_Q16_p0.1_snr6_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "58ce1db577be3ec870a6ff47679c28db29dc1555892a9065f14c3e947aab3ae2",
+      "files": {
+        "public.npz": "baf9876b0afbfcb11c17f1c35aa54b43b7ca2038e7b728fd995ec65442ca1d6b",
+        "raw.npz": "5fb8d4532d839904ac110f1030e76c50ca6e5224f57dbfedbf78d0fbf73007a6",
+        "truth.npz": "93a6894712f6205fc60a7fc04888323157be4facd2c7d92cdf338af7ca19c2e4",
+        "phase.npz": "99211b2518bd3479bc8faf6bc9b29d02842f63daf9a47cfe853505a50d6fe1c3",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\bc7473d52facf78177a9885d79396eb52f0584015ac9c7f29caa585f927f1fa8.json",
+      "STMP_sha256": "ad840f375bf836288454f3b9c9078a7432991eb15601ebaf3bcddbb87230714b",
+      "snr_db": 6
+    },
+    {
+      "scene": 10,
+      "index": 0,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100011\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "7b4b2872ed7b476f27c06be174a1878d570e751cd27437dbde2376a310909d8a",
+      "files": {
+        "public.npz": "bb8bc75fc3270e0d668157b142c45781597dc740fd24827d6096df6d601408e6",
+        "raw.npz": "3d9079983da1f28574d25f13c65c7a9448090b27c410cd24f6968cbd87239fba",
+        "truth.npz": "a5d14ce9bcb6882388478a5d892097fcf13f231e701fbbe108414087c7a6a3c5",
+        "phase.npz": "a5b7f9c532115a86b0d8c570b970a4b9d54417ecf389725bfd9f02fe753b8efb",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\9ed27100997901339b2915ff3ba7fa9158cd978075030439534dee9c43541c0d.json",
+      "STMP_sha256": "9589fb758bc8dd4026323872ee6dec6949057d469227d3c65c0ae33d86e8ca16",
+      "snr_db": -4
+    },
+    {
+      "scene": 10,
+      "index": 2,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100011\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "d574c44d7b49b42f4e040ee520fadb2a55694e940431c8d06e9bfb07b9e9f291",
+      "files": {
+        "public.npz": "dd9b5716ca64b494080ed31373a8e1b9d0d9b2b9abffc84a54fe1ef05b8f5b2c",
+        "raw.npz": "fa357882b97baef053e09f1a1ecf05720f8ad71ddd5090733cdf5e2b15daa701",
+        "truth.npz": "a5d14ce9bcb6882388478a5d892097fcf13f231e701fbbe108414087c7a6a3c5",
+        "phase.npz": "a5b7f9c532115a86b0d8c570b970a4b9d54417ecf389725bfd9f02fe753b8efb",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\0135ef14b25f6b6a5a1644b48f3a6152d660ce8cbfe1dbae0eb6e0d919669e20.json",
+      "STMP_sha256": "6c681fc7aa7e1020b881aa7ac80278fbf3f873543b8976b1d74abdb454bc308b",
+      "snr_db": 0
+    },
+    {
+      "scene": 10,
+      "index": 5,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100011\\K40_Q16_p0.1_snr6_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "d014a93915020084899f2f1ac6d19866ad427333a4145da3f2849b750ae7f53a",
+      "files": {
+        "public.npz": "170f56a1114c66fd5d5fe630f7eb9aed85226b8c7a8c96d947a8439b1c8524aa",
+        "raw.npz": "efb21134e4cc028ecfea5755f0cb377b806a7a49dd7a6717f6e04b2a48cdf067",
+        "truth.npz": "a5d14ce9bcb6882388478a5d892097fcf13f231e701fbbe108414087c7a6a3c5",
+        "phase.npz": "a5b7f9c532115a86b0d8c570b970a4b9d54417ecf389725bfd9f02fe753b8efb",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\b91c05098115fa2c1b1c09c596e6983915132868e2833c46cd5d9102827093f6.json",
+      "STMP_sha256": "0cc009f5135150244a709db5ad22fd905463b4fd4d85e118e5f05dbd11b1a228",
+      "snr_db": 6
+    },
+    {
+      "scene": 20,
+      "index": 0,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100021\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "fe643de94643a0fd10789aaabf7916a164a55c0fde3c80be7fa2aaf6ffa69d97",
+      "files": {
+        "public.npz": "d81789ae1ae65c5cd5f0e5330075e149da68efee3a989969d2fec9381812a4c5",
+        "raw.npz": "22c20a785068adda9576cbdaa43ef6a369e48e115abd74479b5e3177d58d2ddb",
+        "truth.npz": "14970f48cf158de313fbc5c149ca5f95cc2f92085b201a2a079029e559b25f70",
+        "phase.npz": "6d4fd0f0a379bb4eeb36578517c82d22b1ae5d8f268c09e680639c4a2bf90a66",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\44ffb07e6da608ab4f3703645fdf9916da5a4e3b2994da4c37de09de84921064.json",
+      "STMP_sha256": "8e2d08468a3014b2638b00ab5b4fddd7a12d5a9dfe51f5c681659c9f2fab9558",
+      "snr_db": -4
+    },
+    {
+      "scene": 20,
+      "index": 2,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100021\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "4d8f080c1cb55caf5524cf6af8f1df450ac2333d646c03912226d21ec4a4ad30",
+      "files": {
+        "public.npz": "1fe8f4f9a4047c9d85db325a0767ba236b4d9bf6f5ae9bf6e9af8efd3802ebf8",
+        "raw.npz": "ad46990cbc800140e1c10d4114316cb83c973919ee10612248055455edbe607d",
+        "truth.npz": "14970f48cf158de313fbc5c149ca5f95cc2f92085b201a2a079029e559b25f70",
+        "phase.npz": "6d4fd0f0a379bb4eeb36578517c82d22b1ae5d8f268c09e680639c4a2bf90a66",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\116cf8ef327594b1d43b34c69d06fbf505c86620ed18507b7b7340708589845e.json",
+      "STMP_sha256": "07a033d644a374b061969de73f464cbfb6045672341e47149ae7b1c09f64bce9",
+      "snr_db": 0
+    },
+    {
+      "scene": 20,
+      "index": 5,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100021\\K40_Q16_p0.1_snr6_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "040d9d144836d475f648be44c3faf983f52a340b55226eabf8a0a430efc93f0d",
+      "files": {
+        "public.npz": "96d4d3b96ef8a21cc750cc9be5a784bf496d107962a40218d99a6e4ee31c0f27",
+        "raw.npz": "b9ed0d47a0537d6562504afc10ddc2125929584c65a7d2c837437daa482201fd",
+        "truth.npz": "14970f48cf158de313fbc5c149ca5f95cc2f92085b201a2a079029e559b25f70",
+        "phase.npz": "6d4fd0f0a379bb4eeb36578517c82d22b1ae5d8f268c09e680639c4a2bf90a66",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\12cc776596387f2957ba78a62856a9d7123138f45bd6a969e9478d1d90add1fd.json",
+      "STMP_sha256": "1332956914f65034e0519fb9a1aa270bdf28b91b569fe50d75c456bffee9c100",
+      "snr_db": 6
+    }
+  ],
+  "references": [
+    {
+      "scene": 0,
+      "index": 0,
+      "snr_db": -4,
+      "known_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\results\\scene0000_condition00.json",
+        "pointer_sha256": "424433b7ed8d30fc77a0b5d44e72027204af5143d728df4ca8365ddb6feb06a0",
+        "stem": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition00_candidate",
+        "files": {
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition00_candidate.json": "d0082f9a920f0658927882e87b1facd101efa7ae9aaf7ab7b56189e82c7c493e",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition00_candidate.npz": "f02f072873473e2636add8cd234b289ccb14fb11c983bf2abe1313a1c68c212f",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition00_candidate.record.json": "e4d162f7a91fd5227a9834e40e86bbdd2571adcb3fb523f620ff05d4f6241f99"
+        }
+      },
+      "selected_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\results\\scene0000_condition00.json",
+        "pointer_sha256": "6dd5b541718aa16d97bbe5c186788702a4518f70cf9b7f66b65c9c1dfe69b9ab",
+        "result": "D:\\afdm-gfra\\result\\candidates\\c_stmp_phase_selection_20261030\\development\\physical_no_hypotheses_legacy_stop\\scene0000_condition00\\RESULT.json",
+        "result_sha256": "8aec165f60274a1b2bcbf8787af43e45f3dfc0cecb1fa71507dec56c3767673b"
+      }
+    },
+    {
+      "scene": 0,
+      "index": 2,
+      "snr_db": 0,
+      "known_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\results\\scene0000_condition02.json",
+        "pointer_sha256": "453c1155b8dd498bba97c73b23ec1d53f0b380f679c7a7d213d195fb621bf1b3",
+        "stem": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition02_candidate",
+        "files": {
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition02_candidate.json": "24774a50a09e04e598faa121873de9bdb8c9fbf930f07a2ae9c0691f0f05c8e1",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition02_candidate.npz": "18dbcdeeff3c3f4b4b7fbbe48fa81f4a41805a4889bd6edafcb2a8a7745c1c17",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition02_candidate.record.json": "9f6e3b599ed48ba5b667f26fada58844da3238417558a17343c5629de6b62956"
+        }
+      },
+      "selected_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\results\\scene0000_condition02.json",
+        "pointer_sha256": "25024bc3e8569a0a9888c1c4be3519adbc6339333a01074e943820edb25039a5",
+        "result": "D:\\afdm-gfra\\result\\candidates\\c_stmp_phase_selection_20261030\\development\\physical_no_hypotheses_legacy_stop\\scene0000_condition02\\RESULT.json",
+        "result_sha256": "3db5279a1e7a8b0287caab5422e1bfb3789be64df21aabd04e2da2f61ba38910"
+      }
+    },
+    {
+      "scene": 0,
+      "index": 5,
+      "snr_db": 6,
+      "known_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\results\\scene0000_condition05.json",
+        "pointer_sha256": "79088c81802772b6d1375252aba53788e06bfa1e620e18eb7d95178a973a776f",
+        "stem": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition05_candidate",
+        "files": {
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition05_candidate.json": "19a9a42e4deed3a175cce6ea4f70075a224e2b5cf879f0883d851f9a86ad38d6",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition05_candidate.npz": "30334b82aadc03db87a3f2b2f5509ed0e1639db7908c9b495f0fe5cbaf2d8db2",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0000_condition05_candidate.record.json": "8f0936895bbcbe6eff734dc873f49a320f21a096e148f11eae39e9730574e09d"
+        }
+      },
+      "selected_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\results\\scene0000_condition05.json",
+        "pointer_sha256": "17416853350daebb5fc470573925713dd62612d67aedf0f4bf24e59dcba95783",
+        "result": "D:\\afdm-gfra\\result\\candidates\\c_stmp_phase_selection_20261030\\development\\physical_no_hypotheses_legacy_stop\\scene0000_condition05\\RESULT.json",
+        "result_sha256": "d3fd52bafd13513855f60c9eceba62a66b8bfaae8328aff68ec7622cce916a8f"
+      }
+    },
+    {
+      "scene": 10,
+      "index": 0,
+      "snr_db": -4,
+      "known_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\results\\scene0010_condition00.json",
+        "pointer_sha256": "3c2cb882c0539ea0c590ca79be3fd3e1b53c1e0f36494b1b112456bc0f637176",
+        "stem": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition00_candidate",
+        "files": {
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition00_candidate.json": "7528fe5b7e744b90e0e8ddaf38a8a95f1d2c598c113048f790cfd45745b6c42f",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition00_candidate.npz": "7b3a207cbd35ee0e95270871d376767b995f14d7f0732aafda724035765b0856",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition00_candidate.record.json": "df9252a13e77a8988ea3d6b9df94b69cb80719b5e9ad9f6e2c320e153e15367e"
+        }
+      },
+      "selected_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\results\\scene0010_condition00.json",
+        "pointer_sha256": "733c9f55bcd116f9d575009dce85fcd4d2d7a47c7349c2789a98b07d5fd9d5f1",
+        "result": "E:\\afdm-gfra-results\\c_stmp_phase_selected_500_20261030\\scene0010_condition00\\RESULT.json",
+        "result_sha256": "94ada679e9fe43e605cc752ea13413afb18e47e5a8cf8d728e23bd3ae04b5944"
+      }
+    },
+    {
+      "scene": 10,
+      "index": 2,
+      "snr_db": 0,
+      "known_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\results\\scene0010_condition02.json",
+        "pointer_sha256": "74fe588d81cc4677607271f2b4c37c1679a20df80dbdba874f52289b9b0974c5",
+        "stem": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition02_candidate",
+        "files": {
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition02_candidate.json": "b672fc631f9a82c58150d96428f952565eccd88c789df76203af9ff8d565c1f0",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition02_candidate.npz": "e15f8a4947337ec7c50837f97ad00de93eb90db6c71723fe76e8c15a9ec94191",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition02_candidate.record.json": "99f6d91d7a8502e9d46be269154320f34191d2d3c81c1ddacbaad40aaafee3e5"
+        }
+      },
+      "selected_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\results\\scene0010_condition02.json",
+        "pointer_sha256": "970d91d75bb9925d4605d4fdbff79ad7a8450bcbe99f0aa217245c70a2973b8f",
+        "result": "E:\\afdm-gfra-results\\c_stmp_phase_selected_500_20261030\\scene0010_condition02\\RESULT.json",
+        "result_sha256": "78f931a2d4a83de5c385057746ce348dbc0762cc047f3320bd751cabcca67fbc"
+      }
+    },
+    {
+      "scene": 10,
+      "index": 5,
+      "snr_db": 6,
+      "known_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\results\\scene0010_condition05.json",
+        "pointer_sha256": "7c6b25e499bb8eae65b8c4bfef3136ee09043e5e6e93c423af5f72b100ccbf35",
+        "stem": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition05_candidate",
+        "files": {
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition05_candidate.json": "0fb32290677ee8870b690c13e5a827bbbdedf337971b4f1317cdfe1b6a45a6b1",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition05_candidate.npz": "b774a18a25e7f49c04f7481aead0310b390ab4a1f9263211910bcb91d5045d81",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0010_condition05_candidate.record.json": "d319b94c397dc5bd49b4a13b0a8663bbf2236dd247f7d7a84631c0902f6054c4"
+        }
+      },
+      "selected_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\results\\scene0010_condition05.json",
+        "pointer_sha256": "97cee29fff33448193605e9b3db8a54c4d6a36a43f5fa22e0e404e66de8da868",
+        "result": "E:\\afdm-gfra-results\\c_stmp_phase_selected_500_20261030\\scene0010_condition05\\RESULT.json",
+        "result_sha256": "3fc454ad113a3f7a2966036536a33458792015adbc5080c69b7de4fe4f1977a7"
+      }
+    },
+    {
+      "scene": 20,
+      "index": 0,
+      "snr_db": -4,
+      "known_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\results\\scene0020_condition00.json",
+        "pointer_sha256": "bff48d7ec736cf1c7d2d1b18b2b64eb20031af1afcc0e880ad8314cf991a9017",
+        "stem": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition00_candidate",
+        "files": {
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition00_candidate.json": "aef3557fafbdf084de8d7abb93d2539d5c4165910877f7f4ff1759393a7f87de",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition00_candidate.npz": "e401084944dfa4e62704487f8280f7472dd96085e6451eb5340cea8e5058c768",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition00_candidate.record.json": "ec426220ad773aa996f6016d9ca04a80b70e65303d595f753355807dbddc840d"
+        }
+      },
+      "selected_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\results\\scene0020_condition00.json",
+        "pointer_sha256": "c56d65a68c456348de4394fd33c3ca9de79e327ffeb0ab8a6c3792b05482ba46",
+        "result": "E:\\afdm-gfra-results\\c_stmp_phase_selected_500_20261030\\scene0020_condition00\\RESULT.json",
+        "result_sha256": "16532ccb24c79d2cf0a3214488fc3a677fa660291e20d87a492b4c4f0cebe318"
+      }
+    },
+    {
+      "scene": 20,
+      "index": 2,
+      "snr_db": 0,
+      "known_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\results\\scene0020_condition02.json",
+        "pointer_sha256": "0e7d2d929441493be4f434fc3e010210fc045dd914819ae6f932eeeb27a52405",
+        "stem": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition02_candidate",
+        "files": {
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition02_candidate.json": "da14d8c9297e33e84380635068974bece3228630ed361788895daa282ef38f86",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition02_candidate.npz": "3146afcda0047c7b50a82121b5d4aa11f107568b41f5cc2d624dc58acc548df4",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition02_candidate.record.json": "79241a52c855d7eeff53085fe1158b46ec5b77a30823e8d0ddf664ce3cfa5dae"
+        }
+      },
+      "selected_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\results\\scene0020_condition02.json",
+        "pointer_sha256": "6984dd2b2816d7790ecc338f57c090bb3cc46d1b6317b0a24451715ed42e2985",
+        "result": "E:\\afdm-gfra-results\\c_stmp_phase_selected_500_20261030\\scene0020_condition02\\RESULT.json",
+        "result_sha256": "ad6949813efcf8d91f9936bb53beabbc8b8e56bb0bd755d93f226c26225f82f8"
+      }
+    },
+    {
+      "scene": 20,
+      "index": 5,
+      "snr_db": 6,
+      "known_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\results\\scene0020_condition05.json",
+        "pointer_sha256": "67c204de35f508c32a29671636677bb3bbce927ea788404b081740dce0335809",
+        "stem": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition05_candidate",
+        "files": {
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition05_candidate.json": "16150c25f56482b33af9a4bcb9a5f7a31c8407c947a5c0eee4cbe921eb0e82c1",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition05_candidate.npz": "a2ef22fe362648db939bbe462921034bc1e34f2b2c06aa5c39c055d758f3b7a2",
+          "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025\\inference\\scene0020_condition05_candidate.record.json": "f6fb548c71f034f33c5867600af33a833b3a1b7b34e1d2d15522a2425a313c93"
+        }
+      },
+      "selected_phase": {
+        "pointer": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\results\\scene0020_condition05.json",
+        "pointer_sha256": "bc91e00fad8c0cbaebbe07e492b211e45d8946ae71cf7a1411c0f1ea228f3e51",
+        "result": "E:\\afdm-gfra-results\\c_stmp_phase_selected_500_20261030\\scene0020_condition05\\RESULT.json",
+        "result_sha256": "8a56ebdb5f6d3fe1658b90f8142c3b04f98bd27dfb3e28b9738359d4af7612c8"
+      }
+    }
+  ],
+  "snapshots": [
+    1,
+    20,
+    "final"
+  ],
+  "parent_plan_sha256": "524ed6abefaa86b2a01f2403896c3404649ab4186c6e24ac946c6f5d45721a37",
+  "source_sha256": "d5cde6f5a48869665262247fde3780e7640bed6f8dfd8d9514acb7451bca49cc",
+  "helper_sha256": "588c40230e21e882bd13724741219d6b3cdae1fc47537404fa2dfeb91d736feb",
+  "native_directory": "E:\\afdm-gfra-results\\query_covariance_current_20261105_fp32",
+  "runtime": {
+    "device": "cuda",
+    "threads": 2,
+    "concurrent_replays": 1,
+    "timeout_seconds": 1200
+  },
+  "analysis": "Reuse prior two-fold even/odd-row rank-4-plus-identity factor fit with alpha<=0.5. Truth used only offline after unmodified inference. No fitted C fed into receiver.",
+  "limitations": [
+    "Three physical scenes reused across SNR; exploratory, not independent confirmation.",
+    "Oracle uncentered second moments; not an implementable online covariance estimator.",
+    "Output-row folds are dependent; no significance claim."
+  ]
+}

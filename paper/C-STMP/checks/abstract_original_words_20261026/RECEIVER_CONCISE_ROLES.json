@@ -1,0 +1,34 @@
+{
+  "status": "PASS_SOURCE_ONLY_COMPILE_DEFERRED",
+  "date": "2026-10-26",
+  "english_abstract": "This paper investigates grant-free random access in low Earth orbit satellite Internet-of-Things systems without global navigation satellite system (GNSS) assistance. We firstly propose a multi-frame transmission scheme with affine frequency division multiplexing (AFDM) to handle the large differential delay and Doppler shift at the satellite receiver, and derive the input-output relationship. Subsequently, we learn a score-based generative channel prior directly on the AFDM effective channel with fractional delay and Doppler, without restrictive sparse or grid-aligned channel assumptions. The training uses colored Gaussian noise to account for correlations in the denoiser input error. The learned prior is then incorporated into a message passing (MP) receiver for joint activity detection and channel estimation (JADCE). A neural network estimates the posterior probability of activity to complement minimum mean-squared error (MMSE) channel denoising. Numerical simulations demonstrate that the proposed receiver outperforms the baseline receiver in terms of activity detection and channel estimation.",
+  "receiver_description": "The learned prior is then incorporated into a message passing (MP) receiver for joint activity detection and channel estimation (JADCE). A neural network estimates the posterior probability of activity to complement minimum mean-squared error (MMSE) channel denoising.",
+  "english_word_count": 148,
+  "sentence_word_counts": [
+    20,
+    31,
+    26,
+    15,
+    20,
+    17,
+    19
+  ],
+  "receiver_words": 37,
+  "receiver_sentences": [
+    5,
+    6
+  ],
+  "result_sentence": 7,
+  "source_words_missing": [],
+  "technical_phrases_checked": 28,
+  "expressions_missing": [],
+  "all_sentences_verbatim_from_papers": false,
+  "main_tex_outside_abstract_unchanged": true,
+  "bilingual_synchronized": true,
+  "compile_performed": false,
+  "main_pdf_updated": false,
+  "pdf_matches_current_source": false,
+  "retained_pdf_sha256": "3504ef292b140724792b607e26427acc5d4658ee54436c450c318b861b9913bb",
+  "main_tex_sha256": "3968086865a677fc6e14476ab164bf90572a22157a6110b46e701d0e4340bba6",
+  "new_training_or_inference": false
+}

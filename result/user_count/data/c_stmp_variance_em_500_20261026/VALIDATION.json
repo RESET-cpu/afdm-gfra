@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "created_unix": 1792976097.3597836,
+  "syntax_checked": 4,
+  "pilot_interim_script_syntax_checked": true,
+  "first_scene_saved_data_checks": [
+    {
+      "users": 20,
+      "baseline_saved_outputs_checked": 4,
+      "input_shape_passed": true,
+      "reuse_binding_checked": false
+    },
+    {
+      "users": 40,
+      "baseline_saved_outputs_checked": 4,
+      "input_shape_passed": true,
+      "reuse_binding_checked": true
+    },
+    {
+      "users": 60,
+      "baseline_saved_outputs_checked": 4,
+      "input_shape_passed": true,
+      "reuse_binding_checked": false
+    },
+    {
+      "users": 80,
+      "baseline_saved_outputs_checked": 4,
+      "input_shape_passed": true,
+      "reuse_binding_checked": false
+    },
+    {
+      "users": 100,
+      "baseline_saved_outputs_checked": 4,
+      "input_shape_passed": true,
+      "reuse_binding_checked": false
+    }
+  ],
+  "additional_inferences": 0,
+  "new_user_count_receiver_checks": "Deferred to first planned scene after pilot exits; those outputs count in the 500-scene panel.",
+  "receiver_unchanged": true,
+  "batch_size": 40,
+  "batch_size_role": "Network user chunks, not total candidate user count.",
+  "current_baseline_policy_sha256": "6962b3f99e72532b1962a69dc2a0fabb933da4b59fd280c2e0b900211f89b4bb"
+}

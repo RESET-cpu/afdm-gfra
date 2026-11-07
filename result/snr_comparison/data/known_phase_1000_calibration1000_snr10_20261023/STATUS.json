@@ -1,0 +1,44 @@
+{
+  "stage": "COMPLETE",
+  "pid": 55388,
+  "started_unix": 1792770836.6837134,
+  "updated_unix": 1792796266.9208922,
+  "elapsed_seconds": 25430.23717904091,
+  "completed": 72000,
+  "planned": 72000,
+  "completed_by_method": {
+    "STMP": 8000,
+    "offgrid_sbl": 16000,
+    "gnn": 16000,
+    "gamp": 16000,
+    "somp": 16000
+  },
+  "planned_by_method": {
+    "STMP": 8000,
+    "offgrid_sbl": 16000,
+    "gnn": 16000,
+    "gamp": 16000,
+    "somp": 16000
+  },
+  "pending": 0,
+  "evaluation_scenes": 1000,
+  "calibration_scenes": 1000,
+  "dispatched_new_tasks": {
+    "gpu": 2000,
+    "cpu": 27952
+  },
+  "execution": {
+    "gpu_workers": 4,
+    "cpu_workers": 1,
+    "threads_per_worker": 4,
+    "driver": "D:\\afdm-gfra\\result\\snr_comparison\\data\\known_phase_1000_calibration1000_snr10_20261023\\parallel_run.py",
+    "driver_sha256": "cafcfffd7468e7c766ed7120d45abad8f2a1c138c701378b3c568645bce01cdc",
+    "hard_timeout_seconds": 604800,
+    "process_model": "spawn; persistent models; one writer for inputs; independent CPU/GPU queues",
+    "timing": "Concurrent throughput experiment, not isolated method latency",
+    "environment": {
+      "KMP_BLOCKTIME": "0",
+      "OMP_WAIT_POLICY": "PASSIVE"
+    }
+  }
+}

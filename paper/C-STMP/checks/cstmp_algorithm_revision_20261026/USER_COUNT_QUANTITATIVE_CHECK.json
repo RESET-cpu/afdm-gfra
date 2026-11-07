@@ -1,0 +1,29 @@
+{
+  "figure_source": "result/user_count/figures/paper_interim100_20261026/user_count.pdf",
+  "status": "INTERIM",
+  "scenes_per_point": 100,
+  "users": [
+    20,
+    40,
+    60,
+    80,
+    100
+  ],
+  "methods": [
+    "C_STMP",
+    "gamp",
+    "gnn",
+    "offgrid_sbl",
+    "somp"
+  ],
+  "K100": {
+    "C_STMP_nmse_db": -9.382846990659237,
+    "off_grid_nmse_db": -6.332951882438403,
+    "nmse_gain_db": 3.0498951082208343,
+    "C_STMP_aer": 0.0059,
+    "off_grid_aer": 0.009
+  },
+  "C_STMP_lowest_NMSE_all_points": true,
+  "zero_AER_shown_at_axis_limit": true,
+  "new_experiments_run": false
+}

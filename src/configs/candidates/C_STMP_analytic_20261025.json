@@ -1,0 +1,47 @@
+{
+  "scale": 0.2647966452702405,
+  "batch_size": 40,
+  "conditional_variance_floor_checkpoint_normalized": 0.0001,
+  "decision_threshold": 0.5,
+  "site_damping": 1.0,
+  "ep": {
+    "iterations": 600,
+    "damping": 0.4,
+    "min_iterations": 60,
+    "convergence_tolerance": 0.0005,
+    "convergence_patience": 5,
+    "variance_fraction_floor": 1e-06,
+    "variance_fraction_ceiling": 0.999999,
+    "covariance_mode": "isotropic",
+    "activity_convergence_tolerance": 0.001,
+    "raw_site_residual_tolerance": 0.1,
+    "activity_weight_residual_tolerance": 0.001,
+    "decision_stability_window": 10,
+    "activity_stopping_reference": "smoothed"
+  },
+  "initialization": {
+    "kind": "activity_prior_times_training_power",
+    "normalized_training_second_moment": 1.0004404181394917,
+    "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+  },
+  "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+  "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+  "first_checkpoint": "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt",
+  "first_checkpoint_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+  "schema": "colored-stmp-analytic-activity-v1",
+  "implementation": "colored_conditional_mean",
+  "activity_evidence": "normalized_gaussian_site",
+  "method": "C-STMP",
+  "query_covariance": "vI",
+  "first_epoch": 200,
+  "variance_estimator": {
+    "probes": 1,
+    "epsilon": 0.01,
+    "seed": 2026102407
+  },
+  "limitations": [
+    "Analytic integral is exact for the normalized Gaussian site, not for the unknown physical active-channel density.",
+    "Colored-trained first is queried at C=vI; scalar pooled derivative variance and original rejection/floor rules are retained.",
+    "Error-selected retrospective diagnostic; not a population AER estimate."
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "experiment": "runtime_comparison",
+  "input": null,
+  "output": "../../../result/runtime_comparison/figures/default_style_20261026",
+  "selection": {
+    "methods": null,
+    "conditions": {},
+    "scenes": {},
+    "per_scene": null
+  },
+  "labels": {},
+  "styles": {},
+  "plot": {
+    "x": null,
+    "metrics": null,
+    "facet": null,
+    "facet_order": null,
+    "panels": [
+      "combined"
+    ],
+    "title": "",
+    "annotate": null,
+    "facet_columns": 2,
+    "show_panel_titles": false
+  },
+  "axes": {
+    "x": {
+      "labelpad": 0,
+      "tickpad": 4
+    },
+    "nmse_db": {
+      "labelpad": 0,
+      "tickpad": 4
+    },
+    "aer": {
+      "scale": "log",
+      "zeros": "separate",
+      "labelpad": 0,
+      "tickpad": 4
+    }
+  },
+  "legend": {
+    "show": true,
+    "loc": "auto",
+    "ncol": 1,
+    "fontsize": 6,
+    "groups": [],
+    "frameon": true,
+    "framealpha": 1,
+    "fancybox": false,
+    "handlelength": 2.6,
+    "handletextpad": 0.4,
+    "borderpad": 0.3,
+    "labelspacing": 0.1,
+    "combined_metrics": [
+      "aer"
+    ]
+  },
+  "figure": {
+    "panel_size": [
+      1.75,
+      2.2
+    ],
+    "font_family": "Times New Roman",
+    "font_size": 8.5,
+    "grid": true,
+    "minor_grid": true,
+    "major_grid_color": "#909090",
+    "major_grid_alpha": 0.8,
+    "major_grid_linewidth": 0.65,
+    "separate_panel_size": [
+      3.5,
+      2.2
+    ],
+    "layout": {
+      "w_pad": 0.01,
+      "h_pad": 0.02,
+      "wspace": 0,
+      "hspace": 0
+    }
+  },
+  "export": {
+    "formats": [
+      "pdf",
+      "svg",
+      "png"
+    ],
+    "dpi": 600,
+    "preview_dpi": 180
+  }
+}

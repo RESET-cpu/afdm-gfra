@@ -1,0 +1,71 @@
+{
+  "status": "PASS",
+  "created_unix": 1793202037.9251986,
+  "active_cpu_workers": 2,
+  "active_gpu_workers": 6,
+  "workers": [
+    {
+      "pid": 101120,
+      "variant": "gaussian_evidence",
+      "rss_gib": 1.492431640625,
+      "create_time": 1793201763.98314
+    },
+    {
+      "pid": 104708,
+      "variant": "estimated_phase",
+      "rss_gib": 1.6154060363769531,
+      "create_time": 1793201763.9901712
+    },
+    {
+      "pid": 107960,
+      "variant": "gaussian_evidence",
+      "rss_gib": 1.4892692565917969,
+      "create_time": 1793201901.562523
+    },
+    {
+      "pid": 112096,
+      "variant": "estimated_phase",
+      "rss_gib": 1.5485115051269531,
+      "create_time": 1793201947.1117432
+    },
+    {
+      "pid": 114476,
+      "variant": "gaussian_prior",
+      "rss_gib": 0.443450927734375,
+      "create_time": 1793201763.9661036
+    },
+    {
+      "pid": 31508,
+      "variant": "gaussian_prior",
+      "rss_gib": 0.4418296813964844,
+      "create_time": 1793201763.974853
+    },
+    {
+      "pid": 48564,
+      "variant": "gaussian_evidence",
+      "rss_gib": 1.4920463562011719,
+      "create_time": 1793201808.8012938
+    },
+    {
+      "pid": 51668,
+      "variant": "estimated_phase",
+      "rss_gib": 1.5623931884765625,
+      "create_time": 1793201856.4186115
+    }
+  ],
+  "preserved_results": 73,
+  "completed_at_check": 168,
+  "failed_at_check": 0,
+  "algorithm_assets_unchanged": 166,
+  "gpu_observation": {
+    "samples": 12,
+    "window_seconds": 64.28955101966858,
+    "gpu_utilization_min": 88.0,
+    "gpu_utilization_max": 89.0,
+    "gpu_utilization_mean": 88.33333333333333,
+    "peak_gpu_used_mib": 8592.0,
+    "latest_available_ram_gib": 1.7691879272460938
+  },
+  "resource_plan_sha256": "5d26a43da4acd336dc13075829f2906c538a10c941d47c2cd2d2803a84ec95e1",
+  "limitations": "GPU utilization is a sampled workload measurement, not an algorithm-latency benchmark. All finite nonconverged outputs remain included."
+}

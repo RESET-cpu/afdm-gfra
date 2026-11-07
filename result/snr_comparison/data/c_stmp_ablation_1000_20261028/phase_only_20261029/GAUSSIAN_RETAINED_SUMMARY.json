@@ -1,0 +1,166 @@
+{
+  "status": "ANALYZED_FROM_SAVED_METRICS",
+  "all_outputs": {
+    "gaussian_prior": {
+      "n": 6000,
+      "nmse_db": 0.3134090223306061,
+      "aer": 0.1524875,
+      "misses": 4653,
+      "false_alarms": 31944,
+      "nonconverged": 841
+    },
+    "gaussian_evidence": {
+      "n": 2128,
+      "nmse_db": -10.971889140251923,
+      "aer": 0.3694548872180451,
+      "misses": 187,
+      "false_alarms": 31261,
+      "nonconverged": 724
+    }
+  },
+  "paired_physical_scenes": 354,
+  "paired_conditions": 2124,
+  "paired": {
+    "gaussian_prior": {
+      "n": 2124,
+      "nmse_db": 0.3282095279605852,
+      "aer": 0.14998822975517892,
+      "misses": 1663,
+      "false_alarms": 11080,
+      "nonconverged": 278
+    },
+    "gaussian_evidence": {
+      "n": 2124,
+      "nmse_db": -10.972127186331546,
+      "aer": 0.369515065913371,
+      "misses": 187,
+      "false_alarms": 31207,
+      "nonconverged": 724
+    }
+  },
+  "paired_known": {
+    "n": 2124,
+    "nmse_db": -12.891856586092844,
+    "aer": 0.0013418079096045197,
+    "misses": 111,
+    "false_alarms": 3,
+    "nonconverged": null
+  },
+  "incomplete_physical_scene_outputs_retained": 4,
+  "by_snr": {
+    "-4": {
+      "gaussian_prior": {
+        "n": 354,
+        "nmse_db": 0.2914222638278128,
+        "aer": 0.1528954802259887,
+        "misses": 405,
+        "false_alarms": 1760,
+        "nonconverged": 35
+      },
+      "gaussian_evidence": {
+        "n": 354,
+        "nmse_db": -8.319250566236834,
+        "aer": 0.4538135593220339,
+        "misses": 61,
+        "false_alarms": 6365,
+        "nonconverged": 184
+      }
+    },
+    "-2": {
+      "gaussian_prior": {
+        "n": 354,
+        "nmse_db": 0.37626467881343195,
+        "aer": 0.1612994350282486,
+        "misses": 322,
+        "false_alarms": 1962,
+        "nonconverged": 48
+      },
+      "gaussian_evidence": {
+        "n": 354,
+        "nmse_db": -9.707302554837598,
+        "aer": 0.4309322033898305,
+        "misses": 42,
+        "false_alarms": 6060,
+        "nonconverged": 154
+      }
+    },
+    "0": {
+      "gaussian_prior": {
+        "n": 354,
+        "nmse_db": 0.39449495616213204,
+        "aer": 0.16151129943502826,
+        "misses": 250,
+        "false_alarms": 2037,
+        "nonconverged": 52
+      },
+      "gaussian_evidence": {
+        "n": 354,
+        "nmse_db": -10.901376494253817,
+        "aer": 0.39858757062146893,
+        "misses": 36,
+        "false_alarms": 5608,
+        "nonconverged": 145
+      }
+    },
+    "2": {
+      "gaussian_prior": {
+        "n": 354,
+        "nmse_db": 0.31138624882016896,
+        "aer": 0.14470338983050848,
+        "misses": 229,
+        "false_alarms": 1820,
+        "nonconverged": 37
+      },
+      "gaussian_evidence": {
+        "n": 354,
+        "nmse_db": -12.121449763826355,
+        "aer": 0.35324858757062144,
+        "misses": 24,
+        "false_alarms": 4978,
+        "nonconverged": 93
+      }
+    },
+    "4": {
+      "gaussian_prior": {
+        "n": 354,
+        "nmse_db": 0.29699963309118826,
+        "aer": 0.14413841807909605,
+        "misses": 224,
+        "false_alarms": 1817,
+        "nonconverged": 46
+      },
+      "gaussian_evidence": {
+        "n": 354,
+        "nmse_db": -13.270890302179497,
+        "aer": 0.3112994350282486,
+        "misses": 16,
+        "false_alarms": 4392,
+        "nonconverged": 86
+      }
+    },
+    "6": {
+      "gaussian_prior": {
+        "n": 354,
+        "nmse_db": 0.29750604273716696,
+        "aer": 0.13538135593220338,
+        "misses": 233,
+        "false_alarms": 1684,
+        "nonconverged": 60
+      },
+      "gaussian_evidence": {
+        "n": 354,
+        "nmse_db": -14.468952855510606,
+        "aer": 0.2692090395480226,
+        "misses": 8,
+        "false_alarms": 3804,
+        "nonconverged": 62
+      }
+    }
+  },
+  "limitations": [
+    "Gaussian evidence stopped after inspecting adverse results; this is retrospective descriptive evidence, not a completed 1000-scene sweep.",
+    "All finite outputs retained; equal-coverage paired summary uses every complete physical scene, independent of convergence or performance.",
+    "Poor performance alone does not establish a unique mismatch mechanism or rule out all Gaussian models."
+  ],
+  "gaussian_figures": false
+}

@@ -1,0 +1,55 @@
+{
+  "status": "FAILED",
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\src\\evaluation\\white_phase_pool_20261106\\run.py\", line 321, in coordinate\n    state=g.read_json(r['state_path']) if Path(r['state_path']).exists() else {'stage':'LOADING'}\n          ~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\utils.py\", line 27, in read_json\n    return json.loads(path.read_text(encoding='utf-8-sig'))\n                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 546, in read_text\n    return PathBase.read_text(self, encoding, errors, newline)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_abc.py\", line 632, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 13] Permission denied: 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\white_phase_frontend_marginal_1000_20261106\\\\runtime_pool_20261106\\\\sessions\\\\1793966808665593500\\\\worker1\\\\STATE.json'\n",
+  "active_workers": [
+    {
+      "pid": 33376,
+      "created_unix": 1793966916.686656,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_20261106.run",
+        "worker",
+        "--session",
+        "1793966808665593500",
+        "--slot",
+        "0"
+      ],
+      "started_unix": 1793978333.5856428,
+      "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker0\\STATE.json",
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker0\\stdout.log",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker0\\stderr.log",
+      "slot": 0,
+      "position": 4115,
+      "closing": false
+    },
+    {
+      "pid": 34828,
+      "created_unix": 1793966924.420062,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_20261106.run",
+        "worker",
+        "--session",
+        "1793966808665593500",
+        "--slot",
+        "1"
+      ],
+      "started_unix": 1793978325.9772503,
+      "state_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker1\\STATE.json",
+      "stdout": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker1\\stdout.log",
+      "stderr": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_phase_frontend_marginal_1000_20261106\\runtime_pool_20261106\\sessions\\1793966808665593500\\worker1\\stderr.log",
+      "slot": 1,
+      "position": 4114,
+      "closing": false
+    }
+  ],
+  "automatic_retry": false
+}

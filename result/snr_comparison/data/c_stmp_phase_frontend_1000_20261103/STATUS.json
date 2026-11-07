@@ -1,0 +1,40 @@
+{
+  "stage": "FAILED",
+  "planned": 6000,
+  "completed": 0,
+  "remaining": 6000,
+  "failed": 1,
+  "failures": [
+    {
+      "active": {
+        "scene": 0,
+        "index": 0,
+        "snr_db": -4
+      },
+      "error": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_1000_20261103\\run.py\", line 362, in run\n    startup_bridge(result)\n    ~~~~~~~~~~~~~~^^^^^^^^\n  File \"D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_1000_20261103\\run.py\", line 282, in startup_bridge\n    assert passed, 'Startup reproduction did not match the original frontend run; retain output and stop'\n           ^^^^^^\nAssertionError: Startup reproduction did not match the original frontend run; retain output and stop\n",
+      "time": 1793716858.3010724
+    }
+  ],
+  "active": {
+    "scene": 0,
+    "index": 0,
+    "snr_db": -4
+  },
+  "coordinator_pid": 97996,
+  "worker_pid": null,
+  "completed_by_snr": {
+    "-4": 0,
+    "-2": 0,
+    "0": 0,
+    "2": 0,
+    "4": 0,
+    "6": 0
+  },
+  "nonconverged": 0,
+  "workers": 1,
+  "fresh_process_per_input": true,
+  "available_ram_gib": 7.386405944824219,
+  "elapsed_seconds": 68.66927361488342,
+  "updated_unix": 1793716858.3022597,
+  "stop_reason": "EXECUTION_OR_VALIDATION_FAILURE_NO_RETRY"
+}

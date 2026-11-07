@@ -1,0 +1,120 @@
+{
+  "status": "RUNNING",
+  "checked_at": "2026-11-06T20:51:08+08:00",
+  "checked_unix": 1793969468.7942917,
+  "completed": 2917,
+  "planned": 6000,
+  "coordinator": {
+    "pid": 39296,
+    "created_unix": 1793966803.9247985,
+    "command": [
+      "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "evaluation.white_phase_pool_20261106.run",
+      "coordinate"
+    ],
+    "started_unix": 1793933714.6107712,
+    "resumed_unix": 1793966808.6686926,
+    "session": "1793966808665593500",
+    "execution_module": "evaluation.white_phase_pool_20261106.run",
+    "plan_sha256": "dd02a7ae8ace3339e23b4e364e32a36304d9ede5c99ac56a35ca8b9b6f3f5140"
+  },
+  "workers": [
+    {
+      "pid": 9532,
+      "created_unix": 1793966916.708892,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_20261106.run",
+        "worker",
+        "--session",
+        "1793966808665593500",
+        "--slot",
+        "0"
+      ],
+      "identity": "PASS",
+      "slot": 0,
+      "stage": "BUSY",
+      "position": 2918,
+      "rss_gib": 1.8147468566894531
+    },
+    {
+      "pid": 54328,
+      "created_unix": 1793966924.444007,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "evaluation.white_phase_pool_20261106.run",
+        "worker",
+        "--session",
+        "1793966808665593500",
+        "--slot",
+        "1"
+      ],
+      "identity": "PASS",
+      "slot": 1,
+      "stage": "BUSY",
+      "position": 2917,
+      "rss_gib": 1.8152275085449219
+    }
+  ],
+  "active_workers": 2,
+  "entrypoint": "evaluation.white_phase_pool_20261106.run",
+  "session": "1793966808665593500",
+  "per_snr": {
+    "-4": 487,
+    "-2": 486,
+    "0": 486,
+    "2": 486,
+    "4": 486,
+    "6": 486
+  },
+  "complete_paired_scenes": 486,
+  "gpu_preflight": "PASS",
+  "persistent_worker_numerical_validation": "PASS",
+  "runtime_amendment_sha256": "c03dfd0aa316fd1dc6055b6e42afa043db0accde8fbe0d53967bc3b9fbad6b2c",
+  "saved_result_receipts_and_protocol_checked": 2917,
+  "iteration_limit_count": 0,
+  "dependencies": {
+    "status": "PASS",
+    "checked_unix": 1793969462.1152663,
+    "reasons": [],
+    "receipts": {
+      "white_known_phase": {
+        "completion_sha256": "9288b71f9447d0176e2ad74edad42e717df53a621174dd704e3b2c68f7f01cb8",
+        "summary_sha256": "5bd9f97c02754e00d29f0cc95633a84031a06dc5907748a0c37e8bd03f8869f9",
+        "paired_sha256": "1fd9a313ec093b5af9aa1922f293261bb0511b4d13d0e5e9a2be3e3e36443b00"
+      },
+      "ablation": {
+        "completion_sha256": "7a9e88158b594530ada2ce541912f5cf0972b31579b6a75c1fc668007eb48600",
+        "summary_sha256": "f5c6fa2195f9812599219232044ae801c1f967911f4f751fa055674ba729ef9d",
+        "paired_sha256": "f43f74efdcfde06262ff9b97c211d1d289f7c540ffb4b4d78a5f1c9c88bd32a9",
+        "source_hashes_sha256": "7d992a0081b1daf51d7b4aa2bafdbe62e0f474c9b206ce3bd88ef35c95b7fed6",
+        "adopted_scenes_per_snr": 100,
+        "new_inferences": 1200,
+        "reused_inferences": 1200
+      }
+    },
+    "live_processes": [],
+    "amendment_sha256": "e2a010cdd156d154c759c2ad3fed63838c451e2c4a69bc1b56dadd40a6e1590d"
+  },
+  "new_failures": 0,
+  "nonempty_stderr": [],
+  "available_ram_gib": 3.8117408752441406,
+  "previous_progress": {
+    "checked_at": "2026-11-06T20:21:17+08:00",
+    "completed": 2674
+  },
+  "observed_inputs_per_hour_since_previous": 488.22568753306894,
+  "verification_scope": "Routine progress check: live PID/create-time/command and lock identity, prerequisite completion hashes, frozen assets, result receipts and protocol metadata. Full saved-array rescoring remains the final completion step; earlier cutover verification is preserved separately."
+}

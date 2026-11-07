@@ -1,0 +1,1949 @@
+=== PDF PAGE 1 ===
+1
+Performance Analysis of Approximate Message
+Passing for Distributed Compressed Sensing
+Gabor Hannak, Alessandro Perelli, Norbert Goertz, Senior Member , IEEE, Gerald Matz, Senior Member , IEEE,
+and Mike E. Davies, Fellow, IEEE
+Abstract—Bayesian approximate message passing (BAMP) is
+an efﬁcient method in compressed sensing that is nearly optimal
+in the minimum mean squared error (MMSE) sense. Multiple
+measurement vector (MMV)-BAMP performs joint recovery of
+multiple vectors with identical support and accounts for correla-
+tions in the signal of interest and in the noise. In this paper, we
+show how to reduce the complexity of vector BAMP via a simple
+joint decorrelation (diagonalization) transform of the signal and
+noise vectors, which also facilitates the subsequent performance
+analysis. We prove that the corresponding state evolution (SE)
+is equivariant with respect to the joint decorrelation transform
+and preserves diagonality of the residual noise covariance for
+the Bernoulli-Gauss (BG) prior. We use these results to analyze
+the dynamics and the mean squared error (MSE) performance
+of BAMP via the replica method, and thereby understand the
+impact of signal correlation and number of jointly sparse signals.
+Finally, we evaluate an application of MMV-BAMP for single-
+pixel imaging with correlated color channels and thereby explore
+the performance gain of joint recovery compared to conventional
+BAMP reconstruction as well as group lasso.
+I. I NTRODUCTION
+Compressed sensing (CS) is a signal processing technique
+aiming at recovering a high-dimensional sparse vector from
+a (noisy) system of linear equations [1], [2]. Joint sparsity
+refers to multiple vectors having the same support set 1, whose
+cardinality is typically much lower than the signal dimension.
+There are two prominent CS scenarios [3], [4] in the context
+of joint sparsity: (i) the multiple measurement vector (MMV)
+problem, where the measurement matrices are identical, and
+(ii) the distributed compressed sensing (DCS) problem, where
+the measurement matrices are independent. Joint sparsity
+arises in a number of real-world scenarios, e.g., when multiple
+sensors or antennas observe the same signal corrupted by
+different channels and noise (e.g., [3], [4]). A prime example is
+radio frequency identiﬁcation where the observed vectors are
+the received signals at different antennas (of the same receiver)
+[5]. Additionally, typical applications are magnetic resonance
+imaging [6], distributed networks [7], wireless communica-
+tions [5], and direction of arrival estimation [8].
+G. Hannak, N. Goertz, and G. Matz are with the Institute of Telecom-
+munications, Vienna University of Technology, Vienna, Austria (e-mail:
+ghannak@nt.tuwien.ac.at, ngoertz@nt.tuwien.ac.at, gmatz@nt.tuwien.ac.at)
+A. Perelli and M. E. Davies are with the Institute of Digital Communica-
+tions, University of Edinburgh, Edinburgh, UK, (e-mail: m.davies@ed.ac.uk;
+a.perelli@ed.ac.uk)
+This work was funded in part by WWTF Grant ICT15-119, ERC Grant
+694888, and EPSRC Grant EP/M008916/1; MD is also supported through a
+Royal Society Wolfson Research Merit Award.
+1The support set of a vector consists of the indices of the vector’s nonzero
+entries.
+In this work, we investigate an approximate message pass-
+ing (AMP) solution for joint sparse recovery when there is
+possible correlation between the signals (and the noise). We
+then evaluate this algorithm in the context of single-pixel
+color imaging [9]. In particular, we show the potential of joint
+recovery that exploits the correlation between the red, green,
+blue (RGB) color intensity channels.
+A. Related Work
+Several methods for jointly sparse recovery have been pro-
+posed in the literature [3], [7], [10]–[19]. AMP was introduced
+in [20]–[22] as a large system relaxation of loopy belief propa-
+gation to solve a random linear system with sparsity constraint.
+Scalar Bayesian approximate message passing (BAMP), its
+Bayesian version [23], [24], uses the signal prior explicitly
+and is an efﬁcient approximate MMSE estimator. The turbo
+BAMP methods in [14]–[16], and their generalization in [25]
+for clustered sparse signals, improve the recovery performance
+by exchanging extrinsic information about the current support
+estimate in each message passing iteration. In [17], [18], [26],
+joint sparsity is directly enforced by an appropriate vector
+estimator (denoiser) function for the Bernoulli-Gauss (BG)
+prior.
+The state evolution (SE) formalism developed in [21], [22],
+[27] analytically predicts the recovery performance of (B)AMP
+algorithms. SE was employed to analyze BAMP for joint
+sparsity with a vector estimator and to point out the difference
+between the DCS and MMV scenarios in [18]. Recent works
+rigorously prove the SE for non-separable non-linearities [28]
+and a class of sliding-window denoisers [29] with Gaussian
+i.i.d. measurement matrices. Furthermore, the SE of the Vector
+AMP has been derived for a large class of right orthogonally
+invariant random sensing matrices [30]. (We highlight that the
+acronym Vector AMP should not to be confused with the
+vector-prior version of BAMP, considered in this paper for
+the MMV/DCS problems.)
+In [26], the replica method (a statistical physics tool for
+large disordered systems) is used to calculate the MMSE
+of the CS measurement (note that [26] refers to MMV and
+DCS as MMV-2 and MMV-1, respectively). The replica trick
+non-rigorously simpliﬁes the high-dimensional integral for the
+MMSE of the Bayesian estimator of the CS channel, thereby
+leading to the free energy as a function of the mean squared
+error (MSE). The local maxima in the free energy function
+correspond to stable ﬁxed points of belief propagation (BP)
+and BAMP and thus predict the expected MSE of BAMP. The
+arXiv:1712.04893v2  [cs.IT]  11 Aug 2018
+
+=== PDF PAGE 2 ===
+2
+replica analysis in [26] is performed for the BG signal prior
+with uncorrelated isotropic unitary signal and uncorrelated
+isotropic Gaussian noise distribution, i.e., with a single noise
+parameter.
+B. Contributions
+We consider the vector-prior BAMP algorithm for the
+DCS and MMV problems, which uses an appropriate vector
+MMSE estimator function and Onsager correction term to
+exploit joint sparsity structure, the signal distribution, and
+the noise covariance. We provide an analytical performance
+prediction for the BAMP algorithm with a BG signal prior
+with arbitrary signal and noise correlation by (i) incorporating
+a linear joint decorrelation of the measurements, (ii) showing
+the equivariance of Bayesian approximate message passing
+(BAMP) w.r.t. invertible linear transformations, (iii) extending
+the replica analysis from [26] to arbitrary diagonal noise
+covariance matrices.
+In particular, the joint decorrelation yields a simpler equiv-
+alent measurement model with diagonal signal and noise
+covariance matrix (under mild conditions, one of the co-
+variance matrices can be made the identity matrix). The
+simpliﬁed model naturally provides the measurement signal-
+to-noise ratios (SNRs) of each signal vector and substantially
+reduces the complexity of the BAMP iterations. We further
+show that the BAMP algorithm is equivariant to invertible
+linear transformations, thus, it preserves its properties across
+iterations in the transformed domain and delivers a result
+equivalent to that obtained with the original measurements
+and covariance parameters. For the widely used BG prior,
+we prove that the BAMP iterations (and the corresponding
+SE) preserve the diagonal structure of the (effective) noise
+covariance, thus implying that a B-dimensional state (instead
+ofB(B + 1)/2 dimensions) is sufﬁcient and that every MMV
+problem can be transformed into an equivalent DCS problem.
+Finally, we extend the replica analysis in [26] to the case of
+anisotropic noise (i.e., B noise parameters instead of just 1).
+The replica analysis yields the B measurement-wise MSEs of
+the BAMP estimate in its ﬁxed points. We use both real-world
+and synthetic images to compare MMV-BAMP to state-of-
+the-art scalar recovery algorithms and to joint sparsity-aware
+algorithms in the context of single-pixel color imaging.
+C. Outline
+The remainder of this paper is organized as follows. In
+Section II, we discuss the BAMP algorithm, the estimator
+function for the multivariate BG signal prior, and the mul-
+tivariate state evolution of BAMP. In Section III, the joint
+decorrelation of the signal and the noise vectors is investigated
+in the context of BAMP and state evolution; the multivariate
+BG signal prior is studied as special case. In Section IV,
+we present the multivariate free energy formula for arbitrary
+diagonal noise covariance matrices (the details of the replica
+analysis are relegated to the appendix). Section V provides
+a qualitative discussion and open questions regarding the
+effects of signal correlation and the increasing number of
+jointly sparse vectors on the dynamics of BAMP. Section VI
+evaluates the MMV-BAMP algorithm on a simpliﬁed single
+pixel imaging problem, highlighting the beneﬁts of exploiting
+signal correlation across channels. We close with conclusions
+in Section VII.
+D. Notation
+Uppercase (lowercase) boldface letters denote matrices
+(vectors), and serif letters denote random quantities. For a
+matrix A (vector a), Ai (ai) denotes its ith row (ith entry)
+and ai its ith column. The all zero matrix and the identity
+matrix of dimensionM ×N are denoted by 0M×N and IM×N ,
+respectively (we omit the subscript if the dimensions are clear
+from the context). The Dirac delta (generalized) function is
+δ(x). The normal distribution with mean µ and covariance
+matrix Σ is denoted by N (µ, Σ) and N (x; µ, Σ) denotes the
+value of this normal probability density function (pdf) at x.
+The outer product of a column vector x with itself is denoted
+by ⟨x⟩ = xxT . For a vector x = (x1,...,x B)T , diag(x)
+and diag(x1,...,x B) denote the diagonal matrix whose ith
+diagonal element equals xi. For a matrix X, D(X) is the
+diagonal matrix whose diagonal is identical to that of X, i.e.,
+D(·) is the orthogonal projection that zeros the off-diagonal
+elements. The Kronecker product of two matrices is denoted
+by ⊗.
+II. BAMP WITH VECTOR DENOISER
+A. Measurement Model
+We consider the measurement model
+y(b) = A(b)x(b) + w(b), (1)
+with y(b) ∈ RM , x(b) ∈ RN , w(b) ∈ RM , and A(b) ∈
+RM×N , forb = 1,...,B . We denote the measurement rate by
+R =M/N. We assume that the measurement matrices A(b)
+are realizations of Gaussian or Rademacher random matrices
+[31] with normalized columns. If the measurement matrices
+A(b) are identical (i.e., A(b) = A, b = 1,...,B ) we have
+an MMV scenario; if they are mutually independent then we
+have a DCS scenario. We deﬁne the length-B column vectors
+⃗xn = (xn(1),...,x n(B))T,
+⃗ym = (ym(1),...,y m(B))T, (2)
+⃗wm = (wm(1),...,w m(B))T
+(similar notation will be used throughout the paper). Joint spar-
+sity (cf. JSM-2 in [4]) with sparsity (or nonzero probability)
+ϵ requires that ⃗xn = 0 with probability 1 −ϵ and ⃗xn ̸= 0
+with probability ϵ. In this work, we focus on signals with
+multivariate BG pdf, i.e.,
+f⃗xn(⃗xn) =f⃗x(⃗xn) = (1 −ϵ)δ(⃗xn) +ϵ N (⃗xn; 0, Σ⃗x), (3)
+independent and identically distributed (i.i.d.) overn; here, Σ⃗x
+is the covariance matrix of ⃗xn given that it is non-zero vector.
+The additive noise in (1) is assumed to be i.i.d. Gaussian over
+m with zero mean and covariance Σ⃗w,
+⃗wm ∼ N (0, Σ⃗w). (4)
+
+=== PDF PAGE 3 ===
+3
+Algorithm 1 BAMP for MMV/DCS
+1: input: y(b), A(b), Σ⃗x, ε, tmax, εtol
+2: t = 0, ˆ⃗xt
+n = 0B×1,⃗rt
+m =⃗ym, ∀m,n
+3: do
+4: t ←t + 1
+5: ut−1(b) = ˆxt−1(b) + A(b)Trt−1(b), ∀b
+6: Σt−1
+⃗v =
+{
+Σt−1
+⃗ r for MMV
+D
+(
+Σt−1
+⃗ r
+)
+for DCS
+7: ˆ⃗xt
+n =F (⃗ut−1
+n ; Σt−1
+⃗v ), ∀n
+8: ⃗rt
+m =⃗ym−
+(
+A(1)ˆxt(1),..., A(B)ˆxt(B)
+)
+m
++ 1
+M
+∑N
+n=1F′(⃗ut−1
+n ; Σt−1
+⃗v )⃗rt
+m, ∀m
+9: while ∑B
+b=1
+ˆxt(b)−ˆxt−1(b)
+2
+2 >ε tol
+∑B
+b=1
+ˆxt−1(b)
+2
+2
+and t<t max
+10: return ˆx(b) = ˆxt(b), ∀b
+B. V ector-prior BAMP for MMV/DCS
+The BAMP method for joint sparse recovery of x(b),
+b = 1 ,...,B , [17], [19] is summarized in Algorithm 1
+(superscript t indicates the iteration index). Note that scalar
+BAMP (i.e., when B = 1) is a special case of Algorithm 1
+where MMV and DCS are equivalent. The vector-prior BAMP
+follows similar steps as ordinary scalar BAMP [20]–[24], [27].
+According to the decoupling principle [24], which holds in
+the asymptotic regime where M,N → ∞ while M
+N = R,
+the BAMP algorithm decouples the CS measurements (1)
+according to
+⃗ut
+n =⃗xn +⃗vt
+n, (5)
+where the effective noise vector is distributed as
+⃗vt
+n ∼ N (0, Σt
+⃗v). The effective noise covariance is estimated
+via the empirical covariance Σt
+⃗ r= Cov
+{⃗rt−1
+m
+}
+from vectors
+⃗rt−1
+m in line 6 of Algorithm 1. It has been shown in [18]
+that in the DCS scenario only the diagonal entries of the
+covariance matrix are retained due to the mixing effected by
+the B mutually independent measurement matrices. In the
+following, we will simplify notation by occasionally dropping
+the indices t and n.
+The vector denoiser in BAMP (line 7 of Algorithm 1)
+amounts to a vector MMSE estimator of ⃗xn given the decou-
+pled measurements ⃗un. Using Bayes’ theorem, the denoiser
+can be written as:
+F (⃗u; Σ⃗v) = E⃗x {⃗x |⃗u =⃗u; Σ⃗v}
+=
+∫
+RB⃗z N (⃗u;⃗z, Σ⃗v)f⃗x(⃗z)d⃗z∫
+RB N (⃗u;⃗z, Σ⃗v)f⃗x(⃗z)d⃗z , (6)
+where the covariance of the effective noise is Σ⃗v = Σ⃗ r
+(MMV) or Σ⃗v =D(Σ⃗ r) (DCS). For the multivariate BG prior
+(3), the vector denoiser becomes
+F (⃗u; Σ⃗v) = W⃗u with W = FN(⃗u; Σ⃗v)
+FD(⃗u; Σ⃗v)Σ⃗xΣ−1
+⃗u . (7)
+Here, Σ⃗u = Σ⃗x + Σ⃗v and
+FN(⃗u; Σ⃗v) =ϵ N (⃗u; 0, Σ⃗u), (8)
+FD(⃗u; Σ⃗v) = (1 −ϵ) N (⃗u; 0, Σ⃗v) +ϵ N (⃗u; 0, Σ⃗u)
+The denoiser (7) consists of a multivariate Gaussian Wiener
+estimator followed by a joint shrinkage operation.
+The BAMP residual is computed in line 8 of Algorithm 1.
+As in the original AMP derivation [23], the Onsager correction
+term for the residual ⃗ym −
+(
+A(1)ˆx(1),..., A(B)ˆx(B)
+)
+m is
+computed via the derivative of the estimator. In the asymptotic
+regime, the Onsager term
+1
+M
+N∑
+n=1
+F′(⃗un; Σ⃗v)⃗rm (9)
+renders the decoupled measurement vectors ⃗un Gaussian with
+mean⃗xn and covariance Σ⃗v [19], [26]. Here, the Jacobian ma-
+trix F′(⃗u; Σ⃗v) = dF (⃗u; Σ⃗v)/d⃗uT of the estimator F (⃗u; Σ⃗v)
+is given by
+F′(⃗u; Σ⃗v)= W−
+(
+1−FN(⃗u; Σ⃗v)
+FD(⃗u; Σ⃗v)
+)
+W⃗un⃗uT
+n(Σ−1
+⃗u − Σ−1
+⃗v ).
+(10)
+The algorithm runs until the relative change in the estimated
+signal is below a certain threshold εtol or the maximum
+number of iterations tmax is reached. Compared to scalar
+BAMP, the vector BAMP algorithm involves the following
+crucial modiﬁcations:
+• a multivariate prior (possibly with joint sparsity structure
+and correlation);
+• the estimator acts on vectors rather than scalars (6) and
+both correlated signal and correlated additive noise are
+taken into consideration (more precisely, the full signal
+and noise vector pdf is taken into account);
+• an Onsager term obtained as the sum of Jacobian matrices
+(cf. (9)).
+C. State Evolution
+SE was originally proposed in [20] for scalar (B)AMP and
+extended to the MMV and DCS scenarios (e.g., in [18]);
+it allows to characterize analytically the expected behavior
+of BAMP (note that the Onsager term in [18] is ﬂawed
+even though the multivariate SE is correct). In particular,
+the SE equation predicts the evolution of the effective noise
+covariance (the state) for any signal prior f⃗x(⃗xn) as
+Σt+1
+⃗v =
+{
+Σ⃗w + 1
+R E⃗x,⃗v {⟨e(⃗x,⃗v)⟩} for MMV,
+D
+(
+Σ⃗w + 1
+R E⃗x,⃗v {⟨e(⃗x,⃗v)⟩}
+)
+for DCS, (11)
+where e(⃗x,⃗v) = F (⃗x +⃗v; Σt
+⃗v) −⃗x is the error achieved by
+the MMSE estimator F (⃗u; Σt
+⃗v) and⃗v ∼ N (0, Σt
+⃗v). The state
+in the MMV scenario is in general B(B + 1)/2 dimensional
+(since the covariance matrix is symmetric). From (11), the
+MSE prediction directly follows as
+Cov{⃗ut
+n −⃗xn} = Σt
+⃗v,
+ˆMSEt(b) =R (Σt
+⃗v − Σ⃗w)b,b,
+with the MSE per channel being deﬁned as
+MSEt(b) = 1
+N ∥ˆxt(b) − x(b)∥2
+2.
+
+=== PDF PAGE 4 ===
+4
+Algorithm 2 joint diagonalization transformation
+1: Given Σ⃗x, Σ⃗w
+2: ﬁndP such that PPT = Σ⃗w
+3: G = P−1Σ⃗xP−T
+4: ﬁnd eigendecomposition QΛQT = G
+5: T = Λ−1/2QTP−1
+III. D IAGONALIZED VECTOR -PRIOR BAMP
+A. Joint Diagonalization for MMV
+The BAMP algorithm in Section II-B can deal with arbitrary
+signal and noise correlations Σ⃗x and Σ⃗w, which in general
+results in a nondiagonal Σt
+⃗v in the MMV scenario. In the
+decoupled measurements ⃗u =⃗x +⃗v, it means that there are
+O(B2) SNR relations and B(B + 1)/2 states: each xn(b)
+correlates with all xn(b′), b′ ∈ { 1,...,B } \ {b}, and it is
+inﬂuenced simultaneously by all effective noise components
+v(b′), b′ ∈ {1,...,B }.
+Under the assumption that the covariance matrices Σ⃗x and
+Σ⃗w are full rank and using the fact that covariance matrices
+are symmetric and positive deﬁnite and [32, Thm. 7.6.1.], there
+exists a nonsingular (but generally non-orthogonal) matrix T
+that simultaneously diagonalizes the covariance matrices of the
+signal⃗x and the noise ⃗w. The computation of T is described
+in Algorithm 2. In the transformed model
+˜⃗ym = T⃗ym, ˜⃗xn = T⃗xn, ˜⃗wm = T⃗wm, (12)
+we thus have
+Σ˜⃗x = TΣ⃗xTT = IB×B,
+Σ˜⃗w = TΣ⃗wTT = Λ−1 =ϵ diag
+( 1
+SNR(1),..., 1
+SNR(B)
+)
+.
+Here, the per-channel SNRs are deﬁned as
+SNR(b) = Ex
+{
+∥A(b)˜x(b)∥2
+2
+}
+Ew{∥˜w(b)∥2
+2} =ϵ Λb,b.
+Note that the decorrelation can be applied also in the DCS
+scenario, given that only the noise covariance Σ⃗w is nondiag-
+onal and the signal covariance Σ⃗x is diagonal. We emphasize
+that in case BAMP operates on the transformed measurements,
+the change in the prior distribution has to be accounted for in
+a nontrivial manner. That is, the MMSE estimator (6) and its
+derivative will have a different form. Consider the SE equation
+(11) that describes the expected evolution of the effective noise
+covariance over the BAMP iterations. In the MMV scenario,
+even if Σ⃗w and Σt
+⃗v are diagonal, Σt+1
+⃗v in general will not
+be diagonal because the estimator F (⃗ut
+n, Σt
+⃗v) operates on the
+overall vector⃗ut
+n (nonetheless the diagonalization described in
+Algorithm 2 could be performed repeatedly in each iteration).
+However, we will see shortly that in the particular case of the
+BG prior this is no longer the case. A direct calculation reveals
+that
+Cov{⃗ym} =
+{
+Σ⃗w + 1
+R Cov{⃗xn} for MMV,
+Σ⃗w + 1
+RD (Cov{⃗xn}) for DCS.
+Thus, if we know either the noise or signal covariance then
+the other can be estimated directly through the measurement
+covariance Cov{⃗ym}. Alternatively, when both covariances are
+unknown and the signal is drawn from a BG prior we can use
+the expectation-maximization (EM) AMP approach introduced
+in [33] to estimate both sets of parameters within the iterations.
+B. Equivariance of BAMP for MMV
+We next establish the fact that for MMV both BAMP and
+its SE are equivariant w.r.t. invertible linear transformations of
+the input. The proof of this result is provided in Appendix A.
+Theorem 1: Algorithm 1 for MMV and its SE are equivari-
+ant w.r.t. invertible linear transformations. Denote one BAMP
+iteration by (ˆ⃗xt+1
+n ,⃗rt+1
+m , Σt+1
+⃗v ) = V(⃗ym, ˆ⃗xt
+n,⃗rt
+m, Σt
+⃗v). For any
+nonsingular T, we have for all m and n
+V(T⃗ym, Tˆ⃗xt
+n, T⃗rt
+m, TΣt
+⃗vTT ) = (Tˆ⃗xt+1
+n , T⃗rt+1
+m , TΣt+1
+⃗v TT ).
+Furthermore, the SE equation (11) translates to the transformed
+domain as
+TΣt+1
+⃗v TT = TΣ⃗wTT
++ 1
+R E⃗x,⃗v
+{
+⟨F (T(⃗x +⃗v); TΣ⃗v
+tTT ) − T⃗x⟩
+}
+. (13)
+Note that (13) holds for any signal prior in the Bayesian
+setting, i.e., when the estimator is the MMSE estimator.
+Assume that BAMP converges to ˆ⃗xn with inputs ⃗yn, Σ⃗x, and
+Σ⃗w; then, Theorem 1 implies that BAMP with inputs T⃗yn,
+TΣ⃗xTT , and TΣ⃗wTT converges to the solution Tˆ⃗xn.
+C. Bernoulli-Gauss Prior
+For the BG prior, after applying the transformation T, the
+equivalent measurement model becomes
+˜y(b) = A(b)˜x(b) + ˜w(b), ∀b (14)
+with signal and noise pdfs
+f˜⃗x(˜⃗xn) = (1 −ϵ)δ(˜⃗xn) +ϵ N (˜⃗xn; 0, I), (15)
+f˜⃗w( ˜⃗wm) = N ( ˜⃗wm; 0, Λ−1). (16)
+That is, we retain a BG prior in the transformed domain, only
+with uncorrelated components. This is a distinctive feature of
+the BG prior and in general doesn’t hold for other types of
+distributions.
+In Appendix B we demonstrate that for the decorrelated
+model (14) with BG prior (15)–(16), the BAMP iterations
+under the MMV model preserve the diagonal structure of Σt
+˜⃗v.
+It follows that for CS measurements with multivariate BG
+signal prior, the decorrelation transformation has to be done
+only once before recovery; determiningT itself is of negligible
+computational effort unlessB is very large. These observations
+have the following implications:
+• The computation of (7) and (9) is signiﬁcantly simpliﬁed,
+leading to complexity reductions by a factor of B.
+• The dimension of the SE equations is B instead of
+B(B + 1)/2. In other words, B(B + 1)/2 effective noise
+covariance parameters in Σ⃗v are reduced to B effective
+noise variances, which explicitly characterize the MSE
+for each signal vector estimate as
+ˆMSEt(b) =R (Σt
+˜⃗v − Σ˜⃗w)b,b.
+
+=== PDF PAGE 5 ===
+5
+-60 -50 -40 -30 -20 -10 0-0.3
+-0.2
+-0.1
+0
+0.1
+E/dB
+F(E)
+R = 0.22
+R = 0.2
+R = 0.17
+R = 0.16
+Figure 1: Free energy function at different rates R forB = 1,
+σ2
+w = −35 dB, and sparsity ϵ = 0.1. Red squares and black
+triangles indicate local maxima and minima, respectively.
+• Every MMV problem has an equivalent DCS problem
+with possibly rescaled SNRs. Furthermore, the analysis
+of DCS also covers that of MMV.
+IV. R EPLICA ANALYSIS
+In [26], the replica method was used to determine the
+MSE performance of BAMP for the measurement (1) and the
+BG prior (3), assuming Σ⃗x = I and isotropic uncorrelated
+noise, i.e., Σ⃗w = σ2
+wI. In this special case MMV and DCS
+(referred to as MMV-2 and MMV-1, respectively, in [26])
+are equivalent. The analysis is quite sophisticated and the
+generalization to arbitrary signal and noise correlations seems
+infeasible. However, due to the joint diagonalization approach
+from Section III, it sufﬁces to extend the replica analysis to
+the case with Σ⃗x = I and Σ⃗w = diag(σ2
+w(1),...,σ 2
+w(B)).
+In particular, the replica method is capable of predicting the
+ﬁxed points of BAMP in the asymptotic regime (N,M → ∞,
+R = M/N = const .), as a function of the set of B
+MSEs [34], [35]. We note that rigorous equivalence between
+the replica method and SE is not always guaranteed and
+requires additional technicalities [36]. Assuming Σ⃗x = I and
+Σ⃗w = diag
+(
+σ2
+w(1),...,σ 2
+w(B)
+)
+, we compute in Appendix C,
+following the derivation in [26], the free energy F(⃗E) as a
+function of the MSE vector ⃗E = (E(1),...,E (B))T with
+E(b) = MSE(b), resulting in
+F(⃗E) = (1 −ϵ)ζ(γ) +ϵζ
+( γ
+1 +γ
+)
+− R
+2
+B∑
+b=1
+(
+log 2πR
+γ(b) +γ(b)σ2
+w(b) − 1 −ϵ
+R
+γ(b)
+1 +γ(b)
+)
+.
+(17)
+In this expression we used
+ζ(η) =
+∫
+log
+(
+ϵ
+B∏
+b=1
+(1 +γ(b))− 1
+2
+-60 -50 -40 -30 -20 -10 0
+-0.2
+-0.1
+E/dB
+F(E)
+R = 0.098
+R = 0.097
+R = 0.095
+R = 0.094
+Figure 2: One-dimensional free energy function for the
+isotropic case with B = 10 jointly sparse BG vectors at rates
+around the phase transition rate ( Σ⃗w = −35 dBIB).
++ (1 −ϵ) exp
+(
+− 1
+2
+B∑
+b=1
+η(b)h2(b)
+))
+Dh
+with
+γ(b) = R
+E(b) +Rσ2w(b);
+furthermore, Dh = N (h; 0, I)dh1...dh B denotes the multi-
+variate standard Gaussian measure.
+The stationary points of F(⃗E) correspond to ﬁxed points
+of belief propagation [37], and hence to those of BAMP
+in the asymptotic regime [26]. Thus, we can determine the
+component-wise MSEs of BAMP by evaluating (17) and
+ﬁnding the largest components of ⃗E that correspond to a
+local maximum of F(⃗E) [38], [39]. Note that for isotropic
+noise (σ2
+w(b) = σ2
+w ∀b), the free energy in (17) simpliﬁes
+to the result obtained in [26] with one-dimensional argument
+E = E(1) = ... = E(B). Replica curves for the isotropic
+case with B = 1 and B = 10 are shown in Figure 1
+and 2 respectively. It is important to point out here that all
+the plots are the result of numerical integrations (and not
+Monte Carlo simulations). In the free energy function, local
+maxima correspond to stable ﬁxed points and local minima
+to unstable ﬁxed points, whereas the global maximum of
+F(E) corresponds to the MMSE. BAMP typically achieves
+the largest MSE associated with a local maximum.
+A. MMSE Gap
+In the CS regime of small ϵ and nonzero noise variance, the
+MMSE estimate ˆx for a single measurement features a ﬁrst
+order phase transition (PT) characterized by an abrupt change
+of the MSE at a certain rate RPT: for rates less than RPT, the
+MSE tends to be large, whereas for rates larger than RPT the
+MSE tends to be small and plateaus to ﬁxed nonzero value.
+This phenomenon can be seen in Figure 1: for rates below
+
+=== PDF PAGE 6 ===
+6
+-40 -30 -20 -10 0 10-40
+-30
+-20
+-10
+0
+10
+MSEt(b)/dB
+MSEt+1(b)/dB
+baseline
+B = 1
+B = 5
+B = 20
+Figure 3: Noisy SE curves for different number of jointly
+sparse BG signals ( ϵ = 0.1, Σ⃗x = IB, Σ⃗w = −35 dBIB,
+R = 0.25).
+R ≈ 0.16, where the free energy has a single maximum at an
+MSE of about −12 dB whereas for rates larger than R ≈ 0.17
+a second local maximum at MSEs less then about −37 dB
+appears.
+A similarly abrupt phase transition does not appear to occur
+when the number of measurements B is sufﬁciently large.
+Figure 3 shows the SE curves for various B with ϵ = 0.1
+and Σ⃗x = IB. Observe that the “bump” in the SE curve for
+small B and large MSE, which corresponds to the ﬁrst ﬁxed
+point, ﬂattens out with increasing B. For large enough B we
+observe that the SE curve ceases to exhibit a ﬁrst order PT,
+so that the MSE changes smoothly with increasing rate R.
+The same conclusion can be obtained by investigating
+the behavior of the free energy functions. BAMP typically
+achieves the largest MSE which corresponds to a local max-
+imum in the free energy, whereas the MSE at the global
+maximum of the free energy is the MMSE. As pointed out
+in [26], whenever the free energy function has a second local
+maximum at a larger MSE than the global maximum, BAMP
+is not Bayesian-optimal (i.e., does not reach the MMSE). For
+B = 1 , in Figure 1, a second local (non-global) maximum
+appears and thus BAMP is not MMSE optimal in the rate
+region 0.19 < R <0.21, while for B = 10 with isotropic
+noise and sparsity ϵ = 0.1 it occurs at R = 0.097 as shown
+in Figure 2. We speculate that the vanishing of the ﬁrst order
+PT for sufﬁciently large B may be a typical behaviour and
+something worthy of further investigation.
+While the possibility of no phase transition might appear
+surprising this relies on the presence of ﬁnite measurement
+noise. In such a setting there is no exact recovery PT. It would
+be interesting to understand what happens when the noise
+tends to zero, and see if comparisons could be drawn with
+PT results for the related problem of block sparse recovery
+[40], [41]. However, under this scenario it is not clear what
+would be the role of any anisotropy in the covariance matrices.
+Finally, we emphasize that while our analysis here is
+asymptotic in the large system limit ( N,M,ϵN → ∞ ), it
+is non-asymptotic in the number of jointly sparse vectors B
+which are assumed to be O(1). This is in contrast to existing
+work [42], [43], where results on the PT like phenomena were
+derived for the asymptotic case where B → ∞ as N → ∞.
+V. A NISOTROPIC BAMP D YNAMICS
+We now consider the anisotropic scenaro.
+A. Correlated CS
+The matrix T from Algorithm 2 simultaneously decorrelates
+the signal and the noise. While TΣ⃗xTT = I, the transformed
+noise covariance Σ˜⃗w = TΣ⃗wTT depends on Σ⃗x and Σ⃗w in a
+nontrivial way unless Σ⃗x and Σ⃗w commute. In this case, they
+have identical eigenvectors, i.e., Σ⃗x = QΛ⃗xQT and Σ⃗w =
+QΛ⃗wQT , and we can show
+Σ˜⃗w = Λ⃗wΛ−1
+⃗x = diag
+(λ⃗w(1)
+λ⃗x(1),..., λ⃗w(B)
+λ⃗x(B)
+)
+.
+Special cases of this situation occur when (i) either Σ⃗x or Σ⃗w
+is a scaled identity matrix and (ii) when both Σ⃗x and Σ⃗w are
+diagonal. The per-channel SNRs are then obtained from Σ˜⃗w
+as SNR(b) = ϵλ⃗x(b)/λ⃗w(b). While this result does not hold
+when Σ⃗x and Σ⃗w do not commute, it is possible to derive the
+bounds
+ϵ mink{λ⃗x(k)}
+maxk{λ⃗w(k)} ≤ SNR(b) ≤ϵ maxk{λ⃗x(k)}
+mink{λ⃗w(k)}.
+If a subset x(b1),..., x(bK) of the B signal vectors is
+fully correlated, then K − 1 of the SNRs equal 0. Thus,
+the model is equivalent to one with B −K + 1 (instead of
+B) measurements, but with different SNRs. The free energy
+function leads to the same conclusion: when taking the limits
+σ2
+w(b1) = ... = σ2
+w(bK−1) → ∞ in the B-dimensional free
+energy function (17), it can be seen that F(⃗E) is independent
+of E(b1),...,E (bK−1). Therefore, the curvature of F(⃗E)
+and hence the location of its stationary points do not depend
+on those arguments, such that the B-dimensional free energy
+function effectively collapses into a B −K + 1-dimensional
+function.
+Figure 4 illustates an anisotropic scenario with B = 2 and
+the channel noise independent but with different variances:
+σ2
+w(1) = −45 dB, and σ2
+w(2) = −25 dB. In the top row the
+arrows in the MSE plane depict the SE prediction
+(MSEt(1), MSEt(2)) → (MSEt+1(1), MSEt+1(2)).
+The bottom row shows the free energy function (via gray
+shading and contour lines). Note that the free energy function
+is no longer symmetric between channels and both the free
+energy function and the SE dynamics are nontrivially 2-D.
+However, it is interesting to note that the stationary points still
+appear to lie on a globally attracting 1-D submanifold. This
+raises the question of whether theB-dimensional SE dynamics
+can be compressed back into a one-dimensional evolution in
+some way.
+
+=== PDF PAGE 7 ===
+7
+-60 -50 -40 -30 -20 -10 0-60
+-50
+-40
+-30
+-20
+-10
+0
+MSE(1)/dB
+MSE(2)/dB
+-60
+-50
+-40
+-30
+-20
+-10
+0
+MSE(2)/dB
+R = 0.11
+-60 -50 -40 -30 -20 -10 0
+MSE(1)/dB
+R = 0.13
+-60 -50 -40 -30 -20 -10 0
+MSE(1)/dB
+R = 0.16
+-60 -50 -40 -30 -20 -10 0
+MSE(1)/dB
+R = 0.18
+Figure 4: SE (top) and free energy (bottom) for B = 2, ϵ = 0.1, Σ⃗x = I2, σ2
+w(1) = −45 dB, and σ2
+w(2) = −25 dB. Red
+squares indicate stable ﬁxed points and local maxima whereas black triangles indicate unstable ﬁxed points and saddle points.
+There is also a close match between the ﬁxed points of
+the SE and the stationary points of the free energy func-
+tion, as well as between the SE arrows and the gradient
+of the free energy. This match was conﬁrmed in several
+other numerical experiments. This opens up the possibility for
+more detailed investigations with different sets of parameters
+σ2
+w(1),...,σ 2
+w(B) to shed light on the performance regions
+and dynamics of BAMP. The question arises whether for a
+given sparsity ϵ and measurement rate R there is a diversity
+function θϵ,R(σ2
+w(1),...,σ 2
+w(B)) that describes the effective
+number of jointly sparse measurements based on the individual
+SNR. More speciﬁcally, we expect such a diversity function
+to combine the SNRs such that, for a certain threshold B0, the
+global maximum of the free energy equals the BAMP ﬁxed
+point for θϵ,R ≥B0 while for θϵ,R <B 0 the free energy has
+local maxima to the right of the global maximum, which then
+is no longer the BAMP ﬁxed point.
+VI. S INGLE -PIXEL COLOR IMAGING
+We applied MMV-BAMP (cf. Algorithm 1) to color imaging
+using the single-pixel approach from [9]. Here, white light
+illuminates an object and M random 0/1-masks of dimension√
+N ×
+√
+N with exactly N/2 ones are applied before the
+intensities of the red ( b = 1 ), green ( b = 2 ), and blue
+(b = 3 ) components are measured by noisy single-pixel
+sensors (hence, B = 3). The B = 3 discrete cosine transform
+(DCT) coefﬁcient vectors of the acquired image are assumed
+to be jointly sparse and drawn from a multivariate BG pdf
+(with the exception of the DC term as explained below). The
+measurement matrix is given by A = ΦDT , where theM ×N
+matrix Φ contains the M vectorized binary masks and D is
+the DCT matrix. Since A is the same for all B = 3 color
+channels we have an MMV problem. The measurement matrix
+A does not satisfy the conditions (zero mean and normalized
+columns) required for BAMP. Appendix E explains how to
+convert this problem into an equivalent form that meets the
+BAMP requirements.
+A. Real-world Data
+In order to benchmark the recovery algorithms in a real-
+world setting, we randomly selected a training set of 40 natural
+images (see [44], [45]) and a distinct test image (shown in
+Figure 5). All images had a resolution of 100 × 100 pixels
+(N = 10 000). The parameters of the BG prior (sparsity ϵ and
+covariance matrix Σ⃗x) and the parameters of the three scalar
+BG priors (one for each color channel) were estimated from
+the training set using the EM algorithm [46]. The measurement
+noise was i.i.d. zero-mean Gaussian with a standard deviation
+of σw(1) = σw(3) = 1.5 for the red and the blue channels
+and σw(2) = 6 for the green channel. The number of
+measurements was M = 3330 (R = 0.333).
+Figure 5 shows the recovery results for (i) AMP with soft
+thresholding [20], applied independently in each color channel
+(using the optimal threshold parameter), (ii) scalar BAMP,
+independently applied in each color channel, and (iii) MMV-
+BAMP (using the estimated BG prior). Figure 5 shows that
+MMV-BAMP indeed outperforms the scalar schemes. Since
+the color channels are affected by different noise variance,
+per-channel AMP and BAMP suffer from a color mismatch.
+In contrast, MMV-BAMP does not suffer from this problem
+and yields less blurry edges and clearer image details.
+Table I shows the normalized mean square recovery error
+(NMSE) achieved by the various methods on the three color
+channels (the NMSE was estimated by averaging over 40
+
+=== PDF PAGE 8 ===
+8
+Figure 5: Performance comparison for single-pixel color imag-
+ing at R = 0.333: original image (top left), per-channel AMP
+with soft-thresholding (top right), per-channe BAMP (bottom
+left), and MMV-BAMP (bottom right).
+Table I: Mean recovery NMSE for AMP, BAMP, MMV-
+BAMP, and group lasso (the 95%-conﬁdence levels are ap-
+proximately ±1 dB).
+NMSE [dB]
+red green blue
+AMP −16.5 −12.7 −14.5
+BAMP −16.6 −12.2 −14.7
+MMV-BAMP −16.8 −14.1 −14.9
+group lasso −16.4 −13.3 −14.5
+test images). The table also shows the results obtained with
+the group lasso [47] based on ADMM [47]–[49] with hand-
+optimized regularization parameter.
+MMV-BAMP is seen to outperform all competing schemes.
+Its performance advantage is most pronounced for the green
+channel, which has the poorest SNR of 51.9 dB. For the red
+and blue channels (SNR 64.8 and 62.6 dB, respectively), the
+performance differences tend to be smaller. We emphasize that
+MMV-BAMP achieves these performance gains in spite of a
+mismatched prior, i.e., the distribution of the (jointly sparse)
+DCT coefﬁcients of natural images is not actually BG.
+B. Synthetic Data
+To eliminate effects resulting from mismatched priors, we
+next consider artiﬁcial images whose red, green, and blue
+channel DCT coefﬁcients are jointly sparse and have BG
+distribution. More speciﬁcally, we created images having a
+resolution of 100 × 100 pixels (N = 10 000) by randomly
+drawing 20 × 20 = 400 low-frequency DCT coefﬁcients (on
+Figure 6: Single-pixel recovery of an artiﬁcial image (left
+column) at R = 0.333 and corresponding DCT coefﬁcients
+(right column): original image (top row), BAMP (second
+row), MMV-BAMP (third row), and MMV-BAMP-EM (bot-
+tom row).
+each color channel) from a Gaussian distribution with covari-
+ance matrix (Σ⃗x)ij = 4 − |i−j|, i,j ∈ { 1, 2, 3} (except the
+DC coefﬁcients that had a ﬁxed value of 20). The remaining
+9 600 high-frequency DCT coefﬁcients per channel were set
+to zero. The resulting sparsity equals ϵ = 400/10 000 = 4%.
+We then applied compressive single-pixel imaging as de-
+scribed above to these artiﬁcial images. The sampling rate
+wasR = 0.333 and the standard deviation of the measurement
+noise in the red and the green channels was eight times larger
+
+=== PDF PAGE 9 ===
+9
+Table II: Mean recovery NMSE for AMP, BAMP, MMV-
+BAMP, MMV-BAMP EM, and group lasso (the 95%-
+conﬁdence levels are less than ±0.1 dB).
+NMSE [dB]
+red green blue
+AMP −2.76 −2.81 −17.53
+BAMP −3.92 −3.96 −23.32
+MMV-BAMP −8.36 −9.52 −23.91
+MMV-BAMP-EM −8.34 −9.49 −23.90
+group lasso (small λ) −0.21 −0.30 −11.10
+group lasso (moderate λ) −5.00 −5.30 −6.80
+than that in the blue channel leading to measurement SNRs
+of 32.4 dB, 32.4 dB, and 50.5 dB, respectively. Recovery was
+done using BAMP, MMV-BAMP with perfect prior knowl-
+edge, and a practical variant labeled MMV-BAMP-EM. The
+latter augments MMV-BAMP with an on-the-ﬂy (i.e., during
+the recovery iterations) EM-based estimation of the model
+parameters (sparsity, mean, and covariance in the BG prior).
+As shown in [33], this is possible whenever the structure of
+the prior distribution is known. More speciﬁcally, the EM
+algorithm is applied in Algorithm 1 after line 6 to estimate the
+parameters of a mixture of two multivariate Gaussians from
+the decoupled measurements ut−1(b). The covariance of the
+stronger of the two mixture components is discounted for the
+noise and retained for the non-zero part of the BG model.
+Figure 6 shows the results for an exemplary artiﬁcial image
+and its DCT. MMV-BAMP is seen to perform much better than
+BAMP. Furthermore, MMV-BAMP-EM yields recovery results
+virtually identical to MMV-BAMP. Thus, estimating the prior
+parameters during recovery induces a negligible performance
+loss (indeed, we veriﬁed that the EM estimates of sparsity and
+covariance were close to the true values even though based on
+only 3 × 400 nonzero DCT coefﬁcients). The DCT domain
+results also show that the majority of errors occurs in the red
+and the green channels that suffer from poor SNR.
+A systematic performance comparison in terms of NMSE
+(obtained by averaging over 100 artiﬁcial images) is provided
+in Table II, which also shows the results achieved by the
+group lasso. It is seen that MMV-BAMP and MMV-BAMP-
+EM achieve almost identical NMSE and outperform (B)AMP
+by exploiting the correlation between the color channels. The
+performance gain is speciﬁcally noticeable in the low-SNR red
+and green channels, with the gain in the green channel being
+slightly larger since its correlation with the high-SNR blue
+channel is stronger ( (Σ⃗x)23 = 3) than that of the red channel
+((Σ⃗x)13 = 2).
+The group lasso is seen to perform much worse than MMV-
+BAMP(-EM) since it is unaware of the different measurement
+SNRs on the three channels. With weak regularization (small
+λ), the group lasso relies more on the measurements and
+hence yields reasonable performance only for the high-SNR
+blue channel. With stronger regularization (moderate λ), the
+group lasso enforces stronger sparsity, which is beneﬁcial for
+the low-SNR red and green channels but leads to increased
+distortions on the blue channel. This shows that MMV-BAMP
+has strong advantages over group lasso when the quality of
+the measurements of the correlated components is different
+and unknown.
+VII. C ONCLUSIONS
+We reviewed the multivariate BAMP algorithm for
+MMV/DCS CS recovery and its associated multivariate SE.
+We established that for arbitrary MMV measurement models
+there is an equivalent model in which signal and noise are
+both decorrelated. For the widely employed multivariate BG
+signal prior, we proved that uncorrelatedness is preserved
+during the BAMP and SE iterations; thus, the complexity of
+BAMP for BG signals scales only linearly with the number of
+jointly sparse vectors. The free energy formula for the jointly
+sparse BG CS channel with B degrees of freedom has been
+derived and juxtaposed with the multivariate SE. Our results
+allowed us to assess the impact of signal correlation and of
+the number of jointly sparse vectors on the phase transition
+phenomenon and the optimality rate region of BAMP. Numer-
+ical results for single-pixel color imaging demonstrated that
+MMV-BAMP achieves superior recovery quality by exploiting
+correlation between the vector components. MMV-BAMP can
+be augmented with EM-based estimation of the parameters
+of the BG prior, leading to a practical and ﬂexible scheme
+with excellent recovery performance and signiﬁcantly smaller
+complexity than competing approaches such as group lasso.
+APPENDIX
+A. Equivariance of MMV VBAMP and its SE
+Consider Algorithm 1 with the transformed variables Σ˜⃗x,
+Tˆ⃗xt
+n, T⃗rt
+m, T⃗ut
+n, Σt
+˜⃗v. Lines 5 and 6 are trivially equivari-
+ant. The equivariance of line 7 follows from the invariance
+property of MMSE estimators to afﬁne transformations [50,
+Ch. 11.4]. In the residual term (line 8), the equivariance of
+⃗ym −
+(
+A(1)ˆx(1)t,..., A(B)ˆx(B)t)
+m is trivial. It remains to
+show that the Onsager term is equivariant. Thus, we write the
+transformed Onsager term as
+1
+M
+N∑
+n=1
+F′(T⃗un; TΣ⃗vTT )T⃗rm
+{1}
+= 1
+M
+N∑
+n=1
+Cov{˜⃗x | T⃗un; TΣ⃗vTT }
+(
+TΣ⃗vTT )−1
+T⃗rm
+= 1
+M
+N∑
+n=1
+E{⟨˜⃗x − E{˜⃗x}⟩ | T⃗un; TΣ⃗vTT }T−TΣ−1
+⃗v ⃗rm
+= 1
+M
+N∑
+n=1
+T E{⟨⃗x − E{⃗x}⟩ |⃗un; Σ⃗v}TTT−TΣ−1
+⃗v ⃗rm
+{2}
+= T 1
+M
+N∑
+n=1
+Cov{⃗x |⃗un; Σ⃗v}Σ−1
+⃗v ⃗rm
+= T 1
+M
+N∑
+n=1
+F′(⃗un; Σ⃗v)⃗rm,
+where {1} and {2} follow from Lemma 2 in Appendix D.
+The equivariance of SE follows by similar arguments using
+
+=== PDF PAGE 10 ===
+10
+elementary probability theory and the invariance property of
+MMSE estimators to afﬁne transformations [50, Ch. 11.4].
+B. Diagonality of SE with BG Prior
+We show that MMV SE (11) preserves diagonality for the
+BG prior. In particular, we prove that if Σt
+⃗v, Σ⃗w and Σ⃗x are
+diagonal, then
+Σt+1
+⃗v = Σ⃗w + 1
+R E⃗x,⃗v
+{
+⟨F (⃗x +⃗vt; Σ⃗v
+t) −⃗x⟩
+}
+  
+C
+is also diagonal. It sufﬁces to establish that C is diagonal.
+Inserting the BG prior (3) and its estimator (7) and writing
+out the integrals for (C)i,j (i,j = 1,...,B ), it is seen that
+for i ̸=j the integrands have odd symmetry w.r.t. a separable
+set of their arguments and thus integrate to 0. It follows that
+(C)i,j = 0 for i ̸=j and that Σt+1
+⃗v is diagonal.
+C. Replica Analysis
+Following the analysis in [26], we derive an analytical
+performance prediction for the BAMP algorithm for MMV
+and DCS problems. We consider the measurement model (1)
+and the signal prior (3) with Σ⃗x = I and ⃗wm ∼ N (0, Σ⃗w),
+where Σ⃗w = diag(σ2
+w(1),...σ 2
+w(B)) is a diagonal matrix with
+the noise variances σ2
+w(b). The special case Σ⃗w = σ2
+wI was
+analyzed in [26]. We follow [26] by assuming the rows of
+A(b) to have variance 1
+N . The straightforward rescaling to
+normalized columns is discussed at the end. For the sake of
+notational simplicity, the following derivation applies to the
+MMV scenario, i.e., A(1) = ... = A(B) = A. The gener-
+alization to DCS is straightforward (cf. [26]). The posterior
+pdf of the estimate ˆX = (ˆx(1),..., ˆx(B)) = ( ˆ⃗x1,..., ˆ⃗xN)T
+reads
+f ˆX|Y( ˆX | Y) = 1
+Z
+N∏
+n=1
+fˆ⃗x(ˆ⃗xn)
+M∏
+m=1
+N
+(
+(Y−A ˆX)m; 0, Σ⃗w
+)
+with Y = (y(1),..., y(B)) = (⃗y1,..., ⃗yM)T . Furthermore,
+Z is the partition function
+Z =
+∫
+RN B
+M∏
+m=1
+N
+(
+(Y−A ˆX)m; 0, Σ⃗w
+)N∏
+n=1
+fˆ⃗x(ˆ⃗xn)dˆ⃗xn.
+Following the argumentation in [26] and the assumptions in
+[34], [35], [51]–[54], we determine the stationary points of
+the free energy function, which provide the MSEs in the ﬁxed
+points of BAMP along with the MMSE for the measurement
+model (1). The free energy is deﬁned as
+F = lim
+N→∞
+1
+N EA,X,W {log(Z)}, (18)
+but in general is difﬁcult to evaluate. The replica method
+[34], [35], [51]–[54] introduces k replicas ˆX1,..., ˆXk of the
+estimate ˆX and approximates the free energy (18) as
+F = lim
+N→∞
+lim
+k→0
+EA,x,w
+{
+Zk}
+− 1
+Nk . (19)
+The self-averaging property that leads to (18) and the replica
+trick (19) as well as the replica symmetry assumptions are
+assumed to be valid, even though their theoretical justiﬁcation
+is still an open problem [34], [35], [51]–[54]. In order to
+evaluate (18), we write
+EA,x,w
+{
+Zk}
+= |2πΣ⃗w|− k
+2 EX
+{∫ M∏
+m=1
+Xm
+N∏
+n=1
+k∏
+a=1
+f⃗x(⃗xa
+n)d⃗xa
+n
+}
+,
+(20)
+where
+Xm = EA,W
+{
+exp
+(
+− 1
+2 ∥¯⃗vm∥2
+) }
+. (21)
+Here, we used the vector ¯⃗vm = ¯Σ
+− 1
+2
+⃗w ⃗vm deﬁned in terms
+of ⃗vm = (v1
+m,1,...,v k
+m,1,v 1
+m,2,...,...,v k
+m,B)T , and ¯Σ⃗w =
+Σ⃗w ⊗ Ik×k, where the elements of ⃗vm are in terms of
+⃗va
+m = (va
+m,1,...,v a
+m,B) =
+(
+A(X− ˆXa) + W
+)
+m.
+Using a Gaussian approximation for the pdf of ¯⃗vm,
+f¯⃗vm
+(¯⃗vm
+)
+= N
+(¯⃗vm; 0, Gm
+)
+, (22)
+(21) can be evaluated as
+Xm = |I + Gm|− 1
+2. (23)
+Here, we used the covariance matrix Gm = Cov {¯⃗vm} =
+¯Σ
+− 1
+2
+⃗w
+¯Gm ¯Σ
+− T
+2
+⃗w with Gm = Cov {⃗vm}. The matrix ¯Gm is
+composed of B ×B blocks of size k ×k as follows:
+1) The main diagonal of ¯Gm consists of entries g1(b) =
+EA,w{(va
+m,b)2}, which is different in each of the B
+blocks but identical within a block.
+2) The remaining entries in the blocks of the main diagonal
+areg2(b) = EA,w{va
+m,bva′
+m,b}, which are different in each
+block but identical within a block.
+3) The diagonal entries of the off-diagonal blocks are
+g3(b,b′) = EA,w{va
+m,bva
+m,b′}.
+4) The off-diagonal entries of the off-diagonal blocks are
+g4(b,b′) = EA,w{va
+m,bva′
+m,b′}.
+Using the normalization of the measurement matrix A, the fact
+that ⃗xa
+n follows the same distribution as ⃗xn, and the replica
+symmetry [34], [35], these values turn out to be
+g1(b) = 1
+N
+N∑
+n=1
+(xn(b) − ˆxa
+n(b))2 + 1,
+g2(b) = 1
+N
+N∑
+n=1
+(xn(b) − ˆxa
+n(b))(xn(b) − ˆxa′
+n (b)) + 1,
+g3(b,b′) = 1
+N
+N∑
+n=1
+(xn(b) − ˆxa
+n(b))(xn(b′) − ˆxa′
+n (b)),
+g4(b,b′) = 1
+N
+N∑
+n=1
+(xn(b) − ˆxa
+n(b′))(xn(b) − ˆxa′
+n (b′)).
+By introducing the auxiliary quantities
+ma(b,b′) = 1
+N
+N∑
+n=1
+ˆxa
+n(b)xn(b′),
+Qa(b,b′) = 1
+N
+N∑
+n=1
+ˆxa
+n(b)ˆxa
+n(b′),
+
+=== PDF PAGE 11 ===
+11
+qaa′(b,b′) = 1
+N
+N∑
+n=1
+ˆxa
+n(b)ˆxa′
+n (b′),
+q0(b,b′) = 1
+N
+N∑
+n=1
+xn(b)xn(b′),
+the covariance values can be written as
+g1(b) =ϵ − 2ma(b,b ) +Qa(b,b ) + 1,
+g2(b) =ϵ −ma(b,b ) −ma′(b,b ) +qaa′(b,b ) + 1,
+g3(b,b′) =q0(b,b′) −ma(b′,b ) −ma′(b,b ) +qaa′(b,b ),
+g4(b,b′) =q0(b,b ) −ma(b′,b ) −ma′(b′,b ) +qaa′(b′,b′).
+In the Bayesian setting the distribution of ⃗xn matches the
+distribution of ˆ⃗xn and that of the replicas ˆ⃗xa
+n, thus g3(b,b′) =
+g4(b,b′) = 0. Furthermore, due to the replica symmetry [34],
+[35] ma(b,b ) = ma′(b,b ) = m(b), Qa(b,b ) = Q(b), and
+qaa′(b,b ) =q(b). It follows that the Gm is a structured matrix
+that, due to its block structure, can be expressed in terms of
+all-ones matrices, identity matrices, and Kronecker products.
+Its kB eigenvalues can straightforwardly be determined as
+αb
+1 =g1(b) + (k−1)g2(b), α b
+2 =g1(b) −g2(b),
+where the αb
+1 have multiplicity 1 and the αb
+2 have multiplicity
+k−1. We can thus express (23) as
+|I + Gm|− 1
+2 =
+[B∏
+b=1
+(
+1 +kϵ − 2m(b) +q(b) +σ2
+w(b)
+σ2w(b) +Q(b) −q(b)
+)
+B∏
+b=1
+(
+1 + 1
+σ2w(b)(Q(b) −q(b))
+)k−1
+]− 1
+2
+.
+Using the Taylor series approximation
+exp
+(
+−x
+2
+)
+≈ (1 +x)− 1
+2,
+we obtain
+lim
+k→0
+Xm = exp
+(
+− k
+2
+B∑
+b=1
+ϵ − 2m(b) +q(b) +σ2
+w(b)
+σ2w(b) +Q(b) −q(b)
+− log(Q(b) −q(b) +σ2
+w(b)) − log(σ2
+w(b))
+)
+.
+Following the derivation in [26, App.], (20) can be written as
+EA,X,W
+{
+Zk
+}
+=
+∫
+exp
+(
+kNΦ(m0, ˆm0,q, ˆq,Q, ˆQ)
+)
+dm0d ˆm0dqd ˆqdQd ˆQ.
+Remember that we are only interested in the stationary points
+of the free energy expression (20). Thus, we set
+F = Φ({m(b)∗, ˆm(b)∗,q (b)∗, ˆq(b)∗,Q (b)∗, ˆQ(b)∗}b=1,...,B)
+= 1
+2
+B∑
+b=1
+(
+Q(b) ˆQ(b)− 2m(b) ˆm(b) +q(b)ˆq(b)
+)
+− R
+2 log
+(
+|2πΣ⃗w|
+)
+− R
+2
+B∑
+b=1
+(
+ϵ− 2m(b) +q(b) +σ2
+w(b)
+Q(b)−q(b) +σ2w(b)
++ log
+(
+Q(b)−q(b) +σ2
+w(b)
+)
+− log
+(
+σ2
+w(b)
+)
+)
++
+∫
+RB
+f⃗x(⃗x)
+∫
+RB
+log
+∫
+RB
+fˆ⃗x(ˆ⃗x)
+B∏
+b=1
+exp
+(
+− 1
+2 ˆq(b) ˆx(b)2 + ˆm(b) ˆx(b)x(b) +
+√
+ˆm(b) ˆx(b)h(b)
+)
+dˆ⃗xD⃗hd⃗x,
+(24)
+where the superscript ·∗ denotes stationary points. The station-
+ary points are obtained by differentiation as
+dΦ
+dm(b) = 0⇒ ˆm(b)∗ = R
+E(b) +σ2w(b) =γ(b),
+dΦ
+dq(b) = 0⇒ ˆq(b)∗ = R
+E(b) +σ2w(b) =γ(b),
+dΦ
+dQ(b) = 0⇒ ˆQ(b)∗ = 0.
+Here, we used the substitution E(b) = Q(b) − q(b), and
+the fact that in the Bayesian setting q(b)∗ = m(b)∗, and
+Q(b)∗ = ϵ. Substituting back into (24) and using ⃗E =
+(E(1),...,E (B))T , we obtain
+F(⃗E, Σ⃗w) =
+− R
+2
+B∑
+b=1
+(
+log
+(
+2π(σ2
+w(b) +E(b))
+)
++ ϵ +σ2
+w(b)
+E(b) +σ2w(b)
+)
++
+∫
+RB
+f⃗x(⃗x)
+∫
+RB
+log
+( ∫
+RB
+fˆ⃗x(ˆ⃗x)
+B∏
+b=1
+exp
+(
+− 1
+2γ(b) ˆx(b)2 +γ(b)ˆx(b)x(b) +
+√
+γ(b)ˆx(b)h(b)
+)
+dˆ⃗x
+)
+D⃗hd⃗x,
+where the second integration is over a standard Gaus-
+sian measure, i.e., Dh = ∏B
+b=1 N (hb; 0, 1)dhb =
+N (h; 0, I) ∏B
+b=1dhb. Inserting the signal prior (3) results in
+F(⃗E, Σ⃗w) =−R
+2
+B∑
+b=1
+(
+log
+(
+2π(σ2
+w(b) +E(b))
+)
++ ϵ +σ2
+w(b)
+E(b) +σ2w(b)
+)
++ (1−ϵ)
+∫
+log
+(
+(1−ϵ)+
+ϵ
+∫
+exp
+(
+− 1
+2γ(b)ˆx2 +
+√
+γ(b)ˆx(b)h(b)
+)
+Dx
+)
+D⃗h
++ϵ
+∫ ∫
+log
+(
+(1−ϵ)+
+ϵ
+∫
+exp
+(
+− 1
+2γ(b)ˆx(b)2 +γ(b)ˆx(b)x(b) +
+√
+γ(b)ˆx(b)h(b)
+)
+Dˆ⃗x
+)
+D⃗hD⃗x,
+with the measures D⃗x and Dˆ⃗x analogously as above. Further
+simpliﬁcation leads to
+F(⃗E, Σ⃗w)
+=−R
+2
+B∑
+b=1
+(
+log
+(
+2π(σ2
+w(b) +E(b))
+)
++ ϵ +σ2
+w(b)
+E(b) +σ2w(b)− γ(b)(1 +ϵγ(b))
+R(1 +γ(b))
+)
++ (1−ϵ)
+∫
+log
+(
+ϵ
+B∏
+b=1
+(1 +γ(b))− 1
+2 +(1−ϵ) exp
+(
+− 1
+2
+B∑
+b=1
+γ(b)h2(b)
+)
+)
+D⃗h
++ϵ
+∫
+log
+(
+ϵ
+B∏
+b=1
+(1 +γ(b))− 1
+2 +(1−ϵ) exp
+(
+− 1
+2
+B∑
+b=1
+γ(b)
+1 +γ(b)h2(b)
+)
+)
+D⃗h.
+In order to arrive at (17) that is valid for measurement matrices
+with normalized columns we use the equivalence between the
+measurement models with normalized rows and normalized
+columns and replace σ2
+w(b) with Rσ2
+w(b):
+y = Ax + w =⇒ ¯y = 1√
+R
+y = ¯Ax + ¯w,
+where ¯A has normalized columns and ¯wm ∼ N (0, σ2
+w
+R ) if
+wm ∼ N (0,σ 2
+w).
+
+=== PDF PAGE 12 ===
+12
+D. Estimator Derivative and Conditional Correlation
+Lemma 2: Given a realization x of a random vector x ∈ RN
+with pdf fx(x) and its noisy observation
+u = x + w
+with w ∼ N (0, Σ⃗w) being independent additive Gaussian
+noise, its MMSE estimator is
+ˆx(u) = E {x | u = u} .
+Then, the following relation holds:
+Cov {x | u = u} = d
+duT ˆx(u)Σ⃗w.
+Proof 1: Given the deﬁnition of the conditional mean and
+covariance,
+E{x| u, Σ⃗w} = 1
+fu(u)
+∫
+RN
+xfu|x(u| x)fx(x)dx
+Cov{x| u, Σ⃗w} = 1
+fu(u)
+∫
+RN
+xxTfu|x(u| x)fx(x)dx
+− E{x| u} E{x| u}T ,
+we have
+d
+du ˆx(u)Σ⃗w = 1
+fu(u)
+∫
+RN
+xfx(x) d
+duTfu|x(u| x)dx Σ⃗w
+−
+∫
+RN
+1
+fu(u)xfu|x(u| x)fx(x)dx 1
+fu(u)
+d
+duTfu(u) Σ⃗w. (25)
+Since fu|x(u | x) = N (0, Σ⃗w) [55],
+d
+duTfu|x(u | x) =fu|x(u | x)(x − u)TΣ−1
+⃗w . (26)
+Furthermore, the MMSE estimator can be written as [56], [57]
+ˆx(u) = u + Σ⃗w
+1
+fu(u)
+d
+dufu(u). (27)
+Combining (25), (26), and (27) we have
+d
+du ˆx(u)Σ⃗w = 1
+fu(u)
+∫
+RN
+xfu|x(x| u)(x− u)Tfx(x)dx
+− (ˆx(u)− u) 1
+fu(u)
+∫
+RN
+xfu|x(u| x)fx(x)dx
+= 1
+fu(u)
+∫
+RN
+xxTfu|x(u| x)fx(x)dx− ˆx(u)ˆx(u)T
+= Cov{x| u} ,
+which completes the proof.
+E. Measurement Conversion for Single-Pixel Imaging
+We start from the measurement equation (1), where A(b) =
+A = ΦDT , b = 1, 2, 3. Hence,
+y(b) = ΦDTx(b) + w(b),
+where x(b), b = 1, 2, 3, are the vectorized DCT coefﬁcients
+of the red, green, and blue channels, respectively. The M ×
+N matrix Φ consists of the M vectorized 0/1 masks φT
+i of
+dimension 1×N, each having exactlyN/2 ones. Furthermore,
+D is an N ×N (combined row-column) DCT matrix.
+Since all rows of Φ have exactly N/2 ones and all ele-
+ments of the ﬁrst column of DT equal 1/
+√
+N, it follows
+that all elements of the ﬁrst column a1 of A are equal to
+√
+N/2 and hence a1 has mean
+√
+N/2 and Euclidean norm√
+MN/ 2. Since the remaining columns a2,..., aN of A equal
+the sum of randomly sampled cosine sequences, their mean
+is approximately zero and their norm approximately equals
+∥ai∥2 ≈
+√
+M/2. Since BAMP requires a measurement matrix
+with zero-mean and unit-norm columns, we compensate for
+the ﬁrst column and renormalize the remaining columns, i.e.,
+y(b) − a1
+√
+Nx1(b)√
+M/2  
+˜ y(b)
+=
+(
+a2, a3,..., aN
+)
+√
+M/2  
+˜A
+
+
+x2(b)
+x3(b)
+...
+xN(b)
+
++ w(b)√
+M/2
+.
+The new measurement matrix ˜A now satisﬁes the BAMP
+requirements. It remains to ﬁnd the DC coefﬁcients x1(b),
+b = 1, 2, 3. Denoting the color component vectors by ¯x(b) =
+DTx(b), we have x1(b) = ∑N
+n=1 ¯xn(b)/
+√
+N. Furthermore,
+since half of the elements of the masks φT
+i equal 1 we have∑M
+i=1 φT
+i ≈ 1M/2 and hence
+1
+M
+M∑
+i=1
+yi(b) = 1
+M
+M∑
+i=1
+φT
+i ¯x(b) + 1
+M
+M∑
+i=1
+wi(b)
+  
+≈0
+≈ 1
+2
+N∑
+n=1
+¯xn(b),
+thus ﬁnally leading to the estimate
+x1(b) ≈ 2
+M
+√
+N
+M∑
+i=1
+yi(b).
+REFERENCES
+[1] D. L. Donoho, “Compressed Sensing,” IEEE Transactions on Informa-
+tion Theory , vol. 52, no. 4, pp. 1289–1306, 2006.
+[2] E. J. Cand ´es, J. K. Romberg, and T. Tao, “Stable signal recovery from
+incomplete and inaccurate measurements,” Communications on Pure and
+Applied Mathematics , vol. 59, no. 8, pp. 1207–1223, 2006.
+[3] S. Cotter, B. Rao, K. Engan, and K. Kreutz-Delgado, “Sparse solutions
+to linear inverse problems with multiple measurement vectors,” IEEE
+Transactions on Signal Processing , vol. 53, pp. 2477–2488, Jul. 2005.
+[4] M. F. Duarte, S. Sarvotham, M. B. Wakin, D. Baron, and R. G.
+Baraniuk, “Joint sparsity models for distributed compressed sensing,”
+in Proceedings of the Workshop on Signal Processing with Adaptative
+Sparse Structured Representations , IEEE, 2005.
+[5] M. Mayer, G. Hannak, and N. Goertz, “Exploiting joint sparsity in
+compressed sensing-based RFID,” EURASIP Journal on Embedded
+Systems, vol. 2016, no. 1, pp. 1–15, 2016.
+[6] D. Liang, L. Ying, and F. Liang, “Parallel MRI Acceleration Using
+M-FOCUSS,” in 3rd International Conference on Bioinformatics and
+Biomedical Engineering (ICBBE) , pp. 1–4, IEEE, 2009.
+[7] T. Wimalajeewa and P. K. Varshney, “OMP based joint sparsity pat-
+tern recovery under communication constraints,” IEEE Transactions on
+Signal Processing, vol. 62, no. 19, pp. 5059–5072, 2014.
+[8] G. Tzagkarakis, D. Milioris, and P. Tsak, “Multiple-measurement
+Bayesian compressed sensing using GSM priors for DOA estimation,”
+in IEEE International Conference on Acoustics Speech and Signal
+Processing (ICASSP), pp. 2610–2613, 2010.
+[9] M. F. Duarte, M. A. Davenport, D. Takhar, J. N. Laska, T. Sun,
+K. F. Kelly, and R. G. Baraniuk, “Single-pixel imaging via compressive
+sampling,” IEEE Signal Processing Magazine , vol. 25, pp. 83–91, 2008.
+[10] J. A. Tropp, A. C. Gilbert, and M. J. Strauss, “Algorithms for simulta-
+neous sparse approximation. Part I: Greedy pursuit,” Signal Processing,
+vol. 86, no. 3, pp. 572–588, 2006.
+[11] J. A. Tropp, “Algorithms for simultaneous sparse approximation. Part
+II: Convex relaxation,” Signal Processing, vol. 86, no. 3, pp. 589–602,
+2006.
+[12] D. P. Wipf and B. D. Rao, “An empirical Bayesian strategy for solving
+the simultaneous sparse approximation problem,” IEEE Transactions on
+Signal Processing, vol. 55, no. 7, pp. 3704–3716, 2007.
+
+=== PDF PAGE 13 ===
+13
+[13] M. E. Davies and Y . C. Eldar, “Rank awareness in joint sparse recovery,”
+IEEE Transactions on Information Theory , vol. 58, no. 2, pp. 1135–
+1146, 2012.
+[14] P. Schniter, “Turbo reconstruction of structured sparse signals,” in 2010
+44th Annual Conference on Information Sciences and Systems (CISS) ,
+pp. 1–6, Mar. 2010.
+[15] J. Ziniel and P. Schniter, “Efﬁcient high-dimensional inference in the
+multiple measurement vector problem,” IEEE Transactions on Signal
+Processing, vol. 61, pp. 340–354, Jan. 2013.
+[16] M. Mayer and N. Goertz, “Bayesian optimal approximate message
+passing to recover structured sparse signals,” ArXiv e-prints, Aug. 2015.
+[17] X. Zhao and W. Dai, “On joint recovery of sparse signals with common
+supports,” in International Symposium on Information Theory (ISIT) ,
+pp. 541–545, IEEE, 2015.
+[18] Y . Lu and W. Dai, “Independent versus repeated measurements: A per-
+formance quantiﬁcation via state evolution,” inInternational Conference
+on Acoustics, Speech and Signal Processing (ICASSP) , pp. 4653–4657,
+IEEE, 2016.
+[19] J. Kim, W. Chang, B. Jung, D. Baron, and J. C. Ye, “Belief propagation
+for joint sparse recovery,” arXiv preprint arXiv:1102.3289 , 2011.
+[20] D. L. Donoho, A. Maleki, and A. Montanari, “Message-passing algo-
+rithms for compressed sensing,” Proceedings of the National Academy
+of Sciences , vol. 106, no. 45, pp. 18914–18919, 2009.
+[21] D. Donoho, A. Maleki, and A. Montanari, “Message passing algorithms
+for compressed sensing: I. Motivation and construction,” in 2010 IEEE
+Information Theory Workshop on Information Theory (ITW 2010, Cairo),
+pp. 1–5, Jan. 2010.
+[22] D. Donoho, A. Maleki, and A. Montanari, “Message passing algorithms
+for compressed sensing: II. Analysis and validation,” in 2010 IEEE
+Information Theory Workshop on Information Theory (ITW 2010, Cairo),
+pp. 1–5, Jan. 2010.
+[23] A. Maleki, “Approximate message passing algorithms for compressed
+sensing.” http://www.ece.rice.edu/mam15/thesis.pdf, PhD Thesis, De-
+partment of Electrical Engineering, Stanford University, 2011.
+[24] A. Montanari, “Graphical Models Concepts in Compressed Sensing,”
+Compressed Sensing: Theory and Applications , pp. 394–438, 2012.
+[25] S. Rangan, A. K. Fletcher, V . K. Goyal, E. Byrne, and P. Schniter,
+“Hybrid approximate message passing,” IEEE Transactions on Signal
+Processing, vol. 65, no. 17, pp. 4577–4592, 2017.
+[26] J. Zhu, D. Baron, and F. Krzakala, “Performance limits for noisy
+multi-measurement vector problems,” IEEE Transactions on Signal
+Processing, vol. 65, no. 9, pp. 2444–2454, 2017.
+[27] M. Bayati and A. Montanari, “The dynamics of message passing on
+dense graphs, with applications to compressed sensing,” IEEE Transac-
+tions on Information Theory , vol. 57, pp. 764–785, Feb 2011.
+[28] R. Berthier, A. Montanari, and P. M. Nguyen, “State evolution for
+approximate message passing with non-separable functions,” arXiv
+preprint arXiv:1708.03950, 2017.
+[29] Y . Ma, C. Rush, and D. Baron, “Analysis of approximate message
+passing with a class of non-separable denoisers,” in Information Theory
+(ISIT), 2017 IEEE International Symposium on , pp. 231–235, IEEE,
+2017.
+[30] S. Rangan, P. Schniter, and A. K. Fletcher, “Vector approximate mes-
+sage passing,” in Information Theory (ISIT), 2017 IEEE International
+Symposium on , pp. 1588–1592, IEEE, 2017.
+[31] S. Foucart and H. Rauhut, A mathematical introduction to compressive
+sensing, vol. 1. Birkh ¨auser Basel, 2013.
+[32] R. A. Horn and C. R. Johnson, Matrix analysis . Cambridge university
+press, 2012.
+[33] J. Vila and P. Schniter, “Expectation-maximization Gaussian-mixture
+approximate message passing,” IEEE Transactions on Signal Processing,
+vol. 61, pp. 4658–4672, Oct. 2013.
+[34] F. Krzakala, M. M ´ezard, F. Sausset, Y . Sun, and L. Zdeborov ´a,
+“Probabilistic reconstruction in compressed sensing: algorithms, phase
+diagrams, and threshold achieving matrices,” Journal of Statistical
+Mechanics: Theory and Experiment , vol. 2012, no. 08, p. P08009, 2012.
+[35] F. Krzakala, M. M ´ezard, F. Sausset, Y . Sun, and L. Zdeborov ´a,
+“Statistical-physics-based reconstruction in compressed sensing,” Phys-
+ical Review X , vol. 2, no. 2, p. 021005, 2012.
+[36] G. Reeves and H. D. Pﬁster, “The replica-symmetric prediction for
+compressed sensing with Gaussian matrices is exact,” in 2016 IEEE
+International Symposium on Information Theory (ISIT) , pp. 665–669,
+IEEE, 2016.
+[37] T. Heskes, “Stable ﬁxed points of loopy belief propagation are minima
+of the Bethe free energy,” Advances in neural information processing
+systems, vol. 15, pp. 359–366, 2003.
+[38] J. S. Yedidia, W. T. Freeman, and Y . Weiss, “Constructing free-energy
+approximations and generalized belief propagation algorithms,” IEEE
+Transactions on Information Theory , vol. 51, no. 7, pp. 2282–2312,
+2005.
+[39] J. S. Yedidia, W. T. Freeman, and Y . Weiss, “Bethe free energy, Kikuchi
+approximations, and belief propagation algorithms,” Advances in neural
+information processing systems , vol. 13, 2001.
+[40] A. Taeb, A. Maleki, C. Studer, and R. Baraniuk, “Maximin analysis of
+message passing algorithms for recovering block sparse signals,” arXiv
+preprint arXiv:1303.2389, 2013.
+[41] D. L. Donoho, I. Johnstone, and A. Montanari, “Accurate prediction of
+phase transitions in compressed sensing via a connection to minimax
+denoising,” IEEE transactions on Information Theory , vol. 59, no. 6,
+pp. 3396–3433, 2013.
+[42] J. D. Blanchard and M. E. Davies, “Recovery guarantees for rank aware
+pursuits,” IEEE Signal Processing Letters , vol. 19, no. 7, pp. 427–430,
+2012.
+[43] J. M. Kim, O. K. Lee, and J. C. Ye, “Compressive MUSIC: revisiting
+the link between compressive sensing and array signal processing,”IEEE
+Transactions on Information Theory , vol. 58, no. 1, pp. 278–301, 2012.
+[44] N. Asuni and A. Giachetti, “TESTIMAGES: a large-scale archive for
+testing visual devices and basic image processing algorithms,” in STAG
+– Smart Tools & Apps for Graphics Conference , 2014.
+[45] N. Asuni and A. Giachetti, “TESTIMAGES: a large data archive for
+display and algorithm testing,” Journal of Graphics Tools, vol. 17, no. 4,
+pp. 113–125, 2015.
+[46] C. M. Bishop, Pattern Recognition and Machine Learning . Springer
+New York, 2006.
+[47] S. Boyd, N. Parikh, E. Chu, B. Peleato, and J. Eckstein, “Distributed
+optimization and statistical learning via the alternating direction method
+of multipliers,” F ound. Trends Mach. Learn. , vol. 3, pp. 1–122, Jan.
+2011.
+[48] S. Boyd, N. Parikh, E. Chu, B. Peleato, and J. Eckstein, “Sum-of-norms
+regularization (group lasso) with feature splitting / code..” https://web.
+stanford.edu/∼boyd/papers/admm/group lasso/group lasso.html, 2011.
+[Online; accessed 2018-04-11].
+[49] S. Boyd, N. Parikh, E. Chu, B. Peleato, and J. Eckstein, “Sum-
+of-norms regularization (group lasso) with feature splitting / exam-
+ples.” https://web.stanford.edu/∼boyd/papers/admm/group lasso/group
+lasso example.html, 2011. [Online; accessed 2018-04-11].
+[50] S. M. Kay, Fundamentals of Statistical Signal Processing, V olume I:
+Estimation Theory . Prentice Hall, 1993.
+[51] T. Tanaka, “A statistical-mechanics approach to large-system analysis of
+CDMA multiuser detectors,” IEEE Transactions on Information Theory ,
+vol. 48, no. 11, pp. 2888–2910, 2002.
+[52] D. Guo and S. Verd ´u, “Randomly spread CDMA: asymptotics via
+statistical physics,” IEEE Transactions on Information Theory , vol. 51,
+no. 6, pp. 1983–2010, 2005.
+[53] M. Mezard and A. Montanari, Information, Physics, and Computation .
+Oxford University Press, 2009.
+[54] J. Barbier and F. Krzakala, “Approximate message-passing decoder and
+capacity achieving sparse superposition codes,” IEEE Transactions on
+Information Theory , vol. 63, no. 8, pp. 4894–4927, 2017.
+[55] K. B. Petersen and M. S. Pedersen, “The matrix cookbook,” Technical
+University of Denmark , vol. 7, p. 15, 2008.
+[56] M. Raphan and E. P. Simoncelli, “Empirical Bayes least squares
+estimation without an explicit prior,” NYU Courant Inst. Tech. Report ,
+2007.
+[57] M. Raphan and E. P. Simoncelli, “Least squares estimation without
+priors or supervision,” Neural computation, vol. 23, no. 2, pp. 374–420,
+2011.

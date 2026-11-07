@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "paired_scenes": 30,
+  "complete_cases": 90,
+  "actual_iterations_per_case": 300,
+  "plotted_points": 450,
+  "displayed_iterations": 150,
+  "displayed_metric": "nmse_db",
+  "displayed_methods": [
+    "GP-MP",
+    "STMP",
+    "Off-grid SBL (7)"
+  ],
+  "all_case_hashes_checked": true,
+  "all_methods_same_truth": true,
+  "curves_match_saved_arrays": true,
+  "legend_within_canvas_and_not_overlapping_curves": true,
+  "palette_source": "D:\\afdm-gfra\\src\\configs\\plots\\manuscript.json",
+  "palette_sha256": "e9632c98b4c44f7dad580e29a071815ca1bdddebf9037c58c3d0f91e2be3eb65",
+  "script_sha256": "3666a462989fcdbd6063fabdec188add2ae8543e65833acc4006113e9181dafd",
+  "smoothing": false,
+  "iteration_padding": false,
+  "final_values": {
+    "GP-MP": {
+      "nmse_db": -12.93376807916416,
+      "aer": 0.0
+    },
+    "STMP": {
+      "nmse_db": -11.569024918794605,
+      "aer": 0.0008333333333333334
+    },
+    "Off-grid SBL (7)": {
+      "nmse_db": -8.144944864184934,
+      "aer": 0.0
+    }
+  }
+}

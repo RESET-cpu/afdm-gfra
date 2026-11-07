@@ -1,0 +1,139 @@
+{
+  "cases": [
+    {
+      "scene": 0,
+      "index": 0,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100001\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "03da61ffb875b8bf9df2f41ee50a52a43f7b25573ee97ed60c3f766fade546a3",
+      "files": {
+        "public.npz": "09427b205961229a6c3e57c4f7e8d9482b4ddbaaca6dcfd1c2b87f6bda9b6203",
+        "raw.npz": "569ed11a5fbc0d01db0599d34b84b49af4122760b56b1661d5c2e53e20a39e36",
+        "truth.npz": "93a6894712f6205fc60a7fc04888323157be4facd2c7d92cdf338af7ca19c2e4",
+        "phase.npz": "99211b2518bd3479bc8faf6bc9b29d02842f63daf9a47cfe853505a50d6fe1c3",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\648fb5e8e0867cad7cf15a6fd2ef78d964cd199d6b2e2a7827e8e4611033d8cd.json",
+      "STMP_sha256": "9271a4d5d03bb40620daa5fcfa0c48aab6b8028bae9f49e5a36c79b993abd8d5",
+      "snr_db": -4
+    },
+    {
+      "scene": 0,
+      "index": 2,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100001\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "91b15434f9c89b1688f42876b6ee5bc18df36b3be0b4daf7facf4213aedc37e7",
+      "files": {
+        "public.npz": "4af44b9b994d05fb37d373e80211602bb5f01281d893f8ab721cb61c5d7264ec",
+        "raw.npz": "cb873019a08264aa091b4a4accf65e95edeb65bed25b60dbc3e8b7dc557ae908",
+        "truth.npz": "93a6894712f6205fc60a7fc04888323157be4facd2c7d92cdf338af7ca19c2e4",
+        "phase.npz": "99211b2518bd3479bc8faf6bc9b29d02842f63daf9a47cfe853505a50d6fe1c3",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\71a05011723f330bab020c4a382fa91f9fce88acd98d7f430cb038d642747810.json",
+      "STMP_sha256": "ea7b56a5c0252ed964e4a342a9496368b7deae6152b2f63902f55f0f29253df7",
+      "snr_db": 0
+    },
+    {
+      "scene": 0,
+      "index": 5,
+      "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100001\\K40_Q16_p0.1_snr6_D_dft\\phase_known_noise_estimated\\READY.json",
+      "ready_sha256": "58ce1db577be3ec870a6ff47679c28db29dc1555892a9065f14c3e947aab3ae2",
+      "files": {
+        "public.npz": "baf9876b0afbfcb11c17f1c35aa54b43b7ca2038e7b728fd995ec65442ca1d6b",
+        "raw.npz": "5fb8d4532d839904ac110f1030e76c50ca6e5224f57dbfedbf78d0fbf73007a6",
+        "truth.npz": "93a6894712f6205fc60a7fc04888323157be4facd2c7d92cdf338af7ca19c2e4",
+        "phase.npz": "99211b2518bd3479bc8faf6bc9b29d02842f63daf9a47cfe853505a50d6fe1c3",
+        "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+      },
+      "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\bc7473d52facf78177a9885d79396eb52f0584015ac9c7f29caa585f927f1fa8.json",
+      "STMP_sha256": "ad840f375bf836288454f3b9c9078a7432991eb15601ebaf3bcddbb87230714b",
+      "snr_db": 6
+    }
+  ],
+  "configuration": {
+    "scale": 0.2647966452702405,
+    "batch_size": 40,
+    "conditional_variance_floor_checkpoint_normalized": 0.0001,
+    "decision_threshold": 0.5,
+    "site_damping": 1.0,
+    "ep": {
+      "iterations": 600,
+      "damping": 0.4,
+      "min_iterations": 60,
+      "convergence_tolerance": 0.0005,
+      "convergence_patience": 5,
+      "variance_fraction_floor": 1e-06,
+      "variance_fraction_ceiling": 0.999999,
+      "covariance_mode": "isotropic",
+      "activity_convergence_tolerance": 0.001,
+      "raw_site_residual_tolerance": 0.1,
+      "activity_weight_residual_tolerance": 0.001,
+      "decision_stability_window": 10,
+      "activity_stopping_reference": "smoothed"
+    },
+    "initialization": {
+      "kind": "activity_prior_times_training_power",
+      "normalized_training_second_moment": 1.0004404181394917,
+      "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+    },
+    "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+    "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+    "first_checkpoint": "result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt",
+    "first_checkpoint_sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+    "schema": "white-matched-receiver-binding-v1",
+    "implementation": "colored_conditional_mean",
+    "activity_evidence": "classifier",
+    "evidence_checkpoint": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/evidence_best.pt",
+    "evidence_checkpoint_sha256": "2fb9977d68ede2b451dc0ba712a8106f002f889d2e529147aa2eb271a337d854",
+    "method": "GP-MP",
+    "query_covariance": "vI",
+    "classifier_policy": "matched_white_mean_vI",
+    "first_epoch": 200,
+    "classifier_training_binding": {
+      "first_sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+      "second_sha256": null
+    },
+    "variance_estimator": {
+      "probes": 1,
+      "epsilon": 0.01,
+      "seed": 2026102407
+    },
+    "limitations": [
+      "Historical research scenes; not untouched test data.",
+      "White-trained denoiser and its matched classifier; all numerical receiver controls unchanged.",
+      "Derivative-trace variance remains an approximation."
+    ],
+    "classifier_training_record": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/complete.json",
+    "classifier_training_record_sha256": "a58b5da831ad58dad13e0d8fb164fa4f643a2d144a9e652c5182ff1df0936fa7",
+    "classifier_training_specification": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/specification.json",
+    "classifier_training_specification_sha256": "fb1a0993b2023f48ebe76580034d59a370755d0b600e16395ea99c42160c5a73",
+    "classifier_execution_record": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/LAUNCH.json",
+    "classifier_execution_record_sha256": "da68f3b0026ba09a2293759b61e4537339e615753d337e0ddf5ca75c2e36d791",
+    "classifier_epoch": 79,
+    "query_variance_update": {
+      "enabled": true,
+      "formula": "mean(abs(r-joint_mean)^2)+mean(trace(joint_covariance))/M",
+      "schedule": "one update per outer iteration; ratio damped with existing beta; separate raw linear-query covariance history",
+      "stop": "also require relative posterior-residual variance update below original convergence tolerance"
+    },
+    "first_training_record": "result/channel_denoising/data/white_preconditioned_matched_20261104/complete.json",
+    "first_training_record_sha256": "6b71af29467551d7939cae196df7c22739c0c236976df77e76454b6fbb7449f1",
+    "first_training_specification": "result/channel_denoising/data/white_preconditioned_matched_20261104/specification.json",
+    "first_training_specification_sha256": "327e85315a7b6845500e13c090699ac2f63a9ab11db67e6c6378d740d8e42d03",
+    "classifier_history": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/history.json",
+    "classifier_history_sha256": "4803949cf61b3fddca615326fea6c172ae4cedd1d24f3a8ec80f48eec15f0c04",
+    "classifier_initialization": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/initialization.pt",
+    "classifier_initialization_sha256": "8630e5196c3611842d360bc60a107351202c0b1ff226eecd640986fa6c63ce9b",
+    "base_receiver_configuration": "src/configs/candidates/C_STMP_variance_em_20261025.json",
+    "base_receiver_configuration_sha256": "044d906052bf9150b9dbc09a64efaa545af6f70972cd96fd18f75a8e840f23b8",
+    "evaluation_plan": "result/channel_denoising/data/white_preconditioned_matched_20261104/EVALUATION_PLAN.json",
+    "evaluation_plan_sha256": "124f6e1bf100dd2a37e7f3939c24329b130153fe63290a5d012deafbc2706fd0"
+  },
+  "source_sha256": "449aa6ec5ac26c5eddbc56caa0b593a31d02fbe293fe1b8be0d2cd5b42edbc28",
+  "parent_plan_sha256": "524ed6abefaa86b2a01f2403896c3404649ab4186c6e24ac946c6f5d45721a37",
+  "runtime": {
+    "cudnn_tf32": false,
+    "matmul_tf32": false,
+    "cudnn_benchmark": false
+  },
+  "scope": "Same three scene-0 inputs, no parameter changes; correct numerical precision to match colored reference."
+}

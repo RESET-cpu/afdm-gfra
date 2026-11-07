@@ -1,0 +1,57 @@
+{
+  "status": "PASS",
+  "created_unix": 1793201482.0861158,
+  "protected_assets_unchanged": 166,
+  "tests_passed": 15,
+  "preflight_variants": 3,
+  "completed_at_audit": 51,
+  "failed_at_audit": 0,
+  "nonconverged_retained": {
+    "gaussian_prior": 4,
+    "gaussian_evidence": 1,
+    "estimated_phase": 0
+  },
+  "phase_cpu_gpu_check": {
+    "initial_slope_max_difference": 2.108204455453233e-08,
+    "final_slope_max_difference": 4.2923331289301814e-07,
+    "activity_decisions_equal": true,
+    "new_gpu_iterations": 100,
+    "old_cpu_iterations": 100,
+    "nmse_db_difference": 4.555823394980507e-06,
+    "note": "One-input numerical comparison only; not a population or equivalence conclusion."
+  },
+  "parent_pid": 112600,
+  "children": [
+    {
+      "pid": 114852,
+      "create_time": 1793201377.2127483,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=112600, pipe_handle=764)",
+        "--multiprocessing-fork"
+      ],
+      "rss_gib": 0.4479179382324219
+    },
+    {
+      "pid": 109228,
+      "create_time": 1793201377.2187195,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=112600, pipe_handle=780)",
+        "--multiprocessing-fork"
+      ],
+      "rss_gib": 0.44228363037109375
+    }
+  ],
+  "original_main_snr_reference_count": 6000,
+  "available_memory_gib": 6.077430725097656,
+  "initial_input_adapter_failure": "Archived; zero inferences completed before correcting input-field names."
+}

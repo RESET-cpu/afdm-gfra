@@ -1,0 +1,505 @@
+{
+  "status": "VERIFIED",
+  "candidate_epoch": 92,
+  "previous_candidate_epoch": 10,
+  "awgn_epoch": 200,
+  "cases": 48,
+  "user_stage_rows": 5760,
+  "input_conditions_and_baseline_scores_identical": true,
+  "result_sha256": "b4dbefef012559aee60afd71e6bcc6cab8c3c6a9b5d003659234d4644715d718",
+  "previous_result_sha256": "18b98093e323eeb2503682a673e882e8d2b5a535dc83147510a044ae0f8eb44e",
+  "rows_sha256": "a04c84d48944fc390d552caff9319f52660d3a775e1ff97f207fb0236729f06c",
+  "previous_rows_sha256": "1ecbee642fd46cd25487406b70aa14c1d6a28733f6c2b67b98fa85feaacd5118",
+  "max_scalar_relative_error": 1.0876302502800289e-15,
+  "white_recompute": [
+    {
+      "stage": "iteration001",
+      "mean_relative_error": 0.0
+    },
+    {
+      "stage": "iteration020",
+      "mean_relative_error": 0.0
+    },
+    {
+      "stage": "final",
+      "mean_relative_error": 0.0
+    }
+  ],
+  "comparisons": [
+    {
+      "group": "uniform",
+      "snr_db": -4,
+      "stage": "iteration001",
+      "scenes": 12,
+      "active_users": 38,
+      "awgn_nmse_db": 0.587664238746184,
+      "earlier_candidate_nmse_db": -1.0556164308713107,
+      "current_identity_nmse_db": -4.139965574365591,
+      "current_candidate_nmse_db": -4.379568976235644,
+      "current_vs_awgn": {
+        "nmse_db": -4.379568976235644,
+        "change_from_awgn_db": -4.967233214981829,
+        "paired_scene_bootstrap_change_ci95_db": [
+          -5.34470470368646,
+          -4.504215217816131
+        ],
+        "scenes_improved": 12,
+        "inactive_output_power": 0.2753800945319285
+      },
+      "current_vs_earlier": {
+        "change_db": -3.3239525453643335,
+        "mse_reduction_percent": 53.483744697175716,
+        "ci95_db": [
+          -3.623689527567152,
+          -3.003622638541973
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": -0.23960340187005383,
+        "mse_reduction_percent": 5.367642422187668,
+        "ci95_db": [
+          -0.47020338951156276,
+          0.12643370058100736
+        ],
+        "scenes_improved": 8
+      }
+    },
+    {
+      "group": "uniform",
+      "snr_db": -4,
+      "stage": "iteration020",
+      "scenes": 12,
+      "active_users": 38,
+      "awgn_nmse_db": -5.3643647314783465,
+      "earlier_candidate_nmse_db": -1.35034459475726,
+      "current_identity_nmse_db": -5.653443535522181,
+      "current_candidate_nmse_db": -4.757701541193554,
+      "current_vs_awgn": {
+        "nmse_db": -4.757701541193554,
+        "change_from_awgn_db": 0.6066631902847909,
+        "paired_scene_bootstrap_change_ci95_db": [
+          0.33035625996192636,
+          0.8648881489988266
+        ],
+        "scenes_improved": 2,
+        "inactive_output_power": 0.029965157241833778
+      },
+      "current_vs_earlier": {
+        "change_db": -3.4073569464362947,
+        "mse_reduction_percent": 54.36854620908467,
+        "ci95_db": [
+          -3.8224672992674544,
+          -2.9255888081283974
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": 0.8957419943286256,
+        "mse_reduction_percent": -22.90631547057822,
+        "ci95_db": [
+          0.68960843903731,
+          1.1106528280954258
+        ],
+        "scenes_improved": 0
+      }
+    },
+    {
+      "group": "uniform",
+      "snr_db": -4,
+      "stage": "final",
+      "scenes": 12,
+      "active_users": 38,
+      "awgn_nmse_db": -10.243201778808073,
+      "earlier_candidate_nmse_db": -4.441488415208504,
+      "current_identity_nmse_db": -10.395507873630196,
+      "current_candidate_nmse_db": -10.210999172033278,
+      "current_vs_awgn": {
+        "nmse_db": -10.210999172033278,
+        "change_from_awgn_db": 0.03220260677479478,
+        "paired_scene_bootstrap_change_ci95_db": [
+          -0.26451856818472474,
+          0.4008842300611733
+        ],
+        "scenes_improved": 4,
+        "inactive_output_power": 0.021187296225407264
+      },
+      "current_vs_earlier": {
+        "change_db": -5.769510756824774,
+        "mse_reduction_percent": 73.51201484679017,
+        "ci95_db": [
+          -6.17755401035595,
+          -5.261569287165525
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": 0.18450870159691862,
+        "mse_reduction_percent": -4.340009075109608,
+        "ci95_db": [
+          -0.03316596127527976,
+          0.4719303873255347
+        ],
+        "scenes_improved": 4
+      }
+    },
+    {
+      "group": "uniform",
+      "snr_db": 0,
+      "stage": "iteration001",
+      "scenes": 12,
+      "active_users": 38,
+      "awgn_nmse_db": 1.6510965573085188,
+      "earlier_candidate_nmse_db": -0.2954245297125103,
+      "current_identity_nmse_db": -3.652350877161133,
+      "current_candidate_nmse_db": -3.7615744151810544,
+      "current_vs_awgn": {
+        "nmse_db": -3.7615744151810544,
+        "change_from_awgn_db": -5.412670972489573,
+        "paired_scene_bootstrap_change_ci95_db": [
+          -5.758429453007024,
+          -4.988900319945944
+        ],
+        "scenes_improved": 12,
+        "inactive_output_power": 0.32165030478951817
+      },
+      "current_vs_earlier": {
+        "change_db": -3.466149885468544,
+        "mse_reduction_percent": 54.982122873755216,
+        "ci95_db": [
+          -3.670587391137077,
+          -3.2294276321006685
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": -0.10922353801992182,
+        "mse_reduction_percent": 2.4836031248050228,
+        "ci95_db": [
+          -0.2993397317563641,
+          0.1634034384004131
+        ],
+        "scenes_improved": 7
+      }
+    },
+    {
+      "group": "uniform",
+      "snr_db": 0,
+      "stage": "iteration020",
+      "scenes": 12,
+      "active_users": 38,
+      "awgn_nmse_db": -5.331723488006216,
+      "earlier_candidate_nmse_db": -2.2476994138947286,
+      "current_identity_nmse_db": -5.743560176443857,
+      "current_candidate_nmse_db": -4.828290889780963,
+      "current_vs_awgn": {
+        "nmse_db": -4.828290889780963,
+        "change_from_awgn_db": 0.5034325982252534,
+        "paired_scene_bootstrap_change_ci95_db": [
+          0.19024693800385373,
+          0.9477939318079595
+        ],
+        "scenes_improved": 2,
+        "inactive_output_power": 0.033211527885697055
+      },
+      "current_vs_earlier": {
+        "change_db": -2.580591475886234,
+        "mse_reduction_percent": 44.79977443264779,
+        "ci95_db": [
+          -2.9019123229011785,
+          -2.221784750290968
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": 0.9152692866628946,
+        "mse_reduction_percent": -23.46018649596111,
+        "ci95_db": [
+          0.7497592365887182,
+          1.1290710069155594
+        ],
+        "scenes_improved": 0
+      }
+    },
+    {
+      "group": "uniform",
+      "snr_db": 0,
+      "stage": "final",
+      "scenes": 12,
+      "active_users": 38,
+      "awgn_nmse_db": -13.426247932820472,
+      "earlier_candidate_nmse_db": -6.645814240882468,
+      "current_identity_nmse_db": -12.831556912722297,
+      "current_candidate_nmse_db": -11.466081821705671,
+      "current_vs_awgn": {
+        "nmse_db": -11.466081821705671,
+        "change_from_awgn_db": 1.9601661111147994,
+        "paired_scene_bootstrap_change_ci95_db": [
+          1.5419637969658444,
+          2.4746466850358617
+        ],
+        "scenes_improved": 0,
+        "inactive_output_power": 0.029461328409377246
+      },
+      "current_vs_earlier": {
+        "change_db": -4.820267580823205,
+        "mse_reduction_percent": 67.04105953615081,
+        "ci95_db": [
+          -5.2462240299562,
+          -4.315151045723845
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": 1.3654750910166256,
+        "mse_reduction_percent": -36.945418992567134,
+        "ci95_db": [
+          1.045615920698991,
+          1.7783266619689915
+        ],
+        "scenes_improved": 0
+      }
+    },
+    {
+      "group": "failure_enriched",
+      "snr_db": -4,
+      "stage": "iteration001",
+      "scenes": 12,
+      "active_users": 66,
+      "awgn_nmse_db": 2.9083196603434205,
+      "earlier_candidate_nmse_db": -0.028800214490228265,
+      "current_identity_nmse_db": -1.2838781133928001,
+      "current_candidate_nmse_db": -2.233919583898549,
+      "current_vs_awgn": {
+        "nmse_db": -2.233919583898549,
+        "change_from_awgn_db": -5.142239244241969,
+        "paired_scene_bootstrap_change_ci95_db": [
+          -5.423553196836958,
+          -4.91507817037632
+        ],
+        "scenes_improved": 12,
+        "inactive_output_power": 0.5884746530470122
+      },
+      "current_vs_earlier": {
+        "change_db": -2.2051193694083207,
+        "mse_reduction_percent": 39.81502796620619,
+        "ci95_db": [
+          -2.5849562637761747,
+          -1.9041626163208636
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": -0.9500414705057483,
+        "mse_reduction_percent": 19.648155059793403,
+        "ci95_db": [
+          -1.0908278781122,
+          -0.8280669882331946
+        ],
+        "scenes_improved": 12
+      }
+    },
+    {
+      "group": "failure_enriched",
+      "snr_db": -4,
+      "stage": "iteration020",
+      "scenes": 12,
+      "active_users": 66,
+      "awgn_nmse_db": -4.091778468676855,
+      "earlier_candidate_nmse_db": -0.9667602103621105,
+      "current_identity_nmse_db": -4.59270103213361,
+      "current_candidate_nmse_db": -4.100018309743405,
+      "current_vs_awgn": {
+        "nmse_db": -4.100018309743405,
+        "change_from_awgn_db": -0.008239841066549389,
+        "paired_scene_bootstrap_change_ci95_db": [
+          -0.22639429179677434,
+          0.1865049589141684
+        ],
+        "scenes_improved": 5,
+        "inactive_output_power": 0.02698113544878072
+      },
+      "current_vs_earlier": {
+        "change_db": -3.133258099381295,
+        "mse_reduction_percent": 51.395756263553835,
+        "ci95_db": [
+          -3.389791213917062,
+          -2.910510339387785
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": 0.49268272239020466,
+        "mse_reduction_percent": -12.012959587434423,
+        "ci95_db": [
+          0.3133038618259628,
+          0.6639874533602389
+        ],
+        "scenes_improved": 1
+      }
+    },
+    {
+      "group": "failure_enriched",
+      "snr_db": -4,
+      "stage": "final",
+      "scenes": 12,
+      "active_users": 66,
+      "awgn_nmse_db": -6.833576741342343,
+      "earlier_candidate_nmse_db": -3.14962432282037,
+      "current_identity_nmse_db": -7.602281569345842,
+      "current_candidate_nmse_db": -7.433346373822829,
+      "current_vs_awgn": {
+        "nmse_db": -7.433346373822829,
+        "change_from_awgn_db": -0.5997696324804855,
+        "paired_scene_bootstrap_change_ci95_db": [
+          -0.8616131602991717,
+          -0.34190259004426354
+        ],
+        "scenes_improved": 11,
+        "inactive_output_power": 0.0193069724802133
+      },
+      "current_vs_earlier": {
+        "change_db": -4.283722051002458,
+        "mse_reduction_percent": 62.70695932101249,
+        "ci95_db": [
+          -4.690304962372942,
+          -3.9575144120332517
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": 0.16893519552301398,
+        "mse_reduction_percent": -3.966522915359705,
+        "ci95_db": [
+          -0.03967501895966914,
+          0.41151866130726494
+        ],
+        "scenes_improved": 3
+      }
+    },
+    {
+      "group": "failure_enriched",
+      "snr_db": 0,
+      "stage": "iteration001",
+      "scenes": 12,
+      "active_users": 66,
+      "awgn_nmse_db": 3.8760212334174216,
+      "earlier_candidate_nmse_db": 1.1243681565609358,
+      "current_identity_nmse_db": -0.5978257388814542,
+      "current_candidate_nmse_db": -1.6413061995491838,
+      "current_vs_awgn": {
+        "nmse_db": -1.6413061995491838,
+        "change_from_awgn_db": -5.5173274329666055,
+        "paired_scene_bootstrap_change_ci95_db": [
+          -5.800375458038992,
+          -5.298824904183272
+        ],
+        "scenes_improved": 12,
+        "inactive_output_power": 0.6944972381559542
+      },
+      "current_vs_earlier": {
+        "change_db": -2.76567435611012,
+        "mse_reduction_percent": 47.10281459243717,
+        "ci95_db": [
+          -3.064691821067333,
+          -2.5322455597321145
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": -1.04348046066773,
+        "mse_reduction_percent": 21.358470060214064,
+        "ci95_db": [
+          -1.159858573275827,
+          -0.9000007472626359
+        ],
+        "scenes_improved": 12
+      }
+    },
+    {
+      "group": "failure_enriched",
+      "snr_db": 0,
+      "stage": "iteration020",
+      "scenes": 12,
+      "active_users": 66,
+      "awgn_nmse_db": -4.673842079072735,
+      "earlier_candidate_nmse_db": -1.6605703315479345,
+      "current_identity_nmse_db": -5.011089131876872,
+      "current_candidate_nmse_db": -4.263282539407165,
+      "current_vs_awgn": {
+        "nmse_db": -4.263282539407165,
+        "change_from_awgn_db": 0.4105595396655696,
+        "paired_scene_bootstrap_change_ci95_db": [
+          0.04094195600218166,
+          0.7391873706573653
+        ],
+        "scenes_improved": 1,
+        "inactive_output_power": 0.035968617110118756
+      },
+      "current_vs_earlier": {
+        "change_db": -2.6027122078592315,
+        "mse_reduction_percent": 45.08022121889108,
+        "ci95_db": [
+          -2.8565261033785196,
+          -2.365654061372966
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": 0.7478065924697074,
+        "mse_reduction_percent": -18.790212505163595,
+        "ci95_db": [
+          0.6667566260702407,
+          0.836877120553297
+        ],
+        "scenes_improved": 0
+      }
+    },
+    {
+      "group": "failure_enriched",
+      "snr_db": 0,
+      "stage": "final",
+      "scenes": 12,
+      "active_users": 66,
+      "awgn_nmse_db": -10.92712922010251,
+      "earlier_candidate_nmse_db": -5.432883162682418,
+      "current_identity_nmse_db": -11.130523823479914,
+      "current_candidate_nmse_db": -10.612454971421002,
+      "current_vs_awgn": {
+        "nmse_db": -10.612454971421002,
+        "change_from_awgn_db": 0.3146742486815097,
+        "paired_scene_bootstrap_change_ci95_db": [
+          0.05541111043611672,
+          0.6619796329647055
+        ],
+        "scenes_improved": 3,
+        "inactive_output_power": 0.022254309088091576
+      },
+      "current_vs_earlier": {
+        "change_db": -5.179571808738582,
+        "mse_reduction_percent": 69.65809675523991,
+        "ci95_db": [
+          -5.40490274856338,
+          -4.949247404671227
+        ],
+        "scenes_improved": 12
+      },
+      "current_vs_identity": {
+        "change_db": 0.5180688520589146,
+        "mse_reduction_percent": -12.669634431686404,
+        "ci95_db": [
+          0.29777864519347147,
+          0.7864003273953685
+        ],
+        "scenes_improved": 1
+      }
+    }
+  ],
+  "limitations": [
+    "Working covariance approximation. Temporal query errors are correlated; linear parameter interpolation is not their true covariance. Signal-error dependence and non-Gaussianity remain.",
+    "Reuse all 12 uniform and 12 failure-enriched scenes at -4/0 dB; groups separate. Retrospective exploratory sample, not independent confirmation.",
+    "Completed epoch-200 AWGN checkpoint versus in-progress candidate snapshot; not an equal-epoch architecture comparison. Earlier epoch-10 paired results are retained separately.",
+    "No feedback, classifier replacement, receiver reruns, training restart or binding change."
+  ],
+  "statistics_review": "11/11 checked: grouping retained; no individual inference from pooled averages; selected failure group separate; no selection-conditioned causal claim; active NMSE not detection rate; no claim from extreme-group regression; all queries retained; all planned contrasts reported without multiplicity-adjusted significance claims; plan frozen before output but retrospective exploratory data; no equal-budget architecture causality; truth used only after inference."
+}

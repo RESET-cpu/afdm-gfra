@@ -1,0 +1,244 @@
+{
+  "status": "PAIRED_SAVED_METRICS_PROGRESS",
+  "snapshot_time_beijing": "2026-11-04T19:24:51.035698+08:00",
+  "inputs": 4204,
+  "complete_scenes": 700,
+  "per_snr": [
+    {
+      "snr_db": -4,
+      "paired_inputs": 701,
+      "decisions": 28040,
+      "frontend": {
+        "nmse_db": -9.514803056090996,
+        "misses": 126,
+        "false_alarms": 3,
+        "activity_errors": 129,
+        "aer_percent": 0.4600570613409415,
+        "nonconverged": 1
+      },
+      "known": {
+        "nmse_db": -9.78869377724181,
+        "misses": 118,
+        "false_alarms": 3,
+        "activity_errors": 121,
+        "aer_percent": 0.43152639087018546,
+        "nonconverged": 1
+      },
+      "nmse_gap_db": 0.27389072115081525,
+      "additional_activity_errors": 8
+    },
+    {
+      "snr_db": -2,
+      "paired_inputs": 701,
+      "decisions": 28040,
+      "frontend": {
+        "nmse_db": -11.199191964808481,
+        "misses": 60,
+        "false_alarms": 0,
+        "activity_errors": 60,
+        "aer_percent": 0.21398002853067047,
+        "nonconverged": 0
+      },
+      "known": {
+        "nmse_db": -11.491803381613808,
+        "misses": 57,
+        "false_alarms": 1,
+        "activity_errors": 58,
+        "aer_percent": 0.20684736091298145,
+        "nonconverged": 0
+      },
+      "nmse_gap_db": 0.2926114168053271,
+      "additional_activity_errors": 2
+    },
+    {
+      "snr_db": 0,
+      "paired_inputs": 701,
+      "decisions": 28040,
+      "frontend": {
+        "nmse_db": -12.635131275174302,
+        "misses": 28,
+        "false_alarms": 1,
+        "activity_errors": 29,
+        "aer_percent": 0.10342368045649072,
+        "nonconverged": 0
+      },
+      "known": {
+        "nmse_db": -12.963663942534655,
+        "misses": 29,
+        "false_alarms": 1,
+        "activity_errors": 30,
+        "aer_percent": 0.10699001426533523,
+        "nonconverged": 0
+      },
+      "nmse_gap_db": 0.3285326673603528,
+      "additional_activity_errors": -1
+    },
+    {
+      "snr_db": 2,
+      "paired_inputs": 701,
+      "decisions": 28040,
+      "frontend": {
+        "nmse_db": -13.846624364640551,
+        "misses": 16,
+        "false_alarms": 0,
+        "activity_errors": 16,
+        "aer_percent": 0.05706134094151213,
+        "nonconverged": 0
+      },
+      "known": {
+        "nmse_db": -14.23735140608467,
+        "misses": 16,
+        "false_alarms": 1,
+        "activity_errors": 17,
+        "aer_percent": 0.06062767475035663,
+        "nonconverged": 0
+      },
+      "nmse_gap_db": 0.3907270414441193,
+      "additional_activity_errors": -1
+    },
+    {
+      "snr_db": 4,
+      "paired_inputs": 700,
+      "decisions": 28000,
+      "frontend": {
+        "nmse_db": -14.9005634311266,
+        "misses": 6,
+        "false_alarms": 0,
+        "activity_errors": 6,
+        "aer_percent": 0.02142857142857143,
+        "nonconverged": 0
+      },
+      "known": {
+        "nmse_db": -15.390474358596517,
+        "misses": 7,
+        "false_alarms": 0,
+        "activity_errors": 7,
+        "aer_percent": 0.025,
+        "nonconverged": 0
+      },
+      "nmse_gap_db": 0.4899109274699178,
+      "additional_activity_errors": -1
+    },
+    {
+      "snr_db": 6,
+      "paired_inputs": 700,
+      "decisions": 28000,
+      "frontend": {
+        "nmse_db": -15.852412825256131,
+        "misses": 5,
+        "false_alarms": 0,
+        "activity_errors": 5,
+        "aer_percent": 0.017857142857142856,
+        "nonconverged": 0
+      },
+      "known": {
+        "nmse_db": -16.453950369855047,
+        "misses": 5,
+        "false_alarms": 0,
+        "activity_errors": 5,
+        "aer_percent": 0.017857142857142856,
+        "nonconverged": 0
+      },
+      "nmse_gap_db": 0.6015375445989157,
+      "additional_activity_errors": 0
+    }
+  ],
+  "all_activity_errors": {
+    "frontend": 245,
+    "known": 238
+  },
+  "high_snr_paired_inputs": 1400,
+  "high_snr_disagreements": [
+    {
+      "scene": 144,
+      "index": 4,
+      "snr_db": 4,
+      "newly_wrong_users": [],
+      "newly_correct_users": [
+        30
+      ]
+    }
+  ],
+  "high_snr_newly_wrong_users": 0,
+  "high_snr_newly_correct_users": 1,
+  "high_snr_nmse_gap_above_1db": 162,
+  "worst_high_snr_nmse_gaps": [
+    {
+      "scene": 242,
+      "snr_db": 6,
+      "nmse_gap_db": 4.307959573398907
+    },
+    {
+      "scene": 242,
+      "snr_db": 4,
+      "nmse_gap_db": 4.070160651077309
+    },
+    {
+      "scene": 374,
+      "snr_db": 6,
+      "nmse_gap_db": 3.9662648797794304
+    },
+    {
+      "scene": 317,
+      "snr_db": 6,
+      "nmse_gap_db": 3.4542946440104103
+    },
+    {
+      "scene": 317,
+      "snr_db": 4,
+      "nmse_gap_db": 3.43531582777414
+    },
+    {
+      "scene": 637,
+      "snr_db": 6,
+      "nmse_gap_db": 3.377497016258129
+    },
+    {
+      "scene": 683,
+      "snr_db": 6,
+      "nmse_gap_db": 3.2186270682940084
+    },
+    {
+      "scene": 564,
+      "snr_db": 6,
+      "nmse_gap_db": 3.1342747476641133
+    },
+    {
+      "scene": 327,
+      "snr_db": 4,
+      "nmse_gap_db": 3.096962112863771
+    },
+    {
+      "scene": 9,
+      "snr_db": 6,
+      "nmse_gap_db": 3.086623895444932
+    }
+  ],
+  "frontend_nonconverged_cases": [
+    {
+      "scene": 600,
+      "index": 0,
+      "snr_db": -4,
+      "frontend_iterations": 600,
+      "frontend_stopping_reason": "MAX_ITERATIONS",
+      "nmse_gap_db": 0.4424201215096648
+    }
+  ],
+  "prior_1737_aggregation_reproduced": true,
+  "plan_sha256": "4e190d01eef1bc4288e89ef554a32401f520995cb5f15c1c3bc3214564199ff1",
+  "script_sha256": "d9f5179fbb826716f80c4c11e15cf46cbc5b02c5f59e665495b73c9b652a5361",
+  "checks": [
+    "result JSON hashes",
+    "same scene/SNR and input-file hashes",
+    "same truth energy and user counts",
+    "per-input NMSE arithmetic",
+    "prior 1737 audited aggregate reproduction",
+    "high-SNR disagreeing activity decisions checked against truth"
+  ],
+  "limitations": [
+    "Partial cohort, not final 1000-scene result.",
+    "Saved metrics aggregated; full prediction arrays were not rescored in this progress snapshot.",
+    "All completed inputs, including nonconverged outputs, retained.",
+    "No statistical superiority claim; scenes and user decisions are not all independent."
+  ]
+}

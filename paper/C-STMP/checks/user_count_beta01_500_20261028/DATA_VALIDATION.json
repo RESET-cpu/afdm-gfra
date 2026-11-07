@@ -1,0 +1,485 @@
+{
+  "status": "PASS",
+  "created_unix": 1793118284.349189,
+  "complete_sha256": "14feeb24e6e2ea9a9383a59132655ddc16abacc91d2e41159f502b99dd0dafae",
+  "audit_sha256": "f93d6d55d9ed31068309ac42e6cbb8ecd5f4f55f27c96772d93f2811b652c4e9",
+  "audit_file_hashes_rechecked": 67792,
+  "complete_file_hashes_rechecked": 20,
+  "exact_coverage": true,
+  "paired_inputs": 2500,
+  "method_results": 15000,
+  "main_and_workers_exited": true,
+  "stmp_rows": [
+    {
+      "method": "STMP",
+      "condition": 0,
+      "parameters": {
+        "users": 20,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 20,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 14389.385779466576,
+      "signal_energy": 328240.0462593027,
+      "misses": 3,
+      "false_alarms": 0,
+      "active": 1159,
+      "inactive": 8841,
+      "nmse_db": -13.581493089820505,
+      "aer": 0.0003,
+      "miss_rate": 0.0025884383088869713,
+      "false_alarm_rate": 0.0,
+      "mean_iterations": 84.58,
+      "median_iterations": 84.0,
+      "p90_iterations": 99.0,
+      "convergence_rate": 1.0,
+      "stopping_reasons": {
+        "CONVERGED": 500
+      }
+    },
+    {
+      "method": "STMP",
+      "condition": 1,
+      "parameters": {
+        "users": 40,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 41688.2671558314,
+      "signal_energy": 577881.528653338,
+      "misses": 37,
+      "false_alarms": 0,
+      "active": 2026,
+      "inactive": 17974,
+      "nmse_db": -11.418249696353044,
+      "aer": 0.00185,
+      "miss_rate": 0.01826258637709773,
+      "false_alarm_rate": 0.0,
+      "mean_iterations": 91.682,
+      "median_iterations": 91.0,
+      "p90_iterations": 108.0,
+      "convergence_rate": 1.0,
+      "stopping_reasons": {
+        "CONVERGED": 500
+      }
+    },
+    {
+      "method": "STMP",
+      "condition": 2,
+      "parameters": {
+        "users": 60,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 60,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 89072.74605630703,
+      "signal_energy": 852954.863099208,
+      "misses": 111,
+      "false_alarms": 1,
+      "active": 2983,
+      "inactive": 27017,
+      "nmse_db": -9.811812081146428,
+      "aer": 0.0037333333333333333,
+      "miss_rate": 0.0372108615487764,
+      "false_alarm_rate": 3.70137320946071e-05,
+      "mean_iterations": 180.862,
+      "median_iterations": 177.0,
+      "p90_iterations": 215.0,
+      "convergence_rate": 1.0,
+      "stopping_reasons": {
+        "CONVERGED": 500
+      }
+    },
+    {
+      "method": "STMP",
+      "condition": 3,
+      "parameters": {
+        "users": 80,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 80,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 172954.53831992223,
+      "signal_energy": 1128161.2319346871,
+      "misses": 338,
+      "false_alarms": 23,
+      "active": 3948,
+      "inactive": 36052,
+      "nmse_db": -8.144392092069962,
+      "aer": 0.009025,
+      "miss_rate": 0.085612968591692,
+      "false_alarm_rate": 0.0006379673804504604,
+      "mean_iterations": 209.64,
+      "median_iterations": 193.0,
+      "p90_iterations": 272.20000000000005,
+      "convergence_rate": 0.994,
+      "stopping_reasons": {
+        "CONVERGED": 497,
+        "MAX_ITERATIONS": 3
+      }
+    },
+    {
+      "method": "STMP",
+      "condition": 4,
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 100,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 388762.9332546523,
+      "signal_energy": 1416363.0572017618,
+      "misses": 742,
+      "false_alarms": 193,
+      "active": 4930,
+      "inactive": 45070,
+      "nmse_db": -5.61489740331481,
+      "aer": 0.0187,
+      "miss_rate": 0.15050709939148074,
+      "false_alarm_rate": 0.00428222764588418,
+      "mean_iterations": 253.288,
+      "median_iterations": 218.0,
+      "p90_iterations": 386.5000000000001,
+      "convergence_rate": 0.972,
+      "stopping_reasons": {
+        "CONVERGED": 486,
+        "MAX_ITERATIONS": 14
+      }
+    }
+  ],
+  "nonconverged": [
+    {
+      "scene": 19,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 30,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 48,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 66,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 70,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 179,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 221,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 231,
+      "index": 3,
+      "method": "STMP",
+      "parameters": {
+        "users": 80,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 231,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 240,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 250,
+      "index": 3,
+      "method": "STMP",
+      "parameters": {
+        "users": 80,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 300,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 305,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 357,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 383,
+      "index": 4,
+      "method": "C_STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 392,
+      "index": 3,
+      "method": "STMP",
+      "parameters": {
+        "users": 80,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 413,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 461,
+      "index": 4,
+      "method": "STMP",
+      "parameters": {
+        "users": 100,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    },
+    {
+      "scene": 463,
+      "index": 2,
+      "method": "C_STMP",
+      "parameters": {
+        "users": 60,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "iterations": 600,
+      "stopping_reason": "MAX_ITERATIONS"
+    }
+  ],
+  "removed_scenes": 0,
+  "visual_review_pending": true
+}

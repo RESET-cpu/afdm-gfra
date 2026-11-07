@@ -1,0 +1,86 @@
+{
+  "status": "PASS_STARTUP_ONLY",
+  "created_unix": 1793510410.6085522,
+  "coordinator_alive": true,
+  "coordinator_pid": 128812,
+  "original_assets_verified": 312,
+  "preserved_output_hash_audit": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\resume_20261101\\PREPARED.json",
+  "previous_failed_inputs_completed_and_rescored": [
+    {
+      "scene": 108,
+      "index": 1,
+      "iterations": 80,
+      "converged": true,
+      "result": "E:\\afdm-gfra-results\\c_stmp_phase_selected_500_20261030\\resume_20261101\\scene0108_condition01\\RESULT.json"
+    },
+    {
+      "scene": 108,
+      "index": 2,
+      "iterations": 100,
+      "converged": true,
+      "result": "E:\\afdm-gfra-results\\c_stmp_phase_selected_500_20261030\\resume_20261101\\scene0108_condition02\\RESULT.json"
+    }
+  ],
+  "state": {
+    "stage": "RUNNING",
+    "planned": 3000,
+    "completed": 657,
+    "reused": 25,
+    "new_completed": 632,
+    "preserved": 654,
+    "completed_this_resume": 3,
+    "remaining": 2343,
+    "dispatched_new": 4,
+    "pending": 1,
+    "failed": 0,
+    "failures": [],
+    "historical_failed": 2,
+    "historical_status": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\resume_20261101\\PREVIOUS_STATUS.json",
+    "completed_by_snr": {
+      "-4": 113,
+      "-2": 110,
+      "0": 109,
+      "2": 109,
+      "4": 108,
+      "6": 108
+    },
+    "nonconverged": 0,
+    "active": [
+      {
+        "scene": 108,
+        "index": 4,
+        "started_unix": 1793510396.373033
+      }
+    ],
+    "elapsed_seconds": 68.66184282302856,
+    "updated_unix": 1793510406.448075,
+    "stop_reason": null,
+    "resume_directory": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_selected_500_20261030\\resume_20261101",
+    "workers": 1,
+    "fresh_process_per_input": true,
+    "coordinator_pid": 128812,
+    "worker_pid": 129160,
+    "worker_tree_rss_gib": 1.7189407348632812,
+    "available_ram_gib": 3.753276824951172
+  },
+  "children": [
+    {
+      "pid": 129160,
+      "parent": 128812,
+      "rss_gib": 0.004009246826171875
+    },
+    {
+      "pid": 129212,
+      "parent": 129160,
+      "rss_gib": 0.007091522216796875
+    },
+    {
+      "pid": 126952,
+      "parent": 129160,
+      "rss_gib": 1.7079658508300781
+    }
+  ],
+  "available_ram_gib": 3.6414756774902344,
+  "batch_complete": false,
+  "verification": "Syntax and preparation passed; first two resumed outputs re-scored; original bindings unchanged."
+}

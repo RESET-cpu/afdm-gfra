@@ -1,0 +1,149 @@
+{
+  "status": "PASS",
+  "scientific_status": "ANALYZED",
+  "protected_files_unchanged": {
+    "D:\\afdm-gfra\\FINAL.json": true,
+    "D:\\afdm-gfra\\MAINLINE.json": true,
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\known_phase_1000_calibration1000_snr10_20261023\\PLAN.json": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\activity.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\configuration.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\denoiser.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\fast_initialization.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\gaussian.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\gpu_initialization.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\initialization_cuda.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\initialization_runtime_receiver.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\linear.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\moments.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\noise.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_feedback_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_hypotheses.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_hypotheses_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_hypotheses_receiver.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_initialization_candidates.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_initial_candidates.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_output_cycle.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_output_cycle_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_output_cycle_stopping.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_output_stable.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_output_stable_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_periodic_combined_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_periodic_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_periodic_stopping_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_physical_refresh.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_physical_refresh_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_refresh.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_refresh_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_settled.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_settled_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_slopes.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_slopes_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_stopping.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_supported_hypotheses.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_supported_hypotheses_iterations.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\phase_supported_hypotheses_receiver.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\posterior.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\rank_one.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\receiver.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\records.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\runtime_initialization.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\runtime_moments.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\runtime_receiver.py": true,
+    "D:\\afdm-gfra\\src\\algorithm\\STMP\\__init__.py": true,
+    "D:\\afdm-gfra\\src\\configs\\final\\STMP.json": true,
+    "D:\\afdm-gfra\\src\\configs\\final\\STMP_phase.json": true,
+    "D:\\afdm-gfra\\src\\configs\\final\\STMP_phase_supported_hypotheses.json": true,
+    "D:\\afdm-gfra\\src\\system\\receiver\\noise_estimation.py": true,
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\stmp_covariance_validation_20261024\\metrics.py": true,
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\stmp_covariance_validation_20261024\\run.py": true,
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\stmp_covariance_validation_20261024\\FIRST_ESTIMATED.npz": true,
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\stmp_covariance_validation_20261024\\FIRST_ESTIMATED_COMPLETE.json": true
+  },
+  "run_source_matches_plan": true,
+  "coverage": {
+    "scenes": 1000,
+    "conditions": 2000,
+    "branches": 7,
+    "user_records_per_branch": 80000
+  },
+  "endpoint_checks": 4000,
+  "endpoint_max_relative_error": 8.548717289613705e-14,
+  "gain_correction_max_relative_error": 3.393997432832446e-16,
+  "algebra": {
+    "status": "PASS",
+    "dimension": 640,
+    "branches": [
+      {
+        "branch": "global_scalar",
+        "diagonal_relative_error": 8.006587730603119e-16,
+        "group_mean_relative_error": 6.758050373506878e-16
+      },
+      {
+        "branch": "user_1",
+        "diagonal_relative_error": 7.443344223976422e-16,
+        "group_mean_relative_error": 5.59616207232144e-16
+      },
+      {
+        "branch": "user_2",
+        "diagonal_relative_error": 5.962927534997274e-16,
+        "group_mean_relative_error": 4.442067197086358e-16
+      },
+      {
+        "branch": "user_4",
+        "diagonal_relative_error": 5.870171583644963e-16,
+        "group_mean_relative_error": 5.088777956767603e-16
+      },
+      {
+        "branch": "user_8",
+        "diagonal_relative_error": 7.146247786204032e-16,
+        "group_mean_relative_error": 6.411514495267713e-16
+      },
+      {
+        "branch": "user_16",
+        "diagonal_relative_error": 5.84954607238645e-16,
+        "group_mean_relative_error": 7.107563188467913e-16
+      },
+      {
+        "branch": "user_4_folded",
+        "diagonal_relative_error": 7.540457398302836e-16,
+        "group_mean_relative_error": 5.335190529732355e-16
+      }
+    ],
+    "average_tau": [
+      15.771029287061669,
+      15.771133829372541,
+      39.47657787373654,
+      86.65032541264505,
+      209.18130260134058,
+      603.881565159965,
+      15.926154019736032
+    ],
+    "scope": "Frozen-coefficient Gaussian isotropic working model. Grouped diagonals match; individual diagonals generally differ from the declared group variance."
+  },
+  "all_missing_values_explained": true,
+  "fallacy_scan": {
+    "coverage": "11/11",
+    "simpson": "group, SNR, stage and activity separated",
+    "ecological": "Scene is the sampling unit; tensor entries are not independent scenes",
+    "berkson": "Failure-enriched cohort labeled",
+    "collider": "Final-missed conditioning is descriptive",
+    "base_rate": "No enriched-cohort population AER",
+    "regression_to_mean": "No old failure-filtered retest or activity recovery claim.",
+    "survivorship": "All 2000 conditions retained for all seven branches, including near-singular cases.",
+    "look_elsewhere": "All planned branches and statistics published; no selected p-values or invented pass tolerance.",
+    "forking_paths": "Seven fixed branches recorded before running; no best-branch adoption from same reused scenes.",
+    "correlation_causation": "Coarse-group MSE and correlation are not final activity detection effects.",
+    "reverse_causality": "Feedback and query associations do not establish direction"
+  },
+  "file_sha256": {
+    "SUMMARY.json": "dd659f3cb7c9fd5a7784ba246549f61e8a5715c3bbf7c02e40bd1d6cf9735130",
+    "summarize_grouping.py": "2734f2860073291d009b15715fd963a3156402e68cea0f3c8a3a9aa062f74245"
+  },
+  "figure_sha256": {
+    "grouping_comparison.pdf": "b9255d2495049f282a9b3032c4aa12db8bac2e7e3e853ddc4258390edaace057",
+    "grouping_comparison.png": "6c35f9155050283d6ce06feedfb020a9309a9fdf157b243787b7b6860d91e353"
+  }
+}

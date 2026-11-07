@@ -1,0 +1,59 @@
+{
+  "stage": "FAILED",
+  "planned": 6000,
+  "completed": 498,
+  "remaining": 5502,
+  "preserved": 171,
+  "completed_this_execution": 327,
+  "failed": 1,
+  "failures": [
+    {
+      "case": {
+        "scene": 82,
+        "index": 4,
+        "ready": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100083\\K40_Q16_p0.1_snr4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "ready_sha256": "72a58fdf65992ead7a7fdd4b718fd121a8b546f12cecb3179f46f4a4707e61fc",
+        "files": {
+          "public.npz": "dfce52fad2d25baaec3e4b2c3b8de5a249e1482d45326d6b5bbe106bc397d130",
+          "raw.npz": "06510945a10058f0fec025e31fb15a8ad2a45dca23b05f4c64b498c50fc65d96",
+          "truth.npz": "a7420d2737a53afda8cba56c437addd5e61b7d8c414090e1fa9f747ee6ad453e",
+          "phase.npz": "e59dd9debc2e54c3c16d4bcce3eeba22df7315af184f34849f7b7e43700329dc",
+          "PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+        },
+        "STMP_result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\874067cc1aa9615fbf7b50f5c81596e2e3dbe4486960125503fe4a4d0433dbd9.json",
+        "STMP_sha256": "103968a38612cb0ef40434cac56906f147aee8c1a736e836a02d1cb320ebdda9",
+        "snr_db": 4
+      },
+      "error": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_1000_20261103_v2\\parallel_20261103\\run.py\", line 200, in run\n    assert code == 0, f'Worker exit code {code}; see {job[\"log_path\"]}'\n           ^^^^^^^^^\nAssertionError: Worker exit code 1; see D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_1000_20261103_v2\\parallel_20261103\\logs\\scene0082_condition04.log\n",
+      "time": 1793721784.2205555
+    }
+  ],
+  "workers": 4,
+  "active_workers": 0,
+  "fresh_process_per_input": true,
+  "execution_plan": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_1000_20261103_v2\\parallel_20261103\\PLAN.json",
+  "coordinator_start_file": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_1000_20261103_v2\\parallel_20261103\\START.json",
+  "coordinator_pid": 125520,
+  "active": [],
+  "completed_by_snr": {
+    "-4": 84,
+    "-2": 83,
+    "0": 83,
+    "2": 83,
+    "4": 82,
+    "6": 83
+  },
+  "nonconverged": 0,
+  "available_ram_gib": 8.29937744140625,
+  "elapsed_seconds": 2017.9040637016296,
+  "updated_unix": 1793721793.5015478,
+  "stop_reason": "WORKER_FAILURE_DRAIN_NO_RETRY",
+  "gpu": {
+    "utilization_percent": 2.0,
+    "memory_mib": 2773.0,
+    "power_w": 130.47,
+    "temperature_c": 54.0
+  },
+  "worker_status_note": "The original WORKER_STATUS shows the latest writer; this active list covers all workers.",
+  "estimated_remaining_seconds": 33952.6243378788
+}

@@ -1,0 +1,132 @@
+{
+  "schema": "white-matched-main-snr-followup-v1",
+  "created_local": "2026-11-05T00:02:06.204816+08:00",
+  "status": "WAITING_FOR_DENOISER_AND_CLASSIFIER",
+  "authorization": "用户最新明确要求：训练完成后，就开始跑相同的主SNR实验的1000场景。此授权替代旧任务中不启动批量接收机评估及两个网络完成即停用的安排。",
+  "new_method": "GP-MP",
+  "internal_candidate": "GP_MP_white_preconditioned_matched_20261104",
+  "scope": "Only infer the new white-trained matched receiver on all 6000 saved main-SNR inputs; reuse existing baselines and colored CGP-MP references.",
+  "output": "result/snr_comparison/data/white_preconditioned_matched_1000_snr_20261104",
+  "native_output": "E:/afdm-gfra-results/white_preconditioned_matched_1000_snr_20261104",
+  "scene_ids": {
+    "first": 0,
+    "last": 999,
+    "count": 1000
+  },
+  "snrs_db": [
+    -4,
+    -2,
+    0,
+    2,
+    4,
+    6
+  ],
+  "planned_inputs": 6000,
+  "physical_settings": {
+    "K": 40,
+    "Q": 16,
+    "nominal_activity_probability": 0.1,
+    "channel_profile": "NTN-TDL-D",
+    "pilots": "same saved DFT pilots",
+    "phase_mode": "known",
+    "noise_mode": "estimated"
+  },
+  "dependencies": {
+    "denoiser_output": "result/channel_denoising/data/white_preconditioned_matched_20261104",
+    "denoiser_epochs": 200,
+    "denoiser_optimizer_steps": 156400,
+    "classifier_output": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104",
+    "classifier_epochs": 100,
+    "classifier_optimizer_steps": 156300,
+    "require_complete_records_and_matching_selected_weight_hashes": true,
+    "require_training_processes_exited": true,
+    "require_classifier_teacher_sha256_equals_selected_white_denoiser_sha256": true
+  },
+  "input_manifest": "result/snr_comparison/data/c_stmp_variance_em_1000_snr_m4_p6_20261025/INPUTS.json",
+  "input_manifest_sha256": "9b5c367571a0d3773420217d158c442947268151797bfb0bfa77142cb1bfb571",
+  "reference_manifest": "result/snr_comparison/data/c_stmp_phase_frontend_marginal_1000_20261104/REFERENCES.json",
+  "reference_manifest_sha256": "67a285618604c2f200330d4ce94c0e9377ac62ded1cb0c14e303ff4a9e912e28",
+  "reference_variant": "known_phase only",
+  "reference_summary": "result/snr_comparison/data/c_stmp_variance_em_1000_snr_m4_p6_20261025/SUMMARY.json",
+  "reference_summary_sha256": "12faa6ffd525551707c2780b03902ddc603016ed742af672ec06eef54a72e15b",
+  "reference_completion": "result/snr_comparison/data/c_stmp_variance_em_1000_snr_m4_p6_20261025/COMPLETE.json",
+  "reference_completion_sha256": "6e00426a5256d9e55ad533bf1b8671a21d988e0643940b9535e6d68fc9206fe4",
+  "matched_input_manifest_verified": true,
+  "base_receiver_configuration": "src/configs/candidates/C_STMP_variance_em_20261025.json",
+  "base_receiver_configuration_sha256": "044d906052bf9150b9dbc09a64efaa545af6f70972cd96fd18f75a8e840f23b8",
+  "receiver_factory": "algorithm.C_STMP_variance_em_20261025.receiver:Receiver",
+  "receiver_configuration_to_create": "src/configs/candidates/GP_MP_white_preconditioned_matched_20261104.json",
+  "binding_instructions": "After both complete, create an independent receiver configuration. Bind the selected white first_best.pt and its matching evidence_best.pt plus true complete/specification/execution records and hashes. Populate selected first/classifier epochs from actual metadata, not maximum training budgets. Preserve all numerical receiver controls. Keep legacy schema/class identifiers if required by shared implementation; explicitly record white training and display name GP-MP. If provenance schemas differ, create a narrow independent binding adapter with equally strict budget/hash/teacher checks; do not modify frozen numerical inference or weaken checks.",
+  "scientific_settings_to_preserve": {
+    "scale": 0.2647966452702405,
+    "batch_size": 40,
+    "conditional_variance_floor_checkpoint_normalized": 0.0001,
+    "decision_threshold": 0.5,
+    "site_damping": 1.0,
+    "ep": {
+      "iterations": 600,
+      "damping": 0.4,
+      "min_iterations": 60,
+      "convergence_tolerance": 0.0005,
+      "convergence_patience": 5,
+      "variance_fraction_floor": 1e-06,
+      "variance_fraction_ceiling": 0.999999,
+      "covariance_mode": "isotropic",
+      "activity_convergence_tolerance": 0.001,
+      "raw_site_residual_tolerance": 0.1,
+      "activity_weight_residual_tolerance": 0.001,
+      "decision_stability_window": 10,
+      "activity_stopping_reference": "smoothed"
+    },
+    "initialization": {
+      "kind": "activity_prior_times_training_power",
+      "normalized_training_second_moment": 1.0004404181394917,
+      "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+    },
+    "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+    "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+    "query_covariance": "vI",
+    "variance_estimator": {
+      "probes": 1,
+      "epsilon": 0.01,
+      "seed": 2026102407
+    },
+    "query_variance_update": {
+      "enabled": true,
+      "formula": "mean(abs(r-joint_mean)^2)+mean(trace(joint_covariance))/M",
+      "schedule": "one update per outer iteration; ratio damped with existing beta; separate raw linear-query covariance history",
+      "stop": "also require relative posterior-residual variance update below original convergence tolerance"
+    }
+  },
+  "preflight_and_launch": [
+    "Read existing statuses, launch records and actual process identities; never duplicate or restart a failed run automatically.",
+    "Prepare an independent frozen execution plan using the exact saved public inputs and oracle phase operator. Verify input and reference hashes before loading. Do not regenerate scenes or use estimated-phase inputs.",
+    "Verify completed budgets and classifier-to-white-denoiser binding, model shapes, finite outputs and unchanged receiver controls. A small binding/run check is authorized after training completes; it must not select hyperparameters or filter cases.",
+    "Use existing project Python with PYTHONPATH=src. Reuse validated execution/reporting logic where possible. Launch hidden with separate stdout/stderr and a receipt of full command, time, PIDs, source/config/weight hashes.",
+    "Use fresh worker processes per input and memory-aware bounded concurrency, following the completed phase batch execution pattern; freeze runtime policy before the batch. Save array outputs in the independent result directory.",
+    "On error or pause, keep checkpoints/results/logs and stop further launches; report once. No automatic scientific retry.",
+    "After 6000 cases finish, verify full 1000-by-six coverage, processes exited, prediction-array hashes and rescored metrics before reporting completion."
+  ],
+  "metrics": {
+    "nmse": "10*log10(sum(full channel squared error)/sum(true active channel energy)); include inactive-device errors",
+    "aer": "(misses+false alarms)/all device decisions; 40000 decisions at each SNR",
+    "additional": [
+      "misses",
+      "false alarms",
+      "iterations",
+      "nonconvergence counts",
+      "paired changes versus saved colored CGP-MP on same inputs"
+    ],
+    "retain_all_finite_iteration_limit_outputs": true,
+    "truth_policy": "Known phases are the explicitly shared oracle input condition. Channel/activity truth is for scoring, never receiver inference.",
+    "performance_acceptance": "No minimum gain threshold or selective omission; report unfavorable outcomes.",
+    "interpretation": "Do not compare different-noise validation losses as training gain. A null paired colored gain does not assign all whole-receiver improvement to architecture."
+  },
+  "preservation": {
+    "keep_original_STMP_colored_models_mainline_phase_results_and_failure_records": true,
+    "no_upload": true,
+    "no_global_registry_change_required": true,
+    "no_training_or_hyperparameter_changes": true
+  },
+  "completion_action": "Report verified white paired main-SNR results. Keep automation-3 active while the separately authorized SBL CPU branch still needs monitoring; disable after both branches are resolved. No automatic overwrite of manuscript figures or mainline selection."
+}

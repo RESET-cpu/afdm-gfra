@@ -1,0 +1,184 @@
+\section{Score Pretraining and Joint Receiver Training}
+\label{sec:learning}
+
+We first learn the channel score from perturbed channel samples and
+then train the unfolded receiver on received pilots, jointly adapting
+the channel denoisers, activity classifiers, and message parameters.
+
+\subsection{First-Order Score Matching}
+
+For a normalized channel sample $h_R\in\mathbb R^{2D}$, we form
+the perturbed observation $u=h_R+\sqrt{v/2}\,\varepsilon$, where
+$\varepsilon\sim\mathcal N(0,\I_{2D})$. Denote the perturbed
+density, the real-coordinate form of $q_1$ in
+\eqref{eq:twc-local-densities}, by $q_{1,R}(u;v)$ and its score by
+$s^\star(u,v)=\nabla_u\log q_{1,R}(u;v)$.
+Tweedie's formula relates this score to the conditional channel mean
+\cite{efron2011,cai2026}:
+\begin{equation}
+\E[h_R\mid u]=u+\frac v2\,s^\star(u,v).
+ \label{eq:twc-tweedie}
+\end{equation}
+Replacing $s^\star$ by a score network gives the denoiser in
+\eqref{eq:twc-conditional-mean}, initially with $a_\ell=1$, without
+direct integration over the channel distribution. To learn the
+unknown marginal score, denoising score matching uses the Gaussian
+perturbation score $-\varepsilon/\sqrt{v/2}$ as the training target
+while preserving the score-matching minimizers
+\cite{vincent2011,song2019}. With variance weighting, the loss is
+\begin{equation}
+ \mathcal L_{\rm DSM}(\theta)=\E_{h_R,v,\varepsilon}
+ \left[\frac{\|\sqrt{v/2}\,s_\theta(h_R+\sqrt{v/2}\varepsilon,v)
+                      +\varepsilon\|^2}{2D}\right].
+ \label{eq:twc-dsm}
+\end{equation}
+Samples are drawn before activity masking and perturbed over a range
+of noise levels, with continuous delays and Doppler shifts represented
+in their effective-channel coefficients. The learned score supplies
+the conditional channel mean under the active hypothesis; activity
+probabilities are learned from received pilots in the next stage.
+
+\subsection{Joint Channel and Activity Training}
+\label{sec:twc-joint-training}
+
+To adapt the pretrained denoisers to their layer inputs, each
+training observation passes through the updates in
+Section~\ref{sec:algorithm}, using the sensing matrix and noise variance
+supplied by the physical model. The trainable parameters are
+$\theta_\ell$, $\phi_\ell$, $c_{\alpha,\ell}$, $c_{\gamma,\ell}$,
+and, for layers that return a message, $c_{\beta,\ell}$.
+For a fixed distribution of denoiser inputs, expected squared error on
+active users and expected binary cross-entropy on all users are minimized by the
+conditional channel mean and activity probability, respectively
+\cite{menon2016}, matching the two targets in
+\eqref{eq:twc-mixture-mean}.
+
+Suppose the receiver training set contains $B$ scenes, with $K_i$
+candidate users in scene $i$. Let $h_{ik,R}$ and $\alpha_{ik}$
+denote the channel and activity label of user $k$ in scene $i$.
+Training and validation use disjoint physical scenes.
+The channel and activity losses at layer $\ell$ are respectively
+given by
+\begin{align}
+ R_H^{(\ell)}&=\frac{1}{E_{\rm tr}}\sum_{i,k}
+       \alpha_{ik}\|\mu_{ik\ell}-h_{ik,R}\|^2,
+ \label{eq:twc-channel-loss}\\
+ R_a^{(\ell)}&=-\frac{1}{T_{\rm tr}}\sum_{i,k}
+       \left[\alpha_{ik}\log p_{ik\ell}
+       +(1-\alpha_{ik})\log(1-p_{ik\ell})\right].
+ \label{eq:twc-activity-loss}
+\end{align}
+Here $E_{\rm tr}=\sum_{i,k}\alpha_{ik}\|h_{ik,R}\|^2$ and
+$T_{\rm tr}=\sum_i K_i$ are the training set's active-channel energy
+and user count, which are held fixed so that scenes with different
+numbers of users retain the same normalization. The two normalized
+losses receive equal coefficients in both training and model selection.
+
+For a receiver with $m$ layers, the joint training objective is
+\begin{equation}
+ J_m=\frac{\sum_{\ell=1}^{m}\omega_\ell
+                  \left(R_H^{(\ell)}+R_a^{(\ell)}\right)}
+                 {\sum_{\ell=1}^{m}\omega_\ell},
+ \label{eq:twc-layer-objective}
+\end{equation}
+where $\omega_\ell$ weights the loss at layer $\ell$, including
+intermediate estimates used to form subsequent messages. Since the
+classifier takes $\mu_{k\ell}$ as an input, gradients from the activity
+loss update the channel denoiser within the same layer. Across layers,
+the product $p_{k\ell}\mu_{k\ell}$ determines the residual and return
+message, through which later channel losses update earlier activity
+classifiers and message parameters. Joint training thus accounts for
+both the current estimation errors and their effects on later layers.
+
+\subsection{Progressive Training}
+
+Each newly added layer has independent parameters and receives the
+messages produced by the preceding layers. Its score network is
+initialized from the same pretrained network, while its log-odds
+correction $g_{\phi_\ell}$ and $c_{\alpha,\ell}$, $c_{\beta,\ell}$,
+and $c_{\gamma,\ell}$ start at zero, giving an initial activity
+probability of $\rho$.
+Earlier layers retain their selected parameters.
+
+At depth $m$, we first train the new layer with the earlier parameters
+fixed, except for $c_{\beta,m-1}$ when $m>1$, since the preceding
+layer's return message first contributes to the loss when layer $m$
+is added. We then fine-tune all layers jointly at a reduced learning
+rate, with both stages minimizing \eqref{eq:twc-layer-objective}.
+The checkpoint minimizing the validation sum $R_H^{(m)}+R_a^{(m)}$,
+using the training normalization constants, initializes the next
+depth; after depth $L$, the selected parameters are fixed for inference.
+
+\subsection{Network Structure and Inputs}
+
+Each user's real and imaginary antenna maps form $2M$ feature channels
+over the $N\times N$ input and output DAFT coordinates, allowing
+convolutions to learn dependencies across antennas and coefficients
+affected by continuous delays and Doppler shifts. The score network
+uses conditional RefineNet \cite{cai2026,song2019}, with the structure
+in Table~\ref{tab:twc-networks}. Two fully connected layers embed
+$\log(v_\ell)/5$ into 64 features, from which each conditional
+normalization layer obtains three coefficients per channel: a weight
+for the normalized channel means added to the normalized features,
+and a scale and shift for the result.
+
+The classifier combines the denoiser input and conditional channel
+estimate into $4M$ channels, scaled by $(1+v_\ell)^{-1/2}$, and
+processes them with the convolutions and pooling in
+Table~\ref{tab:twc-networks}. Its fully connected layers combine the
+pooled features with
+\begin{equation}
+ \begin{aligned}
+ \Big(&\log v_\ell,\
+ \log\!\left(1+\frac{\|u_{k\ell}\|^2}{Dv_\ell}\right),\
+ \log\!\left(1+\frac{\|\mu_{k\ell}\|^2}{Dv_\ell}\right),\\
+ &\log\!\left(1+\frac{\|u_{k\ell}-\mu_{k\ell}\|^2}{Dv_\ell}\right),\
+ \logit\rho\Big)
+ \end{aligned}
+ \label{eq:twc-classifier-features}
+\end{equation}
+to produce the log-odds correction in \eqref{eq:twc-activity}.
+These energy terms describe the input, channel estimate, and residual
+relative to the noise level. Since both networks act on individual
+users with shared parameters within a layer, their input dimensions
+depend on $M$ and $N$, whereas $K$ determines the number of evaluations
+and $Q$ enters through the linear estimator.
+
+\begin{table}[t]
+\centering
+\caption{Network structure for $M=N=16$. Tensor sizes are feature
+channels $\times$ height $\times$ width.}
+\label{tab:twc-networks}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.43\linewidth}
+                >{\raggedright\arraybackslash}p{0.49\linewidth}}
+\toprule
+Stage & Output size or operation\\
+\midrule
+\multicolumn{2}{l}{\textit{Score network}}\\
+Input & $32\times16\times16$; affine map $2u-1$\\
+Input convolution, $3\times3$ & $128\times16\times16$\\
+Residual groups 1 and 2 & $128\times16\times16$; $256\times8\times8$\\
+Residual groups 3 and 4 & $256\times8\times8$ each; dilation 2 and 4\\
+Four refinement blocks & Widths 256, 256, 128, 128; final size $16\times16$\\
+Output & Conditional normalization, ELU, $3\times3$ convolution; divide by $\sqrt{v/2}$\\
+\midrule
+\multicolumn{2}{l}{\textit{Activity classifier}}\\
+Input & $64\times16\times16$; divide by $\sqrt{1+v}$\\
+Three $3\times3$ convolutions & $32\times16\times16$, $64\times8\times8$, $64\times4\times4$\\
+Spatial average pooling & 64 features\\
+Concatenation & 64 features and the five scalars in \eqref{eq:twc-classifier-features}\\
+Two fully connected layers & $69\rightarrow64\rightarrow1$\\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{minipage}{0.95\linewidth}
+\footnotesize
+Each score residual group contains two blocks. Refinement uses
+skip connections and bilinear interpolation when sizes differ.
+The score network uses exponential linear units (ELUs), while its
+noise-conditioning layers and the activity hidden layers use
+$x\sigmoid(x)$.
+\end{minipage}
+\end{table}

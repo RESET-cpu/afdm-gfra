@@ -1,0 +1,58 @@
+{
+  "schema": "c-stmp-phase-only-continuation-v1",
+  "created_unix": 1793286987.3214338,
+  "authorization": "Stop Gaussian activity evidence; retain prior results; continue previously authorized estimated-phase experiment; no Gaussian ablation figures.",
+  "variant": "estimated_phase",
+  "planned": 6000,
+  "reused": 3783,
+  "remaining": 2217,
+  "preserved_counts": {
+    "gaussian_prior": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ],
+    "gaussian_evidence": [
+      355,
+      355,
+      355,
+      355,
+      354,
+      354
+    ],
+    "estimated_phase": [
+      631,
+      631,
+      631,
+      630,
+      630,
+      630
+    ]
+  },
+  "preserved_nonconverged": {
+    "gaussian_prior": 841,
+    "gaussian_evidence": 724,
+    "estimated_phase": 50
+  },
+  "gaussian_evidence_status": "STOPPED_BY_USER",
+  "gaussian_figures": false,
+  "initial_gpu_workers": 3,
+  "maximum_gpu_workers": 6,
+  "threads_per_worker": 2,
+  "ramp_interval_seconds": 45,
+  "ramp_utilization_below_percent": 94,
+  "ramp_minimum_free_gpu_mib": 3500,
+  "ramp_minimum_available_ram_gib": 2.5,
+  "algorithm_parameters_unchanged": true,
+  "no_automatic_inference_retries": true,
+  "assets": {
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\phase_only_20261029\\resume.py": "2293882c58945225f1004fe8fb6df5a937417e0f6bf8f6185d5cacb758d74bb6",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\phase_only_20261029\\report.py": "63b62683183c98b1dee9fc6ba565d4f8e1c271a3b3018ad05bb0ff9924fba77f",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\phase_only_20261029\\REQUEST.json": "3582ae1b0de05f1007c946245db4911ec248a42f73d06bea1707c4974ffd70f4",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\phase_only_20261029\\PRESERVED.json": "2c5104ac151ade7ff78dc0f07e3ef0b724e550d86ea57aeafd1c25af9364934c",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\PLAN.json": "0907f29bf7a51cb00a6b90c75f24df72fb7fc262f9c79ffdc33cb8016f0d99b0"
+  }
+}

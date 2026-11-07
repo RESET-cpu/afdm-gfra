@@ -1,0 +1,65 @@
+PDF PAGE 7
+  CAI et al.: JOINT ACTIVITY DETECTION AND CHANNEL ESTIMATION FOR MASSIVE CONNECTIVITY                                                                                                 3581
+
+
+  the same form asp(Hprik|Hk), the belief calculation of Hk                          3) Denoiser of Xk:  Based on the update rules of EP[49],
+  can be interpreted as an MMSE denoising problem given the                       the belief ofXk on the factor nodep(Xk|Hk,αk) is expressed
+  AWGN model(20):                                                                 as
+                  Hpost                    ],                                    (22)     MfXk(Xk)[∫
+                    k     =E[Hk|Hprik
+                   τpostm    =   1  ∑Var[hknm|Hpri],              (23)                    ∝ proj               δ(Xk−αkHk)MXk→fXk(Xk)
+                             KN                          k                                             Hk,αk                ]
+                                    k,n
+                                            ]. To summarize, the belief                      ×MHk→fXk(Hk)p(αk)
+  where Hpostk   ≜[hpostk1 ,...,hpostkM                                                            [
+  calculation  amounts  to  combining  the  Gaussian  pseudo-                             ∝ proj     (1−λpostk    )δ(Xk)
+  likelihood p(Hprik|Hk)  with  the  true  prior p(Hk).  This                                          ∏
+  operation is mathematically equivalent to MMSE denoising                                   +λpostk        CN(xkm;˜xpostkm,B,˜vpostm,BIN)],             (32)
+  underAWGNobservations:thepseudo-observationfromMod-                                                   m
+  ule A provides a noisy estimate of the channel, and the prior                   where                       (                  )−1
+  serves as the denoiser to reﬁne this estimate. The posterior                                                     1
+  mean and variance in(22)and(23)are, however, by no means                                          ˜vpostm,B =  vpri   +   1τextm     ,                      (33)
+  easy to calculate due to the complicated and high-dimensional                                                   m,B(xpri               )
+  integrals. We will detail the method for obtaining the posterior                                 ˜xpost                km,B   + hextkm    .               (34)
+  message in SectionsIVandV.                                                                        km,B = ˜vpostm,B    vpri        τextm
+     The extrinsic message from the variable node Hk  to the                                                              m,B
+  factor nodep(Xk|Hk,αk) is calculated as                                         In(32), the expression inside the Gaussian projection operator
+                                                                                  isaBernoulli-Gaussianpdf.BytakingtheGaussianprojection,
+        MHk→fXk(Hk)∝ MfHk(Hk)                                                     themeanofxkm withrespecttothebeliefMfXk(Xk)isgiven
+                                 MfXk→Hk(Hk)                          (24)        by                      xpost
+                             ∝∏      CN(hkm;hextkm,τextm IN),        (25)                                   km,B =λpostk    ˜xpostkm,B.                          (35)
+
+                                 m                                                The variance of the (n,m)-th element of Xk with respect to
+  where the extrinsic variance and mean are respectively given                    the beliefMfXk(Xk) is(                          )
+  by                                                                                   vpostknm,B =λpostk   |˜xpostknm,B|2+˜vpostm,B−|xpostknm,B|2.      (36)
+                               (   1             )−1                              Based on the above, the projected Gaussian belief is expressed
+                     τextm   =   τpostm −   1τprim     ,                      (26)as
+                                    (                   )                                MfXk(Xk)≈∏CN(xkm;xpost
+                     hextkm =τextm     hpostkm      km     .                  (27)                                            km,B,vpostm,BIN),         (37)
+                                       τpostm − hpriτprim                                                   m
+                                                                                  where we approximate the variance of each column ofXk by
+     2) Denoiser ofαk:  The belief ofαk  on the factor node                                                              ∑
+  p(Xk|Hk,αk) is expressed as                                                                           vpostm,B =   1KN      vpostknm,B.                      (38)
+                                                                                                                         k,n
+  MfXk(αk)∫                                                                       While  per-element  or  full  covariance  estimation  could,  in
+   ∝          δ(Xk−αkHk)MXk→fXk(Xk)MHk→fXk(Hk)p(αk)                               principle, capture heterogeneous conﬁdence across users and
+        Hk,Xk                                                                     subcarriers, such estimates are highly unreliable with limited
+                                                                         (28)     pilot observations. Scalar averaging, as adopted in(38), is a
+   ∝ (1−λpost                                                                     standard design choice to stabilize message-passing updates
+              k    )δ(αk)+λpostk δ(1−αk),                             (29)        [26],[50].
+  where                                                                              Finally,  we  calculate  the  message  from  the  factor  node
+                                                                                  p(Xk|Hk,αk) to the variable node Xk as
+  λpostk                                                               
+                                                                          −1            MfXk→Xk(Xk) = MfXk(Xk)
+                                mCN(0;xprikm,B,vprim,BIN)                                                       MXk→fXk(Xk),                        (39)
+   =1+          (1−λ)∏(                                         )IN  )                                                                        ),        (40)
+             λ∏mCN         0;xprikm,B−hextkm,(vprim,B+τextm                                                  =∏CN(xkm;xextkm,B,vextm,B
+                                                                                                                 m
+                                                                         (30)     where
+  is the posterior probability of activity for thek-th device. We                                            (                   )−1
+  set a thresholdλthr to facilitate the binary decision of device                                  vextm,B =      1    −   1           ,                      (41)
+  activity, i.e.,              {                                                                                vpostm,B(xpostvprim,B     )
+                        ˆαk =     1, λpostk ≥λthr,                                                xextkm,B =vextm,B     km,B   − xprikm,B    .              (42)
+                                  0, λpostk  <λthr.                       (31)                                         vpostm,B    vprim,B
+
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on July 14,2026 at 08:39:16 UTC from IEEE Xplore.  Restrictions apply.

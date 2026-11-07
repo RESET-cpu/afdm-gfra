@@ -1,7 +1,4 @@
-models/**/*.pt filter=lfs diff=lfs merge=lfs -text
-data/proposed/*.npy filter=lfs diff=lfs merge=lfs -text
-data/proposed/*.npz filter=lfs diff=lfs merge=lfs -text
-runs/proposed_sample_sizes_20261018/n5000/**/*.pt filter=lfs diff=lfs merge=lfs -text
-runs/proposed_sample_sizes_20261018/initialization/*.pt filter=lfs diff=lfs merge=lfs -text
-runs/proposed_sample_sizes_20261018/data/n5000/*.npy filter=lfs diff=lfs merge=lfs -text
-runs/proposed_sample_sizes_20261018/data/n5000/*.npz filter=lfs diff=lfs merge=lfs -text
+# Weights and raw arrays are excluded from the current GitHub snapshot.
+*.pdf -text
+*.png -text
+*.jpg -text

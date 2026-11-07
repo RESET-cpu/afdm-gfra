@@ -1,0 +1,16 @@
+{
+  "purpose": "Exploratory second analysis motivated by large input-column mode-Gram offdiagonals in the first analysis. Not preregistered before viewing first analysis; no receiver or network run.",
+  "source_plan_sha256": "2a874324f9352603b0c2af723f80f301932616abfe99396d06fc16f862e52197",
+  "first_summary_sha256": "b22168a2033dbf1276b3bf91dc5065c49db98cd977ef940f7d306b4966fd6741",
+  "script_sha256": "1824dca9e1d0b6c8eef408923bcfe5419366a79ff2924aa2f15b6b44414364ed",
+  "bases": {
+    "block_gram": "Eigenvectors V_k of A_k^H A_k; analysis coordinates V_k^H x_k.",
+    "row_preconditioned": "Eigenvectors V_k of A_k^H (A A^H)^(-1) A_k; fixed within case, computed exclusively from public A."
+  },
+  "limitations": [
+    "Both bases are candidates suggested by geometry. Numerical results on reused evaluation scenes are exploratory, not an independent basis-selection validation.",
+    "Uncentered single-query mode Gram, not an identified conditional covariance.",
+    "The basis depends on public A and user k, not on query, truth, or iteration. A new A can yield a different basis; network must know resulting C or its noise realizations.",
+    "A diagonal marginal mode Gram does not establish Gaussianity, signal independence, or full tensor covariance separability."
+  ]
+}

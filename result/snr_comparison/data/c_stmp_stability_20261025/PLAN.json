@@ -1,0 +1,356 @@
+{
+  "tasks": [
+    [
+      "second_d4",
+      6
+    ],
+    [
+      "second_d4",
+      7
+    ],
+    [
+      "second_d2",
+      6
+    ],
+    [
+      "second_d2",
+      7
+    ],
+    [
+      "derivative_d4",
+      6
+    ],
+    [
+      "derivative_d4",
+      7
+    ],
+    [
+      "derivative_d2",
+      6
+    ],
+    [
+      "derivative_d2",
+      7
+    ],
+    [
+      "second_d2",
+      2
+    ]
+  ],
+  "variants": {
+    "second_d4": {
+      "scale": 0.2647966452702405,
+      "batch_size": 40,
+      "conditional_variance_floor_checkpoint_normalized": 0.0001,
+      "decision_threshold": 0.5,
+      "site_damping": 1.0,
+      "ep": {
+        "iterations": 600,
+        "damping": 0.4,
+        "min_iterations": 60,
+        "convergence_tolerance": 0.0005,
+        "convergence_patience": 5,
+        "variance_fraction_floor": 1e-06,
+        "variance_fraction_ceiling": 0.999999,
+        "covariance_mode": "isotropic",
+        "activity_convergence_tolerance": 0.001,
+        "raw_site_residual_tolerance": 0.1,
+        "activity_weight_residual_tolerance": 0.001,
+        "decision_stability_window": 10,
+        "activity_stopping_reference": "smoothed"
+      },
+      "initialization": {
+        "kind": "activity_prior_times_training_power",
+        "normalized_training_second_moment": 1.0004404181394917,
+        "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+      },
+      "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+      "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+      "first_checkpoint": "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt",
+      "first_checkpoint_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+      "schema": "colored-stmp-second-candidate-v1",
+      "implementation": "colored_conditional_mean_learned_second",
+      "activity_evidence": "classifier",
+      "evidence_checkpoint": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+      "evidence_checkpoint_sha256": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d",
+      "method": "C-STMP",
+      "query_covariance": "vI",
+      "classifier_policy": "frozen_legacy_teacher",
+      "first_epoch": 200,
+      "classifier_training_binding": {
+        "first_sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+        "second_sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5"
+      },
+      "variance_estimator": {
+        "kind": "learned_second_score_trace"
+      },
+      "limitations": [
+        "Scalar runtime C=vI; trained contraction is conditional risk for the finite frozen first.",
+        "Original classifier retained; single-scene evaluation is not general validation."
+      ],
+      "second_checkpoint": "result/channel_denoising/data/colored_second_50000_20261025/second_best.pt",
+      "second_checkpoint_sha256": "5892949324111a96d662d1e0ad3972c40e0c173253138be14f902741d87792a9",
+      "second_epoch": 96
+    },
+    "second_d2": {
+      "scale": 0.2647966452702405,
+      "batch_size": 40,
+      "conditional_variance_floor_checkpoint_normalized": 0.0001,
+      "decision_threshold": 0.5,
+      "site_damping": 1.0,
+      "ep": {
+        "iterations": 600,
+        "damping": 0.2,
+        "min_iterations": 60,
+        "convergence_tolerance": 0.0005,
+        "convergence_patience": 5,
+        "variance_fraction_floor": 1e-06,
+        "variance_fraction_ceiling": 0.999999,
+        "covariance_mode": "isotropic",
+        "activity_convergence_tolerance": 0.001,
+        "raw_site_residual_tolerance": 0.1,
+        "activity_weight_residual_tolerance": 0.001,
+        "decision_stability_window": 10,
+        "activity_stopping_reference": "smoothed"
+      },
+      "initialization": {
+        "kind": "activity_prior_times_training_power",
+        "normalized_training_second_moment": 1.0004404181394917,
+        "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+      },
+      "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+      "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+      "first_checkpoint": "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt",
+      "first_checkpoint_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+      "schema": "colored-stmp-second-candidate-v1",
+      "implementation": "colored_conditional_mean_learned_second",
+      "activity_evidence": "classifier",
+      "evidence_checkpoint": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+      "evidence_checkpoint_sha256": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d",
+      "method": "C-STMP",
+      "query_covariance": "vI",
+      "classifier_policy": "frozen_legacy_teacher",
+      "first_epoch": 200,
+      "classifier_training_binding": {
+        "first_sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+        "second_sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5"
+      },
+      "variance_estimator": {
+        "kind": "learned_second_score_trace"
+      },
+      "limitations": [
+        "Scalar runtime C=vI; trained contraction is conditional risk for the finite frozen first.",
+        "Original classifier retained; single-scene evaluation is not general validation."
+      ],
+      "second_checkpoint": "result/channel_denoising/data/colored_second_50000_20261025/second_best.pt",
+      "second_checkpoint_sha256": "5892949324111a96d662d1e0ad3972c40e0c173253138be14f902741d87792a9",
+      "second_epoch": 96
+    },
+    "derivative_d4": {
+      "scale": 0.2647966452702405,
+      "batch_size": 40,
+      "conditional_variance_floor_checkpoint_normalized": 0.0001,
+      "decision_threshold": 0.5,
+      "site_damping": 1.0,
+      "ep": {
+        "iterations": 600,
+        "damping": 0.4,
+        "min_iterations": 60,
+        "convergence_tolerance": 0.0005,
+        "convergence_patience": 5,
+        "variance_fraction_floor": 1e-06,
+        "variance_fraction_ceiling": 0.999999,
+        "covariance_mode": "isotropic",
+        "activity_convergence_tolerance": 0.001,
+        "raw_site_residual_tolerance": 0.1,
+        "activity_weight_residual_tolerance": 0.001,
+        "decision_stability_window": 10,
+        "activity_stopping_reference": "smoothed"
+      },
+      "initialization": {
+        "kind": "activity_prior_times_training_power",
+        "normalized_training_second_moment": 1.0004404181394917,
+        "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+      },
+      "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+      "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+      "first_checkpoint": "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt",
+      "first_checkpoint_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+      "schema": "colored-stmp-candidate-v1",
+      "implementation": "colored_conditional_mean",
+      "activity_evidence": "classifier",
+      "evidence_checkpoint": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+      "evidence_checkpoint_sha256": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d",
+      "method": "C-STMP",
+      "query_covariance": "vI",
+      "classifier_policy": "frozen_legacy_teacher",
+      "first_epoch": 200,
+      "classifier_training_binding": {
+        "first_sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+        "second_sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5"
+      },
+      "variance_estimator": {
+        "probes": 1,
+        "epsilon": 0.01,
+        "seed": 2026102407
+      },
+      "limitations": [
+        "Colored-trained network queried at C=vI; scalar feedback.",
+        "Legacy classifier has not been fine-tuned to the new conditional mean.",
+        "Derivative trace is a working variance, not calibrated conditional MSE."
+      ]
+    },
+    "derivative_d2": {
+      "scale": 0.2647966452702405,
+      "batch_size": 40,
+      "conditional_variance_floor_checkpoint_normalized": 0.0001,
+      "decision_threshold": 0.5,
+      "site_damping": 1.0,
+      "ep": {
+        "iterations": 600,
+        "damping": 0.2,
+        "min_iterations": 60,
+        "convergence_tolerance": 0.0005,
+        "convergence_patience": 5,
+        "variance_fraction_floor": 1e-06,
+        "variance_fraction_ceiling": 0.999999,
+        "covariance_mode": "isotropic",
+        "activity_convergence_tolerance": 0.001,
+        "raw_site_residual_tolerance": 0.1,
+        "activity_weight_residual_tolerance": 0.001,
+        "decision_stability_window": 10,
+        "activity_stopping_reference": "smoothed"
+      },
+      "initialization": {
+        "kind": "activity_prior_times_training_power",
+        "normalized_training_second_moment": 1.0004404181394917,
+        "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+      },
+      "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+      "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+      "first_checkpoint": "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt",
+      "first_checkpoint_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+      "schema": "colored-stmp-candidate-v1",
+      "implementation": "colored_conditional_mean",
+      "activity_evidence": "classifier",
+      "evidence_checkpoint": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+      "evidence_checkpoint_sha256": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d",
+      "method": "C-STMP",
+      "query_covariance": "vI",
+      "classifier_policy": "frozen_legacy_teacher",
+      "first_epoch": 200,
+      "classifier_training_binding": {
+        "first_sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+        "second_sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5"
+      },
+      "variance_estimator": {
+        "probes": 1,
+        "epsilon": 0.01,
+        "seed": 2026102407
+      },
+      "limitations": [
+        "Colored-trained network queried at C=vI; scalar feedback.",
+        "Legacy classifier has not been fine-tuned to the new conditional mean.",
+        "Derivative trace is a working variance, not calibrated conditional MSE."
+      ]
+    }
+  },
+  "scene": 200,
+  "indices_to_snr": {
+    "2": 0,
+    "6": 8,
+    "7": 10
+  },
+  "scope": "Mechanism diagnostic on previously exposed scene200; not independent performance validation.",
+  "controls": "Only variance estimator and new-message weight differ. No classifier or weight changes.",
+  "truth_use": "External observer scoring only; never feeds back into inference.",
+  "protected": {
+    "FINAL.json": "758534b08e7eaae7f63a540f0ca51d8f3bd8d7ac778477d7916676a646a4672a",
+    "MAINLINE.json": "2ad0bb19de70a3c4fa64ad70efdf8b10c1152971257fc12f035589bea86aaf0c",
+    "src\\configs\\final\\models.json": "491bf5924a46d9598296faec2282ac1f6a1c1da2343920bc51b3b955b2c5b558",
+    "src\\configs\\final\\STMP.json": "314f49447fa05e5bf10672008851be4e1959c3362529e479fde63f353964195a",
+    "result\\models\\proposed_10\\checkpoints\\depth_10\\best.pt": "6fbd2dc91375762e1eae1e24e53c046989d6c806a7afef73a55c85de2049f2c5",
+    "src\\algorithm\\STMP\\activity.py": "5b269d487c1224cb18de017aed88b176e5a4afdb119fdd1bd3ede6d3aa2f5911",
+    "src\\algorithm\\STMP\\configuration.py": "c4ef55b5efc711b2254ffa8a0a2dbe0df0adc5bfcc9e8970d91144c66594f997",
+    "src\\algorithm\\STMP\\denoiser.py": "b8f38425034979c247859daa80e6acf67c044a1d90c22705131d8a5f912ffe51",
+    "src\\algorithm\\STMP\\fast_initialization.py": "19684f8ff4456e8c7c2d80be9e08b9350de13eb7b1b0b7010b757ae8dee64cc8",
+    "src\\algorithm\\STMP\\gaussian.py": "e1b41ab509c473c825bc4cd839e29450ad422a70e507e581e209e51b18b6f55f",
+    "src\\algorithm\\STMP\\gpu_initialization.py": "d379ffed8b91693a9cbae087133cf39684225c592e041e19deb6e020d31c9c5e",
+    "src\\algorithm\\STMP\\initialization_cuda.py": "be63d002b04107d30fcc5724f541af0470baa22712ff168f8faae36a0785bc47",
+    "src\\algorithm\\STMP\\initialization_runtime_receiver.py": "97a3097a8f9b1fa4356d57a4f6d0e22f037768280644ca56767f5e0678482ccc",
+    "src\\algorithm\\STMP\\iterations.py": "6c65eb1fe93a917ced07718cd85e358d2fb3e99472a22720df9999b4e6c7fe12",
+    "src\\algorithm\\STMP\\linear.py": "3a5b1b702b206524988a2746085a3c4796ae5508658ee2b20f1e151639df0c9d",
+    "src\\algorithm\\STMP\\moments.py": "3e16c1515fd3015f6deef071854128221db18f0bb5b9d649cfd4dcf9bc7c2815",
+    "src\\algorithm\\STMP\\noise.py": "795add663b81945329615bc25bbbded6b1628cfe10fe75ded5e6b16db652c390",
+    "src\\algorithm\\STMP\\phase.py": "4406fa701b17428c8eeb6dabd6f0818029b10b84d915d93cc9ae5a75da2f06b4",
+    "src\\algorithm\\STMP\\phase_feedback_iterations.py": "ae2b097672239662a3227604103fbcf2699e2b5c1a8c8c7eab95a3acae11e504",
+    "src\\algorithm\\STMP\\phase_hypotheses.py": "2ce39fa11127126ded277a05df02dbdf627b0d22e95f7268fdef97abf2564978",
+    "src\\algorithm\\STMP\\phase_hypotheses_iterations.py": "f7f91214cc0e254d331b0719fd1e4aa7f3fd4e496f52286e05191cfba34f4da1",
+    "src\\algorithm\\STMP\\phase_hypotheses_receiver.py": "b931687080621faf85f3749619027a2fea98efec9f19ad41ae645cf441e76cd1",
+    "src\\algorithm\\STMP\\phase_initialization_candidates.py": "f88e7c68c7814ba93a969faf0d331b70990b9f716e59d16f768880bb688d7931",
+    "src\\algorithm\\STMP\\phase_initial_candidates.py": "252a84e6135314b6c5938f797c38823ecb96f893be84750072fcd5c40b3ab7af",
+    "src\\algorithm\\STMP\\phase_iterations.py": "1c80f4c48c359c438af2b09a5546b67d62cd7512b68ada8b7a5fa333330710c5",
+    "src\\algorithm\\STMP\\phase_output_cycle.py": "1e4cbb8446f130485571925cf5d76b7b9f13e190ded5e790c7e5fb5f12690ad3",
+    "src\\algorithm\\STMP\\phase_output_cycle_iterations.py": "02741b3afe65600d3b7812f9e99a87aa0d111db50c76bbf12732df093a3871a9",
+    "src\\algorithm\\STMP\\phase_output_cycle_stopping.py": "72c3a033ce5b9cd4b4ee28b801a208539b4923f874dfbc462b254c57f99cf15e",
+    "src\\algorithm\\STMP\\phase_output_stable.py": "3add9c8a572ffc6ff9bdda23a13c6fc1200741e44b7909b908bd0024c8c3173f",
+    "src\\algorithm\\STMP\\phase_output_stable_iterations.py": "34a0f6b8c5e3a0fff0067a416db7c2b936ee1c65ede53aa3d229383b7e85f5fb",
+    "src\\algorithm\\STMP\\phase_periodic_combined_iterations.py": "58ec5f48c75b9b4d700e0ff899b6f7048a6e68072941d16bdbb9008410794e9d",
+    "src\\algorithm\\STMP\\phase_periodic_iterations.py": "5fdca004147e8dddd55a10ef5cea1d1eda197c2cf63af42c4abab862b0f0d25b",
+    "src\\algorithm\\STMP\\phase_periodic_stopping_iterations.py": "9f21cc019d1c4d874126973690b2ac5e1d7d7ab9103bfa92179023d15a0f7dce",
+    "src\\algorithm\\STMP\\phase_physical_refresh.py": "c01986f8957f5613febb5c74ac974e63b25020c502128b5286a1aa7107f591d6",
+    "src\\algorithm\\STMP\\phase_physical_refresh_iterations.py": "683e77a16b46ce378354335b2a5e7c0fb1d35011b2d12426b9896be599ca810c",
+    "src\\algorithm\\STMP\\phase_refresh.py": "38d58199acb8560bcc8b9dc3f2abd613feb2af18f420605f1c132ee8784e0580",
+    "src\\algorithm\\STMP\\phase_refresh_iterations.py": "a30166b4d5d527938b2de20763848534eee237caca414422aeb21e490b85933e",
+    "src\\algorithm\\STMP\\phase_settled.py": "d1234a9f9710f13c9ef3507571e5a9720f2c6b28651f85126c99d521e1e44f05",
+    "src\\algorithm\\STMP\\phase_settled_iterations.py": "b7f29786f3a5ddc87de940768bd22b5cbe9b7cce6fa282a536ef907c2ffabc18",
+    "src\\algorithm\\STMP\\phase_slopes.py": "5c872409516a17a15036c71262443b696ab0b49ed5d0bbed56691ba91f31cd39",
+    "src\\algorithm\\STMP\\phase_slopes_iterations.py": "91ff5015cca8c42e64064a45c6c6adda4dd93a96be2ab9b488442c18d047dce4",
+    "src\\algorithm\\STMP\\phase_stopping.py": "3bae7b3e5315b8f12e5634fb417321ee5554dde622e7b1381e1966869dd93e96",
+    "src\\algorithm\\STMP\\phase_supported_hypotheses.py": "ccfb43d51883b5eae4245d98b7e63cd87ada67aaf0847197a468dbb9e567b100",
+    "src\\algorithm\\STMP\\phase_supported_hypotheses_iterations.py": "c6122ad9ba0105a77fd2402780a833719c8eef1632e399a818f69e8e58704d16",
+    "src\\algorithm\\STMP\\phase_supported_hypotheses_receiver.py": "184b848ada0d44fef5e1ae1ec23a8348987377d00a51212815ba9311b693a12a",
+    "src\\algorithm\\STMP\\posterior.py": "a497fa48bd629c2d458423b7b0277e465ca091bd9b42af9ad232bc1004774862",
+    "src\\algorithm\\STMP\\rank_one.py": "4a825b3bf98cf41a39553cea634adcaff57b34eb5c5507272fa911acdf2762af",
+    "src\\algorithm\\STMP\\receiver.py": "417b392e6e3c9eda437274d9117dae9748634e52f2ae76236b60abb05af2e814",
+    "src\\algorithm\\STMP\\records.py": "0278e92167adf8e345d074c890add963560ba08854c3f372a610fd3004f862a6",
+    "src\\algorithm\\STMP\\runtime_initialization.py": "0dc7ed55f3361373bdb06229e93769fead7b7bfa3d2b7f16cba2ca7d4f680e33",
+    "src\\algorithm\\STMP\\runtime_moments.py": "1824f5f1c94afff67baf48d7838cbc07c6e1e6805d4849c48d73905d2b2c5457",
+    "src\\algorithm\\STMP\\runtime_receiver.py": "b21387891458daddf3e411a0aedc8ac28a2471f95d6404d5a1b48bbbfe19cec6",
+    "src\\algorithm\\STMP\\__init__.py": "1a5bdf1686f57425566ee5472430d2f231ebc73b8c8d3a007610438ddb4c5bdc",
+    "result\\runs\\proposed_50000_cuda_graph_20261018\\model\\first\\first_best.pt": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+    "result\\runs\\proposed_auxiliary_100_cuda_graph_20261019\\n50000\\second\\second_best.pt": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5",
+    "result\\runs\\proposed_auxiliary_100_cuda_graph_20261019\\n50000\\activity\\evidence_best.pt": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d",
+    "result\\runs\\proposed_50000_cuda_20261018\\data\\prior_definition.json": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+    "src\\algorithm\\C_STMP\\configuration.py": "00419958fc07029c22c56b68766a42bf4f7ea1cd7927ab3e391a08b977722720",
+    "src\\algorithm\\C_STMP\\moments.py": "7e0d9b3928c12ed60c135125fef13626dd274ac3c7815101f2b1e98c084989e9",
+    "src\\algorithm\\C_STMP\\receiver.py": "64e7e8df6247304c1f406b434af6dd4a28033989009549be927326b79c241f37",
+    "src\\algorithm\\C_STMP\\__init__.py": "ce31e4bf7a4a7b074c77264643f8e6d1d65c2c3107b747b296371f2c808f044d",
+    "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/ATTEMPT1_FAILURE.json": "ee69ecbe7036b87915698f515b0e7ef33ea122f79b181d393ab6ce12f21d0643",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/ATTEMPT1_PLAN.json": "0e55e50d8a7a7b0ef64ce97153b11d5e0c9c63f8831da4f74283471500e8b7d6",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/attempt1_run.py": "fa07518180414f61e8c63457f6d62ca4df3ec5e6448a29b2b3bd763d544d3657",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/curves.csv": "68bdd72227e6e6639f7c3e4491d317d09b793643489f97347525fc7ba215f7df",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/CURVE_SUMMARY.json": "73df10295074d2a1c52cbf65f4d4526726b8aa51aa7969e617af91c9b9c8abf7",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/C_STMP.json": "51ac2be7e7cbd2baacc2d97e7116530605cc4fe52f53759b762967e70e02f7cc",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/C_STMP.npz": "a1ecf3f3792f31d006d69f316559e7e7d21fc3c68c5ff460acd6afbf092d83d8",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/PLAN.json": "7cb064005decf3f62a618d90ffabf6de6918f72178f6501885705fefa1a97a7c",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/plot.py": "17d2cc930865581bfbc194dd154f9204f595df9fb1b321dcb191bb94932dfc26",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/RESULT.json": "63dc4252915be6870028b10edec93c8ed5ccc80df9aacbd1f8f0cbcd400a0a5e",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/run.py": "cac296590f89cb343894c6e30dc2f3692447a76b00c6bd9c188c497df9247bf6",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/STATUS.json": "a7fca240f4b5d2244969531a5e3153dd22eeed3b9ce8bef032603783a3dddc9a",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/STMP.json": "f470ed01ab4bf71a84a91d9abf7069e33c6431295a4b5061891e50decb3e817b",
+    "result/snr_comparison/data/c_stmp_convergence_20261025_scene0200_snr0/STMP.npz": "71a2da9e1a6dc472bc5bc45820e205070b0dfcadeec62cdb2feef34453affdcf",
+    "result/channel_denoising/data/colored_second_50000_20261025/second_best.pt": "5892949324111a96d662d1e0ad3972c40e0c173253138be14f902741d87792a9"
+  },
+  "source_sha256": "3003b59ecd484b17dccd026ac53989889f32f34ea3c1e37ea0ae32e523b7b130",
+  "replay_tolerances": {
+    "probability_max_abs": 1e-05,
+    "nmse_db_abs": 0.0001,
+    "iterations": "exact"
+  },
+  "material_passport": {
+    "origin_skill": "academic-research-suite / experiment-agent",
+    "origin_mode": "run"
+  }
+}

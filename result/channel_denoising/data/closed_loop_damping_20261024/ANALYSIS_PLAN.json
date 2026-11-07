@@ -1,0 +1,16 @@
+{
+  "frozen_before_complete": true,
+  "comparison": "within each method, delta=0.4 and 0.6 versus delta=0.2",
+  "primary": "active-user pooled raw first-denoiser NMSE at each actual closed-loop iteration",
+  "secondary": [
+    "all-user joint channel NMSE",
+    "AER at fixed 0.5 threshold",
+    "native stop condition with original minimum 60 iterations"
+  ],
+  "speed_readout": "first of 10 consecutive aggregate iterates below -6 or -8 dB denoising NMSE, plus native stop count and median; thresholds declared before complete outcomes",
+  "known_at_analysis_declaration": "First scene at -4 dB: new delta=.4 converged at minimum60 vs .2 at74 or92, .6 instability observed in new_I; old .4/.6 unsupported. Preflight negative derivative estimates recorded.",
+  "missing": "do not average only supported cases; set pooled raw-denoiser NMSE missing if any scene is unsupported",
+  "sample_size": "4 fixed scenes per SNR; no independent-user or significance claims",
+  "support": "record unsupported queries, negative working variance, floors, rejected sites; no exclusions",
+  "scope": "exploratory pilot, original model bindings and paused user-count queue unchanged"
+}

@@ -1,0 +1,2195 @@
+=== PDF PAGE 1 ===
+arXiv:1706.06438v2  [cs.IT]  15 Mar 2018
+1
+Massive Connectivity with Massive MIMO–Part I:
+Device Activity Detection and Channel Estimation
+Liang Liu, Member , IEEE and Wei Y u, Fellow, IEEE
+Abstract—This two-part paper considers an uplink massive
+device communication scenario in which a large number of
+devices are connected to a base-station (BS), but user trafﬁ c
+is sporadic so that in any given coherence interval, only a
+subset of users are active. The objective is to quantify the
+cost of active user detection and channel estimation and to
+characterize the overall achievable rate of a grant-free tw o-
+phase access scheme in which device activity detection and
+channel estimation are performed jointly using pilot seque nces
+in the ﬁrst phase and data is transmitted in the second phase.
+In order to accommodate a large number of simultaneously
+transmitting devices, this paper studies an asymptotic reg ime
+where the BS is equipped with a massive number of antennas.
+The main contributions of Part I of this paper are as follows.
+First, we note that as a consequence of having a large pool
+of potentially active devices but limited coherence time, t he
+pilot sequences cannot all be orthogonal. However , despite
+the non-orthogonality, this paper shows that in the asympto tic
+massive multiple-input multiple-output (MIMO) regime, bo th
+the missed device detection and the false alarm probabiliti es for
+activity detection can always be made to go to zero by utilizi ng
+compressed sensing techniques that exploit sparsity in the user
+activity pattern. Part II of this paper further characteriz es
+the achievable rates using the proposed scheme and quantiﬁe s
+the cost of using non-orthogonal pilot sequences for channe l
+estimation in achievable rates.
+Index Terms —Compressed sensing, approximate message
+passing (AMP), state evolution, massive connectivity, mas sive
+multiple-input multiple-output (MIMO), Internet-of-Thi ngs
+(IoT), machine-type communications (MTC).
+I. I NTRODUCTION
+A. Motivation
+Massive connectivity is a key requirement for future
+wireless cellular networks that aim to support Internet-of -
+Things (IoT) and machine-type communications (MTC).
+In a massive device connectivity scenario, a cellular base-
+station (BS) may be required to connect to a large number of
+devices (in the order 104 to 106), but a key characteristic of
+Manuscript received June 17, 2017, revised November 9, 2017 and
+January 30, 2018, accepted March 8, 2018. The materials in th is paper
+have been presented in part at the IEEE International Sympos ium on
+Information Theory (ISIT), Aachen, Germany, July 2017 [1]. The associate
+editor coordinating the review of this paper and approving i t for publication
+was Dr. Mathini Sellathurai. This work is supported by Natur al Sciences
+and Engineering Research Council (NSERC) of Canada via a dis covery
+grant, a Steacie Memorial Fellowship and the Canada Researc h Chairs
+program.
+The authors are with The Edward S. Rogers Sr. Department
+of Electrical and Computer Engineering, University of Toro nto,
+Toronto, Ontario, Canada, M5S3G4, (e-mails:lianguot.liu @utoronto.ca;
+weiyu@comm.utoronto.ca).
+the IoT and MTC trafﬁc is that the device activity patterns
+are typically sporadic so that at any given time only a small
+fraction of potential devices are active [2]. The sporadic
+trafﬁc pattern may be due, for example, to the fact that
+often devices are designed to sleep most of the time in order
+to save energy and are activated only when triggered by
+external events, as typically the case in a sensor network.
+In these scenarios, the BS needs to dynamically identify the
+active users before data transmissions take place. The cent ral
+question this paper seeks to address is how to quantify the
+cost of device activity detection and to account for its impa ct
+on the overall achievable rate in the cellular system design .
+This paper considers the uplink of a single-cell massive
+connectivity scenario consisting of a BS equipped with M
+antennas connected to a pool of N potential devices, of
+which a fraction of K devices are active at any given time,
+as shown in Fig. 1. In each coherence time interval T , the
+BS needs to identify the active devices, to estimate their
+channels and to decode the transmitted messages from the
+devices. In particular, a two-phase multiple-access schem e
+is adopted in which joint activity detection and channel
+estimation are performed using pilot sequences in the ﬁrst
+phase of duration L, while data transmission takes place in
+the second phase of duration T − L, as shown in Fig. 2.
+Note that we choose to combine user activity detection and
+channel estimation in order to minimize scheduling latency .
+Observe that in order to achieve an appreciable data rate,
+M has to be in the same order as K. This intuition can
+be justiﬁed from a degree-of-freedom (DoF) perspective by
+noting that when coherence time is large, the achievable
+DoF of a multiple-access system (without assuming a priori
+channel state information (CSI) at the receiver) is at maxim al
+when the number of active devices equals to the number
+of receive antennas at the BS [3]. To accommodate a
+large number of active devices, the above result motivates
+us to consider the massive multiple-input multiple-output
+(MIMO) regime with large M .
+Further, in order to achieve reasonably accurate uplink
+channel estimation, L needs to be larger than K. Y et, since
+L is constrained by the coherence time and the total number
+of potential devicesN can be very large, we usually have the
+situation where N >L. Thus, it is typically not possible to
+assign orthogonal pilot sequences to all the potential devi ces.
+The main objectives of this paper are to quantify the per-
+formance of device activity detection and channel estimati on
+when randomly generated non-orthogonal pilot sequences
+
+=== PDF PAGE 2 ===
+2
+Fig. 1. System model of the massive device communication net work.
+User Detection and Channel Trainging 
+User Detection and 
+Channel Training Data Transmission 
+L T-L
+Fig. 2. Two-phase transmission protocol.
+are assigned for each device, and to examine its impact on
+the overall achievable data rate. Toward this end, we propos e
+the use of approximate message passing (AMP) algorithm
+[4] in compressed sensing to exploit sparsity in device
+activity detection. We further analyze the resulting devic e
+detection performance and the channel estimation error by
+utilizing large-system result where N , K, M and L go to
+inﬁnity in certain limits, thereby allowing a characteriza tion
+of the overall achievable data rate for massive connectivit y.
+The main theoretical results of Part I of this paper show
+that massive MIMO is especially well suited for massive
+device connectivity in the sense that device activity detec tion
+error can always be driven to zero asymptotically in the limi t
+as M goes to inﬁnity. Despite the asymptotically perfect
+detection, however, this paper also shows that the channel
+estimation error always remains—because of the use of non-
+orthogonal pilots—and that channel estimation error is the
+main cost of user activity detection on achievable rate. The
+analytical results of Part II of this paper [5] quantify this
+additional channel estimation error and shows its impact
+on achievable rate and optimal pilot length for massive
+connectivity.
+B. Prior W ork
+Conventional cellular networks are designed based on
+the scheduling of active users to time or frequency slots.
+The overhead of scheduling massive number of sporadically
+active users over a separate control channel can, however,
+incur signiﬁcant overhead. To this end, contention-based
+schemes have been proposed to deal with this issue. For
+example, [6]–[8] investigate a random access protocol in
+which each active user picks one of the orthogonal signature
+sequences at random and sends it to the BS, and a connection
+is established if the selected preamble is not used by the
+other users. The main drawback of this random access
+protocol is the need for contention resolution, since colli sion
+is unavoidable with a massive number of devices.
+As an alternative, grant-free non-orthogonal user access
+schemes have recently attracted signiﬁcant attention, whe re
+the active users send their pilot sequences to the BS simul-
+taneously so that the BS can perform user activity detec-
+tion, channel estimation, and/or data decoding in one shot
+[9]–[17]. In contrast to the traditional channel estimatio n
+process, the devices in these systems use non-orthogonal
+pilot sequences, due to the massive number of devices in the
+network and limited coherence time of the wireless channels .
+The key observation made in [9]–[17] is that the sparsity in
+user activity pattern allows the formulation of a compresse d
+sensing problem. For example, assuming perfect CSI at the
+BS, a joint user activity and data detection for code divisio n
+multiple access (CDMA) systems is investigated in [9], [10]
+by exploiting various sparsity structure. When CSI is not
+available at the BS, user activity detection and channel
+estimation is jointly performed in [11], [12], where [11]
+proposes a modiﬁed Bayesian compressed sensing algorithm
+in a cloud radio-access network, and [12] introduces a one-
+shot random access protocol and employs a basis pursuit
+denoising method with a detection error bound in an or-
+thogonal frequency division multiplexing (OFDM) system.
+Moreover, [13]–[16] perform joint information decoding in
+addition based on various compressed sensing techniques.
+One of the open issues in the above line of work is
+the lack of a rigorous performance analysis for the non-
+orthogonal multiple-access scheme for massive connectivi ty.
+Toward this end, the recent work of [17], [18] proposes the
+use of the AMP algorithm for the joint user activity detectio n
+and channel estimation problem, and further shows that a
+state evolution analysis [19] of the AMP algorithm allows
+an analytic characterization of the missed detection and fa lse
+alarm probabilities for device detection. The analysis of
+[17], [18] is however quite involved, especially when the
+BS is equipped with multiple antennas. Further, [17], [18]
+analyze device detection performance only. Its impact on
+user achievable rate has not been investigated.
+This paper makes further progress in this direction by
+making an observation that the characterization of device
+detection performance and user achievable rates can be
+simpliﬁed substantially in the massive MIMO regime where
+the number of BS antennas goes to inﬁnity. In particular, our
+asymptotic analysis provides a key insight that the channel
+estimation error, rather than detection error, is the limit ing
+factor in the massive MIMO regime.
+We emphasize that while massive MIMO system has been
+extensively studied in the literature [20]–[24], conventi onal
+analysis focuses on the regime of small number of users as
+compared to the number of BS antennas. By contrast, the
+analysis of this paper assumes that the number of devices
+can also go to inﬁnity, while focusing on the cost of device
+detection in the overall design. We also note here that the
+information theoretic upper bounds for massive connectivi ty
+
+=== PDF PAGE 3 ===
+3
+have been derived in [3], [25] for both the cases with and
+without CSI, respectively. However, how to approach these
+rate upper bounds in a practical massive connectivity syste m
+is still an open problem.
+The main tool in our analysis is the AMP algorithm,
+which is originally proposed to solve the single measuremen t
+vector (SMV) based sparse signal recovery problem [4],
+then generalized to the multiple measurement vector (MMV)
+problem in [26], [27], corresponding to the multiple-anten na
+case in our setting. The AMP algorithm is also generalized
+to the case where the input signal is not independently
+and identically distributed (i.i.d.) in [28]. As compared
+to other compressed sensing techniques, AMP has many
+appealing advantages. First, the AMP algorithm has low
+complexity similar to other iterative thresholding algori thms
+while achieving the reconstruction power of the basis pursu it
+at the same time [4]. Second, the performance of the AMP
+algorithm can be accurately predicated by state evolution
+[19].
+C. Main Contributions
+This two-part paper provides an analytical performance
+characterization of the two-phase transmission protocol i n
+a single-cell massive connectivity scenario with massive
+MIMO, in which the active users send their non-orthogonal
+pilot sequences to the BS simultaneously for user activity
+detection and channel estimation in the ﬁrst phase of the
+coherence time, then transmit data to the BS for information
+decoding in the second phase. By studying certain asymp-
+totic regime where the number of BS antennas, the number
+of potential devices, and the number of active devices all go
+to inﬁnity, this paper is able to analyze the performance of
+user activity detection and channel estimation, and furthe r
+to characterize the overall achievable rates while taking t he
+cost of both user activity detection and channel estimation
+into consideration. Speciﬁcally, the main contributions o f
+this paper are as follows.
+In Part I of this paper, we design a minimum mean-
+squared error (MMSE) denoiser in the vector AMP algo-
+rithm for user activity detection and channel estimation
+based on statistical channel information. By exploiting th e
+state evolution of vector AMP , we show that the MMSE-
+based AMP algorithm is capable of driving the user de-
+tection error probability down to zero as the number of
+antennas at the BS goes to inﬁnity. This implies that perfect
+user activity detection is possible in a practical IoT/MTC
+system if the BS is equipped with a sufﬁciently large
+number of antennas. Further, the statistical distribution s of
+the estimated channels can also be obtained analytically
+thanks to the state evolution. These results are used in Part
+II of this paper [5] to characterize achievable transmissio n
+rates of massive connectivity.
+D. Organization
+The rest of Part I of this paper is organized as follows.
+Section II describes the system model for massive connectiv -
+ity and introduces the two-phase transmission protocol for
+user detection, channel estimation, and data transmission .
+Section III presents the vector AMP based user activity de-
+tection and channel estimation scheme; Section IV analyzes
+its detection error probability and channel estimation err or
+performance; Section V further provides an asymptotic anal -
+ysis in the massive MIMO regime. Section VI provides the
+numerical simulation results pertaining to device detecti on
+and channel estimation error. Finally, Section VII conclud es
+this Part I of the paper.
+E. Notation
+Scalars are denoted by lower-case letters, vectors by bold-
+face lower-case letters, and matrices by bold-face upper-
+case letters. The identity matrix and the all-zero matrix of
+appropriate dimensions are denoted as I and 0, respectively.
+For a matrix M of arbitrary size, M H and M T denote
+its conjugate transpose and transpose, respectively. The
+expectation operator is denoted as E[·]. The distribution of
+a circularly symmetric complex Gaussian (CSCG) random
+vector with mean x and covariance matrix Σ is denoted by
+CN (x, Σ); the space of complex matrices of size m × n is
+denoted as Cm× n.
+II. S YSTEM MODEL
+Consider the uplink of a single-cell cellular network
+consisting of N users, denoted by the set N = {1, · · ·,N }.
+It is assumed that the BS is equipped with M antennas,
+while each user is equipped with one antenna. The complex
+uplink channel vector from user n to the BS is denoted by
+hn ∈ CM× 1, n = 1, · · ·,N . This paper adopts a block-
+fading model, in which all the channels follow independent
+quasi-static ﬂat-fading within a block of coherence time,
+where hn’s remain constant, but vary independently from
+block to block. Moreover, we model the channel vector
+hn as hn = √
+βngn, ∀n, where gn ∼ CN (0, I) de-
+notes the Rayleigh fading component, and βn denotes the
+path-loss and shadowing component. Therefore, we have
+hn ∼ CN (0,β nI n), ∀n. The path-loss and shadowing
+components depend on the user location and are assumed to
+be known at the BS. 1
+The sporadic nature of user trafﬁc is modeled as follows.
+We assume that the users are synchronized and each user
+decides in each coherence block whether or not to access the
+channel with probability ǫ in an i.i.d. manner. Thus, within
+each coherence block only a subset of the users are active.
+In each particular block, we deﬁne the user activity indicat or
+for user n as follows:
+α n =
+{ 1, if user n is active,
+0, otherwise, ∀n, (1)
+1In this paper we mainly focus on the scenario where the device s are
+stationary, e.g., home security systems, smart metering sy stems, etc.
+
+=== PDF PAGE 4 ===
+4
+so that Pr(α n = 1) = ǫ, Pr(α n = 0) = 1 − ǫ, ∀n. Further,
+we deﬁne the set of active users within a coherence block
+as
+K = {n :α n = 1,n = 1, · · ·,N }. (2)
+We denote the number of active users as K, i.e., K = |K|.
+The overall channel input-output relationship is modeled a s:
+y =
+∑
+n
+hnα nxn + z =
+∑
+k∈K
+hkxk + z, (3)
+where xn ∈ C, y ∈ CM× 1, and z ∈ CM× 1 respectively are
+the user transmitted signal, the channel output at the BS,
+and the additive white Gaussian noise (AWGN) vector dis-
+tributed as CN (0,σ 2I). For simplicity, this paper assumes
+no power adaptation so that all the devices transmit at a
+constant power ρ, i.e.,
+E|xn|2 =ρ. (4)
+Further, we do not account for intercell interference. The
+objective at the BS is to detect which users are active and
+to decode their transmitted messages within each coherence
+block.
+This paper adopts a grant-free multiple-access scheme as
+shown in Fig. 2, in which each coherence block of length
+T symbols is divided into two phases. In the ﬁrst phase, the
+active users send their pilot sequences of length L symbols
+to the BS synchronously, and the BS jointly detects the user
+activities, i.e.,α n’s, as well as the active users’ channels, i.e.,
+hn’s, ∀n ∈ K . In the second phase, the active users send
+their data to the BS using the remaining T − L symbols, and
+the BS decodes these messages based on the knowledge of
+user activities and channels obtained in the ﬁrst phase.
+For the massive connectivity scenario with a large number
+of potential devices, the length of pilot sequence is typica lly
+smaller than the total number of devices, i.e., L < N. In
+this case, it is not possible to assign mutually orthogonal
+sequences to all the users. Following the pioneering works
+on AMP [4], [19], [26]–[28], this paper assumes that pilot
+sequences are generated randomly, i.e., each user n is
+assigned a unique pilot sequence
+an = [an, 1, · · ·,a n,L ]T ∈ CL× 1, (5)
+whose entries are generated from i.i.d. complex Gaussian
+distribution with zero mean and variance 1/L , i.e.,
+an,l ∼ CN
+(
+0, 1
+L
+)
+, (6)
+so that each pilot sequence has unit norm, i.e., ∥an∥2 = 1,
+asL → ∞ . It is further assumed that the pilot sequences of
+all the users are known by the BS.
+To facilitate analysis, this paper considers a certain
+asymptotic regime where N → ∞ , so that K → ǫN, and
+the empirical distribution of β1, · · ·,β N converges to a ﬁxed
+distribution denoted by pβ .
+III. U SER ACTIVITY DETECTION AND CHANNEL
+ESTIMATION VIA AMP
+In this section, we show that the AMP algorithm can be
+used in the ﬁrst phase for user activity detection and channe l
+estimation by exploiting the sparsity in user activity.
+A. Device Activity Detection and Channel Estimation as a
+Compressed Sensing Problem
+Consider the ﬁrst phase of massive device transmission
+in which each user sends its pilot sequence synchronously
+through the channel. Deﬁne ρpilot as the identical transmit
+power of the active users in the ﬁrst transmission phase.
+The transmit signal of user n can be expressed as α n
+√
+ξan,
+whereξ =Lρpilot denotes the total transmit energy of each
+active user in the ﬁrst phase. 2 The received signal at the BS
+is then
+Y =
+√
+ξ
+∑
+n∈N
+α nanhT
+n + Z, (7)
+where Y ∈ CL× M is the matrix of received signals across
+M antennas over L symbols, and Z = [ z1, · · ·, zM ] with
+zm ∼ CN (0,σ 2I), ∀m, is the independent AWGN at the
+BS. Now deﬁne
+A = [a1, · · ·, aN ]. (8)
+Let xn =α nhn and deﬁne
+X = [x1, · · ·, xN ]T. (9)
+Then, the training phase can be modeled as the following
+matrix equation
+Y =
+√
+ξAX + Z, (10)
+where the rows of the matrix X follow a Bernoulli Gaussian
+distribution:
+pxn = (1 − ǫ)δ0 +ǫphn
+, ∀n. (11)
+Here, δ0 denotes the point mass measure at zero, and
+phn
+denotes the distribution of user n’s channel hn ∼
+CN (0,β nI).
+The goal for the BS in the ﬁrst phase is to detect the user
+activities and to estimate the user channels by recovering
+X based on the noisy observation Y . As X is row sparse,
+i.e., many xn’s are zero, such a reconstruction problem is a
+compressed sensing problem. Further, as the sparsity patte rn
+is sensed at multiple antennas, this is an MMV compressed
+sensing setup.
+Among many powerful compressed sensing techniques,
+this paper adopts a low-complexity AMP algorithm to
+recover the row-sparse matrix X. Before proceeding to
+2In practice, the pilot sequence length L is large but ﬁnite. It is thus
+possible that the power of the randomly generated pilot √
+ξan is slightly
+larger than ξ for some users. To satisfy the transmit power constraint,
+in practice we can generate the pilot sequences based on a mod iﬁed
+distribution: an,l ∼ CN (0, 1/L − ζ). With a careful choice of ζ, the
+probability that one pilot sequence violates the power cons traint can be
+close to zero.
+
+=== PDF PAGE 5 ===
+5
+evaluate its performance for user activity detection and
+channel estimation, we ﬁrst brieﬂy review the vector versio n
+of the AMP algorithm in next subsection.
+B. V ector AMP Algorithm
+The vector AMP algorithm is ﬁrst proposed in [26]. This
+paper considers a version of the algorithm proposed in [18]
+that aims to provide an estimate ˆX(Y ) based on Y that
+minimizes the mean-squared error (MSE)
+MSE = EXY ||ˆX(Y ) − X||2
+2 (12)
+assuming the prior distribution (11) and the channel model
+(10). The algorithm is based on an approximation of the
+message passing algorithm for solving the above problem.
+Starting with X 0 = 0 and R0 = Y , the general form
+of the vector AMP algorithm proceeds at each iteration as
+[18], [26], [28]:
+xt+1
+n =ηt,n ((Rt)H an + xt
+n), (13)
+Rt+1 = Y − AX t+1 + N
+L Rt
+N∑
+n=1
+η′
+t,n ((Rt)H an + xt
+n)
+N ,
+(14)
+where t = 0 , 1, · · ·is the index of the iteration, X t =
+[xt
+1, · · ·, xt
+N ]T is the estimate of X at iteration t, and
+Rt = [ rt
+1, · · ·, rt
+L]T ∈ CL× M denotes the correspond-
+ing residual. Intuitively, the algorithm performs in (13) a
+matching ﬁltering of the residual for each user n using
+its pilot sequence, followed by a denoising step using an
+appropriately designed denoiser ηt,n (·) : CM× 1 → CM× 1.
+The residual is then updated in (14), but corrected with
+a so-called Onsager term involving η′
+t,n (·), the ﬁrst-order
+derivative of ηt,n (·).
+A remarkable property of the AMP algorithm is that when
+applied to the compressed sensing problem with the entries
+of the sensing matrix A generated from i.i.d. Gaussian
+distribution, its detection performance in certain asympt otic
+regime can be accurately predicted by the so-called state
+evolution. The asymptotic regime is when L,K,N → ∞ ,
+while their ratios converge to some ﬁxed positive values
+N/L → ω andK/N → ǫ withω,ǫ ∈ (0, ∞ ), while keeping
+the total transmit power ﬁxed at ξ. Note that we ﬁx the total
+transmit power rather than allowing it to scale with L here in
+this hypothetical asymptotic system in order to carry out th e
+state evolution analysis. (This implies that the per-symbo l
+power goes down to zero in this hypothetical asymptotic
+regime.) The analysis is then used to predict the system
+performance at ﬁnite (but large) L,K,N and ξ = Lρpilot.
+As shown in [17], this approach is found to corroborate very
+well with simulation results.
+Speciﬁcally, given β ∼ pβ , deﬁne a random vector
+X β ∈ CM× 1 with a distribution (1 − ǫ)δ0 +ǫphβ
+, where
+phβ
+denotes the distribution hβ ∼ CN (0,β I). Let V ∈
+CM× 1 ∼ CN (0, I) be independent of X β . Then, the state
+evolution is the following recursion for t ≥ 0 [18], [19],
+[26], [28]:
+Σt+1 = σ 2
+ξ I +ω E
+[
+(ηt,β (X β + Σ
+1
+2
+t V ) − X β )
+(ηt,β (X β + Σ
+1
+2
+t V ) − X β )H
+]
+, (15)
+where Σt is referred to as the state, and the expectation
+is over β , X β and V . Note that in the above equation,
+ηt,n (·) is replaced by ηt,β (·) for convenience, since n and
+βn are interchangeable. Moreover, the initial point to the
+above state evolution is the noise covariance matrix after
+the ﬁrst matched ﬁltering, i.e.,
+Σ0 = σ 2
+ξ I +ω E[X β X H
+β ]. (16)
+Deﬁne a set of random vectors ˆX t,n = X n + Σ
+1
+2
+t V n,
+∀n, where X n ∈ CM× 1 follows the distribution given in
+(11), and V n ∈ CM× 1 ∼ CN (0, I) is independent of X n.
+The state evolution analysis says that in the vector AMP
+algorithm, applying the denoiser to (aH
+n Rt)H +xt
+n as shown
+in (13) is statistically equivalent to applying the denoise r to
+ˆxt,n = xn + Σ
+1
+2
+t vn =α nhn + Σ
+1
+2
+t vn, ∀n, (17)
+where the distributions of ˆxt,n and vn are captured by the
+random vectors ˆX t,n and V n [19], [26], [28].
+C. MMSE Denoiser Design for V ector AMP
+The key advantage of the equivalent signal model given
+in (17) is the decoupling of the estimation between differen t
+users, which allows us to design the denoiser ηt,n (·) in the
+vector AMP algorithm to minimize the MSE (12) based on
+the above decoupled signal model. Speciﬁcally, in the tth
+iteration of the AMP algorithm, the MMSE denoiser ηt,n (·)
+is given by the conditional expectation E[X n|ˆX t,n ]. This
+denoiser has been derived in [18], [26], but is re-derived in
+Appendix A and expressed below in a form that highlights
+its structural dependence in M :
+ηt,n (ˆxt,n ) = E[X n|ˆX t,n = ˆxt,n ]
+=φ t,nβn(βnI + Σt)− 1 ˆxt,n, ∀t,n, (18)
+where
+φ t,n = 1
+1 + 1− ǫ
+ǫ exp (−M (πt,n − ψ t,n )), (19)
+πt,n = ˆxH
+t,n (Σ− 1
+t − (Σt +βnI)− 1)ˆxt,n
+M , (20)
+ψ t,n = log det(I +βnΣ− 1
+t )
+M . (21)
+Examining the functional form of the MMSE denoiser
+(18)-(21), it is worthwhile to note that if all the users are
+active, i.e., ǫ = 1 , it follows that φ t,n = 1 , ∀n, in which
+case the MMSE denoiser given in (18) reduces to the linear
+MMSE estimator:ηt,n (ˆxt,n ) = βn(βnI +Σt)− 1 ˆxt,n , which
+is widely used for channel training when the user activity
+
+=== PDF PAGE 6 ===
+6
+is known [20]–[22]. When the device activity needs to be
+detected, the above MMSE denoiser is a non-linear function
+of ˆxt,n due to the functional form of φ t,n .
+D. State Evolution for MMSE Denoiser Based V ector AMP
+The general state evolution of the AMP algorithm as
+in (15) applies to any arbitrary denoiser ηt,n (·). With the
+MMSE denoiser (18), the state evolution can be considerably
+simpliﬁed.
+Theorem 1: Consider the MMSE denoiser based vector
+AMP algorithm for device detection and channel estimation
+in the asymptotic regime in which the number of users N ,
+the number of active users K, and the length of the pilot
+sequencesL all go to inﬁnity, while their ratios converge to
+some ﬁxed positive values, i.e., N/L → ω and K/N → ǫ
+with ω,ǫ ∈ (0, ∞ ), and while keeping the total transmit
+power ξ ﬁxed. The matrix Σt in the state evolution (15)
+always stays as a diagonal matrix with identical diagonal
+entries after each iteration, i.e.,
+Σt =τ2
+t I, ∀t ≥ 0. (22)
+In this case, the signal model given in (17) reduces to
+ˆxt,n = xn +τtvn. (23)
+Moreover, the MMSE denoiser given in (18) reduces to
+ηt,n (ˆxt,n ) = φ t,n
+( βn
+βn +τ2
+t
+)
+ˆxt,n, ∀t,n, (24)
+where φ t,n is given in (19), while πt,n and ψ t,n are
+respectively given by
+πt,n =
+( 1
+τ2
+t
+− 1
+τ2
+t +βn
+) ˆxH
+t,n ˆxt,n
+M , (25)
+ψ t,n = log
+(
+1 + βn
+τ2
+t
+)
+. (26)
+At last, τ2
+t can be iteratively obtained as follows
+τ2
+0 = σ 2
+ξ +ωǫEβ [β ], (27)
+τ2
+t+1 = σ 2
+ξ +ωǫEβ
+[ βτ 2
+t
+β +τ2
+t
+]
++ω Eβ [ϑ t,β (τ2
+t )], t ≥ 0,
+(28)
+with the term ϑ t,β (τ2
+t ) expressed as
+ϑ t,β (τ2
+t ) = 1
+M E ˆX t,β
+[
+φ t,β (1 − φ t,β ) β 2
+(β +τ2
+t )2
+ˆX
+H
+t,β ˆX t,β
+]
+.
+(29)
+Here, ˆX t,β is the random vector that captures the distribu-
+tion of the signal ˆxt,n given in (23), and φ t,β captures the
+distribution of φ t,n , which is implicitly a function of ˆxt,n .
+Proof: Please refer to Appendix B.
+The key observation of Theorem 1 is that because each
+user’s channels across the multiple receive antennas at the
+BS are assumed to be uncorrelated, the residual noise in (17)
+remains uncorrelated across the antennas. This is in spite o f
+the fact that the vector AMP algorithm involves non-linear
+processing in φ t,n as in (18). This scalar form of the state
+evolution signiﬁcantly simpliﬁes performance analysis of the
+device activity detection and channel estimation.
+E. Device Detection and Channel Estimation by V ector
+AMP
+We are now ready to state the proposed device activity
+detector and channel estimator. Observe that the functiona l
+form of φ t,n as given in (18) is such that for large M , we
+have thatφ t,n tends to 1 ifπt,n >ψ t,n and 0 ifπt,n <ψ t,n .
+As a result, the AMP algorithm suggests that it is reasonable
+to adopt a threshold strategy for user activity detection, i .e.,
+to declare a user as active or not simply based on whether
+πt,n exceeds the threshold of ψ t,n . Using (25)-(26) and the
+scalar form of the AMP state evolution, the proposed device
+activity detector and channel estimator are as follows.
+Deﬁnition 1: The MMSE vector AMP algorithm based
+device activity detector is deﬁned as the following thresho ld-
+based detector. After t iterations of AMP , compute τ2
+t
+according to (27)-(28). For each user n, compare πt,n and
+ψ t,n as deﬁned in (25)-(26), i.e.,
+̟ (xt
+n, Rt) ={
+1, if (( Rt)H an + xt
+n)H ((Rt)H an + xt
+n)>θ t,n,
+0, if (( Rt)H an + xt
+n)H ((Rt)H an + xt
+n)<θ t,n,
+(30)
+with a threshold θt,n =M log
+(
+1 + β n
+τ 2
+t
+) /(
+1
+τ 2
+t
+− 1
+τ 2
+t +β n
+)
+.
+Further, given that a device k is declared active, its channel
+is estimated as:
+ˆht,k = xt
+k. (31)
+We remark that the MMSE denoiser given in (24) is a
+scaled version of the observation. As a result, the complexi ty
+of the vector AMP algorithm introduced in (13) and (14)
+mainly comes from the matrix multiplication AX t+1. Since
+A ∈ CL× N and X t+1 ∈ CN × M , the complexity of the
+AMP algorithm is in the order of O(LNM ) per iteration.
+IV. P ERFORMANCE OF VECTOR AMP B ASED DETECTOR
+In this section, we analyze the performance of the above
+MMSE vector AMP based device activity detector in terms
+of missed detection and false alarm error probabilities, as
+well as the associated channel estimation error based on
+the state evolution, as functions of the number of receive
+antennas M at the BS. The results of this section pertain
+to ﬁnite M . Asymptotic result with M going to inﬁnity is
+presented in the next section.
+A. Probabilities of Missed Detection and False Alarm
+We are ready to examine the error probability for the
+MMSE vector AMP based detector as deﬁned in (30). Let
+the missed detection and false alarm probabilities of user n
+
+=== PDF PAGE 7 ===
+7
+after the tth iteration of the MMSE denoiser based AMP
+algorithm be deﬁned as
+P MD
+t,n (M ) = Pr(̟ (xt
+n, Rt) = 0 |α n = 1), (32)
+and
+P F A
+t,n (M ) = Pr(̟ (xt
+n, Rt) = 1 |α n = 0), (33)
+respectively, as functions of M , the number of antennas at
+the BS. The following theorem characterizes P MD
+t,n (M ) and
+P F A
+t,n (M ) analytically in terms of τ2
+t and M .
+Theorem 2: Consider the device activity detector for
+massive connectivity (30), based on the vector AMP algo-
+rithm with MMSE denoiser. Fix the number of BS receive
+antennas M , and consider the asymptotic regime in which
+the number of users N , the number of active users K,
+and the length of the pilot sequences L all go to inﬁnity,
+while their ratios converge to some ﬁxed positive values,
+i.e.,N/L → ω andK/N → ǫ withω,ǫ ∈ (0, ∞ ), and while
+keeping the total transmit power ξ ﬁxed. After t iterations
+of the AMP algorithm, the probabilities of missed detection
+and false alarm of user n can be expressed, respectively, as
+P MD
+t,n (M ) = Γ
+(M,b t,nM )
+Γ(M ) , (34)
+and
+P F A
+t,n (M ) =
+¯Γ (M,c t,nM )
+Γ(M ) , (35)
+where Γ(·), Γ(·, ·), and ¯Γ(·, ·) denote the Gamma function,
+lower incomplete Gamma function, and upper incomplete
+Gamma function [29], respectively, and
+bt,n = τ2
+t
+βn
+log
+(
+1 + βn
+τ2
+t
+)
+, (36)
+ct,n =
+( βn +τ2
+t
+βn
+)
+log
+(
+1 + βn
+τ2
+t
+)
+, (37)
+and τ2
+t is given by (27)-(28).
+Proof: Please refer to Appendix C.
+The above analysis of detection probabilities of error
+hinges upon the Gaussian signal model of the AMP state
+evolution (17). As consequence of the scalar signal model
+(23), the proposed device activity detector (30) becomes
+a threshold detector on a χ 2-distribution as deﬁned in
+(25). This allows both missed detection and false alarm
+probabilities to be characterized analytically.
+An important observation is that due to the fact that
+a > log(1 + a) > a
+1+a for a > 0, we have that bt,n < 1
+and ct,n > 1. As result, one can show that both error
+probabilities eventually go to zero as M → ∞ . This
+asymptotic behavior is explored in more detail in the next
+section.
+Finally, we note that at the convergence of the AMP
+algorithm, τ2
+t converges to the ﬁxed-point solution to (28),
+i.e., τ2
+∞ . The detection error probabilities may then be
+expressed as (34)-(35) with τ2
+t replaced by τ2
+∞ .
+B. Analysis of Channel Estimation Error
+The state evolution analysis of AMP further allows us to
+evaluate the channel estimation performance. For any activ e
+user k ∈ K , the estimated channel ˆht,k is as deﬁned in
+(31), with ∆ht,k = ht,k − ˆht,k denoting the corresponding
+channel estimation error. The following theorem character -
+izes the covariance matrices of the estimated channels and
+the channel estimation errors of the active users as functio n
+of the number of BS antennas M .
+Theorem 3: Consider the channel estimator (31) for mas-
+sive connectivity, based on the vector AMP algorithm with
+MMSE denoiser. Fix the number of BS receive antennas M ,
+and consider the asymptotic regime in which the number of
+users N , the number of active users K, and the length of
+the pilot sequences L all go to inﬁnity, while their ratios
+converge to some ﬁxed positive values, i.e., N/L → ω and
+K/N → ǫ with ω,ǫ ∈ (0, ∞ ), and while keeping the total
+transmit power ξ ﬁxed. For each active user k ∈ K , the
+covariance matrices of its estimated channel and channel
+estimation error are given, respectively, by
+Cov(ˆht,k, ˆht,k ) = υt,k (M )I, (38)
+Cov(∆ht,k, ∆ht,k ) = ∆υt,k (M )I, (39)
+where υt,k (M ) and ∆υt,k (M ) are given in (40) and (41)
+at the bottom of the page, where the expectation is over
+both the channel hk and the residual noise vk modeled
+as Gaussian random variables, and τ2
+t is given by state
+evolution (27)-(28).
+Proof: Please refer to Appendix D.
+As already noted earlier, at the convergence of the AMP
+algorithm,τ2
+t converges toτ2
+∞ . Then, the channel estimation
+error converges to (38)-(39) with τ2
+t replaced by τ2
+∞ .
+V. A SYMPTOTIC PERFORMANCE WITH MASSIVE MIMO
+We have so far characterized the probabilities of missed
+detection and false alarm as well as the covariance matrices
+of the estimated channels and channel estimation errors of
+the proposed MMSE denoiser based AMP detector in the
+asymptotic regime where N,K,L all go to inﬁnity with
+ﬁxed ratios, but with ﬁxed M . In this section, we further let
+υt,k (M ) = 1
+M E
+[
+φ 2
+t,k
+( βk
+βk +τ2
+t
+) 2
+(hk +τtvk)H (hk +τtvk)
+]
+, (40)
+∆υt,k (M ) = 1
+M E
+[ (
+φ t,k
+βk
+βk +τ2
+t
+(hk +τtvk) − hk
+) H (
+φ t,k
+βk
+βk +τ2
+t
+(hk +τtvk) − hk
+) ]
+. (41)
+
+=== PDF PAGE 8 ===
+8
+M go to inﬁnity and study the asymptotic massive MIMO
+regime to gain further insight.
+A. Asymptotic Performance of User Activity Detection
+A main result of this paper is to show that the proposed
+device activity detector performs well in the massive MIMO
+regime. The intuitive reason behind this result is that the
+threshold detection (30) involves a comparison between πt,n
+as in (25) with ψ t,n as in (26). According to the AMP state
+evolution signal model (23), as M → ∞ , by the law of large
+numbers, we have
+πt,n →
+
+
+
+(
+1
+τ 2
+t
+− 1
+τ 2
+t +β n
+)
+(τ2
+t +βn) if α n = 1(
+1
+τ 2
+t
+− 1
+τ 2
+t +β n
+)
+τ2
+t if α n = 0
+which simpliﬁes to πt,n → βn/τ 2
+t if user n is active, and
+πt,n → βn/ (τ2
+t +βn) if it is not. Now compare with ψ t,n =
+log(1 +βn/τ 2
+t ). Using the fact that a> log(1 +a)> a
+1+a
+for all a> 0, we always have
+βn
+τ2
+t
+> log
+(
+1 + βn
+τ2
+t
+)
+> βn
+τ2
+t +βn
+(42)
+as long as βn > 0 and τ2
+t < ∞ . Thus, we have that
+asymptotically asM → ∞ , it is always true that πt,n >ψ t,n
+whenα n = 1 andπt,n <ψ t,n whenα n = 0. In other words,
+the proposed detector always makes the correct decision in
+the massive MIMO regime.
+The above argument can be made more precise by utiliz-
+ing the analytic probabilities of missed detection and fals e
+alarm expressions as characterized in Theorem 2 to show
+that the error probabilities actually go down exponentiall y
+in M .
+Theorem 4: The probabilities of missed detection and
+false alarm for any user n after t iterations of AMP
+algorithm, as characterized in (34) and (35) for the MMSE
+denoiser based device activity detector, scale in M , the
+number of receive antennas at the BS, as follows:
+P MD
+t,n (M ) = − exp(− 1
+2Mν 2
+t,n )
+2
+√
+2πM
+( 1
+bt,n − 1 + 1
+νt,n
+)
++o
+( exp(−M )√
+M
+)
+, (43)
+and
+P F A
+t,n (M ) = exp(− 1
+2Mς2
+t,n )
+2
+√
+2πM
+( 1
+ct,n − 1 + 1
+ςt,n
+)
++o
+( exp(−M )√
+M
+)
+, (44)
+where bt,n and ct,n are as deﬁned in (36) and (37) respec-
+tively, and
+νt,n = −
+√
+2(bt,n − 1 − logbt,n ), (45)
+ςt,n =
+√
+2(ct,n − 1 − logct,n ). (46)
+Further, assuming that βn is bounded below, i.e., βn >
+βmin, ∀n, we then have bt,n ≤ 1 − ε(1)
+t,n , ct,n ≥ 1 + ε(2)
+t,n ,
+νt,n ≤ − ε(3)
+t,n , ςt,n ≥ ε(4)
+t,n , for some positive constants ε(1)
+t,n ,
+ε(2)
+t,n , ε(3)
+t,n , and ε(4)
+t,n that are independent of M , and that
+lim
+M→∞
+P MD
+t,n (M ) = lim
+M→∞
+P F A
+t,n (M ) = 0, ∀t,n. (47)
+Proof: Please refer to Appendix E.
+It is interesting to note that Theorem 4 shows that the
+device detection error probability goes to zero as M → ∞
+for any arbitrary t. Thus remarkably, this is true even for
+t = 1 , i.e., with inﬁnitely large M , detection is already
+correct after just one iteration. Further, it is also true fo r
+when t → ∞ .
+Theorem 4 is also striking in stating that accurate user
+activity detection is guaranteed as long as M is large,
+regardless of the relative ratios between N,K,L . Thus, this
+is true even if L ≤ K. However as shown later in the
+paper, channel estimation performance would be poor in this
+L ≤ K case.
+B. State Evolution in the Asymptotic Massive MIMO Regime
+Theorem 4 states that when M → ∞ , the detection
+strategy (30) is almost always successful. This also implie s
+that the MMSE denoiser in the AMP algorithm (19) must
+converge as follows
+φ t,n →
+{ 1, if α n = 1,
+0, if α n = 0. (48)
+Using this fact, the state evolution equation of the AMP
+algorithm can be signiﬁcantly simpliﬁed. Intuitively, sin ce
+φ t,n almost surely converges to 0 or 1 in the massive MIMO
+regime, the term ϑ t,β n (M ) in (29), which captures the
+cost of imperfect user activity detection, becomes negligi ble
+when M goes to inﬁnity.
+Theorem 5: For any user n and at tth iteration, as the
+number of antennas at the BS M goes to inﬁnity, we have
+lim
+M→∞
+ϑ t,β (M ) → 0. (49)
+Proof: Please refer to Appendix F.
+As a consequence, as M goes to inﬁnity, the scalar form
+of the state evolution for the MMSE denoiser based AMP
+algorithm given in (28) reduces to
+τ2
+t+1 = σ 2
+ξ +ωǫEβ
+[ βτ 2
+t
+β +τ2
+t
+]
+, (50)
+in the massive MIMO regime. It is reasonable to deduce that
+the ﬁxed-point solution to the state evolution given in (28)
+approaches the ﬁxed-point solution to the simpliﬁed state
+evolution shown in (50).
+C. Channel Estimation in Asymptotic Massive MIMO
+Regime
+As another consequence of (48), the covariance matrices
+of the estimated channels and the corresponding channel
+estimation errors as given in (38)-(39) can be considerably
+simpliﬁed in the massive MIMO regime when M → ∞ .
+
+=== PDF PAGE 9 ===
+9
+Theorem 6: Assuming simpliﬁed state evolution (50) in
+the massive MIMO regime as M , the number of antennas at
+the BS, goes to inﬁnity, for each active user k ∈ K and after
+the tth iteration, the covariance matrices of the estimated
+channel and channel estimation error are as given in (38) and
+(39), where υt,k (M ) and ∆υt,k (M ) respectively converge
+to
+lim
+M→∞
+υt,k (M ) = β 2
+k
+βk +τ2
+t
+, (51)
+lim
+M→∞
+∆υt,k (M ) = βkτ2
+t
+βk +τ2
+t
+. (52)
+Proof: Please refer to Appendix G.
+This result enables us to characterize the achievable rates
+of the massive connectivity system in the massive MIMO
+regime in Part II of this paper [5].
+VI. N UMERICAL EXAMPLES
+In this section, we provide numerical examples to verify
+the results of this paper. The setup is as follows. There are
+N = 2, 000 devices in the cell, and at any time slot, each
+user accesses the channel with a probability of ǫ = 0. 05. Let
+dn denote the distance between user n and the BS, ∀n. It
+is assumed that dn’s are randomly distributed in the regime
+[0. 05km, 1km]. The path loss model of the wireless channel
+for user n is given as βn = − 128. 1 − 36. 7 log10(dn) in dB,
+∀n. The bandwidth and the coherence time of the wireless
+channel are 1MHz and 1ms, respectively, and thus in each
+coherence block T = 1000 symbols can be transmitted.
+The transmit power for each user at both the ﬁrst and
+second transmission phases is ρpilot = 23 dBm. The power
+spectral density of the AWGN at the BS is assumed to
+be − 169dBm/Hz. Moreover, the numerical results here are
+obtained by averaging over 107 channel realizations.
+A. Probabilities of Missed Detection and False Alarm
+First, we examine the performance of user activity de-
+tection achieved by the proposed AMP-based detector.
+Given any M , deﬁne the average probabilities of missed
+detection and false alarm over all users as P MD(M ) =∑N
+n=1P MD
+∞ ,n (M )/N and P F A(M ) = ∑N
+n=1P F A
+∞ ,n (M )/N ,
+respectively, where P MD
+∞ ,n (M ) and P F A
+∞ ,n (M ) denote the
+probabilities of missed detection and false alarm of user
+n after the convergence of the AMP algorithm as deﬁned in
+(32) and (33). Fig. 3 shows P MD(M ) and P F A(M ) versus
+M , the number of antennas at the BS, when the length of
+the user pilot sequences is L = 90 both in simulation and as
+predicted by Theorem 4. First, it is observed that the proba-
+bilities of missed detection and false alarm characterized in
+Theorem 4 match the numerical results from AMP algorithm
+very well. Next, it is observed that as M increases, both
+P MD(M ) andP F A(M ) decrease exponentially fast towards
+zero as predicated by Theorem 4.
+Fig. 4 shows the probabilities of missed detection and
+false alarm as functions of M for various values of L. It
+is observed that although for any L, both P MD(M ) and
+0 10 20 30 40 50 60
+Number of Antennas at the BS:  M
+10-6
+10-5
+10-4
+10-3
+10-2
+10-1
+User Activity Detection Error Probability
+PFA(M): Numerical
+PMD(M): Numerical
+PFA(M): Predicted by Theorem 4
+PMD(M): Predicted by Theorem 4
+Fig. 3. Numerical simulations versus analytical expressio ns of probabilities
+of missed detection and false alarm as functions of the numbe r of antennas
+at the BS when each of the N = 2000 users accesses the channel with
+probability ǫ = 0 . 05 at each coherence time. The transmit power of each
+user is ρpilot = 23dBm. The pilot sequence length is L = 90.
+0 10 20 30 40 50 60
+Number of Antennas at the BS:  M
+10-8
+10-7
+10-6
+10-5
+10-4
+10-3
+10-2
+10-1
+User Activity Detection Error Probability
+PFA(M): L=90
+PMD(M): L=90
+PFA(M): L=100
+PMD(M): L=100
+PFA(M): L=110
+PMD(M): L=110
+Fig. 4. Probabilities of missed detection and false alarm as functions of
+the number BS antennas when each of the N = 2000 users accesses the
+channel with probability ǫ = 0 . 05 at each coherence time. The transmit
+power of the users is ρpilot = 23dBm.
+P F A(M ) decrease over M , but the reduction is more rapid
+when L is 110 as compared to 90. Speciﬁcally, when L =
+90 < K, M = 52 antennas are needed to drive P MD(M )
+and P F A(M ) below 10− 5; when L = 110 >K , only M =
+8 antennas are sufﬁcient. The point is that although Theorem
+4 holds for all L as long as M → ∞ , in practice the pilot
+length L should be chosen to be larger than K ≈ Nǫ =
+100, as otherwise very large number of antennas would be
+needed.
+Fig. 5 shows the probabilities of missed detection and
+false alarm versus the transmit power of the users ρpilot,
+with different numbers of antennas at the BS, where the
+
+=== PDF PAGE 10 ===
+10
+10 12 14 16 18 20 22 24
+User Transmit Power: ρpilot (dBm)
+10-8
+10-6
+10-4
+10-2
+100
+User Activity Detection Error Probability
+PFA(M=2)
+PMD(M=2)
+PFA(M=16)
+PMD(M=16)
+PFA(M=32)
+PMD(M=32)
+Fig. 5. Probabilities of missed detection and false alarm as functions of
+the identical transmit power of all the active users with dif ferent numbers
+of antennas at the BS when each of the N = 2000 users accesses the
+channel with probability ǫ = 0 . 05 at each coherence time and the pilot
+sequence length is L = N ǫ = 100.
+length of the user pilot sequences is set to be L = 100 . It is
+observed that for all values of ρpilot, when there are M = 32
+antennas at the BS, both P MD and P F A are signiﬁcantly
+lower than those in the cases when there are M = 2 and
+M = 16 antennas at the BS. Further, when M = 32, P MD
+and P F A decrease much faster with ρpilot than the cases of
+M = 2 and M = 16.
+Fig. 6 shows the probabilities of missed detection and
+false alarm versus the length of the pilot sequences, L, with
+different number of antennas at the BS, where the transmit
+power of each user is 23dBm, and the number of antennas
+at the BS is M = 4, 8 or 16. It is observed that both P MD
+and P F A decrease as the pilot sequence length L increases
+and when M increases from 4 to 8 and 16.
+B. Channel Estimation Error
+Fig. 7 veriﬁes the channel estimation error as predicted by
+Theorem 6 after the convergence of the AMP algorithm. In
+particular, we select an active user k that is 0. 8km away from
+the BS and run AMP to calculate the covariance matrices of
+its estimated channel and corresponding channel estimatio n
+error numerically, for two cases of when the BS has M = 16
+or M = 64 antennas. It is observed that when M = 64 ,
+both ν∞ ,k and ∆ν∞ ,k obtained numerically from the AMP
+algorithm perfectly match those predicated by Theorem 6
+for all values of L. When M = 16, there is some mismatch
+in the regime of L <90 as device detection is not perfect
+in the regime where M and L are both small. We remark
+that to have reasonable channel estimation error, the AMP
+should operate in the regime of L>K ≈ Nǫ.
+VII. C ONCLUSION
+Device activity detection and channel estimation are cru-
+cial components for wireless massive connectivity applica -
+50 60 70 80 90 100 110 120
+Pilot Sequence Length:  L
+10-7
+10-6
+10-5
+10-4
+10-3
+10-2
+10-1
+100
+User Activity Detection Error Probability
+PFA(M=4)
+PMD(M=4)
+PFA(M=8)
+PMD(M=8)
+PFA(M=16)
+PMD(M=16)
+Fig. 6. Probabilities of missed detection and false alarm as functions of
+the pilot sequence lengths when each of the N = 2000 users accesses
+the channel with probability ǫ = 0 . 05 at each coherence time and the
+transmit power of users is ρpilot = 23 dBm. Further, the BS is equipped
+with M = 4, 8 or 16 antennas.
+70 80 90 100 110 120 130
+Pilot Sequence Length:  L
+10-15
+10-14
+10-13
+10-12
+ν∞, k and ∆ ν∞, k
+ν∞, k: Numerical with  M=16
+ν∞, k: Numerical with  M=64
+ν∞, k:Predicated by Theorem 6
+∆ν∞, k: Numerical with  M=16
+∆ν∞, k: Numerical with  M=64
+∆ν∞, k:Predicated by Theorem 6
+Fig. 7. V ariance of the estimated channel and the channel est imation error
+for a particular user at 0. 8km from the BS as function of pilot sequence
+length. Here, each of the N = 2000 users accesses the channel with
+probability ǫ = 0 . 05 in each coherence time; the BS has M = 16 or 64
+antennas.
+tions. This paper shows that the vector AMP algorithm is a
+natural tool for sparse activity detection. Utilizing the s tate
+evolution analysis, both the missed detection and false ala rm
+probabilities and channel estimation error can be analytic ally
+characterized. Further, in the massive MIMO regime, perfec t
+device activity detection can be guaranteed, but channel
+estimation error remains. Part II of this paper [5] utilizes
+these results to further characterize the achievale rate.
+
+=== PDF PAGE 11 ===
+11
+APPENDIX
+A. Derivation of MMSE Denoiser (18)
+Lemma 1: Let ˆX = X + Σ
+1
+2 V where X ∈ CM× 1 has
+a Bernoulli-Gaussian distribution (1 − ǫ)δ0 + ǫphβ
+, with
+hβ ∼ CN (0,β I), Σ is some positive deﬁnite matrix and
+V ∈ CM× 1 ∼ CN (0, I) is independent of X. Deﬁne
+φ(ˆx) =
+1
+1 + 1− ǫ
+ǫ exp
+(
+− ˆxH
+(
+Σ− 1 − (Σ +β I)− 1
+)
+ˆx
+) ⏐
+⏐I +β Σ− 1⏐
+⏐.
+(53)
+Then,
+E[X|ˆX = ˆx] = φ(ˆx)β (β I + Σ)− 1 ˆx, (54)
+and
+E[XX H |ˆX = ˆx] = φ(ˆx)(β I − β 2(β I + Σ)− 1
++β 2(β I + Σ)− 1 ˆxˆxH (β I + Σ)− 1). (55)
+Proof: For convenience, deﬁne ¯X = hβ + Σ
+1
+2 V . Let
+ˆX = ¯X with probability ǫ and ˆX = Σ
+1
+2 V with probability
+1 − ǫ. By standard estimation theory, we have
+E[hβ |¯X = ¯x] = β (β I + Σ)− 1 ¯x, (56)
+and
+E[hβ hH
+β |¯X = ¯x] = β I − β 2(β I + Σ)− 1
++β 2(β I + Σ)− 1 ¯x¯xH (β I + Σ)− 1. (57)
+We now characterize E[X|ˆX = ˆx] and E[XX H |ˆX = ˆx]
+based on E[hβ |¯X = ¯x] and E[hβ hH
+β |¯X = ¯x].
+E[X|ˆX = ˆx] =
+∫
+xpX | ˆX (X = x|ˆX = ˆx)dx (58)
+= 1
+p ˆX ( ˆX = ˆx)
+∫
+xp ˆX |X ( ˆX = ˆx|X = x)
+(
+ǫphβ
+(hβ = x) + (1 − ǫ)δ0(x)
+)
+dx (59)
+= ǫ
+p ˆX ( ˆX = ˆx)
+∫
+xp ¯X , hβ
+( ¯X = ˆx|hβ = x)
+phβ
+(hβ = x)dx (60)
+=
+ǫp ¯X ( ¯X = ˆx)
+p ˆX ( ˆX = ˆx)
+E[hβ |¯X = ˆx] (61)
+=φ(ˆx)β (β I + Σ)− 1 ˆx, (62)
+where (60) is because given X = x, p ˆX|X ( ˆX = ˆx|X =
+x) is just the distribution of the random vector x + Σ
+1
+2 V ,
+but the same is true for p ¯X |hβ
+( ¯X = ˆx|hβ = x), and (62)
+is because p ˆX ( ˆX = ˆx) takes the form of
+ǫexp(− ˆxH (β I + Σ)− 1 ˆx)
+π M |β I + Σ| + (1 − ǫ) exp(− ˆxH Σ− 1 ˆx)
+π M |Σ|
+(63)
+so a straightforward computation gives that
+ǫp ¯X ( ¯X = ˆx)
+p ˆX ( ˆX = ˆx)
+=φ(ˆx). (64)
+Similarly, it can be shown that E[XX H |ˆX = ˆx] =
+φ(ˆx)E[hβ hH
+β |¯X = ˆx].
+B. Proof of Theorem 1
+We ﬁrst characterize the MSE term in (15) when the
+MMSE denoiser (18) is used in the vector AMP algorithm,
+then show that the state Σt stays as a diagonal matrix with
+identical diagonal entries throughout the AMP iterations.
+Let ˆX t,β = X β + Σ
+1
+2
+t V . For a ﬁxed β , the expecta-
+tion term in (15) with the MMSE denoiser ηt,β (ˆxt,β ) =
+E[X β |ˆX t,β = ˆxt,β ] can be expressed as [18]
+E ˆX t,βX β
+[ (
+ηt,β ( ˆX t,β ) − X β )(ηt,β ( ˆX t,β ) − X β
+) H ]
+= E ˆX t,β
+EX β | ˆX t,β = ˆxt,β
+[ (
+E[X β |ˆX t,β = ˆxt,β ] − X β
+)
+(
+E[X β |ˆX t,β = ˆxt,β ] − X β
+) H ]
+= E ˆX t,β
+E
+[
+X β X H
+β
+⏐
+⏐
+⏐ ˆX t,β = ˆxt,β
+]
+− E ˆX t,β
+E
+[
+X β
+⏐
+⏐
+⏐ ˆX t,β = ˆxt,β
+]
+(E[X β |ˆX t,β = ˆxt,β ])H
+= E ˆX t,β
+[φ t,β (β I − β 2(β I + Σt)− 1)+
+φ t,β (1 − φ t,β )β 2(β I + Σt)− 1 ˆxt,β ˆxH
+t,β (β I + Σt)− 1],
+(65)
+where the last equality is due to Lemma 1 and φ t,β is used
+to denote φ(ˆxt,β ).
+According to (64), we have
+φ t,β p ˆxt,β = ǫexp(− ˆxH
+t,β (β I + Σt)− 1 ˆxt,β )
+π M |β I + Σt| . (66)
+As a result, we have E ˆX t,β
+[φ t,β ] = ǫ. It then follows that
+E ˆX t,β
+[
+φ t,β (β I − β 2(β I + Σt)− 1)
+]
+=ǫ(β I − β 2(β I + Σt)− 1). (67)
+By substituting (67) into (65), the expected MSE for
+estimating X β given any β after t iterations is
+E ˆX t,β
+[
+(ηt,β ( ˆX t,β ) − X β )(ηt,β ( ˆX t,β ) − X β )H
+]
+=ǫ(β I − β 2(β I + Σt)− 1) + E ˆX t,β
+[φ t,β (1 − φ t,β )β 2
+(β I + Σt)− 1 ˆX t,β ˆX
+H
+t,β (β I + Σt)− 1]. (68)
+Note here φ t,β is also a random variable depending on ˆX t,β
+as in (19).
+Based on the MSE shown in (68), in the following we
+show that Σt stays as a diagonal matrix with identical
+diagonal entries after each iteration of the AMP algorithm.
+
+=== PDF PAGE 12 ===
+12
+First, it can be easily seen that for the initial state given i n
+(16), Σt is indeed a diagonal matrix with identical diagonal
+elements, i.e., Σ0 =τ2
+0 I, with
+τ2
+0 = σ 2
+ξ +ωǫE[β ]. (69)
+Next, suppose that Σt = τ2
+t I, given t ≥ 0. We show
+in the following that Σt+1 must be a diagonal matrix with
+identical diagonal elements, i.e., Σt+1 =τ2
+t+1I. Deﬁne
+D = E[φ t,β (1 − φ t,β )β 2(β I + Σt)− 1 ˆX t,β ˆX
+H
+t,β
+(β I + Σt)− 1]
+= E
+[
+φ t,β (1 − φ t,β ) β 2
+(β +τ2
+t )2
+ˆX t,β ˆX
+H
+t,β
+]
+, (70)
+where the distribution of ˆX t,β given in (63) reduces to
+p ˆxt,β =
+ǫexp(−
+ˆxH
+t,β ˆxt,β
+β +τ 2
+t
+)
+π M (β +τ2
+t )M +
+(1 − ǫ)exp(−
+ˆxH
+t,β ˆxt,β
+τ 2
+t
+)
+π M (τ2
+t )M ,
+(71)
+and the random variable φ t,β given in (19) reduces to
+φ t,β = 1
+1 + 1− ǫ
+ǫ exp
+(
+−
+(
+1
+τ 2
+t
+− 1
+β +τ 2
+t
+)
+ˆxH
+t,β ˆxt,β
+) (
+1 + β
+τ 2
+t
+) M.
+(72)
+For any 1 ≤ i,j ≤ M , deﬁne D(i,j ) as the element in
+the ith row and jth column of D, and ˆX t,β (i) as the ith
+element of ˆX t,β . For the non-diagonal elements of D, we
+have
+D(i,j )
+= E[φ t,β (1 − φ t,β ) β 2
+(β +τ2
+t )2
+ˆX t,β (i) ˆX
+H
+t,β (j)] (73)
+=
+∫
+φ t,β (1 − φ t,β ) β 2
+(β +τ2
+t )2 ˆxt,β (i)ˆxH
+t,β (j)p ˆxt,βdˆxt,β ,
+(74)
+where ˆxt,β (i) is theith element of ˆxt,β . The key observation
+is that φ t,β as expressed in (72) and p ˆxt,β as expressed in
+(71) involves only square terms |ˆxt,β (i)|2 so are both even
+functions, while ˆxt,β (i)ˆxH
+t,β (j) is an odd function for i ̸=j,
+so the overall integral is zero. Hence D(i,j ) = 0 fori ̸=j,
+i.e., D is diagonal.
+Next, consider the diagonal terms of D
+D(i,i ) = E[φ t,β (1 − φ t,β ) β 2
+(β +τ2
+t )2
+ˆX t,β (i) ˆX
+H
+t,β (i)].
+(75)
+It can be observed from (71) and (72) that all the elements of
+ˆX t,β contribute equally to p ˆxt,β andφ t,β . Moreover, all the
+elements of ˆX t,β have an identical distribution. As a result,
+we have D(i,i ) = D(j,j ) = ϑ t,β (τ2
+t ), 1 ≤ i,j ≤ M , i.e.,
+D =ϑ t,β (τ2
+t )I. To compute ϑ t,β (τ2
+t ), we observe that
+ϑ t,β (τ2
+t ) = tr(D)
+M =
+E[φ t,β (1 − φ t,β ) β 2
+(β +τt)2 ˆX
+H
+t,β ˆX t,β ]
+M .
+(76)
+This proves (29).
+Finally, putting the above expression for D back to (68)
+and recognizing that if Σt =τ2
+t I, then
+ǫ(β I − β 2
+n(βnI + Σt)− 1) = ǫ
+( βτ 2
+t
+β +τ2
+t
+I
+)
+, (77)
+so by the state evolution (15), this implies that if Σt =τ2
+t I,
+we have
+Σt+1 = σ 2
+ξ I +ω
+(
+ǫE
+[ βτ 2
+t
+β +τ2
+t
+]
+I + E[ϑ t,β (τ2
+t )]I
+)
+,
+(78)
+which is also a diagonal matrix with identical diagonal
+elements, i.e., Σt+1 = τ2
+t+1I. The scalar form of the
+denoiser (24)-(26) and the scalar state evolution (28) then
+follow immeidately. Theorem 1 is thus proved.
+C. Proof of Theorem 2
+According to the state evolution equivalent signal model
+(23) in Theorem 1, when α n = 0, the entries of (Rt)H an +
+xt
+n are i.i.d. Gaussian distributed with variance τ2
+t . When
+α n = 1 , the entries of (Rt)H an + xt
+n are i.i.d. Gaussian
+distributed with variance βn +τ2
+t . Since (Rt)H an + xt
+n
+given α n is a complex Gaussian random vector with
+i.i.d. real and imaginary components, the random variables
+((Rt)H an + xt
+n)H ((Rt)H an + xt
+n)/ (2τ2
+t ) given α n = 0
+and ((Rt)H an + xt
+n)H ((Rt)H an + xt
+n)/ (2(βn +τ2
+t )) given
+α n = 1 thus follow χ 2 distribution with 2M DoF.
+Let X ∼ χ 2M be a random variable that follows
+χ 2 distribution with 2M DoF. It is well known that
+its cumulative distribution function follows Pr(X ≤
+x) =
+Γ
+(M, x
+2 )
+Γ(M) . The proposed detector (30) compares
+((Rt)H an + xt
+n)H ((Rt)H an + xt
+n) with the thresh-
+old M log
+(
+1 + β n
+τ 2
+t
+)
+/
+(
+1
+τ 2
+t
+− 1
+τ 2
+t +β n
+)
+. By the deﬁnition of
+missed detection and false alarm probabilities (32) and (33 ),
+it thus follows that
+P MD
+t,n (M ) =Pr
+
+ X ≤
+2M log
+(
+1 + β n
+τ 2
+t
+)
+(βn +τ2
+t )
+(
+1
+τ 2
+t
+− 1
+β n+τ 2
+t
+)
+
+
+= Γ
+(M,b t,nM )
+Γ(M ) , (79)
+and
+P F A
+t,n (M ) =Pr
+
+ X ≥
+2M log
+(
+1 + β n
+τ 2
+t
+)
+τ2
+t
+(
+1
+τ 2
+t
+− 1
+β n+τ 2
+t
+)
+
+
+=1 − Γ
+(M,c t,nM )
+Γ(M ) =
+¯Γ (M,c t,nM )
+Γ(M ) , (80)
+
+=== PDF PAGE 13 ===
+13
+where
+bt,n =
+log
+(
+1 + β n
+τ 2
+t
+)
+(βn +τ2
+t )
+(
+1
+τ 2
+t
+− 1
+β n+τ 2
+t
+) = τ2
+t
+βn
+log
+(
+1 + βn
+τ2
+t
+)
+,
+(81)
+ct,n =
+log
+(
+1 + β n
+τ 2
+t
+)
+τ2
+t
+(
+1
+τ 2
+t
+− 1
+β n+τ 2
+t
+) =
+( βn +τ2
+t
+βn
+)
+log
+(
+1 + βn
+τ2
+t
+)
+.
+(82)
+Theorem 2 is thus proved.
+D. Proof of Theorem 3
+Based on the vector AMP state evolution, the estimated
+channel and the corresponding channel estimation error,
+assuming that device k is active, i.e., α k = 1, is statistically
+equivalent to applying the denoiser (24) to the equivalent
+signal model (23) as shown below:
+ˆhk =φ t,k
+( βk
+βk +τ2∞
+)
+(hk +τtvk), (83)
+∆ˆhk = hk − ˆhk, ∀k ∈ K. (84)
+The main conclusion of Theorem 3 is that for any active
+user k, given any M , Cov(ˆhk, ˆhk) is a diagonal matrix
+with identical diagonal entries. The proof of this fact uses
+the same technique as used in Appendix B for proving
+Theorem 1, and so is not repeated here. Similarly, it can also
+be shown that Cov(∆ˆhk, ∆ˆhk) is a diagonal matrix with
+identical diagonal entries. The expressions for the diagon al
+termsυt,k (M ) and ∆υt,k (M ) (40)-(41) follow directly from
+(83)-(84).
+E. Proof of Theorem 4
+First we show that assuming βn is bounded below, i.e.,
+βn > βmin, ∀n, we have bt,n ≤ 1 − ε(1)
+t,n , ct,n ≥ 1 + ε(2)
+t,n ,
+νt,n ≤ − ε(3)
+t,n , ςt,n ≥ ε(4)
+t,n , for some positive constants
+ε(1)
+t,n , ε(2)
+t,n , ε(3)
+t,n , and ε(4)
+t,n that are independent of M . This
+is because it can be easily checked based on the state
+evolution equation (28) that τ2
+t is always bounded from
+above. So,βn/τ 2
+t is always lower bounded by some positive
+constant indepedent ofM . Now, combining with the fact that
+a> log(1 +a)> a
+1+a for all a> 0 with the ﬁrst inequality
+becoming equality if and only if a = 1 , we can see that
+bt,n , ct,n , as in (36)-(37), and νt,n , ςt,n as in (45)-(46) are
+all bounded away from 1 and 0, respectively, as required.
+Next, we study the asymptotic probabilities of missed de-
+tection and false alarm. According to [29], if bt,n ≤ 1 − ε(1)
+t,n
+for some positive constant ε(1)
+t,n , then
+Γ
+(M,b t,nM )
+Γ(M ) = 1
+2 efrc
+(
+−νt,n
+√
+M
+2
+)
+− exp(− 1
+2Mν 2
+t,n )√
+2πM( 1
+bt,n − 1 − 1
+νt,n
+)
+− o
+( exp(−M )√
+M
+)
+, (85)
+where efrc(·) is the complementary error function. Similarly,
+if ct,n ≥ 1 +ε(2)
+t,n for some positive constant ε(2)
+t,n , then
+¯Γ(M,c t,nM )
+Γ(M ) = 1
+2 efrc
+(
+ςt,n
+√
+M
+2
+)
++ exp(− 1
+2Mς2
+t,n )√
+2πM( 1
+ct,n − 1 − 1
+ςt,n
+)
++o
+( exp(−M )√
+M
+)
+. (86)
+Moreover, it is known that
+efrc(x) = exp(−x2)√ πx
+(
+1 +o
+( 1
+x2
+))
+. (87)
+Then, the missed detection probability given in (34) is
+P MD
+t,n (M ) = 1
+2
+Γ(M,b t,nM )
+Γ(M )
+= 1
+2
+exp(− 1
+2Mν 2
+t,n )
+−νt,n
+√
+πM/ 2
+(
+1 +o
+( 1
+M
+))
+− 1
+2
+exp(− 1
+2Mν 2
+t,n )√
+2πM
+( 1
+bt,n − 1 − 1
+νt,n
+)
+− o
+( exp(−M )√
+M
+)
+(88)
+= − exp(− 1
+2Mν 2
+t,n )
+2
+√
+2πM
+( 1
+bt,n − 1 + 1
+νt,n
+)
++o
+( exp(−M )√
+M
+)
+, (89)
+where (88) is obtained by applying (87) since νt,n < 0 with
+bt,n < 1. and the false alarm probability given in (35) is
+P F A
+t,n (M ) = 1
+2
+¯Γ(M,b t,nM )
+Γ(M )
+= 1
+2
+exp(− 1
+2Mς2
+t,n )
+ςt,n
+√
+πM/ 2
+(
+1 +o
+( 1
+M
+))
++ 1
+2
+exp(− 1
+2Mς2
+t,n )√
+2πM
+( 1
+ct,n − 1 − 1
+ςt,n
+)
++o
+( exp(−M )√
+M
+)
+= exp(− 1
+2Mς2
+t,n )
+2
+√
+2πM
+( 1
+ct,n − 1 + 1
+ςt,n
+)
++o
+( exp(−M )√
+M
+)
+. (90)
+Theorem 4 is thus proved.
+F . Proof of Theorem 5
+Examining the functional form of ϑ t,β (τ2
+t ):
+ϑ t,β (τ2
+t ) = E ˆX t,β
+
+φ t,β (1 − φ t,β ) β 2
+(β +τ2
+t )2
+ˆX
+H
+t,β ˆX t,β
+M
+
+ ,
+(91)
+we see that as 0 ≤ φ t,β ≤ 1 and by the law of large numbers,
+the term inside expectation is bounded from above by a
+
+=== PDF PAGE 14 ===
+14
+constant independent of M . Thus, we can apply dominated
+convergence theorem for taking limit as M → ∞ , i.e.,
+lim
+M→∞
+ϑ t,β (τ2
+t ) = E ˆX t,β
+[
+lim
+M→∞
+φ t,β (1 − φ t,β )
+β 2
+(β +τ2
+t )2
+ˆX
+H
+t,β ˆX t,β
+M
+
+ . (92)
+But limM→∞ φ t,n is either 0 or 1, according to (48) as
+consequence of Theorem 4. It thus follows that
+lim
+M→∞
+ϑ t,β (τ2
+t ) = 0. (93)
+G. Proof of Theorem 6
+Assuming ﬁxed τ2
+t as given by the simpliﬁed state
+evolution (50) in the massive MIMO regime in the limit
+as M goes to inﬁnity, we evaluate lim
+M→∞
+υk(M ) and
+lim
+M→∞
+∆υk(M ) where υk(M ) and ∆υk(M ) are as given
+in (40) and (41), respectively.
+It is easy to check that since 0 ≤ φ 2
+t,k ≤ 1 according to
+(19), it follows that
+υk(M ) ≤ E
+[ β 2
+k
+(βk +τ2
+t )2
+(hk +τtvk)H (hk +τtvk)
+M
+]
+= β 2
+k
+βk +τ2
+t
+. (94)
+So υk(M ) is upper bounded by a ﬁnite constant indepe-
+dent of M , we can then apply the dominated convergence
+theorem to compute
+lim
+M→ t
+υk(M )
+= E
+[
+lim
+M→ t
+φ 2
+t,kβ 2
+k
+(βk +τ2
+t )2
+(hk +τtvk)H (hk +τtvk)
+M
+]
+(95)
+= E
+[ β 2
+k
+(βk +τ2
+t )2 lim
+M→ t
+(hk +τtvk)H (hk +τtvk)
+M
+]
+(96)
+= β 2
+k
+βk +τ2
+t
+, (97)
+where (96) is due to (48) as consequence of Theorem 4.
+Similarly, as M → ∞ , we can show that ∆υk(M )
+converges to β kτ 2
+∞
+β k+τ 2∞
+.
+REFERENCES
+[1] L. Liu and W. Y u, “Massive device connectivity with massi ve MIMO,”
+in Proc. IEEE Inter . Symp. Inf. Theory (ISIT) , Jun. 2017.
+[2] C. Bockelmann, N. Pratas, H. Nikopour, K. Au, T. Svensson , C.
+Stefanovic, P . Popovsk, and A. Dekorsy, “Massive machine-t ype
+communications in 5G: Physical and MAC-layer solutions,” IEEE
+Commun. Mag. , vol. 54, no. 9, pp. 59-65, Sep. 2016.
+[3] W. Y u, “On the fundamental limits of massive connectivit y,“ in Proc.
+Inf. Theory and Appl. (ITA) W orkshop , Feb. 2017.
+[4] D. L. Donoho, A. Maleki, and A. Montanari, “Message-pass ing algo-
+rithms for compressed sensing,“ Proc. Nat. Acad. Sci. , vol. 106, no.
+45, pp. 18914-18918, Nov. 2009.
+[5] L. Liu and W. Y u, “Massive connectivity with massive MIMO -Part II:
+Achievable rate characterization,” IEEE Trans. Signal Process. , 2018,
+to be published.
+[6] M. Hasan, E. Hossain, and D. Niyato, “Random access for ma chine-
+to-machine communication in LTE-advanced networks: Issue s and
+approaches,“ IEEE Commun. Mag. , vol. 51, no. 6, pp. 86-93, Jun.
+2011.
+[7] N. K. Pratas, H. Thomsen, C. Stefanovic, and P . Popovski, “Code-
+expanded random access for machine-type communications,“ in Proc.
+IEEE Globecom W orkshops, Dec. 2012, pp. 1681-1686.
+[8] E. Bj¨ ornson, E. de Carvalho, J. H. Sørensen, E. G. Larsso n, and P .
+Popovski, “A random access protocol for pilot allocation in crowded
+massive MIMO systems,“ IEEE Trans. Wireless Commun., vol. 16, no.
+4, pp. 2220-2234, Apr. 2017..
+[9] H. Zhu and G. B. Giannakis, “Exploiting sparse user activ ity in
+multiuser detection,“ IEEE Trans. Commun. , vol. 59, no. 2, pp. 454-
+465, Feb. 2011.
+[10] H. F. Schepker and A. Dekorsy, “Compressive sensing mul ti-user
+detection with block-wise orthogonal least squares,“ in Proc. IEEE
+V eh. Tech. Conf. (VTC Spring) , May 2012, pp. 1-5.
+[11] X. Xu, X. Rao, and V . K. N. Lau, “Active user detection and
+channel estimation in uplink CRAN systems,” in Proc. IEEE Int. Conf.
+Commun. (ICC) , Jun. 2015, pp. 2727-2732.
+[12] G. Wunder, P . Jung, and M. Ramadan, “Compressive random access
+using a common overloaded control channel,” in Proc. IEEE Int. Conf.
+Commun. (ICC) W orkshops, Jun. 2015.
+[13] G. Hannak, M. Mayer, A. Jung, G. Matz, and N. Goertz, “Joi nt
+channel estimation and activity detection for multiuser co mmunication
+systems,” in Proc. IEEE Int. Conf. Commun. (ICC) W orkshops , Jun.
+2015, pp. 2086-2091.
+[14] H. F. Schepker, C. Bockelmann, and A. Dekorsy, “Exploit ing sparsity
+in channel and data estimation for sporadic multi-user comm unication,“
+in Inter . Symp. Wireless Commun. Sys. (ISWCS) , Aug. 2013, pp. 1-5.
+[15] G. Wunder, H. Boche, T. Strohmer, and P . Jung, “Sparse si gnal
+processing concepts for efﬁcient 5G system design,“ IEEE Access, vol.
+3, pp. 195-208, 2015.
+[16] G. Wunder, P . Jung, and C. Wang, “Compressive random acc ess
+for post-LTE systems,“ in Proc. IEEE Int. Conf. Commun. (ICC)
+W orkshops, Jun. 2014.
+[17] Z. Chen and W. Y u, “Massive device activity detection by approx-
+imate message passing,“ in Proc. IEEE Int. Conf. Acoustic, Speech,
+Signal Process. (ICASSP) , Mar. 2017.
+[18] Z. Chen, F. Sohrabi, and W. Y u, “Sparse activity detecti on for massive
+connectivity,“ IEEE Trans. Signal Process. , vol. 66, no. 7, pp. 1890-
+1904, Apr. 2018.
+[19] M. Bayati and A. Montanari, “The dynamics of message pas sing on
+dense graphs, with applications to compressed sensing,“ IEEE Trans.
+Inf. Theory , vol. 57, no. 2, pp. 764-785, Feb. 2011.
+[20] T. L. Marzetta, “Noncooperative cellular wireless wit h unlimited
+numbers of base station antennas,“ IEEE Trans. Wireless Commun. ,
+vol. 9, no. 11, pp. 3590-3660, Nov. 2010.
+[21] H. Q. Ngo, E. G. Larsson, and T. L. Marzetta, “Energy and s pectral
+efﬁciency of very large multiuser MIMO systems,“ IEEE Trans.
+Commun., vol. 61, no. 4, pp. 1436-1449, Apr. 2013.
+[22] J. Hoydis, S. Brink, and M. Debbah, “Massive MIMO in the U L/DL
+of cellular networks: How many antennas do we need¿‘ IEEE J. Sel.
+Areas Commun. , vol. 31, no. 2, pp. 160-171, Feb. 2013.
+[23] E. G. Larsson, F. Tufvesson, O. Edfors, and T. L. Marzett a, “Massive
+MIMO for next generation wireless systems,“ IEEE Commun. Mag. ,
+vol. 52, no. 2, pp. 186-195, Feb. 2014.
+[24] S. Wagner, R. Couillet, M. Debbah, and D. T. M. Slock, “La rge
+system analysis of linear precoding in correlated MISO broa dcast
+channels under limited feedback,“ IEEE Trans. Inf. Theory , vol. 58,
+no. 7, pp. 4509-4537, Jul. 2012.
+[25] X. Chen, T.-Y . Chen, and D. Guo, “Capacity of Gauassian m any-
+access channels,“ IEEE Trans. Inf. Theory , vol. 63, no. 6, pp. 3516-
+3519, Jun. 2017.
+[26] J. Kim, W. Chang, B. Jung, D. Baron, and J. C. Y e, “Belief
+propagation for joint sparse recovery,“ Feb. 2011, [Online ] Available:
+http://arxiv.org/abs/1102.3289 .
+[27] J. Ziniel and P . Schniter, “Efﬁcient high-dimensional inference in the
+multiple measurement vector problem,“ IEEE Trans. Signal Process. ,
+vol. 61, no. 2, pp. 340-354, Jan. 2013.
+[28] S. Rangan, “Generalized approximate message passing f or estimation
+with random linear mixing,“ in Proc. IEEE Int. Symp. Inf. Theory
+(ISIT), Jul. 2011, pp. 2168-2172.
+[29] W. Gautschi, “The incomplete gamma functions since Tri comi,“ Atti
+dei Convegni Linci , no. 1998, pp. 203-237, 2011.

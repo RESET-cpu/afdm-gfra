@@ -1,0 +1,161 @@
+{
+  "paragraph_id": "P01",
+  "source_lines": {
+    "file": "D:/afdm-gfra/paper/C-STMP/sections/02_system_model.tex",
+    "start": 4,
+    "end": 16
+  },
+  "audit_date": "2026-10-29",
+  "method": "直接读取协议、manifest中P01、Shen逐页抽取文本并渲染核对对应PDF第3页；独立确认实际原句，不采用旧来源日志结论。仅审查语言一致性，不修改正文。",
+  "source_evidence": {
+    "primary_pdf": "D:/afdm-gfra/reference/literature/shen2025.pdf",
+    "extracted_text": "D:/afdm-gfra/paper/C-STMP/checks/strict_sentence_audit_20261029/sources/shen2025.pages.txt",
+    "extracted_lines": [
+      351,
+      366
+    ],
+    "pdf_page": 3,
+    "section": "II. SYSTEM MODEL，Fig. 1下首段",
+    "visual_check": "已将原PDF第3页渲染并查看；页面中5句与上述规范化原句一致。",
+    "normalization": "仅规范PDF行末断词、ﬁ连字、UP A等词内抽取空格、数学下标及乘号排版；没有规范化删除语义成分。"
+  },
+  "sentence_unit_policy": "共5个完整语法句，无显示公式或where独立子句；未拆分或重复计算。",
+  "sentences": [
+    {
+      "id": "P01-S01",
+      "draft": "We consider a LEO satellite-enabled grant-free random access system, where AFDM is adopted to mitigate the doubly dispersive effect inherent in terrestrial-satellite links (TSLs) \\cite{ding2026,bemani2022}.",
+      "category": "OTHER_CHANGE",
+      "source_file": "D:/afdm-gfra/reference/literature/shen2025.pdf",
+      "source_page": 3,
+      "source_section": "II. SYSTEM MODEL，Fig. 1下首段，第1句",
+      "source_quote": "We consider a LEO satellite-enabled grant-free random access system with the fixed beam as illustrated in Fig. 1, where OTFS is adopted to mitigate the doubly dispersive effect [18] inherent in TSLs.",
+      "changes": {
+        "necessary_substitutions": [
+          "OTFS → AFDM（调制对象名称替换）",
+          "TSLs → terrestrial-satellite links (TSLs)（链路术语首次展开）"
+        ],
+        "other_changes": [
+          "删除 system 之后的完整限定成分 with the fixed beam as illustrated in Fig. 1；其中 with the fixed beam 是系统假设限定，不能按图号/排版差异豁免。"
+        ],
+        "display_only": [
+          "原文 [18] 位于 effect 后，当前改为句末 \\cite{ding2026,bemani2022}；引文显示差异不决定语言类别。"
+        ]
+      },
+      "reason": "虽然句型主体及where从句保留，但删除了固定波束限定及其图示从句，超出仅替换必要术语。",
+      "minimal_action": "若坚持纯术语替换标准，需保留原句限定结构并核实本文是否具备对应固定波束设定；若本文不采用该设定，则保留必要改写并将该句标为改写，不能宣称纯术语替换。"
+    },
+    {
+      "id": "P01-S02",
+      "draft": "The system comprises $K$ single-antenna terrestrial devices that communicate with a LEO satellite equipped with a uniform planar array (UPA) consisting of $M=M_yM_z$ antennas.",
+      "category": "OTHER_CHANGE",
+      "source_file": "D:/afdm-gfra/reference/literature/shen2025.pdf",
+      "source_page": 3,
+      "source_section": "II. SYSTEM MODEL，首段，第2句",
+      "source_quote": "The system comprises U single-antenna terrestrial devices that communicate with a LEO satellite equipped with a uniform planar array (UPA) consisting of N_a = N_z × N_y antennas and a regenerative payload for on-board baseband signal processing.",
+      "changes": {
+        "necessary_substitutions": [
+          "设备数 U → K。",
+          "天线总数 N_a → M，阵列维度 N_z → M_z、N_y → M_y。"
+        ],
+        "other_changes": [
+          "删除 antennas 后的 and a regenerative payload for on-board baseband signal processing，删去卫星配备再生载荷及其用途的完整并列成分。"
+        ],
+        "display_only": [
+          "维度乘积 N_z × N_y → M_yM_z 同时交换两个标量因子顺序并省略乘号；该符号层调整不会使删除并列成分获得豁免。"
+        ]
+      },
+      "reason": "设备数和阵列维度可视为符号替换，但再生载荷及星上基带处理限定被整体删除。",
+      "minimal_action": "明确再生载荷是否为本文系统假设。若不适用，保留删改并如实标注为OTHER_CHANGE；不能以符号映射掩盖该删除。"
+    },
+    {
+      "id": "P01-S03",
+      "draft": "During each transmission block, active devices share the same time-frequency resources to transmit their pilots to the satellite.",
+      "category": "TERM_ONLY",
+      "source_file": "D:/afdm-gfra/reference/literature/shen2025.pdf",
+      "source_page": 3,
+      "source_section": "II. SYSTEM MODEL，首段，第3句",
+      "source_quote": "During each time interval, active devices share the same time-frequency resources to transmit their signals to the satellite.",
+      "changes": {
+        "necessary_substitutions": [
+          "time interval → transmission block（本文用于描述一次传输所占时间单位的名称）。",
+          "signals → pilots（本文传输对象改为导频）。"
+        ],
+        "other_changes": [],
+        "display_only": []
+      },
+      "reason": "完整原句可逐词对齐，仅两个技术对象名词短语替换；During each、share the same、to transmit their及其余词序全部保留，没有删从句或改操作谓语。",
+      "minimal_action": "可保留。需把这两个替换明示为本文模型适配；本判定只确认语言替换形式，不证明Shen的signals就是本文pilots，或其time interval与本文block时长相同。",
+      "boundary_note": "signals→pilots限定了本文具体传输对象，但属于被允许替换的技术对象名称；没有将整段机制或长从句包装成术语。"
+    },
+    {
+      "id": "P01-S04",
+      "draft": "Additionally, to minimize energy consumption, we assume that these terrestrial devices operate without GNSS capabilities and do not pre-compensate for delay and Doppler shifts.",
+      "category": "EXACT",
+      "source_file": "D:/afdm-gfra/reference/literature/shen2025.pdf",
+      "source_page": 3,
+      "source_section": "II. SYSTEM MODEL，首段，第4句",
+      "source_quote": "Additionally, to minimize energy consumption, we assume that these terrestrial devices operate without GNSS capabilities and do not pre-compensate for delay and Doppler shifts.",
+      "changes": {
+        "necessary_substitutions": [],
+        "other_changes": [],
+        "display_only": [
+          "仅归并原PDF断行、行末连字符和抽取层词内多余空格；文字已回看PDF确认。"
+        ]
+      },
+      "reason": "全部词语、词序、Additionally连接词及and并列关系一致。",
+      "minimal_action": "无需为本轮语言一致性核查改动。"
+    },
+    {
+      "id": "P01-S05",
+      "draft": "After compensating for the common propagation delay $\\tau_c$, the satellite receiver handles the differential delay and Doppler shift observed in the uplink transmission \\cite{shen2025}.",
+      "category": "OTHER_CHANGE",
+      "source_file": "D:/afdm-gfra/reference/literature/shen2025.pdf",
+      "source_page": 3,
+      "source_section": "II. SYSTEM MODEL，首段，第5句",
+      "source_quote": "Following 3GPP recommendations [19], [20], the satellite initially broadcasts a common delay for all devices, and subsequently handles the differential delay and Doppler shift observed in the uplink transmission.",
+      "changes": {
+        "necessary_substitutions": [
+          "the satellite → the satellite receiver（处理主体的技术名称细化；该局部替换本身不豁免其余机制改写）。"
+        ],
+        "other_changes": [
+          "句首 Following 3GPP recommendations [19], [20] 改为 After compensating for the common propagation delay τ_c：依据某规范改成完成时延补偿之后的时间条件，连接关系和操作均变化。",
+          "删除主语后 initially broadcasts a common delay for all devices, and subsequently：取消初始广播公共时延给全部设备的动作、for all devices范围和and随后处理的并列顺序。",
+          "当前加入 common propagation delay τ_c 作为compensating for的宾语；原首段句子只说broadcasts a common delay，未在本句规定接收机完成公共传播时延补偿。"
+        ],
+        "display_only": [
+          "增加句末 \\cite{shen2025}；删除/替换原规范引文编号不单独决定类别。"
+        ]
+      },
+      "reason": "“卫星先广播公共时延、随后处理”被改成“补偿公共传播时延后由接收机处理”，并删除了原连接词和操作链，属于机制及句法改写。",
+      "minimal_action": "保留本文所需的补偿模型时，应明确这是本文设定并另给适当支持；若要求原句仅术语替换，则需按原句广播机制和连接结构重建，且先确认与本文系统一致。"
+    }
+  ],
+  "counts": {
+    "EXACT": 1,
+    "TERM_ONLY": 1,
+    "OTHER_CHANGE": 3,
+    "NO_SOURCE": 0,
+    "UNVERIFIED": 0,
+    "total": 5
+  },
+  "paragraph_structure": {
+    "same_original_paragraph": true,
+    "source_paragraph": "Shen PDF第3页§II首段的第1—5句",
+    "order_preserved": true,
+    "cross_source_sentence_splicing": false,
+    "connectives": "第1句where、第3句During each及to、第4句Additionally/to/that/and保留；第2句and a regenerative payload并列支被删；第5句Following…与and subsequently…被替换或删除。",
+    "full_structure_preserved": false,
+    "source_attribution_risk": "当前首句引Ding/Bemani，其文字框架实际对应Shen首段；这些技术引文不能证明该句符合原句仅术语替换。第5句的接收机补偿公共传播时延设定也不能由Shen原首段的广播句自动归属给Shen。",
+    "scope_note": "整段可定位为对同一原段的按序改写；这不等于整段是仅替换必要术语。AFDM、导频传输、本文block命名及τ_c补偿表述应区分为本文适配内容。"
+  },
+  "verdict": {
+    "pass": false,
+    "summary": "不通过最严格标准：5句中2句满足句级EXACT/TERM_ONLY，3句有非术语删改；虽同源同序，完整限定和连接结构未保留。",
+    "most_important_failures": [
+      "P01-S01删除固定波束限定。",
+      "P01-S02删除再生载荷和星上基带处理并列成分。",
+      "P01-S05把广播机制改为补偿条件，并改连接关系。"
+    ]
+  },
+  "non_actions": "没有修改论文正文、PDF、参考文献或其他审查员文件；没有作查重、技术正确性或投稿判断。"
+}

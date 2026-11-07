@@ -1,0 +1,195 @@
+PDF PAGE 4
+                                                                                                                                                   4
+
+
+spreading pattern sk. That is,                                              where Ps = P⊗IN,⊗ represents the Kronecker product,
+           hk = [h1k,...,hnk,...,hNk]T                                      hs =vec(HT), and hk is the effective channel gain vector
+                                                                            of userk onN sub-carriers. According to the LDS spreading
+               = [g1ks1k,...,gnksnk,...,gNksNk]T,          (1)              matrixS, the transmitted sequence of each user is only spread
+where then-th elementgnk ofgk represents the actual channel                 ontodc sub-carriers. Therefore, as explained in (1),N−dc
+gain of userk on then-th sub-carrier, and then-th element                   elements inhk are zero, and the positions of the zero elements
+snk ofsk is non-zero if and only if userk chooses to conduct                are known to the BS. We further simplify hs by eliminating
+transmission on then-th sub-carrier. Therefore, the effective               the zeros according to S. Accordingly, the columns in Ps
+channel gain vector hk  is a sparse vector withdc non-zero                  corresponding to the zeros in hs are also removed. Finally,
+elements.  Furthermore,  we  incorporate  user  activity  in  the           we  obtain  the  simpliﬁed  version  of  (3)  in  equation  (a)  of
+channel matrix, i.e.,HK×N = [α1h1,...,αKhK]T, where the                     (4), where   P and    hk are obtained from Ps and hk by zero
+activity indicatorαk  = 0 if userk  is inactive. Otherwise,                 elimination. According to (4), the joint UAD and CE problem
+αk = 1. In this way, we can obtain                                          is formulated as
+               YL×N =XL×KHK×N +WN×L,                (2)                     Solve: detectαk and estimate         hk ifαk is detected as 1,∀k
+                                                                            Given: y and     P
+whereL =Lt+Lc, the(l,n)-th entry ofY represents thel-th                                                                                          (5)
+received symbol on then-th sub-carrier, the (l,k)-th entry of
+X represents thel-th transmitted symbol of thek-th user. The                  Remark 1: To enable this joint UAD and CE task, each
+entries in the additive white Gaussian noise (AWGN) matrix                  active user transmits its unique pilot sequence before its data
+W are assumed i.i.d with noise varianceσ2w.                                 transmission. A common practice is to employ the Zadoff-
+  According to the composition ofxk,Y can be decomposed                     Chu (ZC) sequences [37] as pilot sequences, which is also
+as YL×N =[(YPLt×N)T (YcLc×N)T]T, where YP  and Yc                           considered in this work. One ZC sequence with lengthLt is
+represent the received signal matrices with respect to (w.r.t.)             generated as follows,
+the pilot sequences and the data sequences, respectively. After                    zu(n) = exp{−iπun(n+1)/Lt},   0≤n<Lt,     (6)
+the separator,YP is further processed by the proposed DNN-
+MP-BSBL algorithm for the joint UAD and CE. According                       wherei2 =−1, the sequence lengthLt is a prime number,
+to the output of the DNN-MP-BSBL algorithm ˆhDNN, Yc is                     andu∈ [1,...,Lt− 1] is the root of zu(n). When the root
+fed into the multi-user detection (MUD) module to detect and                u is ﬁxed, we can generateNu =⌊Lt/NSF⌋ different pilot
+decode the information bits of active users.                                sequencesbycyclicallyshiftingoneexistingsequencebyNSF
+                                                                            elements.Therefore,whenNSF issetto1,Lt(Lt−1)different
+                                                                            pilot sequences can be generated for the users.
+B. Problem Formulation
+  In this paper, we mainly consider the received pilot matrix
+YP  and solve the joint UAD and CE problem. Analogous to                    C. MP-BSBL Algorithm [28]
+(2), YP  can be formulated as
+              YPLt×N =PLt×KHK×N +WN×Lt,              (3)                      The recovery of the block sparse signal            h in (4) can be
+where the (l,n)-th entry of YP  represents thel-th received                 addressed by the MP-BSBL algorithm [28], which is based
+signal on then-th sub-carrier, and the (l,k)-th entry of P                  on two types of low-complexity message passing algorithms.
+represents thel-th pilot symbol of thek-th user. The pilot                  The Gaussian message passing is employed for updating the
+matrixP is assumed known to the receiver. Then we perform                   estimated  channel  gain  and  the  mean  ﬁeld  (MF)  message
+vectorization on the transpose of YP  as in [28],                           passingisadoptedtoapproximatethehyper-parametersrelated
+                                                                            to the user activity. The assumptions employed by the MP-
+y =vec([YP]T) = (P⊗IN)vec(HT)+w                                         BSBL algorithm are detailed as follows.
+         p1,1IN  p1,2IN ··· p1,KIN                       α1h1                 For userk, the distribution of the channel gains           hk ondc
+     p2,1IN  p2,2IN ··· p2,KIN                 α2h2...      sub-carriers is assumed conditioned on a hyper-parameterγk.
+   =        ...                ...          ...           ...      +w       Speciﬁcally, the channel gains are assumed independently and
+        pLt,1IN pLt,2IN ··· pLt,KIN                     αKhK                identically distributed (i.i.d) with complex Gaussian distribu-
+                                                                    tion, i.e.,hk(γk)∼CN(0,γ−1k  Idc). In addition, the reciprocal
+                           Ps                              hs               of  the  estimated  hyper-parameter  is  compared  with  a  pre-
+            α1h1                                                          deﬁned thresholdγth to determine the user activity. If ˆγ−1
+                                                                                                                                              k    is
+   (a)=  α2h2...                                                    smaller thanγth, this user is detected as inactive. Otherwise,
+      P                  +w,                                                this  user  is  detected  as  active.  The  hyper-parameterγk  is
+             αKhK                                                           assumed to follow a Gamma distribution [27], [28], [38]. The
+                                                                        noise precisionλ = 1/σ2w  is unknown at the receiver but
+                h                                                           assumedwithaprioriprobabilityp(λ).Withtheseassumptions
+                                                                     (4)    above, the joint a posterior probability is factorized as follows
+
+PDF PAGE 8
+                                                                                                                                                  8
+
+
+LtdcK.                                                                     Algorithm 1 DNN-MP-BSBL algorithm
+Layer 7:    The    weighted    output    vectors   Ilδ→z       =           Input: y,    P,Nit,dc,
+{vlδ→z,mlδ→z}    = {vlδn→zn,mlδn→zn,∀n}   of   Layer   7                           trained weighting matrices in equations (15) to (23)
+are derived as follows,                                                    Output: ˆhDNN, the index set of active user IDX
+    vlδ→z =OlAv2×WlAv2→vδ                                                  Initialize:
+   mlδ→z =OlAm2×WlAm2→mδ(                                         )            l = 0;ˆλl = 103;ˆγl =1;
+              vδ→z.∗      y×Wly→δ−ml−1                                         vlδ→z =1,mlδ→z =0;mlh =0.
+                                              δ→z×Wlmδ→mδ
+           −     (ˆλl−1)−1×Wlλ→δ +vl−1                                     forl = 1 :Nit do
+
+                                              δ→z×Wlvδ→mδ                       1. With ˆλl−1,ml−1h ,vl−1δ→z, and ml−1δ→z  in the (l− 1)-th
+                                                                   (21)          iteration, update vlQ and mlQ by (15), (16), and (17).
+where  WlAv2→vδ   and  WlAm2→mδ   are  weighting  matrices                      2.WithvlQ,mlQ inthel-thiterationandˆγl−1 inthe(l−1)-
+deﬁned   by   the   connection   from   Layer   6   to   Layer   7.              th iteration, update vlh and mlh by (18).
+Wly→δ,Wlmδ→mδ and Wlvδ→mδ are diagonal weighting ma-                            3. Withvlh andmlh in thel-th iteration, updateˆγl by (19).
+trices with sizeNLt×NLt. Wlλ→δ  is a weighting matrix                           4. With ˆλl−1,vl−1δ→z, ml−1δ→z in the (l−1)-th iteration and
+with size 1×NLt.                                                                 vl
+Layer 8:  The  weighted  output  vectors Ilz  ={vlz,mlz}  =                        h, mlh in thel-th iteration, update vlδ→z and mlδ→z by
+{vlzn,mlzn,∀n} of Layer 8 are derived as follows,                                (20) and (21).
+                                                                                5. With ˆλl−1 in the (l−1)-th iteration and vlδ→z, mlδ→z
+  vlz =                          1ˆλl−1×Wlλ→z +    1                             in thel-th iteration, update vlz and mlz by (22).
+                              vlδ→z×Wvδ→vz                                      6. With vlz and mlz in thel-th iteration, update the noise
+               (                                                     )
+ mlz =vlz.∗      (y.∗ˆλl−1)×Wlyλ→z + mlδ→z             ×Wlmv→z                   precision ˆλl by (23).
+                                                vlδ→z                      return:        (       )−1}>γth)
+                                                                   (22)        IDX=ﬁnd      {(ˆγlk               ,
+where Wvδ→vz and Wlmv→z are weighting matrices deﬁned                          ˆhDNN ={0,k/∈ IDX}⋃{ml
+by the connection from Layer 7 to Layer 8. Wlyλ→z  is a                                                         hk,d,k∈ IDX,d = 1,...,dc}.
+diagonal weighting matrix with sizeNLt×NLt, andWlλ→z
+is a weighting matrix with size 1×NLt.                                     the estimated channel gain and h is the known channel gain
+Layer 9:  The  weighted  output  message  ˆλl  of  Layer  9  is            in the training set. It is noted that, different from the training
+derived as follows,                                                        period, the Normalized MSE (NMSE)∥ˆhDNN−h∥22/∥h∥22 is
+ ˆλl=               LtN(                 )2×1TNLt+vlz×Wlvz→λ               considered for the simulations in the testing period to measure
+        mlz×Wlmz→λ−y×Wly→λ                                                 the UAD and CE accuracy.
+                                                                   (23)    D. Summary of the Proposed DNN-MP-BSBL Algorithm
+where Wlmz→λ and Wly→λ are diagonal weighting matrices
+with sizeNLt×NLt, and 1TNLt is an all-one column vector                       After  the  training  period,  all  the  weighting  matrices  are
+with lengthNLt. Wlvz→λ  is a weighting matrix with size                    ﬁxed, and the proposed DNN-MP-BSBL algorithm is summa-
+NLt×1.                                                                     rized in Algorithm 1. AfterNit iterations, the UAD decision()−1  with  a  thresholdγth.  If
+                                                                           is  made  by  comparing        ˆγNitk
+C. Loss Function                                                           (      )−1≤γth, userk is detected as inactive. Otherwise,
+                                                                             ˆγNitk
+  TheDNN-MP-BSBLalgorithmisconductedintwoperiods:                          this user is detected as active and{mNit
+the  training  period  and  the  testing  period.  In  the  training       channel gain for userk.                    hk,d,∀d} is the estimated
+period,  according  to  the  given  samples  in  the  training  set,
+the  non-zero  entries  in  the  weighting  matrices  are  trained         E. Computational Complexity
+to minimize the estimation error. In the testing period, the
+weighting matrices are ﬁxed. The UAD and CE accuracy of                       It  is  emphasized  that  the  weighting  matrices  are  trained
+the DNN-MP-BSBL algorithm is evaluated by the samples in                   off-line,  so  that  we  can  neglect  the  training  complexity  in
+the test set.                                                              the  training  period.  Instead,  we  only  focus  on  the  online
+  In  order  to  train  the  non-zero  entries  in  the  weighting         computational complexity of the DNN-MP-BSBL algorithm
+matrices,alossfunctionisemployedduringthetrainingperiod                    in the testing period. In addition, if all the non-zero entries in
+to measure the estimation error. Then the weights are adjusted             the weighting matrices are ﬁxed as 1, the DNN-MP-BSBL
+with  the  stochastic  gradient  descent  (SGD)  algorithm  in  a          algorithm  is  identical  to  the  MP-BSBL  algorithm,  whose
+back-propagation manner to minimize the loss function. For                 complexity was thoroughly investigated in [28]. Therefore, we
+thestabilityoftheSGDalgorithm,weemploythemeansquare                        ﬁrst present the computational complexity of the MP-BSBL
+error (MSE)∥ˆhDNN−h∥22 as the loss function, where ˆhDNN is                algorithm as a benchmark.
+
+PDF PAGE 10
+                                                                                                                                                      10
+
+
+
+                               TABLE IV
+               RELATED PARAMETERS FOR SIMULATIONS
+
+                   Parameter                         Symbol    Value
+                 User number          K           110
+              Subcarrier number        N             8
+                  Pilot length           Lt           11
+               Spreading factor         dc            4
+   Activation probability for each user   Pa           0.1
+                UAD threshold         γth          0.1
+             Size of training set                                 105
+                Size of test set                                    105
+              Size of mini-batch                                     200
+                Epoch number                                         20
+                 Learning rate                                    10−3
+                                                                              Fig. 5.  NMSE performance for the proposed DNN-MP-BSBL algorithm and
+                                                                              the MP-BSBL algorithm [28] with different activation probability Pa.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fig. 4.   Convergence with iteration for the proposed DNN-MP-BSBL algo-
+rithm and the MP-BSBL algorithm [28].
+
+
+                                                                              Fig. 6.  UAD accuracy for the proposed DNN-MP-BSBL algorithm and the
+are 1.3× 10−2  and 1.7× 10−3  for  SNR=5dB  and  15dB,                        MP-BSBL algorithm [28] with different activation probability Pa.
+respectively. In addition, the improvement by the DNN-MP-
+BSBL algorithm is more prominent with a higher SNR. For
+example, the DNN-MP-BSBL algorithm could improve the
+NMSE performance of the MP-BSBL algorithm by almost                           algorithm could improve the NMSE by almost one magnitude
+one magnitude order when SNR=15dB.                                            order when SNR=10dB andPa is relatively low. Furthermore,
+                                                                              the NMSE can be further lowered by the DNN-MP-BSBL
+B. CE and UAD Accuracy With DifferentPa                                       algorithm when SNR increases to 16dB.
+  The NMSE performance of the proposed DNN-MP-BSBL                              In the DNN-MP-BSBL algorithm, weights are also imposed
+algorithm is investigated with different activation probability               on the MF message update in (19) to alleviate the inﬂuence of
+Pa, and the simulation results are illustrated in Fig. 5. It is               correlated Gaussian messages and improve the UAD accuracy.
+shown that whenPa increases, the NORA system is crowded                       We  also  investigate  the  UAD  accuracy  of  the  DNN-MP-
+with more active users. As a result, the NMSE performance                     BSBL algorithm with differentPa, and the results are shown
+deteriorates for both the DNN-MP-BSBL algorithm and the                       in  Fig.  6.  It  is  shown  that  the  proposed  DNN-MP-BSBL
+MP-BSBL algorithm. In addition, the NMSE performance of                       algorithm could improve the UAD accuracy of the MP-BSBL
+the MP-BSBL algorithm shows no improvement when SNR                           algorithm  for  differentPa,  SNR,  and  different  number  of
+increases from 10dB to 16dB. By contrast, the proposed DNN-                   iterations. Similarly, this improvement on UAD accuracy is
+MP-BSBL  algorithm  could  always  guarantee  improvement                     more prominent whenPa is relatively low and SNR is high.
+on the NMSE performance with different SNR and different                      For example, the DNN-MP-BSBL algorithm could improve
+Pa.  Particularly,  the  improvement  is  more  prominent  with               the UAD error rate by two magnitude orders when SNR=16dB
+lowerPa and higher SNR. For example, the DNN-MP-BSBL                          andPa≤ 0.1.

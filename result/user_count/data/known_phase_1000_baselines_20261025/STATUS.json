@@ -1,0 +1,36 @@
+{
+  "stage": "INFERENCE_COMPLETE",
+  "pid": 87848,
+  "started_unix": 1792888187.002643,
+  "updated_unix": 1792914236.2601914,
+  "elapsed_seconds": 26049.257548570633,
+  "completed": 20000,
+  "planned": 20000,
+  "completed_by_method": {
+    "offgrid_sbl": 5000,
+    "gnn": 5000,
+    "gamp": 5000,
+    "somp": 5000
+  },
+  "prepared_inputs": 5000,
+  "total_inputs": 5000,
+  "dispatched_tasks": {
+    "cpu": 20000
+  },
+  "pending": 0,
+  "execution": {
+    "gpu_workers": 0,
+    "cpu_workers": 1,
+    "threads_per_worker": 4,
+    "driver": "D:\\afdm-gfra\\result\\user_count\\data\\known_phase_1000_baselines_20261025\\parallel_run.py",
+    "driver_sha256": "f85b6818f2b92b060f68dd1e4c7d0d341c9ba69e06e3289faa9b14f87e5f1195",
+    "hard_timeout_seconds": 604800,
+    "process_model": "spawn; one CPU worker; persistent baseline models; one shared-input writer",
+    "timing": "Concurrent throughput experiment, not isolated method latency",
+    "environment": {
+      "KMP_BLOCKTIME": "0",
+      "OMP_WAIT_POLICY": "PASSIVE",
+      "CUDA_VISIBLE_DEVICES": ""
+    }
+  }
+}

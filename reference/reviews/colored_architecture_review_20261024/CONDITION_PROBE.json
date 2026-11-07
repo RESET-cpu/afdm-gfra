@@ -1,0 +1,143 @@
+{
+  "scope": "Exploratory saved-weight CPU diagnosis, 64 distinct development scenes; not the 1000-scene performance experiment or a significance test",
+  "checkpoint": "result\\channel_denoising\\data\\colored_score_50000_matched_20261024\\first_best.pt",
+  "checkpoint_sha256": "1315fd2e2e1bef1cb5ef0e44c5665336816fdd1da1189790f75c70c13494bb57",
+  "epoch": 20,
+  "script_sha256": "f3b5f119ebbe7a29a131bbf822311972ab71028ab5901d309fbc94b49c6b99a4",
+  "seconds": 4.365123987197876,
+  "training_modified": false,
+  "rows": [
+    {
+      "snr_db_interval": [
+        -20,
+        -10
+      ],
+      "samples": 16,
+      "results": {
+        "correct": {
+          "nmse_db": 13.952759742736816,
+          "loss": 0.3303774297237396
+        },
+        "shuffled": {
+          "nmse_db": 14.252477645874023,
+          "loss": 0.3344959020614624,
+          "score_relative_change": 0.10459712147712708
+        },
+        "identity": {
+          "nmse_db": 14.465744018554688,
+          "loss": 0.3314228653907776,
+          "score_relative_change": 0.0767524465918541
+        },
+        "isotropic_prior_linear_estimate": {
+          "nmse_db": -0.19435042142868042,
+          "assumed_complex_prior_covariance": "I; surrogate, not measured true channel prior"
+        },
+        "zero_estimate": {
+          "nmse_db": 0.0
+        },
+        "noisy_input": {
+          "nmse_db": 16.6007080078125
+        }
+      }
+    },
+    {
+      "snr_db_interval": [
+        -10,
+        0
+      ],
+      "samples": 16,
+      "results": {
+        "correct": {
+          "nmse_db": 3.3289811611175537,
+          "loss": 0.3536955714225769
+        },
+        "shuffled": {
+          "nmse_db": 3.43906831741333,
+          "loss": 0.3577345013618469,
+          "score_relative_change": 0.08414425700902939
+        },
+        "identity": {
+          "nmse_db": 3.6487984657287598,
+          "loss": 0.35747453570365906,
+          "score_relative_change": 0.06488972157239914
+        },
+        "isotropic_prior_linear_estimate": {
+          "nmse_db": -1.913517951965332,
+          "assumed_complex_prior_covariance": "I; surrogate, not measured true channel prior"
+        },
+        "zero_estimate": {
+          "nmse_db": 0.0
+        },
+        "noisy_input": {
+          "nmse_db": 5.729727268218994
+        }
+      }
+    },
+    {
+      "snr_db_interval": [
+        0,
+        10
+      ],
+      "samples": 16,
+      "results": {
+        "correct": {
+          "nmse_db": -5.488083362579346,
+          "loss": 0.3304368257522583
+        },
+        "shuffled": {
+          "nmse_db": -5.288276195526123,
+          "loss": 0.3321421444416046,
+          "score_relative_change": 0.0622277669608593
+        },
+        "identity": {
+          "nmse_db": -5.0066680908203125,
+          "loss": 0.3330511450767517,
+          "score_relative_change": 0.05058714374899864
+        },
+        "isotropic_prior_linear_estimate": {
+          "nmse_db": -5.594730377197266,
+          "assumed_complex_prior_covariance": "I; surrogate, not measured true channel prior"
+        },
+        "zero_estimate": {
+          "nmse_db": 0.0
+        },
+        "noisy_input": {
+          "nmse_db": -3.135793685913086
+        }
+      }
+    },
+    {
+      "snr_db_interval": [
+        10,
+        30
+      ],
+      "samples": 16,
+      "results": {
+        "correct": {
+          "nmse_db": -19.496070861816406,
+          "loss": 0.4153892397880554
+        },
+        "shuffled": {
+          "nmse_db": -19.297616958618164,
+          "loss": 0.4203346371650696,
+          "score_relative_change": 0.09548074752092361
+        },
+        "identity": {
+          "nmse_db": -19.176443099975586,
+          "loss": 0.42074644565582275,
+          "score_relative_change": 0.06818538904190063
+        },
+        "isotropic_prior_linear_estimate": {
+          "nmse_db": -18.039152145385742,
+          "assumed_complex_prior_covariance": "I; surrogate, not measured true channel prior"
+        },
+        "zero_estimate": {
+          "nmse_db": 0.0
+        },
+        "noisy_input": {
+          "nmse_db": -17.797182083129883
+        }
+      }
+    }
+  ]
+}

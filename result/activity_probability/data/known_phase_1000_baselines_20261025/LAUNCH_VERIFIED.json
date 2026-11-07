@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "checked_utc": "2026-10-25T12:23:01.748709+00:00",
+  "launch_sha256": "5e94cd7590100dd363dd80141f250f690073dc7ad903e7dc1c22f7d19f432bf0",
+  "plan_sha256": "3b33e721a325754002ce05dace2d4e1c1a7f9dca7468265e1730c2183c84f981",
+  "actual_process": {
+    "pid": 89932,
+    "create_time": 1792930905.1526985,
+    "command_line": [
+      "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-u",
+      "D:\\afdm-gfra\\result\\activity_probability\\data\\known_phase_1000_baselines_20261025\\parallel_run.py",
+      "--plan",
+      "D:\\afdm-gfra\\result\\activity_probability\\data\\known_phase_1000_baselines_20261025\\PLAN.json"
+    ]
+  },
+  "workers": [
+    {
+      "pid": 87028,
+      "create_time": 1792930907.4675903,
+      "command_line": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=89932, pipe_handle=1208)",
+        "--multiprocessing-fork"
+      ],
+      "parent_pid": 89932,
+      "status": {
+        "pid": 87028,
+        "stage": "RUNNING",
+        "updated_unix": 1792930980.4853585,
+        "create_time": 1792930907.4675903,
+        "command_line": [
+          "D:\\afdm-gfra\\.venv\\base\\python.exe",
+          "-B",
+          "-X",
+          "utf8",
+          "-c",
+          "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=89932, pipe_handle=1208)",
+          "--multiprocessing-fork"
+        ],
+        "scene": 3,
+        "condition": 2,
+        "method": "offgrid_sbl",
+        "device": "cpu"
+      }
+    }
+  ],
+  "snapshot_pointer_count": 4052,
+  "snapshot_pointer_count_by_method": {
+    "offgrid_sbl": 1013,
+    "gnn": 1013,
+    "gamp": 1013,
+    "somp": 1013
+  },
+  "reused_results": 4000,
+  "new_result_pointer_count": 52,
+  "first_new_condition_all_four_methods_verified": true,
+  "STMP_result_count": 0,
+  "stderr_bytes": 0,
+  "single_official_launch": true,
+  "no_automatic_retry": true
+}

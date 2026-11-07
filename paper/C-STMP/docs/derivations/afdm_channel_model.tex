@@ -1,0 +1,61 @@
+% Internal derivation record, retained on 2026-11-04.
+% Not included by main.tex or main_full.tex. Cross-references refer to the
+% manuscript; the eq:cpp label below is internal to this record.
+\section{AFDM Channel Matrix: Internal Derivation}
+
+The chirp-periodic extension over the prefix is
+\begin{equation}
+ s_{qk}[t]=e^{\mathrm j2\pi c_1(t^2-\langle t\rangle_N^2)}
+ s_{qk}[\langle t\rangle_N],\qquad -N_{\rm CPP}\leq t<0,
+ \label{eq:cpp}
+\end{equation}
+where $\langle x\rangle_N=x-N\lfloor x/N\rfloor$ and
+$2Nc_1\in\mathbb N_+$. This relation is incorporated into the
+continuous waveform defined in the manuscript.
+
+Substituting the basis waveform in \eqref{eq:continuous-waveform}
+into \eqref{eq:path-operator-system} gives
+\begin{equation}
+ \begin{split}
+ [\mathbf G(d,\nu;g)]_{rn}
+ &=\frac{e^{\mathrm j2\pi[c_1d^2+c_2(n^2-r^2)-nd/N+\nu T_sg]}}{N}\\
+ &\quad\times\sum_{t=0}^{N-1}
+ e^{\mathrm j2\pi[(n-r)/N-2c_1d+\nu T_s]t}
+ e^{\mathrm j2\pi\zeta_{tn}d},
+ \end{split}
+ \label{eq:path-entry-expansion}
+\end{equation}
+where $\zeta_{tn}=\zeta_n(\langle t-d\rangle_N)$.
+Factors with phases equal to integer multiples of $2\pi$ are one because $t,\zeta_{tn}$ are integers
+and $w_{t-d}-(t-d)$ is an integer multiple of $N$.
+For integer $d$, the final factor is one, giving
+
+\begin{align}
+ \mathbf G(d,\nu;g)
+ &=\mathbf F_{\rm A}\mathbf D_{\nu,g}\bm\Omega_d
+   \bm\Pi_{d\bmod N}\mathbf F_{\rm A}^{\mathsf H},
+ \label{eq:integer-operator}\\
+ [\bm\Omega_d]_{tt}
+ &=e^{\mathrm j2\pi c_1[(t-d)^2-\langle t-d\rangle_N^2]},
+ \label{eq:integer-prefix-phase}
+\end{align}
+where $[\bm\Pi_l\mathbf s]_t=s[\langle t-l\rangle_N]$.
+The value $d\bmod N$ determines the cyclic shift, whereas the
+full delay determines the CPP phase. The same expression therefore
+covers delays exceeding $N$ samples.
+
+For the reference frame, the useful part starts at
+$g_0=N_{\rm CPP}$. Combining the path responses in
+\eqref{eq:path-operator-system} with the path gains and array response
+gives the effective channel in \eqref{eq:channel}.
+In frame $q$, the starting sample is
+$g_q=N_{\rm CPP}+q(N+N_{\rm CPP})$, and
+\[
+ \mathbf D_{\nu_k,g_q}
+ =e^{\mathrm j2\pi\nu_kqT_{\rm frame}}\mathbf D_{\nu_k,N_{\rm CPP}}.
+\]
+Since this scalar factor is common to all paths of device $k$,
+the device matrix satisfies
+$\mathbf H_k^{(q)}=e^{\mathrm jq\beta_k}\mathbf H_k$, establishing
+\eqref{eq:twc-frame-channel}.
+

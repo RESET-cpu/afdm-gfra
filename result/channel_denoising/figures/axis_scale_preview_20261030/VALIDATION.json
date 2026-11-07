@@ -1,0 +1,225 @@
+{
+  "status": "PASS",
+  "source_summary": "D:\\afdm-gfra\\archive\\project_cleanup_20261030\\compression_denoising_500_20261030\\data\\SUMMARY.json",
+  "source_sha256": "334f6ca9c98fe82b431ccc594d9f1ae96398a0fc1c785c19f1391a4ac8fa6c25",
+  "source_plot_data": "D:\\afdm-gfra\\archive\\project_cleanup_20261030\\compression_denoising_500_20261030\\figures_after\\PLOT_DATA.json",
+  "source_plot_data_sha256": "397b95013adb0cdb8f40b097673afc6f9845afed366b74d7ec70bf6d28e7305e",
+  "all_54_plot_rows_byte_identical": true,
+  "measured_markers": 54,
+  "out_of_focus_markers": 4,
+  "omitted_markers": 0,
+  "monotone_transform": true,
+  "inverse_error_below_1e_minus_12": true,
+  "midrange_scale_identity": true,
+  "legend_marker_overlaps": [],
+  "legend_line_overlaps": [],
+  "display_curves": [
+    {
+      "method": "proposed",
+      "x": [
+        -20.0,
+        -10.0,
+        -0.0,
+        10.0,
+        20.0,
+        30.0
+      ],
+      "y": [
+        -0.2678285667234517,
+        -9.85470430495123,
+        -17.924736237109705,
+        -25.363650494860053,
+        -32.83565527992823,
+        -40.21556036516692
+      ],
+      "marker_count": 6,
+      "boundary_vertices": 0
+    },
+    {
+      "method": "pretrained_colored_first",
+      "x": [
+        -20.0,
+        -10.0,
+        -0.0,
+        10.0,
+        20.0,
+        30.0
+      ],
+      "y": [
+        -2.0034054869903035,
+        -11.965667147871839,
+        -17.982854662762733,
+        -24.05430028923213,
+        -31.46948621581315,
+        -39.21838853910915
+      ],
+      "marker_count": 6,
+      "boundary_vertices": 0
+    },
+    {
+      "method": "noisy",
+      "x": [
+        -20.0,
+        -10.0,
+        -0.0,
+        10.0,
+        20.0,
+        30.0
+      ],
+      "y": [
+        20.071211114181736,
+        10.071211114181738,
+        0.07121111418173573,
+        -9.928788885818264,
+        -19.928788885818264,
+        -29.928788885818264
+      ],
+      "marker_count": 6,
+      "boundary_vertices": 1
+    },
+    {
+      "method": "gaussian",
+      "x": [
+        -20.0,
+        -10.0,
+        -0.0,
+        10.0,
+        20.0,
+        30.0
+      ],
+      "y": [
+        -0.04269955418006129,
+        -0.407971326874506,
+        -2.975520370853805,
+        -10.349700163804062,
+        -19.972895320194738,
+        -29.933262030524972
+      ],
+      "marker_count": 6,
+      "boundary_vertices": 0
+    },
+    {
+      "method": "genie_bound",
+      "x": [
+        -20.0,
+        -10.0,
+        -0.0,
+        10.0,
+        20.0,
+        30.0
+      ],
+      "y": [
+        -15.729488317916045,
+        -23.323573209474272,
+        -31.872702181430927,
+        -41.42136118781476,
+        -51.31725015060138,
+        -61.29157620893241
+      ],
+      "marker_count": 6,
+      "boundary_vertices": 1
+    },
+    {
+      "method": "offgrid_sbl",
+      "x": [
+        -20.0,
+        -10.0,
+        -0.0,
+        10.0,
+        20.0,
+        30.0
+      ],
+      "y": [
+        -1.8077626721046207,
+        -8.979343838088656,
+        -11.319797053656874,
+        -11.902890104626831,
+        -11.347922157132686,
+        -11.130928142259052
+      ],
+      "marker_count": 6,
+      "boundary_vertices": 0
+    },
+    {
+      "method": "gnn",
+      "x": [
+        -20.0,
+        -10.0,
+        -0.0,
+        10.0,
+        20.0,
+        30.0
+      ],
+      "y": [
+        -1.3644103895922095,
+        -4.8292656781330265,
+        -7.632640103011941,
+        -9.827366756082698,
+        -10.691306680699098,
+        -10.823752805700032
+      ],
+      "marker_count": 6,
+      "boundary_vertices": 0
+    },
+    {
+      "method": "gamp",
+      "x": [
+        -20.0,
+        -10.0,
+        -0.0,
+        10.0,
+        20.0,
+        30.0
+      ],
+      "y": [
+        2.372164711656691,
+        -3.9807070525856902,
+        -8.229498198577826,
+        -10.217699776792466,
+        -10.701991498630194,
+        -10.76802128752783
+      ],
+      "marker_count": 6,
+      "boundary_vertices": 0
+    },
+    {
+      "method": "somp",
+      "x": [
+        -20.0,
+        -10.0,
+        -0.0,
+        10.0,
+        20.0,
+        30.0
+      ],
+      "y": [
+        2.2981750058914097,
+        -3.5128132746617577,
+        -6.928380152125001,
+        -9.745201853029055,
+        -10.750915453472516,
+        -10.87426917406294
+      ],
+      "marker_count": 6,
+      "boundary_vertices": 0
+    }
+  ],
+  "manuscript_figure_replaced": false,
+  "outputs": {
+    "channel_denoising_axis_compressed.pdf": "ce943c31a708edfcaea14165d2e0d3599b19c1cdbba014f30dd8b6aa39b88881",
+    "channel_denoising_axis_compressed.png": "47965fe367fb2387791b7c0c0a26fed455feeee397a001f503ccb711b818a858",
+    "channel_denoising_axis_compressed.svg": "0f3201aa480cf635155b033055aec290875b0ab20f998a47f3333257a7e79d98"
+  },
+  "visual_review": {
+    "status": "PASS",
+    "rendered_from": "channel_denoising_axis_compressed.pdf",
+    "preview": "pdf_render.png",
+    "checks": [
+      "Both scale changes and 1/4 annotations visible",
+      "All tick labels readable",
+      "No legend overlaps with measured points or connecting segments",
+      "Original figure size retained: 3.15 by 2.6 inches"
+    ]
+  },
+  "source_verification_file": "REFERENCES.json"
+}

@@ -1,0 +1,943 @@
+{
+  "status": "COMPLETE",
+  "training_runs": 0,
+  "protected_assets_verified": 408,
+  "development": {
+    "original": {
+      "inputs": 10,
+      "user_decisions": 400,
+      "misses": 7,
+      "false_alarms": 5,
+      "aer": 0.03,
+      "full_error": 2369.273488607634,
+      "signal_energy": 18980.025562070343,
+      "nmse_db": -9.03681598148345,
+      "mean_iterations": 73.8,
+      "max_iterations": 138,
+      "converged": 10
+    },
+    "readout": {
+      "inputs": 10,
+      "user_decisions": 400,
+      "misses": 7,
+      "false_alarms": 0,
+      "aer": 0.0175,
+      "full_error": 2322.787377874069,
+      "signal_energy": 18980.025562070343,
+      "nmse_db": -9.122873356013429,
+      "mean_iterations": 73.8,
+      "max_iterations": 138,
+      "converged": 10
+    },
+    "errors_fixed": 5,
+    "errors_introduced": 0,
+    "worst_nmse_degradation_db": 0.10767576761624742
+  },
+  "holdout": {
+    "original": {
+      "inputs": 80,
+      "user_decisions": 3200,
+      "misses": 0,
+      "false_alarms": 0,
+      "aer": 0.0,
+      "full_error": 3906.8308843917266,
+      "signal_energy": 86506.38561723067,
+      "nmse_db": -13.452235545826506,
+      "mean_iterations": 60.8125,
+      "max_iterations": 80,
+      "converged": 80
+    },
+    "readout": {
+      "inputs": 80,
+      "user_decisions": 3200,
+      "misses": 0,
+      "false_alarms": 0,
+      "aer": 0.0,
+      "full_error": 3926.2586489892783,
+      "signal_energy": 86506.38561723067,
+      "nmse_db": -13.430692607435956,
+      "mean_iterations": 60.8125,
+      "max_iterations": 80,
+      "converged": 80
+    },
+    "errors_fixed": 0,
+    "errors_introduced": 0,
+    "worst_nmse_degradation_db": 0.17640580066647438,
+    "aer_difference_cluster_bootstrap_95_percent": [
+      0.0,
+      0.0
+    ]
+  },
+  "holdout_by_snr": {
+    "-4": {
+      "original": {
+        "inputs": 20,
+        "user_decisions": 800,
+        "misses": 0,
+        "false_alarms": 0,
+        "aer": 0.0,
+        "full_error": 1730.868409060614,
+        "signal_energy": 21626.596404307667,
+        "nmse_db": -10.96724124038436,
+        "mean_iterations": 61.0,
+        "max_iterations": 80,
+        "converged": 20
+      },
+      "readout": {
+        "inputs": 20,
+        "user_decisions": 800,
+        "misses": 0,
+        "false_alarms": 0,
+        "aer": 0.0,
+        "full_error": 1744.3739029053763,
+        "signal_energy": 21626.596404307667,
+        "nmse_db": -10.933485948216287,
+        "mean_iterations": 61.0,
+        "max_iterations": 80,
+        "converged": 20
+      }
+    },
+    "-2": {
+      "original": {
+        "inputs": 20,
+        "user_decisions": 800,
+        "misses": 0,
+        "false_alarms": 0,
+        "aer": 0.0,
+        "full_error": 1230.4917402473043,
+        "signal_energy": 21626.596404307667,
+        "nmse_db": -12.449094726924537,
+        "mean_iterations": 60.0,
+        "max_iterations": 60,
+        "converged": 20
+      },
+      "readout": {
+        "inputs": 20,
+        "user_decisions": 800,
+        "misses": 0,
+        "false_alarms": 0,
+        "aer": 0.0,
+        "full_error": 1236.8179751924706,
+        "signal_energy": 21626.596404307667,
+        "nmse_db": -12.426823871089088,
+        "mean_iterations": 60.0,
+        "max_iterations": 60,
+        "converged": 20
+      }
+    },
+    "2": {
+      "original": {
+        "inputs": 20,
+        "user_decisions": 800,
+        "misses": 0,
+        "false_alarms": 0,
+        "aer": 0.0,
+        "full_error": 683.9188976104286,
+        "signal_energy": 21626.596404307667,
+        "nmse_db": -14.999835714654777,
+        "mean_iterations": 60.15,
+        "max_iterations": 63,
+        "converged": 20
+      },
+      "readout": {
+        "inputs": 20,
+        "user_decisions": 800,
+        "misses": 0,
+        "false_alarms": 0,
+        "aer": 0.0,
+        "full_error": 683.3351970486929,
+        "signal_energy": 21626.596404307667,
+        "nmse_db": -15.003543846880332,
+        "mean_iterations": 60.15,
+        "max_iterations": 63,
+        "converged": 20
+      }
+    },
+    "10": {
+      "original": {
+        "inputs": 20,
+        "user_decisions": 800,
+        "misses": 0,
+        "false_alarms": 0,
+        "aer": 0.0,
+        "full_error": 261.5518374733798,
+        "signal_energy": 21626.596404307667,
+        "nmse_db": -19.17430400100214,
+        "mean_iterations": 62.1,
+        "max_iterations": 69,
+        "converged": 20
+      },
+      "readout": {
+        "inputs": 20,
+        "user_decisions": 800,
+        "misses": 0,
+        "false_alarms": 0,
+        "aer": 0.0,
+        "full_error": 261.73157384273844,
+        "signal_energy": 21626.596404307667,
+        "nmse_db": -19.17132058838896,
+        "mean_iterations": 62.1,
+        "max_iterations": 69,
+        "converged": 20
+      }
+    }
+  },
+  "checks": [
+    {
+      "stage": "development",
+      "scene": 2,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.11297384690743813,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "development",
+      "scene": 6,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.10683996122929107,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "development",
+      "scene": 7,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.19671810554379116,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "development",
+      "scene": 30,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.14667477497817266,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "development",
+      "scene": 12,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.19468737479867043,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "development",
+      "scene": 30,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.10766672772944799,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "development",
+      "scene": 34,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.041348949349163056,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "development",
+      "scene": 39,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.04991471882986255,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "development",
+      "scene": 39,
+      "index": 4,
+      "applied": true,
+      "raw_variance": 0.032150433022461,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "development",
+      "scene": 49,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.13711291206989143,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 0,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.016113230872464666,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 0,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.06469807861868908,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 0,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.043938761847550536,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 0,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.004218715933892116,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 1,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.05389861366378823,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 1,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.08769583781695961,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 1,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.018271686054995108,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 2,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.15232673496304358,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 1,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.0048345155629245075,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 2,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.05220150257626595,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 2,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.11206611465128766,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 2,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.004765253883320733,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 3,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.01267599440103342,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 3,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.004433062302120122,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 3,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.003415218122858315,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 3,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.0021876596337981275,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 4,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.0665703468627615,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 4,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.040776184502211,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 4,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.013496654305100109,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 4,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.0038680987566327195,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 5,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.13202291458234064,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 5,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.08850155416910603,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 5,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.03543999809655625,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 5,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.005483820727663827,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 6,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.1024373307005448,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 6,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.06918011232963864,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 6,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.02526148421595359,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 6,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.004629792463623208,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 7,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.07449906899430961,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 7,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.04514084279502004,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 7,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.012237116952288506,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 7,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.004856498123903161,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 8,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.12475522519899822,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 8,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.08119519427807258,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 8,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.03034682100223033,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 8,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.0049472057659388086,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 9,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.054762656378671504,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 9,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.03557997676102588,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 9,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.013097351594713844,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 9,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.004801957715839556,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 10,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.07946672658083632,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 10,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.04902246649088947,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 10,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.019277974059439852,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 10,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.005175901120897957,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 11,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.06463491132953858,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 11,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.04031069053797598,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 11,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.01210699717035795,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 11,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.003810083547333742,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 12,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.05829234188960869,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 12,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.03510272461288657,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 12,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.009891340263936598,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 12,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.00458266472496951,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 13,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.11938320794576,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 13,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.08034505370559107,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 13,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.030240380201891588,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 13,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.004439693455784669,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 14,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.08423455150994077,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 14,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.05157949780906035,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 14,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.016026916233983706,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 14,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.0043627846021069405,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 15,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.07376742676513547,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 15,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.04797539636357147,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 15,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.017990596853258677,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 15,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.005257478039061498,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 16,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.07619845279909446,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 16,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.04991185483869939,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 16,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.01902712507442525,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 16,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.005012511707047107,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 17,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.09465446524622438,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 17,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.06459705606721405,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 17,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.024051951705044962,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 17,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.003983674044272539,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 18,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.10893577285961246,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 18,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.15104142714582822,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 18,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.041454057598062526,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 18,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.00427624438827332,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 19,
+      "index": 0,
+      "applied": true,
+      "raw_variance": 0.1160895894395674,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 19,
+      "index": 1,
+      "applied": true,
+      "raw_variance": 0.07652793539819949,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 19,
+      "index": 7,
+      "applied": true,
+      "raw_variance": 0.003960404238586432,
+      "additional_first_calls": 3
+    },
+    {
+      "stage": "holdout",
+      "scene": 19,
+      "index": 3,
+      "applied": true,
+      "raw_variance": 0.027393981982938027,
+      "additional_first_calls": 3
+    }
+  ],
+  "full_snr_status": {
+    "stage": "STOPPED_BY_USER",
+    "pid": 70564,
+    "started_unix": 1792908593.988069,
+    "updated_unix": 1792910757.9678972,
+    "completed": 487,
+    "planned": 8000,
+    "completed_by_snr": {
+      "-4": 61,
+      "-2": 61,
+      "0": 61,
+      "2": 61,
+      "4": 61,
+      "6": 61,
+      "8": 61,
+      "10": 60
+    },
+    "pending": 0,
+    "elapsed_seconds": 2163.9798254966736,
+    "newly_completed": 471,
+    "estimated_remaining_seconds": 34518.00515702019,
+    "execution": {
+      "gpu_workers": 6,
+      "threads_per_worker": 2,
+      "hard_timeout_seconds": 604800,
+      "timing": "Concurrent throughput only; do not infer isolated algorithm latency."
+    }
+  },
+  "limitations": [
+    "Final readout does not feed back or establish a new fixed point.",
+    "20 new physical scenes at four SNR levels; no statistical significance claimed from sparse error counts.",
+    "A zero-width paired bootstrap interval, if observed, is degenerate because the observed differences are all zero; it is not a population guarantee.",
+    "Median energy assumes most users are inactive and does not remove correlations.",
+    "Remaining weak-user misses are not solved. This candidate is not a full colored-message model.",
+    "Parallel wall times are not isolated algorithm latency."
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "removed_displays": [
+    {
+      "file": "sections/03_bayesian_receiver_design.tex",
+      "labels": [
+        "eq:exact-local-moments"
+      ],
+      "tex": "\\begin{equation}\n \\begin{aligned}\n \\E[X\\mid R,v]&=p^\\star m,\\\\\n \\operatorname{Cov}(\\vect(X)\\mid R,v)\n &=p^\\star\\bm\\Sigma_H+\n p^\\star(1-p^\\star)\\vect(m)\\vect(m)^{\\mathsf H}.\n \\end{aligned}\n \\label{eq:exact-local-moments}\n\\end{equation}"
+    },
+    {
+      "file": "sections/04_generative_priors.tex",
+      "labels": [
+        "eq:score-matching-objective"
+      ],
+      "tex": "\\begin{equation}\n \\mathcal L_{\\rm SM}(\\theta)=\n \\E\\left[\\frac{1}{2D}\n \\norm{\\bm\\Sigma^{1/2}\n (S_\\theta(\\mathbf u,\\mathbf C)\n -\\nabla_{\\mathbf u}\\log q_{\\bm\\Sigma}^{\\mathbb R}(\\mathbf u))}^2\\right].\n \\label{eq:score-matching-objective}\n\\end{equation}"
+    },
+    {
+      "file": "sections/05_overall_algorithm.tex",
+      "labels": [
+        "eq:total-complexity"
+      ],
+      "tex": "\\begin{equation}\n O\\bigl(C_{\\rm phase}+QNM^2+M^3+KNQ^2+I C_{\\rm iter}\\bigr).\n \\label{eq:total-complexity}\n\\end{equation}"
+    },
+    {
+      "file": "sections/06_simulation_results.tex",
+      "labels": [
+        "eq:variance-stopping"
+      ],
+      "tex": "\\begin{equation}\n d_{\\rm var}^{(i)}=\n \\frac{|v_{\\rm tar}^{(i)}-v^{(i)}|}\n {\\max\\{v_{\\rm tar}^{(i)},v^{(i)}\\}}.\n \\label{eq:variance-stopping}\n\\end{equation}"
+    },
+    {
+      "file": "sections/appendix_parameter_estimation.tex",
+      "labels": [
+        "frontend:eq:phase-aliases"
+      ],
+      "tex": "\\begin{equation}\n \\nu_j=\\frac{\\beta+2\\pi j}{2\\pi T_{\\rm frame}},\\qquad\n j\\in\\mathbb Z,\\quad |\\nu_j|\\leq\\nu_{\\max}.\n \\label{frontend:eq:phase-aliases}\n\\end{equation}"
+    },
+    {
+      "file": "sections/appendix_parameter_estimation.tex",
+      "labels": [
+        "frontend:eq:spatial-noise-covariance"
+      ],
+      "tex": "\\begin{equation}\n \\begin{aligned}\n \\widehat{\\mathbf R}_y&=\\frac{1}{N_{\\rm s}}\\sum_{q=0}^{Q-1}\\sum_{r=0}^{N-1}\n \\mathbf y_{qr}\\mathbf y_{qr}^{\\mathsf H},\\\\\n \\mathbf y_{qr}&=(Y_{q0r},\\ldots,Y_{q,M-1,r})^{\\mathsf T}.\n \\end{aligned}\n \\label{frontend:eq:spatial-noise-covariance}\n\\end{equation}"
+    },
+    {
+      "file": "sections/appendix_parameter_estimation.tex",
+      "labels": [
+        "frontend:eq:noise-tail-statistics"
+      ],
+      "tex": "\\begin{equation}\n \\bar\\lambda_j=\\frac1{M-j}\\sum_{i=j+1}^M\\lambda_i,\\qquad\n \\log g_j=\\frac1{M-j}\\sum_{i=j+1}^M\\log\\lambda_i.\n \\label{frontend:eq:noise-tail-statistics}\n\\end{equation}"
+    },
+    {
+      "file": "sections/appendix_parameter_estimation.tex",
+      "labels": [
+        "frontend:eq:noise-mdl"
+      ],
+      "tex": "\\begin{equation}\n \\begin{aligned}\n \\widehat r_{\\rm s}\n &=\\arg\\min_{0\\leq j<M}\\Big\\{\n N_{\\rm s}(M-j)(\\log\\bar\\lambda_j-\\log g_j)\\\\\n &\\hspace{6em}+\\frac{j(2M-j)}2\\log N_{\\rm s}\\Big\\},\\\\\n \\widehat\\sigma^2&=\\bar\\lambda_{\\widehat r_{\\rm s}}.\n \\end{aligned}\n \\label{frontend:eq:noise-mdl}\n\\end{equation}"
+    },
+    {
+      "file": "sections/appendix_afdm_channel_model.tex",
+      "labels": [
+        "eq:matched-otfs-resources"
+      ],
+      "tex": "\\begin{equation}\n \\begin{aligned}\n T_{\\rm block}&=Q_{\\rm A}(N+N_{\\rm pre})T_s\n              =Q_{\\rm O}L(N+N_{\\rm pre})T_s,\\\\\n N_{\\rm obs}&=Q_{\\rm A}N=Q_{\\rm O}LN.\n \\end{aligned}\n \\label{eq:matched-otfs-resources}\n\\end{equation}"
+    },
+    {
+      "file": "sections/appendix_afdm_channel_model.tex",
+      "labels": [
+        "eq:otfs-common-doppler"
+      ],
+      "tex": "\\begin{equation}\n \\begin{aligned}\n H^{\\rm O}_{km b d r}\n &=[\\mathbf a_k]_m e^{\\mathrm j2\\pi\\nu_k rT_s}\n   \\frac{\\Pi_L(b-LT_{\\rm frame}\\nu_k)}{\\sqrt L}\n   h_k^{\\rm d}[d],\\\\\n h_k^{\\rm d}[d]\n &=\\sum_{\\ell=1}^{L_k}\\widetilde g_{k\\ell}\n       \\mathbf 1\\{d=d_{k\\ell}\\},\n \\end{aligned}\n \\label{eq:otfs-common-doppler}\n\\end{equation}"
+    },
+    {
+      "file": "sections/appendix_afdm_channel_model.tex",
+      "labels": [
+        "eq:afdm-modulation-cost"
+      ],
+      "tex": "\\begin{equation}\n C_{\\rm A}\\leq L C_{\\rm FFT}(N)+2LN.\n \\label{eq:afdm-modulation-cost}\n\\end{equation}"
+    },
+    {
+      "file": "sections/appendix_afdm_channel_model.tex",
+      "labels": [
+        "eq:otfs-transform-cancellation"
+      ],
+      "tex": "\\begin{equation}\n \\mathbf S\n =\\mathbf F_N^{\\mathsf H}\n   (\\mathbf F_N\\mathbf X_{\\rm DD}\\mathbf F_L^{\\mathsf H})\n =\\mathbf X_{\\rm DD}\\mathbf F_L^{\\mathsf H},\n \\label{eq:otfs-transform-cancellation}\n\\end{equation}"
+    }
+  ],
+  "added_displays": [
+    {
+      "file": "sections/05_overall_algorithm.tex",
+      "labels": [
+        "eq:noise-estimation"
+      ],
+      "tex": "\\begin{equation}\n \\widehat{\\mathbf R}_y=\\frac1{N_{\\rm s}}\\sum_{q,r}\n \\mathbf y_{qr}\\mathbf y_{qr}^{\\mathsf H},\\qquad\n \\widehat\\sigma^2=\\frac{\\sum_{i=\\widehat r_{\\rm s}+1}^{M}\\lambda_i}\n {M-\\widehat r_{\\rm s}}.\n \\label{eq:noise-estimation}\n\\end{equation}"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "created_unix": 1792980649.721774,
+  "plan_sha256": "da77f218c52b2f2c9484cb97b6781b525198cf00357df51d09ffc1f27379fb63",
+  "first_scene_all_five_conditions": [
+    {
+      "users": 20,
+      "iterations": 60,
+      "stopping_reason": "CONVERGED",
+      "nmse_db": -15.067401128439336,
+      "misses": 0,
+      "false_alarms": 0,
+      "reused": false
+    },
+    {
+      "users": 40,
+      "iterations": 60,
+      "stopping_reason": "CONVERGED",
+      "nmse_db": -12.862878860105118,
+      "misses": 0,
+      "false_alarms": 0,
+      "reused": true
+    },
+    {
+      "users": 60,
+      "iterations": 60,
+      "stopping_reason": "CONVERGED",
+      "nmse_db": -12.426347305199958,
+      "misses": 0,
+      "false_alarms": 0,
+      "reused": false
+    },
+    {
+      "users": 80,
+      "iterations": 60,
+      "stopping_reason": "CONVERGED",
+      "nmse_db": -11.859410327560745,
+      "misses": 0,
+      "false_alarms": 0,
+      "reused": false
+    },
+    {
+      "users": 100,
+      "iterations": 345,
+      "stopping_reason": "CONVERGED",
+      "nmse_db": -8.70177611530168,
+      "misses": 1,
+      "false_alarms": 0,
+      "reused": false
+    }
+  ],
+  "historical_outputs_checked": 20,
+  "extra_inferences": 0,
+  "check_script_sha256": "d1f98e10b11d9da55c683c76bc743aa265d83c693687ef6bd05b462c83609a14"
+}

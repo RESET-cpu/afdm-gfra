@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "scope": "Small deterministic algebra and local derivative checks, not a Monte Carlo receiver rerun.",
+  "errors": {
+    "posterior_mean_relative": 2.7618869544112354e-15,
+    "posterior_diagonal_relative": 1.4351516100126168e-15,
+    "expected_residual_relative": 4.486694973779801e-16,
+    "offset_objective_absolute": 4.371503159461554e-15,
+    "variance_update_stationarity_relative": 1.20995479249695e-16,
+    "delay_derivative_relative": 1.704908009562791e-09,
+    "doppler_derivative_relative": 1.6593751159476832e-09
+  },
+  "frozen_sources_sha256": {
+    "D:\\afdm-gfra\\src\\algorithm\\baseline\\offgrid_sbl.py": "01fd090f3860cf7f478f0d2b94229e16d2ce45130c7c52b6dd07b14922dd0faf",
+    "D:\\afdm-gfra\\src\\system\\receiver\\atoms.py": "887bbbc959f1503e6ce5cd5e00fb7056f81a4ebed5a50eb2a2feb5234874021d",
+    "D:\\afdm-gfra\\src\\configs\\final\\offgrid_sbl.json": "b5fc888eab3ada594c6c8ad4c15331552043374b93c80d7162305e42afc4c8d6",
+    "D:\\afdm-gfra\\src\\configs\\final\\baseline_noise.json": "8f45f464c29df06f38f872d4bd72ae10401bd72c3177dc739b19597c6ae0fe36",
+    "D:\\afdm-gfra\\src\\configs\\final\\offgrid_readout_policy.json": "be7528f92e4ffd761d4481b2522e73e183f6cd6cb3065bac071f9b6144c7e016"
+  }
+}

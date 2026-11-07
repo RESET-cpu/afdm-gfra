@@ -1,0 +1,39 @@
+{
+  "requested": {
+    "reason": "parallel_dispatch_handoff_20261103",
+    "user_request": "能不能让我的5080火力全开",
+    "created_unix": 1793719602.5185916,
+    "policy": "Save the active input, then stop serial dispatch so the parallel coordinator can take over."
+  },
+  "status_before": {
+    "stage": "RUNNING",
+    "planned": 6000,
+    "completed": 170,
+    "remaining": 5830,
+    "failed": 0,
+    "failures": [],
+    "active": {
+      "scene": 28,
+      "index": 2,
+      "snr_db": 0
+    },
+    "coordinator_pid": 132832,
+    "worker_pid": 105792,
+    "completed_by_snr": {
+      "-4": 29,
+      "-2": 29,
+      "0": 28,
+      "2": 28,
+      "4": 28,
+      "6": 28
+    },
+    "nonconverged": 0,
+    "workers": 1,
+    "fresh_process_per_input": true,
+    "available_ram_gib": 7.3434600830078125,
+    "elapsed_seconds": 2617.4796838760376,
+    "updated_unix": 1793719595.7617168,
+    "stop_reason": null,
+    "estimated_remaining_seconds": 89764.15629121837
+  }
+}

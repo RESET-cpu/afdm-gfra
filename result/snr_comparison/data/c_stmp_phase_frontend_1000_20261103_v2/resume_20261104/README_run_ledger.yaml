@@ -1,0 +1,70 @@
+ledger: ars-run-ledger/1.0
+created_at: '2026-11-03T20:33:32Z'
+entries:
+- seq: 1
+  kind: initial_instructions
+  at: '2026-11-03T20:33:32Z'
+  user_words: 可以，请你修复并续跑
+  prev_hash: null
+  hash: d6283197617693323bc213b6421010f80246c47f54ae60385add0138c0b1f71c
+- seq: 2
+  kind: tool_receipt
+  at: '2026-11-03T20:33:32Z'
+  step: previous_parallel_execution
+  command: Previous four-worker run stopped on shared WORKER_STATUS.json PermissionError
+    at scene 82, SNR 4 dB.
+  status: failed
+  exit_status: 1
+  retries_used: 0
+  input_sha256:
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\parallel_20261103\STATUS.json: 9cc1813f12f93f48077db446fedd48f5b1e7ef270c5af10024b0ad80aab27f00
+    ? D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\parallel_20261103\logs\scene0082_condition04.log
+    : 4a88e0d5b400890803cfd50ae62059ee3458170ddeee75e172b3bbe46208cbf4
+  prev_hash: d6283197617693323bc213b6421010f80246c47f54ae60385add0138c0b1f71c
+  hash: 8d945002ad0d5b719b7723037fd95382d0484d18ab085d233903c2e28a4ace6f
+- seq: 3
+  kind: tool_receipt
+  at: '2026-11-03T20:33:33Z'
+  step: status_io_fix_and_preservation
+  command: Run check_status_io.py and run.py prepare; verify 498 saved outputs and
+    preserve the failed attempt.
+  status: passed
+  exit_status: 0
+  retries_used: 0
+  input_sha256:
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\resume_20261104\PLAN.json: ff9162dac2bac1ffcae568f6524c04a6eed407c4d5b083eeef50b4f94681ecd8
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\resume_20261104\IMPLEMENTATION_CHECKS.json: 6efd53fcc6d4b299cd0fd17709028ed3841cc1dbd5bab11116720e27771bbc68
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\resume_20261104\PRESERVED_OUTPUTS.json: 1183f5851dc0d5b9919ad5e523a18c1d56526c8085aa06ad87cbce3c266cd1e7
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\resume_20261104\FAILURE_PRESERVATION.json: d17fdefced58eb0abe05d28ba9cce3316f3476a6ccebcabeb696efaab3d47607
+  prev_hash: 8d945002ad0d5b719b7723037fd95382d0484d18ab085d233903c2e28a4ace6f
+  hash: e69a2f738b67134286ea1ed61461601e437274bb0c6c776a352722f5d489ffa7
+- seq: 4
+  kind: tool_receipt
+  at: '2026-11-03T20:34:45Z'
+  step: authorized_recovery_started_and_verified
+  command: Start resume_20261104/run.py run; verify original 498 outputs, recover
+    scene82 at 4 dB, and independently re-score the first new saved outputs.
+  status: passed
+  exit_status: 0
+  retries_used: 0
+  input_sha256:
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\resume_20261104\START.json: a578f90e60d8831a7dda4eaa924233cd22b0dd859a91c48f3171c7f5eb291541
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\resume_20261104\RECOVERED_CASE.json: ee4e1b8e9bf21cfd04578d3d598232583f82ef29879a70fc267d934914d71609
+    ? D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\resume_20261104\PRE_RESUME_REPORT_AUDIT.json
+    : c5ed143a5a67281851a4b3ee131c851f390529f2ab1534ff179c91f4acaaba4b
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\resume_20261104\RESUME_VALIDATION.json: fc803997ac619cef2b8a5d02ca92b34d5b34a038d939b2ba23b381f0af37e131
+  prev_hash: e69a2f738b67134286ea1ed61461601e437274bb0c6c776a352722f5d489ffa7
+  hash: 76ddf4d1e100c7e1670ea0045cfb08cda673fd85e9b0a64cb8f0afc2af2bd279
+- seq: 5
+  kind: progress
+  at: '2026-11-03T20:34:45Z'
+  stage: resumed_parallel_run
+  counters:
+    completed_at_checkpoint: 505
+    planned: 6000
+    active_workers: 3
+    new_execution_failures: 0
+    historical_execution_failures_preserved: 1
+    preserved_before_resume: 498
+  prev_hash: 76ddf4d1e100c7e1670ea0045cfb08cda673fd85e9b0a64cb8f0afc2af2bd279
+  hash: ef34812cc800fda4f691ede95318a70a5e9bd5d55ca0e099bc0472b736c32ecc

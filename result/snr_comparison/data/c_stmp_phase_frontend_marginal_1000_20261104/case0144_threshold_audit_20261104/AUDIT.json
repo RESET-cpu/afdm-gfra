@@ -1,0 +1,175 @@
+{
+  "status": "SAVED_OUTPUTS_CHECKED",
+  "scope": "scene 144 / 4 dB / user index 30, all IDs zero-based",
+  "checks": {
+    "same_observation": true,
+    "same_prior": true,
+    "same_conditional_configuration": true,
+    "same_weights": true,
+    "same_noise_estimate": true,
+    "same_threshold": true,
+    "same_stopping_rule": true,
+    "known_operator_matches_true_phase": true,
+    "saved_arrays_rescored": true
+  },
+  "noise_estimate": 0.1494629235340478,
+  "threshold": 0.5,
+  "disagreeing_users": [
+    30
+  ],
+  "true_activity30": true,
+  "variants": {
+    "estimated": {
+      "probability30": 0.5871574512918898,
+      "decision30": true,
+      "iterations": 311,
+      "stopping_reason": "CONVERGED",
+      "nmse_db": -13.22347635552444,
+      "final_probability_range_last20": [
+        0.5871574512918898,
+        0.5909575878008103
+      ],
+      "probability_trace": [
+        {
+          "iteration": 60,
+          "probability": 0.9999519730773802,
+          "logit": 12.12436580657959,
+          "query_variance": 2.549262181935085
+        },
+        {
+          "iteration": 100,
+          "probability": 0.9497218759949642,
+          "logit": 5.119264125823975,
+          "query_variance": 2.54858461446648
+        },
+        {
+          "iteration": 134,
+          "probability": 0.8542698261907081,
+          "logit": 3.949155330657959,
+          "query_variance": 2.564508821352456
+        },
+        {
+          "iteration": 150,
+          "probability": 0.811706850625481,
+          "logit": 3.6418042182922363,
+          "query_variance": 2.571165983344446
+        },
+        {
+          "iteration": 197,
+          "probability": 0.6865038340922912,
+          "logit": 2.964489698410034,
+          "query_variance": 2.593106302893009
+        },
+        {
+          "iteration": 250,
+          "probability": 0.6101705182987963,
+          "logit": 2.6286940574645996,
+          "query_variance": 2.605957571985021
+        },
+        {
+          "iteration": 300,
+          "probability": 0.5892199458393237,
+          "logit": 2.5414066314697266,
+          "query_variance": 2.6096971763212755
+        },
+        {
+          "iteration": 311,
+          "probability": 0.5871574512918898,
+          "logit": 2.5328917503356934,
+          "query_variance": 2.6100231995709833
+        }
+      ],
+      "decision_flip_iterations": [
+        5,
+        10
+      ],
+      "misses": 0,
+      "false_alarms": 0
+    },
+    "known": {
+      "probability30": 0.4357404245278957,
+      "decision30": false,
+      "iterations": 197,
+      "stopping_reason": "CONVERGED",
+      "nmse_db": -13.498724148447312,
+      "final_probability_range_last20": [
+        0.4357404245278957,
+        0.439647374357495
+      ],
+      "probability_trace": [
+        {
+          "iteration": 60,
+          "probability": 0.9984559802595091,
+          "logit": 8.652485847473145,
+          "query_variance": 2.5261850039721394
+        },
+        {
+          "iteration": 100,
+          "probability": 0.7223075691017776,
+          "logit": 3.1366019248962402,
+          "query_variance": 2.5331228507052526
+        },
+        {
+          "iteration": 134,
+          "probability": 0.4988811625561154,
+          "logit": 2.176189661026001,
+          "query_variance": 2.56197016510657
+        },
+        {
+          "iteration": 150,
+          "probability": 0.4618004134234029,
+          "logit": 2.0275683403015137,
+          "query_variance": 2.5768432834738952
+        },
+        {
+          "iteration": 197,
+          "probability": 0.4357404245278957,
+          "logit": 1.9221973419189453,
+          "query_variance": 2.5887820512020645
+        }
+      ],
+      "decision_flip_iterations": [
+        5,
+        9,
+        134
+      ],
+      "misses": 1,
+      "false_alarms": 0
+    }
+  },
+  "user30_phase_slope_error_radians": 0.003990386998664164,
+  "user30_last_frame_phase_error_radians": 0.05985580497996246,
+  "paired_snapshot": {
+    "inputs_4db": 289,
+    "user_decisions_4db": 11560,
+    "new_errors": 1,
+    "known_errors": 2,
+    "difference_in_errors": -1,
+    "source": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_marginal_1000_20261104\\partial_20261104_1737\\COMPARISON.json"
+  },
+  "inference_replayed": false,
+  "forced_equal_iteration_test": false,
+  "algorithm_changed": false,
+  "interpretation": "Saved trajectories differ on both sides of the activity threshold; this is a finite-sample difference under an approximate iterative classifier, not evidence that estimated phase is more informative.",
+  "unresolved": "Whether extending the known-phase run past its original stopping point changes the decision has not been tested; no causal attribution to one internal approximation is established.",
+  "verified_hashes": {
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_marginal_1000_20261104\\PLAN.json": "4e190d01eef1bc4288e89ef554a32401f520995cb5f15c1c3bc3214564199ff1",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_marginal_1000_20261104\\INPUTS.json": "9b5c367571a0d3773420217d158c442947268151797bfb0bfa77142cb1bfb571",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_marginal_1000_20261104\\REFERENCES.json": "67a285618604c2f200330d4ce94c0e9377ac62ded1cb0c14e303ff4a9e912e28",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_phase_frontend_marginal_1000_20261104\\results\\scene0144_condition04.json": "137b7eefd77dce97ab12ea789dc05d047df6e5e3ece8ca3b037be128edb86f97",
+    "E:\\afdm-gfra-results\\c_stmp_phase_frontend_marginal_1000_20261104\\scene0144_condition04\\RESULT.json": "61096b7d2d3eafa7a26c33c71e41486315e6a24e2990eb992cb5bde1e618fdc7",
+    "E:\\afdm-gfra-results\\c_stmp_phase_frontend_marginal_1000_20261104\\scene0144_condition04\\prediction.npz": "e4333ac6bbe3ebab96b08373352fc980bbf5feee2b2901dd81a5fbc493e4ea84",
+    "E:\\afdm-gfra-results\\c_stmp_phase_frontend_marginal_1000_20261104\\scene0144_condition04\\record.json": "fb5b0ab1e246188a5c56a5bbbb364fd8b548539c614cd93776d4ec12ac0040a6",
+    "E:\\afdm-gfra-results\\c_stmp_phase_frontend_marginal_1000_20261104\\scene0144_condition04\\INPUT_MANIFEST.json": "73c48c5ec4a8a418c91e6e7f9830ba52ac092ff858042ec3560235888f2f5dd1",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\results\\scene0144_condition04.json": "ceb08e4491467a7081fb6ed263c56354a9aa1f56ace560a41f47f4c8f4a40547",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\inference\\scene0144_condition04_candidate.json": "ba123b91420d9975ccdff358d00e3e75514f3a413fa9723c0947f3087e2ce76c",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\inference\\scene0144_condition04_candidate.npz": "9c9539f12e8f882bd4765c572a9622026cc91347a995c8caf7b9c71f4e5ba725",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_1000_snr_m4_p6_20261025\\inference\\scene0144_condition04_candidate.record.json": "b0dedd37803f258d59933a6934cc8159003b22a6e63db56a05fb00821fb445da",
+    "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100145\\K40_Q16_p0.1_snr4_D_dft\\phase_known_noise_estimated\\READY.json": "2ef23b4326fb42b59bc55524e9b2b8598803d8c5571b40128e977fae0407bbed",
+    "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100145\\K40_Q16_p0.1_snr4_D_dft\\phase_known_noise_estimated\\public.npz": "f42d1cbf43bed599792d6d07883921e1f923d4fa40986c27bb5b608b1a20874a",
+    "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100145\\K40_Q16_p0.1_snr4_D_dft\\phase_known_noise_estimated\\raw.npz": "5920af6f20b474c3107ae588a8a7ae6ec661f0caaf97cb11182d365eb738a454",
+    "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100145\\K40_Q16_p0.1_snr4_D_dft\\phase_known_noise_estimated\\truth.npz": "98233451637852463c14ba54d8c7b8be4786aa55e59aea2dcb46feeeb8661e05",
+    "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100145\\K40_Q16_p0.1_snr4_D_dft\\phase_known_noise_estimated\\phase.npz": "b07ec84f041674c0209e5c58e49a54f0bf535d33dcd9c293a40a96cefa51711c",
+    "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100145\\K40_Q16_p0.1_snr4_D_dft\\phase_known_noise_estimated\\PHASE.json": "dfe9d9dc6161e25c014db8b8fc29d5dab6801a4a0d0114b5e8f5ec6118adc9d7"
+  }
+}

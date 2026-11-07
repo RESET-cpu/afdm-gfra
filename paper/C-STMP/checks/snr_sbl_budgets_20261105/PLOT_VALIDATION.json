@@ -1,0 +1,421 @@
+{
+  "status": "PASS",
+  "sources": {
+    "result/snr_comparison/figures/main_snr_sbl_budgets_20261105/PLOT_DATA.json": "4d8331ddd7e8370060212520ced0ee9e319f4ef86767ef5a48f421d90f7d6f3c"
+  },
+  "figures": {
+    "snr_comparison": {
+      "kind": "experiment",
+      "point_count": 108,
+      "curves": [
+        {
+          "method": "C_STMP",
+          "channel": null,
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -9.855029239153849,
+            -11.548157440941377,
+            -13.012667746209841,
+            -14.281259758375654,
+            -15.419115254460031,
+            -16.47702771360318
+          ]
+        },
+        {
+          "method": "C_STMP_phase_frontend_marginal_20261104",
+          "channel": null,
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -9.550972068136792,
+            -11.22609659429285,
+            -12.669664603031281,
+            -13.876183765645713,
+            -14.921644351949993,
+            -15.870199556576331
+          ]
+        },
+        {
+          "method": "STMP",
+          "channel": null,
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -7.986905295698187,
+            -9.7387350339687,
+            -11.431817274484175,
+            -13.044684573874171,
+            -14.611928848560261,
+            -16.06791322165942
+          ]
+        },
+        {
+          "method": "offgrid_sbl",
+          "channel": null,
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -5.798656848735398,
+            -7.3359910788826195,
+            -8.519418299898536,
+            -9.406311897937936,
+            -10.056141506552382,
+            -10.565812614092609
+          ]
+        },
+        {
+          "method": "offgrid_sbl_13",
+          "channel": null,
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -5.464470693727561,
+            -7.037936918675668,
+            -8.333516551839198,
+            -9.341060731410794,
+            -10.044248510006828,
+            -10.655679589525182
+          ]
+        },
+        {
+          "method": "offgrid_sbl_25",
+          "channel": null,
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -4.845962795336759,
+            -6.4446541953818635,
+            -7.764082994295201,
+            -8.820545999325143,
+            -9.665516373366739,
+            -10.366726667340698
+          ]
+        },
+        {
+          "method": "gnn",
+          "channel": null,
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -4.384067813875695,
+            -4.981078906911708,
+            -5.508056369483788,
+            -5.9644873678482,
+            -6.344651396431848,
+            -6.626245336653122
+          ]
+        },
+        {
+          "method": "gamp",
+          "channel": null,
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -3.1311562268241975,
+            -3.939297262082582,
+            -4.5978940686865215,
+            -5.116322594886867,
+            -5.502883690458495,
+            -5.7654973230195194
+          ]
+        },
+        {
+          "method": "somp",
+          "channel": null,
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -3.193473910200231,
+            -3.6791335192333543,
+            -3.9096723689024304,
+            -3.9777153807424632,
+            -3.9716865562435295,
+            -3.9303837059608266
+          ]
+        },
+        {
+          "method": "C_STMP",
+          "channel": null,
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.00455,
+            0.0021,
+            0.001075,
+            0.000575,
+            0.0003,
+            0.000225
+          ]
+        },
+        {
+          "method": "C_STMP_phase_frontend_marginal_20261104",
+          "channel": null,
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.004925,
+            0.002225,
+            0.00115,
+            0.0006,
+            0.0003,
+            0.00025
+          ]
+        },
+        {
+          "method": "STMP",
+          "channel": null,
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.007025,
+            0.003825,
+            0.002025,
+            0.00115,
+            0.000675,
+            0.000325
+          ]
+        },
+        {
+          "method": "offgrid_sbl",
+          "channel": null,
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.00435,
+            0.0024,
+            0.001525,
+            0.00125,
+            0.001025,
+            0.000825
+          ]
+        },
+        {
+          "method": "offgrid_sbl_13",
+          "channel": null,
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.00685,
+            0.003575,
+            0.001775,
+            0.00105,
+            0.00085,
+            0.000725
+          ]
+        },
+        {
+          "method": "offgrid_sbl_25",
+          "channel": null,
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.0111,
+            0.008425,
+            0.00215,
+            0.00105,
+            0.000875,
+            0.000625
+          ]
+        },
+        {
+          "method": "gnn",
+          "channel": null,
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.0052,
+            0.003375,
+            0.0024,
+            0.002,
+            0.001775,
+            0.001525
+          ]
+        },
+        {
+          "method": "gamp",
+          "channel": null,
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.0099,
+            0.005375,
+            0.00375,
+            0.0029,
+            0.002575,
+            0.002275
+          ]
+        },
+        {
+          "method": "somp",
+          "channel": null,
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.0085,
+            0.00565,
+            0.005325,
+            0.004925,
+            0.004825,
+            0.0046
+          ]
+        }
+      ],
+      "size_pt": [
+        252.0,
+        190.8000030517578
+      ],
+      "pdf_images": 0,
+      "sha256": "0d01e401ec01e8cb1a46d0319abc401e8c2fe5062546aab1cb9a1bc77a11c2b9"
+    }
+  },
+  "runtime": {
+    "python": "3.13.1",
+    "matplotlib": "3.11.2",
+    "numpy": "2.2.1",
+    "pymupdf": "2.1"
+  },
+  "inference_started": false,
+  "training_started": false,
+  "configuration_sha256": "6285b4e246e181ed8611518a44181d178ab35048931e24dc730ab4cd149b6510",
+  "code_sha256": {
+    "src\\evaluation\\plots\\render_paper.py": "17a18135af50d50ab0d0acc8f85e37d06cd8f96cfe1f8a48270919b62c29ad8d",
+    "src\\evaluation\\plots\\manuscript\\experiments.py": "b8a7550376ae5b2ceb5d9c738d698db5b0b05ac89570c2cdf884b852676165c4",
+    "src\\evaluation\\plots\\manuscript\\factor.py": "5de9256f6e669e0bdc2db98fa41a91ed467b281c3b4746331c91b681d07f7461",
+    "src\\evaluation\\plots\\manuscript\\receiver.py": "026876435581d2a890adaab97c7a2f2a29a35ac1be863fe99e4d26767392fb76",
+    "src\\evaluation\\plots\\manuscript\\system.py": "e4e55b6aea5f866f90864f9753dee99172c71466888291542e337273fd4025b1",
+    "src\\evaluation\\plots\\manuscript\\vector.py": "a51692f6ba1052c99d3ee6774cf6ae0f06ebf7d7f7f637c598fd68da0d222e33",
+    "src\\evaluation\\plots\\manuscript\\__init__.py": "73b30f3b2f3fc465e76c670a7c634143b1b76640444653fb6ac4b94cd1014ca3",
+    "src\\evaluation\\plots\\style.py": "594af1149c3fd3cdb9f80ea9bbbb97a2819199b28f9dd61a161ff72c71619273",
+    "src\\evaluation\\plots\\configurable.py": "b0d4a2f6d484d4f970a4f4c2219c2f66d78e2b8c8beef61ce58f515307f73555",
+    "src\\evaluation\\plots\\data.py": "b23958629402a44c7019e24ca883da2504f4f82dee87d0d7837e65dafc64c7f7",
+    "src\\evaluation\\plots\\plot_selection.py": "60312b536a486b762c73fe8581422e06bcca0e94e5a9cb418322ef116aa4d196",
+    "src\\evaluation\\plots\\legend_layout.py": "afbcb7980b435669a7c52beebc0547ac68b28f0bd7705a49486cdcf9c4e0991d"
+  }
+}

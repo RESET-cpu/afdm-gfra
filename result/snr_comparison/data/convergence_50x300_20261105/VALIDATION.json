@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "scope": "Script and frozen-input verification only; no trained-network inference or experiment batch launched",
+  "test_commands": [
+    {
+      "command": "pytest src/tests/test_convergence_20261105.py -q",
+      "passed": 8
+    },
+    {
+      "command": "pytest src/tests/test_c_stmp_variance_em_20261025.py src/tests/test_configured_experiments.py -q",
+      "passed": 15
+    }
+  ],
+  "plan_sha256": "d29b5398b3f53a747b68a96585e15506cd77d99f3a18001783f7fac1f2542d00",
+  "verified_source_assets": 191,
+  "paired_scenes": 50,
+  "methods": [
+    "STMP",
+    "GP-MP",
+    "Off-grid SBL (7)",
+    "Off-grid SBL (13)",
+    "Off-grid SBL (25)"
+  ],
+  "actual_iterations_required": 300,
+  "planned_inferences": 250,
+  "synthetic_checks": [
+    "Both MP loops execute 300 updates with unchanged native prefixes",
+    "SBL loop executes 300 updates with unchanged native prefix and unchanged observed/unobserved trajectory",
+    "Final SBL reconstruction equals iteration observer output",
+    "Private instance binding leaves original function and other instances intact",
+    "Pooled energy metrics and complete paired coverage required"
+  ],
+  "inference_started": false
+}

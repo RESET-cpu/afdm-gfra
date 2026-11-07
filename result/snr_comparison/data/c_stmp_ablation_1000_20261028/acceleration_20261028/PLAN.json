@@ -1,0 +1,41 @@
+{
+  "schema": "c-stmp-ablation-resource-override-v1",
+  "created_unix": 1793201750.2621493,
+  "authorization": "让我的5080火力全开",
+  "base_plan": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_ablation_1000_20261028\\PLAN.json",
+  "base_plan_sha256": "0907f29bf7a51cb00a6b90c75f24df72fb7fc262f9c79ffdc33cb8016f0d99b0",
+  "driver_sha256": "0a049618da07432c0cd74cf5c6c0795123eff1892c4d14d5e9ef6ce47b6b8903",
+  "reused_manifest_sha256": "27880dfd7fcc83a188648dca67f10aa3a518fe102ad70cdabf6e61411e31a906",
+  "reused": 73,
+  "planned": 18000,
+  "cpu_workers": 2,
+  "initial_gpu_workers": 2,
+  "maximum_gpu_workers": 6,
+  "threads_per_worker": 2,
+  "gpu_lane_order": [
+    "gaussian_evidence",
+    "estimated_phase",
+    "gaussian_evidence",
+    "estimated_phase",
+    "gaussian_evidence",
+    "estimated_phase"
+  ],
+  "ramp_interval_seconds": 45,
+  "ramp_utilization_below_percent": 94,
+  "ramp_minimum_free_gpu_mib": 3500,
+  "ramp_minimum_available_ram_gib": 2.5,
+  "resource_only": true,
+  "algorithm_parameters_unchanged": true,
+  "original_outputs_preserved": true,
+  "prechange_resources": {
+    "created_unix": 1793201750.3210993,
+    "gpu_used_mib": 3120.0,
+    "gpu_total_mib": 16303.0,
+    "gpu_free_mib": 13183.0,
+    "gpu_utilization_percent": 4.0,
+    "power_watts": 56.52,
+    "available_ram_gib": 7.897968292236328
+  },
+  "scheduling": "Two CPU workers run Gaussian prior while CUDA workers run the two learned variants concurrently. Ramp one lane at a time when memory permits and GPU utilization is below target. Completed variants release their lane or hand it to the remaining variant.",
+  "stop_policy": "Root STOP.json or local STOP.json stops new dispatch and drains in-flight work. No automatic inference retries."
+}

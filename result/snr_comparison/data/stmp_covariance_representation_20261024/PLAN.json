@@ -1,0 +1,32 @@
+{
+  "purpose": "Offline descriptive analysis of existing evaluation query tensors; no receiver, denoiser, training or new physical scenes.",
+  "source_plan_sha256": "2a874324f9352603b0c2af723f80f301932616abfe99396d06fc16f862e52197",
+  "script_sha256": "35f0fc941965ecd06497d11bb9f4f6828126c2cfe4271b27272e8c1d56737b4a",
+  "cases": 48,
+  "stages": [
+    "iteration001",
+    "iteration020",
+    "final"
+  ],
+  "flatten_order": "C-order [antenna, output_row, input_column]",
+  "error": "saved query minus saved normalized effective truth channel",
+  "metrics": "For each axis: uncentered 16x16 mode Gram using other 256 entries; offdiagonal squared Frobenius fraction, diagonal CV, largest eigenvalue fraction. Antenna 4x4 UPA unitary DFT; output/input ordinary 16-point DFT. All bases fixed before this analysis, none learned.",
+  "limitations": [
+    "Mode Grams are single-query uncentered second moments, not estimates with 256 independent samples or identified ensemble covariance.",
+    "Existing cases are evaluation traces, including a failure-enriched group. Use only for exploratory diagnosis; do not fit a training covariance law or report new receiver performance.",
+    "All user entries are dependent within scenes; summary quantiles are descriptive, not confidence intervals.",
+    "Three marginal mode Grams do not identify full covariance or establish a separable covariance model.",
+    "Signal projection is descriptive and conditioned on final failures where indicated, not an identified conditional gain."
+  ],
+  "white_control": {
+    "seed": 2026102407,
+    "samples": 128,
+    "shape": [
+      16,
+      16,
+      16
+    ],
+    "law": "Independent proper complex unit-variance Gaussian, no per-realization normalization; finite-sample Gram reference only, not receiver performance.",
+    "range": "q10-q90 across 128 synthetic independent tensors"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "white-mainline-followup-request-v1",
+  "created_unix": 1794000646.3802207,
+  "author_request": "这样吧，你先把代码整理一下，把有色噪声部分全部退出主线，数据暂时先不用动，然后开始补跑后续实验的内容，跑完一个替换一个",
+  "authorization": "Direct author request in this chat on 2026-11-07",
+  "old_data_policy": "Preserve all existing model, input, prediction, report and source data in place.",
+  "code_policy": "White-only default registry; preserve frozen historical implementations and catalog for replay.",
+  "sequence": [
+    "channel_denoising",
+    "pilot_frames",
+    "user_count",
+    "activity_probability",
+    "cross_channel"
+  ],
+  "per_condition_scenes": 500,
+  "selection": "All original scene IDs 0-499, without outcome selection.",
+  "scientific_controls": "Adopted white weights and matched classifier; FP32; TF32/benchmark off; original phase frontend once and fixed; damping .4; 60-600 iterations; threshold .5.",
+  "new_receiver_inferences": {
+    "pilot_frames": 10000,
+    "user_count": 8000,
+    "activity_probability": 8000,
+    "cross_channel": 9000
+  },
+  "receiver_reuse": "Use completed main-SNR white known/EP and SBL13/25 only when raw input files and scientific bindings match.",
+  "denoising_channel_queries": 12000,
+  "denoising_inputs": 3000,
+  "sbl_policy": "Prior authorized 13/25 budgets, frozen readout and remaining numerical controls; CPU.",
+  "user_count_policy": "New white protocol uses beta .4 for every scene and K, including K80/scene372 and all K100; no isolated replacement. Historical C1 remains recorded as history, not retroactively resolved.",
+  "adoption": "Each complete stage must pass full rescore, source/output hashes, coverage, process-exit verification before figure and necessary manuscript update; do not start next stage before adoption.",
+  "failure_policy": "Preserve new failures and partial results; no automatic unconditional inference retries.",
+  "no_extra_training": true,
+  "convergence_and_ablation_not_restarted": true,
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "run",
+    "verification_status": "PENDING",
+    "version_label": "white_followup_20261107"
+  }
+}

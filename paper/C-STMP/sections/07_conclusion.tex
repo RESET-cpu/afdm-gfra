@@ -1,0 +1,22 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+% Included in both manuscript versions on 2026-11-03 at the author's request.
+In this paper, we investigated GNSS-independent GFRA for LEO satellite
+IoT systems. We proposed a multi-frame AFDM transmission scheme that
+accommodates large differential delays and Doppler shifts without
+device-side precompensation. Under a shared effective-channel
+representation, additional pilot frames provide more observations without
+increasing the number of channel coefficients to be estimated. We learned
+a score-based generative prior for AFDM effective channels without imposing
+sparse or grid-aligned channel assumptions, and developed a denoiser that
+provides channel estimates and average variance without requiring a
+separately trained variance model. We incorporated this denoiser into a
+message-passing JADCE receiver comprising MFLE and GPJD. The learned
+density-ratio estimator in GPJD enables activity detection under the
+learned prior without explicit marginal-likelihood evaluation. Simulation
+results demonstrated improved activity detection and channel estimation
+over the adapted STMP baseline, with fewer pilot frames required for
+comparable channel-estimation performance. The receiver also achieved
+lower NMSE than the sparse-recovery baselines across the tested NTN-TDL
+profiles without retraining.

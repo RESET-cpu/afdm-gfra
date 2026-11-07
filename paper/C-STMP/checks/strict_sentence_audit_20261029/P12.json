@@ -1,0 +1,410 @@
+{
+  "paragraph_id": "P12",
+  "audit_date": "2026-10-29",
+  "source_lines": {
+    "file": "D:\\afdm-gfra\\paper\\C-STMP\\sections\\02_system_model.tex",
+    "start_line": 268,
+    "end_line": 280
+  },
+  "draft_sha256": "bb94e3a63b6a85779285b7ffffe7bae89bcba05d919df132983b1ae0ee0a24a7",
+  "scope": "四个完整语法句；不拆子句、不计来源中被省略的句子为待审现句；只判断语言一致性和术语替换边界。",
+  "sources_verified": [
+    {
+      "key": "cai2026",
+      "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "sha256": "78854ee24bd4a67a2ce574855a1205cdf4484eb6ff4b0568fe8479d4ea69bc68",
+      "pdf_pages": [
+        5
+      ],
+      "section": "II-B Problem Statement",
+      "verification": "直接核对提取文本并目视检查PDF第5页；文字、条目和段落边界均可确认。"
+    },
+    {
+      "key": "cai2026_stmp_v2",
+      "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+      "sha256": "f0e6f8acbeec4ca91ecdadb3f51471026646f7d6f338cb051f663a6ba66178cf",
+      "pdf_pages": [
+        5
+      ],
+      "section": "II-B Problem Statement",
+      "verification": "直接核对提取文本并目视检查PDF第5页；文字、条目和段落边界均可确认。"
+    }
+  ],
+  "normalization_policy": "原句引文只规范化空白、断行、提取连字及数学排版；未将删掉的提示短语或完整章节预告当作显示层差异。",
+  "sentences": [
+    {
+      "id": "P12-S01",
+      "draft": "The main difficulty in implementing message passing on the factor graph lies in the message calculation associated with the factor node $q_{\\rm tr}(H_k)$ \\cite{cai2026}.",
+      "draft_lines": [
+        268,
+        270
+      ],
+      "category": "OTHER_CHANGE",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 5,
+      "source_section": "II-B Problem Statement；式(5)后的说明段末句，左栏中部、两个项目符号之前。",
+      "source_quote": "The main difficulty in implementing message passing on the factor graph lies in the message calculation associated with the factor node $p(\\mathbf H_k)$, detailed as follows.",
+      "sources": [
+        {
+          "source_key": "cai2026",
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "source_page": 5,
+          "printed_page": "3579",
+          "source_section": "II-B Problem Statement；式(5)后的说明段末句，左栏中部、两个项目符号之前。",
+          "source_quote": "The main difficulty in implementing message passing on the factor graph lies in the message calculation associated with the factor node $p(\\mathbf H_k)$, detailed as follows.",
+          "extracted_text_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026.pages.txt",
+          "extracted_text_lines": [
+            484,
+            487
+          ],
+          "raw_extracted_excerpt": "node and their abbreviations are summarized in Table II. The\nmain difﬁculty in implementing message passing on the factor\ngraph lies in the message calculation associated with the factor\nnode p(Hk), detailed as follows.",
+          "pdf_visual_verified": true,
+          "same_wording_as_other_version": true
+        },
+        {
+          "source_key": "cai2026_stmp_v2",
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+          "source_page": 5,
+          "printed_page": "5",
+          "source_section": "II-B Problem Statement；式(5)后的说明段末句，左栏中部、两个项目符号之前。",
+          "source_quote": "The main difficulty in implementing message passing on the factor graph lies in the message calculation associated with the factor node $p(\\mathbf H_k)$, detailed as follows.",
+          "extracted_text_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026_stmp_v2.pages.txt",
+          "extracted_text_lines": [
+            672,
+            675
+          ],
+          "raw_extracted_excerpt": "node and their abbreviations are summarized in Table II. The\nmain difficulty in implementing message passing on the factor\ngraph lies in the message calculation associated with the factor\nnodep(H k), detailed as follows.",
+          "pdf_visual_verified": true,
+          "same_wording_as_other_version": true
+        }
+      ],
+      "changes": {
+        "term_substitutions": [
+          {
+            "source": "$p(\\mathbf H_k)$",
+            "draft": "$q_{\\rm tr}(H_k)$",
+            "type": "technical_symbol_or_object_replacement",
+            "details": "先验分布函数 p 改为 q_tr；其信道参数记法由粗体 H_k 改为本文 H_k。此处仅记录符号／对象替换，不据此认定真实信道先验与训练样本先验等价。"
+          }
+        ],
+        "other_changes": [
+          {
+            "operation": "delete",
+            "source_text": ", detailed as follows",
+            "draft_text": "",
+            "scope": "sentence",
+            "details": "删去逗号及三个英文词，句点前不再有引出后文条目的短语；其余非术语词无增加、替换或重排。"
+          }
+        ],
+        "display_normalizations": [
+          "仅合并空白和断行；原文数学粗体、下标按LaTeX记法转写。",
+          "现句添加 \\cite{cai2026} 作为来源标记；按协议属于引文显示层差异，不计为非术语文本添加。",
+          "期刊抽取文本 difﬁculty 的 fi 连字规范化为 difficulty；PDF已确认。"
+        ],
+        "nonterm_additions": [],
+        "connector_changes": [],
+        "word_order_changes": []
+      },
+      "reason": "能完整对齐两版本原句；除先验符号替换外，删除句末“detailed as follows”，属于非术语删减。",
+      "minimal_action": "记录为非术语删改；若仍要求严格通过，须恢复该完整引出成分及其真实对应的后文条目关系，或明确放弃“仅术语替换”归类，不实际改稿。"
+    },
+    {
+      "id": "P12-S02",
+      "draft": "Generally speaking, even if the ground-truth channel distribution becomes analytically available, calculating the messages for the factor node $q_{\\rm tr}(H_k)$ remains highly challenging due to the complicated and high-dimensional integrals.",
+      "draft_lines": [
+        271,
+        274
+      ],
+      "category": "OTHER_CHANGE",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 5,
+      "source_section": "II-B Problem Statement；第二条目 Intractable high-dimensional integrals 的末句，左栏下部。",
+      "source_quote": "Generally speaking, even if the ground-truth channel distribution becomes analytically available, calculating the messages for the factor node $p(\\mathbf H_k)$ remains highly challenging due to the complicated and high-dimensional integrals (as will be discussed in Section III-B).",
+      "sources": [
+        {
+          "source_key": "cai2026",
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "source_page": 5,
+          "printed_page": "3579",
+          "source_section": "II-B Problem Statement；第二条目 Intractable high-dimensional integrals 的末句，左栏下部。",
+          "source_quote": "Generally speaking, even if the ground-truth channel distribution becomes analytically available, calculating the messages for the factor node $p(\\mathbf H_k)$ remains highly challenging due to the complicated and high-dimensional integrals (as will be discussed in Section III-B).",
+          "extracted_text_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026.pages.txt",
+          "extracted_text_lines": [
+            504,
+            509
+          ],
+          "raw_extracted_excerpt": "ent sparsity in the angular domain. Generally speaking,\neven if the ground-truth channel distribution becomes\nanalytically available, calculating the messages for the\nfactor node p(Hk) remains highly challenging due to the\ncomplicated and high-dimensional integrals (as will be\ndiscussed in Section III-B).",
+          "pdf_visual_verified": true,
+          "same_wording_as_other_version": true
+        },
+        {
+          "source_key": "cai2026_stmp_v2",
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+          "source_page": 5,
+          "printed_page": "5",
+          "source_section": "II-B Problem Statement；第二条目 Intractable high-dimensional integrals 的末句，左栏下部。",
+          "source_quote": "Generally speaking, even if the ground-truth channel distribution becomes analytically available, calculating the messages for the factor node $p(\\mathbf H_k)$ remains highly challenging due to the complicated and high-dimensional integrals (as will be discussed in Section III-B).",
+          "extracted_text_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026_stmp_v2.pages.txt",
+          "extracted_text_lines": [
+            692,
+            697
+          ],
+          "raw_extracted_excerpt": "ent sparsity in the angular domain. Generally speaking,\neven if the ground-truth channel distribution becomes\nanalytically available, calculating the messages for the\nfactor nodep(H k)remains highly challenging due to the\ncomplicated and high-dimensional integrals (as will be\ndiscussed in Section III-B).",
+          "pdf_visual_verified": true,
+          "same_wording_as_other_version": true
+        }
+      ],
+      "changes": {
+        "term_substitutions": [
+          {
+            "source": "$p(\\mathbf H_k)$",
+            "draft": "$q_{\\rm tr}(H_k)$",
+            "type": "technical_symbol_or_object_replacement",
+            "details": "先验分布函数 p 改为 q_tr；其信道参数记法由粗体 H_k 改为本文 H_k。此处仅记录符号／对象替换，不据此认定真实信道先验与训练样本先验等价。"
+          }
+        ],
+        "other_changes": [
+          {
+            "operation": "delete",
+            "source_text": " (as will be discussed in Section III-B)",
+            "draft_text": "",
+            "scope": "sentence",
+            "details": "删除完整括号及其中预告性从句，不只是更换 Section III-B 的编号；其余非术语词无增加、替换或重排。"
+          }
+        ],
+        "display_normalizations": [
+          "仅合并空白和断行；原文数学粗体、下标按LaTeX记法转写。"
+        ],
+        "nonterm_additions": [],
+        "connector_changes": [],
+        "word_order_changes": []
+      },
+      "reason": "能完整对齐两版本原句；除先验符号替换外，删除整段章节预告括号，不能视作仅变更章节编号。",
+      "minimal_action": "记录为非术语删改；若仍要求严格通过，须保留完整括号说明并将章节编号对应到本文真实位置；若无对应位置，不能把整括号删除当作编号替换，不实际改稿。"
+    },
+    {
+      "id": "P12-S03",
+      "draft": "To summarize, the message-passing framework faces a dilemma: the adopted channel prior is either too imprecise to ensure good performance, or too complex to facilitate efficient message calculation.",
+      "draft_lines": [
+        274,
+        277
+      ],
+      "category": "EXACT",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 5,
+      "source_section": "II-B Problem Statement；两条目后的总结段第1句，左栏下部。",
+      "source_quote": "To summarize, the message-passing framework faces a dilemma: the adopted channel prior is either too imprecise to ensure good performance, or too complex to facilitate efficient message calculation.",
+      "sources": [
+        {
+          "source_key": "cai2026",
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "source_page": 5,
+          "printed_page": "3579",
+          "source_section": "II-B Problem Statement；两条目后的总结段第1句，左栏下部。",
+          "source_quote": "To summarize, the message-passing framework faces a dilemma: the adopted channel prior is either too imprecise to ensure good performance, or too complex to facilitate efficient message calculation.",
+          "extracted_text_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026.pages.txt",
+          "extracted_text_lines": [
+            510,
+            513
+          ],
+          "raw_extracted_excerpt": "To summarize, the message-passing framework faces a\ndilemma: the adopted channel prior is either too imprecise to\nensure good performance, or too complex to facilitate efﬁcient\nmessage calculation. This paper seeks to address the afore-",
+          "pdf_visual_verified": true,
+          "same_wording_as_other_version": true
+        },
+        {
+          "source_key": "cai2026_stmp_v2",
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+          "source_page": 5,
+          "printed_page": "5",
+          "source_section": "II-B Problem Statement；两条目后的总结段第1句，左栏下部。",
+          "source_quote": "To summarize, the message-passing framework faces a dilemma: the adopted channel prior is either too imprecise to ensure good performance, or too complex to facilitate efficient message calculation.",
+          "extracted_text_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026_stmp_v2.pages.txt",
+          "extracted_text_lines": [
+            698,
+            701
+          ],
+          "raw_extracted_excerpt": "To summarize, the message-passing framework faces a\ndilemma: the adopted channel prior is either too imprecise to\nensure good performance, or too complex to facilitate efficient\nmessage calculation. This paper seeks to address the afore-",
+          "pdf_visual_verified": true,
+          "same_wording_as_other_version": true
+        }
+      ],
+      "changes": {
+        "term_substitutions": [],
+        "other_changes": [],
+        "display_normalizations": [
+          "仅合并空白和断行；原文数学粗体、下标按LaTeX记法转写。",
+          "期刊抽取文本 efﬁcient 的 fi 连字规范化为 efficient；PDF已确认。"
+        ],
+        "nonterm_additions": [],
+        "connector_changes": [],
+        "word_order_changes": []
+      },
+      "reason": "经两个PDF逐字核对，并以抽取文本验证，原句词语、词序、冒号、逗号和连接关系均一致。",
+      "minimal_action": "句级无需修改；段落级仍须单独处理跨原段及条目摘取。"
+    },
+    {
+      "id": "P12-S04",
+      "draft": "This paper seeks to address the aforementioned challenges by plugging in deep generative priors for efficient message calculation.",
+      "draft_lines": [
+        278,
+        279
+      ],
+      "category": "EXACT",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 5,
+      "source_section": "II-B Problem Statement；两条目后的总结段第2句，左栏下部。",
+      "source_quote": "This paper seeks to address the aforementioned challenges by plugging in deep generative priors for efficient message calculation.",
+      "sources": [
+        {
+          "source_key": "cai2026",
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "source_page": 5,
+          "printed_page": "3579",
+          "source_section": "II-B Problem Statement；两条目后的总结段第2句，左栏下部。",
+          "source_quote": "This paper seeks to address the aforementioned challenges by plugging in deep generative priors for efficient message calculation.",
+          "extracted_text_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026.pages.txt",
+          "extracted_text_lines": [
+            513,
+            515
+          ],
+          "raw_extracted_excerpt": "message calculation. This paper seeks to address the afore-\nmentioned challenges by plugging in deep generative priors\nfor efﬁcient message calculation. We begin by developing",
+          "pdf_visual_verified": true,
+          "same_wording_as_other_version": true
+        },
+        {
+          "source_key": "cai2026_stmp_v2",
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+          "source_page": 5,
+          "printed_page": "5",
+          "source_section": "II-B Problem Statement；两条目后的总结段第2句，左栏下部。",
+          "source_quote": "This paper seeks to address the aforementioned challenges by plugging in deep generative priors for efficient message calculation.",
+          "extracted_text_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026_stmp_v2.pages.txt",
+          "extracted_text_lines": [
+            701,
+            703
+          ],
+          "raw_extracted_excerpt": "message calculation. This paper seeks to address the afore-\nmentioned challenges by plugging in deep generative priors\nfor efficient message calculation. We begin by developing",
+          "pdf_visual_verified": true,
+          "same_wording_as_other_version": true
+        }
+      ],
+      "changes": {
+        "term_substitutions": [],
+        "other_changes": [],
+        "display_normalizations": [
+          "仅合并空白和断行；原文数学粗体、下标按LaTeX记法转写。",
+          "期刊抽取文本 efﬁcient 的 fi 连字规范化为 efficient；PDF已确认。",
+          "两版本原文行末 afore- 与下一行 mentioned 合并为 aforementioned；这是断行连字符消除，不是词语删改。"
+        ],
+        "nonterm_additions": [],
+        "connector_changes": [],
+        "word_order_changes": []
+      },
+      "reason": "经两个PDF逐字核对，并以抽取文本验证，原句词语、词序及句法完全一致；原文断行的 afore-mentioned 只合并为 aforementioned。",
+      "minimal_action": "句级无需修改；其 This paper 指向本文，原文只证明表述来源，不自动证明本文已实现该方法。"
+    }
+  ],
+  "counts": {
+    "EXACT": 2,
+    "TERM_ONLY": 0,
+    "OTHER_CHANGE": 2,
+    "NO_SOURCE": 0,
+    "UNVERIFIED": 0,
+    "total_sentences": 4
+  },
+  "exact_sentence_checks": [
+    {
+      "source_key": "cai2026",
+      "sentence_id": "P12-S03",
+      "normalized_string_equal": true,
+      "method": "NFKC ligatures + line-end hyphen join + whitespace collapse; no lexical replacement"
+    },
+    {
+      "source_key": "cai2026",
+      "sentence_id": "P12-S04",
+      "normalized_string_equal": true,
+      "method": "NFKC ligatures + line-end hyphen join + whitespace collapse; no lexical replacement"
+    },
+    {
+      "source_key": "cai2026_stmp_v2",
+      "sentence_id": "P12-S03",
+      "normalized_string_equal": true,
+      "method": "NFKC ligatures + line-end hyphen join + whitespace collapse; no lexical replacement"
+    },
+    {
+      "source_key": "cai2026_stmp_v2",
+      "sentence_id": "P12-S04",
+      "normalized_string_equal": true,
+      "method": "NFKC ligatures + line-end hyphen join + whitespace collapse; no lexical replacement"
+    }
+  ],
+  "paragraph_structure": {
+    "same_document_source": true,
+    "same_original_paragraph": false,
+    "cross_document_splicing": false,
+    "cross_paragraph_or_bullet_splicing": true,
+    "mapping": [
+      {
+        "draft": "P12-S01",
+        "origin": "式(5)后说明段末句；其前文是 where 定义、因子图及表II说明。"
+      },
+      {
+        "draft": "P12-S02",
+        "origin": "第二条目最后一句；第一条目全部、第二条目标题及前两句未保留。"
+      },
+      {
+        "draft": "P12-S03–S04",
+        "origin": "随后独立总结段的前两句；原总结段还有三句后续方法预告未保留。"
+      }
+    ],
+    "source_order_preserved": true,
+    "order_explanation": "在期刊版和v2中均按 S01→第二条目末句S02→总结段S03→S04 的先后出现；没有将来源句倒序。S03与S04在来源中连续。S01与S02之间省去两个标题和五个完整解释句。",
+    "connectors_preserved": [
+      "Generally speaking,",
+      "even if",
+      "due to",
+      "To summarize,",
+      "either ... or",
+      "by plugging in"
+    ],
+    "connectors_or_structural_cues_removed": [
+      ", detailed as follows",
+      "(as will be discussed in Section III-B)",
+      "两个项目符号、条目标题及原段落边界"
+    ],
+    "omissions_are_paragraph_level_not_extra_draft_sentences": true,
+    "omitted_source_context": {
+      "omitted_first_bullet_title": "Lack of exact characterization of channel distribution:",
+      "omitted_first_bullet_sentences": [
+        "It is extremely challenging, if not impossible, to obtain an accurate characterization of the channel distribution $p(\\mathbf H_k)$.",
+        "Existing literature resorts to various assumptions, e.g., Rayleigh fading [5], [6], Rician fading [10], angular-frequency structured sparsity [11], or frequency-domain block-wise linearity [27], to model the wireless channel.",
+        "These assumptions, however, may be mismatched with the ground-truth prior distribution, leading to significant performance degradation and potentially causing the algorithm to diverge."
+      ],
+      "second_bullet_title": "Intractable high-dimensional integrals:",
+      "omitted_second_bullet_leading_sentences": [
+        "The messages associated with the factor node $p(\\mathbf H_k)$ can only be derived under specific, simple, and easily computable priors.",
+        "For example, the work in [11] adopted a simple i.i.d. Bernoulli-Gaussian distribution to account for the inherent sparsity in the angular domain."
+      ],
+      "omitted_summary_tail_sentences": [
+        "We begin by developing a TMP framework for JADCE.",
+        "Then, we present a unique interpretation of the belief calculation at the factor node $p(\\mathbf H_k)$ as an MMSE denoising problem under AWGN observations.",
+        "This insight enables the integration of score-based generative networks for provable MMSE denoising, eliminating the need to compute high-dimensional integrals."
+      ]
+    },
+    "context_effect": "To summarize 和 aforementioned challenges 逐词保留，但原文支撑“过于不精确／过于复杂”两方面困境的第一条目已省去，第二条目也只保留末句；这使总结对象的显式铺垫发生变化。",
+    "own_model_attribution_risk": "原文 p(H_k) 为其信道先验；本文将因子改为训练样本先验 q_tr(H_k)。这不是原文已验证本文先验或模型的证据。末句虽逐词相同，This paper 在本文中指向本文，原文不自动证明本文完成该目标。本段没有显式展示公式。",
+    "paragraph_structure_pass": false,
+    "conclusion": "同一来源论证区间中的摘取拼合，不是同一原段仅替换术语。"
+  },
+  "verdict": {
+    "strict_pass": false,
+    "sentence_level_pass": false,
+    "paragraph_structure_pass": false,
+    "conclusion": "不通过：P12-S01、P12-S02除符号替换外还各删除一个完整提示成分；P12-S03、P12-S04逐词一致；整段跨原说明段、第二条目和总结段拼接。"
+  },
+  "limitations": [
+    "本段四句均在Cai期刊及v2定位；无需以NO_SOURCE或UNVERIFIED处理。",
+    "未使用Li/Bemani原文，未新增其逐字引文。",
+    "未修改论文正文、PDF或bib；本结论不扩展到模型正确性、查重或一般学术质量评价。"
+  ]
+}

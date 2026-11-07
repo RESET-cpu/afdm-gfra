@@ -1,0 +1,2397 @@
+{
+  "figures": [
+    {
+      "name": "convergence",
+      "pdf_sha256": "f33648eb53af775e72ed5d4f88bb1c136029f790b05b69d36e43ca74dfd49966",
+      "size_inches": [
+        3.5,
+        2.65
+      ],
+      "sources": {
+        "result\\snr_comparison\\figures\\convergence_current_paper_20261026\\PLOT_DATA.json": "5e0585ffc6f49ed9035e643f5b9a3f0d8f9157143f3b5445ed8ac404c52b0131"
+      },
+      "curves": [
+        {
+          "method": "C_STMP",
+          "label": "GP-MP-C",
+          "channel": null,
+          "x": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60
+          ],
+          "nmse_db": [
+            5.731038111898687,
+            14.603729379968222,
+            6.037615597027285,
+            7.445810542850974,
+            -0.0032914090107742126,
+            -0.4667179285549747,
+            -1.5305075656519482,
+            -3.8601170278102575,
+            -5.235822074627084,
+            -7.476991090566267,
+            -8.936303309411732,
+            -10.103676937208519,
+            -10.896943716316066,
+            -11.4474407720189,
+            -11.878743883494352,
+            -12.238387337008195,
+            -12.54378673595384,
+            -12.799549109807895,
+            -13.010004391923486,
+            -13.18110692935695,
+            -13.318751720233523,
+            -13.429186981304412,
+            -13.517253440094281,
+            -13.586630511513953,
+            -13.641391709822898,
+            -13.684021133879426,
+            -13.716990300799662,
+            -13.74296463024663,
+            -13.763938082717186,
+            -13.780960825571096,
+            -13.794749579322945,
+            -13.80582624074486,
+            -13.814713152381714,
+            -13.82182043713033,
+            -13.827550151190964,
+            -13.83216839809117,
+            -13.835906364108064,
+            -13.838976580167788,
+            -13.841501734953512,
+            -13.843575881033189,
+            -13.845309241722635,
+            -13.846736890314101,
+            -13.84791908503308,
+            -13.848913473565332,
+            -13.849738924158665,
+            -13.850440520985646,
+            -13.851016418761596,
+            -13.851492810837037,
+            -13.851895737872331,
+            -13.852230659450626,
+            -13.852502999135105,
+            -13.852742636467159,
+            -13.852937293738044,
+            -13.853111213853053,
+            -13.85325235306026,
+            -13.853366609358888,
+            -13.85346737343294,
+            -13.8535381062537,
+            -13.853612439196006,
+            -13.853659338222785
+          ],
+          "point_count": 60,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "s",
+            "linestyle": "-",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false,
+            "markevery": [
+              0,
+              9,
+              19,
+              29,
+              39,
+              49,
+              59
+            ]
+          }
+        },
+        {
+          "method": "STMP",
+          "label": "GP-MP",
+          "channel": null,
+          "x": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85
+          ],
+          "nmse_db": [
+            11.457355137632852,
+            25.510769009408776,
+            16.87290748675037,
+            15.59420962931468,
+            18.182539227003097,
+            10.596582582190003,
+            13.855884214968754,
+            6.591649662122108,
+            6.961925384188597,
+            6.912643522905184,
+            4.430634989542128,
+            -1.1366670786417767,
+            -1.4055033086288526,
+            -2.349721673524576,
+            -0.534134906856351,
+            -2.055104545144055,
+            -4.185505045410726,
+            -4.221340418335479,
+            -4.523207621150338,
+            -5.42316119374346,
+            -6.248872704602069,
+            -6.378010516402898,
+            -6.627168936918664,
+            -7.345253050142185,
+            -7.659771754149091,
+            -7.875294191179557,
+            -8.106498121976525,
+            -8.518150088909014,
+            -8.834880837452587,
+            -9.077758611280565,
+            -9.318046081822061,
+            -9.54430757028535,
+            -9.750643617409352,
+            -9.935780694537291,
+            -10.1006754816195,
+            -10.247336583000417,
+            -10.378178048756855,
+            -10.495708454711659,
+            -10.602244502672969,
+            -10.699679940559788,
+            -10.789322552599245,
+            -10.872005653254975,
+            -10.948269173347462,
+            -11.01852863324222,
+            -11.083125048055368,
+            -11.142404701390822,
+            -11.196706005844652,
+            -11.246426928748479,
+            -11.291906639659533,
+            -11.333519887721355,
+            -11.371609047753639,
+            -11.406480177011375,
+            -11.438433381629254,
+            -11.46773206846108,
+            -11.494629712506265,
+            -11.51932095776792,
+            -11.542020919915085,
+            -11.562879997698655,
+            -11.582077080547133,
+            -11.59974509952373,
+            -11.616021471795596,
+            -11.631029877001591,
+            -11.644873785465181,
+            -11.65765614133818,
+            -11.669469322918095,
+            -11.680398468725778,
+            -11.69050602735864,
+            -11.699872356099057,
+            -11.708556957726321,
+            -11.716605707414375,
+            -11.724080676719675,
+            -11.731022408670139,
+            -11.737467018707928,
+            -11.743467399404274,
+            -11.749037744869932,
+            -11.754238245026333,
+            -11.759070176409237,
+            -11.763574787080683,
+            -11.76776707405369,
+            -11.771680669684763,
+            -11.775333044131841,
+            -11.778740225668846,
+            -11.78192146225103,
+            -11.784890265809025,
+            -11.787667144616737
+          ],
+          "point_count": 85,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "o",
+            "linestyle": "--",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false,
+            "markevery": [
+              0,
+              9,
+              19,
+              29,
+              39,
+              49,
+              59,
+              69,
+              79,
+              84
+            ]
+          }
+        }
+      ],
+      "point_count": 145,
+      "axes": [
+        {
+          "xlim": [
+            1.0,
+            85.0
+          ],
+          "ylim": [
+            -15.0,
+            30.0
+          ],
+          "xscale": "linear",
+          "yscale": "linear"
+        }
+      ],
+      "legend_font_pt": 8,
+      "axis_font_pt": 8.5,
+      "legend_curve_overlaps": [],
+      "canvas_bounds_pass": true,
+      "all_values_preserved": true
+    },
+    {
+      "name": "user_count",
+      "pdf_sha256": "a5058f0aa034047c90ba10fedcbdbe3f4f2159b0392a72945a9920744e9cf947",
+      "size_inches": [
+        3.5,
+        2.65
+      ],
+      "sources": {
+        "result\\user_count\\figures\\redraw_beta01_500_20261028\\PLOT_DATA.json": "63ad4bcb9ac14bbc09a5d558cedb81fc6c154fa8836d15bed5e4dae14e69b3cf"
+      },
+      "curves": [
+        {
+          "method": "C_STMP",
+          "label": "GP-MP-C",
+          "channel": null,
+          "x": [
+            20,
+            40,
+            60,
+            80,
+            100
+          ],
+          "nmse_db": [
+            -14.725377769544583,
+            -12.984285314012151,
+            -11.66452196287729,
+            -10.260629956139724,
+            -8.840923326167054
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "s",
+            "linestyle": "-",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "STMP",
+          "label": "GP-MP",
+          "channel": null,
+          "x": [
+            20,
+            40,
+            60,
+            80,
+            100
+          ],
+          "nmse_db": [
+            -13.581493089820505,
+            -11.418249696353044,
+            -9.811812081146428,
+            -8.144392092069962,
+            -5.61489740331481
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "o",
+            "linestyle": "--",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "offgrid_sbl",
+          "label": "Off-grid SBL",
+          "channel": null,
+          "x": [
+            20,
+            40,
+            60,
+            80,
+            100
+          ],
+          "nmse_db": [
+            -9.675091672158366,
+            -8.512098452409614,
+            -7.733599074114586,
+            -6.996351666506095,
+            -6.313995510081474
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#0066cc",
+            "marker": "s",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gnn",
+          "label": "GNN-ASPL",
+          "channel": null,
+          "x": [
+            20,
+            40,
+            60,
+            80,
+            100
+          ],
+          "nmse_db": [
+            -6.199288905094933,
+            -5.490580163956738,
+            -4.714416192090844,
+            -3.8790096833614083,
+            -3.029569663516999
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#006666",
+            "marker": "^",
+            "linestyle": "-.",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gamp",
+          "label": "GAMP-SBL",
+          "channel": null,
+          "x": [
+            20,
+            40,
+            60,
+            80,
+            100
+          ],
+          "nmse_db": [
+            -5.405763500988378,
+            -4.5852155451166645,
+            -3.8863428217425593,
+            -3.314883475032776,
+            -2.8329471396871675
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00704a",
+            "marker": "D",
+            "linestyle": ":",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "somp",
+          "label": "SOMP",
+          "channel": null,
+          "x": [
+            20,
+            40,
+            60,
+            80,
+            100
+          ],
+          "nmse_db": [
+            -4.6933855047942945,
+            -3.905473976641183,
+            -3.0937539292074105,
+            -2.4144492741326133,
+            -1.785388196785116
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00552b",
+            "marker": "x",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        }
+      ],
+      "point_count": 30,
+      "axes": [
+        {
+          "xlim": [
+            20.0,
+            100.0
+          ],
+          "ylim": [
+            -15.0,
+            0.0
+          ],
+          "xscale": "linear",
+          "yscale": "linear"
+        }
+      ],
+      "legend_font_pt": 8,
+      "axis_font_pt": 8.5,
+      "legend_curve_overlaps": [],
+      "canvas_bounds_pass": true,
+      "all_values_preserved": true
+    },
+    {
+      "name": "activity_probability",
+      "pdf_sha256": "1ca9a885c971bb7f96c36493dde1ca57222d2dc2b88257a14c618ecd3e7a903b",
+      "size_inches": [
+        3.5,
+        2.65
+      ],
+      "sources": {
+        "result\\activity_probability\\figures\\stmp_c_stmp_500_20261026\\PLOT_DATA.json": "f5a931bf2f8e80332c786a308b2dbda05e1e5f6541f54b95a9e52169752f6373"
+      },
+      "curves": [
+        {
+          "method": "C_STMP",
+          "label": "GP-MP-C",
+          "channel": null,
+          "x": [
+            0.05,
+            0.1,
+            0.15,
+            0.2,
+            0.25
+          ],
+          "nmse_db": [
+            -14.781786592656003,
+            -12.984285314012151,
+            -11.60353765601755,
+            -10.412470312550619,
+            -9.263781318517221
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "s",
+            "linestyle": "-",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "STMP",
+          "label": "GP-MP",
+          "channel": null,
+          "x": [
+            0.05,
+            0.1,
+            0.15,
+            0.2,
+            0.25
+          ],
+          "nmse_db": [
+            -13.712914675036163,
+            -11.418249696353044,
+            -9.735367542123441,
+            -8.454282680990582,
+            -7.01134326496618
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "o",
+            "linestyle": "--",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "offgrid_sbl",
+          "label": "Off-grid SBL",
+          "channel": null,
+          "x": [
+            0.05,
+            0.1,
+            0.15,
+            0.2,
+            0.25
+          ],
+          "nmse_db": [
+            -9.090598512108617,
+            -8.512098452409614,
+            -8.021989031963951,
+            -7.620398458310604,
+            -7.1089651560120215
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#0066cc",
+            "marker": "s",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gnn",
+          "label": "GNN-ASPL",
+          "channel": null,
+          "x": [
+            0.05,
+            0.1,
+            0.15,
+            0.2,
+            0.25
+          ],
+          "nmse_db": [
+            -6.367115605852286,
+            -5.490580163956738,
+            -4.84886456693272,
+            -4.341615033401322,
+            -3.8475433809235478
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#006666",
+            "marker": "^",
+            "linestyle": "-.",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gamp",
+          "label": "GAMP-SBL",
+          "channel": null,
+          "x": [
+            0.05,
+            0.1,
+            0.15,
+            0.2,
+            0.25
+          ],
+          "nmse_db": [
+            -5.454399592144363,
+            -4.5852155451166645,
+            -4.000610210189023,
+            -3.5495639175958447,
+            -3.1283325425266684
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00704a",
+            "marker": "D",
+            "linestyle": ":",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "somp",
+          "label": "SOMP",
+          "channel": null,
+          "x": [
+            0.05,
+            0.1,
+            0.15,
+            0.2,
+            0.25
+          ],
+          "nmse_db": [
+            -4.6480656237948805,
+            -3.905473976641183,
+            -3.284299915736673,
+            -2.754340962009902,
+            -2.3085373848763946
+          ],
+          "point_count": 5,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00552b",
+            "marker": "x",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        }
+      ],
+      "point_count": 30,
+      "axes": [
+        {
+          "xlim": [
+            0.05,
+            0.25
+          ],
+          "ylim": [
+            -15.0,
+            0.0
+          ],
+          "xscale": "linear",
+          "yscale": "linear"
+        }
+      ],
+      "legend_font_pt": 8,
+      "axis_font_pt": 8.5,
+      "legend_curve_overlaps": [],
+      "canvas_bounds_pass": true,
+      "all_values_preserved": true
+    },
+    {
+      "name": "cross_channel",
+      "pdf_sha256": "37cb13544f1b4eb8beefd43b1febe42747b3b6500bcdfa1ecf4a3089798cab8f",
+      "size_inches": [
+        7.0,
+        2.6
+      ],
+      "sources": {
+        "result\\cross_channel\\figures\\full_500_paper_20261028\\PLOT_DATA.json": "3ae6c6ac2f66b48b2f8a9d58e42ff8f962610de9772828b117641b4f328b431a"
+      },
+      "curves": [
+        {
+          "method": "C_STMP",
+          "label": "GP-MP-C",
+          "channel": "D",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -9.877552508880536,
+            -11.527536943790814,
+            -12.984285314012151,
+            -14.261245324122907,
+            -15.408293007238864,
+            -16.476091840622622
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "s",
+            "linestyle": "-",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "STMP",
+          "label": "GP-MP",
+          "channel": "D",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -8.017048748215455,
+            -9.749348939129197,
+            -11.418249696353044,
+            -13.0042099519526,
+            -14.60284013824889,
+            -16.08295266624002
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "o",
+            "linestyle": "--",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "offgrid_sbl",
+          "label": "Off-grid SBL",
+          "channel": "D",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -5.791918303128327,
+            -7.354016427026878,
+            -8.512098452409614,
+            -9.381545309758582,
+            -10.002811663809709,
+            -10.497111802421347
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#0066cc",
+            "marker": "s",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gnn",
+          "label": "GNN-ASPL",
+          "channel": "D",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -4.370093614794487,
+            -4.961586181089711,
+            -5.490580163956738,
+            -5.945037473554593,
+            -6.32266247275843,
+            -6.59980951862368
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#006666",
+            "marker": "^",
+            "linestyle": "-.",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gamp",
+          "label": "GAMP-SBL",
+          "channel": "D",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -3.1264106557087805,
+            -3.92932155472443,
+            -4.5852155451166645,
+            -5.102203382036748,
+            -5.486572078616597,
+            -5.748704595447141
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00704a",
+            "marker": "D",
+            "linestyle": ":",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "somp",
+          "label": "SOMP",
+          "channel": "D",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -3.208981677963853,
+            -3.6767874681835817,
+            -3.905473976641183,
+            -3.986844503236438,
+            -3.980896096199401,
+            -3.9203417224777253
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00552b",
+            "marker": "x",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "C_STMP",
+          "label": "GP-MP-C",
+          "channel": "A",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -9.335848409383566,
+            -10.727240342008015,
+            -11.961862055370426,
+            -13.046365733837174,
+            -14.026728080798538,
+            -14.917957844150697
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "s",
+            "linestyle": "-",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "STMP",
+          "label": "GP-MP",
+          "channel": "A",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -7.888483949662863,
+            -9.378028431121251,
+            -10.923553811903705,
+            -12.409994251866628,
+            -13.882409730334242,
+            -15.303273084305054
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "o",
+            "linestyle": "--",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "offgrid_sbl",
+          "label": "Off-grid SBL",
+          "channel": "A",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -5.192391203986718,
+            -6.536984833648944,
+            -7.576663647770095,
+            -8.374986103864767,
+            -8.981240619493535,
+            -9.434883305051622
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#0066cc",
+            "marker": "s",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gnn",
+          "label": "GNN-ASPL",
+          "channel": "A",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -4.472564808811292,
+            -5.060837294139191,
+            -5.595748339825351,
+            -6.043562577350031,
+            -6.4119319597973465,
+            -6.686177437082227
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#006666",
+            "marker": "^",
+            "linestyle": "-.",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gamp",
+          "label": "GAMP-SBL",
+          "channel": "A",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -3.209422338032995,
+            -4.018839799348549,
+            -4.682048615775165,
+            -5.200284227757159,
+            -5.591969368451927,
+            -5.850223707079198
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00704a",
+            "marker": "D",
+            "linestyle": ":",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "somp",
+          "label": "SOMP",
+          "channel": "A",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -3.2347894905701486,
+            -3.6820960540988272,
+            -3.9675486419207577,
+            -4.046817520853425,
+            -4.0902159529537485,
+            -4.039010945896603
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00552b",
+            "marker": "x",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "C_STMP",
+          "label": "GP-MP-C",
+          "channel": "B",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -9.457017056443956,
+            -10.901411307460485,
+            -12.136938357453174,
+            -13.186430741154622,
+            -14.093292937837926,
+            -14.92242527934347
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "s",
+            "linestyle": "-",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "STMP",
+          "label": "GP-MP",
+          "channel": "B",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -7.999930705098716,
+            -9.567660275402199,
+            -11.114766666228222,
+            -12.571882753052883,
+            -14.096306374997356,
+            -15.50258917367027
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "o",
+            "linestyle": "--",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "offgrid_sbl",
+          "label": "Off-grid SBL",
+          "channel": "B",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -5.508931132325471,
+            -6.908318067475917,
+            -7.978965189900478,
+            -8.80745396363958,
+            -9.418397758543314,
+            -9.818680371534917
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#0066cc",
+            "marker": "s",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gnn",
+          "label": "GNN-ASPL",
+          "channel": "B",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -4.623719059088358,
+            -5.2263900222047655,
+            -5.768851511628235,
+            -6.242656144874893,
+            -6.631950918290981,
+            -6.923166598963897
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#006666",
+            "marker": "^",
+            "linestyle": "-.",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gamp",
+          "label": "GAMP-SBL",
+          "channel": "B",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -3.346165632978103,
+            -4.173796407880009,
+            -4.849256507777263,
+            -5.394083197912002,
+            -5.795087149565532,
+            -6.070524543383891
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00704a",
+            "marker": "D",
+            "linestyle": ":",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "somp",
+          "label": "SOMP",
+          "channel": "B",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -3.3954358512188665,
+            -3.899463462046273,
+            -4.155301445987686,
+            -4.320149784831942,
+            -4.3187881590289114,
+            -4.283160642420885
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00552b",
+            "marker": "x",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "C_STMP",
+          "label": "GP-MP-C",
+          "channel": "C",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -10.08058660522827,
+            -11.819084090253988,
+            -13.278806628709672,
+            -14.540143944588092,
+            -15.662463887957989,
+            -16.731447991117673
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "s",
+            "linestyle": "-",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "STMP",
+          "label": "GP-MP",
+          "channel": "C",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -8.164847638645792,
+            -9.934733079257857,
+            -11.681655045792006,
+            -13.236833062024562,
+            -14.758302146538236,
+            -16.161431329899703
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#ff0000",
+            "marker": "o",
+            "linestyle": "--",
+            "linewidth": 0.9,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "offgrid_sbl",
+          "label": "Off-grid SBL",
+          "channel": "C",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -5.9162594025236315,
+            -7.497114593141068,
+            -8.707448104737272,
+            -9.62155537492549,
+            -10.288361158640338,
+            -10.758345592658102
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#0066cc",
+            "marker": "s",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gnn",
+          "label": "GNN-ASPL",
+          "channel": "C",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -4.312109668108348,
+            -4.9056393944358465,
+            -5.431900370791521,
+            -5.888393970956946,
+            -6.272373366949115,
+            -6.555276708422686
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#006666",
+            "marker": "^",
+            "linestyle": "-.",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "gamp",
+          "label": "GAMP-SBL",
+          "channel": "C",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -3.081232354053049,
+            -3.8832804007686135,
+            -4.529428248915821,
+            -5.046551019478615,
+            -5.432996314367661,
+            -5.689653774139893
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00704a",
+            "marker": "D",
+            "linestyle": ":",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        },
+        {
+          "method": "somp",
+          "label": "SOMP",
+          "channel": "C",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "nmse_db": [
+            -3.178744241985904,
+            -3.627414358939696,
+            -3.823212009980858,
+            -3.915686931474334,
+            -3.905559925914033,
+            -3.8566304241573195
+          ],
+          "point_count": 6,
+          "plotted_values_strictly_equal_to_source": true,
+          "style": {
+            "color": "#00552b",
+            "marker": "x",
+            "linestyle": "--",
+            "linewidth": 0.65,
+            "markersize": 3.5,
+            "markeredgewidth": 0.7,
+            "markerfacecolor": "white",
+            "clip_on": false
+          }
+        }
+      ],
+      "point_count": 144,
+      "axes": [
+        {
+          "xlim": [
+            -4.0,
+            6.0
+          ],
+          "ylim": [
+            -20.0,
+            0.0
+          ],
+          "xscale": "linear",
+          "yscale": "linear"
+        },
+        {
+          "xlim": [
+            -4.0,
+            6.0
+          ],
+          "ylim": [
+            -20.0,
+            0.0
+          ],
+          "xscale": "linear",
+          "yscale": "linear"
+        },
+        {
+          "xlim": [
+            -4.0,
+            6.0
+          ],
+          "ylim": [
+            -20.0,
+            0.0
+          ],
+          "xscale": "linear",
+          "yscale": "linear"
+        },
+        {
+          "xlim": [
+            -4.0,
+            6.0
+          ],
+          "ylim": [
+            -20.0,
+            0.0
+          ],
+          "xscale": "linear",
+          "yscale": "linear"
+        }
+      ],
+      "legend_font_pt": 8,
+      "axis_font_pt": 8.5,
+      "legend_curve_overlaps": [],
+      "canvas_bounds_pass": true,
+      "all_values_preserved": true
+    },
+    {
+      "figure": "snr_comparison",
+      "source": "D:\\afdm-gfra\\result\\snr_comparison\\figures\\phase_selected_main_500_20261102\\PLOT_DATA.json",
+      "source_sha256": "53b6bdef171803135f8677b04c5df051ecc1594c8531ac86b9380373ad82511b",
+      "pdf_sha256": "3d03c3a1616d628a5109b7bc61e160068449d913dc8e7db2d4217b9a498c01f0",
+      "point_count": 84,
+      "curves": [
+        {
+          "method": "C_STMP",
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -9.877552508880536,
+            -11.527536943790814,
+            -12.984285314012151,
+            -14.261245324122907,
+            -15.408293007238864,
+            -16.476091840622622
+          ],
+          "label": "GP-MP-C",
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-"
+        },
+        {
+          "method": "C_STMP_phase_selected",
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -9.571601651904087,
+            -11.262998733025594,
+            -12.726615038657798,
+            -13.993776403734632,
+            -15.107978116644855,
+            -16.22009374700047
+          ],
+          "label": "GP-MP-C-EP",
+          "color": "#ff0000",
+          "marker": "^",
+          "linestyle": "--"
+        },
+        {
+          "method": "STMP",
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -8.017048748215455,
+            -9.749348939129197,
+            -11.418249696353044,
+            -13.0042099519526,
+            -14.60284013824889,
+            -16.08295266624002
+          ],
+          "label": "GP-MP",
+          "color": "#ff0000",
+          "marker": "o",
+          "linestyle": "--"
+        },
+        {
+          "method": "offgrid_sbl",
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -5.791918303128327,
+            -7.354016427026878,
+            -8.512098452409614,
+            -9.381545309758582,
+            -10.002811663809709,
+            -10.497111802421347
+          ],
+          "label": "Off-grid SBL",
+          "color": "#0066cc",
+          "marker": "s",
+          "linestyle": "--"
+        },
+        {
+          "method": "gnn",
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -4.370093614794487,
+            -4.961586181089711,
+            -5.490580163956738,
+            -5.945037473554593,
+            -6.32266247275843,
+            -6.59980951862368
+          ],
+          "label": "GNN-ASPL",
+          "color": "#006666",
+          "marker": "^",
+          "linestyle": "-."
+        },
+        {
+          "method": "gamp",
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -3.1264106557087805,
+            -3.92932155472443,
+            -4.5852155451166645,
+            -5.102203382036748,
+            -5.486572078616597,
+            -5.748704595447141
+          ],
+          "label": "GAMP-SBL",
+          "color": "#00704a",
+          "marker": "D",
+          "linestyle": ":"
+        },
+        {
+          "method": "somp",
+          "metric": "nmse_db",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            -3.208981677963853,
+            -3.6767874681835817,
+            -3.905473976641183,
+            -3.986844503236438,
+            -3.980896096199401,
+            -3.9203417224777253
+          ],
+          "label": "SOMP",
+          "color": "#00552b",
+          "marker": "x",
+          "linestyle": "--"
+        },
+        {
+          "method": "C_STMP",
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.00415,
+            0.00215,
+            0.00105,
+            0.0006,
+            0.00025,
+            0.00015
+          ],
+          "label": "GP-MP-C",
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-"
+        },
+        {
+          "method": "C_STMP_phase_selected",
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.0047,
+            0.00245,
+            0.00125,
+            0.00085,
+            0.0008,
+            0.00045
+          ],
+          "label": "GP-MP-C-EP",
+          "color": "#ff0000",
+          "marker": "^",
+          "linestyle": "--"
+        },
+        {
+          "method": "STMP",
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.00625,
+            0.0036,
+            0.00185,
+            0.00115,
+            0.00055,
+            0.0002
+          ],
+          "label": "GP-MP",
+          "color": "#ff0000",
+          "marker": "o",
+          "linestyle": "--"
+        },
+        {
+          "method": "offgrid_sbl",
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.0036,
+            0.002,
+            0.00125,
+            0.00105,
+            0.0009,
+            0.0007
+          ],
+          "label": "Off-grid SBL",
+          "color": "#0066cc",
+          "marker": "s",
+          "linestyle": "--"
+        },
+        {
+          "method": "gnn",
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.0046,
+            0.00325,
+            0.00205,
+            0.0016,
+            0.00135,
+            0.0012
+          ],
+          "label": "GNN-ASPL",
+          "color": "#006666",
+          "marker": "^",
+          "linestyle": "-."
+        },
+        {
+          "method": "gamp",
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.00885,
+            0.0046,
+            0.00345,
+            0.00275,
+            0.0024,
+            0.00205
+          ],
+          "label": "GAMP-SBL",
+          "color": "#00704a",
+          "marker": "D",
+          "linestyle": ":"
+        },
+        {
+          "method": "somp",
+          "metric": "aer",
+          "x": [
+            -4,
+            -2,
+            0,
+            2,
+            4,
+            6
+          ],
+          "y": [
+            0.00675,
+            0.00445,
+            0.0043,
+            0.00435,
+            0.00395,
+            0.00395
+          ],
+          "label": "SOMP",
+          "color": "#00552b",
+          "marker": "x",
+          "linestyle": "--"
+        }
+      ],
+      "all_curve_values_exactly_preserved": true,
+      "colors_markers_line_styles_preserved": true,
+      "axis_limits": [
+        [
+          [
+            -4.0,
+            6.0
+          ],
+          [
+            -20.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            -4.0,
+            6.0
+          ],
+          [
+            0.0001,
+            0.01
+          ]
+        ]
+      ],
+      "size_inches": [
+        3.5,
+        2.65
+      ],
+      "legend_font_pt": 8,
+      "axis_font_pt": 8.5,
+      "legend_outside_panels": true,
+      "text_within_canvas": 38
+    },
+    {
+      "figure": "pilot_frames",
+      "source": "D:\\afdm-gfra\\result\\pilot_frames\\figures\\full_grid_final_20261026\\PLOT_DATA.json",
+      "source_sha256": "9b3e75bd7f3dd628b4e1bf456d952ad8aff6445407aa71472b8c305dbbfe6dc0",
+      "pdf_sha256": "c3771a4913c907406ab587131def7e5e229f0898066dfaa708b8e2343b7190a9",
+      "point_count": 72,
+      "curves": [
+        {
+          "method": "C_STMP",
+          "metric": "nmse_db",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            -8.872652410685896,
+            -12.984285314012151,
+            -14.470366223553055,
+            -15.333582964950637,
+            -15.974558150802585,
+            -16.465449809444674
+          ],
+          "label": "GP-MP-C",
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-"
+        },
+        {
+          "method": "STMP",
+          "metric": "nmse_db",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            34.70341178326305,
+            -11.418249696353044,
+            -13.257480795902234,
+            -14.406206612257295,
+            -15.281630800192774,
+            -15.955369284991667
+          ],
+          "label": "GP-MP",
+          "color": "#ff0000",
+          "marker": "o",
+          "linestyle": "--"
+        },
+        {
+          "method": "offgrid_sbl",
+          "metric": "nmse_db",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            -6.629641292782427,
+            -8.512098452409614,
+            -9.274623740446868,
+            -9.701329631339995,
+            -9.989566425253484,
+            -10.24036168670596
+          ],
+          "label": "Off-grid SBL",
+          "color": "#0066cc",
+          "marker": "s",
+          "linestyle": "--"
+        },
+        {
+          "method": "gnn",
+          "metric": "nmse_db",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            -3.5560740173765346,
+            -5.490580163956738,
+            -6.155505909790757,
+            -6.564173134809755,
+            -6.849766205136007,
+            -7.074761022435268
+          ],
+          "label": "GNN-ASPL",
+          "color": "#006666",
+          "marker": "^",
+          "linestyle": "-."
+        },
+        {
+          "method": "gamp",
+          "metric": "nmse_db",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            -3.1145788605229234,
+            -4.5852155451166645,
+            -5.291416124313358,
+            -5.76337272320444,
+            -6.099924007223146,
+            -6.362381332507119
+          ],
+          "label": "GAMP-SBL",
+          "color": "#00704a",
+          "marker": "D",
+          "linestyle": ":"
+        },
+        {
+          "method": "somp",
+          "metric": "nmse_db",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            -2.096733983086164,
+            -3.905473976641183,
+            -4.72638067488378,
+            -5.2578676411488745,
+            -5.626258790780211,
+            -6.005111744584336
+          ],
+          "label": "SOMP",
+          "color": "#00552b",
+          "marker": "x",
+          "linestyle": "--"
+        },
+        {
+          "method": "C_STMP",
+          "metric": "aer",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            0.0077,
+            0.00105,
+            0.00025,
+            0.00015,
+            0.0001,
+            0.0001
+          ],
+          "label": "GP-MP-C",
+          "color": "#ff0000",
+          "marker": "s",
+          "linestyle": "-"
+        },
+        {
+          "method": "STMP",
+          "metric": "aer",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            0.8101,
+            0.00185,
+            0.0007,
+            0.0003,
+            0.00015,
+            0.0001
+          ],
+          "label": "GP-MP",
+          "color": "#ff0000",
+          "marker": "o",
+          "linestyle": "--"
+        },
+        {
+          "method": "offgrid_sbl",
+          "metric": "aer",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            0.01525,
+            0.00125,
+            0.00055,
+            0.0003,
+            0.0002,
+            0.0002
+          ],
+          "label": "Off-grid SBL",
+          "color": "#0066cc",
+          "marker": "s",
+          "linestyle": "--"
+        },
+        {
+          "method": "gnn",
+          "metric": "aer",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            0.02285,
+            0.00205,
+            0.00115,
+            0.0009,
+            0.00075,
+            0.00055
+          ],
+          "label": "GNN-ASPL",
+          "color": "#006666",
+          "marker": "^",
+          "linestyle": "-."
+        },
+        {
+          "method": "gamp",
+          "metric": "aer",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            0.02085,
+            0.00345,
+            0.00195,
+            0.00155,
+            0.0013,
+            0.00105
+          ],
+          "label": "GAMP-SBL",
+          "color": "#00704a",
+          "marker": "D",
+          "linestyle": ":"
+        },
+        {
+          "method": "somp",
+          "metric": "aer",
+          "x": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48
+          ],
+          "y": [
+            0.03525,
+            0.0043,
+            0.0026,
+            0.00245,
+            0.00235,
+            0.0023
+          ],
+          "label": "SOMP",
+          "color": "#00552b",
+          "marker": "x",
+          "linestyle": "--"
+        }
+      ],
+      "all_curve_values_exactly_preserved": true,
+      "colors_markers_line_styles_preserved": true,
+      "axis_limits": [
+        [
+          [
+            8.0,
+            48.0
+          ],
+          [
+            -20.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            8.0,
+            48.0
+          ],
+          [
+            0.0001,
+            0.1
+          ]
+        ]
+      ],
+      "size_inches": [
+        3.5,
+        2.5
+      ],
+      "legend_font_pt": 8,
+      "axis_font_pt": 8.5,
+      "legend_outside_panels": true,
+      "text_within_canvas": 37
+    }
+  ],
+  "inference_started": false,
+  "training_started": false
+}

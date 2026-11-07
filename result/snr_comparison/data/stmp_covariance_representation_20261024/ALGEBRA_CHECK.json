@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "seed": 2026102408,
+  "script_sha256": "16f1a4816f3c72410b75c4560168b62741af68265d561a49ac895db41f52137d",
+  "dimensions": {
+    "users": 3,
+    "input_columns": 4,
+    "frames": 5,
+    "repeated_MMV_columns": 6
+  },
+  "relative_errors": {
+    "physical_mean_vs_Q_solve": 5.835093946740351e-16,
+    "posterior_covariance_vs_direct": 7.170889718496856e-16,
+    "fixed_basis_gaussian_quotient_covariance": 8.216891831136887e-14,
+    "fixed_basis_gaussian_quotient_mean": 9.220774900179463e-14,
+    "scalar_prior_query_conditional_covariance_identity": 9.396871535897254e-16
+  },
+  "min_extrinsic_precision": 0.005379677869031152,
+  "scope": "Deterministic finite-dimensional Gaussian algebra only. Does not establish Gaussian query errors, network derivatives, convergence, or activity detection improvement."
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "c-stmp-shen-schedule-20261103-v1",
+  "name": "shen_schedule_zero",
+  "receiver_configuration": "src/configs/candidates/C_STMP_variance_em_20261025.json",
+  "receiver_configuration_sha256": "044d906052bf9150b9dbc09a64efaa545af6f70972cd96fd18f75a8e840f23b8",
+  "initialization": "all_one_phase",
+  "outer_loop": {
+    "maximum_iterations": 150,
+    "squared_relative_channel_tolerance": 2.5E-07,
+    "update": "every_nonterminated_outer_iteration",
+    "stopping": "Shen Algorithm 1 line 19",
+    "maximum_iterations_source": "Shen section V, simulation outer budget150",
+    "tolerance_source": "Project value: existing relative norm tolerance5e-4 squared; not attributed to Shen"
+  },
+  "phase_update": {
+    "rule": "Shen equation53 projected linear solve",
+    "reference_frame": 0,
+    "all_users": true,
+    "objective_descent_guard": false,
+    "common_slope_projection": false
+  },
+  "selection_status": "INDEPENDENT_UNVALIDATED_CANDIDATE"
+}

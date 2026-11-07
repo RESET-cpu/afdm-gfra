@@ -1,0 +1,2749 @@
+=== PDF PAGE 1 ===
+1
+On Orthogonal Approximate Message Passing
+Lei Liu, Member, IEEE, Yiyao Cheng, Shansuo Liang,
+Jonathan H. Manton, Fellow, IEEE, and Li Ping, Fellow, IEEE
+Abstract—Approximate Message Passing (AMP) is an efﬁ-
+cient iterative parameter-estimation technique for certain high-
+dimensional linear systems with non-Gaussian distributions, such
+as sparse systems. In AMP, a so-called Onsager term is added
+to keep estimation errors approximately Gaussian. Orthogonal
+AMP (OAMP) does not require this Onsager term, relying instead
+on an orthogonalization procedure to keep the current errors
+uncorrelated with (i.e., orthogonal to) past errors. In this paper,
+we show the generality and signiﬁcance of the orthogonality
+in ensuring that errors are “asymptotically independently and
+identically distributed Gaussian” (AIIDG). This AIIDG property,
+which is essential for the attractive performance of OAMP,
+holds for separable functions. We present a simple and versatile
+procedure to establish the orthogonality through Gram-Schmidt
+(GS) orthogonalization, which is applicable to any prototype. We
+show that different AMP-type algorithms, such as expectation
+propagation (EP), turbo, AMP and OAMP, can be uniﬁed under
+the orthogonal principle. The simplicity and generality of OAMP
+provide efﬁcient solutions for estimation problems beyond the
+classical linear models. As an example, we study the optimization
+of OAMP via the GS model and GS orthogonalization. More
+related applications will be discussed in a companion paper
+where new algorithms are developed for problems with multiple
+constraints and multiple measurement variables.
+Index Terms —Expectation propagation (EP), turbo, belief
+propagation (BP), approximate message passing (AMP), vector
+AMP (V AMP), uniﬁed framework, state evolution, Haar matrices.
+I. I NTRODUCTION
+A. Motivation and Insight
+Fig. 1(a) illustrates a message passing scheme for estimating
+the random vector x in a Bayesian setting. Here, Γ and Φ
+represent statistical information about x such as observations
+or known distributions. They are calledconstraints for brevity.
+Message passing repeatedly applies each constraint in turn,
+aiming to converge to an estimate that optimally combines
+both pieces of statistical information. This is attractive when
+applying both pieces of information at once is computationally
+infeasible. This paper provides new insight into when and how
+message passing can be made to work.
+The following example explains some of the insights. Let
+the elements of x be source symbols chosen uniformly at
+Lei Liu was with the Department of Electronic Engineering, City University
+of Hong Kong (CityU), Hong Kong, SAR, China, and is currently with the
+School of Information Science, Japan Institute of Science and Technology
+(JAIST), Ishikawa 923-1292, Japan (e-mail: leiliu@jaist.ac.jp).
+Yiyao Cheng, Shansuo Liang and Li Ping are with the Department of
+Electronic Engineering, CityU, Hong Kong, SAR, China (e-mail:{yiycheng2-
+c, ssliang3-c}@my.cityu.edu.hk, eeliping@cityu.edu.hk).
+Jonathan H. Manton is with the Department of Electrical and Electronic
+Engineering, The University of Melbourne, VIC 3010, Australia (e-mail:
+j.manton@ieee.org).
+1
+On Orthogonal AMP—Part I: Gram-Schmidt
+Orthogonalization
+Lei Liu, Member, IEEE, Yiyao Cheng, Shansuo Liang,
+Jonathan H. Manton, Fellow, IEEE, and Li Ping, Fellow, IEEE
+Abstract—Approximate Message Passing (AMP) is an efﬁ-
+cient iterative parameter-estimation technique for certain high-
+dimensional linear systems with non-Gaussian distributions, such
+as sparse systems. In AMP, a so-called Onsager term is added
+to keep estimation errors approximately Gaussian. Orthogonal
+AMP (OAMP) does not require this Onsager term, relying instead
+on an orthogonalization procedure to keep the current errors
+uncorrelated with (i.e., orthogonal to) past errors. In this paper,
+we show that the orthogonality in OAMP ensures that errors are
+“asymptotically independently and identically distributed Gaus-
+sian” (AIIDG). This AIIDG property, which is essential for the
+attractive performance of OAMP, holds for separable functions.
+We present a procedure to realize the required orthogonality
+for OAMP through Gram-Schmidt orthogonalization (GSO). We
+show that expectation propagation (EP), AMP, OAMP and some
+other algorithms can be uniﬁed under this orthogonal framework.
+The simplicity and generality of OAMP provide efﬁcient solutions
+for estimation problems beyond the classical linear models. The
+related applications will be discussed in a companion paper
+where new estimation algorithms are developed for problems
+with multiple constraints and multiple measurement variables.
+Index Terms —Expectation propagation (EP), approximate
+message passing (AMP), vector AMP (V AMP), uniﬁed frame-
+work, state evolution, Haar matrices.
+I. I NTRODUCTION
+A. Motivation
+Figure 1 illustrates a message passing scheme for estimating
+the vector x. Here, Γ and Φ represent statistical information
+aboutx and are referred to as constraints for brevity. Message
+passing repeatedly applies each constraint in turn, in the hopes
+that each time a constraint is used, the residual error decreases.
+This paper provides new insight into when and how message
+passing can be made to work.
+The following example will be used to explain some of
+the insights. For simplicity, real-valued variables are used
+throughout; the results extend readily to complex-valued vari-
+ables. Assume the elements of x are source symbols chosen
+Lei Liu was with the Department of Electronic Engineering, City University
+of Hong Kong (CityU), Hong Kong, SAR, China, and is currently with the
+School of Information Science, Japan Institute of Science and Technology
+(JAIST), Ishikawa 923-1292, Japan (e-mail: leiliu@jaist.ac.jp).
+Yiyao Cheng, Shansuo Liang and Li Ping are with the Department of
+Electronic Engineering, CityU, Hong Kong, SAR, China (e-mail:{yiycheng2-
+c, ssliang3-c}@my.cityu.edu.hk, eeliping@cityu.edu.hk).
+Jonathan H. Manton is with the Department of Electrical and Electronic
+Engineering, The University of Melbourne, VIC 3010, Australia (e-mail:
+j.manton@ieee.org).
+x
+
+(a)
+(b)
+  =Vx
+ =Vx
+
+
+in inˆ( , )x 
+out outˆ( , )x 
+out outˆ( , ) 
+in inˆ( , ) 
+
+Fig. 1. Graphic illustrations for (a) a system model with two constraints Φ
+and Γ, and (b) a generic iterative process involving two local processors γ
+and φ. The parameter vectors θand Θ carry a small amount of additional
+information about the estimates they accompany, such as the error variance.
+Normally they can be computed ofﬂine.
+uniformly at random from the ﬁnite alphabet Ωx⊂R. Ad-
+ditional statistical information about x comes from observing
+the received signal
+y =Ax +n, (1)
+whereA∈RM×N is a tall or square sensing matrix of size
+M×N withM≤N, andn∼N(0,σ2
+nI) represents additive
+white Gaussian noise (AWGN). When N is large, it is in
+general computationally prohibitive to ﬁnd the optimal MAP
+estimate of x.
+Directly mapping this example to Figure 1 leads to Φ being
+the constraint xi ∼uniform(Ωx) (1≤i≤N), the matrix
+V being the sensing matrix A, and Γ being the constraint
+y = X +n. Naively, given an estimate ˆx ofx, the constraint
+Φ can improve on it by bringing it closer to an element of
+Ωx (e.g., by soft thresholding), while an estimate ˆX of X
+can be improved on by bringing it closer to the observation y.
+This naive approach will not work though due to data incest;
+the incoming estimate at a local processor in Figure 1(b) is
+treated as statistically independent of the statistical constraint
+imposed by the processor, but in general it is not.
+The original way message passing was made to work for
+this example, under the strong assumption thatA “looked like”
+it was generated at random with IID Gaussian entries, was
+by including an Onsager correction term to mitigate the data
+incest problem by ﬁltering out the dependent information [1].
+The idea of using an Onsager correction term comes from
+simulating spin glasses in physics and does not provide an
+elementary understanding of how to make message passing
+schemes work in general.
+Transforming the above example into an equivalent form,
+but where the matrix V in Figure 1 becomes unitary, leads
+to a straightforward derivation of a working message passing
+scheme. It side-steps the need for an Onsager term and readily
+Fig. 1. Graphic illustrations for (a) a system model with two pieces of
+statistical information (called constraints) Φ and Γ, and (b) an iterative process
+involving two local processorsγ andφ. The parameter vectorsθ and Θ carry
+small amounts of information about the estimates they accompany, such as
+the error variance. Normally they can be computed ofﬂine.
+random from the ﬁnite alphabet Ωx⊂ R. Additional statistical
+information comes from observing the received signal
+y =Ax +n, (1)
+where A ∈ RM×N is a fat or square sensing matrix of
+size M×N with M ≤ N, and n∼N (0,σ 2
+nI) represents
+additive white Gaussian noise (AWGN). Finding the optimal
+maximum a posteriori (MAP) estimate ofx is computationally
+prohibitive when N is large.
+Directly mapping this example to Fig. 1 leads to Φ being
+the constraint xi ∼ uniform(Ωx) (1≤ i≤ N), the matrix
+V being the sensing matrix A, and Γ being the constraint
+y = X +n. Naively, given an estimate ˆx ofx, the constraint
+Φ can improve on it by bringing it closer to an element of
+Ωx (e.g., by soft thresholding), while an estimate ˆX of X
+can be improved on by bringing it closer to the observation
+y. This naive approach will not work due to data incest; the
+incoming estimate at a local processor in Fig. 1(b) is treated
+as statistically independent of the statistical constraint imposed
+by the processor, but in general it is not.
+The original way of message passing was made to work
+for this example, under the strong assumption that A “looked
+like” it was generated at random with independently and
+identically distributed (IID) Gaussian entries, was by including
+an Onsager correction term to mitigate the data incest problem
+by ﬁltering out the dependent information [1]. The idea of
+using an Onsager correction term comes from simulating
+spin glasses in physics and does not provide an elementary
+understanding of how to make message-passing schemes work
+in general.
+B. Iterative Detection
+For the estimation of x in Fig. 1(a), jointly processing
+Γ and Φ generally requires excessively high complexity.
+Fig. 1(b) illustrates a low-cost iterative detector. Two local
+processors, denoted by γ and φ, process the two constraints
+arXiv:2203.00224v2  [cs.IT]  13 Jan 2023
+
+=== PDF PAGE 2 ===
+2
+Γ and Φ separately. In each iteration, the estimates for X
+and x, denoted by ˆX
+out
+and ˆxout, are generated by γ and
+φ respectively. They are referred to as output messages and,
+after transforming them by V T orV respectively, they form
+the input (i.e., a priori ) messages ˆxin and ˆX
+in
+for the next
+iteration. In this way, ˆX
+out
+and ˆxout are reﬁned iteratively.
+Although omitted to reduce notational clutter, the distributions
+of the estimates are tracked. Each local processor treats the
+distribution of its input as a prior distribution. The computed
+(approximate) posterior distribution of the outgoing ˆX
+out
+or
+ˆxout serves as the incoming prior for the next processor.
+The local estimators γ andφ can be constructed using min-
+imum mean square error (MMSE) or MAP principles, which
+are broadly referred to as direct methods. Implementations of
+such methods include expectation maximization (EM)-based
+techniques and MAP ﬁltering [2]–[4]. Directly coupling two
+local estimators as in Fig. 1(b) may suffer from an error
+correlation problem. Speciﬁcally, errors at the input of a local
+estimator may become correlated with its previous output
+errors during iterative processing. Such correlated errors are
+difﬁcult to track and may have detrimental effects.
+Various solutions have been proposed before. In the message
+passing decoding techniques for turbo and LDPC codes [5],
+[6], an output of an estimator is “extrinsic”, meaning it
+is independent of the related input message. This extrinsic
+principle can be asymptotically met by forward error control
+(FEC) codes designed on large sparse graphs.
+The turbo principle has been extended to the linear system in
+(1) involving FEC codes [7]. The latter is not sparse whenA is
+full [8]–[12]. Expectation propagation (EP) is a closely related
+technique based on the Gaussian approximation of messages
+[13], [14]. The work on EP was initially heuristic but analysis
+techniques have been derived recently [16]. Approximate
+message passing (AMP) treats the correlation problem using
+a so-called Onsager term [1]. AMP assumes IID Gaussian
+(IIDG) entries for the sensing matrix A in (1).
+State-evolution (SE), derived heuristically in [1] and proved
+rigorously in [18], is an analysis tool for AMP as well as
+other related algorithms [16], [17], [19]–[22]. The discussions
+on SE in [16]–[22] focus on mathematical rigor but are less
+intuitive. It is not straightforward to see a common core among
+different approaches. Recently, [23] shows an interesting direc-
+tion toward a uniﬁed framework. However, [23] heavily relies
+on [16]. The latter involves detailed algorithmic operations of
+orthogonal AMP (OAMP) [17] (categorized as a special case
+of EP), which cannot be easily generalized.
+AMP has been successfully applied to various communica-
+tion systems, including grant-free machine-type communica-
+tions (MTC) [32], massive random access [33], compressed
+coding [34], synchronous/asynchronous massive connectivity
+[35], [36], and reconﬁgurable intelligent surface (RIS) aided
+multi-user multi-input multi-output (MIMO) systems [37].
+C. Orthogonal Approximate Message Passing (OAMP)
+The assumption of IID sensing matrices in AMP is relaxed
+in OAMP [17], which offers a solution to systems with non-
+IID sensing matrices. SE for OAMP is conjectured in [17]
+and proved in [16]. The key to OAMP is to maintain error
+orthogonality during iterative processing [17]. Based on SE,
+the optimality of OAMP is derived in [17] under certain condi-
+tions. Vector AMP (V AMP) [19] is algorithmically similar to
+OAMP. An elegant proof of SE is given in [19] for V AMP. It is
+shown that AMP and OAMP-based decoding can outperform
+the turbo algorithm in coded linear systems [21], [22].
+OAMP has been extensively investigated for commu-
+nication and signal processing applications with non-IID
+(such as ill-conditioned and correlated) channel/pilot matri-
+ces, including massive MIMO [38], clipped sparse regression
+codes [39], coded linear systems [22], orthogonal-frequency-
+division-multiplexing (OFDM) [40]–[43], grant-free MTC
+[44], massive access [45] and orthogonal time frequency space
+(OTFS) modulation [46]. The connection between unfolded
+AMP/OAMP and artiﬁcial neural networks is studied in [24]–
+[26]. It has been demonstrated that the orthogonalization
+parameters can be acquired via deep learning, resulting in deep
+unfolded AMP/OAMP algorithms with improved performance
+[24]–[26].
+D. The Haar Distribution of V
+Throughout this paper, we assume that V in Fig. 1 is ran-
+domly selected and its size approaches inﬁnity. Consequently,
+we may expect by some generalized law of large numbers
+that the errors ˆX
+in
+=V ˆxin and ˆxin =V T ˆX
+out
+are close to
+being IID Gaussian. We however have to scrutinize this issue
+carefully as the errors may become correlated with V during
+iterative processing. To make the problem tractable, we will
+focus on the average behavior of OAMP over all possible V
+in a Haar ensemble. This means, although a ﬁxed V is being
+used to generate the sequence of estimates, the fact that it was
+originally chosen at random and will be exploited at each step
+to simplify the analysis. The hope is that the behavior with a
+ﬁxedV , the one of interest, will be similar to that predicted
+by SE using the “ensemble”. Clearly, this is not always the
+case, e.g.V =I is a bad choice. It is left to numerical studies
+to conﬁrm this estimate.
+“Average performance” is also implied in other works on
+AMP family of algorithms [1], [16], [18], [19], [23]. This
+paper uses this argument explicitly.
+E. Contributions of This Paper
+This paper aims at a comprehensive understanding on
+the impact of orthogonality in OAMP and other AMP-type
+algorithms. Following the basic concept in [17] and inspired
+by the works in [19], [23], we take a high-level approach. We
+separate the overall problem into two inter-coupled sub-ones:
+(i) the impacts of orthogonality, and
+(ii) how to establish orthogonality.
+For (i), the orthogonal principle leads to a uniﬁed framework
+for different AMP-type algorithms [1], [16]–[19], [23]. This is
+implied in [23]. We make it explicit in this paper. For (ii), we
+outline a Gram-Schmidt orthogonalization (GSO) procedure
+to establish orthogonality, which leads to a general realization
+technique for OAMP.
+
+=== PDF PAGE 3 ===
+3
+The separated approach above reveals new insights and new
+treatments/applications, as the contributions listed below.
+• OAMP discussed in this paper is based on a class of
+orthogonal local estimators that are more general than
+those used in the standard EP/AMP/OAMP/V AMP [1],
+[16]–[19], [23]. Hence, new realization methods are re-
+vealed. For example, we can optimize performance by
+selecting the best among the class of orthogonal local
+estimators. (See Section VI.) Another example is the
+integral approach discussed in the next bullet.
+• GSO does not require the differentiability required by the
+standard EP/AMP/OAMP/V AMP. In sub-section IV-C,
+we outline an integral approach to OAMP via GSO,
+which works well when, e.g., a local estimator is re-
+alized by a software package in a black-box manner
+without guaranteed differentiability. Empirical advantages
+of integral-based OAMP can be found in [29].
+• The derivation of SE for OAMP in this paper is inspired
+by the techniques used [16], [18], [19], [23]. The new
+approach is more concise for the following reasons.
+– Under the orthogonal principle, the behavior of SE
+can be directly characterized as the Bolthausen’s
+conditioning problem, which avoids the lengthy step-
+by-step tracking as in [16], [18], [19].
+– We analyze the Bolthausen’s conditioning problem
+using a few conjectures that can be bridged by more
+rigorous treatments in [16], [19], [23]. Our aim is
+conciseness, which can provide useful insights.
+– The algorithm discussed in this paper is symmetric,
+i.e., it consists of two local estimators under the same
+orthogonal principle. Hence we only need to analyze
+one local estimator during induction, since the result
+is applicable to the other one.
+The following are more implications of the ﬁndings in this
+paper. Interested readers are referred to the references listed.
+• Most discussions on AMP-family algorithms are for sim-
+ple single measurement vector (SMV) systems [1], [13],
+[14], [16]–[22]. GSO-based OAMP can be generalized
+to more complex multiple measurement vector (MMV)
+systems, as reported in [45] for correlated massive-access
+channels. GSO also allows the extension of OAMP to
+systems with multiple Haar matrices. We are currently
+working on this issue [27].
+• Based on GSO, we can prove that OAMP together with a
+properly designed decoder is capacity approaching. Such
+information-theoretic optimality is reported in [30], [31].
+Overall, we expect that the ﬁndings in this paper provide
+justiﬁcations for the applications of OAMP in [24]–[31], [38]–
+[46], as well as guidelines for new treatments in communica-
+tions and signal processing.
+F . Notation
+For convenience, a vector is said IID (resp. IIDG) if its
+entries are IID (resp. IIDG). A vector is said joint-Gaussian
+if its entries are jointly Gaussian. Boldface lowercase letters
+represent column vectors and boldface uppercase symbols
+denote matrices. I denotes the identity matrix of appropriate
+size, UN the set of all N×N orthogonal matrices, RN the set
+of all length-N vectors, 0 the zero matrix,aT the transpose of
+a,∥a∥ the ℓ2-norm of a,N (µ, Σ) the Gaussian distribution
+with meanµ and covariance Σ, and Diag[A1,A2,··· AM] the
+block-diagonal matrix with diagonal blocks{Am}. E{·} is the
+expectation operation over all random variables involved in the
+brackets, except when otherwise speciﬁed. E{a|b} is the ex-
+pectation of a conditional on b, Var{a} = E
+{
+(a− E{a})2}
+,
+mmse{a|b} = E
+{
+(a− E{a|b})2 ⏐⏐b
+}
+, and η′(r) = ∂
+∂rη(r).
+Var(x) is the common variance of the entries in x, where x
+is a vector of IID entries. a
+d
+→b denotes that the distribution
+ofa converges to that of b as the length goes to inﬁnity.
+To aid the reader in ﬁnding a referenced Deﬁnition, Prop-
+erty, Theorem and so forth, a single counter is used for
+labelling (e.g., Deﬁnition 1, Property 2, . . . ).
+II. P RELIMINARIES
+A. Polar Coordinates
+Let the Cartesian coordinate of a∈ RN bea ={an,n =
+1,...,N }. Deﬁne
+ρ(a)≡∥a∥ =
+√∑N
+n=1a2
+n and ζ(a) =a/∥a∥. (2)
+We call ρ(a) and ζ(a) the amplitude and angle of a respec-
+tively, and call
+(
+ρ(a),ζ (a)
+)
+jointly as the polar coordinate
+of a. (Note that ζ(a) has N− 1 degrees of freedom since
+∥ζ(a)∥ = 1.) Denote by SN(ρ) a sphere of amplitude ρ over
+RN in an N-dimensional Euclidean space. Any a∈ SN(ρ)
+has a ﬁxed norm ∥a∥ = ρ [47]. Clearly, ζ(a)∈ SN(1), i.e.,
+it is a point on the unit sphere.
+There are other ways to deﬁne the polar coordinates [48].
+Our deﬁnition above serves the purpose in this paper.
+B. Haar Distribution and Haar Transform
+Deﬁnition 1 (Haar Distribution): An N×N matrix1 V
+is said Haar distributed, denoted by V ∼ HN , if Vc is
+uniformly distributed over SN(ρ) for any ﬁxedc∈SN(ρ).
+For brevity, we sayV is Haar to meanV is Haar distributed.
+(This should not be confused with the concept of deterministic
+Haar matrices used in Fourier analysis.)
+It can be veriﬁed that Deﬁnition 1 is consistent with the
+conventional deﬁnition of the Haar distribution [49]. Some
+common linear transforms, such as discrete cosine transform
+(DCT) [50] and Hadamard transform [51], can be regarded
+as samples of a Haar transform. The following follows from
+Deﬁnition 1 directly.
+Lemma 2: Let Ω∈ UN , V ∼ HN and c∈ RN . Then,
+ΩV ∼ HN and V Ω∼ HN . Furthermore, ζ(Vc ) and ζ(c)
+are mutually independent.
+1Although we only consider a square V , the results of this paper are still
+valid for non-square V . For example, V is M×N with M < N, we can
+expand V to a square one without destroying the Haar property and add
+constraints{Xi = 0,i = M + 1,··· ,N} at Γ. The same method applies
+for M >N. Then the problem is the same as the square case.
+
+=== PDF PAGE 4 ===
+4
+C. Pseudo-IID (PIID) Variables
+We will prove in III-F that the distortions in OAMP are
+pseudo IID Gaussian (PIIDG) deﬁned below.
+Deﬁnition 3: A sequence a = {an} of size N is said
+to be pseudo IID (PIID) if any subset of size M in a is
+asymptotically IID when N→∞ and M remains ﬁxed.
+Lemma 4: Leta =Va′ whereV is Haar of sizeN×N and
+a′ is an arbitrary ﬁxed vector. From Theorem 2.8 in [52], the
+entries of a are PIIDG. The marginal symbol distribution of
+an,∀n, converges toN (0,v ) withv = 1
+N E{∥a′∥2} asN→∞.
+Some properties/conjectures of PIID/PIIDG (corresponding
+to those of IID/IIDG) are made in Appendix A.
+D. Separable Function
+Letπ =π(a) be a vector function between two length- N
+vectorsπ ={πn} anda ={an}. We say thatπ is separable if
+we can writeπn =πn(an),∀n. We say thatπ is separable-IID
+if each πn is IID drawn from an ensemble of random scalar
+functions. (See III-H for more explanations.)
+E. Assumptions
+Throughout this paper, unless stated otherwise, we will
+assume that (i) the length of a vector is N and (ii) X and
+x are normalized, i.e., 1
+N E{∥X∥2} = 1
+N E{∥x∥2} = 1 .
+Furthermore, we assume that (i) the entries of x are IID, (ii)
+the estimation functions γt andφt are separable-IID, and (iii)
+the size of V is inﬁnity, i.e.,N→∞ . Hence X is PIIDG.
+F . Orthogonality under Law of Large Numbers (LLN)
+Deﬁnition 5 (LLN Orthogonal): Leta ={an} andb ={bn}
+be two sequences of length N, E{∥a∥2}̸ = 0, E{∥b∥2}̸ = 0,
+E{anbn} = 0 and Var{anbn} ﬁnite. For any ﬁxedδ >0 and
+ε> 0, if there is a ﬁxed N′ such that
+Pr
+(
+(aTb)2
+E
+{
+∥a∥2}
+E
+{
+∥b∥2}<ε
+)
+≥ 1−δ, for N >N′, (3)
+we then say that a andb are LLN-orthogonal, denoted as
+1
+NaTb
+LLN
+−→0. (4)
+In the sequel, we will use (3) as a measure for the conver-
+gence of aTb. Eq. (4) implies the following,
+E{∥a∥2}E{∥b∥2}≫ (aTb)2 in probability asN→∞. (5)
+This is useful for our later discussions. Note that E{aTb} = 0
+alone cannot guarantee (4) when a and/orb are not IID. For
+example, consider: (i) Pr(an = +1) = Pr(an =−1) = 0.5
+and all{an} are equal in each trial (i.e., fully correlated), (ii)
+{bn} follow the same distribution as {an}, and (iii){an} and
+{bn} are independent of each other. Then E{aTb} = 0 but
+E{∥a∥2∥b∥2} = (aTb)2 =N2, so (5) does not hold.
+III. OAMP P RINCIPLES
+In this section, we deﬁne OAMP using an orthogonal con-
+straint, based on which we derive the state evolution procedure
+for the analysis of OAMP. We will discuss the implementation
+of the orthogonal constraint in the next section.
+AMP algorithms are analysed in a random framework [18]:
+their “average behaviour” is found by taking expectations
+with respect to the Gaussian-distributed matrix A in (1). In
+this paper, we analyze OAMP in a similar way: the average
+behaviour of OAMP is studied with respect to the N×N
+Haar-distributed matrix V . Precisely, we study the average
+behaviour of a sequence of trials, where each trial involves
+choosing x and V at random, generating the “observations”
+that determine the constraints Γ and Φ, running the OAMP
+algorithm, and recording the squared-error. Since the analysis
+studies average behaviour, simulation studies are needed to
+ascertain whether a speciﬁc system exhibits the predicted
+average behaviour. This is true of all AMP-type algorithms.
+The primary use of the analysis is for designing AMP-type
+algorithms: appropriate if not optimal messages to pass are
+derived under the assumption that the average behaviour holds.
+A. Gram-Schmidt (GS) Model
+Let ˆx be an arbitrary observation of x. We generate a new
+vectorξ = ˆx−αx using GS orthogonalization [53], where
+α = 1
+N E
+{ˆxTx
+}
+(6)
+is a scalar. We will call (7) below the GS model of ˆx with
+respect to x:
+ˆx =αx +ξ. (7)
+We treatξ as an error term, referred to as GS error, which is
+different from the common deﬁnition of an error ˆx−x. Its
+average entry-wise power is
+v = 1
+N E
+{
+∥ξ∥2}
+= 1
+N E
+{
+ξTξ
+}
+. (8)
+It can be veriﬁed that ξ is orthogonal to x, i.e.
+E
+{
+xTξ
+}
+= 0. (9)
+Normalized Model : When α = 1, i.e., ˆx =x +ξ, we call
+(7) the normalized model.
+MMSE Model: When v =α(1−α), we call (7) the MMSE
+model. In this case, ˆx = E{x|ˆx} is the MMSE solution.
+In the existing AMP-type algorithms, the MMSE-NLE is
+MMSE modeling and their LES are all normalized, which are
+uniﬁed under the GS model. Apart from that, the GS model
+was used to circumvent the difﬁculty in the achievable rate
+analysis and capacity-optimality proof of OAMP [30], [31].
+B. Generic Iterative Process
+Return to the system: X =Vx , x∼ Φ and X∼ Γ. Our
+aim is to use the AMP-type iterative approach in Fig. 1(b) to
+ﬁnd the a posteriori mean of x,
+ˆx≡ E{x|X =Vx, Γ, Φ}, (10)
+which minimises the mean-square error 1
+N E
+{
+∥ˆx− x∥2}
+.
+Similarly, we deﬁne ˆX .
+We add an iteration index t to the estimates and for-
+mally deﬁne the iterative process in Fig. 1(b) as follows.
+Note that, given V , and {γt} and {φt}, the messages
+
+=== PDF PAGE 5 ===
+5
+{ ˆX
+in
+t , ˆxin
+t , ˆX
+out
+t , ˆxout
+t ,∀t} in (11) are completely determined
+by initial values.
+Generic Iterative Process (GIP): Initializing from arbitrary
+{ ˆX
+in
+0, ˆxin
+0} and t=1,
+ˆX
+out
+t =γt
+(ˆX
+in
+t−1
+)
+, ˆxout
+t =φt
+(ˆxin
+t−1
+)
+, (11a)
+ˆxin
+t =V T ˆX
+out
+t , ˆX
+in
+t =V ˆxout
+t . (11b)
+The trivial initialization ˆX
+in
+0 = ˆxin
+0 = 0 are generally
+adopted. In this case, the iterative process is actually kick-
+started using the observations within Γ and Φ.
+In (11a), γt
+(ˆX
+in
+t−1
+)
+and φt
+(
+ˆxin
+t−1
+)
+respectively generate
+reﬁned estimates of x and X . Proper statistical models of
+ˆX
+in
+t−1 and ˆxin
+t−1 are required for the design of γt and φt,
+respectively. Tracking such models is in general a prohibitively
+difﬁcult task due to the correlation problem. We will resolve
+this difﬁculty in III-D by introducing an orthogonal principle,
+and hence deﬁne OAMP.
+We call (11) a parallel algorithm. Tracking (11), we obtain
+two processes as follows:
+ˆX
+in
+0 → ˆX
+out
+1 → ˆxin
+1 → ˆxout
+2 → ˆX
+in
+2 → ˆX
+out
+3 →··· , (12a)
+ˆxin
+0 → ˆxout
+1 → ˆX
+in
+1 → ˆX
+out
+2 → ˆxin
+2 → ˆxout
+3 →··· . (12b)
+There are no common variables (considering both superscripts
+and subscripts) in these two processes, so they are uncoupled.
+We call (12a) and (12b) two serial algorithms. They are
+initialized by ˆX
+in
+0 = 0 and ˆxin
+0 = 0, respectively. It can be
+veriﬁed that the EP/OAMP/V AMP algorithm discussed in [16]
+is the one in (12a). Hence, the parallel and serial algorithms are
+equivalent for the purpose of analysis, and so the results from
+one can be applied to another. On the other hand, only one
+of the two serial algorithms is necessary for implementation.
+Later we will see that (12) leads to more concise analysis due
+to its symmetry.
+C. GS Errors in GIP
+Note that OAMP deﬁned above is symmetric since γt and
+φt in (11) are under the same orthogonal constraint. Hence, in
+Theorem 7 below, we only need to analyze one local estimator
+and the result is applicable to the other one.
+Let the messages in (11) be expressed in their GS models:
+ˆX
+out
+t =αout
+γt X +gout
+t , ˆxout
+t =αout
+φt x +fout
+t , (13a)
+ˆX
+in
+t =αin
+γt+1 X +gin
+t , ˆxin
+t =αin
+φt+1x +fin
+t . (13b)
+Let the average powers of the GS errors gout
+t , gin
+t , fout
+t
+andfin
+t be vout
+γt ,v in
+γt+1,v out
+φt and vin
+φt+1, respectively. Since V
+is orthogonal, combining (11b) and (13), then the following
+relationships hold:
+αγ
+t =αout
+γt =αin
+φt+1, α φ
+t =αout
+φt =αin
+γt+1, (14a)
+vγ
+t =vout
+γt =vin
+φt+1, v φ
+t =vout
+φt =vin
+γt+1. (14b)
+We will use (14) to simplify the derivation of SE in III-G.
+Let gout
+0 = Vf in
+0 and fout
+0 = V Tgin
+0 . The following
+matrices contain the GS errors in (13) up to iteration t:
+Gin
+t ≡
+[
+gin
+0 ,..., gin
+t−1
+]
+, F in
+t ≡
+[
+fin
+0 ,..., fin
+t−1
+]
+, (15a)
+Gout
+t ≡
+[
+gout
+0 ,..., gout
+t−1
+]
+, F out
+t ≡
+[
+fout
+0 ,..., fout
+t−1
+]
+. (15b)
+Denote
+At≡
+[
+X,Gin
+t ,Gout
+t
+]
+, Bt≡
+[
+x,F out
+t ,F in
+t
+]
+. (15c)
+Combining (11), (13) and (15), we have
+At =VBt. (16)
+We will discuss the behavior of GS errors in III-F based on
+the constraint in (16).
+D. Orthogonal AMP (OAMP)
+Deﬁnition 6: OAMP is a special case of the GIP in III-B
+when the following orthogonal constraint holds for N→∞ ,
+t≥ 1 and 0≤t′ <t ,
+1
+N
+(
+gin
+t′
+)T
+gout
+t
+LLN
+−→0, 1
+N
+(
+fin
+t′
+)T
+fout
+t
+LLN
+−→0, (17a)
+1
+N X Tgout
+t
+LLN
+−→0, 1
+NxTfout
+t
+LLN
+−→0. (17b)
+In words, in OAMP, the output errors of γt and φt in (11)
+are LLN-orthogonal to their respective current and previous
+input errors, as well as to X andx. The orthogonality in (17)
+is the key to solve the correlation problem, as will be discussed
+below.
+Here are some intuitions. Return to the GIP in Fig. 1(b) and
+focus on φt. Notice the following:
+• The error fin
+t−1 into φt comes from the output error of
+γt−1 in the previous iteration.
+• The output error fout
+t of φt becomes the error into γt+1
+in the next iteration.
+The correlation between fin
+t−1 andfout
+t implies error circula-
+tion from the output of γ back to its input, which may lead to
+positive feedback and instability. In general, we should avoid
+this effect. This gives a heuristic reason for the orthogonality
+requirement between fout
+t andfin
+t−1.
+The LLN-orthogonality in (17a) is betweenfout
+t and allfin
+t′ ,
+t′ = 1, 2,...t −1, which is referred to as global orthogonality.
+Deﬁnition 6 is a more general deﬁnition of OAMP. Existing
+AMP-type algorithms are restricted to particular orthogonality
+realizations, which are sufﬁcient but not necessary conditions
+of (17). We will discuss the speciﬁc realizations of (17) in IV.
+E. Average MSE Performance
+Return to the original problem of estimating x after t
+iterations in (11). We adopt the following method:
+(i) We track the GS models in (7) recursively for t′ =
+1, 2,...t and obtain (see (13a) and (14a)):
+ˆxout
+t =αφ
+tx +fout
+t . (18)
+
+=== PDF PAGE 6 ===
+6
+(ii) We treat fout
+t above as a pure error. We use ω ˆxout
+t as
+an estimate of x, where ω is a scaling factor. Based on
+the above discussions, we have
+MSE≡ 1
+N E
+r,x
+{
+∥ω ˆxout
+t −x∥2}
+=vφ
+t/
+(
+(αφ
+t )2 +vφ
+t
+)
+,
+(19)
+whereω =αφ
+t/
+(
+(αφ
+t )2+vφ
+t
+)
+minimizes the mean square
+error (MSE) and vφ
+t is deﬁned in (14b). The expectation
+in (19) is over the distribution of the observation r. The
+latter is in turn determined by the distributions of x and
+possible distortions in r. In particular, if the distortion is
+an additive noise vector η, then the distribution of r is
+jointly determined by x andη.
+The GS model in (18) is not an optimal estimation ofx. The
+GS error fout
+t may actually contain useful information about
+x, so it is possible to compute a lower MSE as that in (19),
+but the related cost can be high in iterative processing. The
+approach based on GS models has a distinguished advantage
+of low cost. It can be seen from (14) that the parameters of
+the GS models are not affected by transforms involvingV and
+V T. This makes it computationally efﬁcient. Incidentally, the
+above method may still lead to global optimality in OAMP.
+See IV-F for more details.
+In general, evaluating (19) is still a difﬁcult task. To
+overcome this difﬁculty, we borrow a technique from [1]: we
+redeﬁne the MSE as follows:
+MSE≡ 1
+N E
+r,x,V
+{
+∥ω ˆxout
+t −x∥2}
+. (20)
+In (20), we compute the GS model of ˆxout
+t using the joint
+distribution of r andV . We study the average behavior over
+a sequence of trials, where each trial involves choosing r and
+V at random. (See the second paragraph of this section.)
+F . Error Behavior
+We now consider the details in tracking the GS models in
+(13). As an example, consider the GS model ˆxout
+t = αφ
+tx +
+fout
+t . From (6), (11), (13) and (14), we generate αφ
+t as follows
+αφ
+t = 1
+N E
+r,x,V
+{
+φt(αγ
+t−1x +fin
+t−1)Tx
+}
+. (21)
+where αγ
+t−1x +fin
+t−1 is the GS model for ˆxin
+t−1. Assume that
+αγ
+t−1 is known. In the following, we give the distribution of
+fin
+t−1 in order to evaluate (21).
+Theorem 7 is the main result of this paper. For convenience,
+we adopt the following notations. A matrix is said column-
+wise PIIDG and row-wise joint-Gaussian (CPIIDG-RJG) if
+each column is PIIDG and each row is joint Gaussian. Note
+two subtle points here: (i) as mentioned for (20), V is
+randomly selected for each trial, and (ii)V remains unchanged
+in all iterations during one iterative process. In other words,V
+is randomly selected in Fig. 1(a) but, once selected, it remains
+unchanged throughout an iterative process in Fig. 1(b). Point
+(ii) means that, for t >0, V is constrained by At = VBt
+in (16). This is referred to as the Bolthausen’s conditioning
+problem in [15], [18], [19], [23]. Taking these points into
+consideration, we prove Theorem 7 in Appendix B.
+Theorem 7: Assume that V is Haar distributed and OAMP
+is initialized att = 1 with IIDGgin
+0 andfin
+0 independent of X
+andx, respectively. Then, when t is ﬁnite,N→∞ and over
+the Haar ensemble of V , the following hold for the errors in
+(15) for OAMP asymptotically:
+(a) Gin
+t is CPIIDG-RJG and independent of X and any z
+provided that z is independent of V ;
+(b) F in
+t is CPIIDG-RJG and independent of x and any z
+provided that z is independent of V .
+Notes: (i) Theorem 7 is deﬁned over a Haar ensemble ofV .
+It may not hold for a speciﬁc sample of V . (ii) An example
+ofz is additive thermal noise in the system.
+G. State Evolution (SE) for OAMP
+Return to the error behavior of OAMP for given {fin
+t } and
+{gin
+t} in the asymptotic case of N→∞ . For this purpose, we
+track the distributions of the messages in OAMP and evaluate
+MSEs accordingly, as detailed below.
+Theorem 7 states that any separable-IID function of GS
+errorsF in
+t orGin
+t in OAMP are asymptotically CPIIDG-RJG.
+We still need the GS parameters to determine the GS model
+of messages.
+Recall from (14) that the GS parameters are not affected by
+the transform by an orthogonal V . This greatly simpliﬁes the
+problem; we only need to focus on φt and γt. Assume that
+φt and γt are both separable-IID. Let zγ
+n ∼N (0, 1). From
+Theorem 7, fin
+t−1 is PIIDG. Hence following Conjecture 20
+(see Appendix A-B), we can rewrite (21) as
+αφ
+t = E
+xn,zn
+{
+φt,n
+(
+αγ
+t−1xn +
+√
+vγ
+t−1zγ
+n
+)
+·xn
+}
+, (22)
+We can apply similar reasoning to generate αγ
+t,vγ
+t,αφ
+t and
+vφ
+t deﬁned in (13) and (14). We then obtain the following
+recursion for the GS parameters.
+αγ
+t = E
+rn,zXn,zφ
+n
+{
+γt,n
+(
+αφ
+t−1zX
+n +
+√
+vφ
+t−1zφ
+n
+)
+·zX
+n
+}
+, (23a)
+vγ
+t = E
+rn,zXn,zφ
+n
+{(
+γt,n
+(
+αφ
+t−1zX
+n +
+√
+vφ
+t−1zφ
+n
+)
+−αγ
+tzX
+n
+)2}
+, (23b)
+αφ
+t = E
+xn,zγ
+n
+{
+φt,n
+(
+αγ
+t−1xn+
+√
+vγ
+t−1zγ
+n
+)
+·xn
+}
+, (23c)
+vφ
+t = E
+xn,zγ
+n
+{(
+φt,n
+(
+αγ
+t−1xn+
+√
+vγ
+t−1zγ
+n
+)
+−αφ
+txn
+)2}
+, (23d)
+where {zφ
+n,zγ
+n,zX
+n} are IID drawn from N (0, 1). The ex-
+pectations are based on the assumption that γt,n contains
+observation rn and there is no observation in φt,n. Similar
+results can be obtained if φt,n also contains observation. The
+key here is replacing the GS errors using IIDG variables,
+which makes the problem trackable.
+We re-write the functions in (23) into a more concise form in
+(24) below, where γSE andφSE may or may not have explicit
+expressions, but they can always be numerically tabulated.
+State Evolution for OAMP: Starting with t = 1 and
+{αφ
+0,αγ
+0,vφ
+0,vγ
+0},
+(αγ
+t,vγ
+t ) =γSE(αφ
+t−1,vφ
+t−1), (24a)
+(αφ
+t,vφ
+t ) =φSE(αγ
+t−1,vγ
+t−1). (24b)
+
+=== PDF PAGE 7 ===
+7
+Consider the messages in (13) under their GS models.
+Assume that the distribution of x is given. Lemma 4 and
+Theorem 7 give the distributions of X and the GS errors.
+Hence we can ﬁnd the distributions of the messages using the
+GS parameters generated in (24). This answers the question
+on how to generate the distributions in OAMP.
+The performance of an estimation is not determined by
+a single GS parameter α or v. Instead, it is determined by
+their ratio α2/v, i.e., an effective SNR. As a result, the
+SE in (24) consists of dual-input and dual-output (DIDO)
+functions of GS model parameters. This is slightly different
+from the conventional single-input and single-output (SISO)
+SE functions for AMP-type algorithms [1], [17], but the spirits
+are the same. We can convert (24) into a SISO recursion via
+proper scaling so that αγ
+t =αφ
+t = 1 (scaling does not change
+the performance of an estimation). However, the singular
+situations of αγ
+t = 0 or αφ
+t = 0 in the trivial initialization 2
+may cause problems in normalization.
+Using (22)-(24), we can assess the MSE of OAMP via (20).
+This provides a convenient tool for analysis and optimization.
+H. Distributions of {φn} and{γn}
+In (23) and (24), we assume that {φn} and{γn} are IID
+samples from their respective ensembles. We now clarify this
+assumption using two examples.
+Example: Consider γn = γ,∀n. In this special case, the
+ensemble for{γn} has only one element.
+Next, recall that (23) and (24) are derived over the Haar
+ensemble of V . Let Q be a permutation matrix. Clearly, QV
+is in the Haar ensemble if V is. Then we have Lemma 8.
+Lemma 8: Let Q be a permutation matrix. The SE for
+GIP in (11) remains unchanged if V is replaced by QV , or
+equivalently,γ( ˆX ) is replaced by ˜γ( ˆX ) =QTγ(Q ˆX ).
+Example: Considerr =DX +η, whereD is diagonal. We
+construct a separable γ using the so-called LMMSE estimator
+(see (12) in [17]):
+γn( ˆXn)= N
+MD2
+nnrn+
+(
+1+ N
+M
+D2
+nn
+vD2nn+σ2
+)
+ˆXn,∀n. (25)
+It can be veriﬁed that suchγ is orthogonal. We further consider
+a special case of D with its diagonal entries given by
+{Dnn} ={1, 1,..., 1  
+M ones
+, 0, 0,..., 0  
+N−M zeros
+}. (26)
+We cannot regard {Dnn} as a random sequence. However,
+from Lemma 8, we can randomly permute {Dnn} without
+affecting the related SE. In this sense, when M→∞ ,N →
+∞ and ratio M/N ﬁxed, the entries in a randomly permuted
+{Dnn} asymptotically follow a binary distributionDnn = 1 of
+probabilitiesM/N andDnn = 0 of probabilities (N−M)/N.
+In conclusion, the separable-IID assumption is applicable to
+γ in (25). Incidentally, (26) corresponds to A formed by the
+ﬁrstM rows in an N×N Haar distributed matrix.
+2Such initialization ( α = 0 ) carries no useful information of the true
+signal. However, once the GIP started, the estimations in general carries
+useful information of the true signal, i.e., α̸= 0. In this case, we can use a
+normalized GS model (e.g., α = 1) determined by a single parameter v.
+I. A Brief Summary
+The following is a summary on the discussions so far.
+• We presented a message passing process named GIP (see
+Fig. 1(b) and (11)) to solve the problem in Fig. 1(a).
+• We introduced the GS model to characterize the messages
+in GIP. The related GS parameters are not affected by
+transform by an orthogonal matrix V , which facilitates a
+SE technique to track GS errors.
+• We deﬁned OAMP as an orthogonalized GIP.
+• We showed that the separable-IID function of GS errors
+in OAMP is asymptotically the same as that of PIIDG
+random vectors when N → ∞. We developed a SE
+technique to track GS parameters in OAMP.
+Hence, using SE, we can approximately determine the MSE
+of OAMP for the system in Fig. 1(a) when N is large.
+IV. G RAM -SCHMIDT ORTHOGONALIZATION
+In this section, we discuss techniques to realize the orthog-
+onality required in (17). For simplicity, we may sometimes
+omit the subscript t.
+A. Gram-Schmidt Orthogonalization
+Deﬁnition 9: Consider the GS models: π = αoutx +ξout
+and ˆx =αinx +ξin. We say that π =π(ˆx) is an orthogonal
+estimator if E
+{(
+ξin)T
+ξout}
+= 0 [53].
+Let ˆπ = ˆπ(ˆx) be an arbitrary prototype. We construct an
+orthogonal π(ˆx) as follows
+π =π(ˆx) = ˆπ(ˆx)−B ˆx. (27)
+Then we can rewrite the orthogonal requirement as
+E
+{
+(ξin)Tξout}(a)
+= E
+{
+(ξin)T(π−αoutx)
+}
+(28a)
+(b)
+= E
+{
+(ξin)Tπ
+}
+(28b)
+(c)
+= E
+{
+(ξin)T(
+ˆπ(ˆx)−B ˆx
+)}
+=0, (28c)
+where (a) follows the deﬁnition ofξout, (b) follows (9) for the
+GS model of ˆx, and (c) due to (27). Noting that E
+{
+(ξin)T ˆx
+}
+=
+E
+{
+(ξin)T(αinx +ξin)
+}
+=E
+{
+∥ξin∥2}
+(recalling from (9) that
+E
+{
+xTξin}
+=0 for a GS model), from (28),
+B = E
+{
+(ξin)Tˆπ(ˆx)
+}
+/E
+{
+∥ξin∥2}
+. (29)
+It’s interesting to note that GSO is a fundamental component
+of the conjugate gradient approach, which is used to solve
+the high-complexity challenges of the LMMSE estimator in
+OAMP [54]. We think there are some similarities between the
+GSO for OAMP in this paper and the GSO for the conjugate
+gradient approach.
+The orthogonality discussed above is looser than LLN-
+orthogonality required in (4). We will consider the latter next.
+B. LLN-Orthogonality
+The GSO in IV-A establishes the orthogonality between the
+current input and output errors. The following theorem gives a
+sufﬁcient condition for the LLN-orthogonality in (17), where
+
+=== PDF PAGE 8 ===
+8
+the current output errors are orthogonal to the current and
+previous input errors.
+Theorem 10: The orthogonality in (17) is satisﬁed if γt and
+φt,∀t, are orthogonal and separable-IID.
+Proof: See Appendix C.
+GSO and Theorem 10 together show a way to construct an
+OAMP algorithm based on two arbitrary separable γt and φt.
+C. Computational Aspects for GSO
+The key to GSO is to ﬁnd B in (29). We ﬁrst consider a
+special case when ˆφ is separable and integrable, and x IID.
+From Theorem 7 and Conjecture 20 (see Appendix A-B), (29)
+reduces to
+B =
+∫ +∞
+−∞
+∫ +∞
+−∞ zf ˆφt(αinx+zf)pzf (zf)px(x)dzfdx
+vf in
+, (30)
+where zf ∼N (0,vf in) and vf in = 1
+N∥fin∥2. Assume that
+px(x) is known. Then (30) can be evaluated numerically. We
+may pre-calculate a table for B as a function of vf in off-line.
+Then the cost is low for on-line processing.
+In some cases, ˆφ (or ˆγ or both) may not be explicitly given.
+For example, ˆφ can be a black-box type estimator in a software
+package. In this case, we can still generate B, vγ
+t and vφ
+t
+numerically by the Monte-Carlo method.
+We call (30) the integral approach to B. The advantage
+of this approach over the derivative one can be found in
+[29] for an application in image processing. The integral
+approach requires pX(x). This condition is usually met in
+communication applications, but not in some signal-processing
+applications. The derivative approach discussed next provides
+an alternative approach.
+D. Derivative Approach to B
+We next consider a special case when ˆφ is separable and
+derivable, andx IID. The following is an alternative derivative
+approach to OAMP, ﬁrst introduced in [17] and inspired by
+[1].
+From Theorem 7, Conjecture 20 (see Appendix A-B) and
+Stein’s Lemma [55],
+1
+N E{(fin)T ˆφ(ˆxin)} =vf inE{∂ ˆφ(ˆxin)/∂ˆxin}, (31)
+where vf in≡ 1
+N∥fin∥2. Hence, (29) can be rewritten as
+B = E{∂ ˆφ(ˆxin)/∂ˆxin}≡ E{ˆφ′}. (32)
+For an orthogonal φ, substituting (32) into φ(ˆxin) = ˆφ(ˆxin)
+−B ˆxin, the derivative ofφ is equal to zero. On the other hand,
+if the derivative of φ is zero, we have B = 0 from (32) and
+also E{(fin)Tφ(ˆxin)} from (29), i.e., φ is orthogonal. Thus,
+we have a necessary and sufﬁcient condition below for the
+orthogonal requirement in OAMP.
+Proposition 11: Under the IID x and the GS error fin in
+OAMP, an estimator φ is orthogonal if and only if
+E{∂φ(ˆxin)/∂ˆxin} = 0. (33a)
+In particular, if φ can be expressed as φ = Λˆxin, where Λ is
+a diagonal matrix, then (33a) is equivalent to
+tr{Λ} = 0. (33b)
+Finally, when φ is separable, (32) can be rewritten to
+B≡ E{ˆφ′}≈ 1
+N
+∑N
+i=1∂[ˆφ(ˆxin)]i/∂[ˆxin]i. (34)
+Eqn. (34) does not require the distribution ofx, which makes it
+attractive in many signal processing problems. This advantage
+was ﬁrst pointed out in [1].
+E. Alternative Form of OAMP
+The original OAMP algorithm was derived in [17] for
+solving (1) via the recursion of a linear estimator (LE) and
+a non-linear estimator (NLE):
+LE : rt =γt(st) =st + N
+tr{WtA}Wt(y−Ast), (35a)
+NLE : st+1 =φt(rt) =Ct
+(ˆφt(rt)− E{ˆφ′
+t}· rt
+)
+, (35b)
+where Wt is an arbitrary prototype matrix and Ct a proper
+scalar. Eqn. (35) does not involve SVD and so is usually
+convenient for implementation. It is equivalent to the OAMP
+in III-D, which can be seen from the discussions below.
+From (1), A = U TDV and r = Uy . Denote ˆxin
+t = qt,
+ˆxout
+t+1 = st+1, ˆX
+in
+t = Vst, ˆX
+out
+t = Vqt, ∆t = VWtU T
+and λt = N
+tr{∆tD}. We can rewrite (35) as
+LE : ˆX
+in
+t =V ˆxout
+t , (36a)
+ˆX
+out
+t =γt( ˆX
+in
+t )=λt∆tr+(I−λt∆tD) ˆX
+in
+t , (36b)
+ˆxin
+t =V T ˆX
+out
+t , (36c)
+NLE : ˆxout
+t+1 =φt(ˆxin
+t ) =Ct
+(ˆφt(ˆxin
+t )− E{ˆφ′
+t}· ˆxin
+t
+)
+. (36d)
+It can be veriﬁed that γt and φt in (36) are both orthogonal,
+αγ
+t = 1,∀t and gout
+t = ˆX
+out
+t −x. Hence (36) is consistent
+with OAMP in III-D.
+Eqn. (35) and (36) give two equivalent forms of OAMP.
+Eqn. (35) does not involve SVD so it is convenient for imple-
+mentation. Eqn. (36) is convenient for performance analysis,
+as seen in Section III. Its implementation involves SVD, which
+is very costly when the size of A is large.
+F . Optimality of OAMP
+The MMSE optimality of OAMP for the system in (1)
+is analyzed in [17] based on the assumption that ˆφt and ˆγt
+are respectively linear and nonlinear, and they are separable,
+Lipschitz continuous and locally optimal. The SE ﬁxed point
+of OAMP satisﬁes the following replica equation [56]:
+v−1
+∞ =σ−2·RATA
+(
+−σ−2· mmse(x|x +√v∞·z)
+)
+, (37)
+whereσ2 is the noise variance in (1) and z∼N (0, 1).RATA
+denotes the R-transform w.r.t. the eigenvalue distribution of
+ATA [49]. Following [56], OAMP achieves MMSE when (37)
+has only one solution.
+In a similar way, the replica optimality of V AMP for the
+system (1) is shown in [19]. The result is extended to a system
+with both ˆφt and ˆγt being nonlinear, separable and locally
+MMSE-optimal [14], [28]. This conclusion also applies to
+OAMP under the uniﬁed orthogonal framework discussed in
+V-E. These results are summarized in Proposition 12.
+
+=== PDF PAGE 9 ===
+9
+Proposition 12: For the system in Fig. 1(a), OAMP con-
+verges to the MMSE provided that (i) both ˆφt and ˆγt are
+separable and locally MMSE-optimal, and (ii) the ﬁxed-point
+equation (37) for φt and γt has only one solution.
+V. C OMPARISON WITH RELATED ALGORITHMS
+In this section, we compare OAMP-GSO with other re-
+lated algorithms in [1], [13], [14], [17], [19]. We will show
+that orthogonality is a common feature underpinning these
+algorithms. This observation provides useful insights into
+the turbo/EP/AMP family of iterative signal processing tech-
+niques.
+A. Connection to EP
+When ˆφ achieves MMSE,B in (29) can be calculated using
+Proposition 13, which is proved in [45, Appendix B].
+Proposition 13: Assume that ˆxin = x +fin (GS model)
+and ˆφ achieves local MMSE. Then
+B =vˆφ/vˆxin, (38)
+where vˆφ≡ 1
+N E{∥ˆφ(ˆxin)−x∥2} and vˆxin≡ 1
+N E{∥fin∥2}.
+Recall the EP updating rule [13], [14]:
+ˆxout =φ(ˆxin) = 1
+1−vˆφ/vˆxin
+(
+ˆφ(ˆxin)−
+vˆφ
+vˆxin
+ˆxin
+)
+. (39)
+Clearly, (39) is equivalent to (27) with B given in (38).
+Therefore EP and OAMP are equivalent when local estima-
+tors achieve MMSE. Otherwise, they do not. For example,
+[ˆφ(ˆxin)]i = (ˆxin
+i )2, where ˆxin = x +n and x is zero
+mean and independent of the Gaussian noise n. In this case,
+following (29) or (32), we haveB = 0, i.e., (38) does not hold.
+Therefore, OAMP provides a new treatment for sub-optimal
+local estimators.
+After the introduction of OAMP in [17], a derivative form of
+EP is discussed in [28]. These two algorithms are equivalent.
+B. Connection to Conventional Turbo or Belief Propagation
+The celebrated turbo principle [5], [7]–[9], which has been
+regarded as the de facto solution to coded linear systems
+[10]–[12], is based on the concept of belief propagation (BP),
+where extrinsic messages are used to avoid the correlation
+problem of an iterative process. Intuitively speaking, the
+conventional turbo requires the input and output errors to be
+independent, while OAMP requires the input and output errors
+to be orthogonal. Therefore, turbo is a special case of OAMP
+because independence is a subset of orthogonality. OAMP may
+potentially outperform turbo for non-Gaussian constraints. For
+more details, refer to [22, Section III-D].
+Since EP is also a special case of OAMP (see Subsection
+V-A), the results in this paper are applicable to the combined
+BP-EP message-passing algorithms in [57].
+C. Connection to AMP
+Early discussions on AMP did not involve orthogonality,
+but new insight can be gained from the recent results in [23].
+In this part, we outline the connection of OAMP and AMP in
+[23], explicitly emphasizing the orthogonality in AMP.
+AMP can be rewritten as the following iteration [1] for
+solving (1). Starting with t = 1,s1 =sOnsager
+0 = 0,
+LE : ˆxin
+t =st +AT(y−Ast) +sOnsager
+t−1 , (40a)
+NLE : st+1 = ˆφt(ˆxin
+t ), (40b)
+wheresOnsager
+t−1 is an “Onsager term” [1] deﬁned as
+sOnsager
+t−1 =Bt−1· (ˆxin
+t−1−st−1), (40c)
+Bt−1 = E
+{
+∂[ˆφt−1(ˆxin
+t−1)]i/∂[ˆxin
+t−1]i
+}
+(40d)
+≈ 1
+N
+∑N
+i=1∂[ˆφt−1(ˆxin
+t−1)]i/∂[ˆxin
+t−1]i. (40e)
+LetA =U TDV and ˆy≡Uy , we rewrite (40) as
+St =Vst, ˆX
+out
+t = ˆγt(S1,··· , St), (41a)
+ˆxin
+t =V T ˆX
+out
+t , st+1 = ˆφt(ˆxin
+t ), (41b)
+where
+ˆγt(S1,··· , St)≡ St +DT(ˆy−DSt) + SOnsager
+t−1 , (41c)
+SOnsager
+t−1 ≡Vs Onsager
+t−1 . (41d)
+We now deﬁne an intermediate variable as follows [23].
+ˆxout
+t+1≡φt(ˆxin
+t ) =At
+(
+ˆφt(ˆxin
+t )−Bt ˆxin
+t
+)
+, (42)
+where At = 1/(1−Bt) and Bt is deﬁned in (40e). Deﬁne
+ˆX
+in
+t ≡ V ˆxout
+t . Furthermore, we can express ˆX
+out
+t by a
+function ofγt( ˆX
+in
+1,··· , ˆX
+in
+t ). Then, we rewrite (40) (i.e. AMP)
+into a GIP form with memory (GIP-M) as follows.
+GIP-M: Starting with t = 1 and ˆxout
+1 = 0,
+ˆX
+in
+t =V ˆxout
+t , ˆX
+out
+t =γt
+(ˆX
+in
+1,··· , ˆX
+in
+t
+)
+, (43a)
+ˆxin
+t =V T ˆX
+out
+t , ˆxout
+t+1=φt
+(ˆxin
+t
+)
+. (43b)
+The above can be seen as an extension of GIP in (11) by
+allowing memories in γt and φt. Corresponding to Theorems
+7 and 10, we have the following properties for GIP-M.
+Proposition 14: The followings hold for the equivalent form
+of AMP in (43) if A is IIDG and φt is separable-IID.
+(i) The error orthogonality in (17) holds.
+(ii) All the conclusions of Theorem 7 apply.
+Proposition 14 can be veriﬁed as follows. It is shown in
+[23] that E{∂
+[
+γt( ˆX
+in
+t )
+]
+i/∂[ ˆX
+in
+t ]i} = 0 (see (4) and Theorem
+2 in [23]). Furthermore, E{∂
+[
+φt(ˆxin
+t )
+]
+i/∂[ˆxin
+t ]i} = 0 can
+be derived strictly from (40e) and (42). Then (i) follows
+from Proposition 11. The proof of Theorem 7 requires the
+orthogonality in (17) on the input and output errors of γ and
+φ only, which does not involve their internal structures with
+or without memory. Hence (ii) holds.
+The above shows some interesting connections between
+AMP and OAMP as follows.
+• There are different ways to establish orthogonality such
+as using GSO or Onsager term.
+• Orthogonality provides useful insights into the mecha-
+nism of the AMP-family of algorithms, based on which
+many ﬁndings can be derived more concisely. This can
+
+=== PDF PAGE 10 ===
+10
+be seen by comparing the proof of SE for AMP in [18]
+and that of OAMP in this paper. (Note: Proposition 14
+together with Theorems 7 and 10 in this paper form an
+alternative proof for the SE for AMP.)
+Despite that they are both underpinned by orthogonality,
+AMP is not equivalent to OAMP without memory. In partic-
+ular, Proposition 14 holds for AMP only when the sensing
+matrix A in (1) has IIDG entries [1], [18]. Otherwise, the
+performance of AMP may degrade noticeably. OAMP is not
+subjected to these restrictions.
+D. Connection to OAMP in the Differentiation Form
+OAMP in the differentiation form (OAMP-DF) is introduced
+in [17]. Its equivalence to OAMP-GSO is clear from the
+discussions in V-E. OAMP-DF can be implemented using (35)
+without knowing the distribution of x. This has an advantage
+in many signal processing problems where the distributions
+of x are not known a prior. (In communication problems,
+the distributions of x are usually determined by modulation
+methods and can be assumed to be known.)
+E. Connection to VAMP
+The derivative version of OAMP was originally derived in
+[17] in the form of (35) and (36). Its equivalence 3 to V AMP
+can be seen by comparing (36) with Algorithm 2 in [19]. The
+latter is a special case of (35) usingCt = (1−E{ˆφ′
+t})−1 and an
+MMSE form of (35a) with Wt =vstAT(vstAAT+σ2I)−1,
+where vst = 1
+N E{∥st−x∥2}.
+The SE for OAMP was conjectured based on the Haar
+distribution of V in [17]. (See Deﬁnition 1 and Proposition 1
+in [17].) The key contribution in [19] is an elegant proof of
+SE for V AMP based on the same assumption onV . The proof
+of SE for OAMP in this paper is inspired by the work in [19].
+There is a difference though. The proof in this paper relies
+solely on the orthogonality of local estimators. It is easier to
+extend the proof in this paper to a broader class of applications,
+which will be discussed elsewhere [27].
+F . Summary
+We summarize the characteristics of the existing EP, turbo,
+AMP, OAMP and V AMP below.
+• EP and OAMP are equivalent when local estimators are
+optimal. They are different otherwise.
+• Turbo is a special case of OAMP since orthogonality
+includes independence.
+• V AMP is equivalent to the derivative form of OAMP
+originally proposed in [17].
+• AMP is not equivalent to the standard form of OAMP
+without memory. However, AMP falls in the general class
+of OAMP with memory.
+Finally, the behavior of all these algorithms can be analyzed
+using the orthogonal principle. In general, the performance of
+an algorithm deteriorates if such orthogonality no longer holds.
+This is the case, e.g., for AMP when the sensing matrix is not
+IID, or for EP when the estimators are not locally optimal.
+3V AMP and OAMP are equivalent when OAMP uses the variance updating
+formula given in (23) in [17]. It is mentioned in [19] that V AMP and OAMP
+are different when OAMP is based on an approximate updating technique.
+VI. O PTIMIZATION VIA GS M ODEL AND GSO
+A. Motivation
+This section provides an example to demonstrate an ad-
+vantage of the GS model and GSO. It results from the
+freedom in tuning γ and φ in (11) under the orthogonal
+principle in (17). Speciﬁcally, we consider the standard linear
+model in (1). Assume that A in (1) is not IIDG, such as
+in the applications in [24]–[31], [38]–[46]. Then (1) can
+be solved by EP, OAMP and V AMP, but not AMP. The
+standard EP/OAMP/V AMP solution is given in (35). Below,
+we modify (35a) for performance optimization facilitated by
+the GS model and GSO. This is useful when sub-optimal ˆφ or
+ˆγ or both are used due to complexity concerns [1]. Signiﬁcant
+performance improvement over standard EP/OAMP/V AMP is
+demonstrated.
+B. Tuning OAMP via GS Model and GSO
+Replace (35a) by the following linear operation:
+rt =γt(st) =Ct
+[
+ˆγt(ξst)−Btst
+]
+, (44)
+where ˆγt(st) =Wty + (I−WtA)st, the GSO coefﬁcientBt
+is deﬁned in (27) and is given by Bt = 1
+N Tr{ξ(I−WtA)}
+(following (29)), Ct is a normalization coefﬁcient given by
+Ct = N
+Tr{WtA}, and ξ is a variable for optimization. Then,
+(44) can be rewritten as
+rt =γt
+(
+st) =ξst + N
+tr{WtA}Wt(y−ξAst
+)
+. (45)
+We can see that (35a) is a special case of (45) when ξ = 1.
+More generally, the MSE ofrt (i.e.,vrt) is a concave function
+ofξ. Hence, the optimal ξ that minimizes vrt can be obtained
+by dvrt(ξ)/dξ = 0.
+Assume that st is characterized by the GS model: st =
+αtx +ft with vft the variance of ft. The optimal ξ is
+ξ =αt/(α2
+t +vft), (46a)
+and the corresponding MSE is given by
+vrt = 1
+N Tr{BtBT
+t} vft
+α2
+t+vft
++ 1
+N Tr{ ˜Wt ˜W T
+t}σ2, (46b)
+where Bt = I− ˜WtA and ˜Wt = N
+Tr{WtA}Wt. Some
+interesting observations are as follows.
+(i) The vrt in (46b) is not larger than the MSE of (35a) (see
+(32a) in [17]) in the standard EP/OAMP/V AMP.
+(ii) The complexity of the optimized OAMP in (44) is the
+same as the standard EP/OAMP/V AMP in (35a).
+(iii) For MMSE ˆφ, we can show that (35a) equivalents to (44).
+We omit the proof as it is quite straightforward.
+Since MMSE ˆφ may be hard to obtain or the computational
+complexity is practically prohibitive, sub-optimal solutions are
+commonly employed. The optimized LE in (44) for OAMP is
+useful in this case.
+C. Numerical Example
+Let us consider a special case of (1) for the following
+compressed sensing problem [58]. Let the SVD of A be
+A = U HDV . The eigenvalues {di}, i.e. diagonal elements
+
+=== PDF PAGE 11 ===
+11
+0 5 10 15 20 25 30 35
+Iteration
+10-4
+10-3
+10-2
+10-1
+100
+MSE
+simulation
+SE
+Optimized OAMP
+    Standard EP/OAMP/VAMP
+Fig. 2. MSE comparison between the standard LMMSE-EP/OAMP/V AMP
+and the optimized LMMSE-OAMP, where N =1500, M/N =0.65, κ=10,
+λ=0.25, ϑt =vrt and SNR =σ−2
+n = 45 dB.
+ofD, are generated as: di/di+1 =κ1/M fori = 1,...,M −1
+and ∑M
+i=1d2
+i = N [59]. Here, κ is the condition number of
+A. The entries ofx are IID and follow the Bernoulli-Gaussian
+(i.e., sparse) distribution, i.e. ∀i,
+xi∼
+{ 0, probability = 1−λ,
+CN (0,λ−1), probability =λ. (47)
+The variance of xi is normalized to 1. The applications of this
+example can be seen [60].
+Consider employing the prototypes in (36) for the above
+problem. To reduce complexity, assume that ˆφt is constructed
+using a low-cost thresholding estimator [61]:
+ˆφt(rt) = max
+(
+∥rt∥− ϑt, 0
+)
+· sign(rt), (48)
+where ϑt is a threshold.
+Assuming that φ is obtained by plugging (48) into (36)
+with Ct = 1/
+(
+1− E{ˆφ′
+t}
+)
+(commonly used in EP, OAMP
+and V AMP), we consider two LMMSE-LEs (35a) and (44)
+(withWt =vstAT(vstAAT+σ2I)−1) to get γt for the stan-
+dard EP/OAMP/V AMP and optimized OAMP, respectively.
+(Note that vst = N−1∥st−x∥2 is used in the standard
+EP/OAMP/V AMP, while in the optimized OAMP, vst is set
+as N−1∥ξst−x∥2.) Fig. 2 shows that the optimized LE
+via the GS model and GSO can bring signiﬁcant perfor-
+mance improvement over the standard EP/OAMP/V AMP in
+this example. Additionally, there is a good agreement between
+simulation results for standard/optimized OAMPs and their
+SEs.
+VII. C ONCLUSION
+This paper studied the impact of orthogonality in OAMP
+and other AMP-type algorithms. Speciﬁcally, orthogonality
+suppresses the correlated error component in the iterative
+process and hence ensures the correctness of SE. This pro-
+vides useful insights into the mechanism of OAMP. We also
+developed a GSO procedure to establish orthogonality. GSO
+offers a simple and versatile realization technique for OAMP.
+Various turbo/EP/AMP-type algorithms can be transformed
+into equivalent forms with orthogonal local estimators. Hence
+they can be uniﬁed under a common orthogonal framework.
+A householder dice method has recently been proposed for
+effectively simulating the dynamics on Haar random matrices
+[62]. It will be fascinating to see how the householder dice
+technique may be used to demonstrate the SE of OAMP.
+APPENDIX A
+PROPERTIES /C ONJECTURES OF IID/IIDG AND
+PIID/PIIDG V ARIABLES
+A. LLN Orthogonality
+Let a ={an} and b ={bn} be two sequences of length
+N. Assume that both a andb are IID. Then {anbn} are also
+IID and so we have
+E{∥a∥2} =N E
+{
+a2
+n
+}
+, (49a)
+E{∥b∥2} =N E
+{
+b2
+n
+}
+, (49b)
+Var
+(1
+NaTb
+)
+= Var{anbn}/N. (49c)
+The following is related to the convergence ofaTb whenN→
+∞, which follows the law of large numbers [63].
+Lemma 15: Let E{∥a∥2}̸ = 0, E{∥b∥2}̸ = 0 and both a
+andb be IID with E{anbn} = 0 and Var{anbn} ﬁnite. Then
+1
+NaTb
+LLN
+−→0.
+Proof: From Chebyshev’s inequality [63], we have
+Pr
+(
+( 1
+NaTb)2 < Var
+{ 1
+NaTb
+}
+/δ
+)
+≥ 1−δ. (50)
+Using (49), we rewrite (50) as
+Pr
+(
+(aTb)2
+E
+{
+∥a∥2}
+E
+{
+∥b∥2}< Var{anbn}
+NE
+{
+a2n
+}
+·E
+{
+b2n
+}
+·δ
+)
+≥1−δ. (51)
+Then (3) holds provided that
+N≥N′≡ Var{anbn}
+E
+{
+a2n
+}
+·E
+{
+b2n
+}
+·δ·ε. (52)
+This completes the proof.
+The following lemma follows Lemma 15.
+Lemma 16 (LLN Orthogonality of Separable-IID Function):
+Assume that π ={πn} is separable-IID, and a ={an} IID,
+both of length N→∞ . Then (i){anπn(an)} are IID and (ii)
+1
+NaTπ(a)
+LLN
+−→0 if E{anπ(an)} = 0.
+Similar to Lemma 15, we can verify Property 17 for PIID
+variables using the concept of group IID variables. The details
+are omitted due to space limitations.
+Property 17: Let both a andb be PIID with E{anbn} = 0
+and Var{anbn} ﬁnite. Then, 1
+NaTb
+LLN
+−→0.
+Property 18 follows Property 17.
+Property 18: Assume that π ={πn} is separable-IID, and
+a ={an} PIID, both of length N→∞ . Then (i) aT
+nπn(an)
+are PIID and (ii) 1
+NaTπ(a)
+LLN
+→ 0 if E{aT
+nπ(an)} = 0.
+B. Inner Product of Separable-IID Functions
+Property 19: Letπ1 andπ2 be separable-IID,ξ ={ξ1n} and
+ξ ={ξ2n} be IID variables. It is easy to verify the following.
+1
+N E
+r,ξ1,ξ2
+{
+π1(ξ1)Tπ2(ξ2)
+}
+= E
+rn,ξ1n,ξ2n
+{
+π1n(ξ1n)π2n(ξ2n)
+}
+,
+(53)
+wherer denotes the potential IID variables except for ξ1 and
+ξ2 in function π1 or π2.
+
+=== PDF PAGE 12 ===
+12
+The conjecture below extends Property 19 to the PIIDG
+case.
+Conjecture 20: Let π1 and π2 be separable-IID, ξ ={ξ1n}
+andξ ={ξ2n} be PIID variables. Then,
+1
+N E
+r,ξ1,ξ2
+{
+π1(ξ1)Tπ2(ξ2)
+}
+= E
+rn,ξ1n,ξ2n
+{
+π1n(ξ1n)π2n(ξ2n)
+}
+,
+(54)
+wherer denotes the potential random variables except for ξ1
+andξ2 in function π1 or π2.
+From Conjecture 20, in evaluating 1
+N E
+r,x,ξ
+{
+π(αx +ξ)Tx
+}
+and 1
+N E
+r,x,ξ
+{
+π(αx+ξ)Tξ
+}
+, we can replace the PIIDG ξ by an
+IIDG vector
+√
+Var(ξn)z, where z∼N (0,I). This is useful
+in deriving the state evolution method for OAMP.
+C. Incomplete Orthogonal Transform
+Property 21: Leta =Ub where (i) U is orthogonal, (ii) b
+IIDG, and (iii) U andb are mutually independent. Then (i) a
+is IIDG, and (ii) a andU are mutually independent.
+Property 22: Let U1 be an N × (N − m) block in
+U∈ UN ,b1∈ RN−m be IIDG, and U andb1 are mutually
+independent. Then the following claims hold whenm/N→ 0:
+(i) U1b1→IIDG; (ii) E
+{
+∥U1b1∥2}
+→ E
+{
+∥b1∥2}
+; and (iii)
+U1b1 is asymptotically independent of U1.
+Proof: Consider partitionsU = [U1,U2] andb =
+[ b1
+b2
+]
+such thatUb =U1b1 +U2b2, whereU1 hasN−m columns
+andb is IIDG. Then
+E
+{
+∥U1b1∥2}
+= N−m
+N · E
+{
+∥b∥2}
+, (55a)
+E
+{
+∥U2b2∥2}
+= m
+N· E
+{
+∥b∥2}
+. (55b)
+When m≪N, (55) leads to
+E
+{
+∥U2b2∥2}
+E
+{
+∥U1b1∥2} = m
+N−m→ 0, (56a)
+U1b1
+d
+→Ub, (56b)
+E
+{
+∥U1b1∥2}
+→ E
+{
+∥b∥2}
+→ E
+{
+∥b1∥2}
+. (56c)
+Whenb is IIDG, bothUb andU1b1 are IIDG and independent
+ofU andU1. Therefore, we obtain Property 22.
+Intuitively, Property 22 hinges on the factors that ∥b2∥ and
+∥U2b2∥ are statistically negligible compared with ∥b1∥ and
+∥U1b1∥ when m≪N.
+The conjectures below extend the above two properties to
+the PIIDG case.
+Conjecture 23: Let a = Ub where U is orthogonal, b
+PIIDG, and U and b are mutually independent. Then a is
+PIIDG, and a andU are mutually independent.
+Conjecture 24: LetU1 be an N× (N−m) block in U∈
+UN , b1 ∈ RN−m be PIIDG, and U and b1 are mutually
+independent. Then the following claims hold whenm/N→ 0:
+(i)U1b1→PIIDG; (ii) E
+{
+∥U1b1∥2}
+→ E
+{
+∥b1∥2}
+; and (iii)
+U1b1 is asymptotically independent of U1.
+D. Extended Stein’s Lemma
+The following is a variation of the generalized Stein’s
+Lemma [64]. It will be useful in the proof of Theorem 10.
+We say that a andu are entry-wise jointly Gaussian if every
+{ui,ai} pair are jointly Gaussian.
+Lemma 25 (Extended Stein’s Lemma): Let π = π(a)
+where a is IIDG and π(a) separable-IID. Let u be any
+IIDG vector that is entry-wise jointly Gaussian with a. Let
+E{a} = E{u} = 0 and E{aTπ} = 0. Then (i) 1
+NaTπ
+LLN
+−→0;
+and (ii) 1
+NuTπ
+LLN
+−→0.
+Proof: Since a is IIDG and π(a) is separable-IID, π
+is IID (but not necessarily Gaussian). Then claim (i) follows
+Lemma 15 directly. For claim (ii), denote
+ξ =u−αa, (57)
+where α = E{uTa}/E{aTa} and so E{ξTa} = 0 . (This
+can be compared to (6) for the GS model (7).) Then ξ
+and a are uncorrelated and so mutually independent due
+to their Gaussianity. (When u and a are both IIDG, so is
+ξ.) Then ξ is independent of π due to the Markov chain
+ξ→ a→ π. Therefore, E{ξTπ} = 0 . Furthermore, from
+(57) and E{aTπ} = 0, we have E{uTπ} = 0. It can be seen
+that{unπn} are IID. Then from Lemma 15, 1
+NuTπ
+LLN
+−→ 0.
+This completes the proof.
+The conjecture below extends Lemma 25 to the PIIDG case.
+Conjecture 26: Letπ =π(a) wherea is PIIDG and π(a)
+separable-IID. Let u be any PIIDG vector that is entry-wise
+jointly Gaussian with a. Let E{a} = E{u} = 0. Assume
+E{aTπ} = 0. Then (i) 1
+NaTπ
+LLN
+−→0 ; and (ii) 1
+NuTπ
+LLN
+−→0.
+APPENDIX B
+PROOF OF THEOREM 7
+The asymptotically IID Gaussian (AIIDG) property of
+OAMP was conjectured in [17] and rigorously proved in [16],
+[23]. A similar proof is given in [19] for V AMP, which is
+also applicable to OAMP due to the algorithmic equivalence
+between the two. The discussions below are inspired by these
+background works. In particular, Proposition 28 and Lemma
+29 are inspired by [19, Lemmas 3 and 5], [16, Lemmas 1 and
+3] and [23, Lemmas 1 and 3]. Also, the use of (64) follows the
+Bolthausen’s conditioning technique used in [16], [19], [23].
+We will focus on half of an iteration in the symmetric model
+in Fig. 1, which is much simpler than tracking a full iteration
+as in [16], [19], [23]. This, together with several conjectures
+(i.e., Conjectures 20, 24 and 26, which can be bridged by
+the rigorous treatments in [16], [19], [23]), results in con-
+ciseness in derivation. Our aim is to provide a clear insight
+into the mechanism of OAMP. Combining the discussions in
+Appendixes A and B, we show that orthogonality suppresses
+the correlated error component in the iterative process, and
+hence ensures the correctness of SE.
+A. Haar Distribution under a Linear Constraint
+FixA∈ RN×m andB∈ RN×m. We ﬁrst assume that A
+and B are ﬁxed. Let V be a size N×N Haar distributed
+matrix. Denote by UA=VB the subset of V in the Haar
+ensemble meeting the following linear constraint A =VB .
+The following lemma is straightforward.
+
+=== PDF PAGE 13 ===
+13
+Lemma 27: Let V be Haar distributed independent of A
+andB. The elements in UA=VB are uniformly distributed.
+Let UA = [ U∥
+A,U⊥
+A] and UB = [ U∥
+B,U⊥
+B] be two
+orthogonal matrices with U∥
+A ∈ Sp(A), U⊥
+A ∈ Sp(A)⊥,
+U∥
+B∈ Sp(B) andU⊥
+B∈ Sp(B)⊥. Let
+U∥
+A =VU∥
+B. (58)
+FromA =VB and (58), (U∥
+A)TVU∥
+B =I, (U∥
+A)TVU⊥
+B =
+0 and (U⊥
+A)TVU∥
+B = 0, so
+U T
+AVUB =
+[
+(U∥
+A)T
+(U⊥
+A)T
+]
+V
+[
+U∥
+B, U⊥
+B
+]
+=
+[I 0
+0 ˜V
+]
+, (59a)
+where
+˜V ≡ (U⊥
+A)TVU⊥
+B. (59b)
+Left- and right multiplying (59a) by UA andU T
+B gives
+V =
+[
+U∥
+A, U⊥
+A
+][I 0
+0 ˜V
+][
+(U∥
+B)T
+(U⊥
+B)T
+]
+=U∥
+A(U∥
+B)T+U⊥
+A ˜V (U⊥
+B)T.
+(60a)
+From (59), if V is orthogonal, so is ˜V and vice versa. Thus
+(59b) and (60a) establish a one-to-one afﬁne mapping between
+V ∈ UA=VB and ˜V ∈ UN−m, denoted as V ↔ ˜V . Fix a
+pairV ↔ ˜V . For any Ω such that V Ω∈ UA=VB , we can
+always ﬁnd a ˜Ω such that ˜V ˜Ω ∈ UN−m, and vice versa.
+From Lemma 27, V is uniformly distributed over UA=VB .
+Then for Ω and ˜Ω mentioned above,pV (V ) =pV (V Ω) and,
+due to the one-to-one afﬁne mapping,
+p ˜V ( ˜V ) =p ˜V ( ˜V ˜Ω). (61)
+Eqn. (61) holds ∀ ˜Ω ∈ UN−m, so ˜V is Haar. This is
+summarized as follows.
+Proposition 28: Let A and B be two N×m matrices
+of full column rank. Let U⊥
+A and U⊥
+B be respectively ﬁxed
+orthonormal bases of Sp(A) and Sp(B). Assume that V is
+uniformly distributed over UA=VB . Then ˜V≡ (U⊥
+A)TVU⊥
+B
+is Haar over UN−m.
+There is no loss of generality in the full-rank assumption in
+Proposition 28. Let the ranks of AN×m and BN×m be m′.
+Whenm′ <m (not full rank), we can obtain A′ =VB′ with
+full-rankA′ andB′ by removing the linear correlated columns
+inA andB. Proposition 28 still applies to A′ =VB′.
+B. Random Part of a Constraint Haar Transform
+LetV ∼ HN ,f∈ RN and
+g =Vf . (62)
+From (60), we write g =gﬁxed +grandom underA=VB with
+gﬁxed =U∥
+A(U∥
+B)Tf, grandom =U⊥
+A ˜V (U⊥
+B)Tf. (63)
+Recall from Proposition 28 that ˜V ∼ HN−m. Hencegrandom
+is the random part of g. Let N →∞ and m remain ﬁxed.
+Then from Lemma 4, ˜V (U⊥
+B)Tf is PIIDG with zero mean.
+Then from Conjecture 24 (see Appendix A-C) and (63) (and
+since U⊥
+A is of size N× (N−m)), grandom is PIIDG with
+zero mean.
+The above is for ﬁxedA andB. We now consider random
+A andB. In this case, we deﬁne UA=VB using samples of
+A and B. From Proposition 28, ˜V is not a function of A
+and B except the size of ˜V . Let N → ∞and m remain
+ﬁnite. Then from Property 21, grandom in (63) is independent
+of B. From Conjecture 24 (see Appendix A-C), grandom in
+(63) is asymptotically independent of the columns of U⊥
+A and
+so also independent of the columns of A. Hence grandom is
+asymptotically independent of both A and B. Furthermore,
+due to the one-to-one mapping between V ∈ UA=VB and ˜V
+(see the discussions below (60)), any z independent of V is
+also independent of ˜V andgrandom. We summarize the above
+in a lemma below.
+Lemma 29: LetV be Haar distributed under the constraint
+A =VB . Let N→∞ and m remains ﬁnite. Then grandom
+is PIIDG with zero mean and asymptotically independent of
+A andB. Furthermore,grandom is asymptotically independent
+of any z ifz is independent of V .
+Lemma 29 is a generalization of Lemma 4. The latter is
+forA andB being empty sets, so gﬁxed vanishes and Vf =
+grandom. Note the subtle difference in the treatments of A,
+B andz in Lemma 29. We cannot claim both A andB are
+independent of V sinceA =VB . For any ﬁniteN,grandom
+is a function of A andB, but the related inﬂuence becomes
+negligible when N→∞ .
+C. Proof of Theorem 7
+The equations below are based on (11), (13), (15c) and (16):
+At =
+[
+X,Gout
+t ,Gin
+t
+]
+, Bt =
+[
+x,F in
+t ,F out
+t
+]
+, (64a)
+At =VBt, (64b)
+gin
+t =Vf out
+t , fin
+t =Vg out
+t . (64c)
+Combining (60), (64a) and (64b), we have
+V = [u∥
+X,U∥
+Gout
+t
+][u∥
+x,U∥
+F in
+t
+]T +U∥
+Gin
+t
+(U∥
+F out
+t
+)T
++U⊥
+At
+˜V (U⊥
+Bt)T. (65)
+Substitute (65) into (64c):
+gin
+t =Vf out
+t (66a)
+= [u∥
+X,U∥
+Gout
+t
+][u∥
+x,U∥
+F in
+t
+]Tfout
+t
+  
+δt1
++U∥
+Gin
+t
+(U∥
+F out
+t
+)Tfout
+t
+  
+δt2
++U⊥
+At
+˜V (U⊥
+Bt)Tfout
+t  
+δrandom
+t
+. (66b)
+For OAMP under (17), 1
+N [x,F in
+t ]Tfout
+t
+LLN
+−→0. Hence in (66)
+δt1 =o(1) and
+gin
+t →δt2 +δrandom
+t . (67)
+SinceU∥
+Gin
+t
+∈ Sp(Gin
+t ), we can ﬁnd a ct such that
+δt2 =Gin
+t ct. (68)
+From Lemma 29,δrandom
+t is PIIDG and independent ofAt,Bt
+and z. (Note: X is a column in At). Following (67) and
+(68), the GS error gin
+t is a linear combination of independent
+PIIDG vectors{δrandom
+0 ,··· ,δrandom
+t }, which are zero mean
+and independent of X andz. Then, we have Lemma 30.
+
+=== PDF PAGE 14 ===
+14
+Lemma 30: We can ﬁnd an upper triangular Ct such that
+Gin
+t → [δrandom
+0 ... δrandom
+t−1 ]Ct, (69)
+where{δrandom
+0 ,··· ,δrandom
+t−1 } are independent PIIDG vectors
+with zero mean and are independent of X andz.
+Leta andb be two PIIDG vectors and c =αa +βb where
+α and β are two constants. It can be shown that c is PIIDG.
+Then following Lemma 30, we obtain the claim (a) in Theorem
+7. Due to the symmetry of the problem, we can prove claim
+(b) in a similar way. This completes the proof for Theorem 7.
+D. Discussions
+Here are some intuitions. Recall from (14) and (11) that
+αγ
+t X +gout
+t =γt
+(
+αφ
+t−1X +gin
+t−1
+)
+, (70)
+where gout
+t and gin
+t−1 are errors. Heuristically, in an iterative
+process, we should avoid correlation between gin
+t−1 and X ,
+otherwise the design of γt becomes very complicated. Also,
+we should avoid correlation between gin
+t and Gout
+t . Such
+correlation may result in positive feedback in an iterative
+process and cause stability problem.
+OAMP achieves such desirable correlation avoidance. To
+see this, rewrite (66) as
+gin
+t = [u∥
+X,U∥
+Gout
+t
+][u∥
+x,U∥
+F in
+t
+]Tfout
+t
+  
+δt1
++δt2 +δrandom
+t . (71)
+Clearly,δt1 is potentially correlated with X and Gout
+t since
+δt1∈ Sp([X,Gout
+t ]). In OAMP,δt1 is statistically suppressed
+by a properly designedφt, such that 1
+N [u∥
+x,U∥
+F in
+t
+]Tfout
+t
+LLN
+−→0
+as shown below (66). Furthermore, we showed that δt2 and
+δrandom
+t will not cause the correlation problem above.
+In summary, the orthogonality of φt prevents the output
+of γt from circulating back (partially or fully) to the input of
+γt+1. The similar can be said forφt. Being orthogonal, the two
+local estimators help each other; each stops the input-output
+error circulation for the opposite one.
+APPENDIX C
+PROOF OF THEOREM 10
+We prove Theorem 10 by induction.
+1) Eqn. (17) holds for t = 1 : Since γ1 and φ1 are
+orthogonal estimators, we have (17a) for t = 1 . From the
+deﬁnition of the GS model in (7), we have
+E{X Tgout
+1 } = 0, E{xTfout
+1 } = 0. (72)
+Furthermore,fout
+1 =φ1(0)−x is IID since φ1 is separable-
+IID and x is IID. Then, from (72) and Lemma 15, we have
+1
+NxTfout
+1
+LLN
+−→0. (73)
+In addition, X andgin
+0 are independent PIIDG vectors. Then
+gout
+1 = γ1(0)− X is PIID since γ1 is separable-IID. Then,
+from (72) and Property 17, we have
+1
+N X Tgout
+1
+LLN
+−→0. (74)
+Therefore, (17b) holds for t = 1.
+2) Eqn. (17) holds for t−1⇒ Eqn. (17) holds for t: Since
+(17) holds for t− 1, from Theorem 7 (see also the proof in
+Appendix B), we have the following.
+(a)
+[
+gin
+0 ,..., gin
+t−1
+]
+is CPIIDG-RJG and independent of X ;
+(b)
+[
+fin
+0 ,..., fin
+t−1
+]
+is CPIIDG-RJG and independent of x.
+Since γt and φt are orthogonal estimators, we have
+E{(gin
+t−1)Tgout
+t } = 0, E{(fin
+t−1)Tfout
+t } = 0. (75)
+From (a) and (b),gin
+t−1 andfin
+t−1 are respectively PIIDG. Since
+γt andφt are separable-IID,gout
+t =φt(gin
+t−1)−x andfout
+t =
+γt(fin
+t−1)− X are PIID. Therefore, from (75) and Property 17,
+we have
+1
+N (gin
+t−1)Tgout
+t
+LLN
+−→0, 1
+N (fin
+t−1)Tfout
+t
+LLN
+−→0. (76)
+Then, from Conjecture 26 and the joint Gaussianity in (a) and
+(b), the following hold for all t′ <t − 1.
+1
+N (gin
+t′ )Tgout
+t
+LLN
+−→0, 1
+N (fin
+t′ )Tfout
+t
+LLN
+−→0. (77)
+Therefore, (17a) holds for t.
+From the deﬁnition of the GS model in (7), we have
+E{X Tgout
+t } = 0, E{xTfout
+t } = 0. (78)
+Since x, X fout
+t and gout
+t are PIID, from Property 17 and
+(78), we have
+1
+NxTfout
+t
+LLN
+−→0, 1
+N X Tgout
+t
+LLN
+−→0. (79)
+Therefore, (17b) holds for t.
+REFERENCES
+[1] D. L. Donoho, A. Maleki, and A. Montanari, “Message-passing algo-
+rithms for compressed sensing,” in Proc. Nat. Acad. Sci., vol. 106, no. 45,
+Nov. 2009.
+[2] J. Lodge, R. Young, P. Hoeher and J. Hagenauer, “Separable MAP
+“ﬁlters” for the decoding of product and concatenated codes,” in IEEE
+International Conference on Communications (ICC) , vol. 2, May 1993,
+pp. 1740–1745.
+[3] T. K. Moon, “The expectation-maximization algorithm,” IEEE Signal
+Process. Mag., vol. 13, no. 6, pp. 47-60, Nov. 1996.
+[4] J. Dauwels, A. Eckford, S. Korl, H. A. Loeliger, “Expectation maximiza-
+tion as message passing-part I: Principles and Gaussian messages,” arXiv
+preprint arXiv:0910.2832, 2009.
+[5] C. Berrou, A. Glavieux, and P. Thitimajshima, “Near shannon limit error-
+correcting coding and decoding: Turbo-codes,” in IEEE International
+Conference on Communications (ICC), vol. 2, May 1993, pp. 1064–1070.
+[6] T. Richardson and R. Urbanke, “The capacity of low-density parity-check
+codes under message-passing decoding,” IEEE Trans. Inf. Theory, vol. 47,
+no. 2, pp. 599–618, Feb. 2001.
+[7] X. Wang and H. V . Poor, “Iterative (turbo) soft interference cancellation
+and decoding for coded CDMA,” IEEE Trans. Commun. , vol. 47, no. 7,
+pp. 1046–1061, Jul 1999.
+[8] C. Douillard et al., “Iterative correction of intersymbol interference:
+Turbo-equalization,” Eur. Trans. Telecommun., vol. 6, no. 5, pp. 507-511,
+Sep./Oct. 1995.
+[9] M. T ¨ uchler, R. Koetter, and A. C. Singer, “Turbo equalization: Principles
+and new results,” IEEE Trans. Commun. , vol. 50, no. 5, pp. 754-767,
+May 2002.
+[10] H. A. Loeliger, J. Dauwels, J. Hu, S. Korl, L. Ping, and F. R. Kschis-
+chang, “The factor graph approach to model-based signal processing,”
+Proc. IEEE, vol. 95, no. 6, pp. 1295-1322, June 2007.
+[11] X. Yuan, L. Ping, C. Xu and A. Kavcic, “Achievable rates of MIMO
+systems with linear precoding and iterative LMMSE detector,” IEEE
+Trans. Inf. Theory, vol. 60, no.11, pp. 7073-7089, Oct. 2014.
+[12] L. Liu, Y . Chi, C. Yuen, Y . L. Guan, and Y . Li, “Capacity-achieving
+MIMO-NOMA: Iterative LMMSE detection,” IEEE Trans. Signal Pro-
+cess., vol. 67, no. 7, pp. 1758–1773, April 2019.
+
+=== PDF PAGE 15 ===
+15
+[13] T. P. Minka, “Expectation propagation for approximate Bayesian infer-
+ence,” in Proceedings of the Seventeenth conference on Uncertainty in
+artiﬁcial intelligence, 2001, pp. 362–369.
+[14] B. C ¸ akmak and M. Opper, “Expectation propagation for approximate
+inference: Free probability framework,” arXiv preprint arXiv:1801.05411,
+2018.
+[15] Bolthausen, E., “An iterative construction of solutions of the TAP
+equations for the Sherrington-Kirkpatrick model”, Communications in
+Mathematical Physics, vol. 325, no. 1, pp. 333–366, 2014.
+[16] K. Takeuchi, “Rigorous dynamics of expectation-propagation-based sig-
+nal recovery from unitarily invariant measurements,” IEEE Trans. Inf.
+Theory, vol. 66, no. 1, 368 - 386, Oct. 2019.
+[17] J. Ma and L. Ping, “Orthogonal AMP,” IEEE Access, vol. 5, pp. 2020–
+2033, 2017, preprint arXiv:1602.06509, 2016.
+[18] M. Bayati and A. Montanari, “The dynamics of message passing on
+dense graphs, with applications to compressed sensing,” IEEE Trans. Inf.
+Theory, vol. 57, no. 2, pp. 764–785, Feb. 2011.
+[19] S. Rangan, P. Schniter, and A. Fletcher, “Vector approximate message
+passing,” IEEE Trans. Inf. Theory , vol. 65, no. 10, pp. 6664-6684, Oct.
+2019.
+[20] R. Dudeja, Y . M. Lu, and S. Sen, “Universality of approximate message
+passing with semi-random matrices,” arXiv preprint arXiv:2204.04281 ,
+2022.
+[21] L. Liu, C. Liang, J. Ma, and L. Ping, “Capacity optimality of AMP in
+coded systems,” IEEE Trans. Inf. Theory, vol. 67, no. 7, 4929-4445, July
+2021.
+[22] J. Ma, L. Liu, Y . Xiao, and L. Ping, “On orthogonal AMP in coded
+linear vector systems,” IEEE Trans. Wireless Commun. , vol. 18, no. 12,
+6558-6572, Oct. 2019.
+[23] K. Takeuchi, “A uniﬁed framework of state evolution for message-
+passing algorithms,” IEEE International Symposium on Information The-
+ory (ISIT), 2019, pp. 151-155.
+[24] H. He, C. Wen, S. Jin and G. Y . Li, “A model-driven deep learning
+network for MIMO detection,” 2018 IEEE Global Conference on Signal
+and Information Processing (GlobalSIP) , Anaheim, CA, USA, 2018, pp.
+584-588.
+[25] J. Zhang, C. Wen, S. Jin and G. Y . Li, “Artiﬁcial intelligence-aided re-
+ceiver for a CP-free OFDM system: Design, simulation, and experimental
+test,” IEEE Access, vol. 7, pp. 58901-58914, 2019.
+[26] S. Takabe, M. Imanishi, T. Wadayama, R. Hayakawa and K. Hayashi,
+“Trainable projected gradient detector for massive overloaded MIMO
+channels: Data-driven tuning approach,” IEEE Access, vol. 7, pp. 93326-
+93338, 2019.
+[27] Y . Cheng, L. Liu, S. Liang, J. H. Manton and L. Ping, “Orthogonal
+AMP for problems with multiple measurement vectors and/or multiple
+transforms,” under preparation.
+[28] A. K. Fletcher, M. Saharee, S. Rangan, and P. Schniter, “Expecta-
+tion consistent approximate inference: Generalizations and convergence.”
+arXiv preprint arXiv:1602.07795v2 , 2016.
+[29] Y . Cheng, L. Liu, L. Ping, “An integral-based approach to orthogonal
+AMP,” IEEE Signal Process. Lett. , vol. 28, 194-198, Dec. 2020.
+[30] L. Liu, S. Liang and L. Ping, “Capacity optimality of OAMP in coded
+large unitarily invariant systems,” IEEE ISIT, pp. 1384-1389, July 2022.
+[31] L. Liu, S. Liang, and L. Ping, “Capacity optimality of OAMP: Be-
+yond IID sensing matrices and Gaussian signaling,” arXiv preprint:
+arXiv:2108.08503, Aug. 2021.
+[32] K. Senel and E. G. Larsson, “Grant-free massive MTC-enabled massive
+MIMO: A compressive sensing approach,” IEEE Trans. Commun. , vol.
+66, no. 12, pp. 6164-6175, Dec. 2018.
+[33] Z. Chen, F. Sohrabi and W. Yu, “Multi-cell sparse activity detection
+for massive random access: Massive MIMO versus cooperative MIMO,”
+IEEE Trans. Commun. , vol. 18, no. 8, pp. 4060-4074, Aug. 2019.
+[34] S. Liang, C. Liang, J. Ma and L. Ping, “Compressed coding, AMP-based
+decoding, and analog spatial coupling,” IEEE Trans. Commun. , vol. 68,
+no. 12, pp. 7362-7375, Dec. 2020.
+[35] Z. Sun, Z. Wei, L. Yang, J. Yuan, X. Cheng and L. Wan, “Exploiting
+transmission control for joint user identiﬁcation and channel estimation
+in massive connectivity,” IEEE Trans. Commun., vol. 67, no. 9, pp. 6311-
+6326, Sept. 2019.
+[36] W. Zhu, M. Tao, X. Yuan and Y . Guan, “Deep-learned approximate
+message passing for asynchronous massive connectivity,” IEEE Trans.
+Commun., vol. 20, no. 8, pp. 5434-5448, Aug. 2021.
+[37] C. Ruan, Z. Zhang, H. Jiang, J. Dang, L. Wu and H. Zhang, “Approxi-
+mate message passing for channel estimation in reconﬁgurable intelligent
+surface aided MIMO multi-user systems,” IEEE Trans. Commun. , 2022.
+[38] M. Khani, M. Alizadeh, J. Hoydis and P. Fleming, “Adaptive neural
+signal detection for massive MIMO,” IEEE Trans. Wireless Commun. ,
+vol. 19, no. 8, pp. 5635-5648, Aug. 2020.
+[39] W. Li, L. Liu and B. M. Kurkoski, “Irregularly clipped sparse regression
+codes,” IEEE Information Theory Workshop (ITW) , 2021, pp. 1-6.
+[40] H. Wang, W. -T. Shih, C. -K. Wen and S. Jin, “Reliable OFDM receiver
+with ultra-low resolution ADC,” IEEE Trans. Commun. , vol. 67, no. 5,
+pp. 3566-3579, May 2019.
+[41] X. Zhou, J. Zhang, C. -W. Syu, C. -K. Wen, J. Zhang and S. Jin, “Model-
+driven deep learning-based MIMO-OFDM detector: Design, simulation,
+and experimental results,” IEEE Trans. Commun. , 2022.
+[42] Y . Cheng, M. A. Van Wyk and L. Ping, “Orthogonal AMP detection
+techniques for massive access over OFDM,” IEEE Commun. Lett. , vol.
+25, no. 10, pp. 3384-3388, Oct. 2021.
+[43] S. Zhang, C. -K. Wen, K. Takeuchi and S. Jin, “Orthogonal approx-
+imate message passing for GFDM detection,” IEEE 18th International
+Workshop on Signal Processing Advances in Wireless Communications
+(SPAWC), 2017, pp. 1-5.
+[44] S. Liu, H. Zhang and Q. Zou, “Decentralized channel estimation for the
+uplink of grant-free massive machine-type communications,” IEEE Trans.
+Commun., vol. 70, no. 2, pp. 967-979, Feb. 2022.
+[45] Y Cheng, L. Liu and L. Ping, “Orthogonal AMP for massive access
+in channels with spatial and temporal correlations” IEEE J. Sel. Areas
+Commun., vol. 39, no. 3, 726-740, March 2021.
+[46] S. Li, W. Yuan, Z. Wei and J. Yuan, “Cross domain iterative detection
+for orthogonal time frequency space modulation,” IEEE Trans. Wireless
+Commun., vol. 21, no. 4, pp. 2227-2242, April 2022.
+[47] G. Arfken, Spherical Polar Coordinates, §2.5 in Mathematical Methods
+for Physicists, 3rd ed. Orlando, FL: Academic Press, 1985.
+[48] I. N. Bronshtein, K. A. Semendyayev, G. Musiol, and H. Muehlig,
+Handbook of Mathematics , 4th ed. New York: Springer-Verlag, 2004.
+[49] A. M. Tulino and S. Verdu, “Random matrix theory and wireless
+communications”. Now Publishers Inc. , 2004, vol. 1.
+[50] N. Ahmed, T. Natarajan and K. R. Rao, “Discrete cosine transform,”
+IEEE Transactions on Computers , vol. C-23, no. 1, pp. 90-93, Jan. 1974
+[51] R. K. R. Yarlagadda and J. E. Hershey, Hadamard matrix analysis
+and synthesis: With applications to communications and signal/image
+processing. Boston, MA: Kluwer, 1997.
+[52] E. Meckes, Concentration of measure and the compact classical matrix
+groups, 2014.
+[53] E. Schmidt, “ ¨Uber die auﬂ ¨ osung linearer gleichungen mit unendlich
+vielen unbekannten,” Rend. Circ. Mat. Palermo (1884-1940), vol. 25, no.
+1, 53-77, 1908.
+[54] K. Takeuchi and C.-K. Wen, “Rigorous dynamics of expectation-
+propagation signal detection via the conjugate gradient method,” IEEE
+18th International Workshop on Signal Processing Advances in Wireless
+Communications (SPAWC), 2017, pp. 1–5.
+[55] C. Stein, “A bound for the error in the normal approximation to the
+distribution,” in Proc. 6th Berkeley Symp. Math. Statist. Probab. , 1972.
+[56] Dongning Guo and S. Verdu, “Randomly spread CDMA: Asymptotics
+via statistical physics,” IEEE Trans. Inf. Theory, vol. 51, no. 6, pp. 1983-
+2010, June 2005.
+[57] P. Sun, C. Zhang, Z. Wang, C. N. Manch ´on and B. H. Fleury, “Iterative
+receiver design for ISI channels using combined belief- and expectation-
+propagation,” IEEE Signal Process. Lett. , vol. 22, no. 10, pp. 1733-1737,
+Oct. 2015.
+[58] D. L. Donoho, “Compressed sensing,” IEEE Trans. Inf. Theory, vol. 52,
+no. 4, pp. 1289–1306, Apr. 2006.
+[59] J. Vila, P. Schniter, S. Rangan, F. Krzakala, and L. Zdeborov ´a, “Adaptive
+damping and mean removal for the generalized approximate message
+passing algorithm,” in ICASSP 2015 , pp. 2021–2025.
+[60] J. Ahn, B. Shim and K. B. Lee, “EP-Based Joint Active User Detection
+and Channel Estimation for Massive Machine-Type Communications,”
+IEEE Trans. Commun. , vol. 67, no. 7, pp. 5178-5189, July 2019.
+[61] D. L. Donoho, “De-noising by soft-thresholding,” IEEE Trans. Inf.
+Theory, vol. 41, no. 3, pp. 613-627, May 1995.
+[62] Y . M. Lu, “Householder dice: A matrix-free algorithm for simulating
+dynamics on Gaussian and random orthogonal ensembles,” IEEE Trans.
+Inf. Theory, vol. 67, no. 12, pp. 8264-8272, Dec. 2021.
+[63] F. M. Dekking et al. , A Modern Introduction to Probability and
+Statistics. London, U.K.: Springer-Verlag, 2005.
+[64] C. M. Stein, “Estimation of the mean of a multivariate normal distribu-
+tion,” The Annals of Statistics , 1981, V ol. 9, No. 6, 1135-1151.
+[65] D. Williams, Probability with martingales, Cambridge Univ. Press, 2001.

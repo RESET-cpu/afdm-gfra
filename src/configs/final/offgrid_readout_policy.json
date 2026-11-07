@@ -1,0 +1,104 @@
+{
+  "schema": "afdm-offgrid-activity-v1",
+  "statistic": "relative_channel_frobenius_energy",
+  "snr_nodes_db": [
+    -4.0,
+    -2.0,
+    0.0,
+    2.0,
+    4.0,
+    6.0
+  ],
+  "methods": {
+    "offgrid_sbl": {
+      "inference_sha256": "6e0c6bf2af909f34f6ed4ae8dc987bf04496d0481aca999fa9a0178ae8fac2bc",
+      "thresholds": [
+        0.12659273968569862,
+        0.11800808722001825,
+        0.11024835238211503,
+        0.10656641839005296,
+        0.09446619181467479,
+        0.09240790669481247
+      ],
+      "fits": [
+        {
+          "node_db": -4.0,
+          "empty_bin_fallback": false,
+          "threshold": 0.12659273968569862,
+          "errors": 0,
+          "decisions": 640,
+          "scenes": 16
+        },
+        {
+          "node_db": -2.0,
+          "empty_bin_fallback": false,
+          "threshold": 0.11800808722001825,
+          "errors": 0,
+          "decisions": 640,
+          "scenes": 16
+        },
+        {
+          "node_db": 0.0,
+          "empty_bin_fallback": false,
+          "threshold": 0.11024835238211503,
+          "errors": 0,
+          "decisions": 640,
+          "scenes": 16
+        },
+        {
+          "node_db": 2.0,
+          "empty_bin_fallback": false,
+          "threshold": 0.10656641839005296,
+          "errors": 0,
+          "decisions": 640,
+          "scenes": 16
+        },
+        {
+          "node_db": 4.0,
+          "empty_bin_fallback": false,
+          "threshold": 0.09446619181467479,
+          "errors": 0,
+          "decisions": 640,
+          "scenes": 16
+        },
+        {
+          "node_db": 6.0,
+          "empty_bin_fallback": false,
+          "threshold": 0.09240790669481247,
+          "errors": 0,
+          "decisions": 640,
+          "scenes": 16
+        }
+      ]
+    }
+  },
+  "calibration": {
+    "seed_list": [
+      418100000,
+      418100001,
+      418100002,
+      418100003,
+      418100004,
+      418100005,
+      418100006,
+      418100007,
+      418100008,
+      418100009,
+      418100010,
+      418100011,
+      418100012,
+      418100013,
+      418100014,
+      418100015
+    ],
+    "scenes_per_true_snr": 16,
+    "rule": "minimum total activity errors; midpoint of smallest optimal score interval",
+    "snr_dispatch": "nearest node to 10 log10(max(mean(abs(Y)^2)/noise-1,1e-12))",
+    "empty_bin_rule": "use all calibration SNR bins for this method",
+    "activity_rule": "relative energy >= threshold and absolute energy > 0",
+    "labels_used_for_readout_calibration": true,
+    "evaluation_labels_used": false,
+    "records": "results/offgrid_baselines_20261012/calibration.jsonl",
+    "records_sha256": "9c415786699e4f0aabb6cae804bea5e889171b90e7a200742eccba3c3022a49b"
+  }
+}

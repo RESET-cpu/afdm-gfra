@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "paired_inputs": 1000,
+  "method_results": 5000,
+  "scene_count_per_condition": 200,
+  "raw_statistics_unchanged": true,
+  "finite_nonconverged_excluded": 0,
+  "frozen_renderer_sha256": "8dbd9add2c9c4e607d6cf1e69496cdeb4d90aeaa7718054aedd64c1fb122cdf3",
+  "paper_dimensions_mm": [
+    88.9,
+    55.88
+  ],
+  "image_sha256": "7aee22b488ceab6e43137442ad40591f4d7df8fb9ce131dbf18beb546485af77",
+  "image_viewed": true,
+  "main_plan_unchanged": true,
+  "legend_layout": [
+    {
+      "figure": "user_count",
+      "facet": null,
+      "metric": "aer",
+      "groups": [
+        {
+          "methods": [
+            "C_STMP",
+            "offgrid_sbl",
+            "gnn",
+            "gamp",
+            "somp"
+          ],
+          "loc": "upper left",
+          "ncol": 1
+        }
+      ]
+    }
+  ]
+}

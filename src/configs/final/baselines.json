@@ -1,0 +1,46 @@
+{
+  "schema": "afdm-selected-baselines-v1",
+  "dictionary": {
+    "delay_step": 1.0,
+    "doppler_points": null,
+    "doppler_step_hz": 30000.0
+  },
+  "channel_output": "dictionary_reconstruction",
+  "methods": {
+    "somp": {
+      "solver": {
+        "max_atoms": 64,
+        "noise_multiplier": 1.0,
+        "stopping_rule": "noise_discrepancy"
+      },
+      "readout_inference_sha256": "b474c635365620e68f0168285f2253297918f8506c6ccab2f877c75573f04cef"
+    },
+    "gamp_sbl_mmv": {
+      "solver": {
+        "iterations": 1000,
+        "tolerance": 1e-06,
+        "stopping_rule": "paper_absolute_mean",
+        "alpha_shape": 1.0,
+        "alpha_rate": 1e-12,
+        "initial_noise_fraction": 0.1,
+        "variance_floor": 1e-12
+      },
+      "noise_hyperparameters": "public_noise_Gamma_MAP",
+      "readout_inference_sha256": "7e5f037e78de7771d34c45270c3b4f856fe5496fee9af04250e543ec8e5570bf"
+    },
+    "gnn_aspl_ding2026": {
+      "checkpoint_path": "result/models/gnn/checkpoint.pt",
+      "checkpoint_sha256": "a09f07dd6af6c8390a68d10b892f64fec316b4e7cd031350817e7ad679fa3f4e",
+      "training_recipe_sha256": "f05607c6f89ecfdcb00fc32fafe1ba91da668e912dd9e363710b20de7ed43830",
+      "allow_smoke_checkpoint": false,
+      "allow_preliminary_checkpoint": false,
+      "noise_mode": "supplied",
+      "device": "cpu",
+      "readout_inference_sha256": "abaeb906bf10f0312d8e1efe878b59386c428719b8306ac17069fd3774a15a60"
+    }
+  },
+  "readout": {
+    "path": "src/configs/final/readout_policy.json",
+    "sha256": "dc4829965c967db7dbdaf573212e3ed4704d28a2c936c94ececcb4ca6ce19fef"
+  }
+}

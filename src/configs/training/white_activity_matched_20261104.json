@@ -1,0 +1,52 @@
+{
+  "schema": "colored-mean-activity-training-v1",
+  "base_config": "src/configs/final/STMP.json",
+  "original_training": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/specification.json",
+  "original_training_sha256": "c5fff435a4d6d5c0a8870292b2015fc472775756b6a3b1c6e72f32529055011d",
+  "output": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104",
+  "first_checkpoint": "result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt",
+  "first_checkpoint_sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+  "first_training_record": "result/channel_denoising/data/white_preconditioned_matched_20261104/complete.json",
+  "first_training_record_sha256": "6b71af29467551d7939cae196df7c22739c0c236976df77e76454b6fbb7449f1",
+  "evaluation_scenes": 1000,
+  "activity": {
+    "objective": "balanced_binary_cross_entropy; frozen_white_preconditioned_first_full_mean_at_C_vI",
+    "training_class_prior": 0.5,
+    "seed": 202610180720005,
+    "validation_seed": 202610180720006,
+    "batch_size": 32,
+    "microbatch_size": 16,
+    "learning_rate": 0.0003,
+    "minimum_learning_rate": 1e-06,
+    "ema_decay": 0.999,
+    "gradient_clip": 1.0,
+    "checkpoint_seconds": 120,
+    "maximum_epochs": 100,
+    "minimum_epochs": 100,
+    "validation_patience": 101,
+    "meaningful_relative_improvement": 0.001,
+    "selection": "Minimum fixed-noise validation objective, including initial baseline",
+    "stopping": "Exactly 100 complete data epochs; no validation early stop",
+    "initialization": "random; no pretrained classifier; no fine tuning"
+  },
+  "query_covariance": "vI",
+  "noise_support": [
+    0.001,
+    100.0
+  ],
+  "runtime": {
+    "device": "cuda",
+    "threads": 1,
+    "cuda_graph": true,
+    "precision": "float32"
+  },
+  "running_experiment_protected": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/repair_proposal/PROTECTED.json",
+  "running_experiment_plan": "result/snr_comparison/data/c_stmp_derivative_1000_20261025/inference/PLAN.json",
+  "running_experiment_plan_sha256": "fb4eca4fa9189189c31f2f61437dde2f7269ccb091412d2cab9b3d433f25143a",
+  "scope": "Fresh matched 100 full-epoch balanced activity classifier on original 50000/5000 prior bank. Freeze completed white-preconditioned first selected at epoch 200. Both classes use its same-query C=vI conditional mean. All scientific classifier training settings match the colored classifier. No formal SNR experiment observations or labels used. No receiver, threshold, damping, or existing experiment binding changes.",
+  "differences": [
+    "Fresh random classifier construction; same initialization seed and architecture, no trained classifier initialization.",
+    "Replace frozen colored first teacher by completed white-preconditioned first conditional mean for both classes; this is the downstream matched-classifier effect of the denoiser training intervention.",
+    "Keep original prior bank, RNG streams, disk-backed fixed validation protocol, mathematical batch, precision, optimizer, EMA, noise law, full 100-epoch budget and selection rule."
+  ]
+}

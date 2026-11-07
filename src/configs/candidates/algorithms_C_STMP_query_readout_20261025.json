@@ -1,0 +1,293 @@
+{
+  "schema": "afdm-algorithm-catalog-v1",
+  "algorithms": {
+    "proposed": {
+      "kind": "receiver",
+      "group": "proposed",
+      "label": "DU (deep unfolded, 10 layers)",
+      "factory": "algorithm.proposed.inference:ProposedReceiver",
+      "estimates_phase_internally": true,
+      "known_noise": {
+        "kwargs": {
+          "noise_mode": "known"
+        }
+      },
+      "model_kwargs": {
+        "binding": ""
+      },
+      "backend": "device",
+      "device_modules": [
+        "model"
+      ],
+      "model_files": {
+        "proposed": [
+          "checkpoint",
+          "phase_config",
+          "phase_moment"
+        ]
+      },
+      "training_provenance": "proposed",
+      "alias_of": "DU"
+    },
+    "STMP": {
+      "kind": "receiver",
+      "group": "STMP",
+      "label": "STMP (three networks)",
+      "factory": "algorithm.STMP.initialization_runtime_receiver:PhaseSTMPReceiver",
+      "estimates_phase_internally": true,
+      "known_noise": {
+        "kwargs": {
+          "noise_mode": "known"
+        }
+      },
+      "model_kwargs": {
+        "configuration": "STMP"
+      },
+      "path_kwargs": {
+        "phase_configuration": "src/configs/final/STMP_phase_supported_hypotheses.json"
+      },
+      "assets": [
+        "result/models/proposed_10/phase_moments.npz"
+      ],
+      "backend": "device",
+      "requires_stmp_opt_in": true,
+      "device_modules": [
+        "base.model.first",
+        "base.model.second",
+        "base.evidence.network"
+      ],
+      "model_files": {
+        "STMP": [
+          "first_checkpoint",
+          "second_checkpoint",
+          "evidence_checkpoint",
+          "prior_definition"
+        ]
+      }
+    },
+    "offgrid_sbl": {
+      "kind": "receiver",
+      "group": "baseline",
+      "label": "Off-grid SBL",
+      "factory": "algorithm.baseline._base:EstimatedNoiseBaselineReceiver",
+      "known_noise": {
+        "factory": "evaluation.receivers:known_noise_baseline"
+      },
+      "kwargs": {
+        "method": "offgrid_sbl"
+      },
+      "backend": "cpu",
+      "path_kwargs": {
+        "config": "src/configs/final/offgrid_sbl.json"
+      }
+    },
+    "gnn": {
+      "kind": "receiver",
+      "group": "baseline",
+      "label": "GNN-ASPL",
+      "factory": "algorithm.baseline._base:EstimatedNoiseBaselineReceiver",
+      "known_noise": {
+        "factory": "evaluation.receivers:known_noise_baseline",
+        "parameter_modules": [
+          "native.model"
+        ]
+      },
+      "kwargs": {
+        "method": "gnn"
+      },
+      "backend": "cpu",
+      "path_kwargs": {
+        "config": "src/configs/final/baselines.json"
+      },
+      "parameter_modules": [
+        "base.native.model"
+      ],
+      "assets": [
+        "result/models/gnn/checkpoint.pt"
+      ]
+    },
+    "gamp": {
+      "kind": "receiver",
+      "group": "baseline",
+      "label": "GAMP-SBL",
+      "factory": "algorithm.baseline._base:EstimatedNoiseBaselineReceiver",
+      "known_noise": {
+        "factory": "evaluation.receivers:known_noise_baseline"
+      },
+      "kwargs": {
+        "method": "gamp"
+      },
+      "backend": "cpu",
+      "path_kwargs": {
+        "config": "src/configs/final/baselines.json"
+      }
+    },
+    "somp": {
+      "kind": "receiver",
+      "group": "baseline",
+      "label": "SOMP",
+      "factory": "algorithm.baseline._base:EstimatedNoiseBaselineReceiver",
+      "known_noise": {
+        "factory": "evaluation.receivers:known_noise_baseline"
+      },
+      "kwargs": {
+        "method": "somp"
+      },
+      "backend": "cpu",
+      "path_kwargs": {
+        "config": "src/configs/final/baselines.json"
+      }
+    },
+    "STMP_gaussian": {
+      "kind": "receiver",
+      "group": "ablation",
+      "label": "STMP Gaussian-site evidence",
+      "factory": "evaluation.STMP_ablation:GaussianSiteReceiver",
+      "known_noise": {
+        "factory": "evaluation.STMP_ablation.receiver:Receiver",
+        "device_modules": [
+          "model.first",
+          "model.second"
+        ]
+      },
+      "model_kwargs": {
+        "configuration": "STMP"
+      },
+      "backend": "device",
+      "requires_stmp_opt_in": true,
+      "device_modules": [
+        "base.model.first",
+        "base.model.second"
+      ],
+      "model_files": {
+        "STMP": [
+          "first_checkpoint",
+          "second_checkpoint",
+          "prior_definition"
+        ]
+      }
+    },
+    "noisy": {
+      "kind": "denoiser",
+      "group": "denoising",
+      "label": "Noisy query",
+      "factory": "evaluation.denoising:NoisyQuery",
+      "backend": "cpu"
+    },
+    "gaussian": {
+      "kind": "denoiser",
+      "group": "denoising",
+      "label": "Gaussian mean",
+      "factory": "evaluation.denoising:GaussianMean",
+      "backend": "cpu",
+      "model_kwargs": {
+        "configuration": "STMP"
+      }
+    },
+    "genie_bound": {
+      "kind": "denoiser",
+      "group": "denoising",
+      "label": "Genie bound (truth used)",
+      "factory": "evaluation.denoising:GenieMean",
+      "backend": "cpu",
+      "uses_truth": true
+    },
+    "pretrained_first": {
+      "kind": "denoiser",
+      "group": "denoising",
+      "label": "Pretrained first score",
+      "factory": "evaluation.denoising:PretrainedFirst",
+      "backend": "device",
+      "model_kwargs": {
+        "configuration": "STMP"
+      },
+      "model_files": {
+        "STMP": [
+          "first_checkpoint"
+        ]
+      }
+    },
+    "pretrained_colored_first": {
+      "kind": "denoiser",
+      "group": "denoising",
+      "label": "Colored-trained first score (epoch 200 EMA)",
+      "factory": "evaluation.colored_denoising:PretrainedColoredFirst",
+      "backend": "device",
+      "model_kwargs": {
+        "configuration": "STMP"
+      },
+      "path_kwargs": {
+        "checkpoint": "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt"
+      },
+      "kwargs": {
+        "checkpoint_sha256": "7327d01785f10e3e18d76f7085604e1d1d53baa9d8cd80e12943768015452b91",
+        "epoch": 200
+      },
+      "device_modules": [
+        "network"
+      ],
+      "query_covariance": "vI"
+    },
+    "DU": {
+      "kind": "receiver",
+      "group": "DU",
+      "label": "DU (deep unfolded, 10 layers)",
+      "factory": "algorithm.proposed.inference:ProposedReceiver",
+      "estimates_phase_internally": true,
+      "known_noise": {
+        "kwargs": {
+          "noise_mode": "known"
+        }
+      },
+      "model_kwargs": {
+        "binding": ""
+      },
+      "backend": "device",
+      "device_modules": [
+        "model"
+      ],
+      "model_files": {
+        "proposed": [
+          "checkpoint",
+          "phase_config",
+          "phase_moment"
+        ]
+      },
+      "training_provenance": "proposed"
+    },
+    "C_STMP": {
+      "kind": "receiver",
+      "group": "C_STMP",
+      "label": "C-STMP (calibrated final output)",
+      "factory": "algorithm.C_STMP_query_power.readout:Receiver",
+      "backend": "device",
+      "known_noise": {
+        "kwargs": {
+          "noise_mode": "known"
+        }
+      },
+      "path_kwargs": {
+        "configuration": "src/configs/candidates/C_STMP_query_readout_20261025.json"
+      },
+      "device_modules": [
+        "model.network",
+        "evidence.network"
+      ],
+      "assets": [
+        "result/channel_denoising/data/colored_preconditioned_50000_matched_20261024/first_best.pt",
+        "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/evidence_best.pt",
+        "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+        "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/complete.json",
+        "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/specification.json",
+        "result/snr_comparison/data/c_stmp_classifier_50000_100epochs_20261025/acceleration_20261025/EXECUTION.json"
+      ],
+      "query_covariance": "vI",
+      "classifier_policy": "retrained_colored_mean_vI",
+      "final_readout_calibration": {
+        "kind": "median_query_power",
+        "feedback": false,
+        "mean_variance_classifier_same_condition": true
+      }
+    }
+  }
+}

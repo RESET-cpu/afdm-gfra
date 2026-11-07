@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "rows": [
+    {
+      "case": "STMP_scene0000",
+      "status": "PASS",
+      "maximum_absolute_difference": 0.0,
+      "differences": {
+        "FINAL.npz:estimate": 0.0,
+        "FINAL.npz:conditional_matrix": 0.0,
+        "FINAL.npz:probabilities": 0.0,
+        "FINAL.npz:activity_decision": 0.0,
+        "FINAL.npz:spatial_covariance": 0.0,
+        "FINAL.npz:noise_variance_estimate": 0.0,
+        "TRACE.npz:iteration": 0.0,
+        "TRACE.npz:per_user_error": 0.0,
+        "TRACE.npz:decisions": 0.0,
+        "TRACE.npz:activity_score": 0.0,
+        "TRACE.npz:truth_activity": 0.0,
+        "TRACE.npz:signal_energy": 0.0,
+        "TRACE.npz:native_would_stop": 0.0
+      }
+    },
+    {
+      "case": "GP-MP_scene0000",
+      "status": "PASS",
+      "maximum_absolute_difference": 7.105427357601002e-15,
+      "differences": {
+        "FINAL.npz:estimate": 3.3306690738754696e-16,
+        "FINAL.npz:conditional_matrix": 3.3306690738754696e-16,
+        "FINAL.npz:probabilities": 0.0,
+        "FINAL.npz:activity_decision": 0.0,
+        "FINAL.npz:spatial_covariance": 6.776263578034403e-21,
+        "FINAL.npz:noise_variance_estimate": 0.0,
+        "TRACE.npz:iteration": 0.0,
+        "TRACE.npz:per_user_error": 7.105427357601002e-15,
+        "TRACE.npz:decisions": 0.0,
+        "TRACE.npz:activity_score": 0.0,
+        "TRACE.npz:truth_activity": 0.0,
+        "TRACE.npz:signal_energy": 0.0,
+        "TRACE.npz:native_would_stop": 0.0
+      }
+    }
+  ],
+  "rtol": 1e-10,
+  "atol": 1e-12,
+  "includes_all_300_iterations": true,
+  "reference": "Original serial full trajectories and final arrays",
+  "adapter_sha256": "b7133bcf79b586ba85c79665b8b7076aae736397903f21b41be67436da0e51a8"
+}

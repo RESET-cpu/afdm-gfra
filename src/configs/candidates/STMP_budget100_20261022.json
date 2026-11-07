@@ -1,0 +1,38 @@
+{
+  "scale": 0.2647966452702405,
+  "batch_size": 40,
+  "conditional_variance_floor_checkpoint_normalized": 0.0001,
+  "decision_threshold": 0.5,
+  "site_damping": 1.0,
+  "ep": {
+    "iterations": 100,
+    "damping": 0.2,
+    "min_iterations": 80,
+    "convergence_tolerance": 0.005,
+    "convergence_patience": 5,
+    "variance_fraction_floor": 1e-06,
+    "variance_fraction_ceiling": 0.999999,
+    "covariance_mode": "isotropic",
+    "activity_convergence_tolerance": 0.001,
+    "raw_site_residual_tolerance": 0.1,
+    "activity_weight_residual_tolerance": 0.001,
+    "decision_stability_window": 10,
+    "activity_stopping_reference": "smoothed"
+  },
+  "initialization": {
+    "kind": "activity_prior_times_training_power",
+    "normalized_training_second_moment": 1.0004404181394917,
+    "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+  },
+  "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+  "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+  "first_checkpoint": "result/runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt",
+  "first_checkpoint_sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+  "second_checkpoint": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/second/second_best.pt",
+  "second_checkpoint_sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5",
+  "schema": "full-channel-score-message-passing-v1",
+  "implementation": "full_score",
+  "activity_evidence": "classifier",
+  "evidence_checkpoint": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+  "evidence_checkpoint_sha256": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d"
+}

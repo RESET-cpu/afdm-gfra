@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-02",
+  "sources": {
+    "huang": {
+      "path": "reference/literature/huang2026.pdf",
+      "sha256": "00e929f3c0cc809ea97c020d35a12eafea61023dd20894f9efe7af9a03f6d9c6",
+      "printed_pages": [
+        2950,
+        2952
+      ],
+      "doi": "10.1109/LWC.2026.3689601"
+    },
+    "shen_preprint": {
+      "path": "reference/literature/shen2025.pdf",
+      "sha256": "49ba5402794cb29bdbd39c10ed5146e10291e15d2db222e4e57f8b13ae3f7abd",
+      "url": "https://arxiv.org/html/2412.20806v1",
+      "version": "arXiv 2412.20806v1",
+      "pdf_pages": [
+        3,
+        4,
+        7,
+        9,
+        12
+      ]
+    },
+    "bemani_thesis": {
+      "path": "paper/C-STMP/checks/huang_shen_model_audit_20261102/sources/bemani_thesis.pdf",
+      "sha256": "a2ccbfcb7f6047e4b7e228759cf7a47b9c175ca1e4e68c1b402d5884e227738b",
+      "url": "https://www.eurecom.eu/publication/7447/download/comsys-publi-7447.pdf",
+      "printed_pages": [
+        24,
+        26,
+        27,
+        29,
+        30,
+        31,
+        37
+      ],
+      "rendered_pdf_pages": [
+        52,
+        53,
+        54,
+        55,
+        56,
+        57
+      ],
+      "visually_checked_pdf_pages": [
+        52,
+        55,
+        57
+      ]
+    },
+    "phase_selection": {
+      "path": "result/candidates/c_stmp_phase_selection_20261030/RECOMMENDED.json",
+      "sha256": "c2c07c4d05073fae143656265b077cbd6c6c2a83f4d1108ecbd641fd14801082"
+    },
+    "selected_configuration": {
+      "path": "src/configs/candidates/c_stmp_phase_selection_20261030/physical_no_hypotheses_legacy_stop.json",
+      "sha256": "ea03572d8eb59dd11da2f24b200d5855c0a3961f99ae81f24dfd736b04564750"
+    },
+    "phase_result_report": {
+      "path": "result/snr_comparison/data/c_stmp_phase_selected_500_20261030/REPORT.md",
+      "sha256": "7d370b54c5cbd8f4ddc70ac26a76909bc1ff76afadad1f5552441d02dc3178cb"
+    },
+    "phase_result_completion": {
+      "path": "result/snr_comparison/data/c_stmp_phase_selected_500_20261030/COMPLETION.json",
+      "sha256": "b6f22f4fcdccef23336d705976d49dc8e2dd1d76aba3f39c4ae4e8fb8d881602"
+    },
+    "phase_result_status": {
+      "path": "result/snr_comparison/data/c_stmp_phase_selected_500_20261030/STATUS.json",
+      "sha256": "6176e03acaa405ce5214f6fe1ee5bfe82206133d0e2de8b2a7a468cbfc07b6b9"
+    },
+    "new_figure_description": {
+      "path": "result/snr_comparison/figures/phase_selected_main_500_20261102/README.md",
+      "sha256": "5a741e19e7b3cc69d15e68a04f2c7d2f97495b2f2fc55b6633af5ed19b43f420"
+    },
+    "verification_code": {
+      "path": "paper/C-STMP/checks/huang_shen_model_audit_20261102/verify_model.py",
+      "sha256": "ec612442c6d93b67c24ed6080b52aaea8f1911f481017e424152ea7acd86b14f"
+    },
+    "verification_results": {
+      "path": "paper/C-STMP/checks/huang_shen_model_audit_20261102/NUMERICAL_CHECKS.json",
+      "sha256": "12aeb9f78923875ad104e7bd769e228b854fe831622ad4f213f302515b103039"
+    }
+  },
+  "selected_configuration_hash_matches": true,
+  "environment": {
+    "python": "3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]",
+    "numpy": "2.2.1",
+    "executable": "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "protected_source_count": 86,
+  "protected_source_changes": [],
+  "scope": "No manuscript, physical model, selected receiver, configuration, weight or existing result edits. No training or batch receiver run. Saved performance reports were read, not independently rescored in this audit."
+}

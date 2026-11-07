@@ -1,0 +1,132 @@
+{
+  "experiment": "pilot_frames",
+  "label": "导频帧数",
+  "generated_utc": "2026-10-23T12:19:10.254693+00:00",
+  "entries": [
+    {
+      "entry": "adopted_baseline_readout_20261025",
+      "status": "COMPLETE",
+      "original_target": "D:\\afdm-gfra\\result\\pilot_frames\\data\\adopted_baseline_readout_20261025",
+      "resolved_target": "D:\\afdm-gfra\\result\\pilot_frames\\data\\adopted_baseline_readout_20261025",
+      "summary_available": true,
+      "plan_available": true,
+      "evaluation_scenes": 1000,
+      "methods": [
+        "offgrid_sbl",
+        "gnn",
+        "gamp",
+        "somp"
+      ],
+      "results": 24000,
+      "original_reused_results": 4000,
+      "original_new_inferences": 20000,
+      "new_inferences_this_application": 0,
+      "summary": "D:\\afdm-gfra\\result\\pilot_frames\\data\\adopted_baseline_readout_20261025\\selected_readout_20261025\\SUMMARY.json",
+      "report": "D:\\afdm-gfra\\result\\pilot_frames\\data\\adopted_baseline_readout_20261025\\selected_readout_20261025\\REPORT.md",
+      "completion": "D:\\afdm-gfra\\result\\pilot_frames\\data\\adopted_baseline_readout_20261025\\selected_readout_20261025\\COMPLETE.json",
+      "complete_sha256": "d51eadc75e357d8e16ae49c75f511b1e4cc60f23b1913ad5870cf033d7d7e968",
+      "application_sha256": "c9dd25190e86b387e8f45235185b48e463f211d9f7a202334046ffa9ee3cb060",
+      "figures": "D:\\afdm-gfra\\result\\pilot_frames\\figures\\baselines_selected_readout_20261025\\FIGURES.json",
+      "independent_test": false,
+      "status_updated_utc": "2026-10-25T16:38:42.218228+00:00",
+      "status_reason": "既有四baseline导频结果按用户采纳历史门限重评分；原始数据及NMSE不变，完整核验与绘图完成。"
+    },
+    {
+      "entry": "known_phase_1000_20261023",
+      "status": "COMPLETE",
+      "original_target": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_1000_20261023",
+      "resolved_target": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_1000_20261023",
+      "summary_available": true,
+      "plan_available": true,
+      "evaluation_scenes": 1000,
+      "reused_results": 5000,
+      "new_inferences": 25000,
+      "status_history": [
+        {
+          "status": "QUEUED_WAITING_FOR_SNR",
+          "recorded_utc": "2026-10-24T07:16:12.703930+00:00",
+          "reason": "Preserved before user request to pause after pilot"
+        },
+        {
+          "status": "RUNNING_PAUSE_AFTER_COMPLETION",
+          "recorded_utc": "2026-10-24T11:01:24.824570+00:00",
+          "reason": "Preserved before verified final completion"
+        }
+      ],
+      "status_updated_utc": "2026-10-24T11:01:24.824570+00:00",
+      "status_reason": "导频原始推断及固定门限汇总已完成并通过哈希核验；用户数仍暂缓。",
+      "pause_request": "known_phase_1000_20261023/PAUSE_AFTER_PILOT.json",
+      "summary": "known_phase_1000_20261023/fixed_readout/SUMMARY.json",
+      "report": "known_phase_1000_20261023/fixed_readout/REPORT.md",
+      "completion": "known_phase_1000_20261023/COMPLETE.json",
+      "complete_sha256": "d819a280dd4cb4505dd5226438640480c4e42b32b9dc8b1881a840c905d4281d",
+      "results": 30000,
+      "new_inferences_completed": 25000,
+      "completed_utc": "2026-10-24T11:00:26.483709+00:00"
+    },
+    {
+      "entry": "history/final2000",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\final2000\\pilot_frames",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\final2000\\pilot_frames",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/lstmp_v3_formal2000_20261021",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\lstmp_v3_formal2000_20261021\\pilot_frames",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\lstmp_v3_formal2000_20261021\\pilot_frames",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_20261023",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_20261023\\pilot_frames",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_20261023\\pilot_frames",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "planned_2000_ten_layer",
+      "status": "PLANNED_NOT_STARTED",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_initialization_runtime_20261023\\pilot_frames",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_initialization_runtime_20261023\\pilot_frames",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_message_gem_20261022",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_message_gem_20261022\\pilot_frames",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_message_gem_20261022\\pilot_frames",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "history/main2000_runtime_20261023",
+      "status": "HISTORICAL_PLAN_OR_PARTIAL_RESULTS",
+      "original_target": "D:\\afdm-gfra\\result\\main2000_runtime_20261023\\pilot_frames",
+      "resolved_target": "D:\\afdm-gfra\\archive\\result_legacy_20261023\\main2000_runtime_20261023\\pilot_frames",
+      "summary_available": false,
+      "plan_available": true
+    },
+    {
+      "entry": "known_phase_2000_20261023",
+      "status": "SUPERSEDED_TRIMMED_TO_FIRST1000",
+      "original_target": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023",
+      "resolved_target": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_2000_20261023",
+      "summary_available": false,
+      "plan_available": true,
+      "disposition": "DISPOSITION.json",
+      "copied_results": 5000,
+      "removed_results": 2193
+    }
+  ],
+  "note": "Directory entries preserve source protocols; a stored plan or partial output is not a completed experiment.",
+  "updated_utc": "2026-10-25T16:38:42.218228+00:00",
+  "current_active_batch": null,
+  "current_baseline_result": "D:\\afdm-gfra\\result\\pilot_frames\\data\\adopted_baseline_readout_20261025\\selected_readout_20261025",
+  "previous_active_batch": "D:\\afdm-gfra\\result\\pilot_frames\\data\\known_phase_1000_20261023"
+}

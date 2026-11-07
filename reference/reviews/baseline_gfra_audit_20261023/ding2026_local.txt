@@ -1,0 +1,1178 @@
+=== PDF PAGE 1 ===
+1
+Learning Sparsity Pattern: An Adaptive Joint Detection for AFDM
+Grant-Free System in LEO Satellites Communication
+Chao Ding, Lixia Xiao, Jiaxi Zhou, Lidong Zhu, Pei Xiao, Senior Member, IEEE, and Tao Jiang, Fellow, IEEE
+Abstract—In this paper, an adaptive sparse pattern learning
+aided joint activity detection and channel estimation scheme is
+proposed for grant-free random access with affine frequency
+division multiplexing (AFDM) in LEO satellite communication
+systems. Specifically, the channel parameters and active index
+will be detected in the context of unknown sparsity. First, a
+sparse prior is preset to perform active detection and channel
+estimation. Subsequently, the prior is refined by a graph net-
+work architecture, where the delay-Doppler grid is modeled as
+the graph nodes delivering the message. Furthermore, a novel
+graph aggregation module based on self-attention mechanism is
+designed to capture the correlation between nodes to infer the un-
+known sparsity patterns inherent in dynamic terrestrial-satellite
+links (TSL). Simulation results demonstrate that, compared with
+conventional nearest neighbor sparsity pattern learning (NNSPL),
+the proposed scheme achieves a 2 dB improvement in normalized
+mean-square error (NMSE) and reduces pilot overhead by
+approximately 25%.
+Index Terms—Affine frequency division multiplexing (AFDM),
+grant-free random access (GF-RA), joint active detection and
+channel estimation (JADCE), graph neural network (GNN).
+I. I NTRODUCTION
+L
+OW earth orbit (LEO) satellites communication, enabling
+global coverage and ubiquitous connectivity, have been
+envisaged as a fundamental component of future Internet of
+Things (IoT) [1]. Over the next decade, large-scale constella-
+tions comprising thousands of LEO satellites will be deployed
+to serve billions of IoT devices [2]. However, owing to massive
+device connectivity and long terrestrial-satellite link (TSL)
+distances, conventional grant-based access mechanism gives
+rise to prohibitive transmission latency [3]. Accordingly, grant-
+free random access (GF-RA), which significantly reduces
+signaling overhead and access latency by streamlining the
+access process, constitutes as a promising alternative for LEO
+satellite IoT.
+In GF-RA systems, each user transmits data directly to
+LEO satellites without prior scheduling. Nevertheless, the
+high Doppler shift caused by the mobility of LEO satellites
+poses severe interference for data transmission. To address this
+This work is supported in part by the National Science Foundation of
+China under Grant 62571202. The associate editor coordinating the review of
+this article and approving it for publication was T. De Cola. ( Corresponding
+author: Lixia Xiao .)
+Chao Ding, Lixia Xiao, Jiaxi Zhou, and Tao Jiang are with the Re-
+search Center of 6G Mobile Communications, School of Cyber Science
+and Engineering, Huazhong University of Science and Technology, Wuhan
+430074, China (e-mail: chaoding@hust.edu.cn; lixiaxiao@hust.edu.cn; zhou-
+jiaxi@hust.edu.cn; tao.jiang@ieee.org).
+Pei Xiao is with 5GIC & 6GIC, Institute for Communication Systems, Uni-
+versity of Surrey, GU2 7XH Guildford, U.K. (e-mail: p.xiao@surrey.ac.uk).
+Lidong Zhu is with the National Key Laboratory of Wireless Communi-
+cations, University of Electronic Science and Technology of China, Chengdu
+611731, China. (zld@uestc.edu.cn)
+challenge, orthogonal time frequency space (OTFS) modula-
+tion is incorporated into GF-RA systems [4]. However, the
+high complexity of the 2D transformation in OTFS limits
+its practical deployment. In contrast, affine frequency divi-
+sion multiplexing (AFDM), based on 1D chirp modulation,
+is capable of achieving comparable performance with lower
+complexity [5]. Owing to these attractive features, AFDM
+emerges as a promising candidate for low-complexity and
+reliable GF-RA systems.
+To unleash the full potential of AFDM-GF-RA, accurate
+joint activity detection and channel estimation (JADCE) is a
+critical prerequisite. By exploiting the sporadic sparsity of IoT
+device, JADCE has been widely formulated as a compressed
+sensing (CS) problem [6]–[12]. Specifically, representative
+algorithms including approximate message passing (AMP)
+[6], orthogonal matching pursui (OMP) [7], sparse Bayesian
+learning (SBL) [8], have attracted considerable attention in
+terrestrial networks owing to their efficient implementation.
+However, such approaches fail to exploit the block sparsity
+induced by the large delay and high Doppler characteristics of
+TSLs. As a remedy, advanced schemes have been developed
+to facilitate block sparse pattern through structured prior
+modeling or clustering methods, such as pattern coupled SBL
+[9], sparsity pattern learning (SPL) [10], [11], and modified
+variance state propagation [12]. However, since their conver-
+gence performance depends on predefined hyperparameters,
+the applicability of these schemes remains constrained, making
+it difficult to fully exploit the evolving structural sparsity in
+TSLs.
+Benefiting from powerful feature extraction capabilities,
+deep learning-based schemes have been investigated for
+JADCE to alleviate the dependence on empirical models
+[13]–[15]. Representative works include data-driven [13]
+and model-driven methods [14], [15]. However, data-driven
+schemes suffer from limited interpretability, while model-
+driven approaches exhibit limited gains due to restricted pa-
+rameterization. Moreover, owing to the absence of explicit
+modeling for complex sparsity patterns, these architectures are
+unable to exploit structural correlations, resulting in degraded
+performance in AFDM-GF-RA systems.
+Against the above background, the contributions of this
+paper are summarized as follows:
+1) We propose a graph neural network-based adaptive spar-
+sity pattern learning (GNN-ASPL) scheme for AFDM-
+GF-RA system. Specifically, it extends the conventional
+sparse clustering methods into a modified message pass-
+ing paradigm, and employs GNN to infer the unknown
+sparse pattern in an adaptive manner.
+This article has been accepted for publication in IEEE Transactions on Vehicular Technology. This is the author's version which has not been fully edited and 
+content may change prior to final publication. Citation information: DOI 10.1109/TVT.2026.3729877
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on September 20,2026 at 08:42:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+=== PDF PAGE 2 ===
+2
+2) An innovative graph aggregation module with self-
+attention is further designed to captures correlations
+among signal components to mitigate error propagation
+in sparse pattern estimation.
+3) Moreover, the GNN model is iteratively integrated with
+a deep unfolding network to improve detection perfor-
+mance. Simulation results demonstrate that the proposed
+method significantly outperforms existing baselines in
+both accuracy and robustness.
+Notations: (·)T and (·)H denote the transpose and Hermi-
+tian transpose, respectively. The notation C and R represent
+the complex and real number fields. CN (µ, σ2) denotes the
+complex Gaussian distribution with mean µ and variance σ2,
+while ∼ denotes “is distributed as.”
+II. AFDM-GF-RA SYSTEM
+We consider an AFDM-GF-RA system, where a LEO
+satellite equipped with M antennas serves K single-antenna
+devices. In each GF-RA round, only Ka devices are activated
+and the k-th device transmits signal xk using AFDM modu-
+lation with N sub-carriers and sub-carrier spacing ∆f.
+The time-domain transmitted signal is generated through the
+inverse discrete affine Fourier transform (IDAFT) applied to
+xk, mathematically formulated as
+sk [n] = 1√
+N
+N −1X
+m=0
+xk [m] ej2π(c1n2+c2m2+ nm
+N ), (1)
+where xk [m] represents the m-th symbol of xk. c1 and c2
+are AFDM modulation parameters. The signal in (1) can be
+represented in matrix form as
+sk = AHxk = ΛH
+c1FΛH
+c2xk, (2)
+where AH = ΛH
+c1FΛH
+c2 represents the DAFT matrix. F ∈
+CN ×N denotes the normalized DFT matrix, and Λc ≜
+diag(e−j2πcn2
+, n = 0 , 1, · · · , N − 1) represents the affine
+transformation matrix.
+After incorporating the chirp-periodic prefix (CPP), the
+transmitted signal propagates through the terrestrial satellite
+links (TSLs), which can be modeled by
+˜hk,m =
+P −1X
+l=0
+hk,m,lδ (ν − νk,l∆f) δ (τ − τk,lTs), (3)
+where Ts = 1 /(N∆f) gives the sampling interval. ˜hk,m
+represents the channel between the k-th device and m-th
+antenna. P denotes the number of multi-paths. hk,m,l, νk,l,
+and τk,l denote the channel gain, the normalized Doppler and
+time delay of the l-th path, respectively.
+For the TSL channel, the above parameters are mod-
+eled according to 3GPP recommendations [16]. Specifically,
+the normalized Doppler νk,l = αk,l + βk,l, with αk,l ∈
+{−αmax, . . . , αmax} and βk,l ∈ (− 1
+2 , 1
+2] denoting the integer
+and fractional parts, respectively. In order to support massive
+access, a sufficiently large transmission bandwidth is adopted.
+Accordingly, the normalized delay is approximated as an
+integer, with τk,l ∈ {0, 1, . . . , τmax}.
+After removing the CPP from the time-domain signal, the
+received signal at the m-th antenna can be written as
+˜ ym =
+K−1X
+k=0
+P −1X
+l=0
+αkhk,l,mΓcpp
+k,m,l∆νk,lΠlk,lsk + ˜ nm, (4)
+where αk ∈ {0, 1} denotes the activity state of the k-th device.
+∆νk,l = diag
+ 
+e−j2πνk,ln/N, n = 0, · · · , N − 1
+
+represents
+the Doppler matrix. Πlk,l denotes the cyclic shift matrix, ˜ nm
+represents the additive white Gaussian noise (AWGN) with
+variance σ2.
+Finally, the received signal can be obtained after the DAFT
+operation, as
+ym = Arm,
+=
+K−1X
+k=0
+P −1X
+l=0
+αkhk,m,lAΓcpp
+k,m,l∆νk,lΠlk,lAH
+| {z }
+Φ(νk,m,l,τk,m,l)
+xk + A˜ nm,
+(5)
+where Φ (νk,m,l, τk,m,l) characterizes joint delay-Doppler ef-
+fects in TSLs.
+III. P ROPOSED JOINT DETECTION FOR AFDM-GF-RA
+A. Pilot Arrangement and Dual Sparsity Model
+For the k-th device, the transmitted symbol is arranged by
+xk[n] =
+
+
+
+xp
+k[n], n ∈ [ Q, L) ,
+0, n ∈ [0 , Q) ∪ [ L, L + Q) ,
+xd
+k[n], otherwise,
+(6)
+where L = Q + Lp, with Q ≜ (τmax + 1)(2(αmax + kv) + 1)
+representing the length of the zero guard interval adjacent to
+the pilot block and Lp denoting the pilot length.
+According to the symbol arrangement, the channel response
+can be isolated from the surrounding data symbols at the
+receiver [5]. Consequently, the input-output relation associated
+with pilot can be expressed as
+yp
+m =
+K−1X
+k=0
+P −1X
+l=0
+αkhk,m,lΦp (τk,m,l, νk,m,l) xp
+k + np
+m, (7)
+where Φp ≜ Φ[Ir, Ip], with the column index Ip = [Q, L−1]
+and the row index Ir = [αmax + kv, αmax + kv + L − 1].
+To facilitate estimation, the time delay and Doppler fre-
+quency deviation are uniformly divided into Nι and Nκ grids,
+respectively. Let Ng ≜ (Nι + 1)(Nκ + 1) denote the total
+number of virtual delay-Doppler grids. Consequently, (7) is
+approximated as
+yp
+m =
+K−1X
+k=0
+P −1X
+l=0
+αk
+NιX
+i=0
+NκX
+j=0
+ιk,iκk,j ˜hi,j
+k,mΦp (τi, νj)xp
+k + np
+m
+=
+K−1X
+k=0
+˜Ψk ˜Λk˜hk,m + np
+m = ΨΛhm + np
+m,
+(8)
+where ιk,i, κk,j ∈ {0, 1} denotes the indicator of the virtual
+grid. ˜hi,j
+k,m and Φp (τi, νj) denote the channel coefficient and
+the sub-channel matrix at the grid points, with τi = iτmax/Nι
+and νj = (2 j − Nκ) νmax/Nκ. Ψ = [ ˜Ψ0, · · · , ˜ΨK−1] ∈
+CL×KN g represents the expanded pilot matrix of all de-
+vices, with ˜Ψk = [ Φp (τ1, ν1) xp
+k, · · · , Φp (τNι , νNκ) xp
+k].
+Λ = diag[α0 ˜Λ0, · · · , αK−1 ˜ΛK−1] is the diagonal ma-
+trix, with ˜Λk = diag[ιk,0κk,0, · · · , ιk,Nι κk,Nκ]. hm =
+[˜hT
+0,m, · · · , ˜hT
+K−1,m]T denotes the channel gains of all devices
+in different grids, with ˜hk,m = [˜h0,0
+k,m, · · · , ˜hNι,Nκ
+k,m ]T.
+Combining the observed signals from multiple antennas, we
+have
+Y = ΨΛH + N = ΨZ + N, (9)
+This article has been accepted for publication in IEEE Transactions on Vehicular Technology. This is the author's version which has not been fully edited and 
+content may change prior to final publication. Citation information: DOI 10.1109/TVT.2026.3729877
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on September 20,2026 at 08:42:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+=== PDF PAGE 3 ===
+3
+AMP
+GNN
+1-th Layer
+ T-th Layer
+t-th Layer
+Eq.(12b)
+ Eq.(13b)
+1
+t
+ju
+t
+nu
+k
+t
+ju
+
+AMP
+GNN
+1-th Layer
+ T-th Layer
+t-th Layer
+Eq.(12b)
+ Eq.(13b)
+EEqq..((15)1
+1
+t
+ju
+t
+nu
+k
+t
+ju
+
+Fig. 1. The Architecture of GNN-ASPL
+where Z = [( z0,0
+0 )T, · · · , (zi,j
+k )T, · · · , (zNι,Nκ
+K )T]T ∈
+CKN g×M denotes the structured sparse channel model, with
+zi,j
+k = αkιk,iκk,j ˜hi,j
+k and ˜hi,j
+k = [ ˜hi,j
+k,0, · · · , ˜hi,j
+k,M −1]T. Ac-
+cordingly, Z exhibits a dual sparsity structure. Specifically,
+there are only Ka device blocks are nonzero due to αk, while
+only P nonzero delay-Doppler grid are occupied within each
+active block.
+According to the channel characteristics and the inherent
+dual sparse structure, Z is modeled by a hierarchical spike-
+and-slab prior, as
+p(Z|λ) =
+K−1Y
+k=0
+Ng −1Y
+i,j=0
+
+(1 − λi,j
+k )δ(zi,j
+k ) + λi,j
+k CN (zi,j
+k ; µi,j
+k , Σi,j
+k )
+
+p (λ; θ) =
+K−1Y
+k=0
+Ng −1Y
+i,j=0
+
+(1 − θk(Gi,j
+k )δ(λi,j
+k ) + θk(Gi,j
+k )δ(1 − λi,j
+k )
+
+,
+(10)
+where δ (·) denotes the Dirichlet function. µi,j
+k and Σi,j
+k =
+diag([γi,j
+k,0, · · · , γi,j
+k,M −1]) denote the mean and variance, re-
+spectively. λ denotes the latent support vector of Z, with
+θk(Gi,j
+k ) representing the structured sparse probability of λi,j
+k .
+Specifically, θk(·) captures device-level inter-group sparsity,
+while Gi,j
+k controls intra-group delay-Doppler sparsity.
+Within the Bayesian framework, the maximum a posteriori
+(MAP) estimate can be formulated as
+ˆZ, ˆθ = arg max
+Z,θ
+p (Z|Y; θ)
+= arg max
+Z,θ
+p(Y|Z) p(Z|λ) p(λ; θ). (11)
+However, direct estimation of these two parameters poses
+considerable challenges, since the the structured sparse prob-
+ability θk(Gi,j
+k ) is generally difficult to specify at the receiver.
+To address this issue, an intelligent estimation framework is
+designed and will be detailed in the next subsection.
+B. Proposed GNN-ASPL Algorithm
+In this subsection, a GNN-ASPL algorithm is proposed
+to exploit the dual sparse structure of Z. Compared to
+conventional sparsity pattern learning (SPL) schemes [11],
+which rely on predefined sparse associations, the proposed
+detector constructs the latent support variables θk(Gi,j
+k ) as
+graph nodes and employs GNN-based message aggregation to
+learn their structured dependencies. In this way, the coupling
+between block sparsity induced by device activity and intra-
+block sparsity in the delay-Doppler domain can be adaptively
+captured. The architecture of GNN-ASPL is shown in Fig.
+1, by unfolding the AMP algorithm and embedding the
+GNN model, GNN-ASPL enables efficient inference while
+adaptively learning the coupled sparse structure. Specifically,
+detailed procedure is presented as follows.
+Initialization. For notational simplicity, (k, i, j) is indexed
+by n in the following derivations, and the sparse probability
+θ0
+n is initialized as 0.5 to compute the posterior under a fixed
+sparse pattern.
+Step 1: Update the variance ψt
+k,m and mean mt
+k,m. To
+initialize the subsequent sparse structure learning, the posterior
+statistics of Z are first obtained through iterative inference.
+At the t-th iteration, the variance ψt
+k,m and mean mt
+k,m are
+updated as
+ψt
+k,m = βt
+KNg −1X
+n=0
+|Ψk,n|2V t−1
+n,m +
+ 
+1 − βt
+ψt
+k,m (12a)
+mt
+k,m =
+KNg −1X
+n=0
+Ψk,n ˆzt−1
+n,m + ψt
+k,m
+ 
+yk,m − mt
+k,m
+
+σ2 + ψt−1
+k,m
+(12b)
+where βt denotes the trainable damping factor of t-th layer.
+Step 2: Update the variance φt
+n,m and observation rt
+n,m.
+Subsequently, the equivalent noise variance φt
+n,m and obser-
+vation rt
+n,m are obtained as
+φt
+n,m =
+ L−1X
+k=0
+|Ψk,n|2
+σ2 + ψt
+k,m
+!−1
+(13a)
+rt
+n,m = ˆzt−1
+n,m + ζ t
+n,m
+L−1X
+k=0
+Ψ ∗
+k,n
+ 
+yk,m − mt
+k,m
+
+σ2 + ψt
+k,m
+. (13b)
+Step 3: Compute the sparse estimate πt
+n. Based on the
+equivalent observation, the posterior distribution of zn can be
+approximated as
+p
+ 
+zn|ˆrt
+n
+
+=
+ 
+1 − πt
+n
+
+δ (zn) + πt
+nCN
+ 
+zn; ϕt
+n, Υt
+n
+
+, (14)
+where ˆrt
+n denotes the n-th row of ˆRt, and πt
+n represents the
+posterior sparse probability, given by
+πt
+n = θt−1
+n ηt
+n 
+1 − θt−1n
+
++ θt−1n ηtn
+, (15)
+with
+ηt
+n = exp
+ 
+−
+M −1X
+m=0
+ˆrt
+n,m − µn,m
+2
+φtn,m + γn,m
+| {z }
+u1
++
+M −1X
+m=0
+ˆrt
+n,m
+2
+φtn,m
+| {z }
+u2
+−
+M −1X
+m=0
+log
+ φt
+n,m + γn,m
+φtn,m
+
+| {z }
+u3
+!
+,
+(16)
+where ηt
+n denotes the likelihood ratio between the nonzero
+This article has been accepted for publication in IEEE Transactions on Vehicular Technology. This is the author's version which has not been fully edited and 
+content may change prior to final publication. Citation information: DOI 10.1109/TVT.2026.3729877
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on September 20,2026 at 08:42:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+=== PDF PAGE 4 ===
+4
+and zero components, while {u1, u2, u3} denotes the dominant
+terms of ηt
+n. ϕt
+n and Υt
+n denote the mean and variance of the
+posterior distribution in (14), which can be obtained by
+Υ t
+n,m = γn,mφt
+n,m
+γn,m + φtn,m
+(17a)
+ϕt
+n,m = Υ t
+n,m
+ 1
+γn,m
+µn,m + 1
+φtn,m
+ˆrt
+n,m
+
+(17b)
+Step 4: Recalculate the variance V t
+n,m and the mean zt
+n,m.
+Based on the approximate posterior distribution in (14), an
+MMSE estimator is employed, and the posterior mean and
+variance are calculated as
+zt
+n,m = ξtπt
+nϕt
+n,m +
+ 
+1 − ξt
+zt−1
+n,m, (18a)
+V t
+n,m = πt
+n
+ 
+1 − πt
+n
+
+|ϕt
+n,m|2 + πt
+nΥ t
+n,m. (18b)
+To ensure proper convergence of GNN-ASPL, trainable
+damping factors are added to (12a) and (18a) for tuning the
+AMP module to the GNN module.
+Step 5: Attention-based Message Aggregation. To update
+sparsity hyperparameter ˆθ
+t
+, the EM algorithm is employed
+with the approximate distribution obtained in (14), and the
+sparsity can be updated as
+θt
+n = πt
+n. (19)
+However, the update in (19) only exploits the row sparsity
+in the delay-Doppler domain, while ignoring the block sparsity
+shared by each device. In fact, the sparsity within each device
+is jointly constrained by its activity state and the intra-block
+sparsity pattern. Accordingly, the sparsity of each node is
+related to those of its associated neighbors in the same block.
+To exploit this correlation, (19) is extends into a general
+message passing paradigm, which can be formulated as
+θt
+n = Ut
+
+θt−1
+n ,
+X
+j∈In
+ϖt
+j→n
+ 
+πt
+n, πt
+j, en,j
+
+πt
+j
+
+, (20)
+where In denotes the set of node indices potentially associated
+with n. ϖj→n (·) denotes the association function of node j
+and node n, conditioned on node and edge features. U(·) is the
+update function, responsible for fusing the prior representation
+and the aggregated messages.
+It is worth noting that the update of node n is determined
+by both θt−1
+n and the aggregated sparse evidence from its
+associated nodes. When ϖt
+j→n(·) assigns comparable weights
+to nodes within the same device block, the aggregated message
+reflects the common block activity, thereby capturing block
+sparsity. In contrast, when ϖt
+j→n(·) concentrates on a few
+nodes with stronger sparse evidence, the update is dominated
+by the significant delay-Doppler components, thereby charac-
+terizing intra-block sparsity.
+Benefiting from the ability to assign feature-dependent
+weights to different neighboring nodes, the self-attention
+mechanism is adopted to adaptively learn ϖt
+j→n(·) for joint
+block-level aggregation and intra-block sparse selection.
+Specifically, the sparse estimate πt
+n is treated as the prior
+information for node n. To characterize the sparsity of the
+current node, the three dominant terms {u1, u2, u3} in (16)
+are incorporated. Accordingly, the node property ut
+n can be
+obtained by
+ut
+n =
+
+u1, u2, u3, πt
+n
+
+. (21)
+A self attention mechanism is subsequently employed to
+compute the correlation en,j between nodes n and j, which
+can be represented by
+en,j = LeakRelu
+ 
+Wut
+n||Wut
+j
+
+a
+
+, (22)
+where W ∈ Rh1×4 is a shared trainable parameter for feature
+enhancement. a ∈ R2h1×1 is a single-layer feedforward
+network, which projects the concatenated high-dimensional
+features onto a real value.
+To measure the degree of association, the correlation coef-
+ficient of adjacent nodes can be normalized as
+ζn,j = exp (en,j)P
+j∈In exp (en,j) . (23)
+By fusing the correlation degree and node characteristics,
+the message mt
+j→n transmitted from node j to node n can be
+obtained by
+mt
+j→n = ζn,jut
+j. (24)
+In the following step, the n-th node aggregates all incoming
+messages and updates its feature using a gated recurrent unit
+(GRU) network.
+gt
+n = GRU(gt−1
+n ,
+X
+j∈In(n)
+mt
+j→n), (25)
+where GRU (·) denotes the GRU network. gt
+n ∈ Rh2×1
+represents the hidden feature of the n-th node, which is
+forwarded to the next GRU unit for iteration.
+Step 6: Sparse Update . Finally, the sparsity hyperparameter
+is updated through a linear projection followed by a Sigmoid
+function, i.e.,
+λt
+n = Sigmoid
+ 
+W2gt
+n + b
+
+. (26)
+After the T -layer iterative recovery, the activity state of the
+k-th device is detected according to the normalized average
+magnitude of the corresponding recovered block, which is
+obtained by
+ˆαk =
+
+
+
+1,
+1
+NgM
+kNgP
+n=(k−1)Ng+1
+∥ˆzn∥2
+max
+1≤j≤K
+ 
+1
+NgM
+jNgP
+n=(j−1)Ng+1
+∥ˆzn∥2
+! ≥ η,
+0, otherwise,
+(27)
+where Ng = ( Nι + 1)(Nκ + 1) denotes the block length
+associated with each device, while η is the decision threshold.
+Overall, the proposed GNN-ASPL framework alternates be-
+tween AMP-based channel estimation and GNN-based adap-
+tive sparsity pattern learning across T independent layers. This
+iterative design significantly enhances detection performance
+under unknown sparsity conditions.
+C. Offline Training of GNN-ASPL
+To facilitate the joint optimization of AMP and GNN
+modules, an improved layer-wise training strategy is adopted.
+Specifically, the training process is divided into T stages,
+corresponding to the T layers of the network. In the t-th
+stage, the GNN module from layer t − 1 is first trained to
+refine the sparsity prior, with parameters of other layers kept
+fixed. Subsequently, the t-th AMP module is optimized based
+on the updated prior. To avoid overfitting caused by partial
+This article has been accepted for publication in IEEE Transactions on Vehicular Technology. This is the author's version which has not been fully edited and 
+content may change prior to final publication. Citation information: DOI 10.1109/TVT.2026.3729877
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on September 20,2026 at 08:42:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+=== PDF PAGE 5 ===
+5
+training, all parameters up to layer t are jointly optimized in
+the following step.
+In order to obtain desirable training results, the above
+procedure adopts the normalized mean squared error (NMSE)
+as the loss function, which is expressed as
+L (Ω) = 1
+|Π|
+|Π|X
+i=1
+∥Zi − ˆZt
+i∥2
+F
+∥Zi∥2
+F
+, (28)
+where Ω denotes the set of trainable parameters, and Π
+represents the mini-batch training set with cardinality |Π|.
+D. Complexity Analysis
+In this subsection, the computational complexity is eval-
+uated in terms of the real-valued floating-point operations
+(FLOPs). Specifically, given matrixAc ∈ Cm×n, Bc ∈ Cn×p,
+Ar ∈ Rm×n, Br ∈ Rn×p, the operations of AcBc, ArBr
+require 8mnp − 2mp, 2mnp − mp flops, respectively. Ac-
+cordingly, the complexity for the t-th layer of proposed GNN-
+ASPL can be expressed as
+FLOPs = 10 (KN g + 1) LM| {z }
+Eq.(12)
++ KN g (13L + 3) M| {z }
+Eq.(13)
++KN g (17M + 7)| {z }
+Eq.(15)
++ 11KN gM| {z }
+Eq.(17)
++ 18KN gM| {z }
+Eq.(18)
++KN g
+
+J2 + 11h1J + 3J + 4h2
+2 + 7h2
+
+| {z }
+Eq.(22)−(26)
+,
+(29)
+where J denotes the cardinality of the index set I.
+It is worth noting that the GNN-related complexity term is
+independent of the number of receive antennas and the pilot
+length. Instead, it is only determined by the graph structure
+and the neural-network dimensions. In particular, owing to
+the block-sparse property of the considered system, J is only
+confined within a single device block. Hence, its relative
+computational proportion decreases as the antenna dimension
+or pilot length increases, making it attractive for large-scale
+deployment.
+IV. S IMULATION RESULTS
+A. Simulation Setup
+This section considers a typical LEO-enabled GF-RA sys-
+tem, where a satellite serves K = 100 potential devices within
+its coverage area. Each device is activated with a probability of
+pk = 0.1 and transmits data using the AFDM waveform with
+a carrier frequency of 4 GHz and a subcarrier spacing of 15
+kHz. The non-terrestrial channel model recommended in [16]
+is adopted, with the number of paths P = 3. Due to coarse pre-
+compensation, the residual delay and Doppler shifts for each
+device are assumed within a small range, where the maximum
+normalization delay τmax is set to 2 and the maximum residual
+Doppler is set to 30 kHz. The delays and Doppler are assumed
+to be aligned with the grid points, with (Nl, Nk) = (2, 4).
+In the offline training stage, GNN-ASPL is implemented
+via Pytorch platform on Dell T640 with a NVIDIA RTX
+3090 GPU. To achieve satisfactory performance, over 10,000
+pairs of training data (Y, Ψ, Z, σ2) are randomly generated at
+different SNRs and a ten-layer GNN-ASPL is trained for each
+SNR. The Adam optimizer is adopted, with an initial learning
+rate 5 × 10−3 and a batchsize of 128.
+B. Performance Comparsion
+To demonstrate the effectiveness of the proposed GNN-
+ASPL, the benchmark detectors using for comparison include
+vector AMP with soft thresholding shrinkage (V AMP-ST) [6],
+block orthogonal matching pursuit (BOMP) [7], generalized
+AMP based SBL (GAMP-SBL) [8], GAMP with EM (EM-
+GAMP) [10], and nearest neighbor SPL (NNSPL) [11], as well
+as oracle least squares (OLS), which constitutes a computable
+performance bound in [4]. The NMSE and active device error
+rate (ADER) in different SNR are adopted as the metrics for
+channel estimation and active detection, respectively, where
+ADER =PK
+k |ˆαk − α|/K and SNR = ||SZ||2
+F /(M Lσ2).
+NMSE(dB)
+Pilot Overhead
+-12
+-10
+-8
+-6
+-4
+-2
+0
+40 80 120 160 200 24040 80 120 160 200 240
+OFDM-GF-RA
+OLS
+CRLB
+OFDM-GF-RA
+OLS
+CRLB
+CRLB
+AFDM-GF-RA
+OLS
+CRLB
+AFDM-GF-RA
+OLS
+NMSE(dB)
+Pilot Overhead
+-12
+-10
+-8
+-6
+-4
+-2
+0
+40 80 120 160 200 240
+OFDM-GF-RA
+OLS
+CRLB
+CRLB
+AFDM-GF-RA
+OLS
+Fig. 2. The Theoretical performance for AFDM-GF-RA and OFDM-GF-RA
+systems with (K, M, Nι, Nκ) = (100 , 4, 2, 4) and SNR = 8 dB.
+Fig. 2 compares the theoretical performance of the AFDM-
+GF-RA and OFDM-GF-RA systems, where the Cramer-Rao
+lower bound (CRLB) is derived under the assumption of
+known sparse support. It can be observed that the OLS
+closely coincide with the corresponding CRLBs, indicating
+that the OLS is consistent with the theoretical lower bound.
+Moreover, the results indicate that the AFDM-GF-RA requires
+significantly fewer pilots while achieving same NMSE, which
+demonstrates the superiority of AFDM in high mobility.
+SNR(dB)
+0 4 8 12 16 2010-4
+10-3
+10-2
+10-1
+100
+0 4 8 12 16 2010-4
+10-3
+10-2
+10-1
+100
+ADER
+NMSE(dB)
+0 4 8 12 16 20-20
+-15
+-10
+-5
+0
+5
+0 4 8 12 16 20-20
+-15
+-10
+-5
+0
+5
+(a) Performance of CE (b) Performance of AD
+OLS
+BOMP
+VAMP-ST
+GAMP-SBL
+OLS
+BOMP
+VAMP-ST
+GAMP-SBL
+EM-GAMP
+NNSPL
+pro. GNN-ASPL
+EM-GAMP
+NNSPL
+pro. GNN-ASPL
+SNR(dB)
+Fig. 3. The performance comparison of conventional detectors and pro-
+posed GNN-ASPL for AFDM-GF-RA system with (K, M, Nι, Nκ) =
+(100, 4, 2, 4) and pilot overhead Lp = 50.
+Fig. 3 depicts the NMSE and ADER achieved by the various
+competing schemes, where (K, M, Nι, Nκ) = (100 , 4, 2, 4)
+and the pilot overhead is Lp = 50. It can be observed from Fig.
+3(a) that the proposed GNN-ASPL outperforms the benchmark
+schemes across the entire SNR range. Specifically, both SOMP
+This article has been accepted for publication in IEEE Transactions on Vehicular Technology. This is the author's version which has not been fully edited and 
+content may change prior to final publication. Citation information: DOI 10.1109/TVT.2026.3729877
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on September 20,2026 at 08:42:53 UTC from IEEE Xplore.  Restrictions apply. 
+
+=== PDF PAGE 6 ===
+6
+and V AMP-ST suffer from an error floor, while GNN-ASPL is
+capable of achieving about 2 dB performance gain compared
+to NNSPL in terms of NMSE of -15 dB. This improvement
+is attributed to its capability to adaptively capture evolving
+sparsity patterns, as illustrated in Fig. 3(b), leading to effective
+suppression of error propagation during detection.
+0 4 8 12 16 200 4 8 12 16 20
+-20
+-15
+-10
+-5
+0
+5
+-20
+-15
+-10
+-5
+0
+5NMSE(dB)
+SNR(dB)
+0 4 8 12 16 20
+-20
+-15
+-10
+-5
+0
+5NMSE(dB)
+SNR(dB)
+SOMP
+VAMP-ST
+EM-BG-GAMP
+SBL-AMP
+NNSPL
+pro. GNN-ASPL
+OLS
+SOMP
+VAMP-ST
+EM-BG-GAMP
+SBL-AMP
+NNSPL
+pro. GNN-ASPL
+OLS
+0 4 8 12 16 20
+-20
+-15
+-10
+-5
+0
+5NMSE(dB)
+SNR(dB)
+SOMP
+VAMP-ST
+EM-BG-GAMP
+SBL-AMP
+NNSPL
+pro. GNN-ASPL
+OLS
+Fig. 4. The performance comparison of conventional detectors and pro-
+posed GNN-ASPL for AFDM-GF-RA system with (K, M, Nι, Nκ) =
+(100, 32, 2, 4) and pilot overhead Lp = 50.
+Fig. 4 depicts the NMSE performance of different
+schemes under the large-scale antenna configuration with
+(K, M, Nι, Nκ) = (100 , 32, 2, 4) and Lp = 50 . It can be
+observed that the proposed GNN-ASPL achieves the best
+performance over the entire SNR range and closely approaches
+the OLS in the high-SNR region. By contrast, SOMP and
+V AMP-ST suffer from pronounced error floors, while EM-
+BG-GAMP and SBL-AMP exhibit limited improvement in
+the high-SNR region. Compared with NNSPL, GNN-ASPL
+provides about 1.8 dB NMSE improvement at SNR = 20
+dB, which indicates its effectiveness in exploiting the spatial
+observations provided by massive antennas.
+Pilot Overhead
+NMSE(dB)
+40 50 60 70 80 90 10040 50 60 70 80 90 100
+-10
+-8
+-6
+-4
+-2
+0
+-10
+-8
+-6
+-4
+-2
+0
+-12
+-10
+-8
+-6
+-4
+-2
+0
+-12
+BOMP
+VAMP-ST
+EM-GAMP
+GAMP-SBL
+NNSPL
+pro. GNN-ASPL
+BOMP
+VAMP-ST
+EM-GAMP
+GAMP-SBL
+NNSPL
+pro. GNN-ASPL
+Fig. 5. The NMSE performance comparison with different pilot overhead
+with (K, M, Nι, Nκ) = (100 , 4, 2, 4) and SNR = 8 dB.
+To provide further analysis, Fig. 5 compares the NMSE
+performance versus the number of pilots under SNR = 8 dB.
+As shown in Fig. 5, the proposed GNN-ASPL can significantly
+reduce pilot overhead. In particular, to achieve an NMSE of
+–10 dB, the proposed scheme requires only 75 pilots, while
+NNSPL needs 100 pilots, corresponding to a 25% reduction.
+This highlights the significant advantage of the proposed
+algorithm in resource-constrained scenarios.
+V. C ONCLUSION
+In this paper, an AFDM-GF-RA system was investigated for
+LEO satellite IoT to mitigate excessive signaling overhead and
+access latency. To enable reliable uplink access, the JADCE
+problem was first formulated as a structured compressed
+sensing task. To address this problem, a GNN-ASPL algo-
+rithm was proposed. Specifically, a self-attention-based graph
+aggregation module was developed to refine sparsity patterns,
+which was further embedded into a deep unfolding framework
+to enhance sparse recovery. Simulation results verified the
+significant performance advantages of the proposed approach
+and demonstrated its strong generalization capabilities under
+dynamic TSL conditions.
+REFERENCES
+[1] O. Kodheli, E. Lagunas, N. Maturo, S. K. Sharma, B. Shankar, J. F. M.
+Montoya, J. C. M. Duncan, D. Spano, S. Chatzinotas, S. Kisseleff,
+J. Querol, L. Lei, T. X. Vu, and G. Goussetis, “Satellite communications
+in the new space era: a survey and future challenges,” IEEE Commun.
+Surveys Tuts., vol. 23, no. 1, pp. 70–109, 2021.
+[2] T. T. T. Le, N. U. Hassan, X. Chen, M.-S. Alouini, Z. Han, and C. Yuen,
+“A survey on random access protocols in direct-access LEO satellite-
+based IoT communication,” IEEE Commun. Surveys Tuts., vol. 27, no. 1,
+pp. 426–462, 2025.
+[3] H. Kong, M. Lin, L. Han, W.-P. Zhu, Z. Ding, and M.-S. Alouini,
+“Uplink multiple access with semi-grant-free transmission in inte-
+grated satellite-aerial-terrestrial networks,” IEEE J. Sel. Areas Commun.,
+vol. 41, no. 6, pp. 1723–1736, 2023.
+[4] X. Zhou, K. Ying, Z. Gao, Y . Wu, Z. Xiao, S. Chatzinotas, J. Yuan,
+and B. Ottersten, “Active terminal identification, channel estimation, and
+signal detection for grant-free NOMA-OTFS in LEO satellite internet-of-
+things,” IEEE Trans. Wireless Commun., vol. 22, no. 4, pp. 2847–2866,
+2023.
+[5] A. Bemani, N. Ksairi, and M. Kountouris, “Affine frequency division
+multiplexing for next generation wireless communications,” IEEE Trans.
+Wireless Commun., vol. 22, no. 11, pp. 8214–8229, 2023.
+[6] L. Liu and W. Yu, “Massive connectivity with massive MIMO—part i:
+Device activity detection and channel estimation,” IEEE Trans. Signal
+Process., vol. 66, no. 11, pp. 2933–2946, 2018.
+[7] Y . Zhang, Q. Guo, Z. Wang, J. Xi, and N. Wu, “Block sparse bayesian
+learning based joint user activity detection and channel estimation for
+grant-free NOMA systems,” IEEE Trans. Veh. Technol., vol. 67, no. 10,
+pp. 9631–9640, 2018.
+[8] X. Zhang, P. Fan, L. Hao, and X. Quan, “Generalized approximate
+message passing based bayesian learning detectors for uplink grant-free
+NOMA,” IEEE Trans. Veh. Technol., vol. 72, no. 11, pp. 15 057–15 061,
+2023.
+[9] B. Shen, Y . Wu, J. An, C. Xing, L. Zhao, and W. Zhang, “Random
+access with massive MIMO-OTFS in LEO satellite communications,”
+IEEE J. Sel. Areas Commun. , vol. 40, no. 10, pp. 2865–2881, 2022.
+[10] T. Zhao, S. Chen, H.-H. Chen, and Q. Guo, “Joint activity detection and
+channel estimation in mixed-fronthaul cell-free massive MIMO,” IEEE
+Trans. Veh. Technol., vol. 74, no. 3, pp. 4117–4131, 2025.
+[11] X. Meng, S. Wu, L. Kuang, Defeng, Huang, and J. Lu, “Approximate
+message passing with nearest neighbor sparsity pattern learning,” 2016.
+[Online]. Available: https://arxiv.org/abs/1601.00543
+[12] Y . Zuo, M. Yue, M. Zhang, S. Li, S. Ni, and X. Yuan, “OFDM-based
+massive connectivity for LEO satellite internet of things,” IEEE Trans.
+Wireless Commun., vol. 22, no. 11, pp. 8244–8258, 2023.
+[13] H. Yu, Z. Fei, Z. Zheng, N. Ye, and Z. Han, “Deep learning-based user
+activity detection and channel estimation in grant-free NOMA,” IEEE
+Trans. Wireless Commun., vol. 22, no. 4, pp. 2202–2214, 2023.
+[14] W. Zhu, M. Tao, X. Yuan, and Y . Guan, “Deep-learned approximate
+message passing for asynchronous massive connectivity,” IEEE Trans.
+Wireless Commun., vol. 20, no. 8, pp. 5434–5448, 2021.
+[15] J. Johnston and X. Wang, “Model-based deep learning for joint activity
+detection and channel estimation in massive and sporadic connectivity,”
+IEEE Trans. Wireless Commun. , vol. 21, no. 11, pp. 9806–9817, 2022.
+[16] 3GPP, “Study on new radio (NR) to support non-terrestrial networks
+(release 15),” Tech. Rep. 38.811 V15.4.0, 2020.
+This article has been accepted for publication in IEEE Transactions on Vehicular Technology. This is the author's version which has not been fully edited and 
+content may change prior to final publication. Citation information: DOI 10.1109/TVT.2026.3729877
+© 2026 IEEE. All rights reserved, including rights for text and data mining and training of artificial intelligence and similar technologies. Personal use is permitted,
+but republication/redistribution requires IEEE permission. See https://www.ieee.org/publications/rights/index.html for more information.
+Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELECOM. Downloaded on September 20,2026 at 08:42:53 UTC from IEEE Xplore.  Restrictions apply. 

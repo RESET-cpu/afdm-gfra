@@ -1,0 +1,62 @@
+{
+  "paragraph_id": "P11",
+  "source_line_range": [188, 208],
+  "sentence_count": 7,
+  "sentence_counts": {"A": 5, "B": 1, "C": 1, "D": 1},
+  "counting_note": "A/B/C为七句的主要出处分类；D为独立问题叠加在S2，不从A扣除。不得把合计8解释为8句或原创度分数。",
+  "overall_source_verdict": "活动句组与X定义有Cai引用版本直接原句；块内活动不变为借用Shen句式表达的本文假设；含相位A定义属于本文代数定义，Shen发射扩频句不能作为其同任务母本。确认一处因果句序问题，不判活动模型错误。",
+  "sentences": [
+    {"id": "S1", "lines": [188, 189], "source_category": "A", "issue_categories": [], "source": "Cai引用版 §II-A PDF pp.3–4", "verdict": "保留原接入i.i.d.分句并合理删除同步假设。"},
+    {"id": "S2", "lines": [190, 191], "source_category": "A", "issue_categories": ["D"], "source": "Cai引用版 §II-A PDF p.4 式(1)前", "verdict": "原文确有As a result与small subset；i.i.d.本身不推出低活动比例，应将句子移到ρ≪1之后。"},
+    {"id": "S3", "lines": [192, 199], "source_category": "A", "issue_categories": [], "source": "Cai引用版 §II-A PDF p.4 式(1)", "verdict": "二值活动定义、active和otherwise含义一致。"},
+    {"id": "S4", "lines": [200, 201], "source_category": "A", "issue_categories": [], "source": "Cai引用版 §II-A PDF p.4 式(1)后", "verdict": "λ到ρ与p到Pr为必要替换；低活动率条件真实存在。"},
+    {"id": "S5", "lines": [201, 202], "source_category": "B", "issue_categories": [], "source": "Shen §I PDF p.1句式；Ding §II PDF p.2式(4)后术语", "verdict": "原Shen主语为块衰落信道；本句活动不变是假设，未把信道不变错误推导为活动不变。"},
+    {"id": "S6", "lines": [203, 203], "source_category": "A", "issue_categories": [], "source": "Cai引用版 §II-A PDF p.4 式(3)后", "verdict": "设备标量活动乘整个信道的同任务定义；本文H为张量、位置前移。"},
+    {"id": "S7", "lines": [204, 208], "source_category": "C", "issue_categories": [], "source": "本文P10及S6代数定义；Shen §II-B/C PDF pp.4–5仅提供相关术语和相位合并操作", "verdict": "未核得完整同任务原句；is given by不能使发射扩频句成为含信道相位导频句的直接母本。"}
+  ],
+  "findings": [
+    {
+      "id": "P11-F1",
+      "severity": "medium",
+      "lines": [190, 191],
+      "issue": "As a result紧接i.i.d.，把小活动比例的直接原因写成独立同分布；ρ≪1尚在后文。",
+      "evidence": "Cai引用版§II-A pp.3–4原文也按i.i.d.、As a result small subset、α定义、λ≪1排列。本稿ρ≪1在200–201行。",
+      "reason": "i.i.d. Bernoulli模型可以有ρ=0.8，故独立同分布本身不蕴含小子集；全段已有低活动率假设，属于连接和顺序问题而非数学模型错误。",
+      "minimal_action": "仅将S2移到S4低活动概率定义之后，再接S5、S6、S7。保留全部模型和公式，无需扩写活动概率或稀疏性讨论。"
+    }
+  ],
+  "optional_refinements": [
+    {"lines": [203, 208], "issue": "从活动定义到X再到含相位A有轻微逐项报定义感。", "action": "若仍需润色，可用极短引出语说明两个定义用于下一接收式；现有P10/P12已给足数学关系，不列为必须修改。"}
+  ],
+  "strengths": [
+    "活动指示和低概率定义准确，Cai同步假设没有错误带入。",
+    "块内活动不变是共享Q帧未知量所需的明确假设。",
+    "X与A在下一观测式首次使用前定义，乘积与P10跨帧关系相容。",
+    "没有要求有效信道自身稀疏，也没有凭P已知就宣称相位始终已知。",
+    "活动定义长度与参考段相称，无需移至附录。"
+  ],
+  "recurrence": [
+    {"topic": "因果与数学不对应", "status": "confirmed_local", "detail": "低活动率原因后置，最小调序即可。"},
+    {"topic": "只罗列定义", "status": "minor_optional", "detail": "尾部用途由下一观测式体现；不要求每一定义都加动机。"},
+    {"topic": "完整原句出处被夸大", "status": "historical_alignment_boundary", "detail": "S5仅句式与术语，S7为本文定义；不得按旧对照笼统称必要替换。"},
+    {"topic": "辅助细节掩盖主线", "status": "not_found", "detail": "不宜新增活动统计、分数时延或CPP讨论。"},
+    {"topic": "机械换词或重复", "status": "not_found", "detail": "两处Let服务不同定义，不构成无意义重复。"},
+    {"topic": "防御性赘述", "status": "not_found", "detail": "块内活动不变是必要假设，不应删除。"}
+  ],
+  "granularity": {
+    "verdict": "正文细粒度适当，只需修局部因果顺序。",
+    "cai_comparison": "Cai先单时刻观测再X和堆叠；本文X前移供下一单帧式使用，已有H/P不重复定义。",
+    "shen_comparison": "借鉴相位进入观测系数的相关操作，不复制未知数据扩频模型或长段分辨率讨论。",
+    "appendix_recommendation": "本段无内容应移至附录。",
+    "neighbor_connection": "P10给相位与共同H；P11加入活动并定义X和A；P12将两者用于接收式。轻微衔接可选改善，不需重排三段。"
+  },
+  "sources_read": [
+    {"key": "cai", "path": "reference/literature/cai2026.pdf", "reading_text": "sources/cai.reading.txt", "sha256": "78854ee24bd4a67a2ce574855a1205cdf4484eb6ff4b0568fe8479d4ea69bc68", "locations": "§II-A PDF pp.3–4, printed pp.3577–3578, eqs.(1)–(4)", "version_note": "稿件引用版本；未混用cai_v2"},
+    {"key": "shen", "path": "reference/literature/shen2025.pdf", "reading_text": "sources/shen.reading.txt", "locations": "§I PDF p.1; §II-B/C PDF pp.4–5, eqs.(8)–(15)"},
+    {"key": "ding", "path": "reference/literature/ding2026.pdf", "reading_text": "sources/ding.reading.txt", "locations": "§II PDF p.2, eq.(4) and explanation"},
+    {"key": "wei", "path": "reference/literature/wei_yuan_2026_lstmp_v1.pdf", "reading_text": "sources/wei.reading.txt", "locations": "§II-A PDF p.2, eqs.(2)–(3)"},
+    {"key": "xu", "reading_text": "sources/xu_web_excerpt.txt", "locations": "Author accepted manuscript §II-C printed p.3 / cover-inclusive PDF p.4, excerpt L380–L415", "limitation": "仅阅读本轮提供的在线节选和XU_ACCESS.md，未声称完整本地PDF或本代理重新联网"},
+    {"key": "project_context", "locations": "README; WRITING_GUIDE; current abstract/introduction; snapshot chapter II; §V-A1 lines11–14; historical alignment entries50–56"}
+  ],
+  "limitations": ["未遍历所有文献。", "未读取其他段报告。", "未修改正文或公共文件，未运行实验。"]
+}

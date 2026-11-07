@@ -1,0 +1,3059 @@
+=== PDF PAGE 1 ===
+1
+Active Terminal Identiﬁcation, Channel Estimation,
+and Signal Detection for Grant-Free NOMA-OTFS
+in LEO Satellite Internet-of-Things
+Xingyu Zhou, Keke Ying, Zhen Gao, Yongpeng Wu, Zhenyu Xiao, Symeon Chatzinotas, Jinhong
+Yuan, Fellow, IEEE, and Bj ¨orn Ottersten, Fellow, IEEE
+Abstract—This paper investigates the massive connectivity of
+low Earth orbit (LEO) satellite-based Internet-of-Things (IoT)
+for seamless global coverage. We propose to integrate the grant-
+free non-orthogonal multiple access (GF-NOMA) paradigm with
+the emerging orthogonal time frequency space (OTFS) modu-
+lation to accommodate the massive IoT access, and mitigate
+the long round-trip latency and severe Doppler effect of ter-
+restrial–satellite links (TSLs). On this basis, we put forward
+a two-stage successive active terminal identiﬁcation (ATI) and
+channel estimation (CE) scheme as well as a low-complexity
+multi-user signal detection (SD) method. Speciﬁcally, at the ﬁrst
+stage, the proposed training sequence aided OTFS (TS-OTFS)
+data frame structure facilitates the joint ATI and coarse CE,
+whereby both the trafﬁc sparsity of terrestrial IoT terminals
+and the sparse channel impulse response are leveraged for
+enhanced performance. Moreover, based on the single Doppler
+shift property for each TSL and sparsity of delay-Doppler domain
+channel, we develop a parametric approach to further reﬁne
+the CE performance. Finally, a least square based parallel time
+domain SD method is developed to detect the OTFS signals
+with relatively low complexity. Simulation results demonstrate
+the superiority of the proposed methods over the state-of-the-art
+solutions in terms of ATI, CE, and SD performance confronted
+with the long round-trip latency and severe Doppler effect.
+Index Terms—Internet of Things (IoT), low Earth orbit (LEO)
+satellite, orthogonal time frequency space (OTFS), grant-free
+non-orthogonal multiple access (GF-NOMA).
+This paper was presented in part at the 2021 IEEE/CIC International
+Conference on Communications in China (ICCC) [1]. The work of Z. Gao
+is supported in part by the Natural Science Foundation of China (NSFC)
+under Grant 62088101, Grant 61827901, and Grant 62071044; in part by the
+Beijing Institute of Technology Research Fund Program for Young Scholars
+under Grant XSQD-202121009; and in part by the Ensan Foundation under
+Grant 2022006. The work of Z. Xiao is supported by the Beijing Natural
+Science Foundation under grant number L212003. (Corresponding author:
+Zhen Gao.)
+X. Zhou, K. Ying, and Z. Gao are with the School of Information and
+Electronics, Beijing Institute of Technology, Beijing 100081, China, and also
+with the Advanced Research Institute of Multidisciplinary Science, Beijing
+Institute of Technology, Beijing 100081, China (E-mails:{zhouxingyu21, ykk,
+gaozhen16}@bit.edu.cn).
+Y . Wu is with the Department of Electronic Engineering, Shang-
+hai Jiao Tong University, Shanghai 200240, China (E-mail: yong-
+peng.wu@sjtu.edu.cn).
+Z. Xiao is with the School of Electronic and Information Engineering,
+Beihang University, Beijing 100191, China (E-mail: xiaozy@buaa.edu.cn).
+S. Chatzinotas and B. Ottersten are with Interdisciplinary Centre for Secu-
+rity, Reliability and Trust, University of Luxembourg, 29 Avenue J.F. Kennedy,
+Luxembourg City L-1855, Luxembourg (E-mails: {symeon.chatzinotas,
+bjorn.ottersten}@uni.lu).
+J. Yuan is with the School of Electrical Engineering and Telecommuni-
+cations, the University of New South Wales, Sydney, NSW 2025, Australia
+(Email: j.yuan@unsw.edu.au).
+I. I NTRODUCTION
+W
+ITH the advent of the 5G era, Internet of Things (IoT)
+based on terrestrial cellular networks has developed
+rapidly and has been widely used in various aspects of human
+life [2]. In the coming beyond 5G and even 6G, IoT is expected
+to revolutionize the way we live and work, by means of a
+wealth of new services based on the seamless interactions
+of massive heterogeneous terminals [3]. However, in many
+application scenarios, IoT terminals are widely distributed.
+Particularly, a considerable percentage of IoT terminals may
+be located in remote areas, which indicates that these IoT
+applications can not be well supported by conventional ter-
+restrial cellular infrastructures. In recent years, low Earth
+orbit (LEO) satellite communication systems have attracted
+considerable research interest, and dense LEO constellations
+are expected to complement and extend existing terrestrial
+communication networks, reaching seamless global coverage.
+In fact, the commercial exploration of LEO constellations
+dates back to the late 20th century, such as Iridium, Globalstar,
+and Teledesic [4]. Unfortunately, most of these early attempts
+ended with failure in the context of the underdeveloped vertical
+applications. Nowadays, a booming demand and new space
+technologies reignite the LEO market, where numerous enter-
+prises, such as Starlink, OneWeb, and Telesat [4], envisage
+massive deployment. As an indispensable component of the
+6G space-air-ground-sea integrated networks, LEO constella-
+tions are envisioned to provide a promising solution to enable
+wide area IoT services [5]–[7].
+Nevertheless, distinct from the terrestrial communication
+environment, satellite communications usually suffer from
+harsh channel conditions such as long round-trip delay, severe
+Doppler effects, poor link budget, and etc [8], [9]. Besides, in
+sharp contrast to the conventional downlink-dominated human-
+type communication systems, IoT is mainly driven by the
+uplink massive machine-type communications (mMTC) with
+the characteristics of sporadic behavior [10]. Meanwhile, the
+demands of advanced IoT-enabled applications have shifted
+from low-rate short packet transmission to more rigorous low-
+latency, broadband, and reliable information interaction [3].
+Consequently, the design of efﬁcient random access (RA)
+paradigm for massive IoT terminals based on LEO satellite
+constitutes a challenging problem.
+arXiv:2201.02084v2  [cs.IT]  9 Oct 2022
+
+=== PDF PAGE 2 ===
+2
+TABLE I: A brief comparison of the related literature with our work
+Reference Channel model Bandwidth Transmit signal
+waveform
+Signal processing
+at the receiver Algorithm
+ATI CE SD
+[15] Frequency selective
+Rayleigh fading Broadband OFDM ✓ ✓ Structured iterative
+support detection
+[16] Rayleigh fading Narrowband Single-carrier ✓ ✓ Block sparse modiﬁed
+subspace pursuit (SP)
+[17] Frequency selective
+Rayleigh fading Broadband OFDM ✓ ✓ Modiﬁed orthogonal
+matching pursuit (OMP)
+[18] Rayleigh fading Narrowband Single-carrier ✓ ✓ Prior-information
+aided adaptive SP
+[19] Rayleigh fading Narrowband Single-carrier ✓ ✓ Maximum a posteriori
+probability (MAP)
+[20] Frequency selective
+Rayleigh fading Broadband OFDM ✓ ✓
+Approximate message passing
+(AMP) and expectation
+maximization (EM)
+[21]
+Frequency selective
+Rayleigh fading
+(Pre-equalized)
+Broadband OFDM ✓ ✓
+Orthogonal AMP with
+multiple measurement
+vectors (MMV)
+[22] Frequency fading Broadband OFDM ✓ ✓ Iterative identiﬁed
+user cancellation
+[23] Rayleigh fading Narrowband Single-carrier ✓ ✓ Modiﬁed Bayesian CS
+[24] Rayleigh fading Narrowband Single-carrier ✓ ✓ AMP
+[25] Frequency selective
+fading Broadband OFDM ✓ ✓ Generalized MMV
+(GMMV)-AMP-EM
+[26] Land mobile satellite Narrowband Single-carrier ✓ ✓ Bernoulli–Rician MP-EM
+[35] Double-dispersive Broadband OTFS ✓ ✓ Three-dimensional
+simultaneous-OMP
+[36] Double-dispersive Broadband OTFS ✓ EM-variational Bayesian (VB)
+Our work TSL channel
+(Double-dispersive) Broadband OTFS ✓ ✓ ✓ Two-stage ATI & CE and
+LS-based parallel SD
+A. Related Work
+The traditional grant-based RA protocols adopted by ter-
+restrial cellular networks usually suffer from the complicated
+control signaling exchanges and scheduling for requesting
+uplink access resources [5], [11]. In the case of the extremely
+long terrestrial–satellite link (TSL) and the resulting large
+round-trip signal propagation delay, this type of solution will
+further aggravate the access latency. To this end, the ALOHA
+protocols arise as a better option and are widely used in
+existing satellite communications for RA [12]. The original
+ALOHA protocol allows the terminals to transmit their data
+packets without any coordination. To improve the RA through-
+put, more advanced ALOHA techniques are developed, such
+as contention resolution diversity ALOHA (CRDSA) [13]
+and enhanced spread spectrum ALOHA (E-SSA), and etc.
+Despite the aforementioned efforts, the current ALOHA-based
+RA protocols mainly depend on orthogonal multiple access
+(OMA) technique and may suffer from the network congestion
+when the number of terrestrial IoT terminals becomes massive
+[12].
+Recently, grant-free non-orthogonal multiple access (GF-
+NOMA) schemes have been emerging. These schemes al-
+low IoT terminals to directly transmit their non-orthogonal
+preambles followed by data packets over the uplink and avoid
+complicated access requests for resource scheduling [14]. By
+exploiting the intrinsic sporadic trafﬁc, the receiver of the
+base station (BS) can separate the non-orthogonal preambles
+transmitted by different terminals and thus identify the active
+terminal set (ATS) with compressive sensing (CS) techniques.
+Beneﬁtting from the non-orthogonal resource allocation, the
+GF-NOMA schemes can improve the system throughput with
+limited radio resources. To date, the state-of-the-art CS-based
+GF-NOMA study mainly focuses on two typical problems: 1)
+joint active terminal identiﬁcation (ATI) and signal detection
+(SD); 2) joint ATI and channel estimation (CE).
+The former category is developed by assuming the perfect
+channel state information (CSI) known at the BS [15]–[20]
+or the perfect pre-equalization at the terminals (e.g., based on
+the beacons periodically broadcast by the BS [21]), where CSI
+is usually regarded to be quasi-static. In particular, [15] and
+[16] proposed a structured iterative support detection algorithm
+and a block sparsity based subspace pursuit (SP) algorithm,
+respectively, to jointly perform ATI and SD in one signal
+frame (consists of multiple continuous time slots), where the
+terminals’ activity is assumed to remain unchanged. [17] and
+[18] further relaxed the assumption, i.e., the ATS may vary
+
+=== PDF PAGE 3 ===
+3
+in several continuous time slots, and developed a modiﬁed
+OMP algorithm and a priori information aided adaptive SP
+algorithm, respectively, to perform dynamic ATI and SD,
+where the estimated ATS is exploited asa priori knowledge for
+the identiﬁcation in the following time slots. Moreover, to fully
+exploit the a priori information of the transmit constellation
+symbols for enhanced accuracy, some Bayesian inference-
+based detection algorithms were proposed in [19]–[21]. In
+[19], based on the maximum a posteriori probability (MAP)
+criterion, the proposed algorithm calculated a posteriori ac-
+tivity probability and soft symbol information to identify the
+active terminals and detect their payload data, respectively. To
+overcome the challenge that the perfect a priori information
+could be unavailable in practical systems, an approximate
+message passing (AMP)-based scheme was proposed in [20],
+where the hyper-parameters of terminals’ activity and noise
+variance can be adaptively learned through the expectation-
+maximization (EM) algorithm. The above literature is mainly
+based on the assumption that the CSI is perfectly known at
+the BS and requires the elements of the adopted spreading
+sequences to be independent and identically distributed (i.i.d),
+which can be unrealistic in practice. Therefore, [21] developed
+an orthogonal AMP (OAMP)-based ATI and SD algorithm for
+orthogonal frequency division multiplexing (OFDM) systems,
+where the CSI can be pre-equalized at the terminals according
+to the beacon signals broadcast by the BS, and the spreading
+sequences are selected from the partial discrete Fourier trans-
+formation (DFT) matrix.
+Another category can be applied to time-varying channels,
+where perfect CSI at the BS or perfect pre-compensation at
+terminals is unrealistic [22]–[26]. An iterative joint ATI and
+CE scheme was proposed in [22], where the sparsity of delay-
+domain channel impulse response (CIR) was exploited and
+an identiﬁed user cancellation approach was proposed for en-
+hanced performance. By exploiting not only the sparse trafﬁc
+behavior of IoT terminals, but also the innate heterogeneous
+path loss effects and the joint sparsity structures in multi-
+antenna systems, the authors in [23] developed a modiﬁed
+Bayesian CS algorithm. With the full knowledge of thea priori
+distribution of the channels and the noise variance, the authors
+in [24] developed an AMP-based scheme for massive access
+in massive multiple-input multiple-output (MIMO) systems.
+For more challenging massive MIMO-OFDM systems, the
+authors in [25] proposed a generalized multiple measurement
+vector (GMMV)-AMP algorithm, where the structured sparsity
+of spatial-frequency domain and angular-frequency domain
+channels were leveraged with EM algorithm incorporated.
+Moreover, a Bernoulli–Rician message passing with expec-
+tation–maximization (BR-MP-EM) algorithm was proposed
+for the LEO satellite-based narrowband massive access using
+single-carrier in [26]. However, these aforementioned works
+[22]–[25] usually assume the channels to be slowly time-
+varying, which can not be directly applied to the highly
+dynamic TSLs due to the high-mobility of LEO satellites. For
+clarity, the comparison of the aforementioned related works
+on GF-NOMA is summarized in Table I.
+B. Motivation
+An emerging two-dimensional modulation scheme, orthogo-
+nal time frequency space (OTFS), has been widely considered
+as a promising alternative to the dominant OFDM. Particularly,
+OTFS is expected to support reliable communications under
+high-mobility scenarios in the next-generation mobile commu-
+nications [27]–[39]. OTFS multiplexes information symbols
+on a lattice in the delay-Doppler (DD) domain and utilizes
+a compact DD channel model, where the channel in the DD
+domain is considered to exhibit more stable, separable, and
+sparse features than that in the TF domain [28]. Consequently,
+OTFS can achieve more robust signal processing with addi-
+tional diversity gain in the presence of Doppler effect [27],
+[28]. In fact, [29]–[31] have integrated the OTFS waveform
+with OMA based on the grant-based access protocols and
+investigated some new resource allocation schemes. Besides,
+[32], [33] further amalgamated the OTFS modulation scheme
+with the NOMA technique. However, [29]–[33] adopt the
+grant-based RA schemes, which may not cater to the stringent
+requirements of access latency and massive connectivity for
+LEO satellite-based IoT. Moreover, the study of CE for OTFS
+is only limited to terminals employing OMA scheme [34]–
+[37].
+C. Contributions
+In this paper, we propose a GF-NOMA paradigm that
+incorporates OTFS modulation to provide a blend of mMTC
+and enhanced mobile broadband (eMBB) services for LEO
+satellite-based IoT, and investigate the challenging ATI, CE,
+and SD problems. The main contributions of this paper are
+summarized as follows.
+• GF-NOMA-OTFS paradigm: We propose to apply the
+GF-NOMA scheme employing OTFS waveform (GF-
+NOMA-OTFS) to LEO satellite-based massive IoT ac-
+cess. By allowing the uncoordinated IoT terminals to
+transmit the data packets directly, reusing the limited
+delay-Doppler resources, and exploiting the particular
+stability, sparsity, and separability of TSLs represented
+in the DD domain, the GF-NOMA-OTFS paradigm can
+harvest the beneﬁt of high RA throughput and Doppler-
+robustness in this context.
+• Training sequences (TSs) aided OTFS modula-
+tion/demodulation architecture : Existing CE solutions
+for OTFS systems embed the pilot and guard symbols in
+the DD domain [34]–[37]. However, in the case of highly
+dynamic TSLs with extremely severe Doppler shifts, the
+compactness of the DD domain channel could be de-
+stroyed, which would give rise to a dramatical increase of
+guard symbols. Moreover, the low-resolution of Doppler
+lattices could lead to the severe Doppler spreading even
+each TSL’s Doppler shift is a single value, which would
+further deteriorate the performance and effectiveness of
+signal processing in the DD domain. To circumvent these
+challenges, we utilize the time domain TSs to replace
+the conventional DD domain pilot and guard symbols for
+performing ATI and CE, and further propose a TSs aided
+OTFS (TS-OTFS) modulation/demodulation architecture.
+
+=== PDF PAGE 4 ===
+4
+• Successive ATI, CE, and SD method : Furthermore,
+we put forward a two-stage successive ATI and CE
+scheme as well as a following low-complexity multi-
+user SD for the GF-NOMA-OTFS paradigm. Speciﬁcally,
+for the ATI and CE, at the ﬁrst stage, the proposed
+time domain TSs facilitate the joint ATI and coarse
+CE, whereby both the trafﬁc sparsity of terrestrial IoT
+terminals and the structural sparse CIR are leveraged. On
+this basis, a parametric approach is developed to further
+reﬁne the CE performance, whereby the single Doppler
+shift property for each TSL and sparsity of DD domain
+channel are exploited. Finally, a least square (LS)-based
+parallel time domain SD is developed for detecting the
+OTFS signals with relatively low complexity. Simulations
+and performance evaluation are conducted to varify the
+effectiveness of the proposed successive ATI, CE, and SD
+method.
+D. Organization
+The remainder of this paper is organized as follows. In
+Section II, we introduce the TSL model of the LEO satellite-
+based IoT. The GF-NOMA-OTFS paradigm and TS-OTFS
+modulation/demodulation architecture are proposed in Section
+III. In Section IV, the proposed successive ATI and CE scheme
+for the GF-NOMA-OTFS paradigm is presented. Then, in
+Section V, we further propose a multi-user signal detector
+based on the previous results of ATI and CE. The effectiveness
+of our proposed scheme is demonstrated by simulation results
+in Section VI. Finally, conclusions are drawn in Section VII.
+The important variables of the system model adopted in the
+paper are listed in Table I for ease of reference.
+E. Notations
+Throughout this paper, scalar variables are denoted by
+normal-face letters, while boldface lower and upper-case
+letters denote column vectors and matrices, respectively.
+The transpose, Hermitian transpose, inversion, and pseudo-
+inversion for matrix are denoted by (·)T, (·)H, (·)−1, and
+(·)†, respectively. Besides, |·| ,∥·∥ 2, and ∥·∥ F represent
+modulus, ℓ2-norm, and Frobenius-norm, respectively. X[m,n]
+is the (m,n )-th element of matrix X; X[m,:] and X[:,n] are
+them-th row vector and the n-th column vector of matrix X,
+respectively. X[:,I] and X[:,I] denote the submatrix consisting
+of the columns and rows of X indexed by the ordered set I,
+respectively. x[n] denotes the n-th element of x. Furthermore,
+|A|c is the cardinality of the set A, and supp(·) is the support
+set of a vector or a matrix. A−B denotes the difference set
+ofA with respect toB, andA∩B denotes the intersection of
+A andB. The operators ⊙ and⊗ represent the Hadamard
+product and Kronecker product, respectively. The operator
+vec(X) stacks the columns of X on top of each another, and
+mat(x;m,n ) converts the vector x of sizemn into the matrix
+of size m×n by successively selecting every m elements of
+x as its columns. < x1, x2 > represents the inner product of
+x1 and x2. Finally, In is the identity matrix of size n×n,
+0n×m is the n×m zero matrix,∅ denotes the empty set, and
+δ(x) is the Dirac function.
+TABLE II. Variable list
+Notation Deﬁnation
+Ps,Pt Number of antennas for satellite and terminal
+K,Ka Number of potential and active terminals
+αk,A Activity indicator and active terminal set
+γk,Qk Rician factor, number of NLoS paths
+gLoSk ,gq
+k Complex path gain of LoS and NLoS paths
+τLoSk ,τq
+k RToA and propagation delay of NLoS paths
+νLoSk ,νq Doppler shift
+θzenk ,θazik ,θzen′
+,θazi′
+Zenith and azimuth angles of Rx and Tx
+vR,vT Steering vector of Rx and Tx
+gABF−LoS
+k ,gABF−q
+k Analog beamforming gain
+HDDk (τ,ν) DD domain uplink CIR
+heﬀ−DD
+k (τ,ν) DD domain effective baseband CIR
+heﬀk (t,τ) Time-delay domain CIR
+heﬀk,p[κ,ℓ],heﬀk,p[ℓ,υ] Discrete time-delay domain and DD domain CIR
+(M,N,Mt) Size of TS-OTFS frame
+G,L Length of non-ISI region and CIR
+∆f,Bw,Ts,T Subcarrier spacing, bandwidth, sampling interval
+frame duration
+XDDk ,XTFk ,˜Sk Data symbols in the DD, TF, and time domain
+˜sk,ck,sk
+Time domain data symbols, training sequences,
+and transmit signal
+rp,ˆ˜sk, Received signal, detected OTFS payload data
+ˆ˜Sk,ˆXTF,ˆXDD Detected time, TF, and DD domain data symbols
+II. T ERRESTRIAL -SATELLITE LINK MODEL
+As illustrated in Fig. 1, we consider that the LEO con-
+stellations consisting of a large number of LEO satellites
+can provide ubiquitous connections and eMBB services for
+massive IoT terminals1 [5]–[7]. Each LEO satellite is equipped
+with a uniform planar array (UPA) composed ofPs =Ps
+x×Ps
+y
+antennas, wherePs
+x andPs
+y are the number of antennas on the
+x-axis and y-axis, respectively. Meanwhile, a Pt = Pt
+x×Pt
+y
+phased array with analog beamforming is assumed to be
+employed at each IoT terminal. Due to the sporadic trafﬁc
+behavior in typical IoT [10], within a given time interval, the
+number of active IoT terminals Ka can be much smaller than
+the number of all potential IoT terminals K, i.e., Ka≪ K.
+The active IoT terminals transmit RA signals and the inactive
+remain silent. To reﬂect the activity status of all potential IoT
+terminals, we deﬁne an activity indicator αk, which is equal to
+1 when the k-th IoT terminal is active and 0 otherwise. Mean-
+while, the ATS is deﬁned as A ={k|αk = 1, 1≤ k≤ K}
+and its cardinality is Ka =|A|c.
+Since analog beamforming at the IoT terminals can be
+approximately implemented with the predictable trajectory
+of LEO satellites in theory, the TSLs connecting the LEO
+satellites and terrestrial IoT terminals would experience few
+propagation scatterers and the line-of-sight (LoS) links could
+rarely be blocked by obstacles [9]. It is reasonable to assume
+there coexist the LoS and few non-LoS (NLoS) links when
+employing the X-band and above. Therefore, the DD domain
+uplink channel between the LEO satellite and the k-th served
+IoT terminal can be expressed as Eq. (1) [28], [40], where the
+1As we mainly focus on RA for one satellite in the physical layer in this
+paper for obtaining important RA design insights, the problems of interference
+and coordination between multiple satellites will not be involved [4].
+
+=== PDF PAGE 5 ===
+5
+HDD
+k (τ,ν ) =
+√ γk
+γk + 1gLoS
+k δ(τ−τ LoS
+k )δ(ν−νLoS
+k )vR(θzen
+k,LoS,θ azi
+k,LoS)vH
+T (θzen′
+k,LoS,θ azi′
+k,LoS)
++
+√ 1
+γk + 1
+Qk∑
+q=1
+gq
+kδ(τ−τq
+k)δ(ν−νq
+k)vR(θzen
+k,q,θ azi
+k,q)vH
+T (θzen′
+k,q ,θ azi′
+k,q ),
+(1)
+heﬀ−DD
+k (τ,ν ) =
+√ γk
+γk + 1gLoS
+k gABF−LoS
+k δ(τ−τ LoS
+k )δ(ν−νLoS
+k )vR(θzen
+k ,θ azi
+k )
++
+√ 1
+γk + 1
+Qk∑
+q=1
+gq
+kgABF−q
+k δ(τ−τq
+k)δ(ν−νq
+k)vR(θzen
+k ,θ azi
+k ),
+(4)
+... 
+Active terminal 
+Silent terminal 
+Terminal k
+z
+x
+y
+o
+azi 
+kq
+zen 
+kq
+s
+xP
+s
+yP
+x
+y
+z
+o
+The coordinates of system 
+( ) td
+h
+( ) tq
+SAT w
+SAT ( ) tx
+UPA 
+Fig. 1. Illustration of the LEO satellite-based IoT based on
+the proposed GF-NOMA-OTFS scheme.
+ﬁrst term corresponds to the LoS path and the NLoS paths
+contribute to the other Qk terms. In (1), νLoS
+k and νq
+k respec-
+tively denote the Doppler shift of the LoS and the q-th NLoS
+path, τ LoS
+k and τq
+k respectively denote the remanent relative
+time of arrive (RToA) and delay of the q-th NLoS path, γk
+and gLoS
+k (gq
+k) are respectively the Rician factor and complex
+path gain, vR(θzen
+k,LoS,θ azi
+k,LoS)
+(
+vR(θzen
+k,q,θ azi
+k,q)
+)
+∈ CPs×1 and
+vT (θzen′
+k,LoS,θ azi′
+k,LoS)
+(
+vT (θzen′
+k,q ,θ azi′
+k,q )
+)
+∈ CPt×1 denote the
+UPA’s steering vector for the LEO satellite and IoT terminal,
+respectively. The further explanations of these parameters are
+detailed as follows.
+• Array steering vector : Since the TSL’s distance is far
+larger than the distances between the terminal and its
+surrounding scatterers, the angles of arrival (AoAs), i.e.,
+the zenith angle θzen
+k,LoS (θzen
+k,q ) and the azimuth angle
+θazi
+k,LoS (θazi
+k,q), for the k-th terminal can be assumed to
+be almost identical [40], i.e., θzen
+k,LoS ≈ θzen
+k,q = θzen
+k
+and θazi
+k,LoS≈ θazi
+k,q = θazi
+k . Therefore, the UPA’s steering
+vector for the LEO satellite can be simpliﬁed as
+vR(θzen
+k ,θ azi
+k ) = 1√
+Ps
+[
+e−j2πd
+λ sin(θzen
+k ) cos(θazi
+k )p1
+]
+⊗
+[
+e−j2πd
+λ sin(θzen
+k ) sin(θazi
+k )p2
+], (2)
+where p1 = [0 , 1,...,P s
+x− 1]T, p2 =
+[
+0, 1,...,P s
+y− 1
+]T
+, λ is the wavelength of carrier
+frequency and d is the antenna spacing. Without loss of
+generality, the elements of the UPA are assumed to be
+separated by one-half wavelength in both the x-axis and
+y-axis. Beisdes, vT (θzen′
+k,LoS,θ azi′
+k,LoS)
+(
+vT (θzen′
+k,q ,θ azi′
+k,q )
+)
+shares a similar expression with vR(θzen
+k ,θ azi
+k ).
+• Doppler shift : The Doppler shift νLoS
+k (νq
+k) includes
+two independent components: νLoS−S
+k (νq−S
+k ) and
+νLoS−T
+k (νq−T
+k ) caused by the mobility of LEO satellite
+and terrestrial IoT terminals, respectively. Since LEO
+satellite moves much faster than IoT terminals, the mo-
+tion of LEO satellite mainly determines νLoS
+k (νq
+k), i.e.,
+νLoS−S
+k ≫ νLoS−T
+k (νq−S
+k ≫ νq−T
+k ). Besides, combined
+with the fact that the AoAs of LoS and NLoS links related
+to the k-th terminal are alomst identical, it is reasonable
+to assume that the Doppler shift of the TSL is single-
+valued, i.e., νLoS
+k ≈νq
+k≈νLoS−Sat
+k ≈νq−Sat
+k [9], [41].
+• Remanent RToA and multipath components’ (MPCs’)
+delay: Since IoT terminals’ locations are geographically
+distributed, the ToA of signals received from different
+terminals may undergo severe time offsets. Although [42]
+proposed a repetition code spreading scheme without
+synchronization and scheduling, its cost is signiﬁcant
+throughput reduction and intra-system interference. In
+contrast, we consider the major part of time offsets can be
+compensated by timing advance [43], while the remanent
+RToA is denoted as τ LoS
+k . Meanwhile, in the case of
+MPCs, the relative delay of the q-th NLoS path can be
+denoted as τq
+k .
+After taking the analog beamforming at the terminals into
+consideration, the effective baseband channel can be written
+as
+heﬀ−DD
+k (τ,ν ) =HDD
+k (τ,ν )vT (θzen′′
+k ,θ azi′′
+k ), (3)
+where vT (θzen′′
+k ,θ azi′′
+k ) ∈ CPt×1 is the analog
+beamforming vector. From Eq. (1), heﬀ−DD
+k (τ,ν )
+can be further represented by Eq. (4), where
+gABF−LoS
+k = vH
+T (θzen′
+k,LoS,θ azi′
+k,LoS)vT (θzen′′
+k ,θ azi′′
+k ) and
+gABF−q
+k = vH
+T (θzen′
+k,q ,θ azi′
+k,q )vT (θzen′′
+k ,θ azi′′
+k ) are the analog
+beamforming gain. Meanwhile, note that Eq. (4) can be
+
+=== PDF PAGE 6 ===
+6
+,6))7 
+:LQGRZLQJ 
++HLVHQEHUJ 
+7UDQVIRUP 
+$GG7UDLQLQJ 
+6HTXHQFHV 
+3DUDOOHO 
+WR6HULDO 
+7UDLQLQJ6HTXHQFHV 
+([WUDFWLRQ 
+$FWLYH7HUPLQDO,GHQWLILFDWLRQ 
+	&KDQQHO(VWLPDWLRQ 
+0XOWL8VHU 
+6LJQDO'HWHFWLRQ 
+6HULDOWR 
+3DUDOOHO 
+:LJQHU 
+7UDQVIRUP 
+6))7 
+:LQGRZLQJ 
+4$0 
+'HPRGXODWLRQ 
+7627)60RGXODWLRQ 
+7627)6'HPRGXODWLRQ 
+/(2VDWHOOLWH 
+7HUPLQDO 
+7HUPLQDO .
+''GRPDLQ 
+'DWD0XOWLSOH[HU 
+4$0 
+0RGXODWLRQ 
+,6))7 
+:LQGRZLQJ 
++HLVHQEHUJ 
+7UDQVIRUP 
+$GG7UDLQLQJ 
+6HTXHQFHV 
+3DUDOOHO 
+WR6HULDO 
+7627)60RGXODWLRQ 
+''GRPDLQ 
+'DWD0XOWLSOH[HU 
+4$0 
+0RGXODWLRQ 
+''GRPDLQ 
+'DWD'HPXOWLSOH[HU 
+76/ 
+,QSXW 
+'DWD 
+,QSXW 
+'DWD 
+Fig. 2. The transceiver structure of the proposed TS-OTFS scheme for the GF-NOMA-OTFS paradigm.
+transformed into time-varying CIR through
+heﬀ
+k (t,τ ) =
+∫
+heﬀ−DD
+k (τ,ν )ej2πν(t−τ)dν. (5)
+III. P ROPOSED TS-OTFS T RANSMISSION SCHEME
+In this section, we introduce the GF-NOMA-OTFS
+paradigm and the transceiver structure of the proposed TS-
+OTFS scheme, which is illustrated in Fig. 2.
+A. Modulation of the Proposed TS-OTFS at Transmitter
+For the active IoT terminals, the input information bits
+are ﬁrst mapped to quadrature amplitude modulation (QAM)
+symbols and then rearranged in the DD domain plane as
+XDD
+k ∈ CM×N,∀k. Here, N and M are the dimensions of
+the latticed resource units in the Doppler domain and delay
+domain, respectively. On this basis, the DD domain XDD
+k is
+parallel-to-serial converted to the transmit signal vector sk in
+the time domain via a cascade of TS-OTFS transformations,
+which are constituted by a pre-processing module and time-
+frequency (TF) modulator.
+Speciﬁcally, the pre-processing module is consistent with
+that of the traditional OFDM-based OTFS architecture [38],
+i.e., the DD domain data XDD
+k is transformed into the TF
+domain data matrix XTF
+k ∈ CM×N by applying the inverse
+symplectic ﬁnite Fourier transform (ISFFT) , which can be
+written as
+XTF
+k = FMXDD
+k FH
+N,∀k, (6)
+where both FM ∈ CM×M and FN ∈ CN×N are the DFT
+matrices. Based on the acquired TF domain data matrix XTF
+k ,
+the subsequent TF modulator transforms XTF
+k into the transmit
+signal vector sk. In particular, ﬁrstly, Heisenberg transform
+[27] is applied to each column of XTF
+k to produce the time
+domain data matrix ˜Sk∈ CM×N as
+˜Sk = Wtx⊙ (FH
+MXTF
+k ),∀k. (7)
+For simplicity and without loss of generality, a rectangular
+window, namely Wtx with all elements equal to one, is
+adopted in this paper. In this case, the Heisenberg transform
+degenerates into Fourier transform.
+Furthermore, for the traditional OFDM-based OTFS archi-
+tecture, a cyclic preﬁx (CP) is added to the front of each time
+domain OTFS symbol ˜si
+k ∈ CM×1 (˜si
+k is the i-th column
+vector of ˜Sk). By contrast, for the proposed TS-OTFS scheme,
+N + 1 duplicate TSs with the length of Mt, denoted by
+ck = [ck,0 ck,1... ck,Mt−1]T∈ CMt×1, are appended to the
+front and rear of the OTFS payload data as illustrated in Fig. 3.
+These time domain TSs are known by the transceiver, and they
+can not only be utilized to avoid inter-symbol-interference
+(ISI) over time dispersive channels, but also perform ATI
+and CE (will be detailed in Section IV). Finally, the transmit
+TS-OTFS signal consisting of TSs and time domain OTFS
+payload data sk =
+[
+cT
+k, ˜s1T
+k , cT
+k, ˜s2T
+k ,..., cT
+k, ˜sNT
+k , cT
+k
+]T
+∈
+C(MtN+MN +Mt)×1 is obtained through the parallel-to-serial
+conversion.
+B. Proposed TS-OTFS Demodulation at Receiver
+In fact, the discrete form of Eq. (5) can be rewritten as
+heﬀ
+k,p[κ,ℓ ] =heﬀ
+k,p(t,τ )|t=κTs,τ =ℓTs, (8)
+whereheﬀ
+k,p(t,τ ) is the p-th element of heﬀ
+k (t,τ ) andTs is the
+sampling interval of the system. Moreover, the discrete form
+of Eq. (4) can be denoted as 2
+heﬀ−DD
+k,p [ℓ,υ ] =heﬀ−DD
+k,p (τ,ν )|τ= ℓ
+M∆f,ν = υ
+NT
+, (9)
+whereheﬀ−DD
+k,p (τ,ν ) is thep-th element of heﬀ−DD
+k (τ,ν ), ∆f
+is the frequency spacing between adjacent sub-carriers, and
+T = (M +Mt)Ts is the duration of one TS-OTFS symbol.
+Therefore, the κ-th element of the signal rp ∈
+C(MtN+MN +Mt)×1 received at the p-th antenna is the su-
+2Due to the large value of the sampling interval T in the Doppler domain,
+the fractional part of normalized Doppler can not be neglected [39], which
+means the normalized Doppler shift υLoS
+k =νLoS
+k NT (alsoυq
+k) tends to be
+off-gird and comprises integer and fractional components.
+
+=== PDF PAGE 7 ===
+7
+LEO Satellite  
+Antenna  p
+           OTFS Data Symbol 1            TS            OTFS Data Symbol 2            TS ...           OTFS Data Symbol N            TS          TS 
+  OTFS Data Symbol 1      TS Ka   OTFS Data Symbol 2      TS Ka ...    OTFS Data Symbol N     TS Ka     TS Ka
+  OTFS Data Symbol 1     TS 1    OTFS Data Symbol 2     TS 1 ...     OTFS Data Symbol N    TS 1     TS 1 
+Transmitted TS-OTFS Signals over MPCs 
+Non-ISI region ISI contaminated region 
+... 
+TS trailing part Data trailing part 
+Remnant 
+RToA 
+Terminal Ka
+... 
+Terminal 1 
+... 
+Fig. 3. Transmit and receive signal structures of the proposed TS-OTFS scheme at the transceiver.
+perposition of the signals received from all active terminals,
+which can be expressed as
+rp(κ) =
+K∑
+k=1
+L−1∑
+l=0
+αk
+√
+Pkheﬀ
+k,p [κ,ℓ ]sk [κ−ℓ] +wp(κ),∀p,
+(10)
+where Pk denotes the transmit power of the k-th terminal,
+L− 1 represents the maximum of remanent RToA and MPCs’
+delay, and wp(κ) ∼ CN(0,σ 2
+w) denotes the additive white
+Gaussian noise (AWGN) at the receiver.
+The receiver of LEO satellite consists of two cascaded
+modules: the ﬁrst one performs ATI, CE, and multi-user SD,
+and the others demodulate the OTFS payload data. For the ﬁrst
+one, the receiver of LEO satellites ﬁrstly extracts TSs from the
+received signals to perform ATI and CE. With the identiﬁed
+active terminal set (ATS) ˆA and their corresponding CSI, the
+proposed multi-user signal detector detects the payload data
+for the ATS to obtain ˆ˜sk ∈ CMN×1,k ∈ ˆA. The above
+ATI, CE, and SD modules will be discussed in detail in the
+following Sections IV and V.
+For the TS-OTFS demodulation, it is equivalent to the
+inverse operation of the modulation, which consists of a TF
+demodulator and a post-processing module, and transforms the
+detected time domain OTFS payload data ˆ˜sk to the original
+DD domain ˆXDD
+k . In particular, ˆ˜sk can be rewritten as time
+domain 2D data matrix ˆ˜Sk∈ CM×N through serial-to-parallel
+conversion, i.e.,
+ˆ˜Sk = mat
+(
+ˆ˜sk,M,N
+)
+,∀k, (11)
+Then, the Wigner transform [27] is applied to recover the TF
+data ˆXTF
+k as
+ˆXTF
+k = Wrx⊙ (FM
+ˆ˜Sk),∀k. (12)
+where a rectangular window Wrx is adopted similar to the
+transmitter in Eq. (7). In the post-processing module, sym-
+plectic ﬁnite Fourier transform (SFFT) is applied to ˆXTF,W
+k
+for restoring the TF domain OTFS data to DD domain as
+ˆXDD
+k = FH
+M ˆXTF,W
+k FN,∀k. (13)
+IV. P ROPOSED ACTIVE TERMINAL IDENTIFICATION AND
+CHANNEL ESTIMATION
+To handle the challenging ATI and CE over TSLs with
+severe Doppler effect, we propose a two-stage successive ATI
+and CE scheme for the GF-NOMA-OTFS paradigm.
+A. Problem Formulation of Successive ATI and CE
+The structure of time domain TS-OTFS signal vector
+sk (1≤ k≤ K) and its received version at the p-th receive
+antenna rp (1≤ p≤ Ps) are illustrated in Fig. 3, both of
+which consist of the OTFS payload data and the embedded
+TSs part. One signiﬁcant challenge to perform ATI and CE
+based on the received TSs, lies in the fact that each received
+TS is contaminated by the previous OTFS data symbol due to
+the time dispersive CIR of each TSL and the remnant RToA
+among different terminals’ TSLs. An effective approach is to
+utilize the non-ISI region as illustrated in Fig. 3, which is the
+rear part of the TSs and immune from the inﬂuence of the
+previous OTFS data symbol [45]. Therefore, the TS’s length
+Mt is designed to be longer than the maximum of remnant
+RToA and MPCs’ delay L− 1 in order to ensure the non-ISI
+region with sufﬁcient length, and thus the length of non-ISI
+region can be denoted as G ≜Mt−L + 1.
+In this way, according to (10), the non-ISI region of the i-th
+(1≤i≤N + 1) TS ri
+TS,p∈ CG×1 can be expressed as
+ri
+TS,p =
+K∑
+k=1
+αk
+√
+Pk
+(
+∆LoS
+k Ψkheﬀ−i,LoS
+TS,k,p +
+Qk∑
+q=1
+∆q
+kΨkheﬀ−i,q
+TS,k,p
+)
++ wi
+TS,p,∀i,p, (14)
+where heﬀ−i,LoS
+TS,k,p ∈ CL×1 and heﬀ−i,q
+TS,k,p ∈ CL×1 denote the
+LoS and NLoS components of the vector form of CIR heﬀ−i
+TS,k,p
+(aligned with the instant of the beginning of the i-th non-ISI
+region) as
+heﬀ−i
+TS,k,p = heﬀ−i,LoS
+TS,k,p +
+Qk∑
+q=1
+heﬀ−i,q
+TS,k,p,∀i,p,k, (15)
+wi
+TS,p∈ CG×1 is the vector form of AWGN, Ψk∈ CG×L is
+
+=== PDF PAGE 8 ===
+8
+-150 -100 -50 0 50 100 150 200 
+Time (s) 
+-2.5 
+-2 
+-1.5 
+-1 
+-0.5 
+0
+0.5 
+1
+1.5 
+2
+2.5 
+Doppler shift (Hz) 
+10 5
+-5 0 5
+10 -5 
+-0.2 
+-0.1 
+0
+0.1 
+0.2 
+(a)
+-200 -150 -100 -50 0 50 100 150 200 
+Time (s) 
+0
+0.5 
+1
+1.5 
+2
+2.5 
+3
+3.5 Delay (s) 
+10 -3 
+149.99995 150 150.00005 
+2.353447 
+2.3534475 
+2.353448 
+2.3534485 
+2.353449 
+10 -3 (b)
+Fig. 4. The Doppler and delay variation as a function of time: (a) Doppler shift; (b) Relative delay.
+a Toeplitz matrix given by [45]
+Ψk =
+
+
+ck,L−1 ck,L−2 ··· ck,0
+ck,L ck,L−1 ··· ck,1
+... ... ... ...
+ck,Mt−1 ck,Mt−2 ··· ck,Mt−L
+
+
+, (16)
+∆LoS
+k (∆q
+k) ∈ CG×G is the diagonal Doppler shift matrix
+associated with the LoS (the q-th NLoS) path as ∆LoS
+k =
+diag
+{
+e
+j2πυLoS
+k
+N(M+Mt)·[(−ℓLoS
+k ),...,0,...,(G−ℓLoS
+k −1)]
+T
+}
+, and ∆q
+k shares
+a similar expression.
+Since both ∆LoS
+k and ∆q
+k are unknown matrices for the
+receiver of LEO satellites, it would be infeasible to recover
+the sparse CIR vectors in Eq. (14) with the unknown sensing
+matrices. Fortunately, on one hand, the duration of each non-
+ISI region is always short enough. When the TSLs are assumed
+to be unchanged in this region, the approximation error could
+not be obvious for the support set estimation in the sparse CIR
+vector recovery (which will be veriﬁed through simulations
+in Section VI). On the other hand, it will be clariﬁed in
+Remark 2 that the ambiguity of recovered non-zero elements
+caused by this approximation can be compensated through the
+following CE reﬁnement. In this case, both ∆LoS
+k and ∆q
+k are
+approximate to the identity matrices, and (14) can be rewritten
+as
+ri
+TS,p =
+K∑
+k=1
+αk
+√
+PkΨk
+(
+heﬀ−i,LoS
+TS,k,p +
+Qk∑
+q=1
+heﬀ−i,q
+TS,k,p
+)
+  
+heff−i
+TS,k,p
++ ˜wi
+TS,p
+= Ψ˜heﬀ−i
+TS,p + ˜wi
+TS,p, (17)
+where ˜heﬀ−i
+TS,p =
+[
+˜heﬀ−iT
+TS,1,p, ˜heﬀ−iT
+TS,2,p,..., ˜heﬀ−iT
+TS,K,p
+]T
+∈ CKL×1,
+˜heﬀ−i
+TS,k,p = αk
+√
+Pkheﬀ−i
+TS,k,p, Ψ = [ Ψ1, Ψ2,..., ΨK] ∈
+CG×KL, the approximation error and the AWGN are collect-
+edly considered as the effective noise term ˜wi
+TS,p.
+Due to the severe path loss of TSLs, the energy of NLoS
+paths reﬂected by scatterers around the terminals could be
+weak and the number of non-negligible NLoS paths is limited.
+Therefore, the delay domain sparsity of the CIR vector heﬀ−i
+TS,k,p
+can be represented as
+⏐⏐⏐supp
+{
+heﬀ−i
+TS,k,p
+}⏐⏐⏐
+c
+=Qk + 1≪L,∀i,p,k. (18)
+Moreover, combined with the sporadic trafﬁc behaviors, ˜heﬀ−i
+TS,p
+exhibits the sparsity as
+⏐⏐⏐supp
+{
+˜heﬀ−i
+TS,p
+}⏐⏐⏐
+c
+=
+∑
+k∈A
+(Qk + 1) =Q≪KL,∀i,p. (19)
+It indicates that (17) is a typical sparse signal recovery problem
+with the single measurement vector (SMV) form.
+B. Exploiting TSL’s Spatial and Temporal Correlations for
+Enhanced Performance
+To further enhance the system performance, we will explore
+the structured common sparsity inherent in the TSLs. 1)
+Spatial correlation: Specially, for different receive antennas,
+the RToA, MPCs’ delay, and Doppler shift of the signals
+received from the same terminal are approximately identical.
+This implies that the support sets can be treated as common
+for sparse CIR vectors {˜heﬀ−i
+TS,k,p}P
+p=1, whereas the non-zero
+coefﬁcients could be distinct. 2) Temporal correlation: Addi-
+tionally, although the TSLs vary continuously with time due
+to the high mobility of LEO satellites, within the duration of
+one frame, the relative positions of the IoT terminals and LEO
+satellite will not change dramatically. This fact implies that it
+can also be reasonable to assume the RToA, the propagation
+delay, and the Doppler shift of signals received from the same
+terminal are approximately identical for multiple adjacent
+OTFS symbols within one TS-OTFS frame. Hence, the support
+sets can also be regarded as identical for sparse CIR vectors
+{˜heﬀ−i
+TS,k,p}N+1
+i=1 .
+We will further illustrate the TSL’s spatial and temporal
+correlations with the following example. As illustrated in
+Fig. 1, it assumes a Cartesian coordinate system such that
+the moving satellite and the transmitter of the terminal are on
+
+=== PDF PAGE 9 ===
+9
+the x-z plane. The Doppler shift experienced by a stationary
+terminal can be computed as follows as a function of time:
+fd(t) = fc
+c
+d(t)
+|d(t)|
+∂xSAT(t)
+∂t , (20)
+where fc is the carrier frequency, d(t) is the distance vector
+between the satellite and the terminal, and xSAT(t) is the
+vector of the satellite position. These vectors can be expressed
+as:
+d(t) = [(RE +h) sin(ωSATt), 0,RE− (RE +h) cos(ωSATt)]T,
+(21)
+xSAT(t) = [(RE +h) sin(ωSATt), 0,−(RE +h) cos(ωSATt)]T,
+(22)
+where RE is the Earth radius, h is the satellite altitude,
+and ωSAT is the satellite angular velocity. The relative delay
+experienced by a stationary terminal can be computed as well:
+τrel =|d(t)|−| d0(t)|
+c , (23)
+where d0(t) is the distance vector when the satellite is closest
+to the receiver. After some mathematical manipulation [46],
+the Doppler shift as a function of the elevation angle is
+computed in a closed-form expression as follows:
+fd(t) = fc
+c ωSATRE cos[θ(t)], (24)
+where c is the light velocity.
+Fig. 4 illustrates the Doppler and delay variation as a
+function of time, where the carrier frequency is fc = 10 GHz,
+and the orbital altitude of LEO satellite is h = 500km. It can
+be observed whent = 0, the gradient of Doppler shift function
+reaches its maximum value, and when t = 150, the gradient of
+delay function reaches a relative maximum value. Assuming
+the size of TS-OTFS frame is (M,N,M t) = (256, 8, 50) and
+the system bandwidth Bw = 100 MHz . Then the resulting
+maximum Doppler and delay jitter, which are deﬁned as
+the maximum variation of delay and Doppler parameters
+in the duration of one TS-OTFS frame ∆t = 25 µs, are
+|∆fd| = 0.09 Hz and |∆τrel| = 0.55 ns , respectively. In
+fact, when employing the subcarrier spacing ∆f = 480 kHz,
+the Doppler jitter is 2× 10−5% of subcarrier spacing, which
+is negligible for inter-carrier interference. Meanwhile, the
+delay jitter occupies only 5.5% of the sampling interval
+Ts = 1 /Bw = 1 × 10−8 s. Therefore, the spatial and
+temporal correlation of TSL channels in the DD domain can
+be guaranteed.
+Remark 1: The above analysis implies that the stability of
+TSLs in the DD domain can maintain in the one TS-OTFS
+frame since both the delay and Doppler jitters are negligible,
+and thus it determines that the DD domain signal processing
+of OTFS is effective in this case.
+With the above discussion in mind, we come to the conclu-
+sion that the CIR vectors display a common sparsity pattern
+across the time and spatial domain. On this basis, we propose
+to extend Eq. (17) to MMV to jointly process the received
+signal from multiple antennas and multiple TSs. Speciﬁcally,
+by collecting the received signal {ri
+TS,p}Ps
+p=1 from multiple
+Terminal 1's 
+CIR 
+Terminal 2's 
+CIR 
+Terminal 3's 
+CIR 
+1-st TS 2-nd TS 3-rd TS 
+Delay domain Delay domain 
+receive antennas 3
+TS,3,1 h
+3
+h 3
+TS,3,9 h
+3
+h
+1
+TS,1,1 h
+1
+h 1
+TS,1,9 h
+1
+h
+receive antennas 
+Delay domain 
+sP sP receive antennas sP
+Fig. 5. The illustration of the common sparsity of ˜Heﬀ
+TS resulting from the
+spatial and temporal correlations in the TSLs. As an example, we assume
+that K = 3 potential terminals access one LEO satellite, which is equipped
+with a (P s
+x,P s
+y ) = (3, 3) UPA. Besides, the dimension of Doppler domain
+for OTFS waveform is N = 2, and the maximum RToA and MPCs’ delay
+are L− 1 = 7 .
+antennas (i.e., different subscript p), we can obtain
+Ri
+TS = Ψ ˜Heﬀ−i
+TS + ˜Wi
+TS,∀i, (25)
+where Ri
+TS =
+[
+ri
+TS,1, ri
+TS,2,..., ri
+TS,Ps
+]
+∈ CG×Ps
+, ˜Hi
+TS =[
+˜heﬀ−i
+TS,1, ˜heﬀ−i
+TS,2,..., ˜heﬀ−i
+TS,Ps
+]
+∈ CKL×Ps
+, and ˜Wi
+TS =[˜wi
+TS,1, ˜wi
+TS,2,..., ˜wi
+TS,Ps
+]
+∈ CG×Ps
+. Moreover, by stack-
+ing the received signals from multiple adjacent TSs (i.e.,
+different superscript i), we can further obtain
+RTS = Ψ ˜Heﬀ
+TS + ˜WTS, (26)
+where RTS =
+[
+R(1)
+TS, R(2)
+TS,..., R(N+1)
+TS
+]
+∈ CG×Ps(N+1),
+˜Heﬀ
+TS =
+[
+˜Heﬀ−(1)
+TS , ˜Heﬀ−(2)
+TS ,..., ˜Heﬀ−(N+1)
+TS
+]
+∈ CKL×Ps(N+1), and ˜WTS =[
+˜W(1)
+TS, ˜W(2)
+TS,..., ˜W(N+1)
+TS
+]
+∈ CG×Ps(N+1). The common
+sparsity pattern of ˜Heﬀ
+TS is illustrated in Fig. 5.
+C. Joint ATI and Coarse CE Based on MMV-CS Theory
+Generally speaking, the dimension of non-ISI region G is
+expected to be as small as possible to reduce the TSs overhead,
+so that G could be usually far smaller than the dimension of
+˜Heﬀ
+TS. Nevertheless, based on Eq. (26), estimating the high-
+dimensional ˜Heﬀ
+TS from the low-dimensional non-ISI region
+is difﬁcult, and conventional LS and linear minimum mean
+square error (LMMSE) estimators would fail. Fortunately,
+the CS theory has proved that high-dimension signals can
+be accurately reconstructed by low-dimensional uncorrelated
+observations if the target signal is sparse or approximately
+sparse [47]. For the joint sparse signal recovery of Eq. (26),
+various signal recovery algorithms have been developed, which
+aim to exploit the inherent common sparstiy to jointly recover
+a set of sparse vectors for enhanced performance [47].
+We propose to utilize the simultaneous orthogonal match-
+ing pursuit (SOMP) algorithm [48] for fully exploiting the
+spatial-temporal joint sparsity of the CIR and the sparse
+trafﬁc behavior of terrestrial IoT terminals with relatively low
+
+=== PDF PAGE 10 ===
+10
+computational complexity, which is listed in the stage 1 part
+of Algorithm 1 . Speciﬁcally, line 3-line 7 heuristically ﬁnd
+the most correlated atom in each iteration by calculating the
+correlation coefﬁcients in step 3 and augment the support set of
+non-zero elements in line 4. According to the current support
+set, the locally optimal solution is calculated in line 5. Then
+the residual is updated in line 6 for the next iteration until the
+stop condition meets.
+The estimated support set of ˆ˜Heﬀ
+TS is denoted as I and the
+individual index of support set divided for each IoT terminal
+can be denoted as Ωk ={ωq
+k|ωq
+k∈I , (k− 1)L≤ωq
+k <kL},
+where ωq
+k is the q-th (1≤q≤| Ωk|c) element of the set Ωk.
+On the basis of the estimated support set and CIR vectors, a
+channel gain-based activity identiﬁcator [25] is proposed for
+ATI as follows
+ˆαk =
+
+
+
+1, 1
+P(N+1)
+∑
+p
+∑kL
+l=(k−1)L+1| ˆ˜Heﬀ
+TS[l,p]
+|2≥ξ
+0, 1
+P(N+1)
+∑
+p
+∑kL
+l=(k−1)L+1| ˆ˜Heﬀ
+TS[l,p]
+|2 <ξ
+,
+(27)
+where ξ = β max{ 1
+P(N+1)
+∑
+p
+∑kL
+l=(k−1)L+1| ˆ˜Heﬀ
+TS[l,p]
+|2,∀k}
+and β = 0.1 is the threshold factor 3. As a result, the ATS
+can be represented by ˆA ={k|ˆαk = 1, 1≤k≤K} and the
+cardinality of ˆA is denoted as ˆKa =| ˆA|c.
+D. CE Reﬁnement with Parametric Approach
+From the above discussion in Section IV-B and the channel
+model in Eq. (4), it can be observed that the separability, sta-
+bility, and sparsity of the DD domain channels maintain in the
+TSLs, which motivates us to leverage the parametric approach
+to acquire the accurate estimation of the DD domain channel
+parameters and further reﬁne the CE results. Speciﬁcally, the
+remanent RToA among different terminals and MPCs’ delay
+for each terminal’s TSL can be acquired from the index of
+support set of ˆ˜Heﬀ
+TS as4
+ˆℓq
+k =ωq
+k− (k− 1)L, k∈ ˆA, 1≤q≤| Ωk|c. (28)
+Besides, the acquired N + 1 sampled values of the time-
+varying CIR from N + 1 adjacent TSs can facilitate the
+super-resolution estimation of the Doppler shift. Speciﬁcally,
+we can use the one-dimensional estimating signal parameters
+via rotational invariance techniques (ESPRIT) algorithm [49],
+which is a class of harmonic analysis algorithms by exploiting
+the underlying rotational invariance among signal subspaces.
+For the convenience of the following Doppler estimation,
+we deﬁne a path-gain matrix ˆΥq∗
+k ∈ C(N+1)×Ps
+for the MPC
+with maximum energy as follows
+ˆΥq∗
+k = mat
+(
+ˆ˜Heﬀ
+TS
+[ωq∗
+k ,:]
+,P s,N + 1
+)T
+,∀k, (29)
+3If the channel gain of the k-th IoT terminal is decided to be above the
+thresholdξ, the k-th IoT terminal is declared to be active. And β = 0.1 is an
+empirical value to minimize the identiﬁcation error probability in Eq. (52).
+4Here, we no longer distinguish LoS and NLoS paths, and uniformly treat
+them as MPCs with different subscript q.
+Algorithm 1: Proposed two-stage successive ATI and
+CE
+Input: Measurement signals RTS and sensing matrix Ψ.
+Output: Estimated activity indicator ˆαk,∀k, the ATS ˆA, and the
+correspoding CIR ˆhk,p[κ,ℓ ], ˆhDD
+k,p [ℓ,υ ],k∈ ˆA,∀p;
+Stage 1 (Joint ATI and coarse CE)
+1: Initialize t = 1, the residual R0 = RTS, the index of support
+setI =∅, and deﬁne Tmax as the maximum number of
+iterations and termination threshold πth;
+2: repeat
+3: i∗ = arg max i=0,...,KL−1
+∑(N+1)P
+k=1 |⟨[Rt−1]:,k, ψi⟩|;
+4: I =I∪{ i∗};
+5: ˆHtemp
+TS = Ψ†
+[:,I]RTS;
+6: Rt = RTS− Ψ[:,I] ˆHtemp
+TS ;
+7: t =t + 1;
+8: until T >Tmax or∥Rt∥2
+F <PG (N + 1)πth
+9: ˆ˜Heﬀ
+TS[I,:] = ˆHtemp
+TS ;
+10: Compute the estimated indicator according to Eq. (27) and
+obtain the ATS ˆA;
+Stage 2 (CE reﬁnement)
+11: fork∈ ˆA do
+12: Compute the estimate of the RToA and MPCs’ delay
+according to Eq. (28);
+13: Estimate the Doppler shift according to Eq. (30)-(34);
+14: Compute the effective channel coefﬁcients according to Eq.
+(38);
+15: Reﬁne the results of CE by reconstructing CIR according to
+Eq. (39) and Eq. (40);
+16: end for
+where q∗ = arg max q∥ ˆ˜Heﬀ
+TS[ωq
+k,:]
+∥2
+2. In fact, each column
+vector of ˆΥq∗
+k is composed of CIR associated with multiple
+TSs, and its different column vectors originate from different
+receive antennas. For the CIR of different TSs, they are
+continuous observation samples for the same channel. While
+for the CIR of different receive antennas, the Doppler shift
+is approximately identical and thus they can be regarded as
+multiple snapshots to mitigate the effects of noise. The main
+steps of Doppler estimation based on the ESPRIT algorithm
+are detailed as follows.
+First of all, we divide two subarrays for each snapshot,
+which consist of CIR from the ﬁrst N TSs and the last N
+TSs, respectively, as
+x1
+k,p = ˆΥq∗
+k[1:N,p]
+, x2
+k,p = ˆΥq∗
+k[2:N+1,p]
+,∀k,p, (30)
+and their combination xk,p =
+[
+x1T
+k,p x2T
+k,p
+]T
+∈ C2N×1. In the
+presence of noise, the low rank property of autocorrelation
+matrix
+Rk
+xx =E
+[
+xk,pxH
+k,p
+]
+≈ 1
+P
+P∑
+p=1
+xk,pxH
+k,p, (31)
+is destroyed. To mitigate the impact of noise, the eigenvalue
+decomposition (EVD) is utilized to distinguish the signal
+subspace and noise subspace, and we take the minimum
+eigenvalue ˆσ2
+k as the estimate of the noise’s variance. As a
+result, the noise cancelled autocorrelation matrix ˆRk
+xx can be
+
+=== PDF PAGE 11 ===
+11
+calculated as
+ˆRk
+xx = Rk
+xx− ˆσ2
+kI, (32)
+Then, the subspace of subarray x1
+k,p and x2
+k,p can be obtained
+by performing EVD on ˆRk
+xx as
+ˆRk
+xx = ˆUk ˆΣk ˆUH
+k, (33)
+and the ﬁrst column of the eigenvector matrix ˆUs
+k can approx-
+imate their dominant signal subspace, i.e., e1
+k = ˆUs
+k[1:N,1]
+,
+e2
+k = ˆUs
+k[N+1:2N,1]
+. In fact, e1
+k and e2
+k are characterized by
+rotational invariance [49]. Therefore, based on the LS criterion,
+the estimated Doppler shift can be calculated by
+ˆυk = N
+2π arg(e1†
+ke2
+k). (34)
+Before proceeding with the estimation of channel coefﬁcients
+of the MPCs, we introduce a lemma as follows.
+Lemma 1: We assume that the support set of ˆ˜Heﬀ
+TS is
+estimated perfectly. The non-zero elements of the recoverd
+sparse CIR vector associated with the i-th TS and p-th receive
+antenna are deﬁned as ˆheﬀ−nz,i
+TS,p = ˆ˜Heﬀ
+TS[I,p+(i−1)Ps]
+∈ CQ×1,
+and the effective channel coefﬁcients of the LoS and NLoS
+paths are denoted as
+geﬀ−LoS
+k,p =
+√
+γkPk
+γk + 1gLoS
+k gABF−LoS
+k
+[
+vR(θzen
+k ,θ azi
+k )
+]
+p, (35)
+geﬀ−q
+k,p =
+√
+Pk
+γk + 1gq
+kgABF−q
+k
+[
+vR(θzen
+k ,θ azi
+k )
+]
+p. (36)
+Their relationship can be written as
+ˆheﬀ−nz,i
+TS,p = Ψ†
+[:,I]Γηi−1⊙ geﬀ
+p + Ψ†
+[:,I]wi
+TS,p, (37)
+where Γ and ηi−1are parameterized by the TSs, Doppler shift,
+RToA, and MPCs’ delay, andgeﬀ
+p collects the effective channel
+coefﬁcients of all active terminals associated with the p-th
+receive antenna. Their speciﬁc expression can refer to the
+Appendix.
+Proof 1: Please refer to Appendix.
+After reconstructing ˆΓ and ˆηi−1 with the estimated Doppler
+shift ˆυk, RToA, and MPCs’ delay ˆℓq
+k, the effective channel
+coefﬁcients related to the p-th receive antenna can be mathe-
+matically calculated in line with the Lemma 1 as
+ˆgeﬀ
+p = 1
+N + 1
+N+1∑
+i=1
+[
+(Ψ†
+[:,I]
+ˆΓ)−1ˆheﬀ−nz,i
+TS,p ⊙ 1
+ˆηi−1
+]
+. (38)
+Up to now, the dominated DD domain channel’s parameters
+have been acquired, and the results of CE reﬁnement can be
+expressed as
+ˆheﬀ−DD
+k,p [ℓ,υ ] =
+|Ωk|c∑
+q=1
+ˆgeﬀ−q
+k,p δ[ℓ− ˆℓq
+k]δ[υ− ˆυk],∀k,p, (39)
+where ˆgeﬀ−q
+k,p is the element of ˆgeﬀ
+p related to the q-th path and
+the k-th terminal. Besides, the estimate of time-varying CIR
+can be represented by
+ˆheﬀ
+k,p[κ,ℓ ] =
+|Ωk|c∑
+q=1
+ˆgeﬀ−q
+k,p ej2π
+ˆυk(κ−ˆℓq
+k)
+N(M+Mt)δ[ℓ− ˆℓq
+k],∀k,p. (40)
+Remark 2: In fact, ignoring the noise term, Eq. (37) can be
+rewritten as
+ˆheﬀ−nz,i
+TS,p ≈ ζ⊙ η(i,{υk}k∈A), (41)
+where ζ = Ψ†
+[:,I]Γgeﬀ
+p ∈ CQ×1 is a Doppler-invariant and
+i-invariant vector, and η is a function of i and Doppler shift
+{υk}k∈A. The linear relationship between ζ and η ensures
+that the proposed Doppler shift estimation method is immune
+from the uncertainty of ζ, i.e., the approximation error in Eq.
+(17), which also guarantees the effectiveness of the subsequent
+channel coefﬁcients estimation.
+So far, we have ﬁnished the discussion of the proposed
+two-stage successive ATI and CE scheme, and its complete
+procedure is listed in Algorithm 1.
+E. Complexity Analysis
+The computational complexity of the proposed two-stage
+successive ATI and CE scheme in Algorithm 1 mainly de-
+pends on the following operations:
+• SOMP (line 1-9) : The matrix-vector multiplications in-
+volved in each iteration have the complexity on the or-
+der ofO
+(
+2G (N + 1)PsKL +KL (N + 1)Ps + 2t2G
++t3 +tG (N + 1)Ps)
+, where t is the iteration index.
+• Activity identiﬁcator (line 10): The cost to identify the
+active terminals is O (Ps (N + 1)KL).
+• Doppler estimation (line 13) : The compu-
+tational complexity of Doppler estimation is
+O
+((
+2NPs + (2N)3 +N
+)ˆKa
+)
+.
+• Effective channel coefﬁcients estimation (line 14): The
+computational complexity involved mainly results from
+LS solution, where it has the complexity on the order
+ofO
+(
+Ps
+[(∑
+k∈ ˆA 1 + ˆQk
+)2
+G +
+(∑
+k∈ ˆA 1 + ˆQk
+)3
++
+2
+(∑
+k∈ ˆA 1 + ˆQk
+)])
+.
+Obviously the SOMP implemented in Algorithm 1 con-
+tributes to most of the computational complexity. In compari-
+son of the proposed algorithm, the complexity of the TDSBL-
+FM algorithm [50] is cubic to the pilot length and quadratic
+to number of potential terminals and also requires a good
+deal of iterations to converge, which is prohibitive high for
+large-scale system. Meanwhile, the proposed scheme has the
+same order of computational complexity as the 3D-SOMP in
+[35], but requires fewer memory resources and computing time
+overhead without vectorization operation.
+V. S IGNAL DETECTION
+Based on the above ATI and CE results, we develop a LS-
+based parallel time domain multi-user SD for detecting the
+OTFS signals with relatively low computational complexity in
+this section.
+
+=== PDF PAGE 12 ===
+12
+A. Received Signal Preprocessing
+As illustrated in Fig. 3, on one hand, the received OTFS
+payload data symbols over the time dispersive channels would
+be contaminated by trailing of the preceding TS; on the other
+hand, the data symbols can also contaminate the following TS
+part. These can lead to severe ISI. Fortunately, TSs are known
+by the transceiver. With the estimated CSI, the aforementioned
+ISI can be eliminated to facilitate the following SD. The details
+of the preprocessing of the received signals before SD are
+presented as follows.
+First, Eq. (10) can be rewritten as a vector form as
+rp =
+K∑
+k=1
+αk
+√
+Pk
+(
+Πeﬀ−LoS
+k,p +
+Qk∑
+q=1
+Πeﬀ−q
+k,p
+)
+  
+Πeff
+k,p
+sk + wp,∀p,
+(42)
+where Πeﬀ−LoS
+k,p (also Πeﬀ−q
+k,p ) ∈
+C(MN +MtN+Mt)×(MN +MtN+Mt) consists of elements
+of time-varying CIR in Eq. (8), and its (m,n )-th element is
+deﬁned as
+Πeﬀ−LoS
+k,p[m,n]
+=
+{
+heﬀ
+k,p[m− 1,m−n], m −n =ℓLoS
+k
+0, otherwise ,
+(43)
+and Πeﬀ−q
+k,p shares a similar expression. Consequently, the ISI
+in the OTFS payload data symbol caused by the trailing of the
+preceding TS can be estimated as
+ˆrISI
+p =
+K∑
+k=1
+ˆαk ˆΠeﬀ
+k,p˚sk,∀p, (44)
+where ˚sk consists of TSs and zero sequences, i.e.,
+˚sk =
+[
+cT
+k, 0T
+M×1, cT
+k, 0T
+M×1,..., cT
+k, 0T
+M×1, cT
+k
+]T
+∈
+C(MtN+MN +Mt)×1, and ˆΠeﬀ
+k,p is the estimate of Πeﬀ
+k,p
+with its elements padded by the estimated CIR in Eq. (40).
+Besides, to form the cyclic convolution relationship be-
+tween the OTFS data signal and the CIR like traditional
+OFDM/OFDM-based OTFS system [38], the data trailing
+(cause the ISI to the following TS) will be superposed onto
+the header of each OTFS data symbol region. In fact, such a
+data trailing can be acquired and shifted by
+ˆrtra
+p = RT
+t (IN⊗ Rs)Rt(rp− rISI
+p ),∀p, (45)
+where Rt =
+[
+0(M+Mt)N×Mt I(M+Mt)N
+]
+∈
+C(M+Mt)N×(MN +MtN+Mt) and the (m,n )-th element
+of Rs∈ C(M+Mt)×(M+Mt) is deﬁned as
+Rs[m,n] =
+{
+1 m−n =M, n∈ [1,Mt]
+0 otherwise . (46)
+Therefore, the preprocessed OTFS payload data symbols ˆrp∈
+CMN×1 can be ﬁnally acquired after removing the TSs as
+ˆrp = (IN⊗ Rr)Rt(rp− ˆrISI
+p + ˆrtra
+p ),∀p, (47)
+where Rr = [IM 0M×Mt]∈ CM×(M+Mt).
+B. LS-Based Parallel Time Domain Multi-User SD
+It has been shown that with the fractional Doppler shift,
+the TF domain and DD domain effective channel matrices
+could be not very sparse due to the Doppler spreading with the
+limited Doppler resolution, while the sparsity of time domain
+channel remains to hold [39]. Therefore, we are motivated to
+perform multi-user SD in the time domain to exploit its sparse
+pattern for lower computational complexity. In fact, based on
+Eq. (42) and Eq. (44), we have
+rp− rISI
+p =
+∑
+k∈ ˆA
+ˆΠeﬀ
+k,p (sk−˚sk) +
+∑
+k∈ ˆA
+(√
+PkΠeﬀ
+k,p− ˆΠeﬀ
+k,p
+)
+sk
++
+∑
+k∈(A− ˆA)
+√
+PkΠeﬀ
+k,psk + wp =
+∑
+k∈ ˆA
+ˆΠeﬀ
+k,p (sk−˚sk) + ˆwp,
+(48)
+where ˆwp = ∑
+k∈ ˆA
+(√PkΠeﬀ
+k,p− ˆΠeﬀ
+k,p
+)
+sk +∑
+k∈(A− ˆA)
+√PkΠeﬀ
+k,psk + wp is the effective noise vector
+including errors in the signal preprocessing and AWGN.
+Furthermore, by stacking Eq. (45), Eq. (47), and Eq. (48), we
+have
+ˆrp =
+∑
+k∈ ˆA
+[IN⊗ Rr(IM+Mt + Rs)] Rt
+(
+rp− ˆrISI
+p
+)
+=
+∑
+k∈ ˆA
+[IN⊗ Rr(IM+Mt + Rs)] Rt ˆΠeﬀ
+k,pRT
+t (IN⊗ At)˜sk
++ [IN⊗ Rr(IM+Mt + Rs)] Rt ˆwp, (49)
+where At =
+[
+0T
+M×Mt IT
+M
+]T
+∈ C(M+Mt)×M .
+With the aid of the TSs and the preprocessing aforemen-
+tioned, the ISI between adjacent OTFS data symbols can be
+avoided. Hence, the SD in the time domain can be performed
+in parallel for N OTFS payload data symbols, which can
+signiﬁcantly reduce the computational complexity. As a result,
+Eq. (49) can be further decomposed into
+ˆri
+p =
+∑
+k∈ ˆA
+Rr(IM+Mt + Rs) ˆΠeﬀ−i
+k,p At
+  
+ˆUi
+p,k
+˜si
+k + ˆwi
+p,∀i,p, (50)
+where ˆΠeﬀ−i
+k,p =
+(
+Rt ˆΠeﬀ
+k,pRT
+t
+)
+[(i−1)(M+Mt)+1:i(M+Mt)]
+∈
+C(M+Mt)×(M+Mt), ˆri
+p = ˆrp[(i−1)M+1:iM]∈ CM×1, and ˆwi
+p∈
+CM×1 is the corresponding noise vector.
+Moreover, we intend to extend Eq. (50) to jointly process
+the received signal from Ps receive antennas as
+ˆri = ˆUi˜si + ˆwi,∀i, (51)
+where ˆUi ∈ CPsM× ˆKaM is a block matrix and its (p,k )-
+th submatrix equals to ˆUi
+p,k, ˆri =
+[
+ˆriT
+1 , ˆriT
+2 ,..., ˆriT
+Ps
+]T
+∈
+CMPs×1, ˜si =
+[
+˜siT
+k1, ˜siT
+k2,..., ˜siT
+k ˆKa
+]T
+∈ CM ˆKa×1,
+k1,k 2,...,k ˆKa
+are the elements of the set ˆA, and ˆwi denotes
+the noise vectors of different receive antennas.
+Therefore, given P ≥ ˆKa, the time domain OTFS signals
+of different active terminals can be detected by calculating
+the LS solution of Eq. (51). Beneﬁtting from the sparsity of
+TSLs, ˆUi displays favorable sparse pattern, where we can
+
+=== PDF PAGE 13 ===
+13
+TABLE III: Simulation parameters
+Contents Parameters Values
+System
+Carrier frequency 10 GHz
+Subcarrier spacing 480 KHz
+Bandwidth 122.88 MHz
+OTFS data size(M,N) (256,8)
+Modulation scheme QPSK
+Satellite’s UPA(Psx,Psy) (32,32)
+Terminals’ UPA(Ptx,Pty) (32,32)
+Angular spacing(∆z,∆a) (14.4◦,14.3◦)
+TSL
+Orbit altitude of LEO satellite 500 km
+Velocity of LEO satellite 7.58 km/s
+Velocity of terminals 0∼10 m/s
+Service coverage radius 494.8 km
+Zenith angleθzenk [−44.7◦,44.7◦]
+Azimuth angleθazik [0,360◦)
+Remant RToAτLoSk and
+MPC’s delayτq
+k range 0∼0.52µs
+Doppler shiftνLoSk (νq
+k) range 0∼178.2 KHz
+further utilize iterative method, such as LS QR-factorization
+(LSQR) [51], to facilitate the approximate solution of sparse
+linear equations with low computational complexity. In this
+case, the computational complexity of Eq. (51) solution dra-
+matically reduces fromO
+(
+2PsM3 ˆK2
+a + ˆK3
+aM3 + ˆKaM
+)
+to
+O (2PsMQT ), where T is the required number of iterations
+for LSQR algorithm.
+VI. P ERFORMANCE EVALUATION
+A. Simulation Setup
+In this section, we carry out extensive simulation investiga-
+tions to verify the effectiveness of our proposed scheme under
+different parameter conﬁgurations, and compare it with the
+state-of-the-art solutions. First of all, we deﬁne the identiﬁca-
+tion error probability Pe for ATI as
+Pe =
+K∑
+k=1
+|ˆαk−αk|. (52)
+Besides, the normalized mean square error (NMSE) for CE is
+considered as
+NMSE =
+∑K
+k=1
+∑P
+p=1||ˆαk ˆΠeﬀ
+k,p−αk
+√PkΠeﬀ
+k,p||2
+F
+∑K
+k=1
+∑P
+p=1||αk
+√
+PkΠeﬀ
+k,p||2
+F
+, (53)
+and the uncoded bit error rate (BER) for SD is considered as
+BER = EaNMMb +Ba
+KaNMMb
+, (54)
+whereEa is the number of falsely identiﬁed terminals and Mb
+is the modulation order. Besides, Ba is the total error bits for
+the DD domain payload data of the correctly identiﬁed active
+terminals, i.e., error bits between ˆXDD
+k and XDD
+k ,k∈ (A∩ ˆA).
+For the massive MIMO based massive connectivity in
+IoT, the performance of payload data demodulation highly
+depends on the channel statistics of the simultaneously served
+terminals. As for the LEO satellite-based IoT, the channel
+characteristics are mainly determined by the simultaneously
+served terminals’ AoA observed at the satellite receiver, i.e.,
+θzen
+k and θazi
+k ,∀k ∈ A [40]. Therefore, channels of IoT
+terminals with minor AoA differences would be highly corre-
+lated, which inevitably leads the multi-user MIMO channel
+matrix to be ill-conditioned with considerably performance
+deterioration if they are allocated with the same TF or DD
+resources. To this end, we adopt a user retransmission strategy
+to eliminate interference in the presence of correlated channels.
+Speciﬁcally, when the LEO satellite identiﬁes that the zenith
+and azimuth angles of terminals meet
+|θzen
+k1 −θzen
+k2|< ∆z,|θazi
+k1 −θazi
+k2|< ∆a, (55)
+it broadcasts retransmission scheduling signaling for one of the
+collided terminals k∗ =k1 (k2) to retransmit its signal, where
+k1,k 2∈A and k1̸=k2, ∆z and ∆e are the preset minimum
+zenith and azimuth spacing to avoid the MIMO channel matrix
+to be ill-conditioned [40]. After receiving the retransmission
+signal r2
+p,∀p, it is necessary for the LEO satellite to reestimate
+the CSI with the TSs, since the channel state may change or
+channel resource allocation could vary in the retansmission
+stage. Then, the LEO satellite could demodulate the payload
+data of the retransmission signal with the estimated CSI as
+ˆ˜Sk∗ as Eq. (11). In this way, the LEO satellite can eliminate
+the interference resulting from terminal k∗ for the ﬁrst stage
+received signal rp as
+r1−2
+p = rp− ˆΠ
+eﬀ
+k∗,pˆsk∗, (56)
+where ˆΠ
+eﬀ
+k∗,p is the estimated CSI of terminal k∗ in the ﬁrst
+stage, ˆsk∗ =
+[
+cT
+k∗, ˜s1T
+k∗, cT
+k∗, ˜s2T
+k∗,..., cT
+k∗,
+˜sNT
+k∗ , cT
+k∗
+]T
+∈ C(MtN+MN +Mt)×1 is the reconstructed trans-
+mit signal of terminal k∗. Following the procedures in Eq.
+(42)-(51), the satellite can demodulate the payload data for
+other terminals with r1−2
+p .
+Additionally, to meet the mutual coherence property (MCP)
+[47] of the sensing matrix for reliable recovery of sparse
+vectors in Eq. (26), we assume the time domain TS associated
+with the k-th terminal is generated from a standard complex
+Gaussian distribution, i.e., ck∼CN (0Mt×1, IMt). The system
+topology is set as Fig. 1. Within the coverage radius of
+494.8 km, the number of potential and active IoT terminals
+served by one LEO satellite is ﬁxed asK = 100 andKa = 10,
+respectively. The zenith and azimuth angles of terminals are
+randomly distributed in the range of [−44.7◦, 44.7◦] and
+[0◦, 360◦), and their locations can be simulated accordingly.
+Besides, their velocity is randomly distributed in the range
+of 0 ∼ 10 m/s. Other detailed system parameters for the
+following simulations are summarized in Table III. Meanwhile,
+the maximum number of iterations Tmax in Algorithm 1 is set
+to 30, and the termination threshold is set as πth = 1.05σ2
+w,
+where the variance σ2
+w of AWGN at the receiver is assumed
+to be the a prior information for the LEO satellite.
+B. Link budget
+According to the general formula for link budget derived
+from [9], which includes all the gains and losses in the
+
+=== PDF PAGE 14 ===
+14
+TABLE IV. Link budget for single terminal [52]
+Case 1 Case 2 Case 3
+Terminal zenith angle 0◦ 25◦ 44.7◦
+Frequency [GHz] 10 10 10
+Bandwidth [MHz] 122.88 [7]122.88 [7]122.88 [7]
+Tx transmit power [dBm] 40 40 40
+Tx beamforming gain [dB] 40 40 40
+RxGr/T[dB/K] -4.62 [53]-4.62 [53]-4.62 [53]
+Free space path loss [dB]167.25 168.10 170.21
+Atmospheric loss [dB] 0.07 0.07 0.07
+Shadowing margin [dB] 3 3 3
+Scintillation loss [dB] 2.2 2.2 2.2
+Polarization loss [dB] 0 0 0
+Additional losses [dB] 0 0 0
+Additional margin [dB] 6 6 6
+SNR for single terminal [dB]14.59 13.73 11.62
+propagation medium from transmitter to receiver, the received
+signal-to-noise ratio (SNR) for single terminal case can be
+computed as follows
+SNRSU[dB] =Pk[dBW] +Gt[dB] +Gr/T [dB]
+−kB[dBW/K/Hz]− PLFS[dB]− PLA[dB]− PLS[dB]
+− PLAD[dB]− PLMA[dB]− 10 log10(Bw[Hz]),
+(57)
+where Gt is the beamforming gain for the terminal, Gr and
+T are the receive antenna gain and the noise temperature,
+respectively, andkB =−228.6 dBW/K/Hz is the Boltzmann
+constant, PLFS represents the free space propagation loss, PLA
+corresponds to atmospheric gas losses, PL S is a shadowing
+margin, PL AD denotes some underlying additional losses
+due to the scintillation phenomena, PL MA is the additional
+reserved margin, and Bw is the channel bandwidth. TABLE
+IV illustrates the link budget for different conﬁgurations in the
+uplink RA. Unless otherwise mentioned, the transmit power
+is set to Pk = 40 dBm for all terminals in the following
+simulations.
+C. Performance under LoS TSL
+First of all, we investigate the performance of ATI, CE, and
+SD under LoS TSL. As a ﬂedgling concept, there has been
+little work dedicated to the ﬁeld of ATI, CE, and multi-user
+SD in the framework of GF-NOMA-OTFS. We take one of
+the most representative schemes proposed in [35], [50] as the
+Benchmark 1 for comparison, which embeds the guard and
+non-orthogonal pilot symbols in the DD domain to facilitate
+uplink ATI and CE by exploring the sparsity of channel in
+the delay-Doppler-angle domain. The size of embedded DD
+domain pilots along the Doppler dimension and the delay
+dimension are denoted as Nν and Mτ , respectively, and N
+is ﬁxed as N = Nν. Besides, the size of embedded DD
+domain guard symbols along the Doppler dimension and the
+delay dimension, which are utilized to eliminate ISI, is set as
+Ng = 0 and Mg = L− 1, respectively [34, Fig. 34]. The
+problem formulation and the adopted 3D-SOMP algorithm
+for comparison can be referred to [35], [50], respectively.
+Furthermore, we set Benchmark 2, where the virtual sampling
+TABLE V: Transmission efﬁciency comparison between the
+benchmark and the proposed scheme
+Schemes Benchmark 1 and 2 Proposed
+Cyclic preﬁx
+(ISI region)
+N(L−1) (N+ 1)(L−1)
+256 256 256 256 288 288 288 288
+Guard
+Interval
+2N(L−1)
+512 512 512 512
+Effective
+Pilot
+MτNν(Nν=N) G(N+ 1)
+160 240 320 400 180 270 360 450
+Frame size (M+L−1)N Mt(N+ 1) +MN
+2304 2304 2304 2304 2516 2606 2696 2786
+Transmission
+efﬁceny
+MN−2N(L−1)−MτNν
+(M+L−1)N M(M+L−1)N2
+[Mt(N+1)+MN]2
+59.72%56.25%52.78%49.31%74.54%69.48%64.92%60.79%
+grid in the DD space [37] is attached for the Benchmark 1 for
+further comparison, and its virtual sampling grid size in the
+Doppler domain is ﬁxed as N′ = 2N,M′ =M. In additional,
+the GF-NOMA scheme employing OFDM waveform without
+Doppler compensation, is considered for comparison as well
+[25]. Finally, the oracle-LS estimator with known ATS is used
+as performance upper bound.
+Fig. 6 provides Pe, NMSE, and BER performance under
+effective different pilot length, where the effective pilot length
+is deﬁned as follows: non-ISI region dimension G for pro-
+posed scheme, DD domain pilots along delay dimension Mτ
+for Benchmark 1 and 2 [35], and time slots dimension G
+occupied by pilots for GF-NOMA scheme employing OFDM
+waveform [25]. It can be observed from Fig. 6 that, GF-
+NOMA scheme employing OFDM waveform suffers serious
+performance degradation confronted with severe Doppler ef-
+fect when complicated compensation technique is absent. In
+contrast, the GF-NOMA-OTFS paradigms enjoy performance
+superiority owing to their Doppler robustness provided by
+OTFS. It’s noteworthy that the proposed scheme can further
+provide noticable performance gain over the Benchmark 1.
+To ﬁgure out the rationality behind this phenomenon, the
+result of Benchmark 2 is presented. As Fig. 6 exhibits, the
+superiority of Benchmark 2 over Benchmark 1 is self-evident,
+and it indicates that it’s the low-resolution of Doppler domain
+that severely holds back the performance of Benchmark 1,
+especially when the small size of Doppler dimension N is
+adopted. However, oversize N is prohibitive in the LEO
+satellite system for the intolerable computational complexity
+and signal processing latency. And more importantly, the
+quasi-static property of TSLs in the DD domain could be
+destroyed as N increases. Therefore, the proposed scheme
+with the Doppler domain super-resolution enabled by the time
+domain TSs and parametric CE reﬁnement is rewarding in
+this kind of harsh channel conditions. Beisides, the NMSE
+and BER performance of the proposed method is very close
+to oracle-LS when the dimension of effective pilot overheads
+G≥ 40, which manifests that the approximation error of Eq.
+(17) only leads to a slight increase of TSs overhead to ensure
+the performance of sparse signal recovery. Meanwhile, the in-
+disputable superiority of the proposed method even with lower
+TSs overhead demonstrates that the impact of approximation
+error on the following CE reﬁnement is negligible in contrast
+to the low-resolution of Doppler domain of the Benchmark 1
+
+=== PDF PAGE 15 ===
+15
+20 25 30 35 40 45 50 10 -6 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+(a)
+20 25 30 35 40 45 50 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+NMSE (b)
+20 25 30 35 40 45 50 
+Effective pilot length 
+10 -6 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+BER (c)
+Fig. 6: Performance comparison under different pilot length: (a) Pe; (b) NMSE; (c) BER.
+20 25 30 35 40 45 50 10 -7 
+10 -6 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+(a)
+20 25 30 35 40 45 50 10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+NMSE (b)
+20 25 30 35 40 45 50 10 -7 
+10 -6 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+BER (c)
+Fig. 7: Performance comparison under different transmit power Pk: (a) Pe; (b) NMSE; (c) BER.
+0 2 4 6 8 10 12 14 16 18 20 
+10 -6 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+(a)
+2 4 6 8 10 12 14 16 18 20 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+NMSE (b)
+2 4 6 8 10 12 14 16 18 20 
+10 -6 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+BER (c)
+Fig. 8: Performance under different number of active terminals Ka: (a) Pe; (b) NMSE; (c) BER.
+
+=== PDF PAGE 16 ===
+16
+30 35 40 45 50 55 60 65 70 75 80 
+10 -7 
+10 -6 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+(a)
+30 35 40 45 50 55 60 65 70 75 80 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0 (b)
+30 35 40 45 50 55 60 65 70 75 80 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0 (c)
+Fig. 9: Performance under different channel conditions: (a) Pe; (b) NMSE; (c) BER.
+and Benchmark 2.
+Furthermore, to clearly present the percentage of the re-
+duced pilot overhead compared to Benchmark, we compare
+the transmission efﬁciency between the proposed scheme with
+Benchmark 1 and 2 as shown in Table V, which is deﬁned
+as the percentage of data symbols in the whole data frame.
+Therefore, we can conclude that the proposed scheme can
+reduce the pilot overhead while achieving better performance.
+Fig. 7 exhibits Pe, NMSE, and BER performance under
+different transmit power Pk. It can be observed that the
+proposed scheme can achieve better Pe, NMSE, and BER
+performance while keeping the pilot overhead to a low level
+in the almost whole regime of transmit power (20-50 dBm)
+in contrast to Benchmark 1 and Benchmark 2. This can be
+interpreted that in the range of low transmit power, namely low
+SNR, the effective utilization of both the spatial and temporal
+correlations in the TSLs considerably promotes the accuracy
+of sparse signal recovery, and as a result, our proposed scheme
+outperforms the benchmarks. Moreover, in the range of high
+transmit power, namely high SNR, the BER performance
+is mainly dominated by the CE performance. In spite of
+the approximation error, our proposed scheme overcomes the
+problem of low-resolution in the Doppler domain and achieves
+a more satisfactory performance.
+Moreover, since the trafﬁc of mMTC is sporadic, the number
+of active terminals could be continuously varying. Besides,
+the number of active terminals Ka is likely to get larger
+in massive MTC. In order to show the applicability of our
+proposed scheme in various IoT applications, we investigate
+Pe, NMSE, and BER performance under different number of
+active terminals Ka. The numerical results are illustrated in
+Fig. 8. On the one hand, when the number of active terminals
+Ka = 0 , Pe degrades into the false alarming probability
+resulting from noise since there is no signal sent by the IoT
+terminals. On the other hand, when Ka > 0, the performance
+of ATI, CE, and SD exhibit a similar deteriorating trend with
+an increasing number of active IoT terminals trying to access
+the LEO satellite in the same DD resources. Nevertheless,
+when appropriate TS overheads are employed, it could support
+a wide range of active terminals with tolerable performance
+losses. For instance, when G = 50 , the performance of Pe,
+NMSE, and BER could still hold the superiority to −30 dB,
+−20 dB, and−30 dB, respectively, when the number of active
+terminal varies from 2 to 20.
+D. Performance under Different Channel Conditions
+To further demonstrate the robustness of the proposed
+method, we investigate its performance under different TSL
+conditions. Fig. 9 displays Pe, NMSE, and BER performance
+with the variation of MPCs, while the Rician factor is ﬁxed
+at γk = 8 dB,∀k. It can be observed that with the increase of
+MPCs, there is a slight rise of the effective pilot overheads to
+guarantee constant performance. This can be interpreted that
+the increase of MPCs leads to more observations to recover the
+increasing non-zero elements of sparse CIR vectors. In fact,
+despite the fact that the performance of NMSE deteriorates
+at a relatively rapid rate, the performance of Pe and BER
+degrades sluggishly. It veriﬁes the system performance is
+mainly determined by the accuracy of estimation of the LoS
+path and those low-energy NLoS paths have negligible impact
+on the system performance. Besides, it is noteworthy that the
+increase of MPCs could contribute to the enhancement of ATI,
+which could be treated as a diversity gain.
+VII. C ONCLUSION
+This paper investigates an effective RA paradigm for ac-
+commodating massive IoT access based on LEO satellites.
+Speciﬁcally, we ﬁrst propose to apply the GF-NOMA-OTFS
+scheme to LEO satellite-based IoT for mitigating the access
+scheduling overheads and latency, and combating the severe
+Doppler effect of TSLs. On this basis, to handle the chal-
+lenging problem of ATI, CE, and SD, we further develop
+a TS-OTFS transmission scheme and a two-stage successive
+ATI and CE method. At the ﬁrst stage, the time domain TSs
+facilitate us to leverage the trafﬁc sparsity of IoT terminals
+and the sparse CIR to jointly perform ATI and coarse CE.
+Furthermore, a parametric approach is introduced to reﬁne
+the CE performance based on the sparsity of TSLs in the
+DD domain. With the results of ATI and CE, we are further
+motivated to propose a time-domain parallel multi-user SD
+with relatively low computational complexity to circumvent
+the channel spreading in the DD or TF domain. Simulation
+
+=== PDF PAGE 17 ===
+17
+results demonstrate the effectiveness and superiority of our
+proposed paradigm particularly for LEO satellite-based mas-
+sive access.
+APPENDIX
+PROOF OF LEMMA 1
+In fact, under the assumption that the support set of ˆ˜Heﬀ
+TS
+is perfectly recovered, the non-zero elements ˆheﬀ−nz,i
+TS,p of
+ˆ˜Heﬀ
+TS[:,p+(i−1)P]
+can be derived from
+ˆheﬀ−nz,i
+TS,p = Ψ†
+[:,I]ri
+TS,p. (58)
+From Eq. (14), it can be further written as Eq. (59), where
+ψLoS
+k = Ψk[:,ℓLoS
+k +1]
+and ψq
+k = Ψk[:,ℓq
+k+1]. Ignoring the noise
+term, (59) can be further approximate to the vector form as
+Eq. (60). According to the CIR model in Eq. (8) and Eq.
+(35), Eq. (60) can be further expressed as Eq. (61). Finally,
+by extracting the effective channel coefﬁcients, Eq. (61) can
+be decomposed into Eq. (62). Therefore, the mathematical
+relationship between ˆheﬀ−nz,i
+TS,p and the effective channel coef-
+ﬁcients can be represented by
+ˆheﬀ−nz,i
+TS,p = Ψ†
+[:,I]
+∑
+k∈A
+Γkηi−1
+k ⊙ geﬀ
+k,p + Ψ†
+[:,I]wi
+TS,p. (63)
+Furthermore, by collecting the vectors and matrices with
+different subscripts k, Eq. (63) can be vectorized to
+ˆheﬀ−nz,i
+TS,p = Ψ†
+[:,I]Γηi−1⊙ geﬀ
+p + Ψ†
+[:,I]wi
+TS,p, (64)
+where Γ = [ Γk1, Γk2,..., ΓKa] ∈ CG×Q, ηi−1 =[
+ηi−1T
+k1
+, ηi−1T
+k2
+,..., ηi−1T
+kKa
+]T
+∈ CQ×1, and geﬀ
+p =
+[
+geﬀT
+k1,p, geﬀT
+k2,p,..., geﬀT
+kKa,p
+]T
+∈ CQ×1 with k1,k 1,...,k Ka ∈
+A.
+It’s clear that ˆheﬀ−nz,i
+TS,p and geﬀ
+p have linear relationship.
+Since Γ and ηi−1 can be reconstructed with the estimated
+Doppler shift, RToA and MPCs’ delay, geﬀ
+p can be calculated
+mathematically based on the LS criterion according to Eq. (64)
+as well. This completes the proof of Lemma 1.
+REFERENCES
+[1] X. Zhou and Z. Gao, “Joint active user detection and channel estimation
+for grant-free NOMA-OTFS in LEO constellation Internet-of-Things,”
+in Proc. IEEE/CIC Int. Conf. Commun. China (ICCC) , Xiamen, Jul.
+2021, pp. 735-740.
+[2] L. Chettri and R. Bera, “A comprehensive survey on Internet of Things
+(IoT) toward 5G wireless systems,” IEEE Internet Things J. , vol. 7, no.
+1, pp. 16-32, Jan. 2020.
+[3] F. Guo, F. R. Yu, H. Zhang, X. Li, H. Ji and V . C. M. Leung, “Enabling
+massive IoT toward 6G: A comprehensive survey,”IEEE Internet Things
+J., vol. 8, no. 15, pp. 11891-11915, Aug. 2021.
+[4] S. Liu et al., “LEO satellite constellations for 5G and beyond: How will
+they reshape vertical domains?,” IEEE Commun. Mag. , vol. 59, no. 7,
+pp. 30-36, Jul. 2021.
+[5] O. Kodheli et al. , “Satellite communications in the new space era: A
+survey and future challenges,” IEEE Commun. Surveys Tuts. , vol. 23,
+no. 1, pp. 70-109, 1st Quart. 2021.
+[6] M. Centenaro, C.. Costa, F. Granelli, C. Sacchi, L. Vangelista, “A survey
+on technologies, standards and open challenges in satellite IoT”, IEEE
+Commun. Surveys Tuts., vol. 23, no. 3, pp. 1693-1720, 2021.
+[7] K. Liolis et al. , “Use cases and scenarios of 5G integrated
+satellite-terrestrial networks for enhanced mobile broadband: The
+SaT5G approach,” Int. J. Satellite Commun. Netw. , vol. 37, no. 2,
+pp. 91–112, 2019. [Online]. Available: https://onlinelibrary.wiley.com/
+doi/abs/10.1002/sat.1245.
+[8] O. Kodheli, N. Maturo, S. Chatzinotas, S. Andrenacci and F. Zimmer,
+“NB-IoT via LEO satellites: An efﬁcient resource allocation strategy
+for uplink data transmission,” IEEE Internet Things J. , vol. 9, no. 7, pp.
+5094-5107, Apr. 2022.
+[9] H. Chougrani, S. Kisseleff, W. A. Martins and S. Chatzinotas, “NB-IoT
+Random Access for Non-Terrestrial Networks: Preamble Detection and
+Uplink Synchronization,” IEEE Internet Things J., early access, Oct. 27,
+2021, doi: 10.1109/JIOT.2021.3123376.
+[10] C. Bockelmann, N. Pratas, H. Nikopour, K. Au, T. Svensson, C.
+Stefanovic, P. Popovski, and A. Dekorsy, “Massive machine-type com-
+munications in 5G: Physical and MAC-layer solutions,” IEEE Commun.
+Mag., vol. 54, no. 9, pp. 59-65, Sept. 2016.
+[11] M. Hasan, E. Hossain, and D. Niyato, “Random access for machineto-
+machine communication in LTE-advanced networks: Issues and ap-
+proaches,” IEEE Commun. Mag. , vol. 51, no. 6, pp. 86–93, Jun. 2013.
+[12] R. De Gaudenzi, O. Del Rio Herrero, G. Gallinaro, S. Cioni, and P.-
+D. Arapoglou, “Random access schemes for satellite networks, from
+VSAT to M2M: A survey,” Int. J. Satellite Commun. Netw. , vol.
+36, no. 1, pp. 66–107, 2018. [Online]. Available: https:// onlineli-
+brary.wiley.com/doi/abs/10.1002/sat.1204.
+[13] E. Casini, R. De Gaudenzi and O. Del Rio Herrero, “Contention
+resolution diversity slotted ALOHA (CRDSA): An enhanced random
+cccess scheme for satellite access packet networks,” IEEE Trans. on
+Wireless Commun., vol. 6, no. 4, pp. 1408-1419, Apr. 2007.
+[14] M. B. Shahab, R. Abbas, M. Shirvanimoghaddam and S. J. Johnson,
+“Grant-free non-orthogonal multiple access for IoT: A survey,” IEEE
+Commun. Surveys Tuts., vol. 22, no. 3, pp. 1805-1838, 3rd Quart. 2020.
+[15] B. Wang, L. Dai, T. Mir, and Z. Wang, “Joint user activity and data
+detection based on structured compressive sensing for NOMA,” IEEE
+Commun. Lett., vol. 20, no. 7, pp. 1473–1476, Jul. 2016.
+[16] Y . Du et al., “Block-sparsity-based multiuser detection for uplink grant-
+free NOMA,” IEEE Trans. Wireless Commun., vol. 17, no. 12, pp. 7894-
+7909, Dec. 2018.
+[17] B. Wang, L. Dai, Y . Zhang, T. Mir, and J. Li, “Dynamic compressive
+sensing-based multi-user detection for uplink grant-free NOMA,” IEEE
+Commun. Lett., vol. 20, no. 11, pp. 2320–2323, Nov. 2016.
+[18] Y . Du et al., “Efﬁcient multi-user detection for uplink grant-free NOMA:
+Prior-information aided adaptive compressive sensing perspective,”IEEE
+J. Sel. Areas Commun. , vol. 35, no. 12, pp. 2812-2828, Dec. 2017.
+[19] B. K. Jeong, B. Shim, and K. B. Lee, “MAP-based active user and data
+detection for massive machine-type communications,” IEEE Trans. Veh.
+Technol., vol. 67, no. 9, pp. 8481-8494, Sept. 2018.
+[20] C. Wei, H. Liu, Z. Zhang, J. Dang, and L. Wu, “Approximate message
+passing-based joint user activity and data detection for NOMA,” IEEE
+Commun. Lett., vol. 21, no. 3, pp. 640-643, Mar. 2017.
+[21] Y . Mei et al. , “Compressive sensing based joint activity and data
+detection for grant-free massive IoT access,” IEEE Trans. Wireless
+Commun., vol. 21, no. 3, pp. 1851-1869, Mar. 2022.
+[22] S. Park, H. Seo, H. Ji, and B. Shim, “Joint active user detection and
+channel estimation for massive machine-type communications,” in Proc.
+IEEE Int. Workshop Signal Process. Adv. Wireless Commun. , Sapporo,
+Japan, Jul. 2017, pp. 1–5.
+[23] X. Xu, X. Rao, and V . K. N. Lau, “Active user detection and channel
+estimation in uplink C-RAN systems,” in Proc. Int. Conf. Commun., Jun.
+2015, pp. 2727–2732.
+[24] L. Liu and W. Yu, “Massive connectivity with massive MIMO – Part I:
+Device activity detection and channel estimation,” IEEE Trans. Signal
+Process., vol. 66, no. 11, pp. 2933–2946, Jun. 2018.
+[25] M. Ke, Z. Gao, Y . Wu, X. Gao and R. Schober, “Compressive sensing-
+based adaptive active user detection and channel estimation: Massive
+access meets massive MIMO,” IEEE Trans. Signal Process. , vol. 68,
+pp. 764–779, Jan. 2020.
+[26] Z. Zhang et al ., “User activity detection and channel estimation for
+grant-free random access in LEO satellite-enabled Internet of Things,”
+IEEE Internet Things J. , vol. 7, no. 9, pp. 8811-8825, Sept. 2020.
+[27] R. Hadani et al. , “Orthogonal time frequency space modulation,” in
+Proc. IEEE Wireless Commun. Netw. Conf. , Mar. 2017, pp. 1–6.
+[28] Z. Wei et al., “Orthogonal time-frequency space modulation: A promis-
+ing next-generation waveform,” IEEE Wireless Commun., vol. 28, no. 4,
+pp. 136-144, Aug. 2021.
+[29] V . Khammammetti and S. K. Mohammed, “OTFS-based multiple-access
+in high Doppler and delay spread wireless channels,” IEEE Wireless
+Commun. Lett., vol. 8, no. 2, pp. 528-531, Apr. 2019.
+[30] A. K. Sinha, S. K. Mohammed, P. Raviteja, Y . Hong and E. Viterbo,
+“OTFS based random access preamble transmission for high mobility
+scenarios,” IEEE Trans. Veh. Technol., vol. 69, no. 12, pp. 15078-15094,
+Dec. 2020.
+
+=== PDF PAGE 18 ===
+18
+ˆheﬀ−nz,i
+TS,p = Ψ†
+[:,I]
+∑
+k∈A
+√
+Pk
+(
+∆LoS
+k ψLoS
+k heﬀ−i
+TS,k,p(ℓLoS
+k + 1) +
+Qk∑
+q=1
+∆q
+kψq
+kheﬀ−i
+TS,k,p(ℓq
+k + 1)
+)
++ Ψ†
+[:,I]wi
+TS,p
+  
+noise
+, (59)
+≈ Ψ†
+[:,I]
+∑
+k∈A
+√
+Pk
+[
+∆LoS
+k ψLoS
+k , ∆1
+kψ1
+k,..., ∆Qk
+k ψQk
+k
+]
+×
+[
+heﬀ−i
+TS,k,p(ℓLoS
+k + 1),h eﬀ−i
+TS,k,p(ℓ1
+k + 1),...,h eﬀ−i
+TS,k,p(ℓQk
+k + 1)
+]T
+,
+(60)
+≈ Ψ†
+[:,I]
+∑
+k∈A
+√
+Pk
+[
+∆LoS
+k ψLoS
+k , ∆1
+kψ1
+k,..., ∆Qk
+k ψQk
+k
+]
+×
+
+geﬀ−LoS
+k,p e
+j2πυLoS
+k
+[
+i−1
+N +
+(L−ℓLoS
+k )
+N(M+Mt)
+]
+,g eﬀ−1
+k,p e
+j2πυ1
+k
+[
+i−1
+N +
+(L−ℓ1
+k)
+N(M+Mt)
+]
+,...,g eﬀ−Qk
+k,p e
+j2πυ
+Qk
+k
+[
+i−1
+N +
+(L−ℓQk
+k )
+N(M+Mt)
+]
+
+T
+, (61)
+≈ Ψ†
+[:,I]
+∑
+k∈A
+√
+Pk
+[
+∆LoS
+k ψLoS
+k , ∆1
+kψ1
+k,..., ∆Qk
+k ψQk
+k
+]
+  
+Γk
+[
+geﬀ−LoS
+k,p ,g eﬀ−1
+k,p ,...,g eﬀ−Qk
+k,p
+]T
+  
+geff
+k,p
+⊙
+
+e
+j2πυLoS
+k
+[
+i−1
+N +
+(L−ℓLoS
+k )
+N(M+Mt)
+]
+,e
+j2πυ1
+k
+[
+i−1
+N +
+(L−ℓ1
+k)
+N(M+Mt)
+]
+,...,e
+j2πυ
+Qk
+k
+[
+i−1
+N +
+(L−ℓQk
+k )
+N(M+Mt)
+]
+
+T
+  
+ηi−1
+k
+. (62)
+[31] M. Li, S. Zhang, F. Gao, P. Fan and O. A. Dobre, “A new path division
+multiple access for the massive MIMO-OTFS networks,” IEEE J. Sel.
+Areas Commun., vol. 39, no. 4, pp. 903-918, Aug. 2020.
+[32] Z. Ding, R. Schober, P. Fan and H. Vincent Poor, “OTFS-NOMA: An
+efﬁcient approach for exploiting heterogenous user mobility proﬁles,”
+IEEE Trans. Commun. , vol. 67, no. 11, pp. 7950-7965, Nov. 2019.
+[33] A. Chatterjee, V . Rangamgari, S. Tiwari and S. S. Das, “Nonorthogonal
+multiple access with orthogonal time-frequency space signal transmis-
+sion,” IEEE Syst. J. , vol. 15, no. 1, pp. 383-394, Mar. 2021.
+[34] S. Wang, J. Guo, X. Wang, W. Yuan and Z. Fei, “Pilot design and
+optimization for OTFS modulation,” IEEE Wireless Commun. Lett., vol.
+10, no. 8, pp. 1742-1746, Aug. 2021.
+[35] W. Shen, L. Dai, J. An, P. Fan and R. W. Heath, “Channel estimation for
+orthogonal time frequency space (OTFS) massive MIMO,” IEEE Trans.
+Signal Process., vol. 67, no. 16, pp. 4204–4217, Aug. 2019.
+[36] Y . Liu, S. Zhang, F. Gao, J. Ma and X. Wang, “Uplink-aided high mo-
+bility downlink channel estimation over massive MIMO-OTFS system,”
+IEEE J. Sel. Areas Commun. , vol. 38, no. 9, pp. 1994-2009, Sept. 2020.
+[37] Z. Wei et al., “Off-grid channel estimation with sparse bayesian learning
+for OTFS systems,” IEEE Trans. Wireless Commun., early access, Mar.
+18, 2022, doi: 10.1109/TWC.2022.3158616.
+[38] A. Farhang, A. RezazadehReyhani, L. E. Doyle, and B. Farhang Borou-
+jeny, “Low complexity modem structure for OFDM-based orthogonal
+time frequency space modulation,” IEEE Wireless Commun. Lett. , vol.
+7, no. 3, pp. 344–347, Jun. 2018.
+[39] S. Li, W. Yuan, Z. Wei and J. Yuan, “Cross domain iterative detection
+for orthogonal time frequency space modulation,” IEEE Trans. Wireless
+Commun., vol. 21, no. 4, pp. 2227-2242, Apr. 2022.
+[40] L. You, K. -X. Li, J. Wang, X. Gao, X. -G. Xia and B. Ottersten,
+“Massive MIMO transmission for LEO satellite communications,” IEEE
+J. Sel. Areas Commun. , vol. 38, no. 8, pp. 1851–1865, Aug. 2020.
+[41] F. P. Fontan, M. Vazquez-Castro, C. E. Cabado, J. P. Garcia and E.
+Kubista, “Statistical modeling of the LMS channel,” IEEE Trans. Veh.
+Technol., vol. 50, no. 6, pp. 1549-1567, Nov. 2001.
+[42] S. Cluzel et al. , “3GPP NB-IOT coverage extension using LEO satel-
+lites,” in Proc. IEEE 87th Veh. Technol. Conf. (VTC Spring) , Jun. 2018,
+pp. 1–5.
+[43] O. Kodheli, N. Maturo, S. Chatzinotas, S. Andrenacci and F. Zimmer,
+“On the random access procedure of NB-IoT non-terrestrial networks,”
+in Proc. 10th Adv. Satell. Multimedia Syst. Conf. 16th Signal Process.
+Space Commun. Workshop (ASMS/SPSC) , Oct. 2020, pp. 1–8. Graz,
+Austria, 2020, pp. 1-8.
+[44] W. Wang, T. Chen, R. Ding, G. Seco-Granados, L. You and X. Gao,
+“Location-based timing advance estimation for 5G integrated LEO
+satellite communications,” IEEE Trans. Veh. Technol. , vol. 70, no. 6,
+pp. 6002-6017, Jun. 2021.
+[45] Z. Gao, C. Zhang, Z. Wang and S. Chen, “Priori-information aided
+iterative hard threshold: A low-complexity high-accuracy compressive
+sensing based channel estimation for TDS-OFDM,” IEEE Trans. Wire-
+less Commun., vol. 14, no. 1, pp. 242–251, Jan. 2015.
+[46] Study on New Radio (NR) to support non-terrestrial networks, document
+TR 38.811 V15.4.0, 3GPP, Sept. 2020.
+[47] M. F. Duarte and Y . C. Eldar, “Structured compressed sensing: From
+theory to applications,” IEEE Trans. Signal Process., vol. 59, no. 9, pp.
+4053–4085, Sept. 2011.
+[48] J. Determe, J. Louveaux, L. Jacques, and F. Horlin, “On the noise
+robustness of simultaneous orthogonal matching pursuit,” IEEE Trans.
+Signal Process., vol. 65, no. 4, pp. 864–875, Feb. 2017.
+[49] R. Roy and T. Kailath,“Esprit-estimation of signal parameters via
+rotational invariance techniques,” IEEE Trans. Acoust. Speech Signal
+Process., vol. ASSP-37, no. 7, pp. 984-995, Jul. 1989.
+[50] B. Shen, Y . Wu, J. An, C. Xing, L. Zhao, and W. Zhang, “Random
+access with massive MIMO-OTFS in LEO satellite communications”,
+[Online], arXiv:2202.13058v1, 2022.
+[51] Paige, C. C. and M. A. Saunders, “LSQR: An algorithm for sparse
+linear equations and sparse least squares,” ACM Trans. Math. Soft., vol.
+8, 1982, pp. 43-71.
+[52] A. Guidotti, A. Vanelli-Coralli, A. Mengali and S. Cioni, “Non-terrestrial
+networks: Link budget analysis,” in Proc. IEEE Int. Conf. Commun.
+(ICC), 2020, pp. 1-7.
+[53] O. Kodheli, N. Maturo, S. Andrenacci, S. Chatzinotas, and F. Zimmer,
+“Link budget analysis for satellite-based narrowband IoT systems,” in
+Ad-Hoc, Mobile, and Wireless Networks , M. R. Palattella, S. Scanzio,
+and S. Coleri Ergen, Eds. Cham, Switzerland: Springer Int., 2019, pp.
+259–271.
+
+=== PDF PAGE 19 ===
+19
+Xingyu Zhou received the B.S. degree from the
+School of Information and Electronics, Beijing Insti-
+tute of Technology, Beijing, China, in 2021, where
+he is currently pursuing the M.S. degree. His re-
+search interests include space-air-ground-sea inte-
+grated networks, massive access, and OTFS wave-
+form for the next generation wireless communica-
+tions.
+Keke Ying received the B.S. degree from the School
+of Information and Electronics, Beijing Institute of
+Technology, Beijing, China, in 2020, where he is
+currently pursuing the Ph.D. degree. His research
+interests include massive MIMO systems, satellite
+communications, and sparse signal processing.
+Zhen Gao received the B.S. degree in information
+engineering from the Beijing Institute of Technol-
+ogy, Beijing, China, in 2011, and the Ph.D. degree
+in communication and signal processing with the
+Tsinghua National Laboratory for Information Sci-
+ence and Technology, Department of Electronic En-
+gineering, Tsinghua University, China, in 2016. He
+is currently an Assistant Professor with the Beijing
+Institute of Technology. His research interests are
+in wireless communications, with a focus on multi-
+carrier modulations, multiple antenna systems, and
+sparse signal processing. He was a recipient of the IEEE Broadcast Technol-
+ogy Society 2016 Scott Helt Memorial Award (Best Paper), the Exemplary
+Reviewer of IEEE Communication Letters in 2016, IET Electronics Letters
+Premium Award (Best Paper) 2016, and the Young Elite Scientists Sponsorship
+Program (2018–2021) from China Association for Science and Technology.
+Yongpeng Wu (Senior Member, IEEE) received
+the B.S. degree in telecommunication engineering
+from Wuhan University, Wuhan, China, in July 2007,
+the Ph.D. degree in communication and signal pro-
+cessing from the National Mobile Communications
+Research Laboratory, Southeast University, Nanjing,
+China, in November 2013.
+He is currently a Tenure-Track Associate Profes-
+sor with the Department of Electronic Engineering,
+Shanghai Jiao Tong University, Shanghai, China.
+Previously, he was Senior Research Fellow with the
+Institute for Communications Engineering, Technical University of Munich,
+Munich, Germany and the Humboldt Research Fellow and the Senior Research
+Fellow with the Institute for Digital Communications, University Erlangen-
+Nn¨uberg, Germany. During his doctoral studies, he conducted cooperative
+research with the Department of Electrical Engineering, Missouri University
+of Science and Technology, USA. His research interests include massive
+MIMO/MIMO systems, massive access, physical layer security, and power
+line communication.
+Dr. Wu was awarded the IEEE Student Travel Grants for IEEE International
+Conference on Communications 2010, the Alexander von Humboldt Fellow-
+ship in 2014, the Travel Grants for IEEE Communication Theory Workshop
+2016, the Excellent Doctoral Thesis Awards of China Communications Society
+2016, the Exemplary Editor Award of IEEE Communications Letters 2017,
+and Young Elite Scientist Sponsorship Program by CAST 2017. He was an
+Exemplary Reviewer of the IEEE Transactions on Communications in 2015,
+2016, and 2018, respectively. He was the lead Guest Editor for the Special
+Issue Physical Layer Security for 5G Wireless Networks of IEEE Journal
+on Selected Areas in Communications and the Guest Editor for the Special
+Issue Safeguarding 5G-and-Beyond Networks with Physical Layer Security
+of IEEE Wireless Communications. He is currently an Editor for the IEEE
+Transactions on Communications and IEEE Communications Letters. He has
+been a TPC member of various conferences, including Globecom, ICC, VTC,
+and PIMRC, etc.
+Zhenyu Xiao (Senior Member, IEEE) received the
+B.E. degree from the Department of Electronics and
+Information Engineering, Huazhong University of
+Science and Technology, Wuhan, China, in 2006,
+and the Ph.D. degree from the Department of Elec-
+tronic Engineering, Tsinghua University, Beijing,
+China, in 2011.
+From 2011 to 2013, he held a postdoctoral posi-
+tion with the Department of Electronic Engineering,
+Tsinghua University. He was with the School of
+Electronic and Information Engineering, Beihang
+University, Beijing, as a Lecturer from 2013 to 2016, and an Associate
+Professor from 2016 to 2020, where he is currently a Full Professor. He
+has visited the University of Delaware from 2012 to 2013, and the Imperial
+College London from 2015 to 2016. He has authored or coauthored over 70
+papers, including IEEE Journal on Selected Areas in Communications, IEEE
+Transactions on Wireless Communications, IEEE Transactions on Signal Pro-
+cessing, IEEE Transactions on Vehicular Technology, IEEE Communications
+Letters, IEEE Wireless Communications Letters, and IET Communications.
+He has received the 2017 Best Reviewer Award of IEEE Transactions on
+Wireless Communications, the 2019 Exemplary Reviewer Award of IEEE
+Wireless Communications Letters, and the 4th China Publishing Government
+Award. He has received the Second Prize of National Technological Invention,
+the First Prize of Technical Invention of China Society of Aeronautics and
+Astronautics, and the Second Prize of Natural Science of China Electronics
+Society. He is an active Researcher with broad interests on millimeter wave
+communications and UA V/satellite communications and networking. He was
+elected as one of the 2020 Highly Cited Chinese Researchers. He is currently
+an Associate Editor for IEEE Transactions on Cognitive Communications and
+Networking, China Communications, IET Communications, KSII Transac-
+tions on Internet and Information Systems, and Frontiers in Communications
+and Networks. He has also been a Lead Guest Editor of a special issue
+named “Antenna Array Enabled Space/Air/Ground Communications and Net-
+working” of IEEE Journal on Selected Areas in Communications, one named
+“Space-Air-Ground Integrated Network with Native Intelligence (NI-SAGIN):
+Concept, Architecture, Technology, and Radio” of China Communications,
+and one named “LEO Satellite Constellation Networks” of Frontiers in
+Communications and Networks. He has been a TPC Member of IEEE
+GLOBECOM, IEEE WCSP, IEEE ICC, and IEEE ICCC.
+
+=== PDF PAGE 20 ===
+20
+Symeon Chatzinotas (Senior Member, IEEE) re-
+ceived the M.Eng. degree in telecommunications
+from the Aristotle University of Thessaloniki, Thes-
+saloniki, Greece, in 2003, and the M.Sc. and Ph.D.
+degrees in electronic engineering from the Univer-
+sity of Surrey, Surrey, U.K., in 2006 and 2009,
+respectively. He is currently a Full Professor/a Chief
+Scientist and the Co-Head with the SIGCOM Re-
+search Group, SnT, University of Luxembourg. In
+the past, he has been a Visiting Professor at the
+University of Parma, Italy. He is coordinating the
+research activities on communications and networking, acting as a PI for
+more than 20 projects and main representative for 3GPP, ETSI, and DVB.
+He was involved in numerous research and development projects for NCSR
+Demokritos, CERTH Hellas, CCSR, and the University of Surrey. He has
+(co)authored more than 500 technical papers in refereed international journals,
+conferences, and scientiﬁc books. He was the co-recipient of the 2014
+IEEE Distinguished Contributions to Satellite Communications Award and
+the Best Paper Awards at EURASIP JWCN, CROWNCOM, and ICSSC.
+He is currently serving in the editorial board for the IEEE Transactions
+on Communications, IEEE Open Journal of Vehicular Technology, and the
+International Journal of Satellite Communications and Networking.
+Jinhong Yuan (Fellow, IEEE) received the B.E. and
+Ph.D. degrees in electronics engineering from the
+Beijing Institute of Technology, Beijing, China, in
+1991 and 1997, respectively. From 1997 to 1999, he
+was a Research Fellow with the School of Electrical
+Engineering, The University of Sydney, Sydney,
+Australia. In 2000, he joined the School of Electrical
+Engineering and Telecommunications, University of
+New South Wales, Sydney, where he is currently
+a Professor and the Head of the Telecommunica-
+tion Group, School of Electrical Engineering and
+Telecommunications. He has published two books, ﬁve book chapters, over
+300 articles in telecommunications journals and conference proceedings, and
+50 industrial reports. He is a co-inventor of one patent on MIMO systems and
+four patents on low-density-parity-check codes. His current research interests
+include error control coding and information theory, communication theory,
+and wireless communications. He has coauthored four best paper awards
+and one best poster award, including the Best Paper Award from the IEEE
+International Conference on Communications, Kansas City, USA, in 2018;
+the Best Paper Award from IEEE Wireless Communications and Networking
+Conference, Cancun, Mexico, in 2011; and the Best Paper Award from
+the IEEE International Symposium on Wireless Communications Systems,
+Trondheim, Norway, in 2007. He has served as the IEEE NSW Chapter
+Chair for the Joint Communications/Signal Processions/Ocean Engineering
+Chapter from 2011 to 2014. He has served as an Associate Editor for the
+IEEE Transactions on Communications from 2012 to 2017. He is serving as
+an Associate Editor for the IEEE Transactions on Wireless Communications
+and IEEE Transactions on Communications.
+Bj¨orn Ottersten (Fellow, IEEE) received the M.S.
+degree in electrical engineering and applied physics
+from Link ¨oping University, Link ¨oping, Sweden, in
+1986, and the Ph.D. degree in electrical engineering
+from Stanford University, Stanford, CA, USA, in
+1990. He has held research positions with the De-
+partment of Electrical Engineering, Link ¨oping Uni-
+versity; the Information Systems Laboratory, Stan-
+ford University; the Katholieke Universiteit Leuven,
+Leuven, Belgium; and the University of Luxem-
+bourg, Luxembourg. From 1996 to 1997, he was the
+Director of Research with ArrayComm, Inc., a start-up in San Jose, CA,
+USA, based on his patented technology. In 1991, he was appointed as a
+Professor of signal processing with the Royal Institute of Technology (KTH),
+Stockholm, Sweden. He has been the Head with the Department for Signals,
+Sensors, and Systems, KTH, and the Dean with the School of Electrical
+Engineering, KTH. He is currently the Director for the Interdisciplinary Centre
+for Security, Reliability and Trust, University of Luxembourg. He is a fellow
+of EURASIP. He was a recipient of the IEEE Signal Processing Society
+Technical Achievement Award, the EURASIP Group Technical Achievement
+Award, and the European Research Council advanced research grant twice.
+He has coauthored journal papers that received the IEEE Signal Processing
+Society Best Paper Award in 1993, 2001, 2006, 2013, and 2019, and eight
+IEEE conference papers best paper awards. He has been a Board Member
+of IEEE Signal Processing Society and the Swedish Research Council. He
+currently serves for the boards of EURASIP and the Swedish Foundation for
+Strategic Research. He has served as the Editor-in-Chief of EURASIP Journal
+on Advances in Signal Processing and acted on the editorial boards of IEEE
+Transactions on Signal Processing, IEEE Signal Processing Magazine, IEEE
+Open Journal of Signal Processing, EURASIP Journal on Advances in Signal
+Processing, and Foundations and Trends in Signal Processing.

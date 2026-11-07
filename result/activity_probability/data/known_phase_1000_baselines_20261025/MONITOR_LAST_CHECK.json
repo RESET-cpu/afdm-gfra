@@ -1,0 +1,66 @@
+{
+  "checked_utc": "2026-10-25T17:08:48.366350+00:00",
+  "stage": "RUNNING",
+  "total_usable": 18392,
+  "planned": 20000,
+  "reused": 4000,
+  "new": 14392,
+  "remaining": 1608,
+  "condition_counts": [
+    3600,
+    4000,
+    3600,
+    3596,
+    3596
+  ],
+  "pointer_raw_hashes_valid": true,
+  "processes": [
+    {
+      "pid": 89932,
+      "create_time": 1792930905.1526985,
+      "command_line": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-u",
+        "D:\\afdm-gfra\\result\\activity_probability\\data\\known_phase_1000_baselines_20261025\\parallel_run.py",
+        "--plan",
+        "D:\\afdm-gfra\\result\\activity_probability\\data\\known_phase_1000_baselines_20261025\\PLAN.json"
+      ],
+      "parent_pid": 36768,
+      "children": [
+        {
+          "pid": 87028,
+          "create_time": 1792930907.4675903,
+          "command_line": [
+            "D:\\afdm-gfra\\.venv\\base\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "-c",
+            "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=89932, pipe_handle=1208)",
+            "--multiprocessing-fork"
+          ]
+        }
+      ]
+    },
+    {
+      "pid": 87028,
+      "create_time": 1792930907.4675903,
+      "command_line": [
+        "D:\\afdm-gfra\\.venv\\base\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "from multiprocessing.spawn import spawn_main; spawn_main(parent_pid=89932, pipe_handle=1208)",
+        "--multiprocessing-fork"
+      ],
+      "parent_pid": 89932,
+      "children": []
+    }
+  ],
+  "no_unexpected_methods": true,
+  "failure_markers": []
+}

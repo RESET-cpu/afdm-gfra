@@ -1,0 +1,498 @@
+=== PDF PAGE 1 ===
+D-VDAMP: DENOISING-BASED APPROXIMA TE MESSAGE PASSING
+FOR COMPRESSIVE MRI
+Christopher A. Metzler, Gordon Wetzstein
+Department of Electrical Engineering at Stanford University
+{cmetzler,gordon.wetzstein}@stanford.edu
+ABSTRACT
+Plug and play (P&P) algorithms iteratively apply highly
+optimized image denoisers to impose priors and solve compu-
+tational image reconstruction problems, to great effect. How-
+ever, in general the “effective noise”, that is the difference be-
+tween the true signal and the intermediate solution, within the
+iterations of P&P algorithms is neither Gaussian nor white.
+This fact makes existing denoising algorithms suboptimal.
+In this work, we propose a CNN architecture for remov-
+ing colored Gaussian noise and combine it with the recently
+proposed VDAMP algorithm, whose effective noise follows
+a predictable colored Gaussian distribution. We apply the re-
+sulting denoising-based VDAMP (D-VDAMP) algorithm to
+variable density sampled compressive MRI where it substan-
+tially outperforms existing techniques.
+Index Terms — Compressive Sensing, MRI, Approxi-
+mate Message Passing, Plug and Play, Denoising
+1. INTRODUCTION
+The goal of computational imaging (CI) is to recover a vec-
+torized image xo∈ Cn from a measurement y. For the spe-
+cial case of compressive magnetic resonance imaging (MRI),
+which is one of the more mature and important applications
+of CI, the forward model can be approximated by
+y = MΩ(Fxo +ϵ), (1)
+where F∈ Cn×n is a 2-D discrete Fourier transform matrix,
+MΩ ∈ Rn×n is a diagonal matrix, parameterized by Ω ∈
+Rn, that models subsampling the Fourier coefﬁcients, and ϵ
+represents complex circular Gaussian distributed noise. The
+elements Mi,i are one if Ωi = 1 and zero otherwise. There
+arem≪n non-zero elements in Ω.
+The quality of any CI imaging system, including MRI,
+depends on its recovery algorithm. In the last two decades,
+dozens of CI recovery algorithms have been developed.
+Among them, plug and play (P&P) approaches [1, 2, 3, 4],
+which iteratively apply a denoising algorithm to impose a
+C.M. was supported by an appointment to the Intelligence Community
+Postdoctoral Research Fellowship Program at Stanford University adminis-
+tered by Oak Ridge Institute for Science and Education (ORISE) through an
+interagency agreement between the U.S. Department of Energy and the Of-
+ﬁce of the Director of National Intelligence (ODN). G.W. was supported by
+an NSF CAREER Award (IIS 1553333), a Sloan Fellowship, and a PECASE
+by the ARL.
+prior on the reconstruction, have generally been the most suc-
+cessful. P&P approaches using convolutional neural networks
+(CNNs) have been particular effective [5]. For a comprehen-
+sive review of plug and play methods applied to compressive
+MRI see [6].
+Denoising-based approximate message passing (D-AMP)
+[3, 7, 8] is an especially exciting P&P algorithm. It converges
+much faster than competing algorithms and comes with a
+scalar state evolution framework that allows one to predict
+and reason about its performance. These strengths are a re-
+sult of a property unique to AMP algorithms: The difference
+between the ground truth signal and the intermediate recon-
+structions in AMP, a term known as the “effective noise”, can
+be modeled as additive white Gaussian noise with a known
+variance [7].
+However, like the AMP algorithm on which it is based,
+for this property to hold D-AMP requires that the elements of
+the forward operator/measurement matrix follow an i.i.d. sub-
+Gaussian distribution. When the elements of the matrix are
+not i.i.d. sub-Gaussian distributed, the effective noise is not
+white, the state evolution framework does not predict the re-
+construction accuracy, and the performance of the algorithm
+suffers [9, 10].
+Much work has gone into extending AMP to work with
+other measurement matrices. Through the use of damp-
+ing [9], sequential updates [10, 11], variable splitting [12],
+and divergence-free denoisers [13], AMP can be extended
+to work with a far broader class of matrices. However,
+none of the aforementioned extensions fully support Fourier
+measurements, which are arguably the most important CS
+measurement operator. As a result, to date AMP’s perfor-
+mance on Fourier-based CS problems like MRI has been
+underwhelming [14].
+Recently, Millard et al. [15] proposed a novel extension
+to AMP, coined variable density AMP (VDAMP), in which
+the reconstruction is produced and predicted on a per wavelet
+subband basis (related ideas were proposed in [16]). Under
+this model, the effective noise at each iteration is additivecol-
+ored Gaussian noise with a covariance matrix which is di-
+agonal when the noise is represented in the wavelet domain.
+Moreover, VDAMP comes with a (weak) vector state evolu-
+tion framework that can predict the variance of the effective
+noise in each subband, even when dealing with Fourier mea-
+arXiv:2010.13211v1  [eess.SP]  25 Oct 2020
+
+=== PDF PAGE 2 ===
+Algorithm 1 D-VDAMP
+Input: Sampling set Ω, wavelet transform Ψ, probabil-
+ity matrix P, measurements y, regularization parameter
+γ, image domain denoiser D(x;γτ), number of iterations
+Kit.
+1: Set˜r0 = 0, set τ−1 = ∞, and compute S =|FΨH|2
+2: fork = 0, 1,...,K it− 1 do
+3: zk = y− MΩFΨH˜rk
+4: rk =˜rk + ΨFHP−1zk
+5: τk = SHMΩP−1[(P−1− 1N)|zk|2 +σ2
+ϵ1N]
+6: if∥τk∥1 >∥τk−1∥1 then
+7: break
+8: end if
+9: ˆwk = ΨD(ΨHrk;γτk)
+10: αk = M.C. estimate of⟨∂ΨD(ΨHrk;γτk)⟩sband
+11: ˜rk+1 = ( ˆwk− αk⊙ rk)⊘ (1N− αk)
+12: end for
+13: return ˆx = ΨH ˆwk
+surements. Still, as will be demonstrated in Section 3, the
+performance of VDAMP trails behind that of P&P methods
+which can leverage far more sophisticated priors.
+In this work, we propose, analyze, and test a P&P
+denoising-based VDAMP (D-VDAMP) algorithm which ex-
+tends and substantially improves the performance of VDAMP
+by incorporating a novel CNN-based colored noise removal
+algorithm in place of soft wavelet thresholding.
+2. D-VDAMP
+The proposed D-VDAMP algorithm is presented in Algo-
+rithm 1 and is described below. Like the VDAMP algorithm
+on which it is based, D-VDAMP forms a series of noisy ( rk)
+and denoised ( ˆwk) estimates of the true signal’s wavelet co-
+efﬁcients,wo = Ψxo, where Ψ denotes a forward wavelet
+transform [15]. We use a four level 2-D Haar transform
+throughout the paper.
+On line 3 the algorithm computes the residual error be-
+tween the observations y and the wavelet coefﬁcient esti-
+mate˜rk. On line 4, D-VDAMP uses this estimate of the
+residual to take a density compensated gradient descent
+step. That is, rather than taking a gradient step to reduce
+∥y− MΩ(Fx)∥2, the algorithm instead takes a step to re-
+duce EΩ∥y− MΩ(Fx)∥2. This step is central to whitening
+the effective noise within the algorithm but, because it in-
+volves scaling the residual by P−1, this modiﬁcation makes
+the algorithm more sensitive to measurement noise [15].
+On line 5 the algorithm computes an estimate of the vari-
+ance in the wavelet domain. On lines 6–8 the algorithm com-
+pares the estimated power of the effective noise associated
+with the current iteration with the estimated power from the
+previous iteration. If the current iteration’s estimate is larger,
+the solution is getting worse and the algorithm terminates. On
+line 9 the algorithm applies an image domain denoiser. The
+denoiser is parameterized by the estimated diagonal, τk, of
+the effective noise’s covariance matrix and a tunable param-
+eter, γ, which determines the amount of regularization. On
+line 10 the algorithm computes a Monte Carlo estimate of the
+average partial derivative associated with denoising the ele-
+ments of each wavelet subband. See Section 2.1 for more
+information.
+Line 11 is the colored Onsager correction step. The in-
+tuition behind this step is that each wavelet band of the re-
+construction is updated at a different rate. The lower the av-
+erage partial derivative with respect to a subband (which is a
+proxy for the variance associated with the reconstruction in
+that sideband), the faster that band is updated. See [7, 15] for
+more information about the Onsager correction.
+Finally, on line 13 the algorithm maps ˆwk back to the im-
+age domain to form the ﬁnal estimate of the image. Note, that
+unlike VDAMP, our algorithm does not have a ﬁnal gradient
+descent step on line 13. The exclusion of this term signif-
+icantly improved the algorithm’s performance at low SNRs,
+while trading off some performance at higher SNRs.
+2.1. Calculating A verage Partial Derivatives
+A key step in the VDAMP algorithm is computing the
+average partial derivative across each wavelet subband,
+⟨∂ΨD(ΨHr;γτ)⟩sband. In this work, we do so by extending
+the Monte-Carlo procedure developed in [17].
+Letg(r) = ΨD(ΨHr;γτ). For each subband s, we es-
+timate the average partial derivative of the real part of g(r)
+with
+⟨∂R(g(r))⟩sband≈ 1
+Js
+R(bt
+s)
+(R(g(r +ηR(bs))−g(r))
+η
+)
+whereR(·) denotes taking the real part of the argument,η is a
+small constant (we use| max(r)|
+1000 ),Js is the number of elements
+in subbands, and bs is a vector vector whose elements within
+the band s follows an i.i.d. circular complex Gaussian dis-
+tribution with variance 2 (real and imaginary part each have
+variance 1) and whose elements outside this band are 0. An
+analogues expression is used to compute the average partial
+derivative of the imaginary component. Following [15], we
+compute the average partial derivative of the complex func-
+tion by averaging the partials from the real and imaginary
+parts.
+2.2. V ector “State Evolution”
+Within the iterations of VDAMP, the term rk can be thought
+of as a noisy estimate of the true wavelet coefﬁcients wo =
+Ψxo. The difference between these two terms,νk = rk−wo,
+is known as the effective noise. Like VDAMP, D-VDAMP
+comes with a (weak) state evolution framework to predict the
+covariance of νk. The state evolution ﬁnding is stated below
+and is empirically supported in Figure 1.
+Finding 1 The effective noise within each wavelet subband,
+s, follows a white Gaussian distribution with a variance equal
+toτk,s from line 5.
+Note that this “state evolution” differs from and is weaker
+than the typical AMP state evolution: The variances at it-
+eration k + 1 depends on the residual zk from the previous
+iteration, not just the previous state evolution prediction. Ac-
+cordingly, this state evolution is not self-contained and can-
+not be relied upon to analyze the noise sensitivity and con-
+
+=== PDF PAGE 3 ===
+wo
+ r2
+ |r2− wo|
+Fig. 1: State evolution. (Top) An illustration of the effective er-
+ror in the wavelet domain at iteration 2 of the algorithm: Each sub-
+band exhibits a different distribution and the elements within each
+subband appear uncorrelated. (Middle) Quantile-quantile plots of
+the empirical distribution within several of the effective error sub-
+bands: Linear plots indicate a Gaussian distribution. (Bottom) The
+empirical variances of the error within each subband alongside the
+predicted variances, τk,s: The variances are accurately predicted.
+vergence of the algorithm, as has been done with alternative
+AMP frameworks, e.g., [18]. Instead, this state evolution only
+tells you the covariance of the effective noise at each iteration.
+2.3. Removing Colored Noise
+We propose a new CNN architecture which leverages the
+known covariance of the colored effective noise in order to
+remove it. Our proposed architecture is a modiﬁed version
+of the DnCNN [19] architecture where each intermediate fea-
+ture map is concatenated with a h×w× 13 tensor where
+the jth slice of each tensor contains h× w copies of the
+standard deviation associated with the jth wavelet subband.
+(A Haar transform across 4 scales has 13 wavelet subbands.)
+The network architecture thereby provides all convolutional
+layers direct access to the standard deviations in each wavelet
+subband as extra channels.
+Four copies of this CNN were trained to remove col-
+ored Gaussian noise that has a diagonal covariance matrix
+when represented in the wavelet domain. The networks
+were specialized for when the standard deviation of the noise
+across the 13 wavelet bands were uniformly distributed in
+the ranges 0–20, 20–50, 50–120, and 120–500, respectively.
+(Pixel values were in the range 0–255.) The training dataset
+was made of roughly 127 000 different 48× 48 patches
+formed by cropping, scaling, ﬂipping, and rotating 50 MRI
+images from the “Stanford 2D FSE” dataset available at
+http://mridata.org/, which is maintained by Miki
+Fig. 2: Testing dataset from http://mridata.org/.
+Lustig and collaborators. The networks was trained for 50
+epochs using the ADAM optimizer with a learning rate of
+0.001 and batch size of 256.
+3. SIMULA TION RESULTS
+Dataset We test the algorithms on the256× 256 MRI images
+presented in Figure 2. (These images were not used to gen-
+erate the training dataset.) For simplicity, our present simula-
+tions assume the signal is real-valued. The proposed method
+could be extended to deal with the more realistic complex-
+valued case by adding an extra channel to the input and output
+of the DnCNN denoiser, as is done in [6].
+Measurements Our measurements are formed by adding
+i.i.d. circular complex Gaussian noise to variable density
+sampled Fourier coefﬁcients of the images [20]. The variable
+density sampling strategy preferentially samples the low fre-
+quency components, which for MRI images generally contain
+more information. Extending the algorithm to other sampling
+strategies, such as Cartesian [6], remains future work.
+Competition We compare the proposed algorithm against the
+wavelet-sparsity based VDAMP algorithm [15] (with a 2-D
+Haar basis), the total variation based TV AL3 algorithm [21],
+and two plug-and-play algorithms: P&P ADMM [2] and
+RED [4]. The latter two algorithms represent the state-of-
+the-art on this task [6]. Note that, while they can offer
+excellent performance when trained on a ﬁxed measurement
+matrix, unrolled methods like ADMM-Net [22] do not gener-
+alize across measurement patterns, and so are not compared
+against here.
+We test both plug and play algorithms with both the
+classical BM3D denoising algorithm [23] and the CNN-
+based DnCNN denoising algorithm [19], trained with white
+Gaussian noise. Similarly, we test the D-VDAMP algorithm
+with BM3D, a DnCNN network trained with white noise,
+a DnCNN network trained with colored noise, and our pro-
+posed, modiﬁed DnCNN network trained with colored noise.
+Algorithm Parameters VDAMP is run for 30 iterations,
+TV AL3 is run for 300 iterations. P&P ADMM and RED are
+both run for 200 iterations. D-VDAMP is run for 10 iterations
+or until the predicted power of the effective noise, as given by
+the sum of the elements of τk, increases.
+Both P&P ADMM and RED use denoisers whose param-
+eters were optimized to denoise noise with a standard devia-
+tion between 20–50 with DnCNN or 25 with BM3D (among
+the four networks, this one worked the best). The RED loss
+is minimized using proximal gradient descent with adaptive
+step sizes, as implemented by FASTA [24], and with a prox-
+
+=== PDF PAGE 4 ===
+Reference
+ VDAMP
+PSNR = 23.5
+TV AL3
+PSNR = 26.9
+P&P ADMM
+(BM3D)
+PSNR = 29.0
+RED
+(BM3D)
+PSNR = 29.4
+D-VDAMP
+(Proposed)
+PSNR = 31.0
+Fig. 3: 256 × 256 reconstructions and error maps for several algorithms from high SNR measurements with a sampling rate ofm
+n = 1
+16 .
+The proposed D-VDAMP algorithm forms sharper and more accurate reconstructions than existing techniques.
+Table 1: Average PSNRs (dB) and runtimes (seconds) of 256 × 256 reconstructions of MRI images with high SNR (40 dB) variable density
+Fourier measurements with various sampling rates.
+Method
+m
+n = 1
+16
+m
+n = 1
+12
+m
+n = 1
+8
+m
+n = 1
+4
+PSNR Time PSNR Time PSNR Time PSNR Time
+VDAMP 25.2 0.2 26.1 0.2 27.6 0.3 32.3 0.5
+TV AL3 27.7 0.6 28.3 0.6 29.1 0.7 32.0 0.8
+P&P ADMM (BM3D) 30.0 112.0 30.5 114.7 31.0 114.3 32.4 119.1
+P&P ADMM (DnCNN, white) 27.6 7.3 28.9 7.4 30.7 7.4 33.6 7.5
+RED (BM3D) 30.3 284.1 30.7 282.9 31.4 281.8 33.2 287.9
+RED (DnCNN, white) 28.8 13.2 29.9 12.9 31.2 12.8 34.3 12.4
+D-VDAMP (BM3D) 28.4 62.4 30.2 98.0 32.5 121.0 39.9 157.0
+D-VDAMP (DnCNN, white) 29.3 2.9 29.1 4.1 30.0 4.4 32.8 5.3
+D-VDAMP (DnCNN, colored) 29.8 2.9 31.5 4.1 33.5 4.4 38.3 5.3
+D-VDAMP (Proposed) 31.4 3.1 34.0 4.1 36.4 5.9 41.3 6.1
+Table 2: Average PSNRs (dB) of 256 × 256 reconstructions of MRI images sampled with variable density Fourier measurements at a rate of
+m
+n = 1
+8 under various SNRs.
+Method SNR = 25dB SNR = 20dB SNR = 15dB SNR = 10dB SNR = 5dB
+PSNR PSNR PSNR PSNR PSNR
+P&P ADMM (BM3D) 30.9 30.8 30.7 30.2 27.8
+RED (BM3D) 31.4 31.1 30.6 29.3 25.0
+D-VDAMP (BM3D) 32.8 31.8 30.1 27.5 25.0
+D-VDAMP (Proposed) 34.8 33.0 30.8 28.0 25.0
+imal mapping step that applies the denoiser only once. P&P
+ADMM’sρ andγ parameters, as deﬁned in [25], are both set
+to 1. RED’s λ parameter is also set to 1. D-VDAMP’s γ pa-
+rameter is set to 0.75. All the P&P algorithms denoise only
+the real part of the signal. P&P ADMM and RED simply zero
+out the imaginary part while D-VDAMP instead scales the
+imaginary part by 0.1, so as to maintain a nonzero average
+partial derivative.
+Results Table 1 demonstrates that when dealing with high
+SNR measurements, the proposed algorithm substantially
+outperforms the state-of-the-art. It outperforms wavelet based
+methods by nearly 10 dB and uniformly outperforms other
+P&P methods by at least 1 dB. As illustrated in Figure 3,
+the proposed algorithm results in reconstructions with fewer
+artifacts and sharper edges.
+However, as noted in [15], the density compensated gra-
+dient step of VDAMP (line 4), which multiplies zk by P−1,
+makes D-VDAMP sensitive to measurement noise. Accord-
+ingly, as demonstrate in Table 2, at lower SNRs existing P&P
+algorithms outperform D-VDAMP.
+4. DISCUSSION
+A chief criticism against many learning-based reconstruction
+methods is that they can produce realistic looking images,
+even when the measurements contain little information about
+the actual scene [26]. These images can lead practitioners to
+trust the reconstruction, even when they should not. Fortu-
+nately, because the last step of D-VDAMP is equivalent to re-
+moving colored Gaussian noise with known covariance from
+the ground-truth signal, Stein’s unbiased risk estimate can be
+combined with D-VDAMP to produce heat maps of the ex-
+pected squared error per pixel associated with the reconstruc-
+tion [27, 28, 29]. This allows practitioners to judge which
+portions of the reconstruction can be trusted.
+
+=== PDF PAGE 5 ===
+5. REFERENCES
+[1] A. Danielyan, A. Foi, V . Katkovnik, K. Egiazarian, and P. Mi-
+lanfar, “Spatially adaptive ﬁltering as regularization in inverse
+imaging: Compressive sensing super-resolution and upsam-
+pling,” Super-Resolution Imaging, pp. 123–154, 2010.
+[2] Singanallur V Venkatakrishnan, Charles A Bouman, and
+Brendt Wohlberg, “Plug-and-play priors for model based re-
+construction,” in 2013 IEEE Global Conference on Signal and
+Information Processing. IEEE, 2013, pp. 945–948.
+[3] Christopher A Metzler, Arian Maleki, and Richard G Baraniuk,
+“From denoising to compressed sensing,” IEEE Transactions
+on Information Theory, vol. 62, no. 9, pp. 5117–5144, 2016.
+[4] Yaniv Romano, Michael Elad, and Peyman Milanfar, “The lit-
+tle engine that could: Regularization by denoising (red),”SIAM
+Journal on Imaging Sciences , vol. 10, no. 4, pp. 1804–1844,
+2017.
+[5] Christopher A. Metzler, Ali Mousavi, and Richard Baraniuk,
+“Learned d-amp: Principled neural network based compressive
+image recovery,” in Advances in Neural Information Process-
+ing Systems, 2017, pp. 1772–1783.
+[6] Rizwan Ahmad, Charles A Bouman, Gregery T Buzzard, Stan-
+ley Chan, Sizhou Liu, Edward T Reehorst, and Philip Schniter,
+“Plug and play methods for magnetic resonance imaging (long
+version),” arXiv preprint arXiv:1903.08616, 2019.
+[7] David L Donoho, Arian Maleki, and Andrea Montanari,
+“Message-passing algorithms for compressed sensing,” Pro-
+ceedings of the National Academy of Sciences , vol. 106, no.
+45, pp. 18914–18919, 2009.
+[8] Philip Schniter, Sundeep Rangan, and Alyson Fletcher, “De-
+noising based vector approximate message passing,” arXiv
+preprint arXiv:1611.01376, 2016.
+[9] Sundeep Rangan, Philip Schniter, Alyson K Fletcher, and Sub-
+rata Sarkar, “On the convergence of approximate message
+passing with arbitrary matrices,” IEEE Transactions on Infor-
+mation Theory, vol. 65, no. 9, pp. 5339–5351, 2019.
+[10] Francesco Caltagirone, Lenka Zdeborov ´a, and Florent Krza-
+kala, “On convergence of approximate message passing,” in
+2014 IEEE International Symposium on Information Theory .
+IEEE, 2014, pp. 1812–1816.
+[11] Andre Manoel, Florent Krzakala, Eric Tramel, and Lenka Zde-
+borova, “Swept approximate message passing for sparse es-
+timation,” in International Conference on Machine Learning,
+2015, pp. 1123–1132.
+[12] Sundeep Rangan, Philip Schniter, and Alyson K Fletcher,
+“Vector approximate message passing,” IEEE Transactions on
+Information Theory, vol. 65, no. 10, pp. 6664–6684, 2019.
+[13] Junjie Ma and Li Ping, “Orthogonal amp,” IEEE Access, vol.
+5, pp. 2020–2033, 2017.
+[14] Ender M Eksioglu and A Korhan Tanc, “Denoising amp for mri
+reconstruction: Bm3d-amp-mri,” SIAM Journal on Imaging
+Sciences, vol. 11, no. 3, pp. 2090–2109, 2018.
+[15] Charles Millard, Aaron T Hess, Boris Mailh ´e, and Jared Tan-
+ner, “Approximate message passing with a colored aliasing
+model for variable density fourier sampled images,” arXiv
+preprint arXiv:2003.02701, 2020.
+[16] Philip Schniter, Sundeep Rangan, and Allison K. Fletcher,
+“Plug-and-play image recovery using vector amp,” 2017,
+presented at Proc. Intl. Biomed. Astronom. Signal Pro-
+cess. (BASP) Frontiers Workshop, Villars-sur-Ollon, Switzer-
+land (available at http://www2.ece.ohio-state.
+edu/˜schniter/pdf/basp17_poster.pdf).
+[17] Sathish Ramani, Thierry Blu, and Michael Unser, “Monte-
+carlo sure: A black-box optimization of regularization param-
+eters for general denoising algorithms,” IEEE Transactions on
+image processing, vol. 17, no. 9, pp. 1540–1554, 2008.
+[18] David L Donoho, Arian Maleki, and Andrea Montanari,
+“The noise-sensitivity phase transition in compressed sensing,”
+IEEE Transactions on Information Theory, vol. 57, no. 10, pp.
+6920–6941, 2011.
+[19] Kai Zhang, Wangmeng Zuo, Yunjin Chen, Deyu Meng, and
+Lei Zhang, “Beyond a gaussian denoiser: Residual learning of
+deep cnn for image denoising,” IEEE Transactions on Image
+Processing, vol. 26, no. 7, pp. 3142–3155, 2017.
+[20] Michael Lustig, David Donoho, and John M Pauly, “Sparse
+mri: The application of compressed sensing for rapid mr imag-
+ing,” Magnetic Resonance in Medicine: An Ofﬁcial Journal of
+the International Society for Magnetic Resonance in Medicine,
+vol. 58, no. 6, pp. 1182–1195, 2007.
+[21] Chengbo Li, Wotao Yin, and Yin Zhang, “User’s guide for
+TV AL3: TV minimization by augmented Lagrangian and alter-
+nating direction algorithms,” Rice CAAM Department report,
+vol. 20, pp. 46–47, 2009.
+[22] Jian Sun, Huibin Li, Zongben Xu, et al., “Deep admm-net for
+compressive sensing mri,” in Advances in neural information
+processing systems, 2016, pp. 10–18.
+[23] Kostadin Dabov, Alessandro Foi, Vladimir Katkovnik, and
+Karen Egiazarian, “Image denoising by sparse 3-d transform-
+domain collaborative ﬁltering,” IEEE Transactions on image
+processing, vol. 16, no. 8, pp. 2080–2095, 2007.
+[24] Tom Goldstein, Christoph Studer, and Richard Baraniuk, “A
+ﬁeld guide to forward-backward splitting with a fasta imple-
+mentation,” arXiv preprint arXiv:1411.3406, 2014.
+[25] Stanley H Chan, Xiran Wang, and Omar A Elgendy, “Plug-
+and-play admm for image restoration: Fixed-point conver-
+gence and applications,” IEEE Transactions on Computational
+Imaging, vol. 3, no. 1, pp. 84–98, 2016.
+[26] Nina M Gottschling, Vegard Antun, Ben Adcock, and An-
+ders C Hansen, “The troublesome kernel: why deep learn-
+ing for inverse problems is typically unstable,” arXiv preprint
+arXiv:2001.01258, 2020.
+[27] Charles-Alban Deledalle, Vincent Duval, and Joseph Salmon,
+“Non-local methods with shape-adaptive patches (nlm-sap),”
+Journal of Mathematical Imaging and Vision , vol. 43, no. 2,
+pp. 103–120, 2012.
+[28] Vineet Edupuganti, Morteza Mardani, Shreyas Vasanawala,
+and John Pauly, “Uncertainty quantiﬁcation in deep mri re-
+construction,” IEEE Transactions on Medical Imaging, 2020.
+[29] Ruangrawee Kitichotkul, Christopher A. Metzler, Frank Ong,
+and Gordon Wetzstein, “Suremap: Predicting uncertainty in
+cnn-based image reconstructions using Stein’s unbiased risk
+estimate,” Under Review.

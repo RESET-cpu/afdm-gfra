@@ -1,0 +1,111 @@
+{
+  "source_file": "D:\\afdm-gfra\\paper\\C-STMP\\sections\\02_system_model.tex",
+  "source_sha256": "052fa918bfc6e1bfa904bdffb0d0e74324a7323faa369f278f5fab3c2249dddd",
+  "paragraph_count": 13,
+  "paragraphs": [
+    {
+      "id": "P01",
+      "source_lines": [
+        4,
+        11
+      ],
+      "text": "We consider an AFDM-GFRA system, where a LEO satellite equipped\nwith $M=M_yM_z$ antennas serves $K$ single-antenna devices\n\\cite{ding2026}. During each transmission block, active devices\nshare the same time-frequency resources to transmit their pilots\nto the satellite. Additionally, to minimize energy consumption,\nwe assume that these terrestrial devices operate without GNSS\ncapabilities and do not pre-compensate for delay and Doppler shifts\n\\cite{shen2025}."
+    },
+    {
+      "id": "P02",
+      "source_lines": [
+        15,
+        58
+      ],
+      "text": "The terrestrial-satellite links (TSLs) will experience fast variations due to the high mobility of\nthe LEO satellite. Hence, this time variation and multipath propagation\nrequire a doubly dispersive channel model for accurate TSLs\ncharacterization \\cite{shen2025}.\nTake the ground device as the stationary reference point.\nThe Doppler term $\\nu_k$ is assumed to be common to all propagation\npaths within the same TSL \\cite{huang2026}.\nLet $\\mathbf a_k$ denote the uniform planar array (UPA) response vector\nof device $k$.\nThen, after compensating for the common propagation delay $\\tau_c$\nat the satellite receiver, the time-varying channel impulse response\nfrom the $k$th device to the satellite can be represented as\n\\begin{equation}\n \\mathbf h_k(t,\\tau)\n =\\mathbf a_k\\sum_{\\ell=1}^{L_k}g_{k\\ell}\n e^{j2\\pi\\nu_k t}\\delta(\\tau-\\tau_{k\\ell}),\n \\label{eq:physical-channel}\n\\end{equation}\nwhere $k=1,\\ldots,K$, $n_z=0,\\ldots,M_z-1$,\n$n_y=0,\\ldots,M_y-1$, and $L_k$ is the number of physical paths.\nAdditionally, the notations $g_{k\\ell}$ and $\\nu_k$ are the complex path\ngain and Doppler shift of the $\\ell$th path from $k$th device to the\nsatellite, respectively.\n$\\delta(\\cdot)$ denotes the Dirac delta function.\n$\\tau_{k\\ell}=\\widetilde\\tau_{k\\ell}-\\tau_c$ represents the differential\ndelay for the $\\ell$th path from the $k$th device to the satellite,\nwhere $\\widetilde\\tau_{k\\ell}$ and $\\tau_c$ are denoted as propagation\ndelay and common delay, respectively.\nThe common delay corresponds to the propagation time between the\nsatellite and the closest point on earth within the beam coverage\n\\cite{shen2025}.\nLet $t$ denote the time measured from the start of the transmission block.\nLet $\\bigl(\\mu_{y,k},\\mu_{z,k}\\bigr)$ denote the directional cosines.\nLet $\\bigl(d_y,d_z\\bigr)$ denote the antenna spacings.\nLet $\\lambda$ denote the wavelength.\nLet\n\\begin{equation}\n [\\mathbf a_k]_{n_z+M_zn_y}\n =e^{j2\\pi(d_yn_y\\mu_{y,k}+d_zn_z\\mu_{z,k})/\\lambda}.\n \\label{eq:upa}\n\\end{equation}\nAssume that the path gains, differential delays, Doppler shifts, and\nangles-of-arrival remain approximately constant within a transmission\nblock."
+    },
+    {
+      "id": "P03",
+      "source_lines": [
+        62,
+        96
+      ],
+      "text": "Assume that a total of $Q$ AFDM frames are allocated for pilot\ntransmission \\cite{cai2026}. Let $N$ denote the number of AFDM\nchirp subcarriers \\cite{huang2026}. Let $P_{qkn}\\in\\mathbb C$ be\nthe pilot symbol transmitted by the $k$th device during the $q$th\nAFDM frame on the $n$th chirp subcarrier.\nWe construct a pilot vector as\n$\\mathbf p_{qk}=[P_{qk0},\\ldots,P_{qk,N-1}]^{\\mathsf T}\n\\in\\mathbb C^N$, $k=1,\\ldots,K$, $q=0,\\ldots,Q-1$.\nThe time-domain transmitted signal is generated through the inverse\ndiscrete affine Fourier transform (IDAFT) applied to $\\mathbf p_{qk}$,\nmathematically formulated as \\cite{ding2026}\n\\begin{equation}\n s_{qk}[t]=\\frac{1}{\\sqrt N}\\sum_{n=0}^{N-1}\n P_{qkn}e^{j2\\pi(c_1t^2+c_2n^2+nt/N)},\n \\label{eq:afdm-time-signal}\n\\end{equation}\nwhere $P_{qkn}$ represents the $n$th symbol of $\\mathbf p_{qk}$.\n$c_1$ and $c_2$ are AFDM modulation parameters.\nThe signal in \\eqref{eq:afdm-time-signal} can be represented in matrix\nform as\n\\[\n \\mathbf s_{qk}=\\mathbf F_{\\rm A}^{\\mathsf H}\\mathbf p_{qk},\n\\]\nwhere\n\\begin{equation}\n \\begin{gathered}\n \\mathbf F_{\\rm A}\n =\\left[\\frac{1}{\\sqrt N}e^{-j2\\pi(c_2r^2+rt/N+c_1t^2)}\n \\right]_{r,t=0}^{N-1}\n \\end{gathered}\n \\label{eq:daft}\n\\end{equation}\nrepresents the discrete affine Fourier transform (DAFT) matrix.\nLet $\\Delta f$ denote the subcarrier spacing.\nLet $T_s=1/(N\\Delta f)$ denote the sampling interval."
+    },
+    {
+      "id": "P04",
+      "source_lines": [
+        98,
+        112
+      ],
+      "text": "Assume that the chirp-periodic prefix (CPP) duration satisfies\n$N_{\\rm CPP}T_s\\geq\\max_{k,\\ell}\\tau_{k\\ell}$.\nWith the chirp periodicity, the prefix is \\cite{bemani2022}\n\\begin{equation}\n \\begin{gathered}\n s_{qk}[t]=e^{j2\\pi c_1(t^2-\\langle t\\rangle_N^2)}\n s_{qk}[\\langle t\\rangle_N],\\\\\n -N_{\\rm CPP}\\leq t<0,\n \\end{gathered}\n \\label{eq:cpp}\n\\end{equation}\nwhere $\\langle x\\rangle_N=x-N\\lfloor x/N\\rfloor$ and\n$2Nc_1\\in\\mathbb N_+$.\nEach AFDM frame spans a duration of\n$T_{\\rm frame}=(N+N_{\\rm CPP})T_s$ \\cite{huang2026}."
+    },
+    {
+      "id": "P05",
+      "source_lines": [
+        114,
+        157
+      ],
+      "text": "After removing the CPP and applying the DAFT, let\n$H_k^{(q)}\\in\\mathbb C^{M\\times N\\times N}$ denote the effective\nchannel of device $k$ in frame $q$, with $H_k=H_k^{(0)}$.\nTo better capture the LEO channel dynamics, we incorporate\nfractional delay and fractional Doppler effects, and the resulting\nexpression for the elements of the channel tensor $H_k$ is given\nas follows \\cite{huang2026}:\n\\begin{equation}\n H_{kmrn}\n =[\\mathbf a_k]_m\\sum_{\\ell=1}^{L_k}g_{k\\ell}\n [\\mathbf G(\\tau_{k\\ell}/T_s,\\nu_k;N_{\\rm CPP})]_{rn},\n \\label{eq:channel}\n\\end{equation}\nwhere $H_{kmrn}$ is the channel coefficient from transmitted\nDAFT-domain symbol $n$ to received DAFT-domain symbol $r$ at\nantenna $m$.\n$\\mathbf G(d,\\nu;N_{\\rm CPP})$ denotes the effective channel\nmatrix of a path with gain $1$, normalized delay $d$, and Doppler\nshift $\\nu$ in frame $0$.\nFor the $N$ samples after CPP removal, starting at sample $g$,\nthis matrix is given by\n\\begin{equation}\n \\begin{gathered}\n \\mathbf G(d,\\nu;g)=\\mathbf F_{\\rm A}\\mathbf D_{\\nu,g}\\mathbf B_d,\\\\\n \\mathbf D_{\\nu,g}=\\diag\\{e^{j2\\pi\\nu T_s(g+t)}\\}_{t=0}^{N-1},\\\\\n [\\mathbf B_d]_{tn}=\\varphi_n(t-d).\n \\end{gathered}\n \\label{eq:path-operator-system}\n\\end{equation}\nHere, $\\varphi_n$ is the transmitted waveform when the $n$th\nDAFT-domain symbol equals $1$ and all other input symbols are zero,\nwith the CPP defined in \\eqref{eq:cpp}.\nIts expression and the derivation of \\eqref{eq:path-operator-system}\nfor fractional delays, including delays exceeding $NT_s$, are given\nin Appendix~\\ref{app:afdm-model}.\nFor frame $0$, $g=N_{\\rm CPP}$.\nIn practical propagation environments, fractional Doppler shifts\nand fractional time delays can introduce significant power leakage\nin the effective channel matrix of \\eqref{eq:path-operator-system},\nthereby weakening the sparsity of $H_k$ \\cite{huang2026}.\nSince we directly estimate the full AFDM effective channel tensor\n$H_k$ without imposing sparsity assumptions, using only one pilot\nsequence makes \\eqref{eq:mmv} underdetermined, so that multiple\npilot sequences are required \\cite{huang2026}."
+    },
+    {
+      "id": "P06",
+      "source_lines": [
+        159,
+        178
+      ],
+      "text": "Fortunately, $H_k$ remains approximately constant over $Q$\nconsecutive frames, benefited by the quasi-static property of\n\\eqref{eq:physical-channel} in the delay-Doppler domain\n\\cite{shen2025}.\nThis characteristic allows the proposed scheme to gather more\nobservations, thereby facilitating the joint design of channel\nestimation and activity detection.\nFurthermore, the phase rotation $e^{j2\\pi\\nu_kqT_{\\rm frame}}$\ncaused by Doppler shifts accumulates across multiple frames and\nwill be addressed carefully in our algorithm design \\cite{shen2025}.\nSince $\\nu_k$ is common to all paths of device $k$,\n\\eqref{eq:physical-channel} yields\n\\begin{equation}\n \\begin{gathered}\n H_k^{(q)}=e^{jq\\beta_k}H_k,\\\\\n \\beta_k=\\operatorname{wrap}(2\\pi\\nu_kT_{\\rm frame}),\n \\end{gathered}\n \\label{eq:twc-frame-channel}\n\\end{equation}\nwhere $\\operatorname{wrap}(\\cdot)$ maps an angle to $[-\\pi,\\pi)$."
+    },
+    {
+      "id": "P07",
+      "source_lines": [
+        180,
+        235
+      ],
+      "text": "We use an indicator function $\\alpha_k$ to model the device\nactivity as \\cite{cai2026}\n\\[\n \\alpha_k=\\begin{cases}\n 1,&\\text{if the $k$th device is active},\\\\\n 0,&\\text{otherwise}.\n \\end{cases}\n\\]\nLet $\\rho$ represent the probability of a device being active,\ni.e., $\\Pr(\\alpha_k=1)=\\rho$, where $\\rho\\ll1$.\nEach device maintains its activity state throughout a transmission\nblock. Let $X_k=\\alpha_kH_k$.\nLet\n\\begin{equation}\n A_{qkn}=P_{qkn}e^{jq\\beta_k}.\n \\label{eq:effective-pilot}\n\\end{equation}\nAfter removing the CPP and applying the DAFT, the received signal\n$\\mathbf Y_q\\in\\mathbb C^{M\\times N}$ during the $q$th AFDM\nframe is given by \\cite{cai2026}\n\\begin{equation}\n Y_{qmr}=[\\mathbf Y_q]_{mr}\n =\\sum_{k=1}^K\\sum_{n=0}^{N-1}A_{qkn}X_{kmrn}+W_{qmr},\n \\label{eq:observation-tensor}\n\\end{equation}\nwhere $\\mathbf W_q=[W_{qmr}]_{m,r}\\in\\mathbb C^{M\\times N}$\nis an AWGN matrix with the elements i.i.d.\\ drawn from\n$\\CN(0,\\sigma^2)$.\nNext, we collect the $Q$ received frames into a single matrix as\n\\begin{equation}\n \\mathbf Y=\\mathbf A\\mathbf X+\\mathbf W,\n \\label{eq:mmv}\n\\end{equation}\nwhere $\\mathbf Y,\\mathbf W\\in\\mathbb C^{Q\\times MN}$,\n$\\mathbf A\\in\\mathbb C^{Q\\times KN}$, and\n$\\mathbf X\\in\\mathbb C^{KN\\times MN}$.\nDefine\n\\begin{equation}\n \\begin{aligned}\n [\\mathbf Y]_{q,mN+r}&=Y_{qmr},\\\\\n [\\mathbf W]_{q,mN+r}&=W_{qmr},\\\\\n [\\mathbf A]_{q,(k-1)N+n}&=A_{qkn},\\\\\n [\\mathbf X]_{(k-1)N+n,mN+r}&=X_{kmrn}.\n \\end{aligned}\n \\label{eq:mmv-indexing}\n\\end{equation}\nLet $\\mathbf P\\in\\mathbb C^{Q\\times KN}$ denote the pilot matrix\nknown at the satellite receiver, with entries\n$[\\mathbf P]_{q,(k-1)N+n}=P_{qkn}$.\nFor simplicity, we impose the condition that $\\mathbf P$ is partial\northogonal, specifically requiring that\n$\\mathbf P\\mathbf P^{\\mathsf H}=KE_p\\I_Q$, where each device\nhas the same pilot energy budget\n$E_p=\\|\\mathbf p_{qk}\\|^2$ \\cite{cai2026}.\nThe design of partial orthogonal $\\mathbf P$ is deferred to\nSection~\\ref{sec:simulation-settings}."
+    },
+    {
+      "id": "P08",
+      "source_lines": [
+        237,
+        240
+      ],
+      "text": "Due to the sporadic access of the devices, matrix $\\mathbf X$\nexhibits a block-sparsity structure. Specifically, if the $k$th\ndevice is inactive, we have $X_k=\\alpha_kH_k=\\mathbf 0$\n\\cite{cai2026}."
+    },
+    {
+      "id": "P09",
+      "source_lines": [
+        244,
+        247
+      ],
+      "text": "In this paper, we aim to simultaneously detect the active devices\nand estimate the corresponding channels based on the observation\n$\\mathbf Y$ under a Bayesian inference framework \\cite{cai2026}.\nWe consider $Q<KN$ in \\eqref{eq:mmv}."
+    },
+    {
+      "id": "P10",
+      "source_lines": [
+        249,
+        257
+      ],
+      "text": "In this subsection, we assume that the estimates\n$\\widehat{\\mathbf A}$ and $\\widehat\\sigma^2$ are known, which are\nobtained from $\\mathbf Y$ as described in Section~\\ref{sec:frontend}.\nLet $q_{\\rm tr}$ denote the prior distribution of $H_k$ represented\nby the channel samples used for training.\nFor inference, we assume independence across devices and between\neach device's activity and channel. The activities follow Bernoulli\npriors, while $q_{\\rm tr}(H_k)$ retains the dependence among the\ncoefficients within $H_k$."
+    },
+    {
+      "id": "P11",
+      "source_lines": [
+        259,
+        262
+      ],
+      "text": "Exact Bayesian estimators, e.g., the MMSE estimator, are generally\nintractable due to the high-dimensional integrals in the\nmarginalization of the joint posterior distribution\n$q(\\mathbf X,\\{H_k\\}_{k=1}^{K},\\{\\alpha_k\\}_{k=1}^{K}\\mid\\mathbf Y)$."
+    },
+    {
+      "id": "P12",
+      "source_lines": [
+        264,
+        296
+      ],
+      "text": "Alternatively, message-passing algorithms provide a low-complexity\niterative approach for approximately calculating the MMSE estimator\n\\cite{cai2026}. In message passing, we factorize the joint posterior\ndistribution according to Bayes' theorem and the conditional\nindependence relationships among the variables, expressed as\n\\begin{equation}\n \\begin{aligned}\n &q(\\mathbf X,\\{H_k\\}_{k=1}^{K},\\{\\alpha_k\\}_{k=1}^{K}\\mid\\mathbf Y)\\\\\n &\\quad\\propto\\prod_{j=1}^{MN}p(\\mathbf y_j\\mid\\mathbf x_j)\\\\\n &\\qquad\\times\\prod_{k=1}^{K}\n p(X_k\\mid H_k,\\alpha_k)q_{\\rm tr}(H_k)p(\\alpha_k),\n \\end{aligned}\n \\label{eq:working-posterior}\n\\end{equation}\nwhere $\\mathbf x_j\\in\\mathbb C^{KN}$ and\n$\\mathbf y_j\\in\\mathbb C^Q$ denote the $j$-th column of\n$\\mathbf X=[\\mathbf x_1,\\ldots,\\mathbf x_{MN}]$ and\n$\\mathbf Y=[\\mathbf y_1,\\ldots,\\mathbf y_{MN}]$, respectively.\nHere, $q$ is the working posterior,\n$p(\\mathbf y_j\\mid\\mathbf x_j)=\\CN(\\mathbf y_j;\n\\widehat{\\mathbf A}\\mathbf x_j,\\widehat\\sigma^2\\I_Q)$ is the\nGaussian likelihood from \\eqref{eq:mmv},\n$p(X_k\\mid H_k,\\alpha_k)$ imposes $X_k=\\alpha_kH_k$, and\n$p(\\alpha_k)=\\rho^{\\alpha_k}(1-\\rho)^{1-\\alpha_k}$.\nThe MMSE channel estimate and posterior probability of activity\ncan be calculated as\n\\begin{equation}\n \\begin{aligned}\n X_k^{\\rm MMSE}&=\\E_q[X_k\\mid\\mathbf Y],\\\\\n p_k^{\\rm Bayes}&=q(\\alpha_k=1\\mid\\mathbf Y).\n \\end{aligned}\n \\label{eq:targets}\n\\end{equation}"
+    },
+    {
+      "id": "P13",
+      "source_lines": [
+        298,
+        300
+      ],
+      "text": "This paper seeks to address the aforementioned challenges by\nplugging in deep generative priors for efficient message calculation\n\\cite{cai2026}."
+    }
+  ]
+}

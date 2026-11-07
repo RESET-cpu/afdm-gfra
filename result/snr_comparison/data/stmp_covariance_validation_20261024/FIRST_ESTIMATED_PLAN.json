@@ -1,0 +1,15 @@
+{
+  "status": "PLANNED",
+  "reason": "Initial first-step attempt used the legacy supplied noise field, whereas frozen PhaseSTMPReceiver.infer recomputes estimate_spatial_noise(observation). Baseline replay failed; initial FIRST outputs are not accepted evidence for the intended receiver.",
+  "parent_plan_sha256": "d421822250297c8e75c001d6fb867fe2cbf94f4c5ae794986a417c486d0e7944",
+  "initial_completion_sha256": "b17db7c97ddabce0f07d2880f9d2591f2ebb394c169f75a5822dd1d3e72d668d",
+  "initial_summary_sha256": "8c4e856733d82bc27756e100a673d100e6e1a51e8b418a4253b1667f310f4520",
+  "correction": "Recompute the exact frozen observation-only MDL noise estimate on physical y, then divide by scale squared. All cases, initialization, basis, branches and metrics remain the same.",
+  "addition": "Audit numerical rank using each Ak singular values and tolerance eps*16*smax. Retain raw finite-precision fine-mode output but identify null-mode users as outside a finite positive covariance model; do not silently clip or delete them.",
+  "files_sha256": {
+    "result\\snr_comparison\\data\\stmp_covariance_validation_20261024\\first_estimated_noise.py": "836ccec94ad03b1aae90c0aac66f92ea13a6d59753f06ca17e1932e00a3633be",
+    "result\\snr_comparison\\data\\stmp_covariance_validation_20261024\\metrics.py": "1dcad40b8ed53ed45020cd1684d4007c4c29e151aae79f644d169b5e8d9e946b",
+    "result\\snr_comparison\\data\\stmp_covariance_validation_20261024\\run.py": "890518e54ccc79e47cacc9240c41581a466b6d91160d3fc020c0e87c584d24d0",
+    "src\\system\\receiver\\noise_estimation.py": "a4c914376b987d49984c5fbfcdcc54d72409fbadad8a5902af99a0cac753fe48"
+  }
+}

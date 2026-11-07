@@ -1,0 +1,81 @@
+{
+  "status": "PASS",
+  "date": "2026-10-26",
+  "request": "Paraphrase the receiver passage to distinguish its wording from Cai while preserving its meaning.",
+  "before": "With the learned channel prior available, we employ a turbo message passing (TMP) framework that models the entire channel matrix as a super node, rather than factorizing it element-wise. This design enables the seamless integration of score-based generative models as a minimum mean-squared error (MMSE) denoiser.",
+  "after": "With the learned channel prior available, we incorporate it into a turbo message passing (TMP) receiver through a minimum mean-squared error (MMSE) denoiser. To this end, the entire channel matrix is represented by a single super node, without factorizing its prior element-wise.",
+  "english_word_count": 177,
+  "receiver_word_count": 42,
+  "sentences": 8,
+  "receiver_sentences": [
+    6,
+    7
+  ],
+  "receiver_sentences_verbatim_from_cai": false,
+  "receiver_exact_sentence_count": 0,
+  "change": "State the learned prior's MMSE-denoising role in TMP first, then explain the whole-matrix super-node representation that supports that integration.",
+  "meaning_preserved": [
+    "The same learned score-based channel prior is used by the receiver through an MMSE denoiser.",
+    "The full channel matrix within each device is represented as a super node.",
+    "The within-device channel prior is not factorized element-wise.",
+    "The existing cross-user marginal factorization and TMP framework are unchanged."
+  ],
+  "source_locations": [
+    {
+      "source": "Cai2026",
+      "pdf": "reference/literature/cai2026.pdf",
+      "pdf_pages": [
+        1,
+        2
+      ],
+      "sections": [
+        "Abstract",
+        "I-A"
+      ],
+      "basis": "TMP, whole channel matrix as a super node, element-wise alternative, score-based prior used as an MMSE denoiser."
+    },
+    {
+      "source": "Cai2026",
+      "pdf": "reference/literature/cai2026.pdf",
+      "pdf_pages": [
+        5,
+        6,
+        7
+      ],
+      "sections": [
+        "III",
+        "III-B"
+      ],
+      "basis": "Joint per-device prior p(H_k), factor graph and channel MMSE denoising."
+    },
+    {
+      "source": "Cai2026",
+      "pdf": "reference/literature/cai2026.pdf",
+      "pdf_pages": [
+        9
+      ],
+      "sections": [
+        "V-A"
+      ],
+      "basis": "With ... available is retained as the transition pattern, not a verbatim full sentence."
+    }
+  ],
+  "source_meaning_boundaries": "Rewritten sentences are not presented as Cai quotations. The prior itself is the same colored-noise-trained AFDM channel prior described in this manuscript, not Cai's OFDM prior or its separate second-order network. MMSE denotes the conditional-mean target, not exact finite-network optimality.",
+  "main_tex_outside_abstract_unchanged": true,
+  "other_abstract_sentences_unchanged": true,
+  "bilingual_synchronized": true,
+  "result_summary_sha256": "12faa6ffd525551707c2780b03902ddc603016ed742af672ec06eef54a72e15b",
+  "result_summary_hash_verified": true,
+  "main_tex_before_sha256": "a0593abac5c27aca85969d6d0a96cadbf910040f9b8a888a8b9ba9ff28c1486e",
+  "main_tex_after_sha256": "d30449bd00cf396b39ec4f65845a4ded9bff37b6f1384da0cbc296bc83fbc492",
+  "new_training_or_inference": false,
+  "source_words_missing": [],
+  "expressions_missing": [],
+  "technical_phrases_checked": 32,
+  "compile_returncode": 0,
+  "pdf_pages": 12,
+  "pdf_sha256": "3504ef292b140724792b607e26427acc5d4658ee54436c450c318b861b9913bb",
+  "first_page_and_contact_sheet_inspected": true,
+  "main_pdf_updated": true,
+  "only_manuscript_pdf": "main.pdf"
+}

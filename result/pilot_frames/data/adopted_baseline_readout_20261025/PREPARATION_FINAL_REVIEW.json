@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "verified_utc": "2026-10-25T16:09:35.454220+00:00",
+  "review_change": "verify_complete now calls the unchanged, full-audit-tested h.verify_files on every bound input receipt file, including existing COMPLETE verification.",
+  "validation": "All three Python ASTs pass; earlier 13-check evidence and full raw audit preserved. Only this one read-only integrity check was added after those checks; no inference or scoring.",
+  "implementation_sha256": {
+    "D:\\afdm-gfra\\result\\pilot_frames\\data\\adopted_baseline_readout_20261025\\finalize.py": "98ac37adb98cc7d810b5b5161da37ab6a60e8352802501c2702d1719b1189396",
+    "D:\\afdm-gfra\\result\\pilot_frames\\data\\adopted_baseline_readout_20261025\\readout_helpers.py": "2a4c2c9d0de579e4a6071309385cc7af2531fce523f75d9b80677b0af3a0725e",
+    "D:\\afdm-gfra\\result\\pilot_frames\\data\\adopted_baseline_readout_20261025\\validate.py": "f9c01dd7e15a68d1a05a59523abbabcd997c5a97a4f956c24a65106ab72d85eb",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\adopted_baseline_readout_20261025\\readout.py": "351af11854f4e7beadf2831672c30dbeb23de4b818a6fe9b9d92e1791591571f"
+  },
+  "draft_sha256": "0d3531f32a9774f51b1dea0016f529fb7b999cf2807dc62e4cf5603a15983675",
+  "application_frozen": false,
+  "scoring_performed": false,
+  "inference_performed": false
+}

@@ -1,0 +1,30 @@
+{
+  "status": "PLANNED",
+  "scope": "Existing linear module and saved public inputs only",
+  "cases": 48,
+  "source_plan_sha256": "2a874324f9352603b0c2af723f80f301932616abfe99396d06fc16f862e52197",
+  "script_sha256": "7bb38d525f0ab06141a59385bd960d37cde40743e68c3af4f0c65938ca1d48f3",
+  "protected_sha256": {
+    "FINAL.json": "758534b08e7eaae7f63a540f0ca51d8f3bd8d7ac778477d7916676a646a4672a",
+    "src\\configs\\final\\STMP.json": "314f49447fa05e5bf10672008851be4e1959c3362529e479fde63f353964195a",
+    "src\\algorithm\\STMP\\linear.py": "3a5b1b702b206524988a2746085a3c4796ae5508658ee2b20f1e151639df0c9d",
+    "src\\algorithm\\STMP\\iterations.py": "6c65eb1fe93a917ced07718cd85e358d2fb3e99472a22720df9999b4e6c7fe12",
+    "src\\algorithm\\STMP\\gaussian.py": "e1b41ab509c473c825bc4cd839e29450ad422a70e507e581e209e51b18b6f55f",
+    "src\\training\\colored_preconditioned_20261024\\formal.py": "b2bd6aae9a10ebcbd7a158717872bc95931c6cdd933783b93288d6db7d76456c",
+    "src\\training\\colored_preconditioned_20261024\\model.py": "147d6bdb1fc82b7387d79a6c046d70ab91b200ee302a20e5ba75e3218afb1035"
+  },
+  "truth_used": false,
+  "network_calls": 0,
+  "full_receiver_runs": 0,
+  "training_changes": false,
+  "goals": [
+    "Check unprojected user covariance of the current undamped query",
+    "Check exact first-query replay without changing its normalization",
+    "Measure compatibility with the already chosen training covariance family"
+  ],
+  "limitations": [
+    "Fixed-coefficient Gaussian working prior, not empirical covariance calibration",
+    "First iteration has no query damping; later cross-iteration error covariance is not available",
+    "48 reused conditions from 24 scenes; no independent performance inference"
+  ]
+}

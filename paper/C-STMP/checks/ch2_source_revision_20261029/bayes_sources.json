@@ -1,0 +1,344 @@
+{
+  "scope": "P09–P12授权修订候选；未修改canonical正文。每句完整原句及必要替换；不把本文自定义说明归为术语替换。",
+  "source_checks": {
+    "pdf_images_viewed": [
+      "strict_sentence_audit_20261029/tmp/P04_cai_p4.png",
+      "strict_sentence_audit_20261029/tmp/P10_cai_p5.png",
+      "strict_sentence_audit_20261029/tmp/P10_shen_p7.png"
+    ],
+    "source_texts": [
+      "sources/cai2026.clean.pages.txt:437–520",
+      "sources/shen2025.clean.pages.txt:1131–1142"
+    ],
+    "audit_inputs": [
+      "manifest.json",
+      "P09.json",
+      "P10.json",
+      "P11.json",
+      "P12.json"
+    ],
+    "page4_check": "已查看Cai p4原PDF渲染图，确认后验完整表达式、Baye’s原文错拼及完整引导句；与p5 where及其后条目相连。"
+  },
+  "counts": {
+    "NO_SOURCE": 7,
+    "OTHER_CHANGE": 2,
+    "EXACT": 8,
+    "TERM_ONLY": 4
+  },
+  "sentence_map": [
+    {
+      "id": "B01",
+      "target": "We consider $Q<KN$ in \\eqref{eq:mmv}.",
+      "source": null,
+      "status": "NO_SOURCE",
+      "changes": [],
+      "note": "保留本文欠定设定Q<KN；本次未定位完整原句。"
+    },
+    {
+      "id": "B02",
+      "target": "In this subsection, we assume that the estimates $\\widehat{\\mathbf A}$ and $\\widehat\\sigma^2$ are known, which are obtained from $\\mathbf Y$ as described in Section~\\ref{sec:frontend}.",
+      "source": {
+        "key": "shen2025",
+        "pdf": "D:/afdm-gfra/reference/literature/shen2025.pdf",
+        "pdf_page": 7,
+        "section": "III-B Message Scheduling",
+        "original": "In this subsection, we assume that the phase rotation caused by fractional Doppler, the noise variance, and the parameters of BGM are known, which will be updated later."
+      },
+      "status": "OTHER_CHANGE",
+      "changes": [
+        "对象列表→Ahat及sigmahat^2",
+        "which will be updated later→which are obtained from Y as described in Section frontend"
+      ],
+      "note": "保留前端由Y获得估计值；Shen原文迭代内更新不符合本文，不硬恢复。"
+    },
+    {
+      "id": "B03",
+      "target": "Let $q_{\\rm tr}$ denote the prior distribution of $H_k$ represented by the channel samples used for training.",
+      "source": null,
+      "status": "NO_SOURCE",
+      "changes": [],
+      "note": "保留训练先验定义；本次未定位完整原句。"
+    },
+    {
+      "id": "B04",
+      "target": "This training prior need not coincide with the ground-truth channel distribution $p(H_k)$.",
+      "source": null,
+      "status": "NO_SOURCE",
+      "changes": [],
+      "note": "最小新增说明：q_tr与真实p(H_k)不必相同。"
+    },
+    {
+      "id": "B05",
+      "target": "For inference, we assume independence across devices and between each device's activity and channel.",
+      "source": null,
+      "status": "NO_SOURCE",
+      "changes": [],
+      "note": "保留跨设备、活动与信道独立的本文推断假设。"
+    },
+    {
+      "id": "B06",
+      "target": "The activities follow Bernoulli priors, while $q_{\\rm tr}(H_k)$ retains the dependence among the coefficients within $H_k$.",
+      "source": null,
+      "status": "NO_SOURCE",
+      "changes": [],
+      "note": "保留Bernoulli先验及块内信道依赖；本次未定位完整原句。"
+    },
+    {
+      "id": "B07",
+      "target": "In this paper, we aim to simultaneously detect the active devices and estimate the corresponding channels based on the observation $\\mathbf Y$ under a Bayesian inference framework \\cite{cai2026}.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 4,
+        "section": "II-B Problem Statement",
+        "original": "In this paper, we aim to simultaneously detect the active devices and estimate the corresponding channels based on the observation Y under a Bayesian inference framework."
+      },
+      "status": "EXACT",
+      "changes": [],
+      "note": "完整原句。"
+    },
+    {
+      "id": "B08",
+      "target": "Exact Bayesian estimators, e.g., the MMSE estimator, are generally intractable due to the high-dimensional integrals in the marginalization of the joint posterior distribution $q(\\mathbf X,\\{H_k\\}_{k=1}^{K},\\{\\alpha_k\\}_{k=1}^{K}\\mid\\mathbf Y)$.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 4,
+        "section": "II-B Problem Statement",
+        "original": "Exact Bayesian estimators, e.g., the MMSE estimator, are generally intractable due to the high-dimensional integrals in the marginalization of the joint posterior distribution p(X,{H_k}_{k=1}^{K},{alpha_k}_{k=1}^{K}|Y)."
+      },
+      "status": "TERM_ONLY",
+      "changes": [
+        "p(联合变量|Y)→q(联合变量|Y)",
+        "粗体H_k→H_k"
+      ],
+      "note": "补回原句末完整联合后验；q为本文工作后验，非真实后验的同义名。"
+    },
+    {
+      "id": "B09",
+      "target": "Alternatively, message-passing algorithms provide a low-complexity iterative approach for approximately calculating the MMSE estimator \\cite{cai2026}.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 4,
+        "section": "II-B Problem Statement",
+        "original": "Alternatively, message-passing algorithms [5], [6], [27], [47] provide a low-complexity iterative approach for approximately calculating the MMSE estimator."
+      },
+      "status": "EXACT",
+      "changes": [],
+      "note": "完整原句；引文显示归并至Cai。"
+    },
+    {
+      "id": "B10",
+      "target": "In message passing, we factorize the joint posterior distribution according to Bayes' theorem and the conditional independence relationships among the variables, expressed as \\begin{equation} \\begin{aligned} &q(\\mathbf X,\\{H_k\\}_{k=1}^{K},\\{\\alpha_k\\}_{k=1}^{K}\\mid\\mathbf Y)\\\\ &\\quad\\propto\\prod_{j=1}^{MN}p(\\mathbf y_j\\mid\\mathbf x_j)\\\\ &\\qquad\\times\\prod_{k=1}^{K} p(X_k\\mid H_k,\\alpha_k)q_{\\rm tr}(H_k)p(\\alpha_k), \\end{aligned} \\label{eq:working-posterior} \\end{equation} where $\\mathbf x_j\\in\\mathbb C^{KN}$ and $\\mathbf y_j\\in\\mathbb C^Q$ denote the $j$-th column of $\\mathbf X=[\\mathbf x_1,\\ldots,\\mathbf x_{MN}]$ and $\\mathbf Y=[\\mathbf y_1,\\ldots,\\mathbf y_{MN}]$, respectively.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": [
+          4,
+          5
+        ],
+        "section": "II-B Problem Statement",
+        "original": "In message passing, we factorize the joint posterior distribution according to Baye’s theorem and the conditional independence relationships among the variables, expressed as p(X,{H_k}_{k=1}^{K},{alpha_k}_{k=1}^{K}|Y) ∝ [product_{m=1}^{M} p(y_m|x_m)] [product_{k=1}^{K} p(X_k|H_k,alpha_k)p(H_k)p(alpha_k)], where x_m in C^{NK} and y_m in C^{NT} denote the m-th column of X=[x_1,...,x_M] and Y=[y_1,...,y_M], respectively."
+      },
+      "status": "OTHER_CHANGE",
+      "changes": [
+        "联合后验p→工作后验q",
+        "信道先验p(H_k)→训练先验q_tr(H_k)",
+        "列索引m→j，列数M→MN；x维度NK→KN；y维度NT→Q",
+        "Baye’s→Bayes'（原文拼写纠错例外）"
+      ],
+      "note": "恢复完整where并按本文维度定义列；唯一非术语文字例外是Bayes拼写纠错。显示式已独立检查，不能当作Cai原模型。"
+    },
+    {
+      "id": "B11",
+      "target": "Here, $q$ is the working posterior, $p(\\mathbf y_j\\mid\\mathbf x_j)=\\CN(\\mathbf y_j; \\widehat{\\mathbf A}\\mathbf x_j,\\widehat\\sigma^2\\I_Q)$ is the Gaussian likelihood from \\eqref{eq:mmv}, $p(X_k\\mid H_k,\\alpha_k)$ imposes $X_k=\\alpha_kH_k$, and $p(\\alpha_k)=\\rho^{\\alpha_k}(1-\\rho)^{1-\\alpha_k}$.",
+      "source": null,
+      "status": "NO_SOURCE",
+      "changes": [],
+      "note": "本文完整模型定义：固定前端估计下的高斯似然、X=alpha H约束、Bernoulli先验与工作后验q。Cai表II提供相关数学对象而非此完整原句。"
+    },
+    {
+      "id": "B12",
+      "target": "The MMSE channel estimate and posterior probability of activity can be calculated as \\begin{equation} \\begin{aligned} X_k^{\\rm MMSE}&=\\E_q[X_k\\mid\\mathbf Y],\\\\ p_k^{\\rm Bayes}&=q(\\alpha_k=1\\mid\\mathbf Y). \\end{aligned} \\label{eq:targets} \\end{equation}",
+      "source": null,
+      "status": "NO_SOURCE",
+      "changes": [],
+      "note": "保留MMSE X及活动后验概率两个目标；本次未定位完整原句。"
+    },
+    {
+      "id": "B13",
+      "target": "The main difficulty in implementing message passing on the factor graph lies in the message calculation associated with the factor node $q_{\\rm tr}(H_k)$, detailed as follows \\cite{cai2026}.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 5,
+        "section": "II-B Problem Statement",
+        "original": "The main difficulty in implementing message passing on the factor graph lies in the message calculation associated with the factor node p(H_k), detailed as follows."
+      },
+      "status": "TERM_ONLY",
+      "changes": [
+        "p(H_k)→q_tr(H_k)"
+      ],
+      "note": "恢复detailed as follows并补回两个条目。"
+    },
+    {
+      "id": "B14",
+      "target": "It is extremely challenging, if not impossible, to obtain an accurate characterization of the channel distribution $p(H_k)$.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 5,
+        "section": "II-B Problem Statement",
+        "original": "It is extremely challenging, if not impossible, to obtain an accurate characterization of the channel distribution p(H_k)."
+      },
+      "status": "EXACT",
+      "changes": [],
+      "note": "p(H_k)明确保留为真实分布；不改成q_tr，也不称其等价。"
+    },
+    {
+      "id": "B15",
+      "target": "Existing literature resorts to various assumptions, e.g., Rayleigh fading, Rician fading, angular-frequency structured sparsity, or frequency-domain block-wise linearity, to model the wireless channel \\cite{cai2026}.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 5,
+        "section": "II-B Problem Statement",
+        "original": "Existing literature resorts to various assumptions, e.g., Rayleigh fading [5], [6], Rician fading [10], angular-frequency structured sparsity [11], or frequency-domain block-wise linearity [27], to model the wireless channel."
+      },
+      "status": "EXACT",
+      "changes": [],
+      "note": "完整句；Cai原句的分项文献标记归并为Cai，属于引文显示变化；这是二手来源归属，不声称独立核验全部原始文献。"
+    },
+    {
+      "id": "B16",
+      "target": "These assumptions, however, may be mismatched with the ground-truth prior distribution, leading to significant performance degradation and potentially causing the algorithm to diverge.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 5,
+        "section": "II-B Problem Statement",
+        "original": "These assumptions, however, may be mismatched with the ground-truth prior distribution, leading to significant performance degradation and potentially causing the algorithm to diverge."
+      },
+      "status": "EXACT",
+      "changes": [],
+      "note": "完整原句；前句assumptions恢复，指代完整。"
+    },
+    {
+      "id": "B17",
+      "target": "The messages associated with the factor node $q_{\\rm tr}(H_k)$ can only be derived under specific, simple, and easily computable priors.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 5,
+        "section": "II-B Problem Statement",
+        "original": "The messages associated with the factor node p(H_k) can only be derived under specific, simple, and easily computable priors."
+      },
+      "status": "TERM_ONLY",
+      "changes": [
+        "p(H_k)→q_tr(H_k)"
+      ],
+      "note": "完整原句；依来源上下文指解析消息计算，不宣称数值积分不可能。"
+    },
+    {
+      "id": "B18",
+      "target": "For example, the work in \\cite{ke2020} adopted a simple i.i.d.\\ Bernoulli-Gaussian distribution to account for the inherent sparsity in the angular domain.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 5,
+        "section": "II-B Problem Statement",
+        "original": "For example, the work in [11] adopted a simple i.i.d. Bernoulli-Gaussian distribution to account for the inherent sparsity in the angular domain."
+      },
+      "status": "EXACT",
+      "changes": [],
+      "note": "Cai原[11]为Ke等2020，对应本文已有ke2020；此例属于该文角域模型，不用于声称本文AFDM块内独立或角域稀疏。"
+    },
+    {
+      "id": "B19",
+      "target": "Generally speaking, even if the training channel distribution becomes analytically available, calculating the messages for the factor node $q_{\\rm tr}(H_k)$ remains highly challenging due to the complicated and high-dimensional integrals (as will be discussed in Section~\\ref{sec:algorithm}).",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 5,
+        "section": "II-B Problem Statement",
+        "original": "Generally speaking, even if the ground-truth channel distribution becomes analytically available, calculating the messages for the factor node p(H_k) remains highly challenging due to the complicated and high-dimensional integrals (as will be discussed in Section III-B)."
+      },
+      "status": "TERM_ONLY",
+      "changes": [
+        "ground-truth channel distribution→training channel distribution",
+        "p(H_k)→q_tr(H_k)",
+        "Section III-B→Section algorithm"
+      ],
+      "note": "完整even if、due to及括号均保留；两处成对更换训练技术对象，避免q_tr与真实分布混同。本文算法节query-densities确有高维积分。"
+    },
+    {
+      "id": "B20",
+      "target": "To summarize, the message-passing framework faces a dilemma: the adopted channel prior is either too imprecise to ensure good performance, or too complex to facilitate efficient message calculation.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 5,
+        "section": "II-B Problem Statement",
+        "original": "To summarize, the message-passing framework faces a dilemma: the adopted channel prior is either too imprecise to ensure good performance, or too complex to facilitate efficient message calculation."
+      },
+      "status": "EXACT",
+      "changes": [],
+      "note": "完整原句；两个困难条目已恢复。"
+    },
+    {
+      "id": "B21",
+      "target": "This paper seeks to address the aforementioned challenges by plugging in deep generative priors for efficient message calculation.",
+      "source": {
+        "key": "cai2026",
+        "pdf": "D:/afdm-gfra/reference/literature/cai2026.pdf",
+        "pdf_page": 5,
+        "section": "II-B Problem Statement",
+        "original": "This paper seeks to address the aforementioned challenges by plugging in deep generative priors for efficient message calculation."
+      },
+      "status": "EXACT",
+      "changes": [],
+      "note": "完整原句；本文第四节通过去噪分数匹配学习先验。未移植原文unique/provable等后续主张。"
+    }
+  ],
+  "headings": [
+    {
+      "target": "Lack of exact characterization of channel distribution:",
+      "source": "Cai PDF p5, II-B第一项目标题",
+      "status": "EXACT"
+    },
+    {
+      "target": "Intractable high-dimensional integrals:",
+      "source": "Cai PDF p5, II-B第二项目标题",
+      "status": "EXACT"
+    }
+  ],
+  "paragraph_structure": [
+    "本文自定义设定移至开头，独立于Cai原段：Q<KN、前端估计、训练先验、独立性和Bernoulli先验。",
+    "Cai首段任务句→Exact Bayesian原句完整连续恢复。",
+    "Alternatively→In message passing→Eq.(5)→where原句连续结构恢复；本文似然/约束/目标说明单独附后。",
+    "P12恢复原引导句→两项完整论证→总结两句。未搬入原文因子图/表II引导句（本文无对应图表），也未搬入原段末unique interpretation/provable等方法新颖性宣称。"
+  ],
+  "mathematical_preservation": [
+    "Q<KN",
+    "Ahat和sigmahat由Y在frontend得到，当前视为已知",
+    "q_tr是训练信道分布；另行区分真实p(H_k)",
+    "跨设备以及活动/信道独立，块内相关保留",
+    "Bernoulli prior rho",
+    "q工作后验",
+    "列高斯似然乘积与原p(Y|X)等价（固定前端估计）",
+    "X_MMSE=E_q[X|Y]及p_Bayes=q(alpha=1|Y)"
+  ],
+  "minimal_exceptions": [
+    "B01/B03–B06/B11/B12为本文特有定义，无可定位完整原句；保留而不伪装原文。",
+    "B02因本文固定前端估计与Shen迭代内更新机制不同，保留必要关系从句改写。",
+    "B10对Baye’s纠错为Bayes'，按用户允许明示例外。",
+    "B19把ground-truth与p(H)成对换为training与q_tr；这是推断模型对象替换，非二者等价论证。"
+  ],
+  "boundaries": [
+    "未改canonical正文、PDF或bib。",
+    "未运行实验或训练。",
+    "编译/版面核验留给主代理合稿阶段。",
+    "B17原文only be derived含解析语境，主代理如需消除绝对措辞，可另行标明非术语修正；本候选没有虚构数值不可积结论。"
+  ]
+}

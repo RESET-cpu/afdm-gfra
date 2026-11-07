@@ -1,0 +1,10 @@
+{
+  "schema": "c-stmp-fixed-estimated-phase-v1",
+  "receiver_configuration": "src/configs/candidates/C_STMP_variance_em_20261025.json",
+  "receiver_configuration_sha256": "044d906052bf9150b9dbc09a64efaa545af6f70972cd96fd18f75a8e840f23b8",
+  "phase_configuration": "src/configs/final/phase.json",
+  "phase_configuration_sha256": "351fe661bc20f6c49a311d324e062b6731bcd496a8f3483dbf1e20e19ed81672",
+  "phase_policy": "Estimate from observations and original pilots once, then hold fixed",
+  "noise_policy": "Estimate from observations for both phase fitting and C-STMP",
+  "full_experiment_authorized": false
+}

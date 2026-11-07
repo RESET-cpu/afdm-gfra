@@ -1,0 +1,185 @@
+{
+  "status": "COMPLETE",
+  "results": [
+    {
+      "method": "STMP",
+      "label": "STMP (three networks)",
+      "scene": 14,
+      "snr_db": -4,
+      "metrics": {
+        "joint_channel_nmse_db": -9.93502887691177,
+        "active_channel_nmse_db": -9.935088783254768,
+        "error_energy": 98.5118083562447,
+        "signal_energy": 970.4902554692711,
+        "misses": 0,
+        "false_alarms": 0,
+        "active_users": 3,
+        "inactive_users": 37,
+        "aer": 0.0,
+        "brier": 1.5102143508390358e-06,
+        "binary_cross_entropy": 0.0004972735637974923,
+        "maximum_inactive_probability": 0.007129271937406064,
+        "minimum_active_probability": 1.0
+      },
+      "iterations": 80,
+      "stopping_reason": "CONVERGED",
+      "warmed_seconds": [
+        5.959528399980627,
+        5.927793999959249,
+        5.904935300000943
+      ],
+      "warmed_median_seconds": 5.927793999959249
+    },
+    {
+      "method": "STMP",
+      "label": "STMP (three networks)",
+      "scene": 14,
+      "snr_db": 0,
+      "metrics": {
+        "joint_channel_nmse_db": -13.24827619248622,
+        "active_channel_nmse_db": -13.24831741763007,
+        "error_energy": 45.937098415422895,
+        "signal_energy": 970.4902554692711,
+        "misses": 0,
+        "false_alarms": 0,
+        "active_users": 3,
+        "inactive_users": 37,
+        "aer": 0.0,
+        "brier": 1.0076631696802456e-06,
+        "binary_cross_entropy": 0.0002072634187624648,
+        "maximum_inactive_probability": 0.006328614630487821,
+        "minimum_active_probability": 1.0
+      },
+      "iterations": 90,
+      "stopping_reason": "CONVERGED",
+      "warmed_seconds": [
+        6.684351700008847,
+        6.7503590999986045,
+        6.736393400002271
+      ],
+      "warmed_median_seconds": 6.736393400002271
+    },
+    {
+      "method": "C_STMP",
+      "label": "C-STMP",
+      "scene": 14,
+      "snr_db": -4,
+      "metrics": {
+        "joint_channel_nmse_db": -11.23425470803388,
+        "active_channel_nmse_db": -11.234289600364818,
+        "error_energy": 73.04083144665502,
+        "signal_energy": 970.4902554692711,
+        "misses": 0,
+        "false_alarms": 0,
+        "active_users": 3,
+        "inactive_users": 37,
+        "aer": 0.0,
+        "brier": 2.01406366144926e-06,
+        "binary_cross_entropy": 0.0008222280079469106,
+        "maximum_inactive_probability": 0.006636419321064513,
+        "minimum_active_probability": 1.0
+      },
+      "iterations": 60,
+      "stopping_reason": "CONVERGED",
+      "warmed_seconds": [
+        6.181974500010256,
+        6.179074399988167,
+        6.196223500010092
+      ],
+      "warmed_median_seconds": 6.181974500010256
+    },
+    {
+      "method": "C_STMP",
+      "label": "C-STMP",
+      "scene": 14,
+      "snr_db": 0,
+      "metrics": {
+        "joint_channel_nmse_db": -13.342465739165938,
+        "active_channel_nmse_db": -13.34247652803989,
+        "error_energy": 44.951543134364336,
+        "signal_energy": 970.4902554692711,
+        "misses": 0,
+        "false_alarms": 0,
+        "active_users": 3,
+        "inactive_users": 37,
+        "aer": 0.0,
+        "brier": 7.358650001436707e-07,
+        "binary_cross_entropy": 0.00046278961349178793,
+        "maximum_inactive_probability": 0.0036280085133341034,
+        "minimum_active_probability": 1.0
+      },
+      "iterations": 60,
+      "stopping_reason": "CONVERGED",
+      "warmed_seconds": [
+        6.176424599951133,
+        6.1672894999501295,
+        6.188628000032622
+      ],
+      "warmed_median_seconds": 6.176424599951133
+    },
+    {
+      "method": "DU",
+      "label": "DU (deep unfolded, 10 layers)",
+      "scene": 14,
+      "snr_db": -4,
+      "metrics": {
+        "joint_channel_nmse_db": -13.493197678543465,
+        "active_channel_nmse_db": -13.49320398167627,
+        "error_energy": 43.41815964898097,
+        "signal_energy": 970.4902554692711,
+        "misses": 0,
+        "false_alarms": 0,
+        "active_users": 3,
+        "inactive_users": 37,
+        "aer": 0.0,
+        "brier": 1.5676040725754124e-07,
+        "binary_cross_entropy": 0.0003793448667166133,
+        "maximum_inactive_probability": 0.0004951539449393749,
+        "minimum_active_probability": 0.9999997615814209
+      },
+      "iterations": 10,
+      "stopping_reason": "FIXED_DEPTH",
+      "warmed_seconds": [
+        0.2991137999924831,
+        0.2472987999790348,
+        0.250261600012891
+      ],
+      "warmed_median_seconds": 0.250261600012891
+    },
+    {
+      "method": "DU",
+      "label": "DU (deep unfolded, 10 layers)",
+      "scene": 14,
+      "snr_db": 0,
+      "metrics": {
+        "joint_channel_nmse_db": -15.838453732529189,
+        "active_channel_nmse_db": -15.838454726543592,
+        "error_energy": 25.301473009716045,
+        "signal_energy": 970.4902554692711,
+        "misses": 0,
+        "false_alarms": 0,
+        "active_users": 3,
+        "inactive_users": 37,
+        "aer": 0.0,
+        "brier": 1.1524795689129479e-08,
+        "binary_cross_entropy": 0.00010316034885938796,
+        "maximum_inactive_probability": 0.00012219206837471575,
+        "minimum_active_probability": 1.0
+      },
+      "iterations": 10,
+      "stopping_reason": "FIXED_DEPTH",
+      "warmed_seconds": [
+        0.24562539998441935,
+        0.24688639998203143,
+        0.24165939999511465
+      ],
+      "warmed_median_seconds": 0.24562539998441935
+    }
+  ],
+  "scenes": 1,
+  "inference_runs": 6,
+  "timing_repetitions": 3,
+  "confidence_intervals": null,
+  "note": "Paired development example; runtime is warmed implementation time, not population performance.",
+  "elapsed_seconds": 109.57540339999832
+}

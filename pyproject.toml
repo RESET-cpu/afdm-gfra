@@ -10,14 +10,22 @@ requires-python = ">=3.10"
 dependencies = ["numpy>=2.0", "scipy", "torch", "threadpoolctl", "PyYAML", "matplotlib"]
 
 [project.scripts]
-jadce = "afdm_jadcedd.experiment.run:main"
+jadce = "evaluation.cli:main"
+
+[tool.setuptools]
+py-modules = ["project", "utils"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = [
+    "algorithm", "algorithm.*", "evaluation", "evaluation.*",
+    "networks", "networks.*", "system", "system.*", "training", "training.*",
+]
 
 [tool.setuptools.package-data]
-"afdm_jadcedd" = ["LICENSE.cai"]
+"networks" = ["cai_models/LICENSE"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["src/tests"]
 pythonpath = ["src"]
+cache_dir = "result/tmp/pytest_cache"

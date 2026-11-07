@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "approved_items": {
+    "VI01": true,
+    "VI02": true,
+    "VI03": true,
+    "VI04": true,
+    "VI05": true,
+    "VI06": true,
+    "VI07": true,
+    "VII01": true,
+    "VII02": true
+  },
+  "changed_files": [
+    "references.bib",
+    "main.pdf",
+    "main_full.pdf",
+    "main.aux",
+    "main_full.aux",
+    "main.log",
+    "main_full.log",
+    "sections/06_simulation_results.tex",
+    "sections/07_conclusion.tex"
+  ],
+  "unchanged_protected_files": 26,
+  "all_math_expressions_preserved": true,
+  "all_figures_unchanged": true,
+  "only_one_new_bib_entry": true,
+  "manuscripts": [
+    {
+      "name": "main",
+      "pages": 13,
+      "old_pages": 13,
+      "changed_pages": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "references": 43,
+      "sha256": "89e88e6bf8d40c5b4b77a4a924cf061553067c678e2a81d808ebad71e9e28b73"
+    },
+    {
+      "name": "main_full",
+      "pages": 14,
+      "old_pages": 14,
+      "changed_pages": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        14
+      ],
+      "references": 43,
+      "sha256": "96ff6f06e80825a683f5951ed5c3164fb1a0fe6f0bc263fb39b58f74da230565"
+    }
+  ],
+  "training_started": false,
+  "inference_started": false
+}

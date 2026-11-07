@@ -1,0 +1,49 @@
+ledger: ars-run-ledger/1.0
+created_at: '2026-11-03T14:43:29Z'
+entries:
+- seq: 1
+  kind: initial_instructions
+  at: '2026-11-03T14:43:29Z'
+  user_words: 我记得我们之前好像有一个单独的相位前端的实现，在完整迭代算法之前进行的，而且好像也就一些实验结果，我们基于那个做一下主SNR实验的1000个场景是否可以
+  prev_hash: null
+  hash: c103f27602979bcf2c934eb5b9be00aad63fe3946f1816a61f567f67d459753a
+- seq: 2
+  kind: tool_receipt
+  at: '2026-11-03T14:43:29Z'
+  step: prepare_corrected_execution_batch
+  command: run.py prepare; original GPU evaluation setup restored in separate v2 batch
+  status: passed
+  exit_status: 0
+  retries_used: 0
+  input_sha256:
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\PLAN.json: 9363600fa5d12b8f9701fb3b662d169817b4f7eda29fe00cc6598099ddfb5000
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\REVISION.json: f377cea1b84d420d1c1b5d873d7e0f1d51bbc7288bcbd8b5589114aff962384b
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\PREPARED.json: 32cfe2f1adf0ad8d550ab79866b831f4ea71b7b02d6ad9da715065296ce9cfc2
+  prev_hash: c103f27602979bcf2c934eb5b9be00aad63fe3946f1816a61f567f67d459753a
+  hash: 657f89cc4c90dfa60d6cd3a2d70b6da713cdf186cfc281b4eaf56ee6aaf8f923
+- seq: 3
+  kind: tool_receipt
+  at: '2026-11-03T14:44:22Z'
+  step: corrected_startup_and_report_check
+  command: Frozen first-input reproduction plus report.py --partial --no-plots
+  status: passed
+  exit_status: 0
+  retries_used: 0
+  input_sha256:
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\PLAN.json: 9363600fa5d12b8f9701fb3b662d169817b4f7eda29fe00cc6598099ddfb5000
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\STARTUP_VALIDATION.json: 4530698b308f4a7753074d58cf1bafe211a92425e222bea0bfd0d495d4260b4a
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\START.json: 1d6e04a063f5b1b05ff727450dcc7b5810165ce0caa251ddeb07a10ba9ab2661
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103_v2\CHECKPOINT_AUDIT.json: c104961225f52c340378c3997e09d7cea7731592688fbddc8937da9480fe6ac3
+  prev_hash: 657f89cc4c90dfa60d6cd3a2d70b6da713cdf186cfc281b4eaf56ee6aaf8f923
+  hash: 82a8e51e8648e71da17b1e3070c9d288426694ef46558d2791cda8295e2de6f4
+- seq: 4
+  kind: progress
+  at: '2026-11-03T14:44:23Z'
+  stage: run
+  counters:
+    planned: 6000
+    completed_at_checkpoint: 5
+    failed_in_current_batch: 0
+    preserved_failed_startups: 1
+  prev_hash: 82a8e51e8648e71da17b1e3070c9d288426694ef46558d2791cda8295e2de6f4
+  hash: b6493cda0e8a63c6b5160e3e5197428e495d61a66a589248962c2adde2aaee21

@@ -1,0 +1,545 @@
+{
+  "paragraph_id": "P07",
+  "source_lines": [
+    180,
+    235
+  ],
+  "input_file": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_reaudit_20261029\\P07.input.txt",
+  "input_sha256": "9d70d78957d3f0128e7921d246776e45821af5d7393a7b8dfb6ccbf62278d5de",
+  "scope": "仅完整英文句语言一致性、必要技术术语替换与原段组织；不作数学正确性或一般学术质量判决。",
+  "method": "按完整语法句计数，显示公式与后接 where 合一；独立查阅五份核心本地文献的全文提取文本，回看 Cai 期刊 PDF p.4 与 Shen PDF p.5。未读取任何其他审查员报告，未联网，未改正文。",
+  "normalization": "原句引文仅规范化空白、换行、OCR 分词和数学 TeX 排版；保留所有英文主句及 where 句尾。原始 PDF 视觉回看确认 S06/S07/S10 的完整尾句。",
+  "sentences": [
+    {
+      "id": "P07-S01",
+      "draft": "We use an indicator function $\\alpha_k$ to model the device activity as \\cite{cai2026} \\[ \\alpha_k=\\begin{cases} 1,&\\text{if the $k$th device is active},\\\\ 0,&\\text{otherwise}. \\end{cases} \\]",
+      "draft_tex": "We use an indicator function $\\alpha_k$ to model the device\nactivity as \\cite{cai2026}\n\\[\n \\alpha_k=\\begin{cases}\n 1,&\\text{if the $k$th device is active},\\\\\n 0,&\\text{otherwise}.\n \\end{cases}\n\\]\n",
+      "input_line_range": [
+        1,
+        8
+      ],
+      "category": "EXACT",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 4,
+      "source_section": "II-A, System Model；式 (1) 及完整引导句",
+      "source_quote": "We use an indicator function $\\alpha_k$ to model the device activity as $\\alpha_k=\\{1,\\ \\text{if the $k$-th device is active};\\ 0,\\ \\text{otherwise}.\\}$",
+      "changes": {
+        "necessary_substitutions": [],
+        "other_changes": []
+      },
+      "formula_adaptation": [
+        "分段指示函数与来源一致；公式内 k-th/kth 是序数排版差异，未改变任何条件。"
+      ],
+      "reason": "说明性英文及指示函数内的两个条件词组一致；引用编号、公式号与序数排版按显示层差异处理。",
+      "minimal_recommendation": "此句无需语言改动；保留明确的 Cai 来源定位。",
+      "parallel_source": {
+        "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+        "source_page": 4,
+        "source_section": "II-A, System Model；同句亦见 v2"
+      }
+    },
+    {
+      "id": "P07-S02",
+      "draft": "Let $\\rho$ represent the probability of a device being active, i.e., $\\Pr(\\alpha_k=1)=\\rho$, where $\\rho\\ll1$.",
+      "draft_tex": "Let $\\rho$ represent the probability of a device being active,\ni.e., $\\Pr(\\alpha_k=1)=\\rho$, where $\\rho\\ll1$.\n",
+      "input_line_range": [
+        9,
+        10
+      ],
+      "category": "TERM_ONLY",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 4,
+      "source_section": "II-A, System Model；式 (1) 后",
+      "source_quote": "Let $\\lambda$ represent the probability of a device being active, i.e., $p(\\alpha_k=1)=\\lambda$, where $\\lambda\\ll1$.",
+      "changes": {
+        "necessary_substitutions": [
+          "$\\lambda\\to\\rho$",
+          "$p(\\cdot)\\to\\Pr(\\cdot)$"
+        ],
+        "other_changes": []
+      },
+      "formula_adaptation": [
+        "活动概率符号和概率算子记号适配；where 小概率条件完整保留。"
+      ],
+      "reason": "含 i.e. 与 where 的完整英文句型、连接词和词序均保留，仅概率记号改变。",
+      "minimal_recommendation": "此句无需语言改动。",
+      "parallel_source": {
+        "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+        "source_page": 4,
+        "source_section": "II-A, System Model；同句亦见 v2"
+      }
+    },
+    {
+      "id": "P07-S03",
+      "draft": "Each device maintains its activity state throughout a transmission block.",
+      "draft_tex": "Each device maintains its activity state throughout a transmission\nblock. ",
+      "input_line_range": [
+        11,
+        12
+      ],
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "changes": {
+        "necessary_substitutions": [],
+        "other_changes": []
+      },
+      "formula_adaptation": [
+        "这是本文的块内活动状态不变假设，不是公式排版问题。"
+      ],
+      "reason": "本次核查未定位完整原句；Cai 的块衰落或每块稀疏活动表述不等于此句的活动状态保持假设。",
+      "minimal_recommendation": "保留为本文自行明确的假设，并从“逐句原文沿用”通过项中剔除；若仍要求严格通过，须补足实际完整来源。",
+      "source_locator": "本次核查未定位可对齐的完整原句。",
+      "searched_sources": [
+        {
+          "key": "shen2025",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\shen2025.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\shen2025.clean.pages.txt"
+        },
+        {
+          "key": "cai2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026.clean.pages.txt"
+        },
+        {
+          "key": "cai2026_stmp_v2",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026_stmp_v2.clean.pages.txt"
+        },
+        {
+          "key": "ding2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\ding2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\ding2026.clean.pages.txt"
+        },
+        {
+          "key": "huang2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\huang2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\huang2026.clean.pages.txt"
+        }
+      ],
+      "search_queries": [
+        "each device maintains its activity state",
+        "activity state throughout",
+        "throughout a transmission block",
+        "maintains",
+        "remain + activity/block",
+        "active + block"
+      ],
+      "related_evidence": [
+        {
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "source_page": 3,
+          "source_section": "II-A, System Model",
+          "source_quote": "We adopt a block-fading model, i.e., all the channels remain quasi-static within a transmission block.",
+          "note": "来源谈信道准静态，不是设备活动状态；不作为对齐原句。"
+        },
+        {
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "source_page": 4,
+          "source_section": "II-A, System Model；式 (1) 前",
+          "source_quote": "As a result, only a (small) subset of the devices is active in any given transmission block.",
+          "note": "来源谈稀疏活动，未逐句给出 maintains its activity state throughout 的表述。"
+        }
+      ]
+    },
+    {
+      "id": "P07-S04",
+      "draft": "Let $X_k=\\alpha_kH_k$.",
+      "draft_tex": "Let $X_k=\\alpha_kH_k$.\n",
+      "input_line_range": [
+        12,
+        12
+      ],
+      "category": "TERM_ONLY",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 4,
+      "source_section": "II-A, System Model；式 (3) 噪声说明后",
+      "source_quote": "Let $\\mathbf X_k\\triangleq\\alpha_k\\mathbf H_k$.",
+      "changes": {
+        "necessary_substitutions": [
+          "来源矩阵 $\\mathbf X_k,\\mathbf H_k\\to$ 本文张量 $X_k,H_k$"
+        ],
+        "other_changes": []
+      },
+      "formula_adaptation": [
+        "定义等号 $\\triangleq\\to =$；来源矩阵定义适配为本文张量定义。"
+      ],
+      "reason": "这里实际定位到同一活动门控定义的完整 Let 句，未凭泛用模板推定来源；英文只有 Let 且未改。",
+      "minimal_recommendation": "此句可作为语言沿用项；注明张量模型是本文适配。",
+      "parallel_source": {
+        "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+        "source_page": 4,
+        "source_section": "II-A, System Model；同句亦见 v2"
+      }
+    },
+    {
+      "id": "P07-S05",
+      "draft": "Let \\begin{equation} A_{qkn}=P_{qkn}e^{jq\\beta_k}. \\label{eq:effective-pilot} \\end{equation}",
+      "draft_tex": "Let\n\\begin{equation}\n A_{qkn}=P_{qkn}e^{jq\\beta_k}.\n \\label{eq:effective-pilot}\n\\end{equation}\n",
+      "input_line_range": [
+        13,
+        17
+      ],
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "changes": {
+        "necessary_substitutions": [],
+        "other_changes": []
+      },
+      "formula_adaptation": [
+        "本文新增有效导频定义 $A_{qkn}=P_{qkn}e^{jq\\beta_k}$。"
+      ],
+      "reason": "本次核查未定位该有效导频定义的完整原句；其他 Let 公式或相位旋转公式不能单独证明此句有来源。",
+      "minimal_recommendation": "将其列为本文自己的定义；不得用另一条 Let 模板认证为原句。",
+      "source_locator": "本次核查未定位可对齐的完整原句。",
+      "searched_sources": [
+        {
+          "key": "shen2025",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\shen2025.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\shen2025.clean.pages.txt"
+        },
+        {
+          "key": "cai2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026.clean.pages.txt"
+        },
+        {
+          "key": "cai2026_stmp_v2",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026_stmp_v2.clean.pages.txt"
+        },
+        {
+          "key": "ding2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\ding2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\ding2026.clean.pages.txt"
+        },
+        {
+          "key": "huang2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\huang2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\huang2026.clean.pages.txt"
+        }
+      ],
+      "search_queries": [
+        "effective pilot",
+        "Aqkn",
+        "pilot matrix",
+        "phase rotation",
+        "Let",
+        "Define"
+      ]
+    },
+    {
+      "id": "P07-S06",
+      "draft": "After removing the CPP and applying the DAFT, the received signal $\\mathbf Y_q\\in\\mathbb C^{M\\times N}$ during the $q$th AFDM frame is given by \\cite{cai2026} \\begin{equation} Y_{qmr}=[\\mathbf Y_q]_{mr} =\\sum_{k=1}^K\\sum_{n=0}^{N-1}A_{qkn}X_{kmrn}+W_{qmr}, \\label{eq:observation-tensor} \\end{equation} where $\\mathbf W_q=[W_{qmr}]_{m,r}\\in\\mathbb C^{M\\times N}$ is an AWGN matrix with the elements i.i.d.\\ drawn from $\\CN(0,\\sigma^2)$.",
+      "draft_tex": "After removing the CPP and applying the DAFT, the received signal\n$\\mathbf Y_q\\in\\mathbb C^{M\\times N}$ during the $q$th AFDM\nframe is given by \\cite{cai2026}\n\\begin{equation}\n Y_{qmr}=[\\mathbf Y_q]_{mr}\n =\\sum_{k=1}^K\\sum_{n=0}^{N-1}A_{qkn}X_{kmrn}+W_{qmr},\n \\label{eq:observation-tensor}\n\\end{equation}\nwhere $\\mathbf W_q=[W_{qmr}]_{m,r}\\in\\mathbb C^{M\\times N}$\nis an AWGN matrix with the elements i.i.d.\\ drawn from\n$\\CN(0,\\sigma^2)$.\n",
+      "input_line_range": [
+        18,
+        28
+      ],
+      "category": "TERM_ONLY",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 4,
+      "source_section": "II-A, System Model；式 (3) 引导句至其 where 句末",
+      "source_quote": "After removing the CP and applying the DFT, the received signal $\\mathbf Y_t\\in\\mathbb C^{N\\times M}$ during the $t$-th OFDM symbol is given by [公式 (3): $\\mathbf Y_t=\\sum_{k=1}^{K}\\alpha_k\\mathbf Q_{kt}\\mathbf H_k+\\mathbf N_t$], where $\\mathbf N_t\\in\\mathbb C^{N\\times M}$ is an AWGN matrix with the elements i.i.d. drawn from $\\mathcal{CN}(0,\\delta_0^2)$.",
+      "changes": {
+        "necessary_substitutions": [
+          "CP → CPP",
+          "DFT → DAFT",
+          "OFDM symbol → AFDM frame",
+          "$t\\to q$",
+          "$\\mathbf N_t\\to\\mathbf W_q$",
+          "$\\delta_0^2\\to\\sigma^2$"
+        ],
+        "other_changes": []
+      },
+      "formula_adaptation": [
+        "接收矩阵 $N\\times M\\to M\\times N$。",
+        "OFDM 矩阵叠加观测改为本文 AFDM 张量收缩 $Y_{qmr}=\\sum_k\\sum_n A_{qkn}X_{kmrn}+W_{qmr}$。",
+        "噪声对象内增加元素索引表示 $\\mathbf W_q=[W_{qmr}]_{m,r}$，概率模型参数随之适配。"
+      ],
+      "reason": "完整主句、After/and/during/is given by 以及 where 后 is an AWGN matrix with the elements i.i.d. drawn from 均未改；差异是技术对象、符号和数学模型适配。",
+      "minimal_recommendation": "此句语言可通过，但不能把本文张量观测等式当成 Cai 原公式。",
+      "parallel_source": {
+        "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+        "source_page": 4,
+        "source_section": "II-A, System Model；同句亦见 v2"
+      }
+    },
+    {
+      "id": "P07-S07",
+      "draft": "Next, we collect the $Q$ received frames into a single matrix as \\begin{equation} \\mathbf Y=\\mathbf A\\mathbf X+\\mathbf W, \\label{eq:mmv} \\end{equation} where $\\mathbf Y,\\mathbf W\\in\\mathbb C^{Q\\times MN}$, $\\mathbf A\\in\\mathbb C^{Q\\times KN}$, and $\\mathbf X\\in\\mathbb C^{KN\\times MN}$.",
+      "draft_tex": "Next, we collect the $Q$ received frames into a single matrix as\n\\begin{equation}\n \\mathbf Y=\\mathbf A\\mathbf X+\\mathbf W,\n \\label{eq:mmv}\n\\end{equation}\nwhere $\\mathbf Y,\\mathbf W\\in\\mathbb C^{Q\\times MN}$,\n$\\mathbf A\\in\\mathbb C^{Q\\times KN}$, and\n$\\mathbf X\\in\\mathbb C^{KN\\times MN}$.\n",
+      "input_line_range": [
+        29,
+        36
+      ],
+      "category": "OTHER_CHANGE",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\shen2025.pdf",
+      "source_page": 5,
+      "source_section": "II-C, Problem Formulation；式 (15) 引导句及全部 where 定义",
+      "source_quote": "Next, we collect the $Q$ received frames into a single matrix as [公式 (15): $\\mathbf Y^l=\\mathbf C^{\\phi,l}(\\mathbf T^l\\otimes\\mathbf I_N)\\mathbf H^l+\\mathbf Z^l$], where $\\mathbf Y^l=[(\\mathbf Y_0^l)^T,\\ldots,(\\mathbf Y_{Q-1}^l)^T]^T$, $\\mathbf H^l=(\\mathbf\\Lambda\\otimes\\mathbf I_{MN})\\widetilde{\\mathbf H}^l$, $\\mathbf C^{\\phi,l}=[(\\mathbf C_0^l(\\mathbf\\Phi_0\\otimes\\mathbf I_N))^T,\\ldots,(\\mathbf C_{Q-1}^l(\\mathbf\\Phi_{Q-1}\\otimes\\mathbf I_N))^T]^T$.",
+      "changes": {
+        "necessary_substitutions": [
+          "$\\mathbf Y^l\\to\\mathbf Y$；相应接收与模型对象适配"
+        ],
+        "other_changes": [
+          "where 原本列出 Y^l、H^l、C^{φ,l} 的三个具体构造定义，当前整段解释关系替换成 Y/W、A、X 的维度声明。",
+          "当前末项前新增英文连接词 and，来源此完整句没有该连接词。"
+        ]
+      },
+      "formula_adaptation": [
+        "显示观测式适配为本文 Y=AX+W，本身不构成 OTHER_CHANGE 的理由。",
+        "原 where 构造等式与当前维度符号变化另列；结论同时依据解释关系整体替换和新增英文 and。"
+      ],
+      "reason": "不能仅凭句首完全相同放行：完整 where 尾部改变了解释关系，且新增非术语连接词。",
+      "minimal_recommendation": "以完整句为单位标记改写；若坚持严格沿用，须重新核对句尾而非只保留 Next 模板。"
+    },
+    {
+      "id": "P07-S08",
+      "draft": "Define \\begin{equation} \\begin{aligned} [\\mathbf Y]_{q,mN+r}&=Y_{qmr},\\\\ [\\mathbf W]_{q,mN+r}&=W_{qmr},\\\\ [\\mathbf A]_{q,(k-1)N+n}&=A_{qkn},\\\\ [\\mathbf X]_{(k-1)N+n,mN+r}&=X_{kmrn}. \\end{aligned} \\label{eq:mmv-indexing} \\end{equation}",
+      "draft_tex": "Define\n\\begin{equation}\n \\begin{aligned}\n [\\mathbf Y]_{q,mN+r}&=Y_{qmr},\\\\\n [\\mathbf W]_{q,mN+r}&=W_{qmr},\\\\\n [\\mathbf A]_{q,(k-1)N+n}&=A_{qkn},\\\\\n [\\mathbf X]_{(k-1)N+n,mN+r}&=X_{kmrn}.\n \\end{aligned}\n \\label{eq:mmv-indexing}\n\\end{equation}\n",
+      "input_line_range": [
+        37,
+        46
+      ],
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "changes": {
+        "necessary_substitutions": [],
+        "other_changes": []
+      },
+      "formula_adaptation": [
+        "本文新增四个展平索引映射，覆盖 Y、W、A、X。"
+      ],
+      "reason": "本次核查未定位此四项索引定义的完整来源；Cai 的 Define 句定义堆叠矩阵，不能靠同一个 Define 动词认定新索引句已逐词沿用。",
+      "minimal_recommendation": "将索引映射作为本文定义单列，不归入原句语言通过项。",
+      "source_locator": "本次核查未定位可对齐的完整原句。",
+      "searched_sources": [
+        {
+          "key": "shen2025",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\shen2025.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\shen2025.clean.pages.txt"
+        },
+        {
+          "key": "cai2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026.clean.pages.txt"
+        },
+        {
+          "key": "cai2026_stmp_v2",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026_stmp_v2.clean.pages.txt"
+        },
+        {
+          "key": "ding2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\ding2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\ding2026.clean.pages.txt"
+        },
+        {
+          "key": "huang2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\huang2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\huang2026.clean.pages.txt"
+        }
+      ],
+      "search_queries": [
+        "Define",
+        "with entries",
+        "q,(k-1)N+n",
+        "mN+r",
+        "concatenated",
+        "single matrix"
+      ],
+      "related_evidence": [
+        {
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "source_page": 4,
+          "source_section": "II-A, System Model；式 (3) 与 (4) 之间",
+          "source_quote": "Define $\\mathbf Y\\triangleq[\\mathbf Y_1^H,\\ldots,\\mathbf Y_T^H]^H\\in\\mathbb C^{NT\\times M}$, $\\mathbf Q_k\\triangleq[\\mathbf Q_{k1}^H,\\ldots,\\mathbf Q_{kT}^H]^H\\in\\mathbb C^{NT\\times N}$, and $\\mathbf N\\triangleq[\\mathbf N_1^H,\\ldots,\\mathbf N_T^H]^H\\in\\mathbb C^{NT\\times M}$.",
+          "note": "相关构造句，非当前四个逐元素映射的完整来源；原句英文 and 也未沿用。"
+        }
+      ]
+    },
+    {
+      "id": "P07-S09",
+      "draft": "Let $\\mathbf P\\in\\mathbb C^{Q\\times KN}$ denote the pilot matrix known at the satellite receiver, with entries $[\\mathbf P]_{q,(k-1)N+n}=P_{qkn}$.",
+      "draft_tex": "Let $\\mathbf P\\in\\mathbb C^{Q\\times KN}$ denote the pilot matrix\nknown at the satellite receiver, with entries\n$[\\mathbf P]_{q,(k-1)N+n}=P_{qkn}$.\n",
+      "input_line_range": [
+        47,
+        49
+      ],
+      "category": "NO_SOURCE",
+      "source_file": null,
+      "source_page": null,
+      "source_section": null,
+      "source_quote": null,
+      "changes": {
+        "necessary_substitutions": [],
+        "other_changes": []
+      },
+      "formula_adaptation": [
+        "本文定义 $\\mathbf P\\in\\mathbb C^{Q\\times KN}$ 及元素索引映射。"
+      ],
+      "reason": "本次核查未定位包含 denote the pilot matrix known at the satellite receiver, with entries 的完整来源；pilot matrix 术语或已知导频常识均不足以使此新定义通过。",
+      "minimal_recommendation": "作为本文定义保留并明确其来源性质；不要以通用 Let/denote 模板认证。",
+      "source_locator": "本次核查未定位可对齐的完整原句。",
+      "searched_sources": [
+        {
+          "key": "shen2025",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\shen2025.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\shen2025.clean.pages.txt"
+        },
+        {
+          "key": "cai2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026.clean.pages.txt"
+        },
+        {
+          "key": "cai2026_stmp_v2",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\cai2026_stmp_v2.clean.pages.txt"
+        },
+        {
+          "key": "ding2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\ding2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\ding2026.clean.pages.txt"
+        },
+        {
+          "key": "huang2026",
+          "pdf": "D:\\afdm-gfra\\reference\\literature\\huang2026.pdf",
+          "text": "D:\\afdm-gfra\\paper\\C-STMP\\checks\\strict_sentence_audit_20261029\\sources\\huang2026.clean.pages.txt"
+        }
+      ],
+      "search_queries": [
+        "denote the pilot matrix",
+        "known at the satellite receiver",
+        "known at",
+        "known to",
+        "with entries",
+        "pilot matrix"
+      ],
+      "related_evidence": [
+        {
+          "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+          "source_page": 4,
+          "source_section": "II-A, System Model；式 (3) 前",
+          "source_quote": "We construct a diagonal pilot matrix as $\\mathbf Q_{kt}\\triangleq\\operatorname{diag}\\{q_{kt1},\\ldots,q_{ktN}\\}\\in\\mathbb C^{N\\times N},\\forall k,t$.",
+          "note": "仅相关的导频矩阵定义；没有当前 known at…with entries 句型。"
+        }
+      ]
+    },
+    {
+      "id": "P07-S10",
+      "draft": "For simplicity, we impose the condition that $\\mathbf P$ is partial orthogonal, specifically requiring that $\\mathbf P\\mathbf P^{\\mathsf H}=KE_p\\I_Q$, where each device has the same pilot energy budget $E_p=\\|\\mathbf p_{qk}\\|^2$ \\cite{cai2026}.",
+      "draft_tex": "For simplicity, we impose the condition that $\\mathbf P$ is partial\northogonal, specifically requiring that\n$\\mathbf P\\mathbf P^{\\mathsf H}=KE_p\\I_Q$, where each device\nhas the same pilot energy budget\n$E_p=\\|\\mathbf p_{qk}\\|^2$ \\cite{cai2026}.\n",
+      "input_line_range": [
+        50,
+        54
+      ],
+      "category": "TERM_ONLY",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 4,
+      "source_section": "II-A, System Model；式 (4) 后完整 partial orthogonal 句",
+      "source_quote": "For simplicity, we impose the condition that $\\mathbf Q$ is partial orthogonal, specifically requiring that $\\mathbf Q\\mathbf Q^H=KP\\mathbf I_{NT}$, where each device has the same transmit power budget $P$.",
+      "changes": {
+        "necessary_substitutions": [
+          "$\\mathbf Q\\to\\mathbf P$",
+          "transmit power → pilot energy",
+          "功率符号 $P\\to$ 能量符号 $E_p$"
+        ],
+        "other_changes": []
+      },
+      "formula_adaptation": [
+        "来源约束 $\\mathbf Q\\mathbf Q^H=KP\\mathbf I_{NT}$ 适配为 $\\mathbf P\\mathbf P^{\\mathsf H}=KE_p\\mathbf I_Q$。",
+        "预算变量 $P$ 适配为带本文公式定义的 $E_p=\\|\\mathbf p_{qk}\\|^2$；该能量定义并非 Cai 原式。"
+      ],
+      "reason": "完整英文骨架（含 specifically requiring that 与 where each device has the same…budget）逐词保留；transmit power/pilot energy 是明确的技术量替换，附加等式按统一口径作为数学适配单列。",
+      "minimal_recommendation": "此句语言可通过；应明确能量预算与归一化约束属于本文适配，不据此宣称 Cai 使用相同导频模型。",
+      "parallel_source": {
+        "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+        "source_page": 4,
+        "source_section": "II-A, System Model；同句亦见 v2"
+      }
+    },
+    {
+      "id": "P07-S11",
+      "draft": "The design of partial orthogonal $\\mathbf P$ is deferred to Section~\\ref{sec:simulation-settings}.",
+      "draft_tex": "The design of partial orthogonal $\\mathbf P$ is deferred to\nSection~\\ref{sec:simulation-settings}.\n",
+      "input_line_range": [
+        55,
+        56
+      ],
+      "category": "TERM_ONLY",
+      "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026.pdf",
+      "source_page": 4,
+      "source_section": "II-A, System Model；partial orthogonal 条件后一句",
+      "source_quote": "The design of partial orthogonal $\\mathbf Q$ is deferred to Section V-C.",
+      "changes": {
+        "necessary_substitutions": [
+          "$\\mathbf Q\\to\\mathbf P$"
+        ],
+        "other_changes": []
+      },
+      "formula_adaptation": [
+        "Section V-C → 本文 simulation-settings 交叉引用属于允许的章节号显示差异。"
+      ],
+      "reason": "除导频矩阵符号与章节定位外，完整句词序和词语一致。",
+      "minimal_recommendation": "此句无需语言改动；整段组织另行判定。",
+      "parallel_source": {
+        "source_file": "D:\\afdm-gfra\\reference\\literature\\cai2026_stmp_v2.pdf",
+        "source_page": 4,
+        "source_section": "II-A, System Model；同句亦见 v2"
+      }
+    }
+  ],
+  "counts": {
+    "EXACT": 1,
+    "TERM_ONLY": 5,
+    "OTHER_CHANGE": 1,
+    "NO_SOURCE": 4,
+    "UNVERIFIED": 0
+  },
+  "total_sentences": 11,
+  "coverage_check": {
+    "exact_concatenation_matches_input": true,
+    "includes_all_formulas_and_where_clauses": true,
+    "overlap": false
+  },
+  "paragraph_structure": {
+    "same_original_paragraph": false,
+    "source_sequence": [
+      "Cai II-A 活动指示与概率（S01–S02）",
+      "本文新增活动保持假设（S03）",
+      "Cai 式 (3) 后有效信道定义被提前（S04）",
+      "本文有效导频定义（S05）",
+      "Cai 式 (3) 接收信号及 AWGN 句（S06）",
+      "Shen II-C 式 (15) 收集帧句，where 尾部改写（S07）",
+      "本文索引和导频定义（S08–S09）",
+      "Cai 式 (4) 后部分正交条件与设计转引（S10–S11）"
+    ],
+    "structure_changes": [
+      "拼接 Cai II-A 与 Shen II-C 两篇文献的不同原段。",
+      "Cai 原先在接收信号与噪声说明后定义 X_k，当前将该定义移到接收信号句之前。",
+      "Cai 原有信道/导频构造和堆叠定义链被删减或由本文定义替代。",
+      "插入四个未定位完整来源的假设或定义。",
+      "Next 的句首仍在，但后续 where 连接结构和说明关系没有保持原文。"
+    ],
+    "paragraph_exact_or_term_only": false,
+    "paragraph_language_all_exact_or_term_only": false,
+    "attribution_risk": "Cai 的句型可用于数学适配，但当前 AFDM 张量观测、有效导频、四个展平索引和能量预算等式不是已核实的 Cai 原模型；Shen 只支持 S07 的句首与原来的构造句，不支持当前维度尾句逐字沿用。"
+  },
+  "verdict": {
+    "strict_pass": false,
+    "sentence_language_pass_count": 6,
+    "sentence_language_total": 11,
+    "paragraph_organization_pass": false,
+    "summary": "11 句中 1 EXACT、5 TERM_ONLY、1 OTHER_CHANGE、4 NO_SOURCE；句子语言及整段组织均未严格通过。S10 完整 partial orthogonal 句按技术术语替换通过；S07 完整 where 句不通过。"
+  }
+}

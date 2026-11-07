@@ -1,0 +1,142 @@
+[
+  {
+    "id": "L01",
+    "file": "sections/02_system_model.tex",
+    "old": "as shown in Fig.~\\ref{fig:system-multiframe}, where AFDM is adopted\nto mitigate the doubly dispersive effect inherent\nin terrestrial-satellite links (TSLs) \\cite{shen2025,huang2026}.",
+    "new": "as shown in Fig.~\\ref{fig:system-multiframe}, where AFDM is adopted\nto mitigate the effects of doubly dispersive terrestrial-satellite\nlinks (TSLs) \\cite{shen2025,huang2026}.",
+    "reason": "压缩 effect inherent in 的名词搭配，保留模型对象和作用。",
+    "source": "Shen §II 开头，PDF p.3；Huang §I，PDF p.1／印刷 p.2949。原搭配来自 Shen，本次是自然语法调整，不声称逐字复制。",
+    "before_line": 5,
+    "after_line": 5
+  },
+  {
+    "id": "L02",
+    "file": "sections/02_system_model.tex",
+    "old": "In this paper, we aim to simultaneously detect the active devices and\nestimate the corresponding channels based on the observation $\\mathbf Y$\nunder a Bayesian inference framework \\cite{cai2026}.",
+    "new": "Our goal is to jointly detect active devices and estimate their channels\nfrom the observation $\\mathbf Y$ within a Bayesian inference framework\n\\cite{cai2026}.",
+    "reason": "精简重复的研究目的引式及 corresponding／based on。",
+    "source": "Cai §II-B 首段，PDF p.4／印刷 p.3578；保留其目标—观测—Bayesian framework 关系，仅作语言压缩。",
+    "before_line": 236,
+    "after_line": 236
+  },
+  {
+    "id": "L03",
+    "file": "sections/03_bayesian_receiver_design.tex",
+    "old": "Information is exchanged between the two estimators through Gaussian\nextrinsic messages based on expectation propagation \\cite{minka2001}.",
+    "new": "The two estimators exchange Gaussian extrinsic messages based on\nexpectation propagation \\cite{minka2001}.",
+    "reason": "用估计器作为主语，直接说明外信息交换。",
+    "source": "Cai §III 开头与 §III-A，PDF p.5／印刷 p.3579；Minka 既有出处保持。原句被动改主动，无新技术结论。",
+    "before_line": 10,
+    "after_line": 10
+  },
+  {
+    "id": "L04",
+    "file": "sections/04_generative_priors.tex",
+    "old": "real and imaginary parts of $\\vect(\\mathbf H)$ in $\\mathbf h_{\\mathbb\nR}\\in\\mathbb R^{2D}$.",
+    "new": "real and imaginary parts of $\\vect(\\mathbf H)$ to form $\\mathbf h_{\\mathbb\nR}\\in\\mathbb R^{2D}$.",
+    "reason": "明确堆叠结果与向量定义的关系。",
+    "source": "本文已有实坐标表示，仅调整介词搭配；不将其说成采用复坐标的 Cai 原句。",
+    "before_line": 16,
+    "after_line": 16
+  },
+  {
+    "id": "L05",
+    "file": "sections/04_generative_priors.tex",
+    "old": "The score of $q_v^{\\mathbb R}$ is unknown.\nFor the conditional Gaussian density in \\eqref{eq:training-query}, the score\nis $-2(\\mathbf u-\\mathbf h_{\\mathbb R})/v$.",
+    "new": "Although the score of $q_v^{\\mathbb R}$ is unknown, the conditional\nGaussian density in \\eqref{eq:training-query} has score\n$-2(\\mathbf u-\\mathbf h_{\\mathbb R})/v$.",
+    "reason": "连接未知边缘 score 与可计算条件 score，避免连续短句割裂 DSM 动机。",
+    "source": "Cai §IV-B，PDF pp.8–9／印刷 pp.3582–3583，式 (46)–(49) 前后完整段；本稿实坐标系数和加权目标保持。",
+    "before_line": 57,
+    "after_line": 57
+  },
+  {
+    "id": "L06",
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "When phases are unavailable, Section~\\ref{sec:phase-estimation} estimates\nthem once before MP and keeps them fixed throughout the iterations.",
+    "new": "When phases are unavailable, we estimate them once before MP using the\nmethod in Section~\\ref{sec:phase-estimation} and keep them fixed throughout\nthe iterations.",
+    "reason": "修正章节充当估计执行者的主语问题。",
+    "source": "本文既有相位估计流程的语法修正；一次估计并固定的时序保持，不声称来自 Cai／Shen。",
+    "before_line": 50,
+    "after_line": 50
+  },
+  {
+    "id": "L07",
+    "file": "sections/05_overall_algorithm.tex",
+    "old": "We minimize $\\mathcal L$ by coordinate updates, analytically minimizing\nover each $\\gamma_k$ and refining $(d_k,\\nu_k)$ using L-BFGS-B",
+    "new": "We minimize $\\mathcal L$ by coordinate updates, solving analytically\nfor each $\\gamma_k$ and refining $(d_k,\\nu_k)$ using L-BFGS-B",
+    "reason": "避免同句重复 minimize，保留各坐标的求解方式。",
+    "source": "本稿已有 coordinate updates、Tipping–Faul §2.1 及 Zhu Algorithm 778 引用保持；语言改写，不重命名算法。",
+    "before_line": 169,
+    "after_line": 170
+  },
+  {
+    "id": "L08",
+    "file": "sections/06_simulation_results.tex",
+    "old": "$-10\\log_{10}v$. At each of six SNRs from $-20$ to $30$~dB, both\nneural estimators share $2{,}000$ samples from $500$ scenes and the\nsame white-noise realizations.",
+    "new": "$-10\\log_{10}v$. At each of six SNRs from $-20$ to $30$~dB, both\nneural estimators use the same $2{,}000$ samples from $500$ scenes and\nthe same white-noise realizations.",
+    "reason": "以 use the same 明确配对输入，避免 estimators share samples 的含混搭配。",
+    "source": "Cai §VI-B，PDF pp.11–12／印刷 pp.3585–3586，为去噪器单独比较的叙述母本；样本数和配对条件为本文数据，不来自 Cai。",
+    "before_line": 351,
+    "after_line": 351
+  },
+  {
+    "id": "L09",
+    "file": "sections/06_simulation_results.tex",
+    "old": "Both learned curves remain above the genie-aided reference, which uses\ntrue path information.",
+    "new": "Both learned denoisers have higher NMSE than the genie-aided reference,\nwhich uses true path information.",
+    "reason": "直接描述方法的误差，不用曲线高低代替指标。",
+    "source": "Cai §VI-B，PDF p.12／印刷 p.3586，含 genie-aided baseline 及比较段；本文相对差距方向沿用原稿结果，不移植 Cai 的性能幅度。",
+    "before_line": 375,
+    "after_line": 375
+  },
+  {
+    "id": "L10",
+    "file": "sections/06_simulation_results.tex",
+    "old": "probability update. As a comparison, the Gaussian approximation gives",
+    "new": "probability update. For comparison, the Gaussian approximation gives",
+    "reason": "修正比较引式的惯用搭配。",
+    "source": "本稿活动证据消融段的普通语法调整；公式和对比设定保持。",
+    "before_line": 381,
+    "after_line": 381
+  },
+  {
+    "id": "L11",
+    "file": "sections/06_simulation_results.tex",
+    "old": "receiver unchanged. The GP-MP variants in this comparison use the\nwhite-noise-trained denoiser and, for density ratio estimation, its\nmatched classifier.",
+    "new": "receiver unchanged. Both GP-MP variants use the white-noise-trained\ndenoiser; the variant with density-ratio estimation also uses its\nmatched classifier.",
+    "reason": "去掉插入式说明，明确分类器仅用于密度比变体。",
+    "source": "本文已有四组消融配置说明；不新增实验或改变 Gaussian／密度比两变体的范围。",
+    "before_line": 395,
+    "after_line": 395
+  },
+  {
+    "id": "L12",
+    "file": "sections/06_simulation_results.tex",
+    "old": "sparse-recovery baselines. These baselines improve more slowly with SNR\nthan the learned receivers, so the NMSE gap between the two groups grows.",
+    "new": "sparse-recovery baselines. The NMSE of these baselines decreases more\nslowly with SNR than that of the learned receivers, so the gap between\nthe two groups grows.",
+    "reason": "明确变化的是 NMSE，避免 baselines improve 的笼统表述。",
+    "source": "Cai §VI-C，PDF pp.12–13／印刷 pp.3586–3587，为按指标、SNR 和方法差异组织结果的参考；实际趋势来自本稿。",
+    "before_line": 424,
+    "after_line": 424
+  },
+  {
+    "id": "L13",
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "The training-version assignment of the retained results is specified\nat the start of Section~\\ref{sec:simulations}.",
+    "new": "The network versions used for the reported results are specified\nat the start of Section~\\ref{sec:simulations}.",
+    "reason": "将生硬的 training-version assignment 改为明确的 network versions used。",
+    "source": "本文工作稿状态的措辞调整，不是文献方法名称；版本对应关系保持。",
+    "before_line": 18,
+    "after_line": 18
+  },
+  {
+    "id": "L14",
+    "file": "sections/appendix_evaluation_protocol.tex",
+    "old": "All four variants use the same saved observations, known phases, and\nnoise variances estimated from the observations.\nAll four use single-precision inference with TF32 disabled.",
+    "new": "All four variants use the same saved observations, known phases, and\nnoise variances estimated from the observations, with single-precision\ninference and TF32 disabled.",
+    "reason": "合并相邻重复的 All four，保留全部配对与数值设置。",
+    "source": "本文实验协议的语法合并，无外部性能主张。",
+    "before_line": 47,
+    "after_line": 47
+  }
+]

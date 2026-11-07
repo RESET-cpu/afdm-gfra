@@ -1,0 +1,29 @@
+{
+  "schema": "c-stmp-direct-phase-20261103-v1",
+  "name": "group4_late20",
+  "receiver_configuration": "src/configs/candidates/C_STMP_variance_em_20261025.json",
+  "receiver_configuration_sha256": "044d906052bf9150b9dbc09a64efaa545af6f70972cd96fd18f75a8e840f23b8",
+  "initialization": {
+    "method": "grouped_covariance",
+    "training_second_moment": "result/models/proposed_10/phase_moments.npz",
+    "training_second_moment_sha256": "2be9d73c11dd5b1bce0faec699470ae3df2af48862f4c033371dcfa401e41671",
+    "sweeps": 1,
+    "local_iterations": 8,
+    "joint_iterations": 30,
+    "group_size": 4
+  },
+  "iteration_overrides": {
+    "iterations": 600,
+    "min_iterations": 80
+  },
+  "phase_update": {
+    "start": 20,
+    "interval": 20,
+    "sweeps": 1,
+    "fit_offset": true,
+    "phase_tolerance": 0.005,
+    "settle_iterations": 10,
+    "reset_variance_ratio": true,
+    "stopping_mode": "cycle"
+  }
+}

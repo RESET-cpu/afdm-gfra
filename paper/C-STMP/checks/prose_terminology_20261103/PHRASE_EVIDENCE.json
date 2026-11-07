@@ -1,0 +1,1001 @@
+[
+  {
+    "source": "cai2026.pdf",
+    "phrase": "posterior moments",
+    "hits": []
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "moments",
+    "hits": [
+      {
+        "page": 6,
+        "context": " to a Gaussian density with matched first- and second-order moments, and (17) approximates the variance by a set of scalars. The posterior mean hpost km and variance τ post m can be calcu"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "posterior mean",
+    "hits": [
+      {
+        "page": 5,
+        "context": "pri m,A + δ2 0 . (8) Eqns. (7) and (8) are respectively the posterior mean and variance from the linear MMSE (LMMSE) estimator of xm, given the prior mean xpri m,A and variance vpri m,A. The mes"
+      },
+      {
+        "page": 6,
+        "context": "and (17) approximates the variance by a set of scalars. The posterior mean hpost km and variance τ post m can be calculated as hpost km = 1 Zk Z Hk hkmp(Hk) Y m CN hkm; hpri km, τ pri m IN \u0001 , ("
+      },
+      {
+        "page": 7,
+        "context": "e prior serves as the denoiser to refine this estimate. The posterior mean and variance in (22) and (23) are, however, by no means easy to calculate due to the complicated and high-dimensional i"
+      },
+      {
+        "page": 8,
+        "context": "], [29] offers an empirical Bayes approach to calculate the posterior mean, applicable regardless of the specific form of the prior distri- bution p(Hk). The formula reads E \u0002 Hk|Hpri k \u0003 = Hpri"
+      },
+      {
+        "page": 9,
+        "context": "the two score networks available, we are able to obtain the posterior mean Hpost k and variance τ post m based on (44) and (45) as Hpost k = Hpri k + τ priS1 Hpri k , τ pri; θ \u0001 , (55) τ post m "
+      },
+      {
+        "page": 10,
+        "context": "Mτ pri τ pri. (61) Let ̄Hpost k and ̄τ post m be the scaled posterior mean and variance obtained from the score networks: ̄Hpost k = ̄Hpri k + ̄τ priS1 ̄Hpri k , ̄τ pri; θ \u0001 , (62) ̄τ post m = ̄"
+      },
+      {
+        "page": 14,
+        "context": "rst-order and a second-order score network to calculate the posterior mean and variance of the channel, respectively. We show by simulation results that STMP-JADCE drastically outperforms all co"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "posterior probability of activity",
+    "hits": [
+      {
+        "page": 7,
+        "context": "km,B −hext km, vpri m,B + τ ext m \u0001 IN \u0011   −1 (30) is the posterior probability of activity for the k-th device. We set a threshold λthr to facilitate the binary decision of device activity, i.e., ˆαk = ( 1, λpo"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "Gaussian projection",
+    "hits": [
+      {
+        "page": 7,
+        "context": "hext km τ ext m ! . (34) In (32), the expression inside the Gaussian projection operator is a Bernoulli-Gaussian pdf. By taking the Gaussian projection, the mean of xkm with respect to the belief MfX"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "extrinsic",
+    "hits": [
+      {
+        "page": 5,
+        "context": "or node p(ym|xm) to the variable node xm, also known as the extrinsic message, is calculated based on the EP algorithm [49] as Mfym→xm(xm) ∝ Mfym (xm) Mxm→fym (xm). (9) Authorized licensed "
+      },
+      {
+        "page": 6,
+        "context": "LECTED AREAS IN COMMUNICATIONS, VOL. 44, 2026 From (9), the extrinsic message is proportional to the ratio of two Gaussian pdfs, which is another Gaussian pdf, denoted as Mfym→xm(xm) = CN(x"
+      },
+      {
+        "page": 7,
+        "context": "r obtaining the posterior message in Sections IV and V. The extrinsic message from the variable node Hk to the factor node p(Xk|Hk, αk) is calculated as MHk→fXk (Hk) ∝ MfHk (Hk) MfXk →Hk(Hk"
+      },
+      {
+        "page": 8,
+        "context": "t 17: Decide the indices of active devices by (31), ∀k. The extrinsic message in (40) flows leftward through the vector-matrix reorganization module unchanged, serving as the prior message "
+      },
+      {
+        "page": 10,
+        "context": "endences) from the prior messages to both the posterior and extrinsic messages. Please refer to eqns. (55), (56), (26), and (27) for the rigorous relationships. vpri m,A(i) = γvext m,B(i) +"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "turbo message passing",
+    "hits": [
+      {
+        "page": 1,
+        "context": "erformance limit of JADCE. Specifically, we develop a novel turbo message passing (TMP) framework that models the entire channel matrix as a super node, rather than factorizing it element-wise. This de"
+      },
+      {
+        "page": 2,
+        "context": "s for solving inverse problems. Specifically, a score-based turbo message passing (STMP) framework was developed for compressive image recovery, in which the score network is integrated into Turbo-CS ["
+      },
+      {
+        "page": 5,
+        "context": "nating the need to compute high-dimensional integrals. III. TURBO MESSAGE PASSING FRAMEWORK In this section, we develop a novel TMP framework based on the combined use of the sum-product rule [48] and "
+      },
+      {
+        "page": 15,
+        "context": "386. [24] C. Cai, X. Yuan, and Y.-J.-A. Zhang, “Score-based turbo message passing for plug-and-play compressive image recovery,” in Proc. IEEE 26th Int. Workshop Signal Process. Artif. Intell. Wireless"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "Tweedie",
+    "hits": [
+      {
+        "page": 2,
+        "context": "ssage- passing iteration, supported by the well-established Tweedie’s formula [28], [29]. Additionally, we employ a second-order score network that outputs the Hessian diagonals of the lo"
+      },
+      {
+        "page": 8,
+        "context": "Hk + Wk, Wk ∼CN 0, τ priINM \u0001 . (43) For the model in (43), Tweedie’s formula [28], [29] offers an empirical Bayes approach to calculate the posterior mean, applicable regardless of the s"
+      },
+      {
+        "page": 15,
+        "context": ", Switzerland: Springer, 1992, pp. 388-394. [29] B. Efron, “Tweedie’s formula and selection bias,” J. Amer. Stat. Assoc., vol. 106, no. 496, pp. 1602-1614, Dec. 2011. [30] P. Vincent, “A "
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "first-order score",
+    "hits": [
+      {
+        "page": 8,
+        "context": "fferent devices are combined into a single training set. B. First-Order Score Matching With a slight abuse of notation, let p(H) : CN×M →R be the mixture distribution of the channels for the total "
+      },
+      {
+        "page": 9,
+        "context": "{τi}I i=1 to establish a unified objective for training the first-order score network: min θ I X i=1 λ1(τi)l1(τi; θ). (49) A common choice for the weighting factor is λ1(τi) = τi [15], which empiri"
+      },
+      {
+        "page": 11,
+        "context": "score (Hessian) function, sharing the same dimension as the first-order score. The detailed layer configu- rations of both architectures are summarized in Table III. The models are trained on every"
+      },
+      {
+        "page": 12,
+        "context": "SE denoiser requires only a forward propagation through the first-order score network. In contrast, the VALSE algorithm suffers from prohibitively high computational com- plexity due to the iterati"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "second-order score",
+    "hits": [
+      {
+        "page": 2,
+        "context": "hed Tweedie’s formula [28], [29]. Additionally, we employ a second-order score network that outputs the Hessian diagonals of the log density to compute the variance of the denoiser. The plug-in impl"
+      },
+      {
+        "page": 8,
+        "context": "the Hessian of the log-density function, referred to as the second-order score function. The first- and second-order Tweedie’s formulas are well-known results that can be proven using simple integra"
+      },
+      {
+        "page": 9,
+        "context": "nces the loss term l1(τi; θ) for different values of τi. C. Second-Order Score Matching For a given τ, we seek to learn a second-order score model S2(·, τ; φ) : CN×M →CNM×NM parameterized by φ with "
+      },
+      {
+        "page": 11,
+        "context": "omputational costs of a forward pass through the first- and second-order score networks, respec- tively. Consequently, the overall per-iteration complexity of STMP-JADCE is O (MNK log2 K + C). VI. S"
+      },
+      {
+        "page": 14,
+        "context": " iteration, our approach maintains both a first-order and a second-order score network to calculate the posterior mean and variance of the channel, respectively. We show by simulation results that S"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "denoising score matching",
+    "hits": [
+      {
+        "page": 2,
+        "context": "P-JADCE. The two score networks can be trained based on the denoising score matching technique [15], [30], [31]. The main contributions of this paper are summarized as follows. • We devise a novel TMP fra"
+      },
+      {
+        "page": 8,
+        "context": "ed in posterior message calculation. Then, we elaborate the denoising score matching technique [15], [30], [31], a data-driven approach for empirically estimating score functions. A. Bridging Score Functi"
+      },
+      {
+        "page": 9,
+        "context": "e matching objective can also be expressed in an equivalent denoising score matching formula- tion as min φ Ep(H)p( ̃H|H) \u0014 S2( ̃H, τ; φ) −b(H, ̃H, τ)b(H, ̃H, τ)H + INM τ 2 F \u0015 , (51) where b(H, ̃H, τ) ≜ "
+      },
+      {
+        "page": 15,
+        "context": "ihood training for score-based diffusion ODEs by high order denoising score matching,” in Proc. Int. Conf. Mach. Learn., 2022, pp. 14429-14460. [32] Study on Channel Model for Frequencies From 0.5 to 100 "
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "MMSE denoising",
+    "hits": [
+      {
+        "page": 3,
+        "context": "V reveals the relation- ship between the score function and MMSE denoising, and then specifies the training objectives for the score networks. In Section V, we present the STMP-JADCE algorithm a"
+      },
+      {
+        "page": 5,
+        "context": "on of the belief calculation at the factor node p(Hk) as an MMSE denoising problem under AWGN observations. TABLE II FACTOR NODES AND THEIR ABBREVIATIONS This insight enables the integration of "
+      },
+      {
+        "page": 6,
+        "context": "nce between belief calculation at the factor node p(Hk) and MMSE denoising of Hk under AWGN observations. This equivalence plays a crucial role in the integration of score-based generative prior"
+      },
+      {
+        "page": 7,
+        "context": "|Hk), the belief calculation of Hk can be interpreted as an MMSE denoising problem given the AWGN model (20): Hpost k = E \u0002 Hk|Hpri k \u0003 , (22) τ post m = 1 KN X k,n Var \u0002 hknm|Hpri k \u0003 , (23) wh"
+      },
+      {
+        "page": 8,
+        "context": "Algorithm 1. IV. LEARNING SCORE-BASED GENERATIVE PRIORS FOR MMSE DENOISING In this section, we introduce score-based representations of (22) and (23) to circumvent the intractable high-dimension"
+      },
+      {
+        "page": 11,
+        "context": "ormed on the same machine used for training. B. Score-Based MMSE Denoising Performance Before digging into the evaluation of the STMP-JADCE algorithm, we separately assess the performance of the"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "damping factor",
+    "hits": [
+      {
+        "page": 10,
+        "context": " m,B(i) + (1 −γ)vext m,B(i −1), (58) where γ ∈(0, 1] is the damping factor. The input to module B is damped in a similar manner. 2) Channel Power Normalization: Following the training recipe of "
+      },
+      {
+        "page": 12,
+        "context": " T = 30, and the SNR is 10 dB. Left: K = 800 and we set the damping factor γ = 0.8 for all schemes; right: K = 1600 and we set γ = 0.6 for all schemes. but incorporates an i.i.d. Gaussian prior "
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "normalization",
+    "hits": [
+      {
+        "page": 6,
+        "context": "re Zk ≜ R Hk p(Hk) Q m CN hkm; hpri km, τ pri m IN \u0001 is the normalization constant. State evolution (SE) analysis [51] has shown that the error vector hpri km −hkm is i.i.d. Gaussian in the lar"
+      },
+      {
+        "page": 10,
+        "context": "to module B is damped in a similar manner. 2) Channel Power Normalization: Following the training recipe of score-based generative models [15], we normalize the power of each channel sample dur"
+      },
+      {
+        "page": 11,
+        "context": "ock consists of two 3 × 3 convolutions followed by instance normalization and nonlin- ear activation, with skip connections between corresponding encoder and decoder stages to preserve fine-gra"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "block sparsity",
+    "hits": []
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "score-based generative",
+    "hits": [
+      {
+        "page": 1,
+        "context": "ation for Massive Connectivity: Where Message Passing Meets Score-Based Generative Priors Chang Cai , Member, IEEE, Wenjun Jiang , Member, IEEE, Xiaojun Yuan , Fellow, IEEE, and Ying-Jun Angela Zhang , "
+      },
+      {
+        "page": 2,
+        "context": "ures of high-dimensional data distributions. In particular, score-based generative models learn the prior by matching the gradient of the log density of the data distribution, referred to as the score f"
+      },
+      {
+        "page": 3,
+        "context": "ich may not generalize effectively to diverse scenarios. 3) Score-Based Generative Models for Channel Estimation: Recent studies [37], [38], [39], [40], [41], [42], [43] have applied DPS [18], [19], [20"
+      },
+      {
+        "page": 5,
+        "context": "THEIR ABBREVIATIONS This insight enables the integration of score-based generative networks for provable MMSE denoising, eliminating the need to compute high-dimensional integrals. III. TURBO MESSAGE PA"
+      },
+      {
+        "page": 6,
+        "context": "This equivalence plays a crucial role in the integration of score-based generative priors for efficient belief calculation. Firstly, we derive the message from the variable node Xk to the factor node p("
+      },
+      {
+        "page": 8,
+        "context": "udo- code of the TMP framework in Algorithm 1. IV. LEARNING SCORE-BASED GENERATIVE PRIORS FOR MMSE DENOISING In this section, we introduce score-based representations of (22) and (23) to circumvent the "
+      },
+      {
+        "page": 10,
+        "context": "annel Power Normalization: Following the training recipe of score-based generative models [15], we normalize the power of each channel sample during training, ensuring that the normalized channel ̄Hk = "
+      },
+      {
+        "page": 14,
+        "context": "deep learning solution that com- bines message passing with score-based generative models. In each message-passing iteration, our approach maintains both a first-order and a second-order score network t"
+      },
+      {
+        "page": 15,
+        "context": "message passing allows for the integration of unconditional score-based generative models to solve Bayesian inference problems without requiring task-specific training. This opens up new opportunities f"
+      },
+      {
+        "page": 16,
+        "context": "56] Y. Song and S. Ermon, “Improved techniques for training score-based generative models,” in Proc. Adv. Neural Inf. Process. Syst., 2020, pp. 1-8. [57] T. T. Cai and L. Wang, “Orthogonal matching purs"
+      }
+    ]
+  },
+  {
+    "source": "cai2026.pdf",
+    "phrase": "likelihood",
+    "hits": [
+      {
+        "page": 2,
+        "context": "n be obtained by combining the learned prior score with the likelihood term from the measurement model using Bayes’ theorem. Yet, DPS typically requires traversing hundreds or even thousands"
+      },
+      {
+        "page": 3,
+        "context": "ince the pilots (measurement matrix) are solely tied to the likelihood, differ- ent pilot designs can be implemented without necessitating retraining of the prior score network. As mentioned"
+      },
+      {
+        "page": 5,
+        "context": "rately estimates each column of X (i.e., xm) exploiting the likelihood p(ym|xm) and the messages from module B. Module B is a denoiser of Xk exploiting the priors p(Hk) and p(αk), along with"
+      },
+      {
+        "page": 7,
+        "context": "elief calculation amounts to combining the Gaussian pseudo- likelihood p(Hpri k |Hk) with the true prior p(Hk). This operation is mathematically equivalent to MMSE denoising under AWGN obser"
+      },
+      {
+        "page": 8,
+        "context": " the posterior mean can be viewed as the sum of the maximum likelihood estimator and a Bayes correction term. The formula can also be framed as “denoised result = noisy data - predicted nois"
+      },
+      {
+        "page": 15,
+        "context": " Lu, K. Zheng, F. Bao, J. Chen, C. Li, and J. Zhu, “Maximum likelihood training for score-based diffusion ODEs by high order denoising score matching,” in Proc. Int. Conf. Mach. Learn., 2022"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "moments",
+    "hits": []
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "posterior means and variances",
+    "hits": [
+      {
+        "page": 11,
+        "context": "odule produces the set of estimated active devices, and the posterior means and variances for W and H of active devices. Subsequently, these outputs are combined in the preprocessing module to form the input f"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "phase rotation",
+    "hits": [
+      {
+        "page": 1,
+        "context": " expectation-maximization algorithm is integrated to adjust phase rotation caused by the fractional Doppler and to learn the hyperparameters in the priors. Finally, the convolutional neural netw"
+      },
+      {
+        "page": 3,
+        "context": "-maximization (EM) algorithm is embedded to accommodate the phase rotation caused by the fractional Doppler and to learn the hyperparameters in priors. • The convolutional neural network (CNN) d"
+      },
+      {
+        "page": 5,
+        "context": " the quasi-static property of the channel. Furthermore, the phase rotation φu,q[l′] caused by fractional Doppler accumulates across multiple frames and will be addressed carefully in our algorit"
+      },
+      {
+        "page": 7,
+        "context": ". Message Scheduling In this subsection, we assume that the phase rotation caused by fractional Doppler, the noise variance, and the parameters of BGM are known, which will be updated later. In "
+      },
+      {
+        "page": 9,
+        "context": "ior distributions, the EM algorithm is adopted to learn the phase rotation φ ≜{φq, ∀q} and parameter ̄p ≜{σ2, ωu k, μu k, ηu k, ∀u, k}. Firstly, we assign the i.i.d. Gaus- sian distribution prio"
+      },
+      {
+        "page": 12,
+        "context": "he fractional Doppler ̃ki,u = 0, does not involve the extra phase rotation. (ii) The off-grid case, where ̃ki,u ∈(−1 2, 1 2], requires to update the phase rotation by the proposed algorithm. Not"
+      },
+      {
+        "page": 13,
+        "context": "n Q degrade performance due to the rising number of unknown phase rotations, which pose a significant estimation challenge. In practical communications, smaller Q values are preferred to maintai"
+      },
+      {
+        "page": 15,
+        "context": "T ) × ΠN(k′ −NTsymνi). (69) Multiplying (69) by the antenna phase rotation e ̄πnzΘz u and e ̄πnyΘy u, we get the result in Proposition 1. REFERENCES [1] B. Shen, Y. Wu, W. Zhang, S. Chatzinota"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "differential delay",
+    "hits": [
+      {
+        "page": 1,
+        "context": " 30 Dec 2024 LEO Satellite-Enabled Random Access with Large Differential Delay and Doppler Shift Boxiao Shen, Student Member, IEEE, Yongpeng Wu, Senior Member, IEEE, Wenjun Zhang, Fellow, IEEE, Syme"
+      },
+      {
+        "page": 2,
+        "context": "ring the initial cell-search procedure. Following this, the differential delay and Doppler shift are either pre-compensated at the device side or managed by the satellite during uplink trans- missio"
+      },
+      {
+        "page": 3,
+        "context": "Ă \u0003 Ă \u0003 Ă \u0003 Ă \u0003 0 d ,i u d Speed of light: c Common delay:\u0003 Differential delay of the u-th device: 0 / t = c d c , , / t t = - i u i u c d c Speed of light: c Common delay:\u0003 Differential delay of th"
+      },
+      {
+        "page": 4,
+        "context": " considered scenario. For example, as computed in [21], the differential delay and Doppler shift can be up to 698.62 μs and ±41 kHz for the 3GPP Set-2, resulting in τmaxνmax ≈28.64. As estab- lished"
+      },
+      {
+        "page": 12,
+        "context": " 600 km Spot beam radius 128 km Minimum elevation angle 30° Differential delay [0, 699] μs Doppler shift [−41, 41] kHz Zenith angle [−π/2, π/2) Azimuth angle [0, 2π) Rician factor 11.707 dB Table II"
+      },
+      {
+        "page": 13,
+        "context": "cheme (Q = 1) performs inadequately in scenarios with large differential delay and Doppler shift. -4 -2 0 2 4 SNR (dB) -8 -6 -4 -2 0 NMSE (dB) -4 -2 0 2 4 SNR (dB) -8 -6 -4 -2 0 NMSE (dB) (a) Channe"
+      },
+      {
+        "page": 14,
+        "context": "atellite-based uplink transmission in the presence of large differential delay and Doppler shift. Moreover, the SER for off-grid MRF-MP-GAMP-CNN outperforms Oracle-LMMSE at SNRs above -2 dB, which d"
+      },
+      {
+        "page": 15,
+        "context": "ed multi-frame OTFS transmission scheme to handle the large differential delay and Doppler shift. Then, the MP-based algo- rithm was designed for joint device identification, channel es- timation, a"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "GNSS",
+    "hits": [
+      {
+        "page": 1,
+        "context": "devices operate without global navigation satellite system (GNSS) assistance. Considering the constrained power consumption of these devices, the large differential delay and Doppler s"
+      },
+      {
+        "page": 2,
+        "context": "ipped with a built-in global navigation satel- lite system (GNSS) or not [19], [20]. Devices with GNSS pre-compensate for Doppler shift and propagation delay be- fore uplink transmissi"
+      },
+      {
+        "page": 3,
+        "context": "n, we assume that these terrestrial devices operate without GNSS capabilities and do not pre-compensate for delay and Doppler shifts. Following 3GPP recommenda- tions [19], [20], the s"
+      },
+      {
+        "page": 12,
+        "context": "3GPP NTN protocols do not fully support IoT devices without GNSS, while this is a focus of ongoing standardization efforts. For- tunately, only minor changes to satellite infrastructur"
+      },
+      {
+        "page": 15,
+        "context": "tailored for LEO satellite communications in the absence of GNSS assistance. Exploiting the quasi-static property of the channel in the delay-Doppler domain, we proposed a spreading-ba"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "uniform planar array",
+    "hits": [
+      {
+        "page": 3,
+        "context": "vices that communicate with a LEO satellite equipped with a uniform planar array (UPA) consisting of Na = Nz × Ny antennas and a regenerative payload for on- board baseband signal processing. During e"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "common delay",
+    "hits": [
+      {
+        "page": 2,
+        "context": "ely, for devices with- out GNSS, the satellite broadcasts a common delay during the initial cell-search procedure. Following this, the differential delay and Doppler shift are either pre-compe"
+      },
+      {
+        "page": 3,
+        "context": " \u0003 Ă \u0003 Ă \u0003 Ă \u0003 Ă \u0003 Ă \u0003 Ă \u0003 Ă \u0003 0 d ,i u d Speed of light: c Common delay:\u0003 Differential delay of the u-th device: 0 / t = c d c , , / t t = - i u i u c d c Speed of light: c Common delay:\u0003 Dif"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "multi-frame",
+    "hits": [
+      {
+        "page": 2,
+        "context": "ay and Doppler shift. Instead, we propose a spreading-based multi-frame OTFS transmission scheme, combined with a MP-based JDICESD algorithm to mitigate these negative effects at the satellit"
+      },
+      {
+        "page": 4,
+        "context": "smission scheme. B. Transmission Scheme The spreading-based multi-frame OTFS transmission scheme is proposed to handle the large differential delay and Doppler shift. In this scheme, each dev"
+      },
+      {
+        "page": 12,
+        "context": "that conventional algorithms are not directly applicable to multi-frame transmission scenarios af- fected by fractional Doppler shifts, and thus they are evaluated solely in the on-grid case."
+      },
+      {
+        "page": 13,
+        "context": "e benchmarks. This indicates the effectiveness the proposed multi-frame transmission scheme and the JDICESD algorithms. For example, at Q = 12, the SER of the MRF- MP-GAMP is lower than 0.01 "
+      },
+      {
+        "page": 15,
+        "context": " in the delay-Doppler domain, we proposed a spreading-based multi-frame OTFS transmission scheme to handle the large differential delay and Doppler shift. Then, the MP-based algo- rithm was d"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "activity error rate",
+    "hits": [
+      {
+        "page": 12,
+        "context": "r of output channels is C and the filter size is W × W. The activity error rate (AER), normalized mean-squared- error (NMSE), and symbol error rate (SER) are adopted as metrics for device identificat"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "normalized mean-squared",
+    "hits": [
+      {
+        "page": 12,
+        "context": "nd the filter size is W × W. The activity error rate (AER), normalized mean-squared- error (NMSE), and symbol error rate (SER) are adopted as metrics for device identification, channel estimation, and sy"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "NTN-TDL-D",
+    "hits": [
+      {
+        "page": 12,
+        "context": " Parameter Values Operating band S-band Power delay profile NTN-TDL-D Modulation Scheme 4NPAM Frame size (M, N) (16, 7) Subcarrier spacing ∆f 30 kHz Orbit altitude 600 km Spot beam radius 1"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "Gaussian",
+    "hits": [
+      {
+        "page": 6,
+        "context": " , N −1, j = 0, · · · , Na −1. Then, K-components Bernoulli-Gaussian- mixture (BGM) distribution is assigned for modeling hl,u,l′ i,j , which is a general and accurate distribution for the"
+      },
+      {
+        "page": 12,
+        "context": " elements of each device’s spreading code follow the i.i.d. Gaussian distributions, i.e., Cu,q[k, l] ∼ CN(0, 1 QN ). The received signal-to-noise ratio is defined as SNR = 10 log10 PM−1 l="
+      },
+      {
+        "page": 16,
+        "context": " [38] J. P. Vila and P. Schniter, “Expectation-maximization gaussian-mixture approximate message passing,” IEEE Trans. Signal Process., vol. 61, no. 19, pp. 4658-4672, Oct. 2013. [39] L. Y"
+      }
+    ]
+  },
+  {
+    "source": "shen2025.pdf",
+    "phrase": "channel tensor",
+    "hits": []
+  },
+  {
+    "source": "huang2026.pdf",
+    "phrase": "grid-aligned",
+    "hits": [
+      {
+        "page": 1,
+        "context": " approach, the proposed method avoids restrictive sparse or grid-aligned channel assumptions and is more robust to fractional delay-Doppler off-grid leakage. Simulations under standardized LEO"
+      }
+    ]
+  },
+  {
+    "source": "huang2026.pdf",
+    "phrase": "power leakage",
+    "hits": [
+      {
+        "page": 2,
+        "context": "shifts and fractional time delays can introduce significant power leakage in the effective channel matrix of (5), thereby weakening the sparsity of Heff. Consequently, conventional compressive "
+      },
+      {
+        "page": 5,
+        "context": " This is because the CS approaches suffer severely from the power leakage effect due to the off-grid misalignment between the precise DD parameters and on-grid DD parameters, indicating a weak "
+      }
+    ]
+  },
+  {
+    "source": "huang2026.pdf",
+    "phrase": "fractional",
+    "hits": [
+      {
+        "page": 1,
+        "context": "e or grid-aligned channel assumptions and is more robust to fractional delay-Doppler off-grid leakage. Simulations under standardized LEO channel models demonstrate that the proposed diffusi"
+      },
+      {
+        "page": 2,
+        "context": "ices, whereas −1 2 < ιi, κi ≤ 1 2 capture the corresponding fractional offsets from the nearest integer indices. For LEO satellite communications, the path delay, Doppler shift, and complex "
+      }
+    ]
+  },
+  {
+    "source": "huang2026.pdf",
+    "phrase": "chirp",
+    "hits": [
+      {
+        "page": 1,
+        "context": "via the one-dimensional IDAFT, which with properly designed chirp parameters provides strong Doppler robustness over doubly dispersive channels while incurring lower implementation comp"
+      },
+      {
+        "page": 2,
+        "context": "antenna LEO satellite (Rx). Let N denote the number of AFDM chirp subcarriers. Each AFDM frame spans a duration of T = N∆t. The sampling rate is given by 1/∆t, and the subcarrier spacin"
+      },
+      {
+        "page": 3,
+        "context": "AFT- domain symbols with a carrier frequency of 2 GHz and a chirp subcarrier spacing of ∆f = 30 kHz [9]. The AFDM Authorized licensed use limited to: BEIJING UNIVERSITY OF POST AND TELE"
+      }
+    ]
+  },
+  {
+    "source": "huang2026.pdf",
+    "phrase": "common Doppler",
+    "hits": [
+      {
+        "page": 4,
+        "context": "selected from [30, 50] ns. All paths are assumed to share a common Doppler shift, determined by the satellite velocity and the satellite-UE geometry. The complex path gains are generated based o"
+      }
+    ]
+  },
+  {
+    "source": "manor_michaeli_2024_posterior.pdf",
+    "phrase": "posterior moments",
+    "hits": [
+      {
+        "page": 2,
+        "context": "n denoising. Specifically, they showed that the non-central posterior moments m1, m2, m3, . . ., admit a recursion of the form mk+1 = f(mk, ∇mk, m1). In many settings, central moments are rather pr"
+      },
+      {
+        "page": 3,
+        "context": "rior central moments at y (see proof in App. A). Theorem 1 (Posterior moments in univariate denoising). In the scalar denoising setting of (1), the high-order posterior central moments of x given y"
+      },
+      {
+        "page": 4,
+        "context": "derivatives, allows to recursively compute all higher order posterior moments (see proof in App. B). Theorem 2 (Posterior moments in multivariate denoising). Consider the multivariate denoising set"
+      },
+      {
+        "page": 5,
+        "context": "ior covariance. The question, however, is how to obtain the posterior moments of the projection of x onto a deterministic d-dimensional vector v. Let us denote the first posterior moment of v⊤x (i."
+      },
+      {
+        "page": 24,
+        "context": "0 k is even. (S46) Since μ3(y∗) = σ2μ2(y∗) = 0 as well, the posterior moments are the same as those of a Gaussian distribution. Indeed, the central moments of a random variable z ∼N(E[z], σ2) are g"
+      }
+    ]
+  },
+  {
+    "source": "dytso2023_conditional_mean_published.pdf",
+    "phrase": "conditional covariance",
+    "hits": [
+      {
+        "page": 1,
+        "context": "given by K−1 N Cov(X, U|Y = y) where Cov(X, U|Y = y) is the conditional covariance. In the second part of the paper, via various choices of the random vector U, the new identity is used to recover and g"
+      }
+    ]
+  },
+  {
+    "source": "dytso2023_conditional_mean_published.pdf",
+    "phrase": "Jacobian",
+    "hits": [
+      {
+        "page": 1,
+        "context": "fically, for the Markov chain U ↔X ↔Y, it is shown that the Jacobian matrix of E[U|Y = y] is given by K−1 N Cov(X, U|Y = y) where Cov(X, U|Y = y) is the conditional covariance. In the seco"
+      },
+      {
+        "page": 2,
+        "context": " • In Section II, Theorem 1 presents a new identity for the Jacobian of the conditional mean. Throughout the paper, this identity will be used for systematic proofs of old and new identiti"
+      },
+      {
+        "page": 3,
+        "context": " by ∇xf(x) = \u0005∂f(x) ∂x1 , . . . , ∂f(x) ∂xn \u0006T ∈Rn. (8) The Jacobian matrix of a function f : Rn →Rm is denoted by Jxf(x) = ⎛ ⎜ ⎜ ⎜ ⎜ ⎝ ∂f1(x) ∂x1 ∂f2(x) ∂x1 · · · ∂fm(x) ∂x1 ∂f1(x) ∂x2 ∂f"
+      },
+      {
+        "page": 12,
+        "context": " using the TRE identity in (3). Now using the definition of Jacobian in (9), we have that JyE [U|Y = y] = \u000e Cov(U, X|Y = y)K−1 N \u000fT (141) = K−1 N CovT(U, X|Y = y) (142) = K−1 N Cov(X, U|Y "
+      }
+    ]
+  },
+  {
+    "source": "dytso2023_conditional_mean_published.pdf",
+    "phrase": "conditional mean",
+    "hits": [
+      {
+        "page": 1,
+        "context": "IONS ON INFORMATION THEORY, VOL. 69, NO. 3, MARCH 2023 1883 Conditional Mean Estimation in Gaussian Noise: A Meta Derivative Identity With Applications Alex Dytso , Member, IEEE, H. Vincent Poor ,"
+      },
+      {
+        "page": 2,
+        "context": ", Theorem 1 presents a new identity for the Jacobian of the conditional mean. Throughout the paper, this identity will be used for systematic proofs of old and new identities. • In Section III, Pr"
+      },
+      {
+        "page": 3,
+        "context": "DYTSO et al.: CONDITIONAL MEAN ESTIMATION IN GAUSSIAN NOISE: A META DERIVATIVE IDENTITY WITH APPLICATIONS 1885 of the information density and the Hess"
+      },
+      {
+        "page": 4,
+        "context": "his new identity can be used to prove the uniqueness of the conditional mean estimator. In Section V, this identity will be used to show a new fundamental connection between conditional cumulants "
+      },
+      {
+        "page": 5,
+        "context": "DYTSO et al.: CONDITIONAL MEAN ESTIMATION IN GAUSSIAN NOISE: A META DERIVATIVE IDENTITY WITH APPLICATIONS 1887 Fig. 1. Plot of E[Xk|Y = y] vs. y for k"
+      },
+      {
+        "page": 7,
+        "context": "DYTSO et al.: CONDITIONAL MEAN ESTIMATION IN GAUSSIAN NOISE: A META DERIVATIVE IDENTITY WITH APPLICATIONS 1889 Example:A random variable U with mean μ"
+      },
+      {
+        "page": 9,
+        "context": "DYTSO et al.: CONDITIONAL MEAN ESTIMATION IN GAUSSIAN NOISE: A META DERIVATIVE IDENTITY WITH APPLICATIONS 1891 ≤ak|y|k + bk, (82) where ak = kk2k−1(2m"
+      },
+      {
+        "page": 11,
+        "context": "DYTSO et al.: CONDITIONAL MEAN ESTIMATION IN GAUSSIAN NOISE: A META DERIVATIVE IDENTITY WITH APPLICATIONS 1893 After integrating both sides of (118), "
+      },
+      {
+        "page": 13,
+        "context": "DYTSO et al.: CONDITIONAL MEAN ESTIMATION IN GAUSSIAN NOISE: A META DERIVATIVE IDENTITY WITH APPLICATIONS 1895 To this end, note that E \u0005****U d dym φ"
+      },
+      {
+        "page": 15,
+        "context": "DYTSO et al.: CONDITIONAL MEAN ESTIMATION IN GAUSSIAN NOISE: A META DERIVATIVE IDENTITY WITH APPLICATIONS 1897 where we have used that kT i = eT i K−1"
+      }
+    ]
+  },
+  {
+    "source": "shastri2022_dgec_published.pdf",
+    "phrase": "denoiser input error",
+    "hits": [
+      {
+        "page": 1,
+        "context": "ly designed/trained to remove white Gaussian noise, but the denoiser input error in PnP algorithms is usually far from white or Gaussian. Approximate message pass- ing (AMP) methods provide white and "
+      },
+      {
+        "page": 3,
+        "context": " with μ = β2. The goal of Onsager correction is to make the denoiser input error et+1 ≜xt + βAHvt+1 −x0 (9) behave like a realization of WGN with variance τ t+1, where τ t+1 is given in (8b). Note tha"
+      },
+      {
+        "page": 5,
+        "context": " showed that, for asymptotically large ROI matrices A, EC’s denoiser input error e2 = r2 −x0 obeys e2 ∼N(0, I/γ2) (23) at every iteration, similar to AMP (recall (10)). Likewise, macroscopic statistic"
+      },
+      {
+        "page": 6,
+        "context": "I A. To start, one can show (see Appendix A) that EC/VAMP’s denoiser input error e2 ≜r2 −x0 can be written as e2 = VDVHe1 + u, (28) where V is the right singular vector matrix of A, the matrix D is di"
+      },
+      {
+        "page": 8,
+        "context": "ion III-B. The experiments in Section IV-B suggest that the denoiser input error e2 = r2 −c0 does indeed obey e2 ∼N 0, Diag γ 2 \u000e−1 (36) for the γ 2 vector computed in line 6 of Algorithm 3, similar t"
+      },
+      {
+        "page": 10,
+        "context": "x C-A. One of our main goals is to demonstrate that D-GEC’s denoiser input error behaves as in (36), i.e., that the error in each wavelet band is white and Gaussian with a predictable variance. For th"
+      },
+      {
+        "page": 13,
+        "context": "PnP are trained to remove white Gaussian noise, whereas the denoiser input errors encountered in PnP are typically non- white and non-Gaussian. In this paper, we proposed a new PnP algorithm, called D"
+      }
+    ]
+  },
+  {
+    "source": "shastri2022_dgec_published.pdf",
+    "phrase": "colored Gaussian noise",
+    "hits": [
+      {
+        "page": 8,
+        "context": ", \u0002T Diag γ 2 \u000e−1\u0002 , (38) i.e., the true image corrupted by colored Gaussian noise with (known) covariance matrix \u0002T Diag(γ 2)−1\u0002. Here, the γ 2 vector takes the form shown in (34). Although several DNN"
+      }
+    ]
+  },
+  {
+    "source": "shastri2022_dgec_published.pdf",
+    "phrase": "covariance-conditioned denoising",
+    "hits": []
+  },
+  {
+    "source": "shastri2022_dgec_published.pdf",
+    "phrase": "DNN Denoiser for Correlated Noise",
+    "hits": [
+      {
+        "page": 8,
+        "context": "e DNN denoiser that is described in the next subsection. B. DNN Denoiser for Correlated Noise As suggested by (36), the denoiser f2 in Algorithm 3 faces the task of denoising the pixel-domain signal \u0002Tr2, where r2"
+      }
+    ]
+  },
+  {
+    "source": "karras2022_edm.pdf",
+    "phrase": "preconditioning",
+    "hits": [
+      {
+        "page": 1,
+        "context": "ges to both the sampling and training processes, as well as preconditioning of the score networks. Together, our improvements yield new state-of-the-art FID of 1.79 for CIFAR-10 in a class-condit"
+      },
+      {
+        "page": 2,
+        "context": "NCSN [48]), we provide the first principled analysis of the preconditioning of the networks’ inputs, outputs, and loss functions in a diffusion model setting and derive best practices for improvi"
+      },
+      {
+        "page": 3,
+        "context": " t t t Scaling s(t) 1 \u000ep e 1 2 βdt2+βmint 1 1 1 Network and preconditioning (Section 5) Architecture of Fθ DDPM++ NCSN++ DDPM (any) Skip scaling cskip(σ) 1 1 1 σ2 data/ σ2 + σ2 data \u0001 Output scal"
+      },
+      {
+        "page": 8,
+        "context": "esign choices related to model architecture and training. 5 Preconditioning and training There are various known good practices for training neural networks in a supervised fashion. For example, "
+      },
+      {
+        "page": 9,
+        "context": " capacity 2.08 2.52 2.31 2.83 2.78 41.62 2.54 15.04 D + Our preconditioning 2.09 2.64 2.29 3.10 2.94 3.39 2.79 3.81 E + Our loss function 1.88 1.86 2.05 1.99 2.60 2.81 2.29 2.28 F + Non-leaky aug"
+      },
+      {
+        "page": 27,
+        "context": "reviously. As such, the derivation is omitted here. B.6 Our preconditioning and training (Eq. 8) Following Eq. 2, the denoising score matching loss for a given denoiser Dθ on a given noise level "
+      },
+      {
+        "page": 31,
+        "context": "C.1.2 VP preconditioning In the VP case, Song et al. [49] approximate the score of pt(x) of Eq. 13 as1 ∇x log pt(x) ≈− 1 ̄σ(t) Fθ x; (M−1)t \u0001 | "
+      },
+      {
+        "page": 34,
+        "context": "section of Table 1 reflects these adjusted values. C.2.3 VE preconditioning In the VE case, Song et al. [49] approximate the score of pt(x) of Eq. 13 directly as9 ∇x log pt(x) ≈ ̄Fθ x; σ(t) \u0001 , ("
+      },
+      {
+        "page": 38,
+        "context": "C.3.3 iDDPM preconditioning and training We can solve Dθ(·) from Eq. 227 by substituting σ(t) = t from Appendix C.3.1: ε(j) θ \u0010 x/ p σ2 + 1 \u0011 = x −"
+      },
+      {
+        "page": 46,
+        "context": "s at 64×64 resolution. In config D, we replace the original preconditioning with our improved formulas (“Network and preconditioning” section in Table 1). In config E, we do the same for the nois"
+      }
+    ]
+  },
+  {
+    "source": "karras2022_edm.pdf",
+    "phrase": "exponential moving average",
+    "hits": [
+      {
+        "page": 45,
+        "context": "rst 10 million images, and standardize the half-life of the exponential moving average of θ to 0.5 million images. Finally, we adjust the dropout probability for each dataset as shown in Table 7 via a full "
+      },
+      {
+        "page": 46,
+        "context": "d ∼600,000 training iterations, using learning rate 0.0001, exponential moving average of 50 million images, and the same model architecture and dropout probability as Dhariwal and Nichol [9]. We did not fi"
+      }
+    ]
+  },
+  {
+    "source": "wei2022_offgrid_sbl.pdf",
+    "phrase": "First-Order Linear Approximation",
+    "hits": [
+      {
+        "page": 4,
+        "context": "D off-grid compressed channel estimation model based on the first-order linear approximation, which enables us to improve the delay and Doppler shift estimation accuracy while maintaining a low computational comp"
+      },
+      {
+        "page": 10,
+        "context": "h the measurement matrix, which motivates us to propose the first-order linear approximation in next section."
+      },
+      {
+        "page": 11,
+        "context": "11 B. First-Order Linear Approximation Following the principle of compressed channel sensing [14], we formulate an SSR problem via a virtual representation ba"
+      }
+    ]
+  },
+  {
+    "source": "liu2018_massive_mimo.pdf",
+    "phrase": "Bernoulli-Gaussian",
+    "hits": [
+      {
+        "page": 11,
+        "context": "iser (18) Lemma 1: Let ˆX = X + Σ 1 2 V where X ∈CM×1 has a Bernoulli-Gaussian distribution (1 −ǫ)δ0 + ǫphβ, with hβ ∼CN(0, βI), Σ is some positive definite matrix and V ∈CM×1 ∼CN(0, I) is independe"
+      }
+    ]
+  },
+  {
+    "source": "tropp2005_somp.pdf",
+    "phrase": "simultaneous orthogonal matching pursuit",
+    "hits": [
+      {
+        "page": 1,
+        "context": "t of this paper proposes a greedy pursuit algorithm, called Simultaneous Orthogonal Matching Pursuit, for simultaneous sparse approximation. Then it presents some numerical exper- iments that demonstrate how a sparse mod"
+      },
+      {
+        "page": 6,
+        "context": "norm of a matrix in consequence of results from [Roh00]. 3. Simultaneous Orthogonal Matching Pursuit In this section, we present a greedy pursuit algorithm that can be used to solve several different simultaneous sparse "
+      },
+      {
+        "page": 7,
+        "context": " discussed in [LT03a, LT03b]. 3.2. Stopping Criteria. Since Simultaneous Orthogonal Matching Pursuit is an iterative algo- rithm, we must supply a method for deciding when to halt the iteration. There are three obvious p"
+      },
+      {
+        "page": 8,
+        "context": "ation. These experiments also provide confirmation that the Simultaneous Orthogonal Matching Pursuit algorithm can solve these problems in practice. In this section, we will be working with the Dirac-Fourier dictionary, "
+      },
+      {
+        "page": 14,
+        "context": " we have a bound ∥Φ∗(S −Aopt)∥∞,∞ ≤ τ. After iteration t of Simultaneous Orthogonal Matching Pursuit, halt the algorithm if ∥Φ∗Rt∥∞,∞ ≤ 1 −M(t) 1 −2 M(t) τ. If the algorithm terminates at the end of iteration t, we may c"
+      },
+      {
+        "page": 19,
+        "context": "ion. In this work, we have only performed experiments using Simultaneous Orthogonal Matching Pursuit. Other papers have performed experiments with l1 minimization [CH04b] and with M-FOCUSS [CREKD04]. Aside from the actua"
+      }
+    ]
+  },
+  {
+    "source": "ding2026.pdf",
+    "phrase": "GNN-ASPL",
+    "hits": [
+      {
+        "page": 1,
+        "context": " neural network-based adaptive spar- sity pattern learning (GNN-ASPL) scheme for AFDM- GF-RA system. Specifically, it extends the conventional sparse clustering methods into a modified mes"
+      },
+      {
+        "page": 3,
+        "context": ".(15) 1 1 t j u t n u k t j u  Fig. 1. The Architecture of GNN-ASPL where Z = [(z0,0 0 )T, · · · , (zi,j k )T, · · · , (zNι,Nκ K )T]T ∈ CKNg×M denotes the structured sparse channel model,"
+      },
+      {
+        "page": 4,
+        "context": " n,m|2 + πt nΥ t n,m. (18b) To ensure proper convergence of GNN-ASPL, trainable damping factors are added to (12a) and (18a) for tuning the AMP module to the GNN module. Step 5: Attention-"
+      },
+      {
+        "page": 5,
+        "context": "nts, with (Nl, Nk) = (2, 4). In the offline training stage, GNN-ASPL is implemented via Pytorch platform on Dell T640 with a NVIDIA RTX 3090 GPU. To achieve satisfactory performance, over "
+      },
+      {
+        "page": 6,
+        "context": "6 and VAMP-ST suffer from an error floor, while GNN-ASPL is capable of achieving about 2 dB performance gain compared to NNSPL in terms of NMSE of -15 dB. This improvement is a"
+      }
+    ]
+  },
+  {
+    "source": "ding2026.pdf",
+    "phrase": "graph neural network",
+    "hits": [
+      {
+        "page": 1,
+        "context": "RA), joint active detection and channel estimation (JADCE), graph neural network (GNN). I. INTRODUCTION L OW earth orbit (LEO) satellites communication, enabling global coverage and ubiquitous connect"
+      }
+    ]
+  },
+  {
+    "source": "vila_schniter_2013.pdf",
+    "phrase": "noise variance",
+    "hits": [
+      {
+        "page": 1,
+        "context": "n noise (AWGN). For this problem, accurate (relative to the noise variance) signal recovery is known to be possible with polynomial-complexity algorithms when is sufficiently sparse and when sat"
+      },
+      {
+        "page": 2,
+        "context": "nts a recovery algorithm that does not need to know and the noise variance a priori, yet of- fers performance on par with MMSE recovery, which (by defini- tion) requires knowing these prior stat"
+      },
+      {
+        "page": 4,
+        "context": "lar for the other parameters). A. EM Update of the Gaussian Noise Variance We first derive the EM update for the noise variance given a previous parameter estimate . For this, we write for a -in"
+      },
+      {
+        "page": 9,
+        "context": " 9For genie-tuned GM-AMP, for numerical reasons, we set the noise variance at and, with Bernoulli and BR signals, the mixture variances at ."
+      },
+      {
+        "page": 12,
+        "context": "er, than T-MSBL must be given some knowledge about the true noise variance in order to perform well [34], unlike the proposed algorithms. C. Heavy-Tailed Signal Recovery In many applications of "
+      }
+    ]
+  },
+  {
+    "source": "vila_schniter_2013.pdf",
+    "phrase": "likelihood",
+    "hits": [
+      {
+        "page": 3,
+        "context": " an iterative technique that increases a lower bound on the likelihood at each iteration, thus guaran- teeing that the likelihood converges to a local maximum or at least a saddle point [22]"
+      },
+      {
+        "page": 7,
+        "context": "nverge to a local maximum or at least a saddle point of the likelihood function, proper initial- ization of the unknown parameters is essential. Here, we pro- pose initialization strategies "
+      },
+      {
+        "page": 8,
+        "context": " the number of GM com- ponents, , based on standard maximum likelihood (ML)-based model-order-selection methodology [25], i.e., (73) where is the ML estimate of under the hypothesis and is a"
+      },
+      {
+        "page": 15,
+        "context": "2. [15] A. Dempster, N. M. Laird, and D. B. Rubin, “Maximum-likelihood from incomplete data via the EM algorithm,” J. Roy. Statist. Soc., vol. 39, pp. 1-17, 1977. [16] B. Efron, Large-Scale "
+      }
+    ]
+  }
+]

@@ -1,0 +1,2169 @@
+=== PDF PAGE 1 ===
+Tweedie Moment Projected Diffusions for Inverse Problems
+Benjamin Boys bb515@cam.ac.uk
+Department of Engineering, University of Cambridge, Cambridge, United Kingdom
+Jakiw Pidstrigach jakiw.pidstrigach@stats.ox.ac.uk
+Department of Statistics, University of Oxford, United Kingdom
+Mark Girolami mag92@cam.ac.uk
+Department of Engineering, University of Cambridge, Cambridge, United Kingdom
+The Alan Turing Institute, London, United Kingdom
+Sebastian Reich sereich@uni-potsdam.de
+Universitat Potsdam, Berlin, Germany
+Alan Mosca alan@nplan.io
+nPlan
+O. Deniz Akyildiz deniz.akyildiz@imperial.ac.uk
+Imperial College London, London, United Kingdom
+Abstract
+Diffusiongenerativemodelsunlocknewpossibilitiesforinverseproblemsastheyallowforthe
+incorporation of strong empirical priors in scientific inference. Recently, diffusion models are
+repurposed for solving inverse problems using Gaussian approximations to conditional den-
+sities of the reverse process via Tweedie’s formula to parameterise the mean, complemented
+with various heuristics. To address various challenges arising from these approximations, we
+leverage higher order information using Tweedie’s formula and obtain a statistically prin-
+cipled approximation. We further provide a theoretical guarantee specifically for posterior
+sampling which can lead to a better theoretical understanding of diffusion-based conditional
+sampling. Finally, we illustrate the empirical effectiveness of our approach for general linear
+inverse problems on toy synthetic examples as well as image restoration. We show that
+our method (i) removes any time-dependent step-size hyperparameters required by earlier
+methods, (ii) brings stability and better sample quality across multiple noise levels, (iii) is
+the only method that works in a stable way with variance exploding (VE) forward processes
+as opposed to earlier works.
+1 Introduction
+Due to the ease of scalability, diffusion models (Song et al., 2020; Ho et al., 2020) have received increased
+attention, producing a variety of improvements in the conditional generation setting such as adding classifier
+guidance (Dhariwal & Nichol, 2021), classifier free guidance (Ho & Salimans, 2022), conditional diffusion
+models (Batzolis et al., 2021; Karras et al., 2022; 2024) and DEFT (Doob’s h-transform Efficient FineTuning)
+(Denker et al., 2024). These methods are useful for problems where paired(x0, y) data are available, see,
+e.g., Saharia et al. (2022); Abramson et al. (2024). However, paired data is not always available, and there
+are cases where we would like to study alternatives to classical Bayesian approaches to solve inverse problems
+(Tarantola, 2005; Stuart, 2010) to build samplers for complicated conditional distributions with a known
+observation operator mappingx0 to the observed datay that is used to express a known likelihoodp(y|x0).
+With their flexibility, diffusion models replace handcrafted priors on the latent signal with pretrained and
+strong empirical priors. For example, given a latent signalx0 (say a face image), we cantrain a diffusion
+1
+arXiv:2310.06721v3  [stat.CO]  25 Sep 2024
+
+=== PDF PAGE 2 ===
+model to sample from the priorp(x0). The idea for solving inverse problems is to leverage the extraordinary
+modelling power of diffusion models to learn samplers for priors and couple this with a given likelihood
+p(y|x0) for a given datay to sample from the posteriorp(x0|y) for inverse problems. However, designing
+a diffusion model for the posterior comes with challenges due to intractability. Despite its challenges, this
+approach has been recently taking off with lots of activity in the field, e.g. for compressed sensing (Bora
+et al., 2017; Kadkhodaie & Simoncelli, 2021), projecting score-based stochastic differential equations (SDEs)
+(Song et al., 2021b), gradient-based approaches (Daras et al., 2022; Chung et al., 2022b), magnetic resonance
+imaging (MRI) by approximating annealed Langevin dynamics with approximate scores (Jalal et al., 2021),
+image restoration (Kawar et al., 2022), score-based models as priors but with a normalizing flow approach
+(Feng et al., 2023), variational approaches (Mardani et al., 2023; Feng & Bouman, 2023). Most relevant
+ideas to us, which we will review in detail in Section 5, use Tweedie’s formula (Efron, 2011; Laumont et al.,
+2022) to approximate the smoothed likelihood, e.g. Diffusion posterior sampling (DPS) (Chung et al., 2022a;
+2023) and pseudo-guided diffusion models (ΠGDM) (Song et al., 2023). Similar approaches are also exploited
+using singular-value decomposition (SVD) based approaches (Kawar et al., 2021). In this work, we develop
+an approach which builds a tighter approximation to optimal formulae for approximating the scores of the
+posterior diffusion model.
+This paper is devoted to developing novel methods to solving inverse problems, given a la-
+tent (target) signal x0 ∈Rdx, noisy observed data y ∈Rdy, a known linear observa-
+tion map H, and a pretrained diffusion prior. The main tool we use is Tweedie’s formula
+TMPD DTMPD DPSAnalytic ΠGDM
+MeanV ariance
+Figure 1: Error to target posterior for aGaus-
+sian random field. (Top row) visualisation of
+the empirical mean and variance of the 1500
+samples that were used to compute this er-
+ror against the analytical moments. (Bottom)
+Wassersteindistancesofdifferentmethodsw.r.t.
+sample size. For details, see Appendix E.2.
+to obtain both the mean and the covariance for approx-
+imating diffused likelihoods, to be used for building the
+final posterior score approximation. This is as opposed to
+previous works which only utilised first moment approx-
+imations using Tweedie’s formula (Chung et al., 2022a;
+Song et al., 2023). We show that utilising covariance ap-
+proximation, with moment projections, provides a princi-
+pled scheme with improved performance, which we term
+Tweedie Moment Projected Diffusions(TMPD).
+To demonstrate our method briefly, Figure 1 demonstrates
+a sampling scenario of a Gaussian random field (GRF)
+whose mean and variance entries are plotted under “Ana-
+lytic” column1. We demonstrate the approximations under
+this setting provided by our method (TMPD) and its diag-
+onal (cheaper) version (DTMPD), compared withΠGDM
+(Songetal.,2023), andDPS(Chungetal.,2022a). Thefig-
+ure demonstrates the optimality of our method: Our first
+and second moment approximations become exact in this
+case. This results in a drastic performance improvement
+stemming from the statistical optimality of our method
+for near-Gaussian settings and also unlocks a possible line
+for theoretical research for understanding similar diffusion
+models for inverse problems.
+In what follows, we will first introduce the technical back-
+ground in Section 2 and then describe TMPD in detail in
+Section 3. We will then provide some theoretical results
+about our method in Section 4 and provide a discussion to
+closely related work in literature in Section 5. Finally, Sec-
+tion 6 will present experiments on Gaussian mixtures, im-
+age inpainting and super-resolution, demonstrating quan-
+titative and qualitative improvements provided by TMPD.
+1We only plot the variances for visualisation while the GRF has a full covariance.
+2
+
+=== PDF PAGE 3 ===
+2 Technical Background
+In score based generative models (SGMs) (Song et al., 2020) and denoising diffusion probabilistic models
+(DDPM) (Ho et al., 2020), the goal is to sample from a target distributionp0 := pdata. To that end, an
+artificial pathpt is introduced, with the property thatpt will approachN (0,I ) for larget, i.e.,pt→N(0,Id)
+as t→∞. Then, one learns to reverse this process, in order to transform samples from a standard normal
+distribution into samples frompdata. More recent advances in generative modelling include methods with
+artificial paths based on stochastic interpolants or continuous normalizing flows, see, e.g., Albergo & Vanden-
+Eijnden (2022); Lipman et al. (2022). Conditional flow matching draws inspiration from the denoising score
+matching approach, but generalizes to matching vector fields directly. We have focused our approach to
+denoising-diffusion models in the SGM paradigm because of readily available pretrained diffusion models.
+In the SGM paradigm, a stochastic differential equation (SDE) is used to noise the data, and the interpolation
+parametert will take continuous values int∈[0,T ]. In the DDPM setting,t is discrete. However, the DDPM
+Markov chain can be seen as a discretization of the SDE (Song et al., 2020).
+Recent developments have improved the noising schedule of score-based diffusion models for image data
+that parameterise the transition kernels of the forward process in terms of the signal-to-noise ratioσ2
+t,
+pt(xt|x0) = N (xt;stx0,s 2
+tσ2
+t Idx) (Karras et al., 2022; 2024). In this paper, we focus derivations on the
+Variance Preserving (VP) SDE formulation, although our approach can be generalised and derived for other
+SDEs, such as the Variance Exploding (VE) SDE (see Appendix C). The VP transition kernel that we choose
+to focus our derivation is given by setting
+pt(xt|x0) =N (xt;√αtx0,vtIdx) where αt := exp
+(
+−
+∫ t
+0
+β(s)ds
+)
+and vt := 1−αt,
+which are the transition kernels for the time-rescaled Ornstein-Uhlenbeck process:
+dxt =−1
+2β(t)xtdt +
+√
+β(t)dwt, x0∼p0 =pdata. (1)
+The corresponding reverse SDE is then given by
+dzt = 1
+2β(T−t)ztdt +β(T−t)∇zt logpT−t(zt)dt +
+√
+β(T−t)d ¯wt, z0∼pT.
+A parameterisation that performs well in practice isβ(t) =βmin +t(βmax−βmin). In the diffusion modelling
+literature, the time-rescaled OU process is also sometimes called a Variance Preserving SDE. This is not the
+only SDE that is suitable for the forward process. See Appendix C for details on a time-rescaled Brownian
+motion (Variance Exploding SDE (Song et al., 2020)).
+There are two usual approximations to solve the SDE in Equation (2). First, we do not knowpT, since
+it is a noised version of the distributionpdata. However for T large enough, we can approximatepT ≈
+pref =N (0,Idx). We also do not have∇logpT−t which we need for the drift in Equation (2). This can
+be circumvented by approximating the drift using score-matching techniques (Hyvärinen, 2005; Ho et al.,
+2020). These methods construct an estimate of the score function by solving the score matching problem in
+the form ofsθ(xt,t )≈∇xt logpt(xt). This score can also be used in the setting of DDPM (Ho et al., 2020).
+2.1 Conditional sampling for the linear inverse problem
+In the preceding section we introduced diffusion models as a method to sample from a target distribution
+pdata. We now suppose that we have access to measurements, or observationsy∈Rdy of x0∈Rdx:
+y = Hx0 + u, u∼N(0,σ2
+yIdy). (2)
+We would then be interested in sampling from the conditional distribution ofx0 given y, i.e.,pdata( · |y).
+To that end, we have to modify the reverse SDE. We would like to sample from the reverse SDE targeting
+pdata( · |y), instead of the one targetingpdata.
+3
+
+=== PDF PAGE 4 ===
+Optimally, we would want to replace the score∇zt logpT−t(zt) in Equation (2) with the posterior score
+∇zt logpT−t|y(zt|y). Written in terms of the forward process, this coincides with
+∇xt logpt|y(xt|y) =∇xt logpt(xt) +∇xt logpy|t(y|xt). (3)
+The termpy|t(y|xt) is given by the integral
+py|t(y|xt) =
+∫
+py|0(y|x0)p0|t(x0|xt)dx0, (4)
+which involves a marginalization overx0. The above integral is difficult to evaluate since the termp0|t(x0|xt)
+is only defined implicitly through running the diffusion model. One way around this is to train a neural
+network to directly approximate∇logpt|y(xt|y) (Batzolis et al., 2021; Karras et al., 2022). Alternatively,
+if one already has access to an approximation of∇xt logpt(xt), one can train an auxiliary network to
+approximate the term∇logpy|t(y|xt) in Equation (3), (Dhariwal & Nichol, 2021; Denker et al., 2024).
+However, these methods can be time and training-data intensive, as it is necessary to retrain networks
+for each conditional task as well have access to paired training data from the joint distribution of(x0, y).
+Alternatively, one could try to do a Monte-Carlo approximation of the score corresponding to Equation (4).
+But this needs evaluating the probability flow ODE together with its derivative (Song et al., 2020, Section
+D.2) for each sample, which is prohibitive, also suffers from high variance (Mohamed et al., 2020, Section 3).
+3 Tweedie Moment Projected Diffusions
+In this section, we first introduceTweedie moment projectionsin Section 3.1 below. Our method relies
+on the approximationp0|t(x0|xt)≈N
+(
+x0; m0|t(xt), C0|t(xt)
+)
+to make the sampling process tractable. In
+that case, since the conditional distribution ofy given x0 is also Gaussian, we cancompute the integral in
+Equation (4) analytically— py|t(y|xt) will just be another Gaussian in that case, its mean and covariance
+being determined throughm0|t, C0|t, H andσy. In particular, we can then use this Gaussian to approximate
+∇logpy|t(y|xt), since the score of a Gaussian is available in closed form.
+3.1 Tweedie moment projections
+Instead of just approximating the variance ofp0|t(x0|xt) heuristically, we approximate it by projecting onto
+the closest Gaussian distribution using Tweedie’s formula for the second moment. Our approximation at this
+stage consists of two main steps: (i) Find the mean and covariance ofp0|t(x0|xt) using Tweedie’s formula,
+and (ii) approximate this density with a Gaussian using the mean and covariance ofp0|t(x0|xt) (moment
+projection). Due to this approximation, we will refer to the resulting methods asTweedie Moment Projected
+Diffusions (TMPD). We will first introduce Tweedie’s formula for the mean and covariance and then describe
+the moment projection.
+Proposition 1 (Tweedie’s formula). Let m0|t and C0|t be the mean and the covariance ofp0|t(x0|xt),
+respectively. Then given the marginal densitypt(xt), the mean is given as
+m0|t = E[x0|xt] = 1√αt
+(xt +vt∇xt logpt(xt)), (5)
+and the covarianceC0|t is given by
+C0|t = E
+[
+(x0−m0|t)(x0−m0|t)⊤|xt
+]
+= vt
+αt
+(Idx +vt∇2 logpt(xt)) = vt
+√αt
+∇xtm0|t. (6)
+The proof is an adaptation of Meng et al. (2021, Theorem 1), see Appendix A.1. Whilem0|t and C0|t give
+us the moments of the densityp0|t(x0|xt), we do not have the exact form of this density. At this stage, we
+employ moment projection, i.e., we choose the closest Gaussian in Kullback-Leibler (KL) divergence which
+is a distribution with the same first and second moments, as formalised next.
+4
+
+=== PDF PAGE 5 ===
+Proposition 2(Moment projection). Letp0|t(x0|xt) be a distribution with meanm0|t and covarianceC0|t.
+Let ˆp0|t(x0|xt) be the the closest Gaussian in KL divergence top0|t(x0|xt), i.e.,
+ˆp0|t(x0|xt) = arg min
+q∈Q
+DKL(p0|t(x0|xt)||q), (7)
+whereQ is the family of multivariate Gaussian distributions. Then
+ˆp0|t(x0|xt) =N (x0; m0|t, C0|t). (8)
+This is a well-known moment matching result, see, e.g., Bishop (2006, Section 10.7). Merging Propositions 1
+and 2 leads to the followingTweedie moment projection:
+p0|t(x0|xt)≈N
+(
+x0; m0|t, vt
+√αt
+∇xtm0|t
+)
+, (9)
+where m0|t is given in Proposition 1. In the next section, we demonstrate how to use this approximation to
+obtain approximate likelihoods.
+3.2 Tweedie Moment Projected Likelihood Approximation
+We next use the approximation in Equation (9) to compute the following integralanalytically
+py|t(y|xt)≈
+∫
+py|0(y|x0)ˆp0|t(x0|xt)dxt
+=N
+(
+y; Hm0|t, HC0|tH⊤+σ2
+yIdy
+)
+.
+(10)
+Let us recall that mean and covariance terms are a function ofxt by making them explicit in the notation, i.e.,
+m0|t(xt) and C0|t(xt) for the mean and covariance respectively. To compute∇xt logpy|t(y|xt), we require
+further approximations since we havext dependence in both the mean and the covariance of Equation (10)
+which is computationally infeasible to differentiate through. For this reason, we treat the matrixC0|t like a
+constant w.r.t. xt when computing the gradient (which is the case ifpdata is Gaussian). For non-Gaussian
+pdata, this results in a computationally efficient sampler usingC0|t as a preconditioner for the step size, as
+otherwise, the resulting terms can be expensive to compute. This leads to an approximation of the gradient
+f y(xt) :=∇xtm0|t(xt)H⊤(HC0|t(xt)H⊤+σ2
+yIdy)−1(y−Hm0|t(xt)) (11)
+≈∇xt logpy|t(y|xt),
+where∇xt only operates on m0|t in Equation (11). Another way to write this approximation is to use
+Equation (6), which leads to
+f y(xt) :=
+√αt
+vt
+C0|t(xt)H⊤(HC0|t(xt)H⊤+σ2
+yIdy)−1(y−Hm0|t(xt))
+3.3 Algorithms
+Plugging the approximation in Equation (11) into the reverse SDE in Equation (2) together with the prior
+score as described in Section 2.1 results in a TMPD for conditional sampling to solve inverse problems. The
+SDE we will approximate numerically to sample from the conditional distribution is given by
+dzt =1
+2β(T−t)ztdt +β(T−t)(∇zt logpT−t(zt) +f y
+T−t(zt))dt +
+√
+β(T−t)d ¯wt (12)
+where z0 ∼pT and f y
+t (zt) ≈ ∇logpy|T−t(y|zt) is our approximation to the data likelihood, given by
+Equation (11). We call this SDE theTMPD SDE.
+We have two options to convert TMPD SDE into implementable methods: (1) score-based samplers (Song
+& Ermon, 2020), which we abbreviate as TMPD since they are Euler-Maruyama discretizations of the
+5
+
+=== PDF PAGE 6 ===
+TMPD SDE; and (2) denoising diffusion models (TMPD-D). The denoising diffusion approach is derived
+from approximate reverse Markov chains and is the approach of DDPM and DPS methods (Ho et al.,
+2020; Chung et al., 2022a). We note that the Gaussian projection can be used in this discrete setting,
+assuming that the conditional density is available analytically as in Ho et al. (2020), and can be written as
+pn|0(xn|x0) =N (xn;√αnx0,vnIdx). The idea is to update the unconditional meanm0|n(xn) of the density
+p0|n(x0|xn)with a Bayesian update:p(x0|xn, y)∝p(y|xn)p0|n(x0|xn). Given a similar formulation as above,
+assuming we have a readily available approximationp0|n(x0|xn)≈N(x0; m0|n, C0|n) and a likelihood similar
+to Equation (10) wheret can be replaced byn, we can compute the moments ofp(x0|xn, y) analytically,
+which we denotemy
+0|n and Cy
+0|n. The Bayes update for Gaussians gives (Bishop, 2006)
+my
+0|n = m0|n + C0|nH⊤(HC0|nH⊤+σ2
+yIdx)−1(y−Hm0|n). (13)
+Incorporating Equation (13) forn =N−1,..., 0 into the usual Ancestral sampling (Ho et al., 2020) steps
+leads to Algorithm 1, termed TMPD-Denoising (TPMD-D). The update in Equation (13) can be used in
+any discrete sampler such as denoising diffusion implicit models (DDIM) (Song et al., 2021a).
+3.4 Computationally cheaper approximation of Moment Projection
+We show in our experiments promising results for TMPD motivating the exploration of less computation-
+ally expensive approximations to the full Jacobian. In particular, we empirically study a computationally
+inexpensive method that applies to inpainting and super-resolution, below.
+To make the computational cost of TMPD smaller, we can make an approximation of the Gaussian Projection
+that requires fewer vector-Jacobian products and does not require linear solves. One approximation that we
+found useful for sampling from high dimensional diffusion models, e.g., high resolution images, is denoted
+here as diagonal Tweedie Moment Projection (DTMPD). Instead of the full second moment, DTMPD uses
+the diagonal of the second moment∇xtm0|t≈diag(∇xtm0|t). Intuitively, this approximation will perform
+well empirically since it is a similar approximation toΠGDM that assumes dimensional independence of
+the distributionp(x0|xt), but unlikeΠGDM, this diagonal approximation is the same as using the closest
+dimensionally independent Gaussian in KL divergence top0|t(x0|xt).
+The biggest drawback of our method is that without further approximation, it doesn’t scale up to the high
+dimensions of image data. This is because even calculating the diagonal of a Jacobian requires computingdx
+vector-Jacobian products since in general every element of the Jacobian at a locationxt,∇xtm0|t depends
+on every element ofxt. Therefore we must resort to a further approximation that exploits knowledge of the
+observation operatorH.
+For the cases of super-resolution and inpainting, a further approximation that allows scaling up to the
+dimensions of image data is approximating the diagonal of the Jacobian by the row sum of the Jacobian
+which only requires a single vector-Jacobian product and brings the memory and time complexity of DTMPD
+downtothatof ΠGDM.Weexploitthesparsityof Htomaketherowsumapproximationofthediagonalmore
+accurate by masking out (zeroing) the values in the vector-Jacobian product that that will not contribute
+to the diagonal of HC0|nH⊤. We discuss a justification of this approximation in Ap. E.1. We use this
+approximation in the image experiments and find that in practice it is only (1.5±0.1)×slower thanΠGDM
+and DPS across all of our experiments (Sec. 6), with competitive sample quality for noisy inverse problems
+and without the need for expensive hyperparameter tuning. Finally, we note a very recent work (Rozet et al.,
+2024) that circumvents our heuristic by applying the conjugate gradient (CG) method, unlocking using the
+approximation Eq. 11 to be used in practice for non-sparseH (see Ap. E.1 for more details).
+4 Theoretical Guarantees
+Because of the approximations, our method, as well asΠGDM Song et al. (2023) and DPS (Chung et al.,
+2022a) do not sample the exact posterior for general prior distributions. Therefore, one cannot hope for these
+methods to sample the true posterior and a priori it is not even clear how the sampled distribution relates
+to the true posterior. Without further justification, such methods should only be interpreted asguidance
+6
+
+=== PDF PAGE 7 ===
+methods, where paths are guided to regions where a given observationy is more likely, not as posterior
+sampling methods.
+We justify our approximation by showing that the TMPD-SDE in Equation (12) is able to sample the exact
+posterior in the Gaussian case. One can see that this contrasts withΠGDM and DPS in our numerical
+experiments or by explicitly evaluating their approximations on simple one-dimensional examples.
+Proposition 3 (Gaussian data distribution). Assume that pdata is Gaussian. Then, the posterior score
+expression using Equation (11) is exact, i.e., if there are no errors in the initial condition and drift approx-
+imation sθ(xt,t ) =∇xt logpt(xt), the TMPD will samplepdata(·|y) at its final time.
+The proof is given in Appendix B.1. However, most distributions will not be Gaussian. The following
+theorem generalizes the above proposition tonon-Gaussian distributions, as long as they have a density with
+respect to a Gaussian. We study how close our sampled measure will be to the true posterior distribution
+and give explicit bounds on the total variation distance in terms of the regularity properties of the density:
+Theorem 1(General data distribution). Assume that the data distributionpdata can be written as
+pdata(x0) = exp(Φ( x0))N (x0;µ0, Σ 0), (14)
+for someµ0 and Σ 0. We furthermore assume that for someM≥1, it holds that1/M≤exp(Φ( x))≤M
+and∥∇xΦ( x)∥≤L for all x∈Rdx. Then
+∥pdata(·|y)−qT (·)∥TV≤C(1 +T 1/2)
+(
+(M5/2−1)(L1/2 + 1) +L1/2
+)
+, (15)
+where qt denotes the law of the corresponding reverse-time process for Equation (12) at timet and the
+constantC that only depends ony, H,σy,µ0 and Σ 0.
+See Appendix B.2 for a proof.
+In the limit, whenpdata becomes more similar to a Gaussian, theΦ in Equation (14) converges to zero, and
+therefore M →1 and L→0. In particular, the right hand side in Equation (15) converges to0 and we
+recover the result of Proposition 3. Whenpdata is not Gaussian, the right hand side of Equation (15) gives
+us an upper bound of our sample distribution to the true posterior.
+5 Related Work
+In this section, we review two closely related methods, that we use as benchmarks, and summarise the
+relationship between them.
+The first work by Chung et al. (2022a), abbreviated DPS-D here2 introduced the use of Tweedie’s formula
+to approximatept(x0|xt) with a Dirac delta (point) distribution centred atm0|t. In our framework this
+corresponds to choosing a zero covariance, i.e.,
+mDPS-D
+0|t = m0|t and CDPS-D
+0|t = 0. (16)
+In the work Song et al. (2023), abbreviatedΠGDM-D here3 the same estimator for the mean is chosen.
+However, the variance is set to a multiple of the identity, corresponding to choices
+mΠ G
+0|t = m0|t and CΠ G
+0|t =r2
+t Idx (17)
+The choice ofrt is such that it matches the variance of the reverse SDE ifpdata would be a standard normal
+distribution. Since they employ a different forward SDE to ours (variance exploding SDE),rt is set, when
+the variance of the data is 1, to be equal tovt/(vt + 1). In our case, with the OU/variance preserving SDE
+as a forward process,rt would be equal tovt/(vt +αt), when the variance of the data is 1.
+2Since the authors run DDPM-type sampler, we re-abbreviate DPS as DPS-D in this work (as DPS approximation itself can
+also be run with Euler-Maruyama schemes).
+3Since the authors run DDIM-type sampler, we re-abbreviate ΠGDM as ΠGDM-D in this work (as ΠGDM approximation
+itself can also be run with Euler-Maruyama schemes).
+7
+
+=== PDF PAGE 8 ===
+Another relevant very recent work by Finzi et al. (2023) arrives at the approximation matching ours in the
+context of modelling physical constraints. However, we focus on general linear inverse problems outside the
+physical domain in this paper together with a novel theoretical result. Also, we note the work of Stevens
+et al. (2023) who consider the maximum-a-posteriori (MAP) approach to find the moments ofp0|t.
+Finally, sequential Monte Carlo (SMC) methods are particle-based posterior sampling schemes that are
+asymptotically exact in the limit of infinitely many particles. Cardoso et al. (2023) target the posterior for
+linear inverse problems, and our first experiment makes a comparison to Cardoso et al. (2023) for a Gaussian
+Mixture model. However, for high dimensional data (such as images), this method can exhibit the well
+studied SMC problem of weight degeneracy, where particle weights collapse. We note a recent state of the
+art work (Wu et al., 2024) that tackles weight degeneracy by introducing the Twisted Diffusion Sampler
+(TDS), with heuristic twisting functions approximatingpy|t(y|xt) that increase computational efficiency of
+SMC. The method is still asymptotically exact as long as the approximation ofpy|t(y|xt)converges top(y|x0)
+as t approaches 0. The authors note that the efficiency of TDS (Wu et al., 2024) depends on how closely
+the twisting function approximates the exact likelihood. TMPD (Equation (10)) could be a good twisting
+candidate.
+6 Experiments
+In this section, we demonstrate our results as well as the peformance of other approximations to the likelihood
+provided in Chung et al. (2022a); Song et al. (2023). In particular, we perform comparisons for two of our
+methods TMPD (an SGM using our approximation) and TMPD-D (a DDPM sampler using Equation (13)).
+We compare these to DPS (an SGM sampler using the posterior approximation in Equation (16)), DPS-D
+(Chung et al., 2022a) (a DDPM-type sampler using Equation (16)),ΠGDM (Song et al., 2023) (an SGM
+sampler using the posterior approximation in Equation (17)), and finallyΠGDM-D (a DDIM-type sampler
+using Equation (17), but in our experiments a DDPM-type sampler since we set the DDIM hyperparameter
+η= 1.0 which is defined in Algorithm 1 by Song et al. (2021a) who show that this is equivalent to a
+DDPM-type sampler).
+The code for all of the experiments and instructions to run them are available at github.com/bb515/tmpdjax
+and github.com/bb515/tmpdtorch.
+6.1 Gaussian Mixture Model
+We now demonstrate a nonlinear SDE example and follow the Gaussian mixture model example of Cardoso
+et al. (2023) where the data distributionp0(x0) is a mixture of 25 Gaussian distributions. The means and
+variances of the components of the mixture are given in Appendix E.3. In this case, for each choice of
+observation y, observation mapH and measurement noise standard deviationσy, the target posterior can
+be computed explicitly (see Appendix E.3).
+To investigate the performance of posterior sampling methods, for each pair of dimensions and observation
+noise (dx,d y,σy)∈{8, 80, 800}×{1, 2, 4}×{10−2, 10−1, 100}we randomly generate multiple measurement
+models (y, H)∈Rdy×Rdy×dx, and equally weight each component of the Gaussian mixture. Further details
+are given in Appendix E.3. We chose to control the dimension to gain insight into the performance of
+posterior sampling methods under varying dimensions. We also chose to control the noise level since the
+different posterior sampling methods have accuracy that depends on the signal-to-noise ratio. Through
+randomly varying the observation model, we gain an insight into the performance of the posterior sampling
+methods with different levels of posterior multimodality. This example is interesting because it allows us to
+study the behaviour of our methods on non-Gaussian problems in high dimensions whilst having access to
+the target posterior with which to compare (usually, obtaining a ‘ground-truth’ posterior is not feasible for
+non-Gaussian problems).
+We use the sliced Wasserstein (SW) distance defined in Appendix E.3 to compare the posterior distribution
+estimated by each algorithm with the target posterior distribution. We use104 slices for the SW distance
+and compare 1000 samples of TMPD-D,ΠGDM-D and DPS-D in Tables 1 obtained using 1000 denoising
+steps and 1000 samples of the true posterior distribution.
+8
+
+=== PDF PAGE 9 ===
+Figure2: WedisplaythefirsttwodimensionsoftheGMMinverseproblemforoneofthemeasurementmodels
+tested (H,σy = 0.1, (dx,d y) = (80, 1)). The blue dots represent samples from the target posterior, while the
+red dots correspond to samples generated by each of the algorithms used (the names of the algorithms are
+given at the bottom of each column).
+Table 1: Sliced Wasserstein for the GMM case. The full table is in Ap. E.3.
+dx 8 8 8 80 80 80 800 800 800
+dy 1 2 4 1 2 4 1 2 4
+TMPD-D 1.6 0.7 0.3 2.7 1.0 0.3 3.1 1.4 0.4
+DTMPD-D 1.8 3.3 0.4 2.8 3.2 0.7 3.7 3.5 0.7
+DPS-D 4.7 1.8 0.7 5.6 3.2 1.2 5.8 3.5 1.4
+Π GDM-D 2.6 2.1 3.8 3.2 2.8 0.6 3.5 3.1 0.4
+TMPD-D 1.4 0.9 0.3 2.3 1.2 0.4 2.9 1.3 0.4
+DTMPD-D 1.8 2.7 0.5 2.6 3.2 0.8 3.4 3.4 0.8
+DPS-D 4.7 1.5 0.8 5.1 3.1 1.0 5.7 3.1 1.3
+Π GDM-D 2.2 1.6 3.8 2.9 2.7 0.6 3.3 2.7 0.4
+TMPD-D 0.9 0.9 0.6 1.5 1.1 0.9 1.5 1.2 0.9
+DTMPD-D 0.9 1.7 0.9 1.4 2.1 0.9 1.4 2.0 1.1
+DPS-D 5.2 3.5 2.5 6.9 3.9 1.7 6.8 4.7 0.9
+Π GDM-D 1.5 2.3 1.8 1.6 1.4 0.9 2.0 2.0 0.6
+Table 1 indicates the Central Limit Theorem (CLT) 95% confidence intervals obtained by considering 20
+randomly selected measurement models (H) for each setting (dx,d x,σy). Figure 2 shows the first two
+dimensions of the estimated posterior distributions corresponding to the configurations (80, 1) from Table 1
+for one of the randomly generated measurement model (H,σy = 0.1). These illustrations give us insight
+into the behaviour of the algorithms and their ability to accurately estimate the posterior distribution. We
+observe that TMPD-D estimates the target posterior well compared toΠGDM-D and DPS-D. TMPD-D
+covers all of the modes, whereasΠGDM-D and DPS-D do not.
+We perform the same experiment using 1000 samples of TMPD, DTMPD, DPS andΠGDM, obtained using
+1000 Euler-Maruyama time-steps, and results are shown in Appendix E.3.
+A direct comparison to Cardoso et al. (2023) using their original experimental setup is shown in Table 5 in
+Appendix E.3, which shows competitive performance for posterior sampling compared to Sequential Monte-
+Carlo, an exact sampling method.
+6.2 Noisy observation inpainting and super-resolution
+We consider inpainting and super-resolution problems on the FFHQ256×256 (Karras et al., 2019) and
+CIFAR-10 32×32 (Krizhevsky et al., 2009) datasets. We compare TMPD toΠDGM and DPS. We also
+compare score-based diffusion models with their denoising-diffusion counterparts (denoted with suffix, -D).
+9
+
+=== PDF PAGE 10 ===
+Firstly, we follow the benchmark used by Chung et al. (2022a) and use a Variance Preserving (VP) SDE,
+using a DDPM sampler, on FFHQ256×256 using 1k validation images. The pre-trained diffusion model for
+FFHQ was taken from Chung et al. (2022a) and was used directly without any finetuning. We follow Chung
+et al. (2022a) and use various forward operators. For super-resolution, we use a downsampling ratio of 4
+(256×256→64×64) and bicubic interpolation; for ‘box’ mask inpainting we mask out128×128 region and
+for ‘random’ mask inpainting we choose a random mask for each image masking between 30% and 70% of the
+pixels. Images are normalized to the range[0, 1] and it is on this scale that we add Gaussian measurement
+noise with standard deviation σy ∈ {0.01, 0.05, 0.1, 0.2}. For quantitative comparison, we focus on two
+widely used perception distances, Fréchet Inception Distance (FID) and Learned Perceptual Image Patch
+Similarity (LPIPS) distance. FID evaluates consistency with the whole dataset using summary statistics
+from the FFHQ-50k dataset. We also evaluate observation data similarity using various distances between
+a sampled image and ground truth image: LPIPS, mean-squared-error (MSE), peak signal-to-noise-ratio
+(PSNR) and structural similarity index measure (SSIM). ForΠGDM-D we use the algorithm and default
+hyperparametersasdescribedinSongetal.(2023). For DPS-D weusethealgorithminthecodebaseprovided
+by the authors Chung et al. (2022a) and we use their default hyperparameters such as their suggested step-
+size hyperparameter for this task, and static-thresholding (clipping the denoised image at each step to a
+range [−1, 1]) whereas TMPD-D does not require hyperparameter tuning or static-thresholding. The results
+for FFHQ sampled using VP DDPM are shown in the appendix Table 7. We observe that DTMPD-D is
+competitive with DPD-D over a range of noise levels, however,ΠGDM-D is not able to produce high quality
+reconstructions for larger noise levels.
+We note that the heuristics used in the DPS andΠGDM implementations have been designed to work with
+the VP-SDE (DDPM sampler), and therefore the performance may not be robust to the choice of SDE.
+Fig 14 illustrates this when each method is applied to the VE-SDE on a sample from the FFHQ validation
+dataset. We next compare performance to TMPD across VP and VE-SDE samplers and a range of noise
+levels on CIFAR-1064×64 using 1k validation images.
+We use pretrained denoising networks for CIFAR-10 that are available here. For inpainting, we use ‘box’ and
+‘half’ mask. For ‘half’-type inpainting, we mask out a16×16 right half region of the image; for box-type
+inpainting, we mask out an8×8 box region following Cardoso et al. (2023). For super-resolution, we use a
+downsampling ratio of 2 on each axis (32×32→16×16) with a nearest-neighbour downsampling method;
+and a downsampling ratio of 4 (32×32→8×8) with bicubic downsampling. Images are normalized to
+the range [0, 1] and it is on this scale that we add Gaussian measurement noise with standard deviation
+σy∈{0.01, 0.05, 0.1}. Whereas no hyperparameters are required for our method, we chose the DPS scale
+hyperparameter by optimising LPIPS, MSE, PSNR and SSIM on a validation set of 128 images (see Fig. 9
+for an example). We found that static thresholding (clipping the denoised image estimate to a range[0, 1]
+at each sampling step) is critical for the stability and performance of both DPS-D andΠGDM-D. Stability
+was noted as a limitation in Chung et al. (2022a), and they suggest that devising methods to stabilize the
+samplers would be a promising direction of research. We find that our TMPD-D method and the diagonal
+approximation DTMPD-D is stable across SDE, noise-level and observation maps, without the need for static
+thresholding. Whilst for VEΠGDM-D we found the original algorithm in Song et al. (2023) to be stable, for
+VP ΠGDM-D, the original algorithm, whilst stable for FFHQ, was not stable, even with static-thresholding,
+for CIFAR-10. We chose to bringΠGDM-D a step closer to our algorithm by substituting their likelihood
+score into an Ancestral sampling algorithm, instead of a DDIM algorithm as suggested in Song et al. (2023),
+which produced stable samples.
+The methods TMPD,ΠGDM and DPS all have the same numerical solver of their respective reverse-SDE,
+and DTMPD-D, ΠGDM-D and DPS-D all use DDPM since DDIM and DDPM are equivalent algorithms
+with our chosen DDIM hyperparameterη= 1.0. Therefore, the sampling methods being compared only
+differ in the∇xt logpy|t(y|xt) term in their reverse-SDE, and so this experiment allows us to study the
+behaviour of our method on inpainting and super-resolution compared to the different approximations of
+the smoothed likelihood. A summary of the results for CIFAR-10 sampled using VE DDPM are shown in
+Table 2. The complete results are in Tables 8 and 12 for VP and VE DDPM respectively, and Tables 9 and
+13 for score-based VP and VE-SDE, respectively. For more experimental details including illustration of
+samples used to generate the tables can be found in Appendix E.4. Our method is the only method able to
+10
+
+=== PDF PAGE 11 ===
+Table 2: Summary of results using the VE and VP-SDE for increasingly noisyσy∈{0.01, 0.05, 0.1}obser-
+vation inpainting and super-resolution problems on FFHQ 1k validation set. The full results are in Ap. E.4.
+SDE VE-SDE VP-SDE
+Problem Method FID ↓LPIPS↓ FID↓LPIPS↓
+σy = 0.01 DTMPD-D 32.3 0.203 ±0.039 29.6 0.230 ±0.034
+4×‘bicubic’ DPS-D 47.0 0.273 ±0.031 31.4 0.234 ±0.048
+super-resolution Π GDM-D 37.4 0.244 ±0.030 29.7 0.198 ±0.037
+σy = 0.05 DTMPD-D 32.1 0.268 ±0.048 32.7 0.304 ±0.043
+4×‘bicubic’ DPS-D 105.9 0.590 ±0.036 29.3 0.280 ±0.051
+super-resolution Π GDM-D 106.8 0.592 ±0.041 45.1 0.311 ±0.047
+σy = 0.1 DTMPD-D 32.7 0.310 ±0.053 38.0 0.348 ±0.048
+4×‘bicubic’ DPS-D 114.0 0.569 ±0.044 30.9 0.318 ±0.051
+super-resolution Π GDM-D 206.0 0.724 ±0.034 119.6 0.589 ±0.047
+σy = 0.01 DTMPD-D 30.2 0.114 ±0.029 25.7 0.153 ±0.033
+‘box’ mask DPS-D 23.9 0.093 ±0.019 31.5 0.175 ±0.038
+inpainting Π GDM-D 27.1 0.108 ±0.025 143.8 0.247 ±0.024
+σy = 0.05 DTMPD-D 33.6 0.186 ±0.036 27.0 0.240 ±0.038
+‘box’ mask DPS-D 39.7 0.318 ±0.044 30.7 0.228 ±0.046
+inpainting Π GDM-D 49.5 0.354 ±0.044 159.3 0.448 ±0.046
+σy = 0.1 DTMPD-D 34.0 0.223 ±0.041 29.6 0.292 ±0.049
+‘box’ mask DPS-D 59.1 0.467 ±0.053 29.3 0.259 ±0.049
+inpainting Π GDM-D 72.6 0.529 ±0.047 165.7 0.539 ±0.083
+provide high-quality reconstructions independently of the SDE, time discretization or noise level used. On
+the other hand, we see that DPS-D andΠGDM-D are not able to provide high-quality reconstructions for
+the VE-SDE. For the continuous time methods,ΠGDM and DPS are outperformed by TMPD for both VE
+and VP-SDEs in the majority of tasks.
+7 Discussions, limitations and future work
+In this paper, we introduced TMPD, a diffusion modelling approach to solve inverse problems and sample
+from conditional distributions using unconditional diffusion models. On various tasks on the VP-SDE,
+TMPD achieves competitive quality with other methods that aim to solve the noisy, linear inverse problem
+while avoiding the expensive, problem-specific training of conditional models. Our method is more versatile
+since it can also be used for the VE-SDE, and for large noise and different time discretizations.
+TMPD is slower, as each iteration costs more memory and compute due to the Jacobian over the score
+model. Even with a diagonal and row-sum approximation to the Jacobian, the method is around 1.5×
+slower than DPS andΠGDM. The row-sum approximation is not suitable for inverse problems with more
+complicated, non-diagonal and nonlinear observation operators, therefore, it would be helpful to explore
+methods to circumvent heuristics. For example, heuristics can be circumvented by noting in the definition
+of Equation (11) does not require the inverse but rather solving a system of linear equations with right hand
+side y−Hm0|t(xt). A very recent work (Rozet et al., 2024), uses the natural choice of the conjugate gradient
+(CG) method to solve this linear system with success on non-diagonal and nonlinear observation operators,
+even for a small number of iterations of the CG method.
+Using flow based methods (Albergo & Vanden-Eijnden, 2022; Lipman et al., 2022) as unconditional priors
+and building conditional sampling methods that leverage flows as pretrained models (Ben-Hamu et al., 2024;
+Pandey et al., 2024) is related to the approach used in this paper. For example, it is possible to directly
+substitute in the TMPD approximation to the PiGDM method applied to flows (Pokle et al., 2023), which
+would be a fruitful direction for future work.
+11
+
+=== PDF PAGE 12 ===
+Many state of the art diffusion models operate in a latent space which would make any observation operator
+nonlinear, and thus linear observations maps do not suffice in the latent diffusion setting. Furthermore, for
+inverse problems in general it may be excessive to train a diffusion model for the full data distribution, and
+it could be difficult to outperform a diffusion model trained for a specific inverse problem. For example,
+using diffusion models trained specifically for the super-resolution problem in a cascade together with noise
+conditioning augmentation (Ho et al., 2022) has been extremely effective in progressively generating high-
+fidelity images, see e.g., Saharia et al. (2022).
+A limitation of our method is that without approximations, the full method may be costly to implement in
+high dimensions of image data. On the positive side, our approach does not require any hyperparameter
+tuning, does not require static-thresholding of the denoised image, and is more principled when compared to
+existing approaches, as shown in Section 4. We show that our method, unlikeΠGDM, does not fail for the
+cases where the additive Gaussian noise is significant. We provided a way to analyse similar methods and
+our moment approximations can be analysed more rigorously to provide deeper theoretical results for these
+kinds of methods. Our future work plans include expanding the analysis we provided in this work.
+Acknowledgements
+This work has been supported by The Alan Turing Institute through the Theory and Methods Chal-
+lenge Fortnights event Accelerating generative models and nonconvex optimisation, which took place on
+6-10 June 2022 and 5-9 Sep 2022 at The Alan Turing Institute headquarters. JP and SR acknowledge
+funding by Deutsche Forschungsgemeinschaft (DFG) – Project-ID 318763901 - SFB1294. M. Girolami
+was supported by a Royal Academy of Engineering Research Chair grant RCSRF1718/6/34, and EPSRC
+grants EP/W005816/1, EP/V056441/1, EP/V056522/1, EP/R018413/2, EP/R034710/1, EP/Y028805/1,
+and EP/R004889/1. The authors would also like to thank the Isaac Newton Institute for Mathematical
+Sciences, Cambridge, for support and hospitality during the programmeThe Mathematical and Statistical
+Foundation of Future Data-Driven Engineeringwhere work on this paper was undertaken. This work was
+supported by EPSRC grant no EP/R014604/1. BB gratefully acknowledges the EPSRC for funding this
+research through the EPSRC Centre for Doctoral Training in Future Infrastructure and Built Environment:
+Resilience in a Changing World (EPSRC grant reference number EP/S02302X/1); and the support of nPlan,
+and in particular Damian Borowiec and Peter A. Zachares, for the invaluable facilitation of work that was
+completed whilst on internship with nPlan and access to A100 GPUs.
+References
+Josh Abramson, Jonas Adler, Jack Dunger, Richard Evans, Tim Green, Alexander Pritzel, Olaf Ronneberger,
+Lindsay Willmore, Andrew J Ballard, Joshua Bambrick, et al. Accurate structure prediction of biomolec-
+ular interactions with alphafold 3.Nature, pp. 1–3, 2024.
+Michael S Albergo and Eric Vanden-Eijnden. Building normalizing flows with stochastic interpolants.arXiv
+preprint arXiv:2209.15571, 2022.
+Georgios Batzolis, Jan Stanczuk, Carola-Bibiane Schönlieb, and Christian Etmann. Conditional image
+generation with score-based diffusion models.arXiv preprint arXiv:2111.13606, 2021.
+Heli Ben-Hamu, Omri Puny, Itai Gat, Brian Karrer, Uriel Singer, and Yaron Lipman. D-flow: Differentiating
+through flows for controlled generation.arXiv preprint arXiv:2402.14017, 2024.
+Christopher M Bishop.Pattern recognition and machine learning, volume 4. Springer, 2006.
+Ashish Bora, Ajil Jalal, Eric Price, and Alexandros G Dimakis. Compressed sensing using generative models.
+In International conference on machine learning, pp. 537–546. PMLR, 2017.
+Gabriel Cardoso, Yazid Janati El Idrissi, Sylvain Le Corff, and Eric Moulines. Monte carlo guided diffusion
+for bayesian linear inverse problems, 2023.
+12
+
+=== PDF PAGE 13 ===
+SitanChen, SinhoChewi, JerryLi, YuanzhiLi, AdilSalim, andAnruRZhang. Samplingisaseasyaslearning
+the score: theory for diffusion models with minimal data assumptions. InInternational Conference on
+Learning Representations, 2023.
+Hyungjin Chung, Jeongsol Kim, Michael Thompson Mccann, Marc Louis Klasky, and Jong Chul Ye. Diffu-
+sion posterior sampling for general noisy inverse problems. InThe Eleventh International Conference on
+Learning Representations, 2022a.
+Hyungjin Chung, Byeongsu Sim, Dohoon Ryu, and Jong Chul Ye. Improving diffusion models for inverse
+problemsusingmanifoldconstraints. Advances in Neural Information Processing Systems, 35:25683–25696,
+2022b.
+Hyungjin Chung, Jeongsol Kim, Sehui Kim, and Jong Chul Ye. Parallel diffusion models of operator and
+image for blind inverse problems. InProceedings of the IEEE/CVF Conference on Computer Vision and
+Pattern Recognition, pp. 6059–6069, 2023.
+GiannisDaras, YuvalDagan, AlexDimakis, etal. Score-guidedintermediateleveloptimization: Fastlangevin
+mixing for inverse problems. InProceedings of the 39th International Conference on Machine Learning
+(ICML), 2022.
+Alexander Denker, Francisco Vargas, Shreyas Padhy, Kieran Didi, Simon Mathis, Vincent Dutordoir, Ric-
+cardo Barbano, Emile Mathieu, Urszula Julia Komorowska, and Pietro Lio. Deft: Efficient finetuning of
+conditional diffusion models by learning the generalisedh-transform. arXiv preprint arXiv:2406.01781,
+2024.
+Prafulla Dhariwal and Alexander Nichol. Diffusion models beat gans on image synthesis.Advances in neural
+information processing systems, 34:8780–8794, 2021.
+Bradley Efron. Tweedie’s formula and selection bias.Journal of the American Statistical Association, 106
+(496):1602–1614, 2011. doi: 10.1198/jasa.2011.tm11181. URL https://doi.org/10.1198/jasa.2011.
+tm11181. PMID: 22505788.
+Berthy T Feng and Katherine L Bouman. Efficient bayesian computational imaging with a surrogate score-
+based prior. arXiv preprint arXiv:2309.01949, 2023.
+Berthy T Feng, Jamie Smith, Michael Rubinstein, Huiwen Chang, Katherine L Bouman, and William T
+Freeman. Score-based diffusion models as principled priors for inverse imaging. arXiv preprint
+arXiv:2304.11751, 2023.
+Marc Anton Finzi, Anudhyan Boral, Andrew Gordon Wilson, Fei Sha, and Leonardo Zepeda-Núñez. User-
+defined event sampling and uncertainty quantification in diffusion models for physical dynamical systems.
+In International Conference on Machine Learning, pp. 10136–10152. PMLR, 2023.
+Clark R. Givens and Rae Michael Shortt. A class of Wasserstein metrics for probability distributions.
+Michigan Mathematical Journal, 31(2):231 – 240, 1984. doi: 10.1307/mmj/1029003026. URL https:
+//doi.org/10.1307/mmj/1029003026.
+Jonathan Ho and Tim Salimans. Classifier-free diffusion guidance.arXiv preprint arXiv:2207.12598, 2022.
+Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models, 2020.
+Jonathan Ho, Chitwan Saharia, William Chan, David J Fleet, Mohammad Norouzi, and Tim Salimans.
+Cascaded diffusion models for high fidelity image generation.The Journal of Machine Learning Research,
+23(1):2249–2281, 2022.
+Aapo Hyvärinen. Estimation of non-normalized statistical models by score matching.Journal of Machine
+Learning Research, 6(24):695–709, 2005. URLhttp://jmlr.org/papers/v6/hyvarinen05a.html.
+13
+
+=== PDF PAGE 14 ===
+Ajil Jalal, Marius Arvinte, Giannis Daras, Eric Price, Alexandros G Dimakis, and Jon Tamir. Robust
+compressed sensing mri with deep generative priors.Advances in Neural Information Processing Systems,
+34:14938–14954, 2021.
+Zahra Kadkhodaie and Eero Simoncelli. Stochastic solutions for linear inverse problems using the prior
+implicit in a denoiser.Advances in Neural Information Processing Systems, 34:13242–13254, 2021.
+Ioannis Karatzas and Steven Shreve.Brownian motion and stochastic calculus, volume 113. Springer Science
+& Business Media, 2012.
+Tero Karras, Samuli Laine, and Timo Aila. A style-based generator architecture for generative adversarial
+networks. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pp.
+4401–4410, 2019.
+Tero Karras, Miika Aittala, Timo Aila, and Samuli Laine. Elucidating the design space of diffusion-based
+generative models. Advances in neural information processing systems, 35:26565–26577, 2022.
+Tero Karras, Miika Aittala, Jaakko Lehtinen, Janne Hellsten, Timo Aila, and Samuli Laine. Analyzing and
+improving the training dynamics of diffusion models. InProceedings of the IEEE/CVF Conference on
+Computer Vision and Pattern Recognition, pp. 24174–24184, 2024.
+Bahjat Kawar, Gregory Vaksman, and Michael Elad. Snips: Solving noisy inverse problems stochastically.
+Advances in Neural Information Processing Systems, 34:21757–21769, 2021.
+Bahjat Kawar, Michael Elad, Stefano Ermon, and Jiaming Song. Denoising diffusion restoration models.
+Advances in Neural Information Processing Systems, 35:23593–23606, 2022.
+Alex Krizhevsky, Geoffrey Hinton, et al. Learning multiple layers of features from tiny images. 2009.
+Rémi Laumont, Valentin De Bortoli, Andrés Almansa, Julie Delon, Alain Durmus, and Marcelo Pereyra.
+Bayesian imaging using plug & play priors: when Langevin meets Tweedie.SIAM Journal on Imaging
+Sciences, 15(2):701–737, 2022.
+Yaron Lipman, Ricky TQ Chen, Heli Ben-Hamu, Maximilian Nickel, and Matt Le. Flow matching for
+generative modeling. arXiv preprint arXiv:2210.02747, 2022.
+Morteza Mardani, Jiaming Song, Jan Kautz, and Arash Vahdat. A variational perspective on solving inverse
+problems with diffusion models.arXiv preprint arXiv:2305.04391, 2023.
+Chenlin Meng, Yang Song, Wenzhe Li, and Stefano Ermon. Estimating high order gradients of the data
+distribution by denoising.Advances in Neural Information Processing Systems, 34:25359–25369, 2021.
+Shakir Mohamed, Mihaela Rosca, Michael Figurnov, and Andriy Mnih. Monte carlo gradient estimation in
+machine learning.The Journal of Machine Learning Research, 21(1):5183–5244, 2020.
+Kushagra Pandey, Ruihan Yang, and Stephan Mandt. Fast samplers for inverse problems in iterative refine-
+ment models. arXiv preprint arXiv:2405.17673, 2024.
+Jakiw Pidstrigach, Youssef Marzouk, Sebastian Reich, and Sven Wang. Infinite-dimensional diffusion models
+for function spaces.arXiv preprint arXiv:2302.10130, 2023.
+Ashwini Pokle, Matthew J Muckley, Ricky TQ Chen, and Brian Karrer. Training-free linear image inversion
+via flows.arXiv preprint arXiv:2310.04432, 2023.
+Herbert E. Robbins. An Empirical Bayes Approach to Statistics, pp. 388–394. Springer New York, New
+York, NY, 1992. ISBN 978-1-4612-0919-5. doi: 10.1007/978-1-4612-0919-5_26. URLhttps://doi.org/
+10.1007/978-1-4612-0919-5_26.
+François Rozet, Gérôme Andry, François Lanusse, and Gilles Louppe. Learning diffusion priors from obser-
+vations by expectation maximization.arXiv preprint arXiv:2405.13712, 2024.
+14
+
+=== PDF PAGE 15 ===
+Chitwan Saharia, William Chan, Saurabh Saxena, Lala Li, Jay Whang, Emily L Denton, Kamyar
+Ghasemipour, Raphael Gontijo Lopes, Burcu Karagol Ayan, Tim Salimans, et al. Photorealistic text-
+to-image diffusion models with deep language understanding.Advances in Neural Information Processing
+Systems, 35:36479–36494, 2022.
+Jiaming Song, Chenlin Meng, and Stefano Ermon. Denoising diffusion implicit models. 2021a. URLhttps:
+//openreview.net/forum?id=St1giarCHLP.
+Jiaming Song, Arash Vahdat, Morteza Mardani, and Jan Kautz. Pseudoinverse-guided diffusion models
+for inverse problems. In International Conference on Learning Representations, 2023. URL https://
+openreview.net/forum?id=9_gsMA8MRKQ.
+Yang Song and Stefano Ermon. Generative modeling by estimating gradients of the data distribution, 2020.
+Yang Song, Jascha Sohl-Dickstein, Diederik P Kingma, Abhishek Kumar, Stefano Ermon, and Ben
+Poole. Score-based generative modeling through stochastic differential equations. arXiv preprint
+arXiv:2011.13456, 2020.
+Yang Song, Liyue Shen, Lei Xing, and Stefano Ermon. Solving inverse problems in medical imaging with
+score-based generative models.arXiv preprint arXiv:2111.08005, 2021b.
+Tristan SW Stevens, Jean-Luc Robert, Faik C Yu, Jun Seob Shin, and Ruud JG van Sloun. Removing
+structured noise with diffusion models.arXiv preprint arXiv:2302.05290, 2023.
+Andrew M Stuart. Inverse problems: a bayesian perspective.Acta numerica, 19:451–559, 2010.
+Albert Tarantola.Inverse problem theory and methods for model parameter estimation. SIAM, 2005.
+Luhuan Wu, Brian Trippe, Christian Naesseth, David Blei, and John P Cunningham. Practical and asymp-
+totically exact conditional sampling in diffusion models.Advances in Neural Information Processing Sys-
+tems, 36, 2024.
+A Proofs for Section 3
+A.1 Proof of Proposition 1
+In order to prove this result, we adapt Theorem 1 of Meng et al. (2021). We write the proof for generic
+exponential family which can be adapted to our case easily. Let us consider
+pt|0(xt|x0) =N (xt;√αtx0,vtIdx).
+and writept(xt) =
+∫
+pt|0(xt|x0)p0(x0)dx0. We are interested in finding the moments of the posterior
+p0|t(x0|xt) = pt|0(xt|x0)p0(x0)
+pt(xt) .
+Let us redefine the right handside in this Bayes’ rule using the exponential family parameterisation of the
+Gaussian pt|0(xt|x0)
+p(η0|xt) = pt|0(xt|η0)q0(η0)
+pt(xt) ,
+whereη0 = x0
+√αt/vt and
+pt|0(xt|η0) =eη⊤
+0 xt−ψ(η0)q(xt),
+where
+q(xt) = ((2π)dv2d)−1/2e−x⊤
+t xt/2vt
+15
+
+=== PDF PAGE 16 ===
+Now let
+λ(xt) = logpt(xt)
+q(xt),
+we can rewrite
+p(η0|xt) =eη⊤
+0 xt−ψ(xt)−λ(xt)q0(η0).
+It is then easy to show that the moments ofη0 are given by (Meng et al., 2021)
+E[η0|xt] = Jλ(xt),
+E[η⊤
+0|xt] = Jλ(xt)⊤,
+E[η0η⊤
+0|xt] = Sλ(xt) + Jλ(xt)Jλ(xt)⊤,
+where Jλis the Jacobian ofλw.r.t. xt and Sλis the Hessian ofλw.r.t. xt. Recall now thatη0 = x0
+√αt/vt
+and
+λ(xt) = logpt(xt) + x⊤
+t xt
+2vt
++C
+Jλ(xt) =∇xt logpt(xt) + xt
+vt
+Sλ(xt) =∇2
+xt logpt(xt) + 1
+vt
+Idx.
+This implies that
+E[x0|xt] = 1√αt
+(xt +vt∇xt logpt(xt)),
+which proves the Tweedie’s formula for the mean. For the covariance, note that
+Cov(η0|xt) = E[η0η⊤
+0|xt]−E[η0|xt]E[η0|xt]⊤
+=∇2 logpt(xt) + 1
+vt
+Idx.
+Since
+Cov(η0|xt) = αt
+v2
+t
+Cov(x0|xt),
+we conclude
+Cov(x0|xt) = vt
+αt
+(Idx +vt∇2 logpt(xt)),
+which concludes the proof. □
+B Proofs for Section 4
+B.1 Proof of Proposition 3
+Ifpdata is Gaussian, then the full processxt is a Gaussian process. In particular,(x0, xt) are jointly Gaussian:
+x0|xt∝N(E[x0|xt], V[x0|xt]),
+where V denotes the covariance. However, the right-hand side is precisely the approximation we make, due
+to Proposition 1. Therefore, the approximation we make in Equation (11) is correct. Adding this to the
+learned drift sθ(xt,t ) =∇logpt(xt), we get an expression for∇logpt(xt|y) by Equation (3).
+16
+
+=== PDF PAGE 17 ===
+B.2 Proof of Theorem 1
+We first introduce three SDEs.
+Conditioned SDEs : The first pair of SDEs is given by an OU process, but started in the conditional
+distribution:
+dxc
+t =−1
+2xc
+tdt + dwt, xc
+0∼pc
+0 :=pdata(x0|y). (18)
+We denote the marginals ofxc
+t bypc
+t to differentiate them from the marginalspt of the OU process started
+in the correct distribution, defined in Equation (2). Note thatpc
+t =pt(xt|y). The time reversalzt = xT−t
+then satisfies the SDE
+dzt =1
+2ztdt +∇zt logpc
+T−t(zt)dt + dwt
+=1
+2ztdt +∇zt logpT−t(zt)dt +∇zt logpy|T−t(y|zt)dt + dwt
+z0∼pc
+T,
+(19)
+where we used Equation (3).
+Solutions to the above reverse SDE will sample our target measurepc
+0 =pdata(x0|y) at final time. Therefore,
+we want to study how our algorithm approximates solutions ofxc.
+Intermediate Gaussian SDE: Instead of bounding the distance of solutions to the above conditioned
+reverse SDE to our algorithm, we will instead introduce an intermediate process, which we will later use in
+a triangle inequality. The process will be a Gaussian process. Therefore, we denote it with a superscriptG.
+The process xG
+t will be defined analogous to Equation (2), but assuming that it is started inN (x0;µ0, Σ 0)
+instead ofpdata. Since the forward SDE in Equation (2) is linear, all of the marginals ofxG
+t , which we denote
+bypG
+t , will also be Gaussian.
+Again, we define a conditioned version of x, called xG,c analogous to Equation (18), i.e. xG,c
+0 will be
+distributed as xG
+0 conditioned on y = y, i.e. pG(x0|y = y). Since we have a linear observation model,
+pG(x0|y =y) is still a Gaussian, and thereforexG,c will also be a Gaussian process. Its reverse SDEzG,c is
+defined through Equation (19), just that every appearance ofp will also have a superscriptG,
+dzt = 1
+2ztdt +∇zt logpG
+T−t(zt)dt +∇zt logpG
+T−t(y|zt)dt + dwt z0∼pc
+T, (20)
+Algorithm SDE: Finally, we define a third reverse SDE, which is the SDE that we are discretizing when
+implementing our algorithm. It is given by
+dzt = 1
+2ztdt +∇zt logpT−t(zt)dt +fT−t(zt)dt + dwt z0∼pc
+T, (21)
+where
+ft(zt) =∇ztE[x0|xt =zt]H⊤(HV[x0|xt =zt]H⊤+σ2
+yI)−1(y−HE[x0|xt =zt]) (22)
+and V denotes the conditional covariance. Except for approximation errors due to time discretization and
+the initial conditions, this is the SDE we are sampling from in our algorithm. We denote the marginal ofzt
+byqt. Now we are ready to write our proof.
+Proof of Theorem 1.We have thatpdata(·|y) =pc
+0
+∥pc
+0−qT∥TV≤∥pc
+0−pG,c
+0 ∥TV +∥pG,c
+0 −qT∥TV
+We will bound the second term using Pinsker’s inequality to get a KL term on the path space, as done in
+Chen et al. (2023). The proof then consists of bounding the first total variation term and the resulting KL
+term.
+17
+
+=== PDF PAGE 18 ===
+Bounding the first term: The first term is the total variation distance betweenp0(x0|y = y) and
+pG
+0 (xG
+0|y =y). Now,
+p0(x0 =x0|y =y) = py|0(y =y|x0 =x0)p0(x0 =x0)
+py(y =y)
+=
+pG
+y|0(y =y|x0 =x0)pG
+0 (x0 =x0)
+pGy (y =y)
+p0(x0 =x0)
+pG
+0 (xG
+0 =xG
+0 )
+pG
+y (y =y)
+py(y =y)
+=pG
+y|0(x0 =x0|y =y) exp(Φ(x0))pG
+y (y =y)
+py(y =y),
+where we used that the conditional distribution ofy given x0 does not depend on the distribution ofx0. For
+the last term we get
+py(y =y) =
+∫
+py|0(y =y|x0 =x0)p0(x0 =x0)dx0
+=
+∫
+pG
+y|0(y =y|x0 =x0)pG
+0 (x0 =x0) exp(Φ(x0))dx0
+=NpG
+y (y =y),
+with N∈[1/M,M ]. Therefore,
+∥pc
+0−pG,c
+0 ∥TV≤
+∫
+|pc
+0
+pG,c
+0
+(x0)−1|pG,c
+0 (x0)dx0≤M2−1,
+where we used thatM−1 is always greater or equal to1−1
+M, sinceM≥1.
+Bounding the second term: For the second term we get thatpG,c
+0 is the final marginal of Equation (20),
+while qT is the final marginal of Equation (21). We now use Pinsker’s inequality,
+∥pG,c
+0 −qT∥TV≤
+√
+KL(pG,c
+0 ∥qT ).
+We denote the path measures induced by Equation (20) and Equation (21) byPG,c and Q respectively. They
+have final time marginalspG,c
+0 and qT. Therefore, we can bound the KL-Divergence of the marginalspG,c
+and qT by the KL-Divergence on the full path space:
+KL(pG,c
+0 ∥qT )≤KL(PG,c∥Q).
+We will assume that we can apply Girsanovs theorem and show later that this is justified. Using Girsanovs
+theorem, we can evaluate the Radon-Nikodym derivativedQ
+dPG,c on the path space and therefore calculate the
+KL-divergence:
+KL(PG,c∥Q) =EPG,c[log dPG,c
+dQ ]
+=EPG,c
+[
+−
+∫ t
+0
+∇logpt(xt) +fT−t(xt)−∇logpG,c
+T−t(xt)dwt
+]
++EPG,c
+[∫ t
+0
+∥∇logpt(xt) +fT−t(xt)−∇logpG,c
+T−t(xt)∥2dt
+]
+=
+∫ t
+0
+EpG,c
+t
+[∥∇logpt(xt) +fT−t(xt)−∇logpG,c
+T−t(xt)∥2]dt,
+18
+
+=== PDF PAGE 19 ===
+where the term on the second line drops out because stochastic integrals have expectation0. Now we have
+the drift of the Gaussian SDE given by
+∇logpG,c
+t (xt)
+=∇logpG
+t (xt) +∇logpG(y|xG
+t =xt)
+=∇logpG
+t (xt)
++∇xtE[xG
+0|xG
+t =xt]H⊤(HV[xG
+0|xG
+t =xt]H⊤+σ2
+yIdy)−1(y−HE[xG
+0|xG
+t =xt])
+=:∇logpG
+t (xt) + ˜ft(xt),
+(23)
+see Equation (48), while the drift of the algorithm SDE is given by
+∇logpt(xt) +ft(xt), (24)
+where ft is given by Equation (22). We see that the difference in the SDE drifts mainly consists of differ-
+ences between conditional moments ofpt and pG
+t , as well as the derivatives of the conditional expectations.
+Therefore, the main difficulty of the proof is to bound these.
+The density of the conditional distribution ofp0|t is given by
+p0|t(x0|xt) =p0,t(x0,xt)
+pt(xt) = pG
+0,t(x0,xt) exp(Φ(x0))
+p(xt) =
+pG
+0|t(x0|xt)pG(xt) exp(Φ(x0))
+p(xt)
+=pG
+0|t exp(Φ(x0)−Φ(xt)),
+(25)
+where
+exp(Φt(xt)) = pt(xt)
+pG
+t (xt) = E[exp(Φ( x0))|xt =xt]. (26)
+In the last equality, we used that
+dP
+dPG (x[0,t]) = exp(Φ(x0)),
+where we denoted byP the path measure induced by Equation (18). Therefore, also their marginalspt = PG
+t
+and pt = Pt have relative densities, which are given by integrating out the density to timet, as we did in
+Equation (26).
+By assumptionexp(Φ) is bounded from above and below byM and 1/M respectively, and by Equation (26)
+the same holds forexp(Φt). Therefore, by Equation (25),pt|0 is absolutely continuous with respect topG
+t|0
+with a density that is bounded from above and below byM2 and 1/M2 respectively. We now obtain
+|E[x0|xt =xt]−E[xG
+0|xG
+t =xt]|
+=
+⏐⏐⏐⏐
+∫
+x0[p(x0|xt)−pG(x0|xt)]dx0
+⏐⏐⏐⏐ =
+⏐⏐⏐⏐
+∫
+x0pG(x0|xt)(exp(Φ(x0)−Φ(xt))−1)dx0
+⏐⏐⏐⏐
+≤(M2−1)E[|xG
+0||xG
+t =xt]
+The same holds for every entry of the covariance matrix. We denote
+Vij := V[x0|xt]ij,
+VG
+ij := V[xG
+0|xG
+t ]ij =Nij,
+|Vij−VG
+ij|≤(M2−1)Nij
+Nij := E[|xG
+0,ixG
+0,j||xG
+t ]
+Now we get that
+∥V−VG∥F =
+
+∑
+ij
+(Vij−VG
+ij )2
+
+
+1/2
+≤(M2−1)∥VG∥F max
+ij
+(Nij).
+19
+
+=== PDF PAGE 20 ===
+We can boundNij by
+Nij≤E[(xG
+0,i)2 + (xG
+0,j)2|xG
+t ]≤Tr(V[xG
+0|xG
+t =xt]). (27)
+The latter term does not actually depend onxt, but only ont. Using the formulas in Equation (44) we see
+that it can be bounded independently oft (only depending onm0 and Σ 0). Therefore, we can put it into a
+constant. We get that
+∥V−VG∥F ≲ (M2−1)∥VG∥F,
+where
+a ≲b ⇔a≤Cb,
+with a constantC only depending onm0, Σ 0, H, σy and the observationy. Now let v be a vector with
+∥v∥= 1. It holds that
+v⊤Vijv =
+∫
+(v⊤(x0−E[x0|xt =xt]))2pG
+0|t(x0|xt) exp(Φ(x0)−Φt(xt))dx0
+= 1
+Mv⊤VG
+ijv +N
+∫
+(v⊤(E[xG
+0|xG
+t =xt]−E[x0|xt =xt]))2p0|t(x0|xt)dx0
+≥v⊤VG
+ijv 1
+M
+(28)
+with N≥1/M. Since V and VG are positive semidefinite, symmetric matrices, this implies that all eigen-
+values ofV are bounded by the lowest eigenvalue ofVG times 1/M. We define
+T1 = HVGH⊤+σ2
+yIdy (29)
+T2 = HVH⊤+σ2
+yIdy. (30)
+We then need to bound
+∥T−1
+1 −T−1
+2 ∥≤∥T1−T2∥(∥T−1
+1 ∥+∥T−1
+2 ∥).
+We start with
+∥T1−T2∥op≤∥H∥2∥V−VG∥op ≲∥V−VG∥F ≲ (M2−1)∥VG∥F.
+We also used the equivalence of the Frobenius and operator norm here. Due to our eigenvalue bound
+(Equation (28)) onV, we also get an analogous bound onV +σyIdy. Therefore,
+∥T−1
+1 −T−1
+2 ∥op ≲ (M2−1)∥VG∥F∥VG∥−1
+F (1 +M)≤(M2−1)(M + 1)≤M3−1
+where we used that the operator norm of the inverse, is the inverse of the operator norm and the equivalence
+of the operator norm to the Frobenius norm.
+Finally, we need to bound
+∇xt
+∫
+x0p(x0|xt)dx0
+=
+∫
+x0∇xtpG(x0|xt) exp(Φ(x0)−Φ(xt))dx0
+=
+∫
+x0 exp(Φ(x0)−Φ(xt))∇xtpG(x0|xt)dx0 +
+∫
+x0∇xtΦ(xt) exp(Φ(x0)−Φ(xt))pG(x0|xt)dx0
+=
+∫
+x0 exp(Φ(x0)−Φ(xt))∇xtpG(x0|xt)dx0 +∇xtΦ(xt)E[x0|xt =xt].
+(31)
+20
+
+=== PDF PAGE 21 ===
+Also 
+∫
+x0 exp(Φ(x0)−Φ(xt))∇xtpG(x0|xt)dx0−∇xtE[xG
+0|xG
+t =xt]
+
+=
+
+∫
+∇xtpG(x0|xt)x⊤
+0 (exp(Φ(x0)−Φ(xt))−1)dx0
+
+≤(M2−1)
+∫
+pG(x0|xt)∥∇logpG(x0|xt)x⊤
+0∥dx0
+≤(M2−1)(
+∫
+pG(x0|xt)∥∇logpG(x0|xt)x⊤
+0∥dx0)1/2
+≤(M2−1)(
+∫
+pG(x0|xt)x⊤
+0 Σ−1
+0|t(x0−mxt
+0|t)dx0)1/2
+≲(M2−1)(
+∫
+pG(x0|xt)(x0−mxt
+0|t)⊤Σ−1
+0|t(x0−mxt
+0|t)dx0)1/2 ≲∥xt∥(M2−1)
+√
+dx
+≲∥xt∥(M2−1),
+(32)
+here we used that we can upper bound the operator norm of a positive semidefinite matrix by its trace from
+the third to the fourth line. We denoted bymxt
+0|t and Σ 0|t the mean and covariance ofpG(xG
+0|xG
+t = xt).
+From the second to last to the last line we used that themxt
+0|t depends onxt linearly, and the magnitude of
+the linear dependence can be bounded uniformly int (see Equation (44)). The integral in the last line is the
+variance of a standard normal random variable, which evaluates todx. Furthermore,
+∇Φt(xt) = E[∇Φ 0(x0)|xt =xt]≤L,
+see for example the Proof of Theorem 1 in Pidstrigach et al. (2023). Therefore,
+∥∇xtE[xG
+0|xG
+t =xt]−∇xtE[x0|xt =xt]∥
+≲∥xt∥(M2−1) +L∥E[x0|xt =xt]∥
+≤∥xt∥(M2−1) +L(∥E[x0|xt =xt]−E[xG
+0|xG
+t =xt]∥+∥E[xG
+0|xG
+t =xt]∥)
+≲∥xt∥(M2−1) +L(M2−1 +∥xt∥) =∥xt∥(M2−1 +L) + (M2−1)L =:Bxt
+Furthermore, from Equation (31) we see that
+∥∇xtE[x0|xt =xt]∥≤∥xt∥(M2−1) +L(M2−1 +∥xt∥) =Bxt
+too. We now subtract the full drifts in Equation (23) and Equation (24) and arrive at
+∥∇˜f(xt)−ft(xt)∥
+≤Bxt×∥T−1
+1 (y−HE[xG
+0|xG
+t =xt])∥
++Bxt∥T−1
+1 −T−1
+2 ∥op∥y−HE[xG
+0|xG
+t =xt]∥
++Bxt∥T−1
+2 ∥op∥HE[xG
+0|xG
+t =zt]−HE[x0|xt =zt]∥
+≲Bxt +Bxt(M3−1) +BxtM(M2−1)
+≤Bxt(M3−1) = (M5−1)(∥xt∥+L) + (M3−1)L∥xt∥.
+Furthermore, we get that
+∥∇logpG
+t (xt)−∇logpt(xt)∥≤∥∇logpG
+t (xt)
+pt(xt)∥≤∥∇xtΦt(xt)∥≤L.
+Plugging in Equation (23), we get that
+∥∇logpt(xt) +ft(xt)−pG,c
+t (xt)∥≤(M5−1)(∥xt∥+L) + (M3−1)L∥xt∥+L.
+Using this expression, we see that the drift change is linear in∥xt∥. We now want to apply an iterated
+version of Novikov’s condition to show that our application of Girsanov’s Theorem is justified. To that end,
+21
+
+=== PDF PAGE 22 ===
+we follow the argument Karatzas & Shreve (2012, Corollary 3.5.16). We repeat it here for completeness. We
+see that
+EPG,c
+[
+exp
+(1
+2
+∫ ti+1
+ti
+∥∇logpt(xt) +ft(xt)−∇logpG,c
+t (xt)∥2dt
+)]
+≤EPG,c
+[
+exp
+(
+c
+∫ ti+1
+ti
+1 +∥xt∥2dt
+)]
+.
+Since the expectation is regarding a Gaussian random variablext, we can make it finite as long as we pick
+∆ i =ti+1−ti small enough. By settingt0 = 0 andt1 > 0, we can show equivalence on[t0,t 1]. We can then
+iterate this procedure, to get equivalence on[t1,t 2] and so on. Since the lowest and highest eigenvalues of
+Σt are bounded from below and above respectively, andmt is also bounded, the∆ i can be bounded from
+below. Therefore, we get equivalence on[0,T ] this way in at most⌈T/∆⌉steps.
+Furthermore, we see that the likelihood KL-divergence can be bounded by
+EPG,c
+[1
+2
+∫ t
+0
+∥∇logpt(xt) +ft(xt)−∇logpG,c
+t (xt)∥2dt
+]
+≲T ((M5−1)(L + 1) + (M3−1)L +L)≤T ((M5−1)(L + 1) +L),
+where we used that the mean and covariance of the Gaussian processxt (under PG,c) can be bounded by a
+constant only depending ony, Σt and mt. Taking the square root proves our theorem.
+C Variance Exploding SDE (time-rescaled Brownian motion)
+A second example of an SDE used frequently in denoising-diffusion is the Variance Exploding (Song et al.,
+2020) or time-rescaled Brownian motion, is
+dxt =
+√
+dv(t)
+dt dwt, x0∼p0 =pdata (33)
+where (wt)t∈[0,T] is a Brownian motion andv : R≥0→R≥0 is an increasing function wherev(0) = 0. The
+transition kernel of the time-rescaled Brownian motion is
+pt|0(xt|x0) =N (x0,vtIdx), (34)
+denotingv(t) =vt. The signalx0 is sampled from a second SDE, the reverse process, given in forward time
+as
+dxt =−∇xt logpt(xt)dt−
+√
+dvt
+dt d ¯wt, xT∼pT. (35)
+D Tweedie’s formula
+In this section, we give an alternative derivation of the Tweedie’s formula for VP-SDEs and VE-SDEs.
+Tweedie’s formula (Robbins, 1992; Efron, 2011) gives the minimum mean squared error (MMSE) estimator
+of x0|xt when xt|x0 is Gaussian and the score∇xt logpt(xt) is available. Tweedie’s formula applied to the
+time-rescaled SDEs is given below.
+D.1 Variance Preserving SDE (time-rescaled Ornstein-Uhlenbeck process)
+Using the Variance Preserving SDE or time-rescaled Ornstein-Uhlenbeck process in Equation (2), given the
+random variable √αt
+vt
+x0 := v0∼pv0,
+22
+
+=== PDF PAGE 23 ===
+where, we now definepv0(v0) as the probability density of the random variablev0 evaluated at the realization
+v0, then the random variable xt
+√vt
+:= vt∼N(v0, Idx),
+has a marginal probability density evaluated at the realizationvt is the convolution of the random variable
+v0 with the Gaussian kernel
+pvt(vt) =
+∫
+ϕ(vt−v0)pv0(v0)dv0.
+Then, Tweedie’s formula (Robbins, 1992; Efron, 2011) gives
+Ev0∼pv0|vt
+[v0] = vt +∇vt logpvt(vt)
+From continuous change of random variables,pvt(vt) =pxt(vt
+√vt)
+⏐⏐⏐ dxt
+dvt
+⏐⏐⏐ =pxt(xt)√vt, giving logpvt(vt) =
+logpxt(xt) + log√vt, which yields
+∇vt logpvt(vt) =√vt∇xt logpxt(xt).
+Now, substituting into Tweedie’s formula,
+Ev0∼pv0|vt
+[v0] = xt
+√vt
++√vt∇xt logpxt(xt),
+giving
+Ex0∼px0|xt
+[x0] = 1√αt
+xt + 1√αt
+vt∇xt logpxt(xt).
+The covariance is given as (Robbins, 1992; Efron, 2011),Vv0∼pv0|vt
+[v0|vt] =I +∇vt∇vt logpvt(vt), where
+∇vt∇vt logpvt(vt) =∇vt(√vt∇xt logpxt(xt)) (36)
+=vt∇2
+xt logpxt(xt) (37)
+(38)
+and so
+Vv0∼pv0|vt
+[v0] = Idx +vt∇2
+xt logpxt(xt)
+giving
+Vx0∼px0|xt
+[x0] = vt
+αt
+(Idx +vt∇xt logpxt(xt)).
+In practice, we make the approximation∇xt logpxt(xt)≈sθ(xt,t ), giving
+Ex0∼px0|xt
+[x0]≈m0|t := 1√αt
+xt + 1√αt
+vtsθ(xt,t )
+and
+Vx0∼px0|xt
+[x0]≈vt
+αt
+(Idx +vt∇xtsθ(xt,t )),
+which yields a Gaussian approximation that matches the first and second moments,
+px0|xt(x0|xt)≈N
+(
+m0|t, vt
+αt
+(Idx +vt∇xtsθ(xt,t ))
+)
+(39)
+=N
+(
+m0|t, vt
+√αt
+∇xtm0|t
+)
+. (40)
+The matrix vt
+αt
+(Idx +vt∇xtsθ(xt,t )) needs to be inverted to calculate the log likelihood, and therefore must
+be both symmetric and positive definite for all time, which puts the requirement thatsθ(xt,t ) can be written
+as the negative gradient of a potential, however it is only approximated as suchsθ(xt,t )≈∇logpxt(xt).
+23
+
+=== PDF PAGE 24 ===
+D.2 Variance Exploding SDE (time-rescaled Brownian motion)
+Using the Variance Exploding SDE (Song et al., 2020) or time-rescaled Brownian motion, given the random
+variable √
+1
+vt
+x0 := v0∼pz0, (41)
+a similar calculation as in D.1 gives
+Ex0∼px0|xt
+[x0] = xt +vt∇xt logpxt(xt),
+and
+Vx0∼px0|xt
+[x0] =vt(Idx +vt∇xt logpxt(xt)).
+Again, in practice, we make the approximation∇xt logpxt(xt) = sθ(xt,t ), giving
+Ex0∼px0|xt
+[x0]≈m0|t := xt +vtsθ(xt,t )
+and
+Vx0∼px0|xt
+[x0]≈vt(Idx +vt∇xtsθ(xt,t )),
+which yields a Gaussian approximation that matches the first and second moments,
+px0|xt(x0|xt)≈N
+(
+m0|t,vt(Idx +vt∇xtsθ(xt,t ))
+)
+(42)
+=N
+(
+m0|t,vt∇xtm0|t
+)
+. (43)
+E Algorithmic details and numerics
+The code for all of the experiments and instructions to run them are available at github.com/bb515/tmpdjax
+and github.com/bb515/tmpdtorch.
+Algorithm 1TMPD-D (Ancestral sampling, VP)
+input y, σy
+xN∼N(0, Idx)
+for n =N−1,..., 0 do
+m0|t←1√αn
+(xn +vnsθ(xn,tn))
+my
+0|t←m0|t + vn√αn
+∇xnm0|tH⊤(H vn√αn
+∇xnm0|tH⊤+σ2
+yIdy)−1(y−Hm0|t)
+zn∼N(0, Idx)
+σn←
+√
+(1−αn−1)βn/(1−αn)
+xn−1←
+√
+1−βn(1−αn−1)
+1−αn
+xn +
+√αn−1βn
+1−αn
+my
+0|t +σnzn
+end for
+output x0
+E.1 Computational Complexity
+Let N is the number of noise scales, and letdy is the dimensions of the observation,dx are the dimension
+of the image andTs is the time complexity of evaluating the score network. Computing a vector-Jacobian
+product has time complexityTs. Then, the time complexity of TMPD (not including fast matrix-vector
+products) isO(N(d3
+y +Tsdy +Ts +Ts)). ΠGDM comes at a smaller computational cost due to needing only
+O(1) vector-jacobian-products, instead ofO(dy), resulting in a time complexity ofO(N(Ts +Ts)). DPS
+comes at the same complexity asΠGDM.
+Whereas TMPD requires calculating the Jacobian which has memory complexity of atleastO(dxdy). This is
+too large for high resolution image problems where the dimension of the observation is large. In comparison,
+24
+
+=== PDF PAGE 25 ===
+the memory complexity ofΠGDM depends on the observation operator, but for the class of problems that
+are explored in Song et al. (2023) isO(dx). DPS comes at the same memory complexity asΠGDM.
+As mentioned in the text, we make the following approximation
+DTMPD ∇xt logpy|t(y|xt)≈∇xtm0|tH⊤(H vt
+√αt
+diag(∇xtm0|t)H⊤+σ2
+yIdy)−1(y−Hm0|t).
+Whilst this approximation does not require a linear solve, taking out theO(Nd3
+y) time complexity term,
+we would still like to take out theO(NTsdy) time complexity andO(dxdy) memory complexity term from
+calculating and storing the Jacobian, respectively, since this is too large for solving high resolution image
+applications. A further approximation approximates the diagonal of the Jacobian by the row sum of the
+Jacobian which only requires one vector-jacobian product and brings the memory and time complexity of
+DTMPD down to that ofΠGDM and DPS. We use this approximation in the image experiments and find
+that in practice it is only (1.5±0.1)×slower than ΠGDM and DPS across all of our experiments. The
+row sum will be a good approximation of the diagonal when the Jacobian is approximately diagonal, which
+happens when there is small linear correlation between observation pixels, which we found to work well for
+super-resolution and inpainting. In inpainting, we have further improved the accuracy of the rowsum by
+instead of calculating the vector-Jacobian product evaluated atH1, masking out values of the vector in
+the vector-Jacobian product using the inpainting observation operator since they won’t contribute to the
+diagonal values of the of the variance.
+However, heuristics can be circumvented by noting in the definition of Equation (11) does not require the
+inverse but rather solving a system of linear equations with right hand sidey−Hm0|t(xt). A very recent
+work (Rozet et al., 2024), uses the natural choice of the conjugate gradient (CG) method to solve this linear
+system noting thatHC0|tH⊤+ σ2
+yI is symmetric positive definite (SPD) and is therefore compatible with
+the conjugate gradient (CG) method. The CG method is an iterative algorithm to solve linear systems of
+the formMv =b where SPD matrixM and vectorb are known. Importantly, the CG method only requires
+implicit access toM through an operator that performs the matrix-vector productMv given a vectorv. In
+our case, the linear system to solve isy−Hm0|t = (HC0|tH⊤+σ2
+yI)v = H
+√α
+vt
+∇xtm0|tH⊤v +σ2
+yIv. The
+vector-jacobian productv⊤H∇⊤
+xtm0|t can be cheaply evaluated. In practice, there is no restriction on the
+score network to be the gradient of a potential, and the gradient of the score need not be SPD. Due to this
+and numerical errors, Rozet et al. (2024) observed that CG method becomes unstable after a large number of
+iterations and fails to reach an exact solution. Fortunately, the authors find that using very few iterations (1
+to 3) of the CG method as part of the computation of the posterior score approximation leads to significant
+improvements over using heuristics for the covariance. Rozet et al. (2024) have successfully applied the CG
+method to non-sparseH, such as accelerated MRI (whereH is the composition of the Fourier transform and
+frequency subsampling).
+E.2 Gaussian
+When the data distributionp0(x0) is a (multivariate) Gaussian, then the reverse SDE is a linear SDE and we
+can calculate all of the terms needed to sample from the target posterior using diffusion explicitly. Moreover,
+we can sample from the target posterior using a direct or implicit method such as Cholesky decomposition.
+In this simple example, we compare samples from the direct method to various conditional diffusion methods
+(TMPD, ΠGDM, DPM), by plotting a sample estimate of theL2 Wasserstein distance between the sample
+and the target Gaussian measures (Givens & Shortt, 1984) by using the analytical mean and covariance of
+the target distribution and empirical estimate of the mean and covariance of the sample distribution. To
+generate p0(x0), we use an equally spaced grid of vectorsui∈[−5.0, 5.0]2 for i∈1, 2,...,322, pick a Matern
+5/2 kernel for the covariance functionk(ui, uj) =
+(
+1 +
+√
+5|ui−uj|+ 5
+3|ui−uj|2)
+exp
+(
+−
+√
+3|ui−uj|
+)
+which
+defines the priorp0(x0) =N (m0, C0) covariance C0∈R1024×1024 where C0ij =k(ui, uj) and we define the
+mean as a zero vectorm0 = 0∈R1024. To compute analytically the distribution ofp0|y(x0|y), we sample
+y = Hx0 + z, z∼N(0,σ2
+yIdy) and use the standard Gaussian formula to calculate the mean and covariance
+of x0|y which in this case are a complete description ofp0|y(x0|y). The L2 Wasserstein estimate is plotted
+over an increasing sample sizeN∈[9, 1500] and forσy = 0.1 in Figure 1.
+25
+
+=== PDF PAGE 26 ===
+We provide an illustration of the mean and uncertainty captured by the diffusion samples using1500 samples
+of each diffusion model to produce a Monte-Carlo estimate of the mean and diagonal variance vector, and
+compare these to the exact mean and diagonal variance.
+Below, we provide a calculation comparing the exact diffusion posterior for the linear diffusion posterior
+sde to the approximations used inΠGDM (Song et al., 2023) and TMPD. Let us assume that the target
+distribution be knownp0(x0) =N (m0, C0). Then, via Bayes’ rule,
+logp0|t(x0|xt) = logpt|0(xt|x0) + logp0(x0) +constant
+=−1
+2(xt−√αtx0)⊤(vtIdx)−1(xt−√αtx0)
+−1
+2(x0−m0)⊤C−1
+0 (x0−m0) +constant
+=−1
+2(√αtx0)⊤(vtIdx)−1(√αtx0) + x⊤
+t (vtIdx)−1(√αtx0)
+−1
+2x⊤
+0 C−1
+0 x0 + m⊤
+0 C−1
+0 x0 +constant
+=−1
+2(x0−mt)⊤Σ−1
+t (x0−mt),
+so
+p0|t(x0|xt) =N (mt, Σt) (44)
+where
+Σt =
+(
+(vt
+αt
+Idx)−1 + C−1
+0
+)−1
+(45)
+and
+mt = Σt
+(√αt
+vt
+xt + C−1
+0 m0
+)
+.
+We also have that,
+pt(xt) =N (√αtm0, Ct)
+where Ct =αtC0 +vtIdx, and thus
+logpt(xt) =−1
+2(xt−m0
+√αt)⊤C−1
+t (xt−m0
+√αt).
+From
+py|t(y|xt) =
+∫
+py|0(y|x0)p0|t(x0|xt)dx0 =N (Hmt, HΣtH⊤+σ2
+yIdy),
+we have that
+logpt(y|xt) =−1
+2(y−Hmt)⊤(HΣtH⊤+σ2
+yIdy)−1(y−Hmt).
+The posterior score can be calculated (see Cardoso et al. (2023)) from applying Bayes’ theorem,
+logpt|y(xt|y) = logpt(xt) + logpy|t(y|xt) +Constant,
+and taking gradients with respect to the statext gives
+∇xt logpt|y(xt|y) =∇xt logpt(xt) +∇xt logpy|t(y|xt) (46)
+=−(αtC0 +vtIdx)−1(xt−m0
+√αt) (47)
++
+√αt
+vt
+Σ⊤
+t H⊤(HΣtH⊤+σ2
+yIdy)−1(y−HΣt(
+√αt
+vt
+xt + C−1
+0 m0)). (48)
+Setting m0 = 0 in (48) gives,
+∇xt logpt|y(xt|y) =−(αtC0 +vtIdx)−1xt (49)
++
+√αt
+vt
+Σ⊤
+t H⊤(HΣtH⊤+σ2
+yIdy)−1(y−
+√αt
+vt
+HΣtxt) (50)
+26
+
+=== PDF PAGE 27 ===
+E.2.1 Comparison of the exact posterior to the approximation made in Pseudo-Inverse-Guidance
+We aim to compare (50), to the approximation used inΠGDM (Song et al., 2023);
+p0|t(x0|xt)≈N(m0|t,r 2
+t Idx),
+where m0|t = xt +vt∇xt logpt(xt), which is the minimum mean squared error (MMSE) estimate ofx0|xt
+and rt is chosen empirically. This givespy|t(y|xt)≈N(Hm0|t,r 2
+t HH⊤+σ2
+yIdy), which in turn gives
+∇xt logpt|y(xt|y)≈∇xt logpt(xt) (51)
++∇xtm0|tH⊤(r2
+t HH⊤+σ2
+yIdy)−1(y−Hm0|t) (52)
+which is computationally tractable in the standard diffusion model setting where the score is nonlinear and
+approximated as∇xt logpt(xt)≈sθ(xt,t ). Substituting in the known score and again settingm0 = 0 score
+to compare to the linear case (50) gives,
+∇xt logpt|y(xt|y)≈∇xt logpt(xt) (53)
++∇xtm0|tH⊤(r2
+t HH⊤+σ2
+yIdy)−1(y−Hm0|t) (54)
+=−(αtC0 +vtIdx)−1xt (55)
++ 1√αt
+(Idx−vt(αtC0 +vtIdx)−1)H⊤(r2
+t HH⊤+σ2
+yIdy)−1 (56)
+(y−1√αt
+H(Idx−vt(αtC0 +vtIdx)−1)xt) (57)
+comparing terms, ΠGDM is making the approximation
+∇xtm0|t = 1√αt
+Idx−vt
+√αt
+(αtC0 +vtIdx)−1≈
+√αt
+vt
+Σt.
+Note that since,
+√αt
+vt
+Σt =
+√αt
+vt
+(C−1
+0 + (vt
+αt
+Idx)−1)−1 (58)
+= 1
+vt
+√αt
+((αtC0)−1 + (vtIdx)−1)−1 (59)
+= 1
+vt
+√αt
+(vtI−v2
+t (αtC0 +vtIdx)−1) Woodbury identity (60)
+= 1√αt
+(I−vt(αtC0 +vtIdx)−1) (61)
+=∇xtm0|t, (62)
+this is exact. The other approximationΠGDM is making isr2
+t I≈Σt, and note that this approximation is
+accurate withr2
+t = vt as t→0 but inaccurate ast→1. But the exact linear SDE can be recovered by
+instead using TMPD,
+∇xt logpt|y(xt|y) =∇xt logpt(xt) (63)
++∇xtm0|tH⊤(H vt
+√αt
+∇xtm0|tH⊤+σ2
+yIdy)−1(y−Hm0|t) (64)
+=∇xt logpt(xt) (65)
++
+√αt
+vt
+ΣtH⊤(HΣtH⊤+σ2
+yIdy)−1(y−
+√αt
+vt
+HΣtxt) (66)
+27
+
+=== PDF PAGE 28 ===
+Table 3: Sliced Wasserstein for the GMM example using the reverse VP-SDEs discretized with Euler-
+Maruyama.
+σy = 0.01 σy = 0.1 σy = 1.0
+dx dy TMPD DTMPD Π GDM DPS TMPD DTMPD Π GDM DPS TMPD DTMPD Π GDM DPS
+8 1 1.5±0.5 1.5 ±0.5 1.5 ±0.4 5.7 ±2.2 1.4 ±0.5 1.4 ±0.5 1.2 ±0.4 5.6 ±2.1 0.9 ±0.3 0.9 ±0.3 0.9 ±0.3 0.9 ±0.3
+8 2 0.7±0.3 3.2 ±1.4 0.4 ±0.3 6.2 ±0.8 0.9 ±0.3 2.7 ±1.1 0.5 ±0.3 6.2 ±2.4 0.9 ±0.2 1.8 ±0.8 1.0 ±0.3 1.2 ±0.4
+8 4 0.3±0.3 0.6 ±0.4 0.1 ±0.1 - 0.3 ±0.2 0.7 ±0.4 0.1 ±0.0 8.4 ±3.1 0.6 ±0.2 0.9 ±0.5 0.2 ±0.1 0.3 ±0.2
+80 1 2.7±0.7 2.7 ±0.7 2.9 ±1.4 9.1 ±1.3 2.3 ±0.7 2.3 ±0.7 2.1 ±1.1 4.7 ±1.8 1.5 ±0.7 1.5 ±0.7 1.8 ±0.8 1.9 ±0.9
+80 2 1.0±0.5 3.3 ±1.0 0.8 ±0.7 2.2 ±0.9 1.2 ±0.5 3.3 ±1.0 0.8 ±0.7 6.0 ±2.1 1.1 ±0.2 2.2 ±1.0 1.3 ±0.5 1.5 ±0.5
+80 4 0.3±0.1 0.9 ±0.5 0.1 ±0.0 - 0.4 ±0.2 1.0 ±0.5 0.1 ±0.1 4.4 ±1.6 0.9 ±0.2 1.0 ±0.4 0.4 ±0.2 0.5 ±0.3
+800 1 3.1±0.7 3.1 ±0.7 3.2 ±1.0 6.8 ±1.2 2.9 ±0.6 2.9 ±0.6 2.8 ±0.7 6.4 ±1.5 1.5 ±0.4 1.5 ±0.4 1.3 ±0.3 1.3 ±0.3
+800 2 1.3±0.4 3.6 ±1.2 0.8 ±0.5 7.4 ±0.9 1.3 ±0.3 3.2 ±1.1 0.8 ±0.4 6.4 ±1.9 1.2 ±0.3 1.9 ±0.5 1.1 ±0.3 1.1 ±0.3
+800 4 0.3±0.2 0.9 ±0.6 0.6 ±0.5 - 0.4 ±0.2 0.9 ±0.6 0.1 ±0.0 5.8 ±1.4 0.9 ±0.2 1.1 ±0.5 0.4 ±0.2 0.4 ±0.2
+E.3 GMM
+For a given dimensiondx, we considerp0 a mixture of 25 Gaussian random variables. The components have
+mean µi,j := (8i, 8j,...,8i, 8j)∈Rdxfor(i,j )∈−2,−1, 0, 1, 22 and unit variance. We have set the associated
+unnormalized weightsωi,j = 1.0. We have setσ2
+δ= 10−4.
+Note thatpt(xt) =
+∫
+pt|0(xt|x0)p0(x0)dx0. As p0(x0) is a mixture of Gaussians,pt(xt) is also a mixture of
+Gaussians with means√αtµi,j and unitary variances. Therefore, using automatic differentiation libraries,
+we can calculate∇xt logpt(xt). We chose βmax = 500.0 and βmin = 0.1. We use 1000 timesteps for the
+time-discretization. For the pair of dimensions and chosen observation noise standard deviation(dx,d y,σy)
+the measurement model(y, H) is drawn as follows:
+• H: We first draw ˜H∼N(0dy×dx, Idy×dx) and compute the SVD decomposition of ˜H = USV⊤.
+Then, we sample for (i,j )∈−2,−1, 0, 1, 22, si,j according to a uniform in[0, 1]. Finally, we set
+H = Udiag(si,j(i,j)∈−2,−1,0,1,22)V⊤.
+• y: We then drawx∗∼p0 and set y := Hx∗+ z where z∼N(0,σ2
+yIdy).
+Once we have drawn bothx∗∼p0 and (y, H,σy), the posterior can be exactly calculated using Bayes formula
+and gives a mixture of Gaussians with mixture componentsci,j and associated weights˜ωi,j,
+ci,j :=N (Σ (H⊤y/σ2
+y +µi,j), Σ ), (67)
+˜ωi :=ωiN (y; Hµi,j,σ2
+δIdx + HH⊤), (68)
+where Σ = (Idx + 1
+σ2
+δ
+H⊤H)−1.
+Euler-Maruyamasolver Tocomparetheposteriordistributionestimatedbyeachalgorithmwiththetarget
+posterior distribution, we use104 slices for the SW distance and compare 1000 samples of the continuous
+SDEs defined by the TMPD, DTMPD, Song et al. (2023) and Chung et al. (2022a) approximations obtained
+using 1000 Euler-Maruyama time-steps with 1000 samples of the true posterior distribution. Table 3 indicates
+the Central Limit Theorem (CLT) 95% confidence intervals obtained by considering 20 randomly selected
+measurement models (H) for each setting (dx,d x,σy).
+DDPM Table 4 compares 1000 samples of TMPD-D,ΠGDM-D and DPS-D which are obtained using 1000
+denoising steps and is the extended version of Table 1. We follow Cardoso et al. (2023) and compute the sliced
+Wasserstein distance using Wasserstein-1 distance. Figure 2 shows the first two dimensions of the estimated
+posterior distributions corresponding to the configurations (80, 1) and (800, 1) from Table 4 for one of the
+randomly generated measurement model (H). These illustrations give us insight into the behaviour of the
+algorithms and their accuracy in estimating the posterior distribution. We observe that TMPD-D (and the
+Euler-Maruyama method TMPD) is the only method that covers the modes of the posterior distribution.
+Finally, a direct comparison to Cardoso et al. (2023) using their original experimental setup is shown in
+Table 5, which shows competitive performance for posterior sampling compared to Sequential Monte-Carlo,
+an exact sampling method.
+28
+
+=== PDF PAGE 29 ===
+Table 4: Sliced Wasserstein for the GMM example using VP DDPM.
+σy = 0.01 σy = 0.1 σy = 1.0
+dx dy TMPD-D DTMPD-D Π GDM-D DPS-D TMPD-D DTMPD-D Π GDM-D DPS-D TMPD-D DTMPD-D Π GDM-D DPS-D
+8 1 1.6±0.5 1.8 ±0.6 2.6 ±0.9 4.7 ±1.5 1.4 ±0.5 1.8 ±0.7 2.2 ±0.9 4.7 ±1.6 0.9 ±0.3 0.9 ±0.2 1.5 ±0.4 5.2 ±1.3
+8 2 0.7±0.3 3.3 ±1.5 2.1 ±1.0 1.8 ±1.5 0.9 ±0.3 2.7 ±1.1 1.6 ±0.6 1.5 ±0.9 0.9 ±0.2 1.7 ±0.8 2.3 ±0.4 3.5 ±1.2
+8 4 0.3±0.3 0.4 ±0.2 3.8 ±2.3 0.7 ±0.6 0.3 ±0.2 0.5 ±0.2 3.8 ±2.2 0.8 ±0.6 0.6 ±0.2 0.9 ±0.5 1.8 ±0.3 2.5 ±0.9
+80 1 2.7±0.7 2.8 ±0.9 3.2 ±1.0 5.6 ±1.8 2.3 ±0.7 2.6 ±0.9 2.9 ±0.8 5.1 ±1.8 1.5 ±0.7 1.4 ±0.6 1.6 ±0.5 6.9 ±1.8
+80 2 1.0±0.5 3.2 ±1.1 2.8 ±1.3 3.2 ±1.9 1.2 ±0.5 3.2 ±1.1 2.7 ±1.2 3.1 ±1.9 1.1 ±0.2 2.1 ±1.0 1.4 ±0.2 3.9 ±1.2
+80 4 0.3±0.1 0.7 ±0.4 0.6 ±0.4 1.2 ±1.1 0.4 ±0.2 0.8 ±0.4 0.6 ±0.4 1.0 ±1.1 0.9 ±0.3 0.9 ±0.4 0.9 ±0.2 1.7 ±0.6
+800 1 3.1±0.7 3.7 ±0.7 3.5 ±1.1 5.8 ±1.6 2.9 ±0.6 3.4 ±0.7 3.3 ±0.9 5.7 ±1.6 1.5 ±0.4 1.4 ±0.4 2.0 ±0.4 6.8 ±1.0
+800 2 1.4±0.4 3.5 ±0.7 3.1 ±1.1 3.5 ±1.7 1.3 ±0.3 3.4 ±0.7 2.7 ±0.9 3.1 ±1.4 1.2 ±0.3 2.0 ±0.4 2.0 ±0.5 4.7 ±1.3
+800 4 0.4±0.2 0.7 ±0.5 0.4 ±0.2 1.4 ±1.0 0.4 ±0.2 0.8 ±0.5 0.4 ±0.2 1.3 ±0.9 0.9 ±0.2 1.1 ±0.5 0.6 ±0.2 0.9 ±0.4
+Table 5: Comparison to Cardoso et al. (2023) using their original experimental setup. TMPD-D and
+DTMPD-D use 1000 steps of DDPM.
+dx dy MCGdiff TMPD-D DTMPD-D
+8 1 1.43±0.55 1.83 ±0.5 1.82 ±0.5
+8 2 0.49±0.24 0.95 ±0.3 2.27 ±0.9
+8 4 0.38±0.25 0.61 ±0.3 0.72 ±0.4
+80 1 1.39±0.45 2.81 ±0.8 2.81 ±0.8
+80 2 0.67±0.24 1.14 ±0.4 2.82 ±0.9
+80 4 0.28±0.14 0.95 ±0.5 0.95 ±0.5
+800 1 2.40±1.00 2.96 ±0.6 2.96 ±0.6
+800 2 1.31±0.60 1.60 ±0.5 3.07 ±1.1
+800 4 0.47±0.19 0.60 ±0.2 0.84 ±0.5
+E.4 Inpainting and super-resolution
+SincetheDPS-D method wasderived andtunedspecifically forVP-SDE,welookatthe VP-SDEexperiments
+in Section E.4.1 separately from the VE-SDE experiments in Section E.4.2. In each comparison, we use the
+same score network for each method and the same sampling or discretization numerical method. All methods
+are discretized using 1000 denoising steps. For the Markov chain methods we use DDPM and for the SDE
+methods we use an Euler-Maruyama discretization. In contrast to DPS(-D)ΠGDM(-D), we observe the
+robustness of our method across both SDEs and inpainting and super-resolution observation maps.
+E.4.1 VP-SDE
+Imagenet 256×256 For VP-SDE, our Imagenet 256×256 experiment compares SNIPS (Kawar et al., 2021)
+to diffusion methods (DDPM) DTMPD-D, DPS-D andΠGDM-D, and results are shown in Table 6.
+FFHQ 256×256 For VP-SDE, our FFHQ 256×256 experiment compares diffusion methods (DDPM)
+DTMPD-D to DPS-D and ΠGDM-D, and results are shown in Table 7. Fig 3, Fig 4 and Fig 5 are a
+visual summary of Table 7, plotting the LPIPS, SSIM and FID metrics against increasing noise for different
+observation maps. Some uncurated samples that were used to generate Table 7 are shown in Fig 6, 7 and 8.
+We observe that all methods can successfully produce high quality reconstructions in the low noise regime
+Table 6: Comparison to SNIPS. 4×noiseless and noisy (images have an additive noise ofσy = 0.05) super-
+resolution results on ImageNet 1K (256× 256).
+Method 4×noiseless super-resolution 4 ×noisy super-resolution
+PSNR↑SSIM↑KID↓ PSNR↑SSIM↑KID↓
+SNIPS 17.6 0.22 35.2 16.3 0.14 67.8
+Π GDM-D 26.0 0.75 1.30 20.7 0.43 17.8
+DPS-D 25.1 0.69 4.08 23.4 0.63 3.09
+DTMPD-D 26.0 0.75 1.10 23.1 0.62 8.85
+29
+
+=== PDF PAGE 30 ===
+Table 7: Quantitative evaluation of solving linear inverse problems for VP DDPM with increasing noise on
+FFHQ 256×256-1k validation dataset.
+Problem Method FID ↓LPIPS↓ MSE↓ PSNR↑SSIM↑
+σy = 0.01 DTMPD-D 29.6 0.230±0.034 1.60e-03±7.74e-04 28.4±1.9 0.784±0.046
+4×‘bicubic’ DPS-D 31.4 0.234 ±0.048 1.90e-03±1.07e-03 27.8±2.2 0.776±0.062
+super-resolution Π GDM-D 29.7 0.198±0.037 1.56e-03±8.72e-04 28.6±2.1 0.809±0.051
+σy = 0.05 DTMPD-D 32.7 0.304 ±0.043 2.90e-03±5.64e-03 26.0±1.7 0.699±0.060
+4×‘bicubic’ DPS-D 29.3 0.280±0.051 2.90e-03±5.73e-03 26.0±1.8 0.719±0.066
+super-resolution Π GDM-D 45.1 0.311 ±0.047 3.08e-03±5.79e-03 25.7±1.7 0.682±0.062
+σy = 0.1 DTMPD-D 38.0 0.348 ±0.048 4.33e-03±4.72e-03 24.0±1.6 0.635±0.066
+4×‘bicubic’ DPS-D 30.9 0.318±0.051 4.06e-03±5.38e-03 24.4±1.6 0.664±0.069
+super-resolution Π GDM-D 119.6 0.589 ±0.047 1.10e-02±5.56e-03 19.7±1.0 0.376±0.055
+σy = 0.2 DTMPD-D 45.6 0.401 ±0.049 7.03e-03±2.56e-03 21.8±1.5 0.559±0.071
+4×‘bicubic’ DPS-D 38.1 0.385±0.061 7.59e-03±3.50e-03 21.6±1.8 0.570±0.081
+super-resolution Π GDM-D 295.7 0.780 ±0.033 5.65e-02±5.20e-03 12.5±0.4 0.117±0.035
+σy = 0.01 DTMPD-D 25.7 0.153±0.033 9.04e-03±7.25e-03 21.4±2.9 0.829±0.031
+‘box’ mask DPS-D 31.5 0.175 ±0.038 7.79e-03±6.89e-03 22.4±3.3 0.833±0.035
+inpainting Π GDM-D 143.8 0.247 ±0.024 2.58e-02±7.11e-03 16.1±1.3 0.759±0.017
+σy = 0.05 DTMPD-D 27.0 0.240±0.038 9.68e-03±6.62e-03 20.9±2.6 0.760±0.036
+‘box’ mask DPS-D 30.7 0.228 ±0.046 8.28e-03±7.93e-03 22.0±3.1 0.782±0.047
+inpainting Π GDM-D 159.3 0.448 ±0.046 2.71e-02±7.91e-03 15.8±1.2 0.504±0.080
+σy = 0.1 DTMPD-D 29.6 0.292 ±0.049 1.06e-02±1.15e-02 20.6±2.5 0.709±0.053
+‘box’ mask DPS-D 29.3 0.259±0.049 8.03e-03±6.97e-03 22.0±2.9 0.746±0.051
+inpainting Π GDM-D 165.7 0.539 ±0.083 2.84e-02±6.57e-03 15.6±1.0 0.418±0.185
+σy = 0.2 DTMPD-D 33.8 0.346±0.061 1.13e-02±8.65e-03 20.2±2.4 0.649±0.070
+‘box’ mask DPS-D 34.9 0.337 ±0.056 8.01e-03±4.22e-03 21.5±2.0 0.662±0.067
+inpainting Π GDM-D 199.7 0.590 ±0.099 3.17e-02±1.01e-02 15.2±1.4 0.461±0.202
+σy = 0.01 DTMPD-D 24.6 0.090±0.033 4.87e-04±6.27e-04 34.3±2.8 0.931±0.036
+‘random’ mask DPS-D 32.7 0.137 ±0.033 5.57e-04±5.02e-04 33.4±2.6 0.913±0.031
+inpainting Π GDM-D 24.7 0.069 ±0.023 4.71e-04±5.18e-04 34.5±3.0 0.940±0.026
+σy = 0.05 DTMPD-D 27.1 0.187 ±0.032 8.86e-04±4.84e-04 30.9±1.8 0.851±0.033
+‘random’ mask DPS-D 38.0 0.256 ±0.049 1.74e-03±1.04e-03 28.1±2.0 0.794±0.056
+inpainting Π GDM-D 44.8 0.315 ±0.043 2.15e-03±6.65e-04 26.8±1.2 0.647±0.068
+σy = 0.1 DTMPD-D 29.9 0.247 ±0.038 1.74e-03±8.94e-03 28.7±1.8 0.787±0.049
+‘random’ mask DPS-D 34.8 0.274 ±0.054 2.21e-03±1.17e-03 27.1±2.1 0.763±0.065
+inpainting Π GDM-D 62.7 0.490 ±0.059 6.71e-03±1.80e-03 22.0±1.7 0.410±0.129
+σy = 0.2 DTMPD-D 34.6 0.306 ±0.046 2.71e-03±2.89e-03 26.1±1.7 0.714±0.060
+‘random’ mask DPS-D 35.9 0.317 ±0.059 3.59e-03±1.73e-03 24.9±1.9 0.701±0.073
+inpainting Π GDM-D 104.1 0.623 ±0.109 1.77e-02±8.62e-03 18.6±3.8 0.316±0.218
+but, visually, only DPS-D and DTMPD-D successfully produce high quality reconstructions in the high noise
+regime.
+WhereasDPS-Drequiresahyperparametersearch, therearenohyperparametersforDTMPD-D.For ΠGDM-
+D we use the algorithm and default hyperparameters as described in Song et al. (2023). For DPS-D we use
+the algorithm in the codebase provided by the authors Chung et al. (2022a) and we use their suggested
+hyperparameters for this task, such as step-size and using static-thresholding (clipping the denoised image
+at each step to a range[−1, 1]) whereas DTMPD-D does not require any hyperparameter tuning or static-
+thresholding.
+CIFAR10 64×64 Our CIFAR-10 64×64 experiment compares TMPD to DPS andΠGDM, and also com-
+pares diffusion methods (DDPM) in Table 8 and score-based methods (discretized with Euler-Maruyama)
+in Table 9. Various samples used to produce the figures in Tables 8 and 9 are shown in Fig 10 and 11.
+We found the hyperparameter suggested for the DDIM method for the VP-SDE in Song et al. (2023)
+r2
+t = vt/(αt +vt), which is calculated by assuming the data distributionp0(x0) is a standard normal and
+30
+
+=== PDF PAGE 31 ===
+Figure 3: 4×bicubic super-resolution FID vs LPIPS (left) and SSIM (right) using the VP-SDE on FFHQ-1k
+validation dataset for increasing observation noise.
+Figure 4: ‘box’ mask inpainting FID vs LPIPS (left) and SSIM (right) using the VP-SDE on FFHQ-1k
+validation dataset for increasing observation noise.
+then calculating the posterior variance, to give unstable solutions for the algorithm given in Song et al.
+(2023). To make the method stable, we instead plug theΠGDM posterior score approximation into a DDIM
+sampler in a similar way to Algorithm 1, which, for the VPSDE, brings the algorithmΠGDM-D closer to
+our method; we are then able to chooser2
+t =vt/(αt +vt) for both VP DDIM and VP-SDE methods.
+For DDPM we use the step-size constant suggested in Chung et al. (2022a) for inpainting,ζi = ζ′/∥y−
+Hm0|t∥, where we tuneζ′over the suggested range ofζ′∈[0.1, 1.0] in Chung et al. (2022a) across LPIPS,
+MSE, PSNR and SSIM, as shown in Fig. 9 for each inverse problem (each line in the Tables 8 and 9).
+E.4.2 VE-SDE
+FFHQ 256×256 For VE-SDE, our FFHQ 256×256 experiment compares diffusion methods (DDPM)
+DTMPD-D to DPS-D andΠGDM-D, and results are shown in Table 10. Fig 12 and Fig 13 are a visual
+summary of Table 10, plotting the LPIPS, SSIM and FID metrics against increasing noise. Some uncurated
+samples that were used to generate Table 10 are shown in Fig 14 and 15. Since the DPS-D and PiGDM
+algorithms were developed for the VP-SDE, the method is not performant for the VE-SDE, and theΠGDM
+31
+
+=== PDF PAGE 32 ===
+Table 8: Noisy observation inpainting and super-resolution for VP DDPM on CIFAR-10 1k validation set.
+Problem Method FID ↓LPIPS↓ MSE↓ PSNR↑SSIM↑
+σy = 0.01 DTMPD-D 33.7 0.090 ±0.048 0.007 ±0.034 23.8 ±3.7 0.784 ±0.073
+‘box’ mask DPS-D 31.5 0.064 ±0.033 0.004 ±0.003 25.8 ±3.6 0.841 ±0.068
+inpainting Π GDM-D 37.1 0.316 ±0.108 0.012 ±0.029 19.9 ±1.9 0.546 ±0.143
+σy = 0.01 DTMPD-D 40.4 0.272 ±0.071 0.028 ±0.020 16.4 ±3.0 0.584 ±0.071
+‘half’ mask DPS-D 33.1 0.221 ±0.072 0.028 ±0.021 16.8 ±3.6 0.637 ±0.093
+inpainting Π GDM-D 35.8 0.397 ±0.103 0.031 ±0.020 15.9 ±2.8 0.419 ±0.132
+σy = 0.05 DTMPD-D 35.9 0.128 ±0.061 0.006 ±0.011 23.5 ±3.3 0.763 ±0.079
+‘box’ mask DPS-D 31.1 0.078 ±0.037 0.004 ±0.003 25.5 ±3.3 0.830 ±0.070
+inpainting Π GDM-D 36.3 0.319 ±0.110 0.012 ±0.031 20.0 ±1.9 0.545 ±0.142
+σy = 0.05 DTMPD-D 40.4 0.292 ±0.075 0.029 ±0.020 16.4 ±3.1 0.572 ±0.076
+‘half’ mask DPS-D 32.5 0.230 ±0.075 0.028 ±0.023 16.7 ±3.5 0.626 ±0.096
+inpainting Π GDM-D 35.6 0.398 ±0.109 0.032 ±0.021 15.9 ±2.8 0.421 ±0.133
+σy = 0.1 DTMPD-D 38.9 0.168 ±0.072 0.007 ±0.012 22.5 ±2.9 0.728 ±0.081
+‘box’ mask DPS-D 31.6 0.101 ±0.043 0.004 ±0.003 24.5 ±2.9 0.807 ±0.078
+inpainting Π GDM-D 36.3 0.318 ±0.109 0.012 ±8.553 19.7 ±1.8 0.546 ±0.140
+σy = 0.1 DTMPD-D 43.8 0.350 ±0.088 0.030 ±0.028 16.2 ±2.9 0.547 ±0.076
+‘half’ mask DPS-D 33.0 0.522 ±0.097 0.031 ±0.022 16.3 ±3.3 0.602 ±0.097
+inpainting Π GDM-D 36.2 0.276 ±0.085 0.034 ±0.023 15.5 ±2.7 0.412 ±0.128
+σy = 0.01 DTMPD-D 33.2 0.117 ±0.051 0.004 ±0.004 24.7 ±3.0 0.835 ±0.071
+2×‘nearest’ DPS-D 32.5 0.099 ±0.044 0.004 ±0.003 25.1 ±3.1 0.847 ±0.073
+super-resolution Π GDM-D 35.6 0.407 ±0.118 0.016 ±0.006 18.2 ±1.7 0.442 ±0.152
+σy = 0.01 DTMPD-D 41.5 0.278 ±0.084 0.011 ±0.006 20.4 ±2.7 0.563 ±0.114
+4×‘bicubic’ DPS-D 33.9 0.220 ±0.079 0.010 ±0.006 20.8 ±3.0 0.609 ±0.135
+super-resolution Π GDM-D 39.4 0.279 ±0.081 0.011 ±0.006 20.1 ±2.5 0.546 ±0.111
+σy = 0.05 DTMPD-D 33.9 0.156 ±0.065 0.005 ±0.025 24.1 ±2.8 0.810 ±0.079
+2×‘nearest’ DPS-D 34.4 0.127 ±0.048 0.004 ±0.003 24.4 ±2.7 0.825 ±0.070
+super-resolution Π GDM-D 35.1 0.407 ±0.118 0.016 ±0.006 18.2 ±1.7 0.440 ±0.153
+σy = 0.05 DTMPD-D 38.3 0.332 ±0.093 0.013 ±0.032 19.6 ±2.4 0.501 ±0.116
+4×‘bicubic’ DPS-D 38.2 0.265 ±0.087 0.011 ±0.006 20.2 ±2.4 0.567 ±0.128
+super-resolution Π GDM-D 23.2 0.522 ±0.101 0.034 ±0.012 15.0 ±1.7 0.215 ±0.114
+σy = 0.1 DTMPD-D 35.0 0.208 ±0.085 0.006 ±0.005 23.1 ±2.5 0.760 ±0.091
+2×‘nearest’ DPS-D 32.1 0.152 ±0.058 0.005 ±0.003 23.8 ±2.5 0.802 ±0.074
+super-resolution Π GDM-D 35.0 0.407 ±0.122 0.017 ±0.006 18.1 ±1.8 0.435 ±0.150
+σy = 0.1 DTMPD-D 36.8 0.378 ±0.102 0.015 ±0.007 18.7 ±2.1 0.435 ±0.121
+4×‘bicubic’ DPS-D 34.8 0.308 ±0.095 0.013 ±0.006 19.4 ±2.2 0.513 ±0.132
+super-resolution Π GDM-D 23.0 0.521 ±0.104 0.035 ±0.013 14.9 ±1.7 0.212 ±0.117
+32
+
+=== PDF PAGE 33 ===
+Table 9: Noisy observation inpainting and super-resolution for the reverse VP-SDEs on CIFAR-10 1k vali-
+dation set.
+Problem Method FID ↓LPIPS↓ MSE↓ PSNR↑SSIM↑
+σy = 0.01 TMPD 33.2 0.088 ±0.050 0.007 ±0.019 23.8 ±3.7 0.785 ±0.071
+‘box’ mask DPS 61.8 0.646 ±0.078 0.111 ±0.049 9.9 ±1.9 0.050 ±0.068
+inpainting Π GDM 34.8 0.073 ±0.035 0.004 ±0.004 25.1 ±3.5 0.816 ±0.068
+σy = 0.01 TMPD 37.4 0.267 ±0.068 0.030 ±0.036 16.3 ±3.0 0.581 ±0.070
+‘half’ mask DPS 65.8 0.645 ±0.079 0.112 ±0.050 9.9 ±1.9 0.052 ±0.069
+inpainting Π GDM 33.3 0.236 ±0.068 0.027 ±0.021 17.0 ±3.6 0.620 ±0.087
+σy = 0.05 TMPD 33.5 0.117 ±0.052 0.006 ±0.017 23.5 ±3.2 0.763 ±0.074
+‘box’ mask DPS 62.2 0.647 ±0.078 0.110 ±0.048 10.0 ±1.9 0.055 ±0.067
+inpainting Π GDM 35.2 0.103 ±0.047 0.004 ±0.003 24.8 ±2.9 0.798 ±0.074
+σy = 0.05 TMPD 37.9 0.286 ±0.073 0.030 ±0.023 16.2 ±3.1 0.567 ±0.075
+‘half’ mask DPS 65.1 0.647 ±0.080 0.117 ±0.054 9.7 ±2.0 0.052 ±0.063
+inpainting Π GDM 34.1 0.256 ±0.078 0.027 ±0.022 16.8 ±3.3 0.605 ±0.094
+σy = 0.1 TMPD 35.1 0.159 ±0.065 0.007 ±0.006 22.6 ±2.8 0.731 ±0.078
+‘box’ mask DPS 61.9 0.647 ±0.074 0.112 ±0.052 9.9 ±1.9 0.054 ±0.071
+inpainting Π GDM 36.2 0.140 ±0.059 0.005 ±0.003 23.7 ±2.6 0.763 ±0.083
+σy = 0.1 TMPD 41.9 0.310 ±0.077 0.031 ±0.020 16.0 ±2.9 0.541 ±0.078
+‘half’ mask DPS 81.0 0.646 ±0.082 0.112 ±0.052 10.0 ±2.0 0.052 ±0.069
+inpainting Π GDM 38.2 0.279 ±0.074 0.029 ±0.021 16.4 ±3.2 0.577 ±0.095
+σy = 0.01 TMPD 32.4 0.123 ±0.055 0.005 ±0.008 24.5 ±3.0 0.826 ±0.077
+2×‘nearest’ DPS 71.6 0.645 ±0.079 0.118 ±0.054 9.7 ±2.0 0.049 ±0.068
+super-resolution Π GDM 41.7 0.192 ±0.079 0.005 ±0.003 23.3 ±2.4 0.773 ±0.079
+σy = 0.01 TMPD 22.9 0.525 ±0.098 0.035 ±0.013 14.9 ±1.7 0.206 ±0.109
+4×‘bicubic’ DPS 77.9 0.640 ±0.076 0.120 ±0.060 9.7 ±2.1 0.046 ±0.070
+super-resolution Π GDM 36.7 0.461 ±0.093 0.023 ±0.009 16.7 ±1.7 0.305 ±0.106
+σy = 0.05 TMPD 32.7 0.158 ±0.060 0.005 ±0.003 23.9 ±2.6 0.800 ±0.075
+2×‘nearest’ DPS 72.5 0.648 ±0.078 0.118 ±0.053 9.7 ±1.9 0.050 ±0.069
+super-resolution Π GDM 37.3 0.229 ±0.086 0.006 ±0.003 22.6 ±2.1 0.735 ±0.088
+σy = 0.05 TMPD 35.7 0.328 ±0.091 0.013 ±0.011 19.5 ±2.3 0.495 ±0.117
+4×‘bicubic’ DPS 77.9 0.641 ±0.071 0.120 ±0.061 9.7 ±2.1 0.047 ±0.070
+super-resolution Π GDM 34.8 0.479 ±0.094 0.026 ±0.010 16.2 ±1.7 0.276 ±0.112
+σy = 0.1 TMPD 32.9 0.207 ±0.081 0.006 ±0.005 23.0 ±2.4 0.753 ±0.088
+2×‘nearest’ DPS 72.2 0.644 ±0.077 0.118 ±0.056 9.7 ±2.0 0.051 ±0.067
+super-resolution Π GDM 35.9 0.273 ±0.098 0.007 ±0.003 21.7 ±2.1 0.682 ±0.105
+σy = 0.1 TMPD 34.7 0.379 ±0.096 0.016 ±0.007 18.5 ±2.0 0.429 ±0.120
+4×‘bicubic’ DPS 78.3 0.639 ±0.074 0.120 ±0.060 9.7 ±2.1 0.050 ±0.068
+super-resolution Π GDM 34.4 0.492 ±0.097 0.028 ±0.010 15.8 ±1.7 0.258 ±0.112
+33
+
+=== PDF PAGE 34 ===
+Figure 5: ‘random’ mask inpainting FID vs LPIPS (left) and SSIM (right) using the VP-SDE on FFHQ-1k
+validation dataset for increasing observation noise.
+Figure 6: 4×bicubic super-resolution samples from the VP-SDE on FFHQ across a range of observation
+noise.
+algorithm was only performant in low noise settings, whereas DTMPD-D is performant across a wide range
+of noise levels.
+It has been observed thatΠGDM-D performs worse for 1000 steps than 100 steps (see (Mardani et al., 2023,
+Section 5)). We also provide results in Table 11 for 100 steps of DTMPD-D andΠGDM-D for the same
+FFHQ VE-SDE model, to compare toΠGDM-D in its optimal setting.
+34
+
+=== PDF PAGE 35 ===
+Figure 7: ‘Random’ mask inpainting samples from the VP-SDE on FFHQ across a range of observation
+noise.
+Table 10: Quantitative evaluation of solving linear inverse problems for VE DDPM for 1000 steps with
+increasing noise on FFHQ 256×256-1k validation dataset.
+Problem Method FID ↓LPIPS↓ MSE↓ PSNR↑SSIM↑
+σy = 0.01 DTMPD-D 32.3 0.203 ±0.039 1.57e-03±8.89e-04 28.6±2.1 0.810±0.052
+4×‘bicubic’ DPS-D 47.0 0.273 ±0.031 1.70e-03±8.36e-04 28.1±1.8 0.747±0.037
+super-resolution Π GDM-D 37.4 0.244 ±0.030 1.74e-03±9.56e-04 28.1±2.0 0.755±0.042
+σy = 0.05 DTMPD-D 32.1 0.268 ±0.048 2.62e-03±1.17e-03 26.2±1.8 0.733±0.066
+4×‘bicubic’ DPS-D 105.9 0.590 ±0.036 6.18e-03±8.50e-04 22.1±0.6 0.404±0.040
+super-resolution Π GDM-D 106.8 0.592 ±0.041 7.92e-03±1.07e-03 21.0±0.6 0.353±0.042
+σy = 0.1 DTMPD-D 32.7 0.310 ±0.053 3.99e-03±1.84e-03 24.3±1.7 0.679±0.071
+4×‘bicubic’ DPS-D 114.0 0.569 ±0.044 8.47e-03±4.95e-03 21.1±1.7 0.483±0.046
+super-resolution Π GDM-D 206.0 0.724 ±0.034 2.46e-02±2.16e-03 16.1±0.4 0.176±0.034
+σy = 0.01 DTMPD-D 30.2 0.114 ±0.029 2.84e-03±2.56e-03 26.5±2.8 0.907±0.020
+‘box’ mask DPS-D 23.9 0.093 ±0.019 2.53e-03±1.77e-03 26.9±2.8 0.899±0.017
+inpainting Π GDM-D 27.1 0.108 ±0.025 2.50e-03±1.55e-03 26.7±2.3 0.877±0.015
+σy = 0.05 DTMPD-D 33.6 0.186 ±0.036 3.24e-03±3.19e-03 25.8±2.5 0.847±0.030
+‘box’ mask DPS-D 39.7 0.318 ±0.044 3.81e-03±1.92e-03 24.7±2.0 0.677±0.086
+inpainting Π GDM-D 49.5 0.354 ±0.044 4.67e-03±1.50e-03 23.5±1.3 0.555±0.091
+σy = 0.1 DTMPD-D 34.0 0.223 ±0.041 3.42e-03±2.24e-03 25.3±2.3 0.801±0.045
+‘box’ mask DPS-D 59.1 0.467 ±0.053 7.78e-03±3.19e-03 21.4±1.7 0.476±0.110
+inpainting Π GDM-D 72.6 0.529 ±0.047 9.88e-03±2.48e-03 20.2±1.2 0.356±0.118
+CIFAR10 64×64 For VE-SDE, our CIFAR-10 64×64 experiments compare TMPD to DPS andΠGDM,
+and also compare diffusion methods (DDPM) in Table 12 and score-based methods (discretized with Euler-
+Maruyama) in Table 13. Various samples used to produce the figures in Tables 12 and 13 are shown in Fig 16
+and 17.
+35
+
+=== PDF PAGE 36 ===
+Figure 8: ‘Box’ mask inpainting samples from the VP-SDE on FFHQ across a range of observation noise.
+Table 11: Quantitative evaluation of solving linear inverse problems for VE DDPM for 100 steps with
+increasing noise on FFHQ 256×256-1k validation dataset.
+Problem Method FID ↓LPIPS↓ MSE↓ PSNR↑SSIM↑
+σy = 0.01 DTMPD-D 38.8 0.215 ±0.042 0.001±0.001 28.9±2.2 0.821±0.051
+4×‘bicubic’ super-resolution Π GDM-D 46.1 0.252 ±0.042 0.002±0.001 27.4±1.9 0.788±0.053
+σy = 0.05 DTMPD-D 39.2 0.279 ±0.049 0.003±0.001 26.2±1.8 0.741±0.065
+4×‘bicubic’ super-resolution Π GDM-D 43.3 0.302 ±0.049 0.003±0.001 25.1±1.7 0.722±0.067
+σy = 0.1 DTMPD-D 41.1 0.317 ±0.054 0.004±0.002 24.5±1.7 0.693±0.073
+4×‘bicubic’ super-resolution Π GDM-D 44.7 0.344 ±0.053 0.005±0.002 23.4±1.6 0.672±0.070
+σy = 0.01 DTMPD-D 31.4 0.124 ±0.030 0.003±0.003 26.5±3.0 0.906±0.020
+‘box’ mask inpainting Π GDM-D 23.7 0.069 ±0.021 0.002±0.001 28.0±2.6 0.925±0.016
+σy = 0.05 DTMPD-D 38.2 0.199 ±0.039 0.003±0.003 26.0±2.5 0.848±0.034
+‘box’ mask inpainting Π GDM-D 29.8 0.185 ±0.028 0.002±0.001 26.7±2.1 0.825±0.029
+σy = 0.1 DTMPD-D 39.7 0.241 ±0.046 0.004±0.003 25.2±2.4 0.799±0.048
+‘box’ mask inpainting Π GDM-D 42.1 0.279 ±0.040 0.003±0.001 25.1±1.6 0.716±0.052
+For ΠGDM(-D), we are able to use the hyperparameterr2
+t =vt/(1 +vt) as suggested by Song et al. (2023),
+which is calculated by assuming the data distributionp0(x0) is a standard normal and then calculating the
+posterior variance, for both VE DDIM and VE-SDE methods, but note some instability for theΠGDM
+VE-SDE method for small noise, as shown in Fig 10.
+For DDPM we use the step-size constant suggested in Chung et al. (2022a) for inpainting,ζi = ζ′/∥y−
+Hm0|t∥, where we tuneζ′over the suggested range ofζ′∈[0.1, 1.0] in Chung et al. (2022a) across LPIPS,
+MSE, PSNR and SSIM, as shown in Fig. 9 for each inverse problem (each line in the Tables 12 and 13).
+36
+
+=== PDF PAGE 37 ===
+Table 12: Noisy observation inpainting and super-resolution for VE DDPM on CIFAR-10 1k validation set.
+Problem Method FID ↓LPIPS↓ MSE↓ PSNR↑SSIM↑
+σy = 0.01 DTMPD-D 34.1 0.094 ±0.044 0.006 ±0.005 23.6 ±3.3 0.782 ±0.067
+‘box’ mask DPS-D 40.6 0.085 ±0.036 0.005 ±0.004 24.2 ±3.1 0.802 ±0.064
+inpainting Π GDM-D 40.0 0.076 ±0.035 0.004 ±0.003 25.0 ±3.3 0.824 ±0.066
+σy = 0.01 DTMPD-D 39.0 0.271 ±0.069 0.028 ±0.020 16.5 ±3.1 0.582 ±0.072
+‘half’ mask DPS-D 42.8 0.247 ±0.065 0.029 ±0.020 16.5 ±3.2 0.595 ±0.077
+inpainting Π GDM-D 42.2 0.237 ±0.067 0.029 ±0.020 16.4 ±3.1 0.610 ±0.079
+σy = 0.05 DTMPD-D 36.7 0.163 ±0.070 0.007 ±0.011 22.6 ±2.8 0.724 ±0.082
+‘box’ mask DPS-D 101.5 0.224 ±0.077 0.008 ±0.004 21.8 ±2.1 0.681 ±0.087
+inpainting Π GDM-D 99.9 0.225 ±0.076 0.007 ±0.003 21.8 ±1.7 0.682 ±0.093
+σy = 0.05 DTMPD-D 40.9 0.320 ±0.078 0.029 ±0.020 16.4 ±2.9 0.544 ±0.073
+‘half’ mask DPS-D 105.5 0.362 ±0.078 0.032 ±0.021 15.7 ±2.7 0.500 ±0.075
+inpainting Π GDM-D 97.1 0.366 ±0.079 0.033 ±0.020 15.4 ±2.5 0.503 ±0.079
+σy = 0.1 DTMPD-D 38.1 0.233 ±0.086 0.009 ±0.009 21.4 ±2.5 0.652 ±0.102
+‘box’ mask DPS-D 80.4 0.313 ±0.078 0.012 ±0.006 19.7 ±2.1 0.596 ±0.088
+inpainting Π GDM-D 140.5 0.378 ±0.086 0.013 ±0.003 18.8 ±0.9 0.550 ±0.113
+σy = 0.1 DTMPD-D 40.8 0.359 ±0.086 0.030 ±0.019 16.1 ±2.8 0.495 ±0.087
+‘half’ mask DPS-D 99.5 0.434 ±0.072 0.038 ±0.023 14.8 ±2.4 0.400 ±0.083
+inpainting Π GDM-D 138.8 0.476 ±0.078 0.039 ±0.019 14.5 ±1.9 0.402 ±0.095
+σy = 0.01 DTMPD-D 32.7 0.126 ±0.058 0.004 ±0.003 24.4 ±2.9 0.828 ±0.073
+2×‘nearest’ DPS-D 42.3 0.134 ±0.053 0.004 ±0.002 24.8 ±2.5 0.839 ±0.063
+super-resolution Π GDM-D 34.9 0.110 ±0.042 0.004 ±0.002 24.8 ±2.8 0.839 ±0.066
+σy = 0.01 DTMPD-D 38.6 0.295 ±0.082 0.011 ±0.006 20.2 ±2.4 0.544 ±0.109
+4×‘bicubic’ DPS-D 53.4 0.296 ±0.074 0.011 ±0.006 20.1 ±2.3 0.547 ±0.101
+super-resolution Π GDM-D 37.8 0.250 ±0.077 0.011 ±0.006 20.4 ±2.5 0.577 ±0.119
+σy = 0.05 DTMPD-D 34.0 0.204 ±0.082 0.006 ±0.004 23.1 ±2.3 0.762 ±0.089
+2×‘nearest’ DPS-D 98.8 0.283 ±0.077 0.007 ±0.003 21.9 ±1.6 0.711 ±0.081
+super-resolution Π GDM-D 99.6 0.298 ±0.081 0.008 ±0.003 21.1 ±1.4 0.677 ±0.092
+σy = 0.05 DTMPD-D 36.8 0.380 ±0.097 0.015 ±0.006 18.8 ±2.0 0.440 ±0.113
+4×‘bicubic’ DPS-D 126.1 0.467 ±0.072 0.017 ±0.007 18.2 ±1.7 0.434 ±0.096
+super-resolution Π GDM-D 104.2 0.419 ±0.088 0.016 ±0.006 18.1 ±1.6 0.454 ±0.117
+σy = 0.1 DTMPD-D 37.1 0.285 ±0.100 0.008 ±0.006 21.5 ±2.1 0.657 ±0.112
+2×‘nearest’ DPS-D 144.6 0.421 ±0.082 0.012 ±0.003 19.4 ±1.1 0.571 ±0.101
+super-resolution Π GDM-D 175.8 0.456 ±0.085 0.016 ±0.003 17.9 ±0.9 0.514 ±0.115
+σy = 0.1 DTMPD-D 36.1 0.439 ±0.099 0.019 ±0.008 17.5 ±1.9 0.353 ±0.115
+4×‘bicubic’ DPS-D 155.1 0.535 ±0.067 0.022 ±0.007 16.8 ±1.3 0.360 ±0.092
+super-resolution Π GDM-D 196.2 0.539 ±0.078 0.030 ±0.007 15.3 ±1.1 0.327 ±0.106
+37
+
+=== PDF PAGE 38 ===
+Table 13: Noisy observation inpainting and super-resolution for the reverse VE-SDEs on CIFAR-10 1k
+validation set.
+Problem Method FID ↓LPIPS↓ MSE↓ PSNR↑SSIM↑
+σy = 0.01 TMPD 40.0 0.102 ±0.047 0.005 ±0.004 23.7 ±3.1 0.773 ±0.069
+‘box’ mask DPS 103.6 0.637 ±0.074 0.114 ±0.052 9.9 ±1.9 0.050 ±0.068
+inpainting Π GDM 78.9 0.094 ±0.039 0.005 ±0.004 24.1 ±3.1 0.787 ±0.071
+σy = 0.01 TMPD 45.8 0.279 ±0.066 0.030 ±0.029 16.3 ±3.0 0.569 ±0.069
+‘half’ mask DPS 110.8 0.638 ±0.072 0.117 ±0.056 9.8 ±2.0 0.045 ±0.067
+inpainting Π GDM 50.5 0.264 ±0.068 0.027 ±0.020 16.7 ±3.1 0.585 ±0.077
+σy = 0.05 TMPD 45.3 0.167 ±0.065 0.007 ±0.024 22.6 ±2.7 0.718 ±0.078
+‘box’ mask DPS 103.4 0.638 ±0.070 0.115 ±0.055 9.8 ±1.9 0.047 ±0.067
+inpainting Π GDM 81.9 0.160 ±0.056 0.006 ±0.004 22.8 ±2.4 0.720 ±0.078
+σy = 0.05 TMPD 51.1 0.319 ±0.071 0.029 ±0.019 16.2 ±2.8 0.532 ±0.071
+‘half’ mask DPS 109.3 0.638 ±0.070 0.116 ±0.057 9.8 ±2.0 0.044 ±0.067
+inpainting Π GDM 56.0 0.311 ±0.074 0.029 ±0.021 16.4 ±3.0 0.540 ±0.078
+σy = 0.1 TMPD 47.6 0.231 ±0.079 0.008 ±0.005 21.5 ±2.3 0.650 ±0.097
+‘box’ mask DPS 104.3 0.639 ±0.068 0.113 ±0.049 9.9 ±1.9 0.048 ±0.065
+inpainting Π GDM 84.6 0.220 ±0.079 0.008 ±0.004 21.6 ±2.1 0.665 ±0.105
+σy = 0.1 TMPD 54.1 0.366 ±0.080 0.032 ±0.020 15.8 ±2.7 0.480 ±0.085
+‘half’ mask DPS 110.4 0.639 ±0.068 0.117 ±0.054 9.7 ±2.0 0.046 ±0.067
+inpainting Π GDM 58.5 0.349 ±0.081 0.031 ±0.021 16.1 ±2.9 0.499 ±0.090
+σy = 0.01 TMPD 43.5 0.141 ±0.070 0.007 ±0.034 24.1 ±3.1 0.810 ±0.092
+2×‘nearest’ DPS 118.7 0.641 ±0.066 0.117 ±0.054 9.7 ±1.9 0.048 ±0.065
+super-resolution Π GDM 59.4 0.258 ±0.083 0.007 ±0.003 22.0 ±2.2 0.716 ±0.075
+σy = 0.01 TMPD 49.6 0.439 ±0.093 0.020 ±0.008 17.3 ±1.8 0.345 ±0.115
+4×‘bicubic’ DPS 128.3 0.642 ±0.071 0.122 ±0.059 9.6 ±2.0 0.046 ±0.068
+super-resolution Π GDM 52.9 0.561 ±0.083 0.042 ±0.015 14.1 ±1.7 0.167 ±0.085
+σy = 0.05 TMPD 47.5 0.213 ±0.087 0.007 ±0.012 22.8 ±2.5 0.744 ±0.100
+2×‘nearest’ DPS 119.1 0.638 ±0.070 0.118 ±0.059 9.7 ±2.0 0.049 ±0.068
+super-resolution Π GDM 60.0 0.326 ±0.097 0.009 ±0.004 20.7 ±1.9 0.619 ±0.104
+σy = 0.05 TMPD 51.2 0.379 ±0.094 0.016 ±0.029 18.6 ±2.1 0.428 ±0.117
+4×‘bicubic’ DPS 128.0 0.642 ±0.068 0.122 ±0.061 9.6 ±2.0 0.043 ±0.067
+super-resolution Π GDM 53.8 0.548 ±0.084 0.038 ±0.014 14.5 ±1.7 0.186 ±0.087
+σy = 0.1 TMPD 51.6 0.292 ±0.097 0.009 ±0.020 21.3 ±2.2 0.646 ±0.116
+2×‘nearest’ DPS 120.5 0.644 ±0.074 0.121 ±0.061 9.7 ±2.0 0.048 ±0.068
+super-resolution Π GDM 61.9 0.386 ±0.100 0.012 ±0.005 19.5 ±1.9 0.523 ±0.117
+σy = 0.1 TMPD 49.6 0.439 ±0.093 0.020 ±0.008 17.3 ±1.8 0.345 ±0.115
+4×‘bicubic’ DPS 128.3 0.642 ±0.071 0.122 ±0.059 9.6 ±2.0 0.046 ±0.068
+super-resolution Π GDM 52.9 0.561 ±0.083 0.042 ±0.015 14.1 ±1.7 0.167 ±0.085
+38
+
+=== PDF PAGE 39 ===
+Figure 9: DPS scale hyperparameter search across LPIPS, MSE, PSNR and SSIM for CIFAR-104×bicubic
+interpolation super-resolution withσ= 0.05. Plotted are the mean values±2 standard deviations over a
+128 sample/batch size, calculated over 10 values ofζ′. We chose an optimal value of 0.15 for the DPS scale
+hyperparameter in this case.
+39
+
+=== PDF PAGE 40 ===
+Figure 10: Inpainting samples from the VP-SDE on CIFAR-10. The observation model was ‘box’ mask with
+Gaussian (σy = 0.05) noise.
+40
+
+=== PDF PAGE 41 ===
+Figure 11: 2×nearest-neighbour super-resolution samples from the VP-SDE on CIFAR-10. The observation
+model was Gaussian (σy = 0.05) noise.
+41
+
+=== PDF PAGE 42 ===
+Figure 12: 4×bicubic super-resolution FID vs LPIPS (left) and SSIM (right) using the VE-SDE on FFHQ-1k
+validation dataset for increasing observation noise.
+Figure 13: ‘box’ mask inpainting FID vs LPIPS (left) and SSIM (right) using the VE-SDE on FFHQ-1k
+validation dataset for increasing observation noise.
+42
+
+=== PDF PAGE 43 ===
+Figure 14: Whilst DTMPD-D with the VE-SDE remains robust to increasing noise, DPS-D andΠGDM-
+D do not. This is illustrated by samples from the different guidance methods for a4×super-resolution
+(256×256→64×64) problem with increasing Gaussian observation noise distorting a ground truth image.
+The top row measurement hasσy = 0.01, the middle rowσy = 0.05 and the bottom rowσy = 0.1. For the
+full results, see Table 10.
+Figure 15: 4×bicubic super-resolution samples from the VE-SDE on FFHQ. The observation model was
+Gaussian (σy = 0.05) noise.
+43
+
+=== PDF PAGE 44 ===
+Figure 16: Inpainting samples from the VE-SDE on CIFAR-10. The observation model was ‘box’ mask with
+Gaussian (σy = 0.05) noise.
+44
+
+=== PDF PAGE 45 ===
+Figure 17: 2×nearest-neighbour super-resolution samples from the VE-SDE on CIFAR-10. The observation
+model was Gaussian (σy = 0.05) noise.
+45

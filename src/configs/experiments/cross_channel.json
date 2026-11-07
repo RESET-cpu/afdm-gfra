@@ -1,0 +1,33 @@
+{
+  "schema": "afdm-experiment-v1",
+  "experiment": "cross_channel",
+  "methods": [
+    "GP_MP",
+    "STMP",
+    "offgrid_sbl",
+    "gnn",
+    "gamp",
+    "somp"
+  ],
+  "scenes": 500,
+  "timing_repeats": 1,
+  "reference_method": "GP_MP",
+  "include_stmp": true,
+  "execution_status": "READY",
+  "profiles": [
+    "D",
+    "A",
+    "B",
+    "C"
+  ],
+  "snr_db": [
+    -4,
+    -2,
+    0,
+    2,
+    4,
+    6
+  ],
+  "phase_mode": "known",
+  "noise_mode": "estimated"
+}

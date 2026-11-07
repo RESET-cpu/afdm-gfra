@@ -1,0 +1,23 @@
+{
+  "schema": "afdm-white-mainline-20261107-v1",
+  "status": "VERIFIED",
+  "entrypoint": "run_experiments.py",
+  "algorithm": "src/algorithm/GP_MP",
+  "algorithm_catalog": "src/configs/algorithms.json",
+  "known_phase": "GP_MP",
+  "estimated_phase": "GP_MP_EP",
+  "inference_config": "src/configs/candidates/GP_MP_white_preconditioned_matched_20261104.json",
+  "phase_config": "src/configs/candidates/GP_MP_white_phase_frontend_marginal_20261106.json",
+  "checkpoint": "result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt",
+  "checkpoint_sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+  "evidence_checkpoint": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/evidence_best.pt",
+  "evidence_checkpoint_sha256": "2fb9977d68ede2b451dc0ba712a8106f002f889d2e529147aa2eb271a337d854",
+  "prior_mainline": "archive/white_mainline_20261107/before/FINAL.json",
+  "original_mainline_preserved": "MAINLINE.json",
+  "historical_catalog": "src/configs/historical/algorithms_colored_20261107.json",
+  "validation": "archive/white_mainline_20261107/VALIDATION.json",
+  "followup_request": "result/white_followup_20261107/REQUEST.json",
+  "numerical_settings_preserved": true,
+  "old_data_unchanged": true,
+  "prior_DU_and_STMP_bindings": "src/configs/final/models.json"
+}

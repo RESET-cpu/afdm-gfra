@@ -1,0 +1,2669 @@
+=== PDF PAGE 1 ===
+arXiv:1906.09867v4  [eess.SP]  3 Aug 2020
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 1
+Compressive Sensing Based Adaptive Active User
+Detection and Channel Estimation: Massive Access
+Meets Massive MIMO
+Malong Ke, Student Member , IEEE, Zhen Gao, Member , IEEE, Y ongpeng Wu, Senior Member , IEEE,
+Xiqi Gao, Fellow, IEEE, and Robert Schober, Fellow, IEEE
+Abstract—This paper considers massive access in massive
+multiple-input multiple-output (MIMO) systems and propos es
+an adaptive active user detection and channel estimation sc heme
+based on compressive sensing. By exploiting the sporadic tr afﬁc
+of massive connected user equipments and the virtual angula r
+domain sparsity of massive MIMO channels, the proposed sche me
+can support massive access with dramatically reduced acces s
+latency. Speciﬁcally, we design non-orthogonal pseudo-ra ndom
+pilots for uplink broadband massive access, and formulate t he
+active user detection and channel estimation problems as a
+generalized multiple measurement vector compressive sens ing
+problem. Furthermore, by leveraging the structured sparsi ty
+of the uplink channel matrix, we propose an efﬁcient general -
+ized multiple measurement vector approximate message pass ing
+(GMMV-AMP) algorithm to realize simultaneous active user
+detection and channel estimation based on a spatial domain or
+an angular domain channel model. To jointly exploit the chan nel
+sparsity presented in both the spatial and the angular domains
+for enhanced performance, a Turbo-GMMV-AMP algorithm is
+developed for detecting the active users and estimating the ir
+channels in an alternating manner . Finally, an adaptive acc ess
+scheme is proposed, which adapts the access latency to guara ntee
+reliable massive access for practical systems with unknown chan-
+nel sparsity level. Additionally, the state evolution of th e proposed
+GMMV-AMP algorithm is derived to predict its performance.
+Simulation results demonstrate the superiority of the prop osed
+active user detection and channel estimation schemes compa red
+to several baseline schemes.
+Index Terms —Massive access, active user detection, channel
+estimation, structured sparsity, message passing.
+I. I NTRODUCTION
+V
+IDEO streaming, social networking, and the emerging
+Internet-of-Things (IoT) accelerate the development of
+base stations (BSs) that enable connectivity for billions o f user
+equipments (UEs) with massive data volumes [2]. However, re -
+liable massive access for massive connectivity is not suppo rted
+by the current wireless networks [3].
+To guarantee the availability of resources and the quality
+of service in massive access scenarios, uplink systems have
+A part of this paper was presented in the 2018 6th IEEE Global C onference
+on Signal and Information Processing (GlobalSIP 2018) [1].
+M. Ke and Z. Gao are with School of Information and Electronic s, Beijing
+Institute of Technology, Beijing 100081, China (e-mail: ke malong@bit.edu.cn;
+gaozhen16@bit.edu.cn).
+Y . Wu is with Department of Electronic Engineering, Shangha i Jiao Tong
+University, Shanghai 200240, China (e-mail: yongpeng.wu@ sjtu.edu.cn).
+X. Gao is with the National Mobile Communications Research L aboratory,
+Southeast University, Nanjing 210096, China (e-mail: xqga o@seu.edu.cn).
+R. Schober is with the Institute for Digital Communications , Friedrich-
+Alexander-University Erlangen-Nn¨ uberg, Erlangen 91054, Germany (e-mail:
+robert.schober@fau.de).
+to provide ultra-reliable low-latency detection and chann el
+estimation (CE) for active UEs [2]. Conventional grant-
+based random access (RA) protocols require control signali ng
+and the scheduling of uplink access requests for granting
+of resources [4]–[7]. The physical random access channel
+(PRACH) protocol of Long-Term Evolution is one example
+of grant-based protocols, and can be classiﬁed into two cate -
+gories: contention-free RA and contention-based RA [4]. Fo r
+contention-free RA, the BS ﬁrst allocates UEs the dedicated
+preambles, which are then transmitted by the active UEs, and
+ﬁnally the BS responds to the requesting UEs without further
+contention resolution [5]. For contention-based RA, multi ple
+active UEs ﬁrst transmit preambles selected from a predeﬁne d
+sequence set to access the BS. Further contention resolutio n
+is required if multiple UEs choose the same preamble [6].
+Unfortunately, for massive access, collisions are likely t o occur
+as the number of potential UEs can be much larger than the
+number of available preambles. The authors in [7] proposed
+a strongest-user collision resolution protocol to resolve col-
+lisions in overloaded networks. However, such grant-based
+solutions generally suffer from high access latency and req uire
+complicated collision resolution schemes in massive acces s
+scenarios [8].
+As a promising alternative, grant-free RA protocols have
+recently attracted signiﬁcant attention, where each activ e UE
+directly transmits its pilots and data to the BS without wait -
+ing for permission [9], [10]. Allocating orthogonal channe l
+resources (e.g., using orthogonal pilots as in [11]) can fac ilitate
+the detection of the active UEs at the BS and the estimation
+of their channels. However, for massive numbers of potentia l
+UEs, this approach fails due to the limited number of availab le
+orthogonal channels for a given channel coherence time.
+Fortunately, a key characteristic of massive access in futu re
+wireless networks is the sporadic trafﬁc of the UEs, i.e., ou t
+of the many potential UEs, only a small number are activated
+and want to access the network in any given time interval [7].
+Exploiting this sporadic trafﬁc property, several compres sive
+sensing (CS)-based grant-free RA schemes have been pro-
+posed, where the active user detection (AUD) is formulated
+as a sparse signal recovery problem [12], [13]. In [14], [15] ,
+two advanced CS-based multi-user detection schemes, which
+leverage the structured sparsity over multiple time slots f or
+accurate support detection, were proposed to jointly detec t the
+active UEs and to decode their data. To further exploit the
+a priori information about the transmitted discrete symbol s
+
+=== PDF PAGE 2 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 2
+for RA, the authors in [16] developed a joint approximate
+message passing (AMP) and expectation maximization (EM)
+algorithm to improve the detection performance of sparsely
+active UEs. Furthermore, the authors in [17] proposed a thre sh-
+old aided block sparsity adaptive subspace pursuit algorit hm,
+which enables improved sparse signal recovery. This work wa s
+also extended to cloud radio access networks (C-RANs) for
+efﬁcient UE activity and data detection [18], [19]. However ,
+the solutions in [14]–[19] rely on the availability of perfe ct
+channel state information (CSI), which is difﬁcult to obtai n,
+especially for massive wireless-connected UEs.
+To jointly perform AUD and CE for single-antenna BSs,
+blind detection of sparse code multiple access was proposed
+to support grant-free RA in massive access scenarios in [20] .
+For multi-antenna systems, the authors in [22] proposed a
+novel joint AUD and CE scheme, where the sparsity of
+delay-domain channel impulse response (CIR) is leveraged f or
+facilitating CE. Particularly, in [22], by iteratively exc hanging
+the active user information and CIR estimates, an identiﬁed
+user cancelation technique is further employed for enhance d
+performance. However, the delay-domain CIR sparsity highl y
+depends on the channel environment and may be violated
+in some practical scenarios. Considering frequency-domai n
+CE, a modiﬁed Bayesian compressive sensing (BCS)-based
+access scheme for uplink C-RANs was proposed in [21], where
+the structured sparsity over multiple receive antennas are
+exploited. To reduce the computational complexity, the aut hors
+in [23] and [24] developed an AMP-based scheme for AUD
+and CE for massive access in massive multiple-input multipl e-
+output (MIMO) systems. However, the solutions in [23] and
+[24] require the full knowledge of the a priori distribution
+of the channels and the noise variance, which might not be
+available in practice. Besides, the work in [20]–[24] consi ders
+a narrow-band massive access scenario assuming single-car rier
+transmission.
+Besides the aforementioned work, there are also related
+solutions that address the massive access problem with spar se
+user activity from information-theoretical perspectives [25],
+[26]. Especially in [26], the authors provided an elegant
+solution to support massive access with fully non-coherent
+detection.
+In this paper, we consider massive access for the more
+challenging enhanced mobile broadband (eMBB) scenario, an d
+investigate AUD and CE for uplink massive MIMO orthogonal
+frequency division multiplexing (OFDM) systems. By exploi t-
+ing the sporadic trafﬁc of the UEs and the virtual angular
+domain sparsity of massive MIMO channels, we develop a
+CS-based adaptive AUD and CE scheme. Speciﬁcally, a pilot
+design based on distributed CS (DCS) theory is proposed
+for broadband massive access. Moreover, the AUD and CE
+problems at the BS are formulated as a generalized multiple
+measurement vector (GMMV) CS problem [27]. By leveraging
+the structured sparsity of the uplink channel matrix, we
+propose a GMMV -AMP algorithm for efﬁcient simultaneous
+AUD and CE based on a spatial domain or an angular domain
+channel model. To further improve performance, a Turbo-
+GMMV -AMP algorithm is proposed for detecting the active
+UEs and estimating their channels in an alternating manner.
+This forms the basis for an adaptive access scheme which
+allows the adaptation of the required access latency 1 to the
+sparsity level of the uplink channel matrix, i.e., the maxim um
+number of non-zero entries of its columns. Additionally, th e
+state evolution (SE) of the proposed GMMV -AMP algorithm
+is derived to characterize its performance. Our main contri bu-
+tions can be summarized as follows.
+• DCS theory-based pilot design tailored for multi-
+carrier systems: Previous work [14]–[24] mainly fo-
+cuses on frequency-ﬂat narrow-band massive access with
+single-carrier transmission. In contrast, we consider the
+more challenging massive access problem for eMBB,
+where OFDM is employed. Based on DCS theory [27],
+we design pseudo-random pilot sequences tailored for
+multi-carrier systems. Thereby, the structured channel
+sparsity for the different subcarriers is further leverage d
+to improve AUD and CE performance.
+• GMMV-AMP algorithm: Exploiting the structured spar-
+sity of the massive access channel matrix observed at
+multiple receive antennas and multiple subcarriers, the
+proposed GMMV -AMP algorithm facilitates efﬁcient si-
+multaneous AUD and CE. In particular, exploiting the
+EM algorithm, the GMMV -AMP algorithm can learn the
+unknown hyper-parameters of the a priori distribution of
+the channels and the noise variance.
+• T urbo-GMMV-AMP algorithm:To jointly leverage the
+channel sparsity presented in both the spatial and the
+angular domains, this algorithm performs AUD and CE in
+an alternating manner for further enhanced performance.
+Compared with GMMV -AMP-based simultaneous pro-
+cessing methods and the state-of-the-art solutions, the
+proposed alternating approach will reap a signiﬁcant
+reduction of access latency for massive access.
+• CS-based adaptive AUD and CE: Most prior work
+[14]–[24] leverages the UEs’ sporadic trafﬁc only to
+provide a ﬁxed access latency. In contrast, the access
+latency for the proposed adaptive access scheme can be
+adapted to the actual sparsity level of the uplink massive
+access channel matrix for reliable AUD and CE.
+Notations: Throughout this paper, scalar variables are de-
+noted by normal-face letters, while boldface lower and uppe r-
+case letters denote column vectors and matrices, respectiv ely.
+[Xp]k,m is the (k, m )-th element of matrix Xp∈ CK× M ;
+[Xp]k, : and [Xp]:,m are the k-th row vector and the m-
+th column vector of matrix Xp∈ CK× M , respectively. The
+transpose, complex conjugate, and conjugate transpose ope r-
+ators are denoted by (·)T, (·)∗ , and (·)H, respectively. |K|c
+is the number of elements in set K, [K] denotes the set
+{1, · · ·, K }, and supp {·} is the support set of a vector or
+a matrix. E [·] denotes the statistical expectation. ∅ denotes
+the empty set and 0K× M is the K × M zero matrix. Finally,
+CN (x; µ, v ) denotes the complex Gaussian distribution of a
+random variable x with mean µ and variance v.
+1For grant-free massive access, the time slots consumed for t ransmitting
+the access pilot sequence contribute to the major part of the access latency.
+In this paper, we focus on the time slot overhead for pilot tra nsmission.
+
+=== PDF PAGE 3 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 3
+Inactive UE 
+Active UE 
+r
+R
+''
+Fig. 1. UEs exhibit sporadic trafﬁc in massive access. A one-
+ring channel model is considered in massive MIMO systems.
+II. S YSTEM MODEL
+In this section, we introduce the system model of the uplink
+massive access in massive MIMO-OFDM systems. Moreover,
+the sparsity properties of the massive access channel matri x
+presented in the spatial and the angular domains are further
+explained, respectively.
+A. Uplink Massive Access in Massive MIMO Systems
+We consider the typical uplink massive access scenario in
+massive MIMO systems, as illustrated in Fig. 1. There are one
+BS equipped with an M -antenna uniform linear array (ULA)
+and K potential UEs, where K is usually large (e.g., K =
+103 in [24]). OFDM with N subcarriers is adopted to combat
+time dispersive channels, and P pilots are uniformly allocated
+across the N subcarriers. For the subchannel of the p-th pilot
+subcarrier (1 ≤ p ≤ P ), the signal yt
+p,k ∈ CM× 1 received at
+the BS from the k-th UE in the t-th time slot (or equivalently
+the t-th OFDM symbol) can be expressed as
+yt
+p,k = hp,k st
+p,k + nt
+p, (1)
+where hp,k ∈ CM× 1 is the subchannel associated with the
+k-th UE, st
+p,k is the uplink access pilot of the k-th UE, and
+nt
+p denotes the additive white Gaussian noise (AWGN) at the
+BS for the p-th pilot subcarrier and the t-th time slot. Here,
+without loss of generality, we consider single-antenna UEs .
+For a typical massive access scenario, within a given time
+interval, only a small number of UEs are activated to access t he
+BS. The UE activity indicator is denoted as α k, and is equal to
+1 when the k-th UE is active and 0 otherwise. Meanwhile, we
+deﬁne the set of active UEs as A = {k|α k = 1, 1 ≤ k ≤ K},
+and the number of active UEs is denoted by Ka = |A|c.
+Hence, the signal received at the BS from all active UEs for th e
+p-th pilot subcarrier and the t-th time slot is given as follows
+yt
+p =
+K∑
+k=1
+α khp,k st
+p,k + nt
+p = Hpst
+p + nt
+p, (2)
+where Hp = [ α 1hp, 1, · · ·, α Khp,K ] ∈ CM× K and st
+p =[
+st
+p, 1, · · ·, s t
+p,K
+]T
+∈ CK× 1. By considering both the large-
+scale and the small-scale fading, we can model hp,k as
+hp,k = ρk ˜hp,k , where ρk is the large-scale fading caused by
+path loss and shadowing, and ˜hp,k is the small-scale fading.
+For the p-th pilot subcarrier, the subchannel of the k-th UE is
+modeled as follows [32]
+%6DQWHQQDV M
+VXEFDUULHUV
+N
+K Mu
+8(V K
+(a)
+K Mu
+VXEFDUULHUV
+N
+&OXVWHUHGVSDUVLW\ 
+8(V K
+YLUWXDO$2$LQGH[HV M
+(b)
+Fig. 2. The uplink massive access channel matrix exhibits tw o
+forms of structured sparsity: (a) Space-frequency structu red
+sparsity due to sparse UE activity; (b) Angular-frequency
+structured sparsity due to the limited angular spread of the
+MPCs.
+˜hp,k =
+L∑
+l=1
+βk,l aR (φ k,l ) e− j2π̟ k,l(− Bs
+2 + Bs (pN/P − 1)
+N ), (3)
+where N/P is an integer, L denotes the number of multi-path
+components (MPCs), βk,l and ̟ k,l are the complex path gain
+and the path delay of the l-th MPC, respectively, and Bs is
+the two-sided bandwidth. The array response vector aR (φ k,l )
+is given by aR (φ k,l ) =
+[
+1, e − j2πφ k,l , · · ·, e − j2π (M− 1)φ k,l
+]T
+,
+where φ k,l = d
+λ sin (ϕ k,l ). Here, ϕ k,l is the angle of arrival
+(AOA) of the k-th UE’s l-th MPC, λ is the wavelength, and
+d = λ/ 2 is the antenna spacing.
+B. Space-Frequency Structured Sparsity in Massive Access
+Due to the sporadic trafﬁc of the UEs, only a small number
+of UEs are active, i.e., Ka ≪ K. Thus, by deﬁning Xp = HT
+p ,
+the channel vector [Xp]:,m ∈ CK× 1 observed at the m-th
+receive antenna for the p-th pilot subcarrier is sparse as
+⏐
+⏐
+⏐supp
+{
+[Xp]:,m
+}⏐
+⏐
+⏐
+c
+= Ka ≪ K. (4)
+Moreover, all BS antennas exhibit the same sparsity,
+supp
+{
+[Xp]:, 1
+}
+= supp
+{
+[Xp]:, 2
+}
+= · · ·= supp
+{
+[Xp]:,M
+}
+.
+(5)
+We refer to this property as the spatial domain structured
+sparsity of massive access. Since the α k, ∀k, are identical for
+all subchannels, the {Xp}P
+p=1 also exhibit a common sparsity
+pattern in the frequency domain as follows
+supp {X1} = supp {X2} = · · ·= supp {XP } . (6)
+The joint structured sparsity in (5) and (6) is referred to as the
+space-frequency structured sparsity of {Xp}P
+p=1. To illustrate
+this structured sparsity in Fig.2(a), as an example, we assu me
+that Ka = 3 active UEs out of K = 10 total UEs access the
+BS, which is equipped with M = 16 antennas.
+C. Angular-Frequency Structured Sparsity in Massive MIMO
+On the other hand, the BS is usually at high elevation with
+few scatterers around, whereas the UEs are typically locate d
+at low elevation in a rich local scattering environment far
+
+=== PDF PAGE 4 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 4
+from the BS [27]. This scenario can be modeled using the
+classical one-ring channel model [28]. For a UE which is
+located at a distance of R from the BS and surrounded by
+rich scatterers located within a radius of r around the UE,
+the angular spread ∆ ≈ arctan (r/R ) seen from the BS is
+expected to be very small as usually R ≫ r. This leads to
+sparsity of massive MIMO channels in the virtual angular
+domain [29]–[31]. Speciﬁcally, the virtual angular domain
+massive MIMO channel associated with the k-th UE for the
+p-th pilot subcarrier can be represented as
+˜wp,k = AH
+R˜hp,k , (7)
+where the transformation matrix AR ∈ CM× M at the BS side
+is a unitary matrix. Here, AR depends on the geometry of
+the adopted array, and becomes the discrete Fourier transfo rm
+matrix for a ULA with d = λ/ 2 [32]. Due to the small ∆ and
+large M , the channel vector ˜wp,k is sparse, i.e.,
+|supp { ˜wp,k }|c ≪ M, (8)
+and this sparsity is clustered, as illustrated in Fig. 2(b).
+Moreover, since the spatial propagation characteristics o f all
+wireless channels within the total bandwidth are similar, a ll
+subchannels associated with different subcarriers are aff ected
+by the same scatterers [27]. Consequently, the { ˜wp,k }P
+p=1 , ∀k,
+have a common sparsity pattern in the frequency domain, i.e. ,
+supp { ˜w1,k } = supp { ˜w2,k } = · · ·= supp { ˜wP,k } . (9)
+We refer to the jointly structured sparsity in (8) and (9) as t he
+angular-frequency structured sparsity of massive MIMO cha n-
+nels. Additionally, we further deﬁne the virtual angular do main
+channel matrix as Wp = XpA∗
+R = [α 1wp, 1, · · ·, α Kwp,K ]T,
+where wp,k = ρk ˜wp,k . Considering the space-frequency
+structured sparsity described in (4)-(6), we further have
+⏐
+⏐
+⏐supp
+{
+[Wp]:,m
+}⏐
+⏐
+⏐
+c
+≪ Ka, and
+supp {W1} = supp {W2} = · · ·= supp {WP } . (10)
+The illustration in Fig. 2(b) takes both the space-frequenc y
+structured sparsity of massive access and the angular-
+frequency structured sparsity of massive MIMO channels int o
+account. These sparsity properties will be exploited in the
+remainder of this paper to achieve low-latency and highly-
+reliable AUD and CE performance.
+III. CS-B ASED ACTIVE USER DETECTION AND CHANNEL
+ESTIMATION SCHEMES
+In this section, we detail the proposed CS-based AUD and
+CE schemes for massive access. First, a DCS-based pilot
+design is proposed for broadband massive access. Then, two
+simultaneous AUD and CE schemes are developed based on a
+spatial domain and an angular domain channel model, respec-
+tively. On this basis, the alternating AUD and CE schemes
+are further proposed for enhanced performance. Finally, th e
+computational complexity of the proposed schemes will be
+analyzed.
+The frame structure of the uplink signals is illustrated in F ig.
+3. A frame consists of T time slots, where the ﬁrst G time
+slots include both pilots and data, and the remaining (T − G)
+TĂ
+Time Slot 
+Frequency (subcarrier) 
+G
+/N P 
+Pilot 
+Data 
+Fig. 3. The frame structure of the uplink signals
+time slots are reserved for data transmission only. Here, we
+assume T is smaller than the channel coherence time, and the
+activity of the UEs during the T time slots remains unchanged.
+At the BS, the received signals in G successive time slots for
+the p-th pilot subcarrier are collected as
+YG
+p = SG
+p Xp + Np, ∀p ∈ [P ] , (11)
+where YG
+p =
+[
+y1
+p, · · ·, yG
+p
+]T
+∈ CG× M , SG
+p =[
+s1
+p, · · ·, sG
+p
+]T
+∈ CG× K, Xp = HT
+p ∈ CK× M , and Np =[
+n1
+p, · · ·, nG
+p
+]T
+. To avoid complicated scheduling protocols
+and the associated latencies, in RA, the active UE set (AUS)
+A and the corresponding channel vectors {hp,k }P
+p=1, k ∈ A ,
+have to be reliably estimated based on the noisy measurement s{
+YG
+p
+}P
+p=1 and the known pilot matrices
+{
+SG
+p
+}P
+p=1, which is
+equivalent to estimating {Xp}P
+p=1 based on (11). Due to the
+space-frequency structured sparsity of {Xp}P
+p=1, the AUD and
+CE based on (11) can be formulated as a CS problem with
+G ≪ K. Moreover, considering the virtual angular domain
+sparsity shown in (8), we can further transform (11) as
+RG
+p = YG
+p A∗
+R = SG
+p Wp + ˜Np, ∀p ∈ [P ] , (12)
+where ˜Np = NpA∗
+R. Based on this, we develop two categories
+of AUD and CE schemes:
+• Simultaneous AUD and CE: The estimate of {Xp}P
+p=1,
+denoted by { ˆXp}P
+p=1, can be directly obtained based on
+(11). Alternatively, we can ﬁrst estimate {Wp}P
+p=1 based
+on (12), and then obtain { ˆXp}P
+p=1 according to (7).
+• Alternating AUD and CE: Compared with Xp in (11),
+the sparser Wp in (12) will yield a better CE perfor-
+mance, but the common sparsity pattern across multiple
+columns of Wp is destroyed. Therefore, the proposed
+alternating scheme leverages (11) for AUD and (12) for
+CE, i.e., (11) and (12) are alternately exploited to reap
+both the structured sparsity of Xp and the enhanced
+sparsity of Wp for further improved performance.
+In the following, we will ﬁrst discuss the pilot design and th en
+explain the proposed AUD and CE schemes.
+A. DCS-Based Pilot Design for Broadband Massive Access
+For the CS problems in (11) and (12), the RA pilot matrices
+SG
+p , ∀p, serve as measurement matrix. The properties of
+
+=== PDF PAGE 5 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 5
+the measurement matrix are crucial for guaranteeing reliab le
+recovery of sparse channel matrices {Xp}P
+p=1. Hence, the pilot
+signals should be carefully designed to guarantee reliable AUD
+and CE. The sparse signal recovery algorithms proposed in
+this paper are based on the family of AMP algorithms, which
+usually require independent and identically distributed ( i.i.d.)
+Gaussian measurement matrices [33]. Hence, for the p-th pilot
+subcarrier, the pilot associated with the k-th UE in the t-
+th time slot is generated from a standard complex Gaussian
+distribution, i.e., st
+p,k ∼ CN (st
+p,k ; 0, 1). Furthermore, the SG
+p
+should be different for different pilot subcarriers to achi eve
+diversity, which means that (11) and (12) are GMMV -CS mod-
+els [27]. Compared to the conventional multiple measuremen t
+vector (MMV) problem [34], where identical pilots would
+be allocated to all pilot subcarriers, employing different pilot
+matrices across different pilot subcarriers can improve AU D
+and CE performance according to DCS theory [27].
+B. Simultaneous AUD and CE Schemes
+For massive access, reliable inference of AUS A and the
+corresponding {hp,k }P
+p=1, k ∈ A , from
+{
+YG
+p
+}P
+p=1 is challeng-
+ing. In this subsection, we propose two simultaneous AUD and
+CE schemes, where a GMMV -AMP algorithm is developed to
+solve the CS problems in (11) and (12), respectively. Withou t
+loss of generality, we consider (11) ﬁrst and focus on the p-th
+pilot subcarrier. The obtained results can be easily extend ed
+to the model (12) and multiple pilot subcarriers.
+1) Spatial Domain Simultaneous AUD and CE (Scheme 1):
+Deﬁne xp,k,m = [ Xp]k,m . The minimum mean square error
+(MMSE) estimate of Xp is the posterior mean, which can be
+expressed as
+ˆxk,m =
+∫
+xk,m p (xk,m |Y) dxk,m , ∀k, m. (13)
+In (13), the superscript G and index p in xp,k,m , Xp, and
+YG
+p are dropped to simplify the notation, and the marginal
+posterior distribution is given by
+p (xk,m |Y) =
+∫
+p (X|Y) dX\ k,m , (14)
+where X\ k,m denotes the collection of the {xi,j }1≤ i≤ K,i ̸=k
+1≤ j≤ M,j ̸=m.
+The joint posterior distribution in (14) can be computed
+according to the Bayesian rule as
+p (X|Y) = p (Y|X) p0 (X)
+p (Y)
+= 1
+˜Z1
+M∏
+m=1
+[ G∏
+g=1
+p (yg,m |X)
+K∏
+k=1
+p0 (xk,m )
+]
+,
+(15)
+where ˜Z1 =
+∫∫
+p (Y|X) p0 (X) dXdY is a normalization
+factor and p0 (X) is the a priori distribution of X. Under the
+assumption of AWGN, the likelihood function in (15) is
+p (yg,m |X) = 1
+πσ exp
+(
+− 1
+σ
+⏐
+⏐
+⏐yg,m −
+∑
+k
+sg,k xk,m
+⏐
+⏐
+⏐
+2)
+,
+(16)
+where σ is the variance of the complex AWGN. In this paper,
+to characterize the sparsity of X, we consider a ﬂexible spike
+and slab a priori distribution for X, i.e.,
+p0 (X) =
+M∏
+m=1
+K∏
+k=1
+p0 (xk,m )
+=
+M∏
+m=1
+K∏
+k=1
+[(1 − γk,m ) δ (xk,m ) + γk,m f (xk,m )],
+(17)
+which can effectively capture the actual prior knowledge of
+the channel matrix X [29]–[31]. In (17), 0 < γ k,m < 1 is the
+sparsity ratio, i.e., the probability of xk,m being non-zero, δ (·)
+is the Dirac delta function, and f (·) is the distribution of the
+non-zero entries. This distribution arises from the litera ture
+of AMP algorithm [35], [36], and has been successfully
+employed in various AMP-based channel estimation schemes
+[29]–[31].
+The factorization in (15) can be represented by a bipartite
+graph, which consists of variable nodes, factor nodes, and t he
+corresponding edges [37]. This suggests the use of message
+passing algorithms [37] to realize the MMSE estimator. As th e
+messages for marginal posterior probabilities are difﬁcul t to
+compute for massive access, we resort to the AMP algorithm
+[33], which employs low-complexity heuristics for approxi -
+mating p (xk,m |Y).
+Proposition 1: In the large system limit, i.e., K → ∞ ,
+while γ = Ka/K and κ = G/K are ﬁxed, the AMP
+algorithm decouples the matrix estimation problem based on
+(11) into KM scalar estimation problems. Considering this,
+the posterior distributions of xk,m , ∀k, m , are approximated
+as
+p (xk,m |Y) ≈ p
+(
+xk,m |Cq
+k,m , D q
+k,m
+)
+≈ 1
+˜Z2
+p0 (xk,m ) CN
+(
+xk,m ; Cq
+k,m , D q
+k,m
+)
+,
+(18)
+where q denotes the q-th iteration, and ˜Z2 is a normalization
+factor. In (18), Dq
+k,m and Cq
+k,m are updated at the variable
+nodes of the bipartite graph as
+Dq
+k,m =
+[ ∑
+g
+|sg,k |2
+σ + V q
+g,m
+] − 1
+, (19)
+Cq
+k,m = ˆxq
+k,m + Dq
+k,m
+∑
+g
+s∗
+g,k
+(
+yg,m − Z q
+g,m
+)
+σ + V q
+g,m
+, (20)
+where V q
+g,m and Z q
+g,m are updated at the factor nodes of the
+bipartite graph as
+V q
+g,m =
+∑
+k
+|sg,k |2 vq
+k,m , (21)
+Z q
+g,m =
+∑
+k
+sg,k ˆxq
+k,m − V q
+g,m
+σ + V q− 1
+g,m
+(
+yg,m − Z q− 1
+g,m
+)
+. (22)
+Proof Please refer to the Appendix A. □
+It is worth noticing that, although the proposed algorithms
+are developed from the large system limit ( K → ∞ ), in
+practice, they perform well even in the medium size problems ,
+such as massive access with hundreds even thousands of UEs,
+which has been discussed in the literature of AMP algorithms
+[33, Sec. II], [41]. Moreover, we consider the widely used
+Gaussian a priori distribution for the channel gains, i.e.,
+
+=== PDF PAGE 6 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 6
+f (xk,m ) = CN (xk,m ; µ, τ ) [29]. By exploiting this a priori
+model in (18), the posterior distribution of xk,m is obtained
+as
+p
+(
+xk,m |Cq
+k,m , D q
+k,m
+)
+=
+(
+1 − π q
+k,m
+)
+δ (xk,m )
++ π q
+k,m CN
+(
+xk,m ; Aq
+k,m , B q
+k,m
+)
+,
+(23)
+where
+Aq
+k,m =
+τ Cq
+k,m + µD q
+k,m
+Dq
+k,m + τ , B q
+k,m =
+τ Dq
+k,m
+τ + Dq
+k,m
+, (24)
+π q
+k,m = γk,m
+γk,m + (1 − γk,m ) exp (−L ) , (25)
+L = 1
+2 ln
+Dq
+k,m
+Dq
+k,m + τ +
+⏐
+⏐
+⏐Cq
+k,m
+⏐
+⏐
+⏐
+2
+2Dq
+k,m
+−
+⏐
+⏐
+⏐Cq
+k,m − µ
+⏐
+⏐
+⏐
+2
+2
+(
+Dq
+k,m + τ
+), (26)
+and π q
+k,m is referred to as the belief indicator. The posterior
+mean (62) and variance (63) can now be explicitly calculated
+as
+ga
+(
+Cq
+k,m , D q
+k,m
+)
+= π q
+k,m At
+k,m , (27)
+gc
+(
+Cq
+k,m , D q
+k,m
+)
+= π q
+k,m
+(⏐
+⏐
+⏐Aq
+k,m
+⏐
+⏐
+⏐
+2
++ Bq
+k,m
+)
+− |ga|2 , (28)
+respectively.
+Therefore, for the p-th pilot subcarrier, the MMSE estimate
+of Xp can be acquired by iteratively calculating (19)-(28)
+instead of solving the high-dimensional integrals in (14). The
+resulting procedure is referred to as the basic MMV-AMP
+algorithm. However, the basic MMV -AMP algorithm requires
+full knowledge of the a priori distribution of the channels
+{µ, τ, γ k,m , ∀k, m } and the noise variance σ , which may be
+difﬁcult to obtain in practice. Hence, the EM algorithm is
+exploited to learn the unknown hyper-parameters, i.e., θ =
+{µ, τ, σ, γ k,m , ∀k, m }. The EM algorithm involves two steps
+Q (θ, θq) = E [ln p (X, Y)|Y; θq] , (29)
+θq+1 = arg max
+θ
+Q (θ, θq) , (30)
+where E [·|Y; θq] denotes the expectation conditioned on
+measurements Y with parameters θq, i.e., the expectation is
+with respect to the posterior distribution p (X|Y; θq). There
+are two challenges in harnessing the EM algorithm: (a) the
+computation of p (X|Y; θq) is of high complexity and (b) the
+joint optimization of all elements of θ is difﬁcult. Fortunately,
+in the large system limit with K → ∞ , the high complexity of
+calculating p (X|Y; θq) can be considerably reduced by using
+the approximation p (X|Y; θq) ≈ ∏
+m
+∏
+k
+p
+(
+xk,m |Cq
+k,m , D q
+k,m
+)
+according to (18). Moreover, the incremental EM algorithm
+[38] can be used to simplify the joint optimization of all
+elements of θ, where θ is updated one element at a time
+and the other parameters are held constant. By setting the
+derivative of (29) with respect to one element of θ to zero, the
+update rules of the hyper-parameters are obtained as, ∀k, m :
+µ q+1
+k,m =
+∑
+k π q
+k,m Aq
+k,m
+∑
+k π q
+k,m
+, (31)
+γ q+1
+k,m = π q+1
+k,m =
+γ q
+k,m
+γ q
+k,m + (1 − γ q
+k,m ) exp (−L ) , (32)
+τq+1
+k,m =
+∑
+k π q
+k,m
+[⏐
+⏐
+⏐µ q
+k,m − Aq
+k,m
+⏐
+⏐
+⏐
+2
++ Bq
+k,m
+]
+∑
+k π q
+k,m
+, (33)
+σ q+1
+k,m = 1
+GM
+∑
+g
+
+
+
+⏐
+⏐yg,m − Z q
+g,m
+⏐
+⏐2
+⏐
+⏐
+⏐1+ V q
+g,m /σ q
+k,m
+⏐
+⏐
+⏐
+2 +
+σ q
+k,m V q
+g,m
+σ q
+k,m +V q
+g,m
+
+
+ . (34)
+As the EM algorithm may converge to a local extremum of
+the likelihood function, the proper initialization of the h yper-
+parameters is crucial. Here, we use the following initializ ation
+[39], ∀k, m :
+σ 1
+k,m =
+∑
+g |yg,m |2
+(SNR0 + 1)G , (35)
+µ 1
+k,m = 0, τ 1
+k,m =
+∑
+g |yg,m |2 − M σ1
+k,m
+∑
+g
+∑
+k |sg,k |2 , (36)
+γ 1
+k,m = G
+K
+{
+max
+c>0
+1− 2K
+[
+(1+ c2)Φ(− c)− cφ(c)
+]
+/G
+1+ c2− 2 [(1+c2)Φ(− c)− cφ(c)]
+}
+. (37)
+Here, Φ(− c) and φ(c) are the cumulative distribution function
+and the probability density function of the standard normal
+distribution, respectively, and SNR0 = 100 is suggested in [39].
+Equations (19)-(28) and (31)-(37) are the main EM steps
+incorporated into the MMV -AMP algorithm to learn the
+unknown hyper-parameters. However, the resulting overall
+algorithm is limited to the AUD and CE of a single pilot
+subcarrier. Hence, we extend the MMV -AMP algorithm to
+the GMMV -AMP algorithm (summarized in Algorithm 1),
+where the subchannel matrices Xp, ∀p, for all pilot subcarriers
+are jointly estimated with different measurement matrices
+SG
+p , ∀p. Speciﬁcally, in lines 3-6 , the messages are updated
+independently for all pilot subcarriers; in lines 4 and 5, a
+damping parameter ρ = 0 . 3 is used to prevent the algorithm
+from diverging according to [40]; line 7 uses the incremental
+EM algorithm to learn the unknown hyper-parameters θ; line 8
+reﬁnes the update rule for the sparsity ratio γp,k,m to leverage
+the structured sparsity of the channel matrix for improved
+CS recovery. By contrast, the state-of-the-art AMP-based
+estimators in [23] and [24] require θ as a priori information.
+In Algorithm 1, the sparsity ratio γp,k,m is the probability
+that the (k, m )-th element of Xp is non-zero. In line 7, γp,k,m
+is updated independently for all p, k, and m according to (32),
+which indicates that the common sparsity pattern described in
+(5) and (6) is not exploited. To fully exploit the structured
+sparsity of the channel matrix, as discussed in Section II-B and
+illustrated in Fig. 2(a), we assume that the channel element s
+associated with the same UE have a common sparsity ratio,
+and further propose to reﬁne γp,k,m as in line 8 of Algorithm
+1, where we use
+Np,k,m = {(o, l, u ) |o = 1, · · ·, P ; l = k; u = 1, · · ·, M } .
+(38)With the estimate of {Xp}P
+p=1, the AUS and the correspond-
+ing channel vectors can be simultaneously acquired. Speciﬁ -
+cally, for AUD, we develop two UE activity detectors based
+on the { ˆXp}P
+p=1 and the belief indicators πp,k,m , ∀p, k, m ,
+
+=== PDF PAGE 7 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 7
+Algorithm 1 GMMV -AMP Algorithm
+Input: ∀p : Noisy observations YG
+p , pilot matrices SG
+p ; the
+damping parameter ρ, the maximum number of iterations
+Tamp, and termination threshold η.
+Output: Estimated channel matrix { ˆXp}P
+p=1 and the related
+belief indicators πp,k,m , ∀p, k, m .
+1: ∀p, k, m, g : Set iteration index q to 1, initialize the hyper-
+parameters as in (35)-(37), and initialize other parameter s
+as V 0
+p,g,m = 1 , Z 0
+p,g,m = yp,g,m , ˆx1
+p,k,m = µ 1
+p,k,m ,
+v1
+p,k,m = τ1
+p,k,m .
+2: repeat
+3: ∀p, g, m : Update V q
+p,g,m and Z q
+p,g,m according to (21)
+and (22) at the factor nodes.
+4: V q
+p,g,m = ρV q− 1
+p,g,m + (1 − ρ) V q
+p,g,m .
+5: Z q
+p,g,m = ρZ q− 1
+p,g,m + (1 − ρ) Z q
+p,g,m .
+6: ∀p, k, m : Update Dq
+p,k,m and Cq
+p,k,m according to
+(19) and (20) at the variable nodes, and ˆxq+1
+p,k,m =
+ga
+(
+Cq
+p,k,m , D q
+p,k,m
+)
+, vq+1
+p,k,m = gc
+(
+Cq
+p,k,m , D q
+p,k,m
+)
+.
+7: ∀p, k, m : Update the hyper-parameters µ q+1
+p,k,m , γ q+1
+p,k,m ,
+τq+1
+p,k,m , and σ q+1
+p,k,m as in (31)-(34).
+8: ∀p, k, m : Reﬁne the update rule for the sparsity ratio,
+γ q+1
+p,k,m = 1
+|Np,k,m|c
+∑
+(o,l,u )∈N p,k,m
+π q+1
+o,l,u .
+9: q = q + 1.
+10: until q > Tamp or ∑
+p
+
+
+ ˆXq
+p − ˆXq− 1
+p
+
+
+
+F
+/ ∑
+p
+
+
+ ˆXq− 1
+p
+
+
+
+F
+< η.
+11: return { ˆXp}P
+p=1; πp,k,m = γ q
+p,k,m , ∀p, k, m .
+respectively, as follows. We ﬁrst deﬁne a threshold functio n
+r (x; ε), where r (x; ε) = 1 if |x|> ε, otherwise r (x; ε) = 0 .
+Deﬁnition 1: Based on { ˆXp}P
+p=1, a channel gain-based
+activity detector (CG-AD) is proposed for AUD as follows
+ˆα k =
+{ 1, 1
+P M
+∑
+p
+∑
+m r (ˆxp,k,m ; εcg) ≥ pcg,
+0, 1
+P M
+∑
+p
+∑
+m r (ˆxp,k,m ; εcg) < p cg, (39)
+where εcg = ˜α max {|ˆxp,k,m |, ∀p, k, m }, ˜α = 0 . 01 is the
+ratio of the minimum and maximum amplitudes of the channel
+coefﬁcients, see [23, Sec. IV], and pcg = 0. 92.
+Proposition 2: In the large system limit, if a reliable estimate
+of Xp is acquired after the convergence of the GMMV -AMP
+algorithm,
+πk,m =
+{ 1, x k,m ̸= 0,
+0, x k,m = 0. (40)
+Proof Please refer to the Appendix B. □
+Deﬁnition 2: Since the belief indicator πp,k,m tends to be
+1 for ˆxp,k,m ̸= 0 and 0 for ˆxp,k,m = 0 , we further design a
+belief indicator-based activity detector (BI-AD) as
+ˆα k =
+{ 1, 1
+P M
+∑
+p
+∑
+m r (πp,k,m ; εbi) ≥ pbi,
+0, 1
+P M
+∑
+p
+∑
+m r (πp,k,m ; εbi) < p bi. (41)
+For spatial domain simultaneous AUD and CE, we set εbi =
+εspa
+bi = 0. 5 to make the missed detection and false alarm proba-
+bilities identical, and the same as pcg, we set pbi = pspa
+bi = 0. 9
+2If more than 90% of the elements of {[ ˆXp]k,:}P
+p=1 are decided to be
+non-zero, the k-th UE is declared active.
+based on empirical experience. Nevertheless, we note that t he
+decisions of the CG-AD and BI-AD are not sensitive to the
+values of pcg and pbi3. Finally, if the k-th UE is declared
+active, its channel is estimated as ˆhp,k =
+[
+ˆXp
+]T
+k, :
+.
+2) Angular Domain Simultaneous AUD and CE (Scheme
+2): The GMMV -AMP algorithm designed for CS model (11)
+can be directly applied to model (12) for angular domain
+simultaneous AUD and CE by replacing YG
+p and ˆXG
+p with RG
+p
+and ˆWG
+p , respectively. Actually, (11) and (12) are equivalent
+signal models. Meanwhile, it is worth noticing that the chan nel
+matrix Xp and Wp exhibit two different forms of structured
+sparsity. Hence, the difference between the spatial domain and
+the angular domain schemes mainly lies in the different upda te
+rules (i.e., (38) and (42)) for reﬁning the sparsity ratio γp,k,m
+in line 8 of Algorithm 1. Different from (11), both the space-
+frequency and the angular-frequency structured sparsity o f the
+channel matrix are considered in (12), as has been discussed in
+Section II-C and illustrated in Fig. 2(b). Deﬁne the neighbo rs
+of wp,k,m as
+˜Np,k,m = {(p − 1, k, m ) , (p + 1, k, m ) ,
+(p, k, m − 1) , (p, k, m + 1)} .
+(42)
+Due to the clustered sparsity and the structured sparsity
+described in (8)-(10), wp,k,m and the elements of ˜Np,k,m
+tend to be simultaneously either zero or non-zero 4. Hence,
+when the GMMV -AMP algorithm is applied to (12), Np,k,m
+in line 8 is replaced by ˜Np,k,m . Based on the estimate of
+{Wp}P
+p=1, the { ˆXp}P
+p=1 can be acquired according to (7).
+Moveover, the active UEs can be detected via CG-AD in
+(39) based on { ˆXp}P
+p=1 or via BI-AD in (41) based on
+the belief indicators of wp,k,m , ∀p, k, m . However, as the
+common sparsity across multiple BS antennas is destroyed,
+it is challenging to ﬁnd a suitable pbi for BI-AD. Hence, we
+set pbi to pang
+bi = pspa
+bi Sa
+min/M , where Sa
+min is the minimum
+number of non-zero elements of [Wp]k, :, ∀p, k . For AUD,
+our simulations in Section V reveal that, for Scheme 1 based
+on model (11), BI-AD is more reliable than CG-AD, but for
+Scheme 2 based on model (12), CG-AD is more reliable than
+BI-AD .
+C. Alternating AUD and CE Schemes
+The simultaneous AUD and CE based on (11) or (12) can
+not fully exploit the enhanced sparsity of Wp and the common
+sparsity pattern across the multiple columns of Xp. Hence,
+we propose a Turbo-GMMV -AMP algorithm that performs
+AUD and CE in an alternating manner, where model (11) and
+model (12) are alternately exploited for enhanced performa nce.
+This facilitates the development of a CS-based adaptive AUD
+and CE scheme for practical massive access scenarios with
+unknown channel sparsity level.
+1) Turbo-GMMV-AMP Algorithm (Scheme 3): This algo-
+rithm is summarized in Algorithm 2, and consists of module
+3We found empirically via simulations for a wide range of syst em param-
+eters that pcg = pspa
+bi = 0.9 yields a high AUD performance.
+4Here, we assume that no power leakage caused by the discrete F ourier
+transformation in (7) [29]. Otherwise, the channel would be approximately
+sparse.
+
+=== PDF PAGE 8 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 8
+$FWLYH8('HWHFWRU 
+G
+p<
+G
+p6
+&KDQQHO(VWLPDWRU 
+:
+&RPSXWH 
+5HVLGXDO 
+i 
+ G
+p
+j
+<
+0RGXOH% 0RGXOH$ 
+m p:
+  
+j
+p k m S:
+*
+m
+
+p
+:
+ª º 
+¬ ¼ :
+˖
+ 
+G G 
+pp p p ::
+ª º 
+¬ ¼ ª º   ¬ ¼ 5 6 : 1 
+˖
+$FTXLUH 
+6XEVHW 
+ j;
+i    
+UH G G
+p p
+j j
+p p   6 ; 1 <
+ GHW r H
+  UHO r H
+Fig. 4. Block diagram of the proposed Turbo-GMMV -AMP
+algorithm.
+A and module B, as illustrated in Fig. 4. In the ﬁrst turbo
+iteration ( j = 1 ), module A determines a rough estimate of
+the AUS, where the GMMV -AMP algorithm is applied based
+on model (11) to obtain the belief indicators π j
+p,k,m , ∀p, k, m .
+Even for small G with poor estimation quality of Xp, i.e.,
+v∞
+k,m is smaller than a speciﬁc value rather than v∞
+k,m → 0,
+the 0 ≤ π j
+p,k,m ≤ 1 tend to be 0 for xp,k,m = 0 but 1 for
+xp,k,m ̸= 0 after convergence of the GMMV -AMP algorithm,
+the related proof is similar to Appendix B. Hence, we use the
+BI-AD rather than CG-AD to acquire two AUS estimates with
+different reliability: a rough AUS Ω with a lower threshold
+εdet and a reliable AUS Ξj with a higher threshold εrel, as
+shown in lines 6-13 in Algorithm 2, so that Ξj ⊆ Ω. Here, we
+set εdet to 0.4 to obtain a low missed detection probability,
+and εrel to 0.9 to avoid false alarm and to achieve reliable
+detection of the active UEs, i.e., the UEs in Ξj are active with
+high probability. These two AUSs, Ω and Ξj, are passed on
+to module B.
+In module B, with the rough AUS estimate Ω, the angular
+domain channel vectors of the UEs in Ω, i.e., [Wp]Ω, :, are
+estimated based on the model in (12) as
+RG
+p =
+[
+SG
+p
+]
+:, Ω [Wp]Ω, : +
+Np, ∀p ∈ [P ] , (43)
+where
+[
+SG
+p
+]
+:, Ω ∈ CG×| Ω|c and [Wp]Ω, : ∈ C|Ω|c× M
+are sub-matrices of SG
+p and Wp, respectively,
+Np =[
+SG
+p
+]
+:, K− Ω [Wp]K− Ω, : + ˜Np, K is the set of all potential
+UEs, and K − Ω denotes the difference set of sets K and
+Ω. To reduce the power of
+Np, A ⊆ Ω is desirable, i.e., a
+low missed detection probability. The dimension of the upli nk
+channel matrix for CE is reduced by considering only the
+UEs in Ω. Furthermore, the low-dimensional channel matrix
+[Wp]Ω, : is still sparse due to the angular-frequency structured
+sparsity of massive MIMO channels. Hence, we can estimate
+[Wp]Ω, : , ∀p, by applying the GMMV -AMP algorithm to (43),
+see line 16 of Algorithm 2. Moreover, the signals received
+from the UEs in Γ, a subset of Ξj , are removed to enhance
+the sparsity of the uplink massive access channel matrix for
+AUD. The residual received signals
+(
+˜YG
+p
+)j
+are computed in
+lines 17 and 18, and are passed on to module A.
+In the following turbo iterations ( j > 1), the AUD problem
+in module A is to recover
+(
+Xre
+p
+)j
+based on the following
+model (
+˜YG
+p
+)j
+= SG
+p
+(
+Xre
+p
+)j
++ Np, ∀p ∈ [P ] , (44)
+where ( ˜YG
+p )j contains the residual received signals in the j-th
+turbo iteration,
+(
+Xre
+p
+)j
+= Xp − ˜Xj
+p, and ˜Xj
+p ∈ CK× M is de-
+ﬁned as, [ ˜Xj
+p]Γ, : = [ ˆXj− 1
+p ]Γ, :, while [ ˜Xj
+p]K− Γ, : = 0|K− Γ|c× M .
+Algorithm 2 Turbo-GMMV -AMP Algorithm
+Input: ∀p : Noisy observations YG
+p , pilot matrices SG
+p ; the
+maximum number of turbo iterations Ttur.
+Output: The estimated AUS ˆA and the corresponding chan-
+nel vectors {ˆhp,k }P
+p=1, ∀k ∈ ˆA.
+1: Initialization: j = 1, Ξ0 = ∅;
+(
+˜YG
+p
+)1
+= YG
+p .
+2: repeat
+3: k = 0, Ω = Γ = ∅.
+4: // Module A: Active UE detector
+5: ∀p, k, m : Acquire the belief indicators π j
+p,k,m by ap-
+plying the GMMV -AMP algorithm to model (44).
+6: for k ≤ K do
+7: if 1
+P M
+∑
+p
+∑
+m r
+(
+π j
+p,k,m ; εdet
+)
+≥ pbi then
+8: Ω = Ω ∪ Ξj− 1 ∪ { k}.
+9: end if
+10: if 1
+P M
+∑
+p
+∑
+m r
+(
+π j
+p,k,m ; εrel
+)
+≥ pbi then
+11: Ξj = Ξ j− 1 ∪ { k}.
+12: end if
+13: end for
+14: // Module B: Virtual angular domain channel estimator
+15: ∀p : RG
+p = YG
+p A∗
+R, ˆWj
+p = 0K× M . % ˆWj
+p is the
+estimated channel matrix in the virtual angular domain.
+16: ∀p : Acquire the channel vectors
+[
+Wj
+p
+]
+k, : , ∀k ∈ Ω by
+applying the GMMV -AMP algorithm to model (43).
+17: Acquire set Γ, Γ ⊆ Ξj , and |Γ|c /
+⏐
+⏐Ξj ⏐
+⏐
+c = λ aus. % The
+elements in Γ are randomly selected from Ξj .
+18: ˆXj
+p = ˆWj
+pAT
+R;
+(
+˜YG
+p
+)j+1
+= YG
+p −
+[
+SG
+p
+]
+:, Γ
+[
+ˆXj
+p
+]
+Γ, :
+.
+19: j = j + 1.
+20: until j > Ttur.
+21: ˆA = Ω; ˆhp,k =
+([
+ˆWj− 1
+p
+]
+k, :
+AT
+R
+)T
+, ∀p, k .
+22: return ˆA; {ˆhp,k }P
+p=1, ∀k ∈ ˆA.
+To prevent the GMMV -AMP algorithm from diverging, we
+only remove the signals received from a part of the UEs
+in Ξj , i.e., λ aus < 1 (e.g. λ aus = 0 . 8). Modules A and B
+will be executed iteratively. Since the
+(
+Xre
+p
+)j
+become sparser
+and the channels of the UEs in Ω are iteratively re-estimated
+as the turbo iterations proceed, the Ω and the correspond-
+ing channels are constantly reﬁned. Therefore, compared to
+the simultaneous processing approaches in Section III-B, t he
+proposed alternating approach facilitates more reliable A UD
+and CE with signiﬁcantly smaller G, which means a dramatic
+reduction of access latency.
+2) CS-Based Adaptive AUD and CE (Scheme 4): For prac-
+tical systems, the UE activity and the channel environment
+are time-varying. As a result, the sparsity level of the upli nk
+massive access channel matrix may change over time. If the
+channel matrix is relatively sparse, a small time slot overh ead
+G is sufﬁcient to acquire accurate AUS and CSI estimates,
+while if the channel matrix is relatively dense, a large G
+is required to guarantee reliable sparse signal recovery. T his
+motivates us to propose a CS-based adaptive AUD and CE
+
+=== PDF PAGE 9 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 9
+Algorithm 3 CS-Based Adaptive AUD and CE Scheme
+1: Determine the initial time slot overhead G0 and set
+iteration index i to 0.
+2: repeat
+3: ∀p : Collect YGi
+p and SGi
+p for given Gi. % Gi is the
+required G for massive access in the i-th iteration.
+4: ∀p : Acquire the AUS estimate ˆA and the corresponding
+CSI estimates ˆhp,k , k ∈ ˆA by leveraging Algorithm 2.
+5: ∀p : Obtain ˆXp according to ˆA and ˆhp,k , k ∈ ˆA.
+6: ∀p :Y
+Gi+1
+p =
+[
+(YGi
+p )T, y
+Gi+1
+p
+]T
+;S
+Gi+1
+p =
+[
+(SGi
+p )T, s
+Gi+1
+p
+]T
+.
+7: Gi+1 = Gi + 1; i = i + 1.
+8: until ∑
+p
+
+
+YGi− 1
+p − SGi− 1
+p ˆXp
+
+
+
+2
+F
+/ (P Gi− 1) < ǫ.
+scheme, as shown in Algorithm 3, to adaptively adjust G
+to facilitate low-latency and high-reliability AUD and CE.
+Algorithm 3 can be summarized as follows.
+• Step 1: In each time slot, all active UEs transmit non-
+orthogonal RA pilots to the BS. The pilots are pre-
+designed based on DCS theory and known to the system.
+• Step 2: The BS collects the received signals over mul-
+tiple successive time slots, and the Turbo-GMMV -AMP
+algorithm is utilized to alternately acquire the AUS and
+CSI estimates, see lines 3 -5 of Algorithm 3. Besides, the
+estimation reliability is evaluated based on a pre-speciﬁe d
+criterion, see line 8 of Algorithm 3.
+• Step 3: If the criterion is met, the outcome of the
+evaluation is informed to all UEs, and the active UEs
+stop transmitting pilots and start to transmit their data to
+the BS without scheduling permission. Otherwise, Step 1
+is repeated until the received signals collected at the BS
+are sufﬁcient to meet the evaluation criterion.
+Here, based on CS theory, G0 ≥ E[|supp{[Wp]:,m }|c] is
+desirable, and ǫ = 0. 8 is suggested in [27, Sec. V].
+D. Computational Complexity Analysis
+For the practical implementation of the algorithms, the
+related computational complexity determines the hardware
+cost and the power consumption for processing. Hence, the
+complexity analysis for the proposed algorithms is an impor -
+tant issue, especially for massive connectivity with large scale
+systems.
+Table I compares the complexity of the proposed GMMV -
+AMP algorithm and Turbo-GMMV -AMP algorithm, as well
+as the conventional greedy CS recovery algorithms, i.e., ge n-
+eralized subspace pursuit (GSP) [43], simultaneous orthog o-
+nal matching pursuit (SOMP) [42], and distributed sparsity
+adaptive matching pursuit DSAMP [27], [44], in terms of
+the number of the required complex multiplications in each
+iteration for AUD and CE. Obviously the matrix inversion
+implemented in three greedy CS recovery algorithms for leas t
+square operation contributes to most of the computational
+complexity. Hence, three greedy methods have the same order
+of computational complexity, i.e., in order of cubic magnit ude
+TABLE I: Computational Complexity for AUD and CE
+Algorithm Number of complex multiplications in each iterat ion
+GSP 2(G + 1)KM P + GM 2P + 2(M + 1)GP K2
+a + 2P K3
+a
+SOMP (2G + 1)KM P + GM 2P + (M + 1)GP o2 + P o3
+DSAMP (2G + 3)KM P + M P + 2(M + 1)GP u2 + 2P u3
+GMMV -AMP 4GKM P + 3GKP + 16GM P + 20KM P
+Turbo-GMMV -AMP 2Tamp(4GKM P + 3GKP + 16GM P + 20KM P )
+Note: o is the iteration index [42], and u denotes the stage index [27].
+of the number of active UEs Ka. By contrast, the complex-
+ity of the proposed GMMV -AMP and Turbo-GMMV -AMP
+algorithms increases linearly with K, G, M , and P . Hence,
+for massive access scenarios with large Ka, the proposed
+algorithms can be more computationally efﬁcient.
+IV. S TATE EVOLUTION
+SE is a framework for analyzing the performance of AMP
+algorithms in the large system limit where K → ∞ [41].
+In this section, we harness SE to characterize the mean
+square error (MSE) performance of the proposed GMMV -
+AMP algorithm. The MSE of the estimation and the variance
+of the estimated channels are deﬁned as
+eq = 1
+KM P
+∑
+p
+∑
+k
+∑
+m
+⏐
+⏐
+⏐ˆxq
+p,k,m − xp,k,m
+⏐
+⏐
+⏐
+2
+, (45)
+ϑ q = 1
+KM P
+∑
+p
+∑
+k
+∑
+m
+vq
+p,k,m , (46)
+respectively. Based on the derivations in Appendix A, the
+GMMV -AMP algorithm can be explained intuitively. For the
+p-th pilot subcarrier, the proposed GMMV -AMP algorithm
+decouples the matrix estimation problem in (11) into KM
+independent scalar estimation problems, as
+Y = SX + N → Cq
+k,m = xk,m + ˜nq
+k,m , ∀k, m, (47)
+where index p and superscript G are omitted for notational
+simplicity, Cq
+k,m ∼ CN
+(
+Cq
+k,m ; xk,m , D q
+k,m
+)
+is the equivalent
+measurement of xk,m in the q-th iteration, and ˜nq
+k,m ∼
+CN
+(
+˜nq
+k,m ; 0, D q
+k,m
+)
+denotes the effective noise.
+Proposition 3: Deﬁne a scalar random variable X0 ∼ p0 (X).
+Then, we have Cq = x0 + ˜nq, ˜nq ∼ CN (˜nq; 0, D q), and the
+posterior distribution of x0 can be expressed as
+p (x0|Cq, D q) = 1
+˜Z3
+p0 (x0) CN (x0; Cq, D q) , (48)
+where
+Cq = x0 +
+√
+σ + Ke q
+G z, D q = σ + Kϑ q
+G , (49)
+and z ∼ CN (z; 0, 1). Hence, eq+1 and ϑ q+1 are updated as
+eq+1 =
+∫ ∫
+|ga (Cq, D q) − x0|2Dx0Dz, (50)
+ϑ q+1 =
+∫ ∫
+gc (Cq, D q)Dx0Dz, (51)
+where Dx0 = p0 (x0) dx0 and Dz = e−| z|2
+/πdz . Therefore,
+deﬁning a scalar random variable following the same distri-
+bution as the channel coefﬁcient, i.e., X0 ∼ p (X), Cq
+k,m and
+Dq
+k,m in the GMMV -AMP algorithm can be calculated as in
+(49), and eq+1 and ϑ q+1 can be obtained from (50) and (51).
+
+=== PDF PAGE 10 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 10
+Algorithm 4 State Evolution of GMMV -AMP Algorithm
+Input: γ = Ka/K , κ = G/K , M , and P ; Tamp, ρ, and η.
+Output: The predicted MSE performance, MSESE.
+1: Determine the number of Monte Carlo realizations ˜K,
+then ˜Ka = γ ˜K and ˜G = κ ˜K.
+2: Generate the Monte Carlo samples {Xp}P
+p=1 according to
+the a priori distribution p0 (X) and the sparsity structure.
+3: ∀p, k, m : Set the iteration index q to 1, initialize eq and
+ϑ q as e1 = ϑ 1 = 1, and initialize the hyper-parameters as
+γ 1
+p,k,m = γ, σ 1
+p,k,m = 1, µ 1
+p,k,m = 0, τ1
+p,k,m = 1.
+4: repeat
+5: ∀p, k, m : Cq
+p,k,m = xp,k,m +
+√
+σ q
+p,k,m+ ˜Keq
+˜G z.
+6: ∀p, k, m : Cq
+p,k,m = ρC q− 1
+p,k,m + (1 − ρ) Cq
+p,k,m .
+7: ∀p, k, m : Dq
+p,k,m = ρDq− 1
+p,k,m + (1 − ρ)
+σ q
+p,k,m + ˜Kϑ q
+˜G .
+8: eq+1 = 1
+KM P
+∑
+p
+∑
+k
+∑
+m
+⏐
+⏐
+⏐ga(Cq
+p,k,m , D q
+p,k,m )− xp,k,m
+⏐
+⏐
+⏐
+2
+.
+9: ϑ q+1 = 1
+KM P
+∑
+p
+∑
+k
+∑
+m gc(Cq
+p,k,m , D q
+p,k,m ).
+10: Update the hyper-parameters via (31)-(33) and (52).
+11: Reﬁne update rule of γp,k,m as line 8 of Algorithm 1.
+12: q = q + 1.
+13: until q > T amp or
+⏐
+⏐eq − eq− 1⏐
+⏐ < η .
+14: return MSESE = eq.
+Proof Please refer to the Appendix C. □
+Since the a priori distribution p0 (X) does not take the
+structured sparsity of channel matrix into consideration, the
+scalar SE in (49)-(51) can not accurately analyze the MSE
+performance of the proposed GMMV -AMP algorithm. Hence,
+we use Monte Carlo simulation to carry out the SE, so that (50)
+and (51) are simpliﬁed and the exploitation of the structure d
+sparsity is also taken into into account. In contrast to the
+conventional AMP algorithms in [23] and [24], which assume
+full knowledge of the a priori distribution of the channels
+and the noise variance, the SE for the proposed GMMV -AMP
+algorithm also needs to track the update rules of the hyper-
+parameters θ in (31)-(33), and [29]
+σ q+1
+k,m = σ0 + eq
+[
+1 + ϑ q/σ q
+k,m
+] +
+σ q
+k,m ϑ q
+σ q
+k,m + ϑ q , (52)
+where σ0 is the actual noise variance. The SE of the proposed
+GMMV -AMP algorithm is summarized in Algorithm 4.
+V. S IMULATION RESULTS
+For the presented simulation results, we assume the BS
+employs a ULA with M antennas, K = 500 potential UEs
+are randomly distributed in the cell with radius 1 km, and
+Ka = 50 (Ka ≪ K) UEs are active unless otherwise
+speciﬁed. Furthermore, the carrier frequency is 2 GHz, the
+bandwidth is Bs = 10 MHz , and the received SNR is 30 dB.
+The system adopts OFDM for massive access in an eMBB
+scenario, where N = 2048 subcarriers and a cyclic preﬁx
+of length NCP = 64 are employed. P = NCP pilots are
+uniformly allocated to the N subcarriers [27]. We consider
+TABLE II: Considered Schemes
+Scheme Model Algorithm G
+Simultaneous
+AUD and CE
+Scheme 1 (11) GMMV -AMP ﬁxed
+Scheme 2 (12) GMMV -AMP ﬁxed
+Alternating
+AUD and CE
+Scheme 3 (11) and (12) Turbo-GMMV -AMP ﬁxed
+Scheme 4 (11) and (12) Turbo-GMMV -AMP adaptive
+Baseline
+Schemes (11) GSP [32], SOMP [31],
+and DSAMP [21] ﬁxed
+30 35 40 45 50 55 60 
+0
+0.1 
+0.2 
+0.3 
+0.4 
+0.5 
+0.6 
+0.7 
+0.8 
+0.9 
+1
+Fig. 5. Comparison of success rate for the proposed DCS-
+based pilot design and identical pilots (Baseline).
+the one-ring channel model with limited angular spread [28] ,
+so that each UE’s massive MIMO channel exhibits clustered
+sparsity in the virtual angular domain. The large scale fadi ng
+ρk is given by the standard Log-distance path loss model as
+ρk = 128 . 1 + 37 . 6lg(dk) with distance dk measured in km.
+The small scale fading channel is generated by (3), where
+L varies from 8 to 40 [29], the related AOAs are generated
+within an angular spread ∆ varying from 20◦ to 40◦ so that the
+effective sparsity level in virtual angle domain Sa varies from
+8 to 14, βk,l ∼ CN (βk,l ; 0, 1), and ̟ k,l is randomly and uni-
+formly selected from [0, N CP /B s]. Furthermore, Tamp = 200 ,
+Ttur = 10 , η = 10 − 5, and the simulation results are obtained
+by averaging over Nsim = 3 × 103 simulation runs unless
+otherwise speciﬁed.
+An overview of the proposed Schemes 1-4 and the consid-
+ered baseline schemes, GSP [43], SOMP [42], and DSAMP
+[27], is presented in Table II. For performance evaluation, we
+consider the detection error probability Pe for AUD and the
+MSE for CE, which are respectively deﬁned as
+Pe =
+∑
+k |ˆα k − α k|
+K , MSE =
+∑
+p
+
+
+ ˆXp − Xp
+
+
+
+2
+F
+KM P . (53)
+Here, to reduce computational complexity, for Schemes 1-4 ,
+only ˜P out of P pilot subcarriers are used to estimate AUS
+A and the corresponding channels. The remaining (P − ˜P )
+pilot subchannels of the active UEs can be easily estimated b y
+applying the GMMV -AMP algorithm to (43) given Ω = ˆA.
+Fig. 5 veriﬁes the superiority of the proposed DCS-based
+pilot design for broadband massive access based on Scheme 1.
+The quality of the pilots is evaluated in terms of the success
+rate, which is deﬁned as the ratio of the number of simulation
+runs with Pe = 0 to the total number of simulation runs.
+
+=== PDF PAGE 11 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 11
+30 35 40 45 50 55 60 65 70 75 80 
+10 -7 
+10 -6 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+Fig. 6. Comparison of detection error probabilities for Scheme
+1 and state-of-the-art GMMV -CS algorithms.
+Fig. 5 shows that, as expected, employing different SG
+p for
+different p improves the success rate. Moreover, the perfor-
+mance is further improved when massive MIMO and larger
+˜P are employed, since the structured sparsity of {Xp}P
+p=1 is
+leveraged.
+Fig. 6 examines the AUD performance of Scheme 1 , where
+the performances of three state-of-the-art GMMV -CS algo-
+rithms are shown as benchmarks. As can be observed, the
+GMMV -AMP algorithm outperforms the other three algo-
+rithms. Hence, the access latency can be considerably reduc ed
+for a given target Pe. For example, for M = 16 and ˜P = 1, the
+GSP-based scheme requires G = 72 to achieve Pe ≤ 10− 5,
+whereas Scheme 1 with BI-AD needs only G = 58 , which
+indicates a reduction of approximately 19% in the access
+latency. Moreover, Scheme 1 can achieve a better detection
+performance by equipping more antennas at the BS and/or
+utilizing larger ˜P , since a larger M and/or ˜P can enhance
+the space-frequency structured sparsity shown in Fig. 2(a) .
+However, this improvement becomes negligible when M and
+˜P are sufﬁciently large.
+In Fig. 6, we further compare the performance of CG-AD
+and BI-AD. For G < 55 or ˜P ≥ 8, CG-AD and BI-AD have
+similar performance. However, when G ≥ 56 and ˜P ≤ 8, BI-
+AD outperforms CG-AD, as CG-AD suffers from a detection
+error ﬂoor. The reason for this behavior is that when there
+are sufﬁciently many measurements for reliable CS recovery ,
+the belief indicator πp,k,m takes values of 0 and 1, but the
+estimated channel gain ˆxp,k,m takes the true value of xp,k,m .
+Hence, based on the threshold function r (x; ε), BI-AD can
+reliably determine whether xp,k,m is zero or not, while for CG-
+AD, missed detections and false alarms can not be avoided,
+which may lead to a detection error ﬂoor. Clearly, for Scheme
+1, BI-AD is more reliable than CG-AD for AUD.
+Fig. 7 depicts the CE MSE performance of Scheme 1 and the
+three state-of-the-art GMMV -CS algorithms also considere d
+in Fig. 6. The oracle least square (LS) estimator with known
+30 35 40 45 50 55 60 65 70 75 80 
+10 -3 
+10 -2 
+10 -1 
+10 0
+10 1
+Fig. 7. MSE performance of Scheme 1 , state-of-the-art
+GMMV -CS algorithms, oracle LS, and SE.
+22 24 26 28 30 32 34 36 38 40 
+10 -7 
+10 -6 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+Fig. 8. Comparison of detection error probabilities for Scheme
+1 and Scheme 2 .
+AUS A is used as performance upper bound [27]. When G
+is sufﬁciently large, both Scheme 1 and the three baseline
+schemes approach the oracle LS performance bound, since
+A is accurately estimated in this case, and the CE problem
+is reduced to an oracle LS problem. However, for G < 70,
+Scheme 1 outperforms the three baseline algorithms, and its
+performance improves when M and/or ˜P increase. Besides,
+the MSE performance of Scheme 1 is accurately predicted by
+SE. Here, an important observation is that when G < K a,
+both Scheme 1 and the oracle LS estimator can not perform
+reliable CE. This suggests that G ≥ Ka is required for reliable
+CE in (11). Hence, the reduction of G is limited to Ka,
+which is identical to the sparsity level of the column vector s
+in Xp. This motivates Scheme 2 for simultaneous AUD and
+CE, where the sparsity level of the channel matrix, deﬁned as
+˜Ka = max
+{
+|supp{[Wp]:,m }|c, ∀p, m
+}
+, is less than Ka.
+Fig. 8 compares the AUD performance of Scheme 1 and
+
+=== PDF PAGE 12 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 12
+22 24 26 28 30 32 34 36 38 40 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+10 1
+Fig. 9. MSE performance of Scheme 1 , Scheme 2 , and SE.
+Scheme 2 . For M = 16 , Scheme 1 outperforms Scheme 2
+for both BI-AD and CG-AD, respectively. In contrast, for
+M = 32, Scheme 2 achieves a much better AUD performance
+than Scheme 1 when G > 28. This is because Wp is sparser
+than Xp, i.e., ˜Ka < K a, and the required G for reliable
+AUD and CE in Scheme 2 mainly depends on ˜Ka rather than
+Ka. However, the virtual angular domain sparsity weakens
+the common sparsity pattern across multiple columns of Wp.
+Therefore, if the BS has a small number of antennas, e.g.,
+M = 16 , Scheme 1 outperforms Scheme 2 by leveraging the
+common sparsity observed at different BS antennas. However ,
+when M becomes large, Scheme 2 can considerably reduce
+the required G for reliable AUD and CE compared to Scheme
+1. In addition, BI-AD in Scheme 2 suffers from an obvious
+detection error ﬂoor, which indicates that for Scheme 2 , CG-
+AD is more reliable than BI-AD for detection of the active
+UEs. Fig. 9 compares the CE MSE performance of Scheme 1
+and Scheme 2 , which again veriﬁes the superiority of Scheme
+2 for massive MIMO systems. The theoretical SE accurately
+predicts the MSE.
+Fig. 10 and Fig. 11 compare the MSE and Pe performance
+of Schemes 1-4 , respectively. The details of Scheme 4 are
+shown in Algorithm 3. Given γ = Ka/K = 0. 1 and M = 64,
+an initial time slot overhead of
+G0 = 1. 5E[|supp{[Wp]:,m }|c]
+= 1. 5γK E[Sa]/M ≈ 12 (54)
+is adopted. For different simulation runs, the varying Sa yields
+a different sparsity level for {Wp}P
+p=1, i.e., different ˜Ka. The
+results and the consumed G, i.e., the overhead, are recorded
+after the pre-deﬁned criterion in line 8 of Algorithm 3 is
+met. For very low time slot overheads, i.e., G ∈ [10, 18],
+both Scheme 1 and Scheme 2 have a poor performance. This
+is because for these schemes, G ≪ Ka leads to extremely
+insufﬁcient measurements. By contrast, Scheme 3 using the
+proposed Turbo-GMMV -AMP algorithm can achieve a much
+better AUD and CE performance than Scheme 1 and Scheme
+10 12 14 16 18 20 22 24 26 28 30 
+10 -6 
+10 -5 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+Fig. 10. Comparison of detection error probabilities of
+Schemes 1-4 for M = 64, ˜P = 8, and Nsim = 2000.
+10 15 20 25 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+10 1
+0.2% 0.8% 
+4.1% 6.3% 
+1% 
+2.2% 
+6.8% 
+22.9% 
+27.3% 
+15.8% 
+11.8% 
+Fig. 11. MSE performance of Schemes 1-4 , where M = 64 ,
+˜P = 8 , Nsim = 2000 , and the percentage of simulation runs
+requiring a given consumed time slot overhead G is indicated.
+2, which conﬁrms its superiority in reducing access latency.
+Finally, Scheme 4 , i.e., the proposed CS-based adaptive AUD
+and CE scheme, adaptively adjusts the overhead to achieve
+satisfactory AUD and CE performance. In Fig. 11, for Scheme
+4, the percentage of simulation runs requiring the given time
+slot overhead G is provided. This reveals that 88. 6% of the
+simulation runs require overheads of G ∈ [12, 18], and the
+corresponding MSE performance is much better than those
+for Schemes 1-3 .
+Fig. 12 further compares the AUD and CE performance of
+Scheme 3 and Scheme 4 for different number of active UEs
+Ka. The proposed Scheme 4 adaptively adjusts the time slot
+overhead to guarantee reliable AUD and CE for different Ka.
+However, Scheme 3 employs a ﬁxed overhead and suffers from
+poor performance when Ka becomes large. This means that
+some of the active UEs will not be able to access the network.
+Hence, for practical systems with time-varying UE activity , the
+superiority of the proposed CS-based adaptive AUD and CE
+scheme is evident.
+
+=== PDF PAGE 13 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 13
+50 55 60 65 70 75 80 85 90 95 
+10 -4 
+10 -3 
+10 -2 
+10 -1 
+10 0
+0
+0.01
+0.02
+0.03
+0.04
+0.05
+0.06
+0.07
+25.422.320.919.4 24.2 17.9 
+16.4 
+27.1 28.5
+30.2
+Fig. 12. MSE and Pe performance of Scheme 3 and Scheme 4
+for different Ka, where M = 64 , ˜P = 8 , Nsim = 1000 , and
+the average time slot overhead of Scheme 4 is indicated.
+VI. C ONCLUSION
+This paper investigates new methods for facilitating massi ve
+access in massive MIMO systems, which leverage the sporadic
+trafﬁc of the UEs and the virtual angular domain sparsity of
+massive MIMO channels to dramatically reduce the access
+latency. The space-frequency structured sparsity of the ch annel
+matrix in the spatial domain improves the AUD performance,
+while the angular-frequency structured sparsity of the cha nnel
+matrix in the angular domain improves the CE performance.
+Therefore, joint AUD and CE schemes exploiting only spatial
+domain or only angular domain channel model can not take
+full advantage of the sparsity properties of massive access
+in massive MIMO systems. This motivates the derivation of
+the proposed Turbo-GMMV -AMP algorithm, which achieves
+a signiﬁcant performance improvement by performing AUD
+based on a spatial domain channel model and CE based on
+an angular domain channel model in an alternating manner.
+Furthermore, for practical systems, where the number of act ive
+UEs is not known, the proposed CS-based adaptive AUD and
+CE scheme can adjust the time slot overhead to realize ultra-
+reliable low-latency massive access.
+APPENDIX A
+PROOF OF THE PROPOSITION 1
+The factorization in the joint posterior probability (15)
+can be represented by a bipartite graph, which motivates the
+application of the sum-product (SP) algorithm to realize th e
+MMSE estimator [37]. As the bipartite graph consists of M
+independent subgraphs, we only discuss the m-th subgraph
+in the following derivations, and the antenna index m is
+dropped for notational simplicity. For the m-th subgraph,
+we deﬁne variable nodes V = [ K], factor nodes of the
+likelihood function F = [ G], and edges E = [ K] × [G] =
+{(k, g ) : k ∈ [K] , g ∈ [G]}. The update rules for the messages
+associated to the edges are [33]
+ξq+1
+k→ g (xk) ∝ p0 (xk)
+∏
+b̸=g
+ˆξq
+b→ k (xk), (55)
+ˆξq
+g→ k (xk) ∝
+∫ ∏
+j̸=k
+ξq
+j→ g (xj) p (yg|x)dx\ k, (56)
+where b ∈ [G], j ∈ [K], q denotes the q-th iteration, and ∝
+denotes equality up to a constant scale factor.
+One practical hurdle for the large-scale implementation of
+the SP algorithm lies in the required evaluation of high-
+dimensional integrals for calculation of messages ˆξq
+g→ k (xk).
+This leads to an unacceptably high complexity. However, a ke y
+observation is that, in the large system limit with K → ∞ ,
+the messages ˆξq
+g→ k (xk) can be approximated by Gaussian
+distributions [33]. Since the random variables {xj }K
+j=1 are
+independently complex Gaussian distributed, random varia ble
+Zg,k = ∑
+j̸=k sg,j xj follows a complex Gaussian distribution
+Zg,k ∼ CN
+(
+zg,k ; Z q
+g→ k, V q
+g→ k
+)
+, with mean Z q
+g→ k and vari-
+ance V q
+g→ k given as
+Z q
+g→ k = ∑
+j̸=k sg,j ˆxq
+j→ g, V q
+g→ k = ∑
+j̸=k |sg,j |2 vq
+j→ g, (57)
+where ˆxq
+j→ g and vq
+j→ g are the mean and variance of message
+ξq
+j→ g (xj), respectively. Hence, the messages ˆξq
+g→ k (xk) can
+be approximated as
+ˆξq
+g→ k (xk) ∝ CN
+(
+xk;
+yg− Zq
+g→ k
+sg,k
+,
+σ +V q
+g→ k
+|sg,k |2
+)
+. (58)
+Further, the posterior distribution of xk is calculated as
+ξq+1
+k (xk) = p0 (xk)
+∏
+g
+ˆξq
+g→ k (xk)
+∝ p0 (xk) CN (xk; Cq
+k, D q
+k) ,
+(59)
+where
+Dq
+k =
+[∑
+g
+|sg,k |2
+σ +V q
+g→ k
+]− 1
+, C q
+k = Dq
+k
+∑
+g
+s∗
+g,k(yg − Zq
+g→ k)
+σ +V q
+g→ k
+. (60)
+It is convenient to introduce a family of densities
+p (x; C, D ) = 1
+˜Z4
+p0 (x) CN (x; C, D ) , (61)
+where ˜Z4 =
+∫
+p0 (x) CN (x; C, D )dx is a normalization
+constant. The corresponding mean and variance are
+ga (C, D ) =
+∫
+xp (x; C, D )dx, (62)
+gc (C, D ) =
+∫
+|x − ga (C, D )|2 p (x; C, D )dx, (63)
+respectively. Deﬁne ξq+1
+k (xk) ∝ CN
+(
+xk; ˆxq+1
+k , v q+1
+k
+)
+, with
+ˆxq+1
+k = ga (Cq
+k, D q
+k) and vq+1
+k = gc (Cq
+k, D q
+k). The messages
+ξq+1
+k→ g (xk) can be approximated as
+ξq+1
+k→ g (xk) = ξq+1
+k (xk)
+ξq
+g→ k (xk) ∝ CN
+(
+xk; ˆxq+1
+k→ g, v q+1
+k→ g
+)
+, (64)
+where
+1
+vq+1
+k→ g
+= 1
+vq+1
+k
+− |sg,k |2
+σ + V q
+g→ k
+, (65)
+1
+ˆxq+1
+k→ g
+= vq+1
+k→ g
+
+ ˆxq+1
+k
+vq+1
+k
+−
+s∗
+g,k
+(
+yg − Z q
+g→ k
+)
+σ + V q
+g→ k
+
+ . (66)
+
+=== PDF PAGE 14 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 14
+At this point, the messages ξq+1
+k→ g (xk) and ˆξq
+g→ k (xk) have
+been approximated as Gaussian densities. However, the com-
+putational complexity is still high when the system is large ,
+since the number of messages scales with the number of
+potential UEs K. In order to reduce the number of messages in
+the q-th iteration, we can further simplify the update rules by
+making some approximations. Deﬁning Z q
+g = ∑K
+j=1 sg,j ˆxq
+j→ g,
+V q
+g = ∑K
+j=1 |sg,j |2 vq
+j→ g, we can rewrite (57) as
+Z q
+g→ k = Z q
+g − sg,k ˆxq
+k→ g, V q
+g→ k = V q
+g − |sg,k |2 vq
+k→ g. (67)
+Substituting (67) into (64) and ignoring terms approximate d
+as 0 in the large system limit K → ∞ [33], the update rules at
+the variable nodes and the factor nodes can be approximated
+as in (19)-(22). Finally, the posterior distribution of xk is given
+by (18).
+APPENDIX B
+PROOF OF THE PROPOSITION 2
+If a reliable estimate of Xp is acquired after the convergence
+of the GMMV -AMP algorithm, the variance of the posterior
+distribution of xk,m tends to be zero, i.e., v∞
+k,m → 0, thus,
+V ∞
+g,m = lim
+v∞
+k,m→ 0
+∑
+k
+|sg,k |2 v∞
+k,m = 0. (68)
+Therefore, D∞
+k,m in (19) is calculated as
+D∞
+k,m = σ
+∑
+g |sg,k |2
+(a)
+≈ σ
+G . (69)
+Here, approximation (a) is because the pilots are generated
+from an i.i.d standard complex Gaussian distribution, i.e. ,
+sg,k ∼ CN (sg,k ; 0, 1), thus ∑
+g |sg,k |2 ≈ ∑
+g E
+[
+|sg,k |2
+]
+=
+G. In the large system limit, as G → ∞ , D∞
+k,m → 0+. For
+a given realization of the massive access channel matrix Xp,
+deﬁning r∞ = ∑
+g
+s∗
+g,k(yg,m− Z∞
+g,m)
+σ + V ∞
+g,m , C∞
+k,m in (20) is
+given as
+C∞
+k,m =
+{ D∞
+k,m r∞ , xk,m = 0,
+xk,m + D∞
+k,m r∞ , x k,m ̸= 0. (70)
+Hence, substituting (69) and (70) into (26), for xk,m = 0, we
+have
+L = lim
+D∞
+k,m→ 0+
+(
+1
+2 ln
+D∞
+k,m
+D∞
+k,m + τ
+)
+− |µ |2
+2τ = −∞ , (71)
+while for xk,m ̸= 0,
+L = lim
+D∞
+k,m→ 0+
+1
+2
+(
+ln
+D∞
+k,m
+D∞
+k,m + τ + xk,m
+D∞
+k,m
+)
+− |µ |2
+2τ
+= lim
+D∞
+k,m→ 0+
+xk,m
+2D∞
+k,m
+= +∞ ,
+(72)
+which yields
+π ∞
+k,m =
+{ 1, x k,m ̸= 0,
+0, x k,m = 0. (73)
+APPENDIX C
+PROOF OF THE PROPOSITION 3
+Here, for simplicity of derivation, we focus on the m-th
+subgraph only and drop the antenna index m, as in Appendix
+A. The derivation is based on (11), and can be easily extended
+to model (12), thus we have
+yg = ∑
+j sg,j xj + ng. (74)
+Substituting (57) and (74) into (60), Cq
+k is computed as
+Cq
+k =
+∑
+g
+|sg,k |2xk+s∗
+g,k ng+s∗
+g,k
+∑
+j̸=k sg,j (xj − ˆxq
+j→ g)
+σ +∑
+j̸=k |sg,j |2vq
+j→ g
+∑
+g
+|sg,k |2
+σ +∑
+j̸=k |sg,j |2vq
+j→ g
+(b)
+≈
+∑
+g
+[
+|sg,k |2xk + s∗
+g,k ng + s∗
+g,k
+∑
+j̸=k sg,j
+(
+xk − ˆxq
+j→ g
+)]
+∑
+g |sg,k |2
+≈ xk +
+∑
+g s∗
+g,k ng + ∑
+g s∗
+g,k
+∑
+j̸=k sg,k
+(
+xj − ˆxq
+j→ g
+)
+G .
+(75)
+In (75), approximation (b) is because the term σ +∑
+j̸=k |sg,j |2vq
+j→ g is approximately independent of g in the
+large system limit with K → ∞ , which has been proven in
+[33]. Deﬁne
+rq
+k = ∑
+g s∗
+g,k ng + ∑
+g s∗
+g,k
+∑
+j̸=k sg,k
+(
+xk − ˆxq
+j→ g
+)
+. (76)
+Since sg,k ∼ CN (sg,k ; 0, 1), ng ∼ CN (ng; 0, σ ), and sg,k is
+independent of ng, rk follows a complex Gaussian distribution
+according to the central limit theorem as K → ∞ . Moreover,
+by substituting (45) into (76), we ﬁnd the mean and the
+variance of rq
+k are 0 and G(σ + Ke q), respectively. Hence,
+Cq
+k = xq +
+√
+σ +Keq
+G z, (77)
+where z ∼ CN (z; 0, 1). Meanwhile, by substituting (46) into
+Dq
+k in (60), we can obtain
+Dq
+k≈
+[ ∑
+g |sg,k |2
+σ + ∑
+j̸=k |sg,j |2vq
+j→ g
+] − 1
+= σ + Kϑ q
+G . (78)
+Hence, the Proposition 2 is proven.
+REFERENCES
+[1] M. Ke, Z. Gao, Y . Wu, and X. Meng, “Compressive massive ran dom
+access for massive machine-type communications (mMTC),” i n Proc.
+IEEE Global Conf. Signal Inform. Process. (GlobalSIP) , Anaheim, USA,
+Nov. 2018, pp. 156-160.
+[2] F. Boccardi, R. W. Heath, A. Lozano, T. L. Marzetta, and P . Popovski,
+“Five disruptive technology directions for 5G,” IEEE Commun. Mag., vol.
+52, no. 2, pp. 74-80, Feb. 2014.
+[3] C. Bockelmann, N. K. Pratas, G. Wunder, S. Saur, et al , “Towards
+massive connectivity support for scalable mMTC communicat ions in 5G
+networks,” IEEE Access. , vol. 6, pp. 28969-28992, May. 2018.
+[4] T. Kim, I. Bang, and D. K. Sung, “An enhanced PRACH preambl e
+detector for cellular IoT communications,” IEEE Commun. Lett. , vol. 21,
+no. 12, pp. 2678-2681, Dec. 2017.
+[5] M. Hasan, E. Hossain, and D. Niyato, “Random access for ma chine-
+to-machine communication in LTE-advanced networks: Issue s and ap-
+proaches,” IEEE Commun. Mag. , vol. 51, no. 6, pp. 86-93, Jun. 2013.
+[6] H. Han, Y . Li, and X. Guo, “A graph-based random access pro tocol for
+crowded massive MIMO systems,” IEEE Trans. Wireless Commun. , vol.
+16, no. 11, pp. 7348-7361, Nov. 2017.
+[7] E. Bj¨ ornson, E. de Carvalho, J. H. Sørensen, E. G. Larsso n, and P .
+Popovski, “A random access protocol for pilot allocation in crowded
+massive MIMO systems,” IEEE Trans. Wireless Commun. , vol. 16, no. 4,
+pp. 2220-2234, Apr. 2017.
+[8] A. Laya, L. Alonso, and J. Alonso-Zarate, “Is the random a ccess channel
+of LTE and LTE-A suitable for M2M communications? A survey of
+alternatives,” IEEE Commun. Surveys Tuts. , vol. 16, no. 1, pp. 4-16, 1st
+Quart., 2014.
+
+=== PDF PAGE 15 ===
+JOURNAL OF LATEX CLASS FILES, VOL. 14, NO. 8, AUGUST 2018 15
+[9] Z. Zhang, X. Wang, Y . Zhang, and Y . Chen, “Grant-free rate less multiple
+access: A novel massive access scheme for internet of things ,” IEEE
+Commun. Lett. , vol. 20, no. 10, pp. 2019-2022, Oct. 2016.
+[10] L. Liu, E. G. Larsson, W. Y u, P . Popovski, C. Stefanovic, and E. de
+Carvalho, “Sparse signal processing for grant-free massiv e connectivity:
+A future paradigm for random access protocols in the interne t of things,”
+IEEE Signal Process. Mag. , vol. 35, no. 5, pp. 88-99, Sep. 2018.
+[11] M. Simko, P . S. R. Diniz, Q. Wang, and M. Rupp, “Adaptive p ilot-
+symbol patterns for MIMO-OFDM systems,” IEEE Trans. Wireless Com-
+mun., vol. 12, no. 9, pp. 4705-4715, Sep. 2013.
+[12] K. Senel and E. G. Larsson, “Grant-free massive MTC-ena bled massive
+MIMO: A compressive sensing approach,” IEEE Trans. Commun. , vol.
+66, no. 12, pp. 6164-6175, Dec. 2018.
+[13] B. Shim and B. Song, “Multiuser detection via compressi ve sensing,”
+IEEE Commun. Lett. , vol. 16, no. 7, pp. 972-974, Jul. 2012.
+[14] B. Wang, L. Dai, T. Mir, and Z. Wang, “Joint user activity and data
+detection based on structured compressive sensing for NOMA ,” IEEE
+Commun. Lett. , vol. 20, no. 7, pp. 1473-1476, Jul. 2016.
+[15] B. Wang, L. Dai, Y . Zhang, T. Mir, and J. Li, “Dynamic comp ressive
+sensing-based multi-user detection for uplink grant-free NOMA,” IEEE
+Commun. Lett. , vol. 20, no. 11, pp. 2320-2323, Nov. 2016.
+[16] C. Wei, H. Liu, Z. Zhang, J. Dang, and L. Wu, “Approximate message
+passing-based joint user activity and data detection for NO MA,” IEEE
+Commun. Lett. , vol. 21, no. 3, pp. 640-643, Mar. 2017.
+[17] Y . Du, C. Cheng, B. Dong, Z. Chen, X. Wang, J. Fang, and S. L i,
+“Block-sparsity-based multiuser detection for uplink gra nt-free NOMA,”
+IEEE Trans. Wireless Commun. , vol. 17, no. 12, pp. 7894-7909, Dec.
+2018.
+[18] X. Rao and V . K. N. Lau, “Distributed fronthaul compress ion and joint
+signal recovery in cloud-RAN,” IEEE Trans. Signal Process. , vol. 63, no.
+4, pp. 1056-1065, Feb. 2015.
+[19] J. Liu, A. Liu, and V . K. N. Lau, “Compressive interferen ce mitigation
+and data recovery in cloud radio access networks with limite d fronthaul,”
+IEEE Trans. Signal Process. , vol. 65, no. 6, pp. 1437-1446, Mar. 2017.
+[20] A. Bayesteh, E. Yi, H. Nikopour, and H. Baligh, “Blind de tection of
+SCMA for uplink grant-free multiple-access,” in Proc. 11th Int. Symp.
+Wireless Commun. Syst. (ISWCS) , Aug. 2014, pp. 853-857.
+[21] X. Xu, X. Rao, and V . K. N. Lau, “Active user detection and channel
+estimation in uplink C-RAN systems,” in Proc. Int. Conf. Commun. (ICC),
+Jun. 2015, pp. 2727-2732.
+[22] S. Park, H. Seo, H. Ji, and B. Shim, “Joint active user det ection and
+channel estimation for massive machine-type communicatio ns,” in Proc.
+IEEE Int. W orkshop Signal Process. Adv. Wireless Commun. (S PAWC),
+Sapporo, Japan, Jul. 2017, pp. 1-5.
+[23] Z. Chen, F. Sohrabi, and W. Y u, “Sparse activity detecti on for massive
+connectivity,” IEEE Trans. Signal Process. , vol. 66, no. 7, pp. 1890-1904,
+Apr. 2018.
+[24] L. Liu and W. Y u, “Massive connectivity with massive MIM O-Part I:
+Device activity detection and channel estimation,” IEEE Trans. Signal
+Process., vol. 66, no. 11, pp. 2933-2946, Jun. 2018.
+[25] Y . Polyanskiy, “A perspective on massive random-acces s,” in Proc. IEEE
+Int. Symp. Inform. Theory. (ISIT) , Jun. 2017, pp. 2523-2527.
+[26] A. Fengler, G. Caire, P . Jung, and S. Haghighatshoar, “M assive MIMO
+unsourced random access,” arXiv preprint arXiv:1901.0082 8, 2019.
+[27] Z. Gao, L. Dai, Z. Wang, and S. Chen, “Spatially common sp arsity based
+adaptive channel estimation and feedback for FDD massive MI MO,”
+IEEE Trans. Signal Process. , vol. 63, no. 23, pp. 6169-6183, Dec. 2015.
+[28] J. Nam, A. Adhikary, J. Ahn, and G. Caire, “Joint spatial division and
+multiplexing: Opportunistic beamforming, user grouping a nd simpliﬁed
+downlink scheduling,” IEEE J. Sel. Topics Signal Process. , vol. 8, no. 5,
+pp. 876-890, Oct. 2014.
+[29] X. Lin, S. Wu, C. Jiang, L. Kuang, J. Y an, and L. Hanzo, “Es timation
+of broadband multiuser millimeter wave massive MIMO-OFDM c hannels
+by exploiting their sparse structure,” IEEE Trans. Wireless Commun., vol.
+17, no. 6, pp. 3959-3973, Jun. 2018.
+[30] X. Lin, S. Wu, L. Kuang, Z. Ni, X. Meng, and C. Jiang, “Esti mation
+of sparse massive MIMO-OFDM channels with approximately co mmon
+support,” IEEE Commun. Lett. , vol. 21, no. 5, pp. 1179-1182, May. 2017.
+[31] J. Zhang, X. Y uan, and Y . A. Zhang, “Blind signal detecti on in massive
+MIMO: Exploiting the channel sparsity,” IEEE Trans. Commun. , vol. 66,
+no. 2, pp. 700-712, Feb. 2018.
+[32] Y . Zhou, M. Herdin, A. M. Sayeed, and E. Bonek, “Experime ntal
+study of MIMO channel statistics and capacity via the virtua l channel
+representation,” Univ. Wisconsin-Madison, Madison, WI, U SA, Tech.
+Rep, 2007.
+[33] D. L. Donoho, A. Maleki, and A. Montanari, “Message pass ing algo-
+rithms for compressed sensing: I. motivation and construct ion,” in Proc.
+Inf. Theory W orkshop. (ITW) , Jan. 2010, pp. 1-5.
+[34] J. Chen and X. Huo, “Theoretical results on sparse repre sentations of
+multiple-measurement vectors,” IEEE Trans. Signal Process. , vol. 54, no.
+12, pp. 4634-4643, Dec. 2006.
+[35] J. P . Vila and P . Schniter, “Expectation-maximization gaussian-mixture
+approximate message passing,” IEEE Trans. Signal Process. , vol. 61, no.
+19, pp. 4658-4672, Oct. 2013.
+[36] X. Meng, S. Wu, M. R. Andersen, J. Zhu, and Z. Ni, “Efﬁcien t
+recovery of structured sparse signals via approximate mess age passing
+with structured spike and slab prior,” IEEE China Commun. , vol. 15, no.
+6, pp. 1-17, Jun. 2018.
+[37] F. R. Kschischang, B. J. Frey, and H. A. Loeliger, “Facto r graph and
+the sum-product algorithm,” IEEE Trans. Inform. Theory. , vol. 47, no. 2,
+pp. 498-519, Feb. 2001.
+[38] R. M. Neal and G. E. Hinton, “A view of the EM algorithm tha t justiﬁes
+incremental, sparse, and other variants,” in Learning in graphical models. ,
+Springer, 1998, pp. 355-368.
+[39] S. Wu, Z. Ni, X. Meng, and L. Kuang, “Block expectation pr opagation
+for downlink channel estimation in massive MIMO systems,” IEEE
+Commun. Lett. , vol. 20, no. 11, pp. 2225-2228, Nov. 2016.
+[40] S. Rangan, P . Schniter, and A. Fletcher, “On the converg ence of
+approximate message passing with arbitrary matrices,” in Proc. Int. Symp.
+Inform. Theory. (ISIT) , Jun. 2014, pp. 236-240.
+[41] D. L. Donoho, A. Maleki, and A. Montanari, “Message pass ing algo-
+rithms for compressed sensing: II. analysis and validation ,” in Proc. Inf.
+Theory W orkshop. (ITW), Jan. 2010, pp. 1-5.
+[42] J. Determe, J. Louveaux, L. Jacques, and F. Horlin, “On t he noise
+robustness of simultaneous orthogonal matching pursuit,” IEEE Trans.
+Signal Process. , vol. 65, no. 4, pp. 864-875, Feb. 2017.
+[43] J. M. Feng and C. H. Lee, “Generalized subspace pursuit f or signal
+recovery from multiple-measurement vectors,” in Proc. Wireless Commun.
+Network Conf. (WCNC) , April. 2013, pp. 2874-2878.
+[44] Z. Gao, L. Dai, S. Han, C-L. I, Z. Wang, and L. Hanzo, “Comp ressive
+sensing techniques for next-generation wireless communic ations,” IEEE
+Wireless Commun., vol. 25, no. 3, pp. 144-153, Jun. 2018.

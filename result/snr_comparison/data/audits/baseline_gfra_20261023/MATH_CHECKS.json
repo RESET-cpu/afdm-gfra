@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "created_utc": "2026-10-23T13:14:26.527315+00:00",
+  "scope": "Deterministic algebra and candidate readout tests only; no performance qualification.",
+  "errors": {
+    "somp_exact_sparse_recovery": 2.31869100025495e-16,
+    "gamp_first_step_mean": 4.1810073103704115e-17,
+    "gamp_first_step_variance": 0.0,
+    "gamp_noise_MAP_stationarity": 3.5666404181476236e-16,
+    "gnn_bg_probability": 4.584696064447909e-16,
+    "gnn_bg_mean": 8.0611641810249e-16,
+    "gnn_bg_variance": 4.4097135120237745e-16,
+    "gnn_graph_permutation": 5.785080538323077e-17,
+    "gnn_hidden_permutation": 4.817173187293867e-17
+  },
+  "candidate_calibration": {
+    "threshold": 0.010000000000000002,
+    "errors": 2,
+    "false_alarms": 1,
+    "misses": 1,
+    "scene_count": 2,
+    "cases": 3,
+    "statistic": "caller_declared_normalized_energy",
+    "objective": "pooled_user_error_count",
+    "snr_dispatch": false,
+    "status": "CALIBRATION_ONLY_REQUIRES_INDEPENDENT_VALIDATION"
+  },
+  "test_overlap_rejected": true,
+  "zero_energy_handled": true,
+  "exact_threshold_equality_handled": true,
+  "offgrid_audit": {
+    "path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\audits\\offgrid_sbl_20261023\\IDENTITY_CHECKS.json",
+    "sha256": "ed1846760e54f36485023da7235b304d2b1ff9cf711fd51ee95a08cc46b0efa7",
+    "errors": {
+      "posterior_mean_relative": 2.7618869544112354e-15,
+      "posterior_diagonal_relative": 1.4351516100126168e-15,
+      "expected_residual_relative": 4.486694973779801e-16,
+      "offset_objective_absolute": 4.371503159461554e-15,
+      "variance_update_stationarity_relative": 1.20995479249695e-16,
+      "delay_derivative_relative": 1.704908009562791e-09,
+      "doppler_derivative_relative": 1.6593751159476832e-09
+    }
+  },
+  "plan_sha256": "254c0f8f72c779dd9253bdbbb787eae2b986c1d6f5fac5bcba83619e401d92a7",
+  "source_sha256": {
+    "src\\algorithm\\baseline\\somp.py": "5b1f6e428a12432095cfc5bc5fe138a620ba34a0899854e6913fa96a977fa059",
+    "src\\algorithm\\baseline\\gamp.py": "924d388233d02522f20b681244bfe188901ec4259035c4caa1c85c9a52b2435f",
+    "src\\algorithm\\baseline\\gnn.py": "c3de3da00e1e215d161aed28ee0834eb031749f720451e1aeaa536a6e16d1ab9",
+    "src\\algorithm\\baseline\\offgrid_sbl.py": "01fd090f3860cf7f478f0d2b94229e16d2ce45130c7c52b6dd07b14922dd0faf"
+  }
+}

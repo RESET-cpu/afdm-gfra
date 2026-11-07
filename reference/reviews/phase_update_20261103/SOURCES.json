@@ -1,0 +1,186 @@
+{
+  "date": "2026-11-03",
+  "scope": "针对 C-STMP 相位初始化、调度、步幅和开销的原文比较；不是系统综述或穷尽性检索。",
+  "status": "已核对文献、代码和既有结果；本轮未改接收机、运行接收机实验、训练或切换主线。局部更新建议尚未实现及验证。",
+  "sources": [
+    {
+      "id": "noels2005",
+      "title": "A Theoretical Framework for Soft-Information-Based Synchronization in Iterative (Turbo) Receivers",
+      "authors": "Nele Noels; Vincenzo Lottici; Antoine Dejonghe; Heidi Steendam; Marc Moeneclaey; Marco Luise; Luc Vandendorpe",
+      "publication": "EURASIP JWCN 2005:2, 117–129",
+      "doi": "10.1155/WCN.2005.117",
+      "url": "https://telin.ugent.be/~hs/full/j17.pdf",
+      "local_pdf": "reference/literature/noels2005_turbo_sync.pdf",
+      "locators": [
+        "Section 3.2, p.121",
+        "Section 4, p.122, (22a)–(22b)"
+      ],
+      "finding": "每次仅做一次检测/解码的合并实现，早期 APP 较不准确；多参数同步可能需在两次同步更新间增加内部迭代。初值影响收敛。",
+      "counterevidence": "某些编码例子的一次内部迭代在较晚阶段几乎无损失，不能推出所有系统越晚更新越好。",
+      "boundary": "单用户编码 QAM 与未知活动的多用户学习先验不同；未提供本项目20/30/60轮的阈值。",
+      "verification": "原文及p.121渲染页面核对。"
+    },
+    {
+      "id": "ito2025",
+      "title": "Joint Channel, CFO, and Data Estimation via Bayesian Inference for Multi-User MIMO-OFDM Systems",
+      "authors": "Kenta Ito; Takumi Takahashi; Koji Ishibashi; Koji Igarashi; Shinsuke Ibi",
+      "publication": "IEEE TWC 24(3), 1898–1915, 2025",
+      "doi": "10.1109/TWC.2024.3514210",
+      "url": "https://ir.library.osaka-u.ac.jp/repo/ouka/all/101415/IEEETransWirelessCommun_24_3_1898.pdf",
+      "local_pdf": "reference/literature/ito2025_joint_channel_cfo.pdf",
+      "locators": [
+        "Introduction p.1899",
+        "III-A pp.1903–1904, (16)–(17)",
+        "p.1906, (38b)",
+        "III-C.2 pp.1906–1907, (46)–(50)",
+        "IV-E/F pp.1911–1912, Figs.8–9"
+      ],
+      "finding": "Gaussian mixture 保留相位不确定性；候选软均值由相位先验方差和伪观测方差加权，CFO在旧候选附近局部更新，误差方差也随迭代更新。",
+      "equation_38b": "简记 dbar=(phi*rhat+psi*theta_hat)/(psi+phi)。phi为候选相位先验方差，psi为伪观测方差。psi相对较大时数据权重phi/(psi+phi)较小；这是复数Gaussian软均值，不是包裹角度直接平均。",
+      "initialization": "L个候选 epsilon_hat_l=epsilon_max*(2*l-1-L)/L；初始分量方差alpha_k^2*epsilon_max^2/(3*L^2)。Algorithm 1初始整体软相位为1，整体方差alpha_k^2*epsilon_max^2/3，不含L^2。",
+      "qualification": "(46)的候选CFO更新明确采用MMSE criterion，(47)–(48)是小残余CFO条件下的二阶Taylor更新；(49)–(50)方差更新使用EM。不将整个步骤误标为精确EM M步。",
+      "boundary": "完整方案保留多个CFO候选及BG时延域先验，不是整体无候选搜索。借鉴不确定性与局部步幅，不直接移植全部模型或阻尼系数。",
+      "verification": "机构正式出版PDF；p.1906–1907渲染核对(38b)、(46)–(50)。"
+    },
+    {
+      "id": "wang_liew2016",
+      "title": "Frequency-Asynchronous Multiuser Joint Channel-Parameter Estimation, CFO Compensation and Channel Decoding",
+      "authors": "Taotao Wang; Soung Chang Liew",
+      "publication": "IEEE TVT, 2016",
+      "doi": "10.1109/TVT.2016.2524206",
+      "url": "https://arxiv.org/html/1505.00082v3",
+      "locators": [
+        "III-B (7)–(9)",
+        "III-C (26), (29)–(35)",
+        "Appendix B (40)–(42)"
+      ],
+      "finding": "SAGE逐用户分解，ECM分别更新CFO、块相位与信道，使用解码软信息。(30)在旧CFO附近用二阶Taylor展开代替全范围连续穷举。",
+      "boundary": "初始依赖前导/导频；编码软信息和独立块相位与本模型不同。不能据其宽泛措辞宣称我们的全局最优。",
+      "verification": "作者预印本v3公式原文核对。"
+    },
+    {
+      "id": "shen2025",
+      "title": "LEO Satellite-Enabled Random Access With Large Differential Delay and Doppler Shift",
+      "authors": "Boxiao Shen; Yongpeng Wu; Wenjun Zhang; Symeon Chatzinotas; Björn Ottersten",
+      "publication": "IEEE TWC 24(4), 2876–2893, 2025",
+      "doi": "10.1109/TWC.2025.3525738",
+      "url": "https://arxiv.org/html/2412.20806v1#S3.SS3",
+      "local_pdf": "reference/literature/shen2025.pdf",
+      "locators": [
+        "III-C (47)–(54), preprint p.9",
+        "Algorithm 1 initialization and line 20"
+      ],
+      "finding": "初始化C^{phi,l}=C^l，即零旋转。更新用后验均值与方差构造二次目标，解无约束线性系统后单位圆投影；按抽头能量选择少量坐标降维。每次外迭代更新相位，明确的damping针对GAMP。",
+      "boundary": "每用户/抽头/帧自由相位不同于每用户共同斜率。相位更新不需另加连续路径搜索，但完整接收机依赖OTFS时延–多普勒–角域稀疏结构。",
+      "our_assessment": "一般耦合二次型下，无约束解再单位圆投影不是单位模问题精确解，也不自动保证单调；这是本项目数学判断。",
+      "verification": "公式按arXiv v1核对，出版信息另核。"
+    },
+    {
+      "id": "neal_hinton1998",
+      "title": "A View of the EM Algorithm that Justifies Incremental, Sparse, and Other Variants",
+      "authors": "Radford M. Neal; Geoffrey E. Hinton",
+      "url": "https://www.cs.toronto.edu/~hinton/absps/emk.pdf",
+      "locators": [
+        "Author PDF p.4 (2)–(3)",
+        "p.5 Lemma 2, (5), Theorem 1"
+      ],
+      "finding": "F(q,theta)=log p(y;theta)-KL(q||p(z|y;theta))。精确E步使旧点KL=0，是标准似然单调性的重要前提。",
+      "boundary": "当前各次冻结Gaussian模型的正确条件下降，不等于整个学习接收机共同目标单调；似然改善也不等于逐样本相位或NMSE改善。",
+      "verification": "PDF文本编码损坏，由审查子任务渲染p.4–5核对。"
+    },
+    {
+      "id": "fessler_hero1994",
+      "title": "Space-Alternating Generalized Expectation-Maximization Algorithm",
+      "authors": "Jeffrey A. Fessler; Alfred O. Hero III",
+      "publication": "IEEE TSP 42(10), 2664–2677, 1994",
+      "url": "https://web.eecs.umich.edu/~fessler/papers/files/jour/94/pre/tsp,sage.pdf",
+      "locators": [
+        "II-B Definition 2, (2)",
+        "II-C (3)–(7), author PDF p.3",
+        "Theorem 1, author PDF p.4"
+      ],
+      "finding": "在合法隐藏数据空间和真实条件期望下，只增加条件目标即可，无须精确最大化。",
+      "boundary": "支持有限条件更新；不能仅因逐用户更新就把我们实现命名为SAGE。作者勘误涉及(18)后陈述及Theorem 2；本记录不采用有勘误的速率论证。",
+      "errata": "https://web.eecs.umich.edu/~hero/det_est.html"
+    },
+    {
+      "id": "chretien_hero2000",
+      "title": "Kullback Proximal Algorithms for Maximum-Likelihood Estimation",
+      "authors": "Stéphane Chrétien; Alfred O. Hero III",
+      "publication": "IEEE TIT 46(5), 1800–1810, 2000",
+      "url": "https://arxiv.org/pdf/1201.5907",
+      "locators": [
+        "Author manuscript p.7 (11)–(12)",
+        "p.9 (13), Assumptions 1",
+        "5.2–5.3 pp.15–16, (30)–(32)"
+      ],
+      "finding": "条件后验KL作近端项；信赖域比较原目标实际改善和局部模型预测改善。",
+      "boundary": "仅借鉴限制步幅和允许零步；固定消息目标验收不等于其原似然验收，不继承收敛定理或直接冠名其算法。"
+    },
+    {
+      "id": "vila2015",
+      "title": "Adaptive Damping and Mean Removal for the Generalized Approximate Message Passing Algorithm",
+      "authors": "Jeremy Vila; Philip Schniter; Sundeep Rangan; Florent Krzakala; Lenka Zdeborová",
+      "publication": "ICASSP, 2015",
+      "url": "https://arxiv.org/pdf/1412.2005",
+      "locators": [
+        "Table 1 R12–R18",
+        "2.1–2.2, (3)–(11), author PDF pp.2–3"
+      ],
+      "finding": "根据明确代价决定通过/失败，失败减小步幅；MMSE版本计算Bethe cost需矩匹配。",
+      "boundary": "当前学习去噪器没有直接提供该先验密度与Bethe cost，不能机械移植验收函数。"
+    },
+    {
+      "id": "sarkar2019",
+      "title": "Bilinear Recovery Using Adaptive Vector-AMP",
+      "authors": "Subrata Sarkar; Alyson K. Fletcher; Sundeep Rangan; Philip Schniter",
+      "publication": "IEEE TSP 67(13), 2019",
+      "doi": "10.1109/TSP.2019.2916100",
+      "url": "https://phil-schniter.web.app/pdf/tsp19_badvamp.pdf",
+      "locators": [
+        "III-C/IV, (36)–(44), p.3387",
+        "IV-B",
+        "IV-D, (83)–(84), p.3390"
+      ],
+      "finding": "交替矩阵参数和VAMP消息估计，讨论方差调整和消息阻尼。",
+      "boundary": "原参数化、先验和渐近条件不同，不能证明有限维非线性相位及学习先验接收机的收敛。"
+    }
+  ],
+  "local_evidence": [
+    {
+      "path": "result/candidates/stmp_phase_schedule_20261022/REPORT.md",
+      "scope": "旧STMP，3场景×0/6dB=6输入，均150轮",
+      "finding": "9次更新开始60/30/1轮时NMSE分别-13.2183/-13.1500/-3.3254dB；1–149轮持续更新为+6.0647dB（预算不同）。scene60_snr0首次更新固定目标93367.740→1151.822，相位RMSE0.04221→1.44745rad。",
+      "limit": "不能证明越晚越好或唯一归因于某个反馈模块。"
+    },
+    {
+      "path": "paper/C-STMP/docs/C_STMP_PHASE_SELECTION_20261030.md",
+      "finding": "20/20是检查安排，仍要求稳定；开发/验证无真正第20轮首更，首更中位数60。稳定不保证准确。"
+    },
+    {
+      "path": "result/candidates/c_stmp_phase_iterative_probe_20261028/REPORT.md",
+      "finding": "保留物理初值的少量稳定后细化在该小样本优于一直固定初值；不支持永远冻结相位。"
+    },
+    {
+      "path": "result/candidates/c_stmp_phase_direct_20261103/REPORT.md",
+      "finding": "共同各向同性Gaussian反馈下Q阶内核等价已验证；新无物理搜索初始化候选18输入未达标。单次全圆扫描也未修复失败，不等于已试本次局部有界步。",
+      "timing": "基线每输入累计相位更新0.421s/总17.113s≈2.46%；初始化6.617s。内核约3.89倍合成计时提速不是整机提速。",
+      "limit": "新旧候选同时变初始化，不能单独归因于更新公式。"
+    }
+  ],
+  "recommended_candidate": {
+    "status": "待验证建议，不是已有论文原算法",
+    "initialization": "首先固定原有效初始化，独立检验精修。不声称局部精修已解决无搜索初始化。",
+    "model": "每用户一个包裹斜率beta；更新不建路径时延/多普勒字典。",
+    "schedule": "保留稳定和有效性检查；相位冻结期间推断信道/活动，相位变化后重新稳定；不将稳定解释为正确。",
+    "moments": "保留后验均值、方差和跨用户协方差；复用已验证Q阶计算，限定其各向同性反馈条件。",
+    "local_objective": "逐用户t_q=q-(Q-1)/2，c_q=conj(current_phase_q)*u_q；最大化G(delta_a,delta_b)=Re sum_q c_q exp[-j(delta_a+t_q*delta_b)]。",
+    "constraint": "max_q |delta_a+t_q*delta_b|<=Delta；同时限制斜率与常数旋转，不能只限制beta。",
+    "derivatives": "零点v_q=[1,t_q]^T，g=sum Im(c_q)*v_q，H=-sum Re(c_q)*v_q*v_q^T。此求和为O(Q)，不包括条件矩和跨用户耦合成本。",
+    "step": "正定化曲率求一个局部上升方向，缩短满足约束，对冻结条件目标回溯；无合格改善允许不更新。一轮用户扫描后返回内部推断。",
+    "mapping": "beta_new=beta+delta_b；吸收入信道的常数旋转delta_a-(Q-1)/2*delta_b。",
+    "guarantee": "仅验收时固定条件目标不恶化；不能推出全局似然、相位真值或NMSE改善。局部步不能纠正错误方向，可能更难离开错误初值。",
+    "uncertainty_followup": "若仍过度相信错误消息，再研究相位不确定性及其校准；完整GM是更大改动，不把分类置信分数直接当相位方差。",
+    "validation": "未来固定初始化、权重、输入、噪声和停止口径，配对比较固定相位/稳定后一次局部修正/稳定后周期局部修正/当前完整更新。开发集选有限参数，再独立确认；记录NMSE、漏检/误报、上限、相位轨迹、更新数及总时间，保留所有失败。本轮未执行。"
+  }
+}

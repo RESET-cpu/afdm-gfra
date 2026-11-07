@@ -1,0 +1,21 @@
+{
+  "schema": "afdm-experiment-v1",
+  "experiment": "runtime_comparison",
+  "methods": [
+    "proposed",
+    "offgrid_sbl",
+    "gnn",
+    "gamp",
+    "somp"
+  ],
+  "scenes": 1000,
+  "timing_repeats": 3,
+  "reference_method": "proposed",
+  "include_stmp": false,
+  "execution_status": "READY",
+  "snr_db": [
+    -4,
+    0,
+    4
+  ]
+}

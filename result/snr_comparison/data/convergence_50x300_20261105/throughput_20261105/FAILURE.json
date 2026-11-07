@@ -1,0 +1,29 @@
+{
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\afdm-gfra\\src\\evaluation\\throughput_20261105\\convergence_queue.py\", line 169, in coordinate\n    if not capacity(kind, active, settings, live_sample):\n           ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\src\\evaluation\\throughput_20261105\\convergence_queue.py\", line 70, in capacity\n    white = read_json(WHITE / 'STATUS.json')\n  File \"D:\\afdm-gfra\\src\\utils.py\", line 27, in read_json\n    return json.loads(path.read_text(encoding='utf-8-sig'))\n                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 546, in read_text\n    return PathBase.read_text(self, encoding, errors, newline)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_abc.py\", line 632, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\afdm-gfra\\.venv\\base\\Lib\\pathlib\\_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 13] Permission denied: 'D:\\\\afdm-gfra\\\\result\\\\snr_comparison\\\\data\\\\white_preconditioned_matched_fp32_1000_snr_20261105\\\\STATUS.json'\n",
+  "active_workers": [
+    {
+      "method": "Off-grid SBL (25)",
+      "scene": 4,
+      "backend": "cpu",
+      "pid": 136900,
+      "created_unix": 1793887718.437021,
+      "started_unix": 1793887718.4415956,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\afdm-gfra\\run_experiments.py",
+        "convergence",
+        "worker",
+        "--output",
+        "D:\\afdm-gfra\\result\\snr_comparison\\data\\convergence_50x300_20261105",
+        "--method",
+        "Off-grid SBL (25)",
+        "--scene",
+        "4"
+      ]
+    }
+  ],
+  "automatic_retry": false
+}

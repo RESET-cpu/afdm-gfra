@@ -1,0 +1,41 @@
+ledger: ars-run-ledger/1.0
+created_at: '2026-11-03T14:37:28Z'
+entries:
+- seq: 1
+  kind: initial_instructions
+  at: '2026-11-03T14:37:28Z'
+  user_words: 我记得我们之前好像有一个单独的相位前端的实现，在完整迭代算法之前进行的，而且好像也就一些实验结果，我们基于那个做一下主SNR实验的1000个场景是否可以
+  prev_hash: null
+  hash: bb755817069b32d23b9ed4af7a0249cb9cbd73353fdf8b9416cd15c4c9311d77
+- seq: 2
+  kind: tool_receipt
+  at: '2026-11-03T14:40:42Z'
+  step: prepare_6000_input_batch
+  command: .venv/Scripts/python.exe -X utf8 -B result/snr_comparison/data/c_stmp_phase_frontend_1000_20261103/run.py
+    prepare
+  status: passed
+  exit_status: 0
+  retries_used: 0
+  input_sha256:
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103\AUTHORIZATION.json: 91169d52617551cfefcfb9535e89b0302f03330eb5629dbd819999f36f2f311f
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103\PLAN.json: d85d44e610d48271d91b482cfc9a74309e344ed85dbf5990ab9d2096b46104de
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103\PLAN_HASH.json: ffc90c686c8ea206aee5b15270be7527c10551c3520b34dd78895a508341e136
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103\PREPARED.json: ba73ffd27bdf85dfbc274e3d7386c87cbdc600e2194c1e2c8f5bbe40026bbbfe
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103\IMPLEMENTATION_CHECKS.json: 97dd69cf1975490fcd59c1fbd54511e48ba1be334440de5eda72f2e4525ae528
+  prev_hash: bb755817069b32d23b9ed4af7a0249cb9cbd73353fdf8b9416cd15c4c9311d77
+  hash: d675921bafc6f0a5184f476ee8febb8842800e18a75c97c25d33167b840a3916
+- seq: 3
+  kind: tool_receipt
+  at: '2026-11-03T14:43:29Z'
+  step: original_startup_reproduction
+  command: First CUDA input compared with original CPU frontend before any further
+    dispatch
+  status: failed
+  exit_status: 1
+  retries_used: 0
+  input_sha256:
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103\PLAN.json: d85d44e610d48271d91b482cfc9a74309e344ed85dbf5990ab9d2096b46104de
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103\STARTUP_VALIDATION.json: 8f4c02118c56d8ee78a94cd8928de21418be5d84a56900fe25e79c1925f3e4b2
+    D:\afdm-gfra\result\snr_comparison\data\c_stmp_phase_frontend_1000_20261103\FAILURE.json: f07a8e69cf962ab56dd560bf77830aa5c522a559d19026d0573678b2c6c038c7
+  prev_hash: d675921bafc6f0a5184f476ee8febb8842800e18a75c97c25d33167b840a3916
+  hash: a3f5083b50a451209321b6c8a0bb0119425de774282f2a00c8d6256aba45712f

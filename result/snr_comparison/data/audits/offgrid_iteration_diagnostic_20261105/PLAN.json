@@ -1,0 +1,57 @@
+{
+  "schema": "offgrid-iteration-diagnostic-v1",
+  "created_local": "2026-11-05T08:15:11.524846+08:00",
+  "authorization": "用户：是不是迭代预算太少了，你诊断一下",
+  "mode": "exploratory paired diagnosis, not mainline replacement",
+  "scenes": [
+    0,
+    200,
+    400
+  ],
+  "snrs_db": [
+    -4,
+    0,
+    6
+  ],
+  "indices": [
+    0,
+    2,
+    5
+  ],
+  "budgets": [
+    7,
+    13,
+    25
+  ],
+  "iterations": [
+    120,
+    240,
+    600
+  ],
+  "maximum_iterations": 600,
+  "scientific_change": "Only maximum iterations, retaining original early-stop tolerance, initialization, data, noise estimation, grid/candidates, update order and activity policy. Capture outputs on the same trajectory at 120/240/600 or early termination.",
+  "selection": "Fixed scene IDs spanning the already completed set; not selected by performance.",
+  "runtime": {
+    "cpu_affinity": [
+      4
+    ],
+    "threads": 1,
+    "priority": "BELOW_NORMAL",
+    "max_workers": 1,
+    "worker_peak_budget_gib": {
+      "7": 0.75,
+      "13": 0.95,
+      "25": 1.6
+    },
+    "minimum_free_ram_gib": 1.0,
+    "peak_basis": "New budgets observed maxima 0.751/1.372 GiB; add headroom. Independent short diagnostic uses >=1 GiB remaining RAM; main queue runtime unchanged.",
+    "timeout_per_case_seconds": 900,
+    "automatic_retry": false
+  },
+  "prefix_verification": "At iteration 120 compare all per-user squared errors and adopted activity decisions with the saved current main-SNR records; rtol=1e-7, atol=1e-8 for numeric environment differences, decisions exact.",
+  "truth_access": "Only after checkpoints are saved; never used for iteration, parameter selection or activity readout.",
+  "preserve_main_queue_and_training": true,
+  "source_plan": "result/snr_comparison/data/offgrid_search_budgets_1000_cpu_20261105/PLAN.json",
+  "source_snapshot": "result/snr_comparison/figures/offgrid_three_budgets_interim_20261105/SNAPSHOT.json",
+  "no_hyperparameter_selection": true
+}

@@ -1,0 +1,1329 @@
+{
+  "created_utc": "2026-10-24T11:54:20.903638+00:00",
+  "authorization": "User: 这个表现感觉就不错，现在再在实际的场景和已有的网络对比一下一阶去噪性能。 Repeat the same saved-query comparison with a frozen latest checkpoint.",
+  "source_plan": "D:\\afdm-gfra\\result\\snr_comparison\\data\\low_snr_query_check_20261024\\PLAN.json",
+  "source_plan_sha256": "2a874324f9352603b0c2af723f80f301932616abfe99396d06fc16f862e52197",
+  "previous_result": "D:\\afdm-gfra\\result\\channel_denoising\\data\\actual_query_denoising_20261024\\RESULT.json",
+  "previous_result_sha256": "18b98093e323eeb2503682a673e882e8d2b5a535dc83147510a044ae0f8eb44e",
+  "previous_runner_sha256": "899b6fc26b557a3fefee297ee5b893004a1d905085fa49d8802919329d307e56",
+  "candidate": {
+    "path": "D:\\afdm-gfra\\result\\channel_denoising\\data\\actual_query_denoising_refresh_20261024\\candidate_first.pt",
+    "sha256": "764df5720bfbb56023f5871b74d9f94e096f992e3f4ecbd35ee8f8aaa4570f8a",
+    "metadata": {
+      "epoch": 92,
+      "validation": {
+        "loss": 0.08852630486488343,
+        "samples": 5000,
+        "nmse_db": -11.900114718788188,
+        "error": 1318314.7665537,
+        "signal": 20418817.54943657,
+        "bands": {
+          "snr_-20_to_-15_db": {
+            "samples": 465,
+            "error": 654672.313873291,
+            "signal": 1916811.4076385498,
+            "nmse_db": -4.665554103868002
+          },
+          "snr_-15_to_-10_db": {
+            "samples": 513,
+            "error": 269229.6185760498,
+            "signal": 2153868.7277240753,
+            "nmse_db": -9.03096394808826
+          },
+          "snr_-5_to_0_db": {
+            "samples": 519,
+            "error": 109847.29052734375,
+            "signal": 2086415.4892578125,
+            "nmse_db": -12.7861144904306
+          },
+          "snr_5_to_10_db": {
+            "samples": 480,
+            "error": 42969.04693031311,
+            "signal": 1861624.5019073486,
+            "nmse_db": -16.367363653398247
+          },
+          "snr_10_to_15_db": {
+            "samples": 509,
+            "error": 21455.40759897232,
+            "signal": 2123812.8083724976,
+            "nmse_db": -19.955794661790613
+          },
+          "snr_15_to_20_db": {
+            "samples": 511,
+            "error": 7873.521785497665,
+            "signal": 2022063.5167236328,
+            "nmse_db": -24.09625759966754
+          },
+          "snr_20_to_25_db": {
+            "samples": 503,
+            "error": 2653.4217282533646,
+            "signal": 2165468.1975250244,
+            "nmse_db": -29.117455288282628
+          },
+          "snr_25_to_30_db": {
+            "samples": 536,
+            "error": 974.2266229987144,
+            "signal": 2216303.0875701904,
+            "nmse_db": -33.56969157979458
+          },
+          "snr_-10_to_-5_db": {
+            "samples": 471,
+            "error": 131644.89421844482,
+            "signal": 1908955.091430664,
+            "nmse_db": -11.613916917710956
+          },
+          "snr_0_to_5_db": {
+            "samples": 493,
+            "error": 76995.0246925354,
+            "signal": 1963494.7212867737,
+            "nmse_db": -14.06567075442764
+          }
+        }
+      },
+      "specification_sha256": "61344549f8646fb1bd105e7476c0990428e689150d7c4e6e88a6e208bdbe75a8",
+      "initialization_sha256": "1ff7105ad62ba3bb0d509501fe7fbd317a7361286649c74ade53404e9230fd63",
+      "noise": {
+        "snr_db": [
+          -20,
+          30
+        ],
+        "max_strength": 0.5,
+        "rank": 4
+      },
+      "training_scope": "First network only. Fresh 200-epoch run from the original random trunk initialization; same colored samples, seeds, objective, Adam, EMA and validation. No auxiliary training or receiver binding."
+    },
+    "source": "D:\\afdm-gfra\\result\\channel_denoising\\data\\colored_preconditioned_50000_matched_20261024\\first_best.pt"
+  },
+  "white": {
+    "path": "D:\\afdm-gfra\\result\\runs\\proposed_50000_cuda_graph_20261018\\model\\first\\first_best.pt",
+    "sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+    "metadata": {
+      "epoch": 200,
+      "validation": {
+        "loss": 0.03139279685020447,
+        "samples": 5000,
+        "nmse_db": -10.786834403149435,
+        "error": 1703519.6529166102,
+        "reported": 0.0,
+        "error_to_reported": null,
+        "raw_negative_variance_coordinates": 0,
+        "raw_nonpositive_sample_variance_traces": 0,
+        "bands": {
+          "snr_-20_to_-15_db": {
+            "samples": 465,
+            "error": 1095888.2205810547,
+            "signal": 1916811.4076385498,
+            "reported": 0.0,
+            "nmse_db": -2.428131265229341,
+            "error_to_reported": null
+          },
+          "snr_-15_to_-10_db": {
+            "samples": 513,
+            "error": 389189.8468475342,
+            "signal": 2153868.7277240753,
+            "reported": 0.0,
+            "nmse_db": -7.430577288286651,
+            "error_to_reported": null
+          },
+          "snr_-5_to_0_db": {
+            "samples": 519,
+            "error": 55419.33648300171,
+            "signal": 2086415.4892578125,
+            "reported": 0.0,
+            "nmse_db": -15.757394763893139,
+            "error_to_reported": null
+          },
+          "snr_5_to_10_db": {
+            "samples": 480,
+            "error": 8696.478495121002,
+            "signal": 1861624.5019073486,
+            "reported": 0.0,
+            "nmse_db": -23.30548658954099,
+            "error_to_reported": null
+          },
+          "snr_10_to_15_db": {
+            "samples": 509,
+            "error": 4092.037195920944,
+            "signal": 2123812.8083724976,
+            "reported": 0.0,
+            "nmse_db": -27.15176662911926,
+            "error_to_reported": null
+          },
+          "snr_15_to_20_db": {
+            "samples": 511,
+            "error": 1718.7429320812225,
+            "signal": 2022063.5167236328,
+            "reported": 0.0,
+            "nmse_db": -30.70583868209503,
+            "error_to_reported": null
+          },
+          "snr_20_to_25_db": {
+            "samples": 503,
+            "error": 713.1000661849976,
+            "signal": 2165468.1975250244,
+            "reported": 0.0,
+            "nmse_db": -34.824013332258595,
+            "error_to_reported": null
+          },
+          "snr_25_to_30_db": {
+            "samples": 536,
+            "error": 323.3434712290764,
+            "signal": 2216303.0875701904,
+            "reported": 0.0,
+            "nmse_db": -38.35965055140036,
+            "error_to_reported": null
+          },
+          "snr_-10_to_-5_db": {
+            "samples": 471,
+            "error": 125779.71690368652,
+            "signal": 1908955.091430664,
+            "reported": 0.0,
+            "nmse_db": -11.811850987314127,
+            "error_to_reported": null
+          },
+          "snr_0_to_5_db": {
+            "samples": 493,
+            "error": 21698.8299407959,
+            "signal": 1963494.7212867737,
+            "reported": 0.0,
+            "nmse_db": -19.56593421884069,
+            "error_to_reported": null
+          }
+        }
+      },
+      "first_sha256": null,
+      "objective": "direct_cai_dsm",
+      "specification_sha256": "3c4ae9b1faa1f479bedec6698c9a351eee43d543b4f7fd1b908e8bb7440343e6",
+      "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+      "initialization_sha256": "1ff7105ad62ba3bb0d509501fe7fbd317a7361286649c74ade53404e9230fd63",
+      "continuation": {
+        "schema": "first-score-continuation-v1",
+        "source": {
+          "execution_only": true,
+          "checkpoint": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\last.pt",
+          "checkpoint_sha256": "fae6dfa7d8b4911bfd1fcaf5080dead359d38b0ebababa759674ffd0ae00c74a",
+          "specification": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\specification.json",
+          "specification_sha256": "557c17e121c95269a996d400bde12678d52d585afbf0bb4719c704cbfdd8c8ee",
+          "best_checkpoint": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\first_best.pt",
+          "best_checkpoint_sha256": "31b5cc8d33b13771e580870a9ed9e7f2a8b96fe5f87b20bdb5d659baf07f454b",
+          "baseline": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\baseline.json",
+          "baseline_sha256": "0f16c5691e48eb53b9aa2a60429740f2234f15db564c930d53100f679d47e06f"
+        },
+        "parent_specification_sha256": "557c17e121c95269a996d400bde12678d52d585afbf0bb4719c704cbfdd8c8ee",
+        "specification_sha256": "3c4ae9b1faa1f479bedec6698c9a351eee43d543b4f7fd1b908e8bb7440343e6",
+        "imported_epoch": 85,
+        "imported_cursor": 34880,
+        "imported_optimizer_steps": 66233,
+        "inherited_history_epochs": 84,
+        "cumulative_target_epochs": 200,
+        "schedule": {
+          "kind": "unchanged_original_schedule",
+          "start_epoch": 85,
+          "start_learning_rate": 6.249198285028728e-05
+        },
+        "restored": [
+          "model",
+          "ema",
+          "optimizer",
+          "rng",
+          "torch_rng",
+          "mps_rng",
+          "cuda_rng",
+          "indices",
+          "cursor",
+          "loss_sum",
+          "seen",
+          "history",
+          "best",
+          "meaningful_best",
+          "stale"
+        ],
+        "same_original_experiment": false,
+        "execution_only": true,
+        "description": "New run continuing an identified trajectory; parent artifacts remain unchanged."
+      },
+      "training_scope": "Full-geometry training; continuation provenance records any inherited trajectory"
+    }
+  },
+  "cases": [
+    {
+      "scene": 14,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 14,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\881a8fa4684863aca9cb5930e2beb539b2801e83193b699255960384c7344dff.json",
+        "result_sha256": "b19ab2c3bbc442c9f4623af311d5afa2df6b5941353477f31bbc64243e7cc80f",
+        "compact_sha256": "d16dd28201e658696a409bab52feeba150b7d2b8453a6a82680f9401f1cf2b2b",
+        "record_sha256": "937c8928a80d038bdc71faa45b9dcceb186b22e077bfac75b31340de712a3f64"
+      },
+      "input": {
+        "scene": 14,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100015\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "ba548eb25045b13ffe95fba1b9e23eeedb02863e89e11f60072e2eb5381908e7"
+      }
+    },
+    {
+      "scene": 14,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 14,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\1a1d6c5639208d95893b27b95fa4ebc9dfc12f94e8d4dd73e2776b2c2c91368b.json",
+        "result_sha256": "58e50795c1b59c1b8231e09533a9366ffb732d8461f45d4bf169e5de9d85ab2b",
+        "compact_sha256": "9daa7c228ae6303810e20de69a3f91286f83d05fdcaa6c26a6c94b945ce712d4",
+        "record_sha256": "851364e1d94609812a2344f636238bd6c25258287d273c4f8fc74d8a3dd9a1cd"
+      },
+      "input": {
+        "scene": 14,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100015\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "8f3676aaf68a871daed093473ec172581cbb32b1a3e0ac1ee00b89d9f8ea6511"
+      }
+    },
+    {
+      "scene": 21,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 21,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\22eca34f939c9875b90168c7321f7415f1849cefa59e2bedeaae600624886ef3.json",
+        "result_sha256": "8b3c1d66f197dd6f7b227f7d5a53987bfad964d42b356d796d3f2ea2d88f5b68",
+        "compact_sha256": "047a9033debc7cbf9931cfe50a9e62181cc58be764bf2c14d54fdea2e4980459",
+        "record_sha256": "70529c680296e572d00b36737ce1ccd5e29e1998af78ab09b4bc709c43ef0d41"
+      },
+      "input": {
+        "scene": 21,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100022\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "4ed4eeccbcd37f5c48aabcb4d88b6c35c07661cdc6af2533d5fe3fd753b529df"
+      }
+    },
+    {
+      "scene": 21,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 21,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\ef305b71be213b9cea6168554b03cb9f7c1ef3ec3d77f6573f835eb5223fcd1f.json",
+        "result_sha256": "ffe6ff7cd501d370376b077326d4423af17f584a83643dccaa9b90680052963a",
+        "compact_sha256": "1d1b6054ab7e85dae017b59fa85a68550631b4fa80dcb0cbb24095abe9bc5be3",
+        "record_sha256": "3a3727f7d4fcf44d7316ed2511ae9fc85afc967b6f4984d955aba4ba0d14cea8"
+      },
+      "input": {
+        "scene": 21,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100022\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "f63c2ff2d0478d7b1b93b48652df3cbb63d6a93a7749f388e509f8d95edbddcb"
+      }
+    },
+    {
+      "scene": 59,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 59,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\2080e49ed4734e4c9eebb799887c639ac3ccda4eb044c10ea888df46da13ca86.json",
+        "result_sha256": "110531d333eb79577bcffb534b8b968997bbc2152e9bc2114bba3559ba70f5a7",
+        "compact_sha256": "2163ab81d1f5202a373087cb2d9979cc44769550f9121a5e292f45f92ff48792",
+        "record_sha256": "b9266ea4e2ba6008cca94a5847c410dfd1833edd991475dd6e87bf6d4825dade"
+      },
+      "input": {
+        "scene": 59,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100060\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "b91c38e5bf9143e3c93b8bc8022bdb035ebff65c1bcb4335b02d0084196005d4"
+      }
+    },
+    {
+      "scene": 59,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 59,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\571e164f66f70bda37905e8d054f897cd9892ceb4c612be014f8a1c304115da7.json",
+        "result_sha256": "4f02810170e53a4d6ed791a29555ee6b6fb5a4ccce73b756f23900c0f232e6ed",
+        "compact_sha256": "fdf0a1dc6fa90199ffbda5370b2e85ec740f3cf1842a6b8d001e72c670eb4141",
+        "record_sha256": "ee54ff1b608f834b2bcbad0708d51aaa8a0fba0b7ec422c2d102d7393c4f98bf"
+      },
+      "input": {
+        "scene": 59,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100060\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "52601349cbe1b0735dbf1785322ba9e10dd3e422f3d917e8fb42fdb82f317b49"
+      }
+    },
+    {
+      "scene": 97,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 97,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\5c28f7bc1272d6176df5214d18668b921316769cdc9872352af3bc8d191c7665.json",
+        "result_sha256": "ac2259dec077b1f1834c223da9f9962f69f27a2b39b7d5f107355df57baea14b",
+        "compact_sha256": "1a797fc3b871eae813de0f1f7ceb803ddae2a4c16e9846618b4ce0bdc5f09c1b",
+        "record_sha256": "e3f3cfac10fda397c8ea81a4ab3755885b7003497a28c788eb2485237ef314e7"
+      },
+      "input": {
+        "scene": 97,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100098\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "c3e0b7ed94e88a8829b30789425ca02fb439dee9bae9095652dc66c84d60fc73"
+      }
+    },
+    {
+      "scene": 97,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 97,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\2cb732583b3b575e8e28b3f0c01e26b5beff7724d65553c56dd8e7c7730967f2.json",
+        "result_sha256": "62a72b9f90fb4aa274f727b0fb407a76499120b4ac0aa63915620072358e2570",
+        "compact_sha256": "70d5a6dd5a32a884649ba92905c5a1380f7ad9d91c45440c41dc0e089547c1b1",
+        "record_sha256": "f8899f4fe169e6c2f0f59583a78bdd773003ea3374c8ee1d9c5c87a73aab2264"
+      },
+      "input": {
+        "scene": 97,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100098\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "eef0f4c387230177f028e2021ccce44f94e01b0a0d8fe339b0a3cea54400c9b9"
+      }
+    },
+    {
+      "scene": 305,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 305,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\8950d58465c3bbb916b1ee23ef3dcb3ec59fd7fcaaeb1105967258d2afed1a40.json",
+        "result_sha256": "1bd35092ec0479e435c13e1fd5147254357de51030ea9c032ea22da9b1b61152",
+        "compact_sha256": "ac3c04ecf9a90587cea2c5813880fca907cfe875874cc6404cf0090b66508cfb",
+        "record_sha256": "58189bd89db1abfbc6b1cd77859b95fa04b099ea844166c2fabf3ca9b850b1ab"
+      },
+      "input": {
+        "scene": 305,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100306\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "4dc57dbe18c576a7a098c1fd3168e2543e47d3166e82f2a1113d89e6a9ba1e1a"
+      }
+    },
+    {
+      "scene": 305,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 305,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\bd05308f9f2d87a3811d3d933fd302218ca1b6503c026ff4be3481b049aef5cf.json",
+        "result_sha256": "23592b0e3173eb69a6c4cc5d09753c484cd7a0ecc8032e6a3be6cd20c60c9833",
+        "compact_sha256": "225b69c4222de7cf94d07c616a1ef7ce4e67e3f01633288172d363bceafab75e",
+        "record_sha256": "7365517152e1415e26d6839c279ee668fb21c61f03a2f1672b925d2bc773fbb5"
+      },
+      "input": {
+        "scene": 305,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100306\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "50323f8912eaae0c5d36704543897a7923cc4ce9ffa5b5091bf18c83885fa022"
+      }
+    },
+    {
+      "scene": 446,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 446,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\b25748ee3b003eb0176c3b68fee1e04af59ccfeae86774438534457103b5af26.json",
+        "result_sha256": "9141672d969867e70af7e1559ad8afcc77e3211b786e374572e413b9568e4476",
+        "compact_sha256": "3ce0bcdd0cb85f43d1dc49b88ff1e560cd02cf9855b09a60feec04b97b2df82c",
+        "record_sha256": "3d4a688af2cd49a16261c58a540cf9724c25584013736dfc9d359e1fc30481d9"
+      },
+      "input": {
+        "scene": 446,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100447\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "85d9ca72977e2d8d7be6e70f274fe5f1e5c746efc5dfb6a1ec5a009880df4eae"
+      }
+    },
+    {
+      "scene": 446,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 446,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\4c2ff1417cd8a7459a6d589fab2b8150f2a432e117e5f289fb600bd0349724be.json",
+        "result_sha256": "30d265b5919d322de8881e9d5dd6bd0f5a13e5967ed861e721cd751100c0794b",
+        "compact_sha256": "ecf5cab5206358d84053edb4550ba0041c36fe0218c9357700f592b44b8e15c4",
+        "record_sha256": "058cf2d0cd191550556b807aa25703d8c97c2d7cd76d5eae63c3bd2150391327"
+      },
+      "input": {
+        "scene": 446,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100447\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "bf3bc67a5d1890080b7a7aba6324e542a62499b75014e43aec3aca4bd4b439d8"
+      }
+    },
+    {
+      "scene": 593,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 593,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\025bf7af0fc39f2ce8129fa2fcd8021dc4fe48193233abcf8c897011f79af129.json",
+        "result_sha256": "396b38b51029bc798d47cacdf55aeaf686428f691aa85ee000af97831b9478ef",
+        "compact_sha256": "01f3f8d681584b6562d8c5fbfbcac5fc257f797e07bb889da107890e583aa1c1",
+        "record_sha256": "b5634d7a0c4aad76c869459f5bb71875e8759067babc1b40e2368eedba75fe9a"
+      },
+      "input": {
+        "scene": 593,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100594\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "b96e01710348b0f7558f017034fa51cf1efdaf923c9e9646794696cb6282fdb6"
+      }
+    },
+    {
+      "scene": 593,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 593,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\edde9093059ae17f1517eb0ddb89ce6f00b6a6e973ec6789a8a9b48608727aa1.json",
+        "result_sha256": "772db46ee204b1902da6f7c387b57047ba0818c9da9f4610bda57fba6c83f6f6",
+        "compact_sha256": "a47d72d7285b2060c5c75025261d49f4105aec658384f5c70fe4bf138feaf41b",
+        "record_sha256": "47e4b12f641c6b96f8fe02232fdfcdd09920213be0b950acc0d8b38e823ac33b"
+      },
+      "input": {
+        "scene": 593,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100594\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "f1855961873a066e218e03a90b16bf1fdd5466e58a32ae230dc83506a23e49d5"
+      }
+    },
+    {
+      "scene": 659,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 659,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\9fe23715495c122cd4c2ed78057bf157a3a02bef3b72ab9de1d8eb4d47b90fab.json",
+        "result_sha256": "2f9a85ec07c168e88718cf3ed08a6f5a47b1f814b78c3106cf12251ac036d8f8",
+        "compact_sha256": "37c20f1ee83e6495dbe47ba7f1833ced693f8e07c93219e8e04412aa8c2c6fe1",
+        "record_sha256": "07b31cd2649305f35f0239669c68293b62866a63cf5021456c5b234d62a5dd6d"
+      },
+      "input": {
+        "scene": 659,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100660\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "107c5bce726bc6626447e876969edab0bbfd1cec14bca63b6fa1f08661e000cb"
+      }
+    },
+    {
+      "scene": 659,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 659,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\5580d708636b0567fe2ee507d7872c53730a09bf1c2a3fc8593ba680912d8f97.json",
+        "result_sha256": "4f5a26d771315574cedca7edeb695a95ff270a7ee0684adad305a63bb0bb9859",
+        "compact_sha256": "3d94092d3945e06ac39ef59e5066f5d8a6c0d1ac773d00cca8dbd1e58b8a5850",
+        "record_sha256": "73c7a356023da702eef76b046c4680effce1134df850d38b493ad8e0bc3bdb75"
+      },
+      "input": {
+        "scene": 659,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100660\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "ccb7b86156453e52806ccb28bbfb6d110b806709853b7c6b8d0f7dc38da36c95"
+      }
+    },
+    {
+      "scene": 729,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 729,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\e17e00a6fd28ba25baa83da55a2fba15a2e5aa31d7ae62114d84d2a4b4810699.json",
+        "result_sha256": "e23930accb7e5e01eac273aeb1f1ede5299e3cb72f85f06e4ae138715f42cc6c",
+        "compact_sha256": "34daa60388545ff76f6c9b41556363408784cdb5d51a798bbb730f0c52b7f56d",
+        "record_sha256": "fea02f6223a3fdc808d0c4b0494a2262287277aeb620dfcf7bf7cd1359f3f35f"
+      },
+      "input": {
+        "scene": 729,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100730\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "ea1b961983637824bd95090ba872fcbfde1e1165629e36f4a963ab1bd66a10c1"
+      }
+    },
+    {
+      "scene": 729,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 729,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\29db5d7199f6a50ce8a40e8388e9fc9c330a265aa90e324f3d8428a3ad3acb14.json",
+        "result_sha256": "47def240578fa970480e5fca741e2903a9a72a456a8a328fa77334bcf3d8cd88",
+        "compact_sha256": "246ec4a9348f8915d3c6f34fa338b98f1127e7abf8a0fa2d88184b45dc7e6bb2",
+        "record_sha256": "1b524299e24cc524eb50de8d9fc4befe18d71d690bfce7bb44db6f6fd84a8d05"
+      },
+      "input": {
+        "scene": 729,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100730\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "55e930f211557feb86b2aeafd93c1d2c127160322d2296dc9a3de529700fead4"
+      }
+    },
+    {
+      "scene": 739,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 739,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\70bdab1d974462061d5b42d0c96b93e957af141e8bfe84f40c38b1a9e7b59c56.json",
+        "result_sha256": "2fd5d4bc249babc9877dc408fdd0b8dbb21a1e36e1657a5c8cb1542b8249c5b0",
+        "compact_sha256": "70bb3251076a4b8ea4dcf84683ef3578c67d162f8378ff4a1f048b5ec30dc92c",
+        "record_sha256": "92eb988e1312ac7777a91afc13e5179324c9fdcbdc4a9b60b2bebb5bf4789513"
+      },
+      "input": {
+        "scene": 739,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100740\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "63b91c11d906328c9d9f755d1ab949294deb8dadc469194499b3746357539f8a"
+      }
+    },
+    {
+      "scene": 739,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 739,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\0f2f336d74ff8ff2634fcc0ea415a3e23e5e6487b0697e6165270dd92b5729f4.json",
+        "result_sha256": "1db3e67752da6e040334f6bd20bdb8d0d0fb3722095187536cd4660329dfea4d",
+        "compact_sha256": "07a106c21df5f3b1c4da624ffcc1f76a462374c805a84f75a5038e6c7828a85c",
+        "record_sha256": "b6e0c1c553b08a5a201714277ace07c4d085f33e5b8adc1298da882fafdbda8d"
+      },
+      "input": {
+        "scene": 739,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100740\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "db133cfa096a4559d5bfcc52a1615792a593df668ddc4b0ad49cd9147bcb7f32"
+      }
+    },
+    {
+      "scene": 925,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 925,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\531a959fa83ccecaa973cf9e6da24c32c430938eb67a21fce8bf77ea455b610d.json",
+        "result_sha256": "8b1f273c1169dc1a7c94160c4071ff7916e49ff9700e9a227ee8d60feb0a8cf4",
+        "compact_sha256": "67c6c7abd39ce0004ae2f60ee5049092fea30f3b09a43a3476f425e09342f267",
+        "record_sha256": "47e7e5a65a13c9fa66c6cddcb7b9544083bae24c934d0eb294d9a8341373f99b"
+      },
+      "input": {
+        "scene": 925,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100926\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "a7475613e7a23e5b1cce8e7cd5e87f44356ddae45e6b1c0a818c47ae027617d9"
+      }
+    },
+    {
+      "scene": 925,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 925,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\abf3de3a688d8b200419b355d53e19fb4f89300071cbbf77e53a187d577a735b.json",
+        "result_sha256": "19416b651a6ad704bf28f1ac4b590bb2b420eba9c9145dcdf2bc9b252d46bd51",
+        "compact_sha256": "1bd0ebb6706605e4d9cff2209f5400a5a683b7c2ea3cd66a6c6c768ab24bfec0",
+        "record_sha256": "113f10b67247087b346813d7f31820ea16e20416b2c9962e0f0f844010ff6566"
+      },
+      "input": {
+        "scene": 925,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100926\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "cdcef2157331713c6af4b9d25cb33b8b2046c859fff74dbdb0c9bd6f8f57c1b7"
+      }
+    },
+    {
+      "scene": 978,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "uniform",
+      "result": {
+        "scene": 978,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\e997272b54c9835c746cdb480316e279a29814cabaabc83e24366fbc7c00d907.json",
+        "result_sha256": "7d315da6bf1836d4c841138f733221f770b475225afc9ceb77914e2cb828b6cf",
+        "compact_sha256": "5a6994cbfc0975dbd49a45d28910d8d2aa9e34dd901491965a8328ecd2655e61",
+        "record_sha256": "2f9a335d42589f1649cfb956bf0985d9e9f980fc79c2827bfb6dcfd7302518e5"
+      },
+      "input": {
+        "scene": 978,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100979\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "e524fcb8d9f52ad680dc2fd44f448d94046739e725805a42ed8365207f2c9cf9"
+      }
+    },
+    {
+      "scene": 978,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "uniform",
+      "result": {
+        "scene": 978,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\7df355bc97757e5f63e23bb653ed9bd09fa646e1643928fffbd07d26875db180.json",
+        "result_sha256": "b4e164059dbabb45eb980a9304073dd5aaf0aa803eb70f22b90a8377e8b269f9",
+        "compact_sha256": "37d7072d374cdb7ba03f6892964d97c7d7e00a80b80158c1ce9fd3b91382d6de",
+        "record_sha256": "d2c36a2139f586f9d91755454f807fad846f7f9ba4ce1205119ab18aa284f8ad"
+      },
+      "input": {
+        "scene": 978,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100979\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "8618e6b3afe3ca5f33c7e62ca7cd11561395a59556e909298b7340a8ca04c3ae"
+      }
+    },
+    {
+      "scene": 45,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 45,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\5dfb4c63e829ce61b54de192b7973c0796df6f64cee91def123ff4bb94b53d65.json",
+        "result_sha256": "67ab28b4075caabf64ace1ce08bc08997076f42245afa4d4627d2f1b416ecd83",
+        "compact_sha256": "d43b2843e776d849b5a44500f43ea45bf2c75913aa58b4ea505f37a1610ef502",
+        "record_sha256": "8b466b5a0a21a783cfae5ee280eef2a080c944f85cba6a92723a1c7484945009"
+      },
+      "input": {
+        "scene": 45,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100046\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "8fdae107aa2a73617442ccd40e886104bf1866a442cf3c26efc95d4df2208df8"
+      }
+    },
+    {
+      "scene": 45,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 45,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\7095edc6580aa0f28d22f65f57ec61419e302896375692032a78d9c5c01bf9ef.json",
+        "result_sha256": "ffe75cfa20ac7ba283472c7e5f7fc1c1d2330ee01362ed56d33509e6af19b288",
+        "compact_sha256": "d3cbfb744d9ad82fb00103d97d44fd7055a342ce431d05d23a07315f3299d833",
+        "record_sha256": "6e1a8ab0a8973ac5eb5323f3010b6ad35b5a8249661c7ae38f55646c8e31b219"
+      },
+      "input": {
+        "scene": 45,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100046\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "a37543352965ce712f66abe610ef56547ad40631557458c878a872499cccde54"
+      }
+    },
+    {
+      "scene": 78,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 78,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\6cc0d0b88b907efcf02976d3c383df13928f113f7966f945f2b42a95ce51a3ef.json",
+        "result_sha256": "37342c8a3285421d9800a0a11037e70502629bdc722fa29aa2108380dd30a35f",
+        "compact_sha256": "9e09a58371c2b6261fc4bedb7a3c3e252fb57c5bcb0a7154a24ffbfb01e66d0a",
+        "record_sha256": "327a44c3fa0a68ae31187ca0ce1c8d20e1cdc7c934b3abc27609baef5638db3f"
+      },
+      "input": {
+        "scene": 78,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100079\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "b607b5652ef6fbe78c42906829702fae7d959092cb699925c58f8de86bedc36f"
+      }
+    },
+    {
+      "scene": 78,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 78,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\c793183f02cca6e7c9eb865c18a3433a4fbe5cb08f3acc8da43829d0e4763dc6.json",
+        "result_sha256": "571fc273617a3dfa8fc93123e2354a9a287dcf6a0cbab1de684c2637dbb6f1c8",
+        "compact_sha256": "56c788227112a9140eb46115b563e4f68a2070d45baec26d2af3ffa3f56576fe",
+        "record_sha256": "0435536d20c42f1b1bbadc3e8ed03b9b6ff350839124f88d5db3f16db28afb07"
+      },
+      "input": {
+        "scene": 78,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100079\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "026f53b69f704997d9756251cf5586d2b9d35bfd94e3c056dc1b2dffad4ae2a3"
+      }
+    },
+    {
+      "scene": 80,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 80,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\fd1a91614de98dd7b1eb798214c31c3929089dc5bde39f5ad8de6c38fdf90c59.json",
+        "result_sha256": "8cdf92d80714e43f9d676fbd81208555d84582d04ad193a2aacab516cb708894",
+        "compact_sha256": "2f789e9a4363cd5a1111576cfd15f13d185f5c89c55b9925573ec77a8d2841c5",
+        "record_sha256": "bd2cb37f2a993b4c79f10c7be81108c5e742751089d9b87a54683b9323f6992c"
+      },
+      "input": {
+        "scene": 80,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100081\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "ab1b99382bf4d6f108ba752d75d4f5b160151b7c1aac507c16e5820a7b3e1e6d"
+      }
+    },
+    {
+      "scene": 80,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 80,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\d689363125f6dc4ae8afd07e989cdedf17e2947442b75aeec2606fc7e4686f2a.json",
+        "result_sha256": "8b1407084969fbc65b01fd3605472e0ac4f9e9db31c1016c859f194146768921",
+        "compact_sha256": "60d430f879345e7181e263bcdfa27183453b111f0e3f472fe5d9a2934a3f726f",
+        "record_sha256": "71dd78be03ec755d0c1132fab74bce89bc71f8e56c5f098940873ff79124463f"
+      },
+      "input": {
+        "scene": 80,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100081\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "853ca233705c77845c0a289258d1c8d5aad210d910df4d9d07bbfd78cc05e10c"
+      }
+    },
+    {
+      "scene": 283,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 283,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\8e321440c2e9da5fa0d12f921d13aa7c62dcc618d9deecfcc2d8d5504c14ebb5.json",
+        "result_sha256": "d817dfc270a1df727a6a83390492b6b1e788a7b9686e0276558d37670fa67983",
+        "compact_sha256": "4bc3d7655cab93a4e46e8988b47d396c0a709e995f86e42abaa23f2a81b37d04",
+        "record_sha256": "88a2476cd5231438de3dd4c50c74218f21ea2587de0bd848234c3119c5149b7d"
+      },
+      "input": {
+        "scene": 283,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100284\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "4de262b0ecbb253519f44907fa6d765114fdedd6249ca295f055b4c20a04394e"
+      }
+    },
+    {
+      "scene": 283,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 283,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\0a34fe423a626876f5ffec7600967f212d0499a6680f6909f42b682bc3229b4b.json",
+        "result_sha256": "141908779b5b9d1cd8d1dfbb1ce89be4dd5383bc31d118252ada9b6fd9efdeec",
+        "compact_sha256": "682a265f7857d08a869fbc168cfe72e59de05f2b6f2f4a90068f469dc8f14c65",
+        "record_sha256": "67e08b95ee028891005dfea304e413ea631d16f0760d07f4d6df30913db0bcb2"
+      },
+      "input": {
+        "scene": 283,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100284\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "67e7549af59d37100b0b0c001ff8cd27b1ee21fdc83966b9fc7658d403abe8e5"
+      }
+    },
+    {
+      "scene": 468,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 468,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\9a68543b7080b5533dc2b52663f8f14901911c5f832ee1a13703d65ca3c8e99f.json",
+        "result_sha256": "b2a89a02fd07621bb3c8c7bca8ce7f3b202eb66bfcf47aa8e832f65e83bdddf2",
+        "compact_sha256": "366fbbdaf2665973b00797311b4de0c68af4ba3574fe56de4e86d2601b03af0a",
+        "record_sha256": "52343055647523b2793d7dc5f9e53ea7648394857841fcbf53a3168991c9c6b7"
+      },
+      "input": {
+        "scene": 468,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100469\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "9b1558e6a00d44bad5e8cf2600de1aaccaa8736307b68d2193f23a9a0767c9e3"
+      }
+    },
+    {
+      "scene": 468,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 468,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\c9815a5f866e346f8d72b8d2a24ff00f2d572d2a4f89106efddddfdeb553a3cd.json",
+        "result_sha256": "14fef85e8bd575fc3c03dc6cf4f740db55c801a9ab258d0cf991479d9f023a45",
+        "compact_sha256": "fb07a27918a74e9a630c13495c1b269a6dc740f598828e98df9881e547b28b96",
+        "record_sha256": "8d794a11a7a44db6192f8bb466385a9eb7c47736769ad385abc1def14d9a399a"
+      },
+      "input": {
+        "scene": 468,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100469\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "ab4195b142aa0c32bdf4baa1383ca4fa811007958185e04f5cf620fbc4de7049"
+      }
+    },
+    {
+      "scene": 512,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 512,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\9b9bdfc90f6a816a68965a193463a63bbe77b95ac437d3ed2717e21e75b9e523.json",
+        "result_sha256": "d3d0fa328d48e41c7b280e894d57432ef4872b81d02ba547c01c1041cfdce8fa",
+        "compact_sha256": "0f7ac34456d73c7a36f4f5e3f42cae4c6af120c11e5d6921d1cc7150d6b98568",
+        "record_sha256": "cfb3b079363474a083e9e371469e4f8bd4678431173b9f5f35435f2b9c2fd76f"
+      },
+      "input": {
+        "scene": 512,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100513\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "644235483e2fe318d7dc3e2497882b5a688f9dd3247cf8fae0e3278f53f4d65f"
+      }
+    },
+    {
+      "scene": 512,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 512,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\38961bcf776182638f056c9d89374e1aad46dae40022f7678af7fbe844ce25c1.json",
+        "result_sha256": "d7f27fef720ad5f68f2f1667260d95aa205c6854e66959e5808a6b35b090884a",
+        "compact_sha256": "e1105ac8021e4efdd1e6b0edb18d2b922d22f5b9a9bda9bc20d9cd0965b09863",
+        "record_sha256": "7d1dcb5acc6eced83afc41352370538cda19c3cf97e91cfaa0ddea7191034dd2"
+      },
+      "input": {
+        "scene": 512,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100513\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "25994904300722cd6d6778fd9e71e5f634a529fe3239212725e83fc45295f887"
+      }
+    },
+    {
+      "scene": 578,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 578,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\822dfedfcc5725ff614cb7e8f19cc07690f9f97ed465c91229809815d0cfe01b.json",
+        "result_sha256": "e55b7c3708ffaf99d0949a26632fe30cebd2d4f68d02c55e3ab62f505f069e20",
+        "compact_sha256": "a6bf1331df3d5328a35e9a407b2dcdf2d3cc0cf420196238c757fdd6bd761aa0",
+        "record_sha256": "dfa038dd70d99fdbdcc64e9a25648290aa1911f12fb8670fd9cb75be76492e7f"
+      },
+      "input": {
+        "scene": 578,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100579\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "0cf38163fa14aca1edfc653288265090c9bb55268fd9765397ec999f039c2280"
+      }
+    },
+    {
+      "scene": 578,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 578,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\24f0723bcfd20c6e133b1ecf37f7a72332b731cdc2c1df06afc0e52ac1b7a403.json",
+        "result_sha256": "2a69f467e4e7ae165bc81df82a28c0786aeb64832643170729c314226c3de488",
+        "compact_sha256": "3eda4bcaf5bfca41b826141de10d7fc6eee4c1e8d0c3fd59197109c0f3a4595c",
+        "record_sha256": "c979549cb06b92cbb25ea4b502b401435fda6292620ac8151d121e3418b928e5"
+      },
+      "input": {
+        "scene": 578,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100579\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "10a10102ecbea879f8a445a050f855f2b26bac6edf3881144a671e2fe59f7bb8"
+      }
+    },
+    {
+      "scene": 589,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 589,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\8711fee15972a4eb1ac65d5b38b104c889ad05639d4f3284af373f2c8b5b7b34.json",
+        "result_sha256": "25358fb7f95a88c2cfcd1212824932684c88c40d351bdc90157ae188e3751101",
+        "compact_sha256": "04b916fd2d13ed7460642d8fe7e590f1feae8b13f3a5551b63ba29abb5356acd",
+        "record_sha256": "5d1c189fd0fc94177e7123628e287483c99f9fa539eba08882fe40f2c5c75cb3"
+      },
+      "input": {
+        "scene": 589,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100590\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "ea40971a2afb43542b12a3eb3d714925bb35ecce17880afd8af9d6a1d1bc9849"
+      }
+    },
+    {
+      "scene": 589,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 589,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\ee3d6cda3ca98f5057aef6c4f6badc172603d3bd1b6a2c3d6c8e5a6ce5f017d9.json",
+        "result_sha256": "32e9031c6333e63b0df3e8d30101ae98dd8df1af45f0daa241cd0acfad8767e4",
+        "compact_sha256": "86316810cba63333aca60ce12e4a964e7c8caa07a032eb8ae7799606409f4204",
+        "record_sha256": "217379f7cb278118eeb2a78fd02bde8454b1f9d810c7d122b2adf99648c88b19"
+      },
+      "input": {
+        "scene": 589,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100590\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "f694938a89ffdc72d7e3b9ee52d4ffa036719994314d3685c42ec4553d83621f"
+      }
+    },
+    {
+      "scene": 600,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 600,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\b46d4b7283ffab47e37753307587cad08d3cd0d8ed71262c582d38a657525c13.json",
+        "result_sha256": "cccaf934539af91251e46ece81443d2f5daca65e15e4ea35f926610df8ec2919",
+        "compact_sha256": "1dbd976fc39aab921e5959b33fc06d23b8078e87837bd3c8134fadd82ebc1ac5",
+        "record_sha256": "65be173ca3d97ebf69bb2281bb0ab98a2d4fd987ec479524d65c3af945833694"
+      },
+      "input": {
+        "scene": 600,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100601\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "d934b6542461fc8885e4e7c43ff5fbddf9147608d88c5e01578bdc19cbd28996"
+      }
+    },
+    {
+      "scene": 600,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 600,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\5a7f4e4fd8ee8b3815035a84204e7828ecf37b7138fe2d1c63d651b7255ae147.json",
+        "result_sha256": "ff8126938560ca05818eb8b721dbb9a5cd5b4c46bae57e1244c6958aed73583e",
+        "compact_sha256": "4946668b859e6462132b85e0e6c0b265bce87e644fd84035acf6695134ffe120",
+        "record_sha256": "4f60176d2173dc7336c9bd585dac2658c7b0520c784be233065151db9031378a"
+      },
+      "input": {
+        "scene": 600,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100601\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "8c28758660e97224c78ad635d63d91b0c8b041b5a04868e964cabdc5f0c24b92"
+      }
+    },
+    {
+      "scene": 625,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 625,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\17f4f03ecc3592e2f1721734cc6509b47523efc9dc500e088270e45c13623f8e.json",
+        "result_sha256": "eaef7fe0d4d5ed3f432011b1c3a4bcf226afaa7451cb7d57c20fc78ccc95e134",
+        "compact_sha256": "a9e9f310326c3a84b0eae4184d56141cd99c61c35287fd4b52c4cdc1e6d9ff18",
+        "record_sha256": "8708a7881aaa09f7fdbd80bb5ff41cca596d888d18205c94e4d8214317fe9526"
+      },
+      "input": {
+        "scene": 625,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100626\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "e7bec8d4795ec17d6edea3107bde31b69c36cfdba3b2d779d7b878b1edc8e1b3"
+      }
+    },
+    {
+      "scene": 625,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 625,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\923ab7c51510903beb563b8b2e82f634c446fb4f46da3c639f034ec5ad04de7f.json",
+        "result_sha256": "d33bd088faf1ea7eab129e7bdff3107a514abd91999116feb26ea95f00ac4e37",
+        "compact_sha256": "dcde996e774678f49876424b1c8ab01df98be6bd2eebe4b82511fbaff2eca675",
+        "record_sha256": "43b0bc7dc0fd14a064d8efae3c2b1bd0bcb126e1954f76c7795b37d452f274b5"
+      },
+      "input": {
+        "scene": 625,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100626\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "6c4355d28692c4a49052485bc985d80b32bd01ccfcb080eeeb354bad37f25e09"
+      }
+    },
+    {
+      "scene": 736,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 736,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\13c2fa65f35fa4d99711f377a2fe8e46fabc48952726e2a6702fa8e957211abf.json",
+        "result_sha256": "772310437cebc108ff2be48bdffcbd17209cf5f3ff8b6ae917c3f65ff3419aca",
+        "compact_sha256": "4f1c0f7bd3bbbea0cda3049a0445937c89db658059fa70cccae9195bb0ce2a70",
+        "record_sha256": "3bbcb6e7bf26e6035c290301c7e5af751aa6495b550f0cf20fc8d80ca6190eb5"
+      },
+      "input": {
+        "scene": 736,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100737\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "9ea6d6f0298d04abf444344059a321eec90e4eb083a23bf4c852cf085fc0666e"
+      }
+    },
+    {
+      "scene": 736,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 736,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\6db5e74e2686d252374963708335481eaeed73e3ba20e28788eaa3664db35a55.json",
+        "result_sha256": "41727932de28260617adb5f5f9d110b8b869da18335a5c1fa505420189f885bb",
+        "compact_sha256": "a039739e65d0c7ff97351711d04f36da30ecaf0084691df698d47c5b5138ecd7",
+        "record_sha256": "872d19675d32dd6a6417e87a976b3c696eedbe7bde41ee7b3c37da6b91893f3a"
+      },
+      "input": {
+        "scene": 736,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100737\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "f6258e355761e6933d837a804784b056e4ef8893ea1723751b553ecb7a03feb6"
+      }
+    },
+    {
+      "scene": 974,
+      "condition": 0,
+      "snr_db": -4,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 974,
+        "condition": 0,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\759d245bb85b2759af00ef0e48b360eaaf3a03538344402afd92b5311427a53c.json",
+        "result_sha256": "0e51a55f0b9f9795f6b8f269d267fbd0eb14fcde32a5a6cfa6dc23f79dda3b09",
+        "compact_sha256": "18bf9c8db82b46e0de20911f729c1e4e11a3e4b44aab421ecac87b39dd3e3778",
+        "record_sha256": "b250ccb9f3cb4665cd399aa39040a4b92b4979c2aeb1323bf86d17cb08bdb4c1"
+      },
+      "input": {
+        "scene": 974,
+        "condition": 0,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100975\\K40_Q16_p0.1_snr-4_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "d8424ecb10a009e3738dc25d699361db0c2fb59ae903d9b93ee457ea3bd9e58f"
+      }
+    },
+    {
+      "scene": 974,
+      "condition": 2,
+      "snr_db": 0,
+      "group": "failure_enriched",
+      "result": {
+        "scene": 974,
+        "condition": 2,
+        "method": "STMP",
+        "result": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\predictions\\9eff50a84f6990daf3d90950349eddcadf8c63aa759ab35d8742d5851551019c.json",
+        "result_sha256": "884eb32c6bd573116c4c31195aae97f509850353d4ca7dc34c7440b8a9d805ae",
+        "compact_sha256": "2f51ac889df65abcbdcfb496b1307aa0bf13b55fd5d3d8c0e527282c08acae87",
+        "record_sha256": "c3cec5984675465a7bd5359c298269da3d50156f4687a51dc88ab133159a23ea"
+      },
+      "input": {
+        "scene": 974,
+        "condition": 2,
+        "path": "D:\\afdm-gfra\\result\\main2000_known_phase_20261023\\shared\\inputs\\202610219100975\\K40_Q16_p0.1_snr0_D_dft\\phase_known_noise_estimated\\READY.json",
+        "sha256": "ba2c4ee00c1ffa87ad5c5cb3176b82bbea820236ef210b686408857cf14174bc"
+      }
+    }
+  ],
+  "stages": [
+    "iteration001",
+    "iteration020",
+    "final"
+  ],
+  "configuration": {
+    "scale": 0.2647966452702405,
+    "batch_size": 40,
+    "conditional_variance_floor_checkpoint_normalized": 0.0001,
+    "decision_threshold": 0.5,
+    "site_damping": 1.0,
+    "ep": {
+      "iterations": 600,
+      "damping": 0.2,
+      "min_iterations": 60,
+      "convergence_tolerance": 0.0005,
+      "convergence_patience": 5,
+      "variance_fraction_floor": 1e-06,
+      "variance_fraction_ceiling": 0.999999,
+      "covariance_mode": "isotropic",
+      "activity_convergence_tolerance": 0.001,
+      "raw_site_residual_tolerance": 0.1,
+      "activity_weight_residual_tolerance": 0.001,
+      "decision_stability_window": 10,
+      "activity_stopping_reference": "smoothed"
+    },
+    "initialization": {
+      "kind": "activity_prior_times_training_power",
+      "normalized_training_second_moment": 1.0004404181394917,
+      "training_sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f"
+    },
+    "prior_definition": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+    "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+    "first_checkpoint": "result/runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt",
+    "first_checkpoint_sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+    "second_checkpoint": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/second/second_best.pt",
+    "second_checkpoint_sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5",
+    "schema": "full-channel-score-message-passing-v1",
+    "implementation": "full_score",
+    "activity_evidence": "classifier",
+    "evidence_checkpoint": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+    "evidence_checkpoint_sha256": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d"
+  },
+  "branches": [
+    "query",
+    "frozen_awgn",
+    "candidate_identity_C",
+    "candidate_projected_C"
+  ],
+  "covariance": "Use public pilot and estimated noise; reconstruct isotropic incoming scalar from recorded posterior/input variance and extrinsic clipping/damping. Propagate raw column covariance with the SAME linear Gaussian-parameter interpolation as existing v; project normalized column factor into rank-4 plus identity, strength <= 0.5. Antenna factor is identity. No truth.",
+  "covariance_limitation": "Working covariance approximation. Temporal query errors are correlated; linear parameter interpolation is not their true covariance. Signal-error dependence and non-Gaussianity remain.",
+  "metrics": "Primary active-user pooled error/signal NMSE, by group/SNR/stage; paired scene bootstrap descriptive 95% intervals. All users retained; inactive output energy reported separately. Truth only used for scoring after inference.",
+  "sampling": "Reuse all 12 uniform and 12 failure-enriched scenes at -4/0 dB; groups separate. Retrospective exploratory sample, not independent confirmation.",
+  "training_budget": "Completed epoch-200 AWGN checkpoint versus in-progress candidate snapshot; not an equal-epoch architecture comparison. Earlier epoch-10 paired results are retained separately.",
+  "scope": "No feedback, classifier replacement, receiver reruns, training restart or binding change.",
+  "batch_size": 16,
+  "device": "cuda",
+  "torch_threads": 2,
+  "tf32": false,
+  "scalar_reconstruction_tolerance": 1e-08,
+  "white_recompute_tolerance": 2e-05,
+  "script_sha256": "aab8184f8c1ae0e85ffe0589747b38c41c614743267ec48abbfbb1c52ccfed04",
+  "helper_sha256": {
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\linear_covariance_interface_20261024\\benchmark.py": "717ebb582f9936740f8cb24ac03af71123789455a62711409733f79564a04432",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\linear_covariance_interface_20261024\\audit.py": "7bb38d525f0ab06141a59385bd960d37cde40743e68c3af4f0c65938ca1d48f3"
+  },
+  "protected_sha256": {
+    "D:\\afdm-gfra\\FINAL.json": "758534b08e7eaae7f63a540f0ca51d8f3bd8d7ac778477d7916676a646a4672a",
+    "D:\\afdm-gfra\\MAINLINE.json": "2ad0bb19de70a3c4fa64ad70efdf8b10c1152971257fc12f035589bea86aaf0c",
+    "D:\\afdm-gfra\\result\\runs\\proposed_50000_cuda_graph_20261018\\model\\first\\first_best.pt": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b"
+  }
+}

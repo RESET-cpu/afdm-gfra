@@ -1,0 +1,1613 @@
+=== PDF PAGE 1 ===
+1
+Denoising-based Turbo Compressed Sensing
+Zhipeng Xue, Junjie Ma, and Xiaojun Yuan, Senior Member , IEEE
+Abstract—Turbo compressed sensing (Turbo-CS) is an efﬁcient
+iterative algorithm for sparse signal recovery with partial orthog-
+onal sensing matrices. In this paper, we extend the Turbo-CS
+algorithm to solve compressed sensing problems involving more
+general signal structure, including compressive image recovery
+and low-rank matrix recovery. A main difﬁculty for such an
+extension is that the original Turbo-CS algorithm requires prior
+knowledge of the signal distribution that is usually unavailable
+in practice. To overcome this difﬁculty, we propose to redesign
+the Turbo-CS algorithm by employing a generic denoiser that
+does not depend on the prior distribution and hence the name
+denoising-based Turbo-CS (D-Turbo-CS). We then derive the
+extrinsic information for a generic denoiser by following the
+Turbo-CS principle. Based on that, we optimize the parametric
+extrinsic denoisers to minimize the output mean-square error
+(MSE). Explicit expressions are derived for the extrinsic SURE-
+LET denoiser used in compressive image denoising and also
+for the singular value thresholding (SVT) denoiser used in
+low-rank matrix denoising. We ﬁnd that the dynamics of D-
+Turbo-CS can be well described by a scaler recursion called
+MSE evolution, similar to the case for Turbo-CS. Numerical
+results demonstrate that D-Turbo-CS considerably outperforms
+the counterpart algorithms in both reconstruction quality and
+running time.
+Index Terms—Compressed sensing, message passing, orthogo-
+nal sensing matrix, denoising, MSE evolution.
+I. I NTRODUCTION
+Compressed sensing (CS) [1] is a new paradigm for sparse
+signal reconstruction. A common approach for compressed
+sensing problem is to solve a mixed l1-norm and l2-norm
+minimization problem via convex programming [2]. However,
+a convex program in general involves polynomial-time com-
+plexity, which causes a serious scalability problem for mass
+data applications.
+Approximate algorithms have been extensively studied to
+reduce the computational complexity of sparse signal recovery.
+Existing approaches include match pursuit [3], orthogonal
+match pursuit [4], iterative soft thresholding [5], compressive
+sampling matching pursuit [6], and approximate message
+passing (AMP) [7]. In particular, AMP is a fast-convergence
+iterative algorithm based on the principle of message passing.
+It has been shown that, when the sensing matrix is independent
+and identically distributed (i.i.d.) Gaussian, AMP is asymp-
+totically optimal as the dimension of the state space goes to
+inﬁnity [8]. Also, the iterative process of AMP can be tracked
+through a scalar recursion called state evolution.
+In many applications, compressive measurements are taken
+from a transformed domain, such as discrete Fourier transform
+Z. Xue and X. Yuan are with the School of Information Science and
+Technology, ShanghaiTech University. J. Ma is with the Department of
+Statistics, Columbia University. The work in this paper was partially presented
+at the GlobalSIP in Dec. 2016; see reference [12].
+(DFT), discrete cosine transform (DCT), and wavelet trans-
+form, etc. This, on one hand, can exempt us from storing the
+sensing matrix in implementation; on the other hand, these
+orthogonal transforms can be realized using fast algorithms
+to reduce the computational complexity. However, the AMP
+algorithm, when applied to orthogonal sensing, does not per-
+form well and its simulated performance deviates away from
+the prediction by the state evolution.
+Turbo compressed sensing (Turbo-CS) [9] solved the above
+discrepancy by a careful redesign of the message passing
+algorithm. The Turbo-CS algorithm consists of two processing
+modules: One module handles the linear measurements of the
+sparse signal based on the linear minimum mean-square error
+(LMMSE) principle and calculates the so-called extrinsic in-
+formation to decorrelate the input and output estimation errors;
+the other module combines its input with the signal sparsity by
+following the minimum mean-square error (MMSE) principle
+and also calculates the extrinsic information. The two modules
+are executed iteratively to reﬁne the estimates. This is similar
+to the decoding process of a turbo code [10], hence the name
+Turbo-CS. It has been shown that Turbo-CS considerably
+outperforms its counterparts for compressed sensing in both
+complexity and convergence speed.
+In this paper, we extend the Turbo-CS algorithm to solve
+compressed sensing problems with partial orthogonal sensing
+matrices involving more general signal structures, such as
+compressive image recovery and low-rank matrix recovery.
+An immediate obstacle for such an extension is that the
+MMSE module in the Turbo-CS algorithm in [9] requires
+the prior knowledge of the signal distribution, while the latter
+is generally unavailable in the new problems under concern.
+To overcome this obstacle, we replace the MMSE module
+in Turbo-CS by a generic denoiser that does not depend
+on the prior distribution. We derive the extrinsic information
+for a generic denoiser by following the Turbo-CS principle.
+Interestingly, we show that the resulting extrinsic denoiser
+falls into the category of divergence-free denoisers in [11].
+Based on that, we propose to optimize the parametric extrinsic
+denoisers to minimize the output mean-square error (MSE).
+Explicit expressions are derived for the extrinsic SURE-LET
+denoiser used in image denoising [13] and also for the singular
+value thresholding (SVT) denoiser used in low-rank matrix
+denoising [14].
+We ﬁnd the dynamics of denoising-based Turbo-CS (D-
+Turbo-CS) can be characterized by a scaler recursion called
+MSE evolution. We also study the impact of the choice of
+the sensing matrix on the accuracy of the MSE evolution in
+Turbo-CS. We show that when the signals to be recovered
+are i.i.d., the output error of the LMMSE module can be
+modelled as an additive Gaussian noise and the corresponding
+state evolution is accurate. However, the state evolution is
+arXiv:1703.08756v1  [cs.IT]  26 Mar 2017
+
+=== PDF PAGE 2 ===
+2
+not necessarily accurate when correlated signals are involved,
+e.g., in the case of image denoising where the neighbouring
+pixels of an image are usually continuous in value and so
+are correlated to each other. We show that this problem can
+be solved by an appropriate design of the sensing matrix. A
+simple solution is to right-multiply the sensing matrix by an
+extra diagonal matrix with random +1 or -1 in the diagonal.
+This extra diagonal matrix randomly ﬂips the signs of the
+signals, and effectively decorrelates the signals.
+We further compare the performance of D-Turbo-CS with
+the state-of-the-art algorithms in the literature. For example,
+denoising-based AMP (D-AMP) was studied in [15], and a
+number of popular image denoisers were examined therein.
+Also, the EM-GM-AMP algorithm proposed in [16] can be
+applied to the compressed image denoising problem under
+concern. Numerical results demonstrate that D-Turbo-CS con-
+siderably outperforms D-AMP and EM-GM-AMP in both
+convergence rate and recovery accuracy.
+The remainder of the paper proceeds as follows. Section II
+takes a brief review of the Turbo-CS algorithm in [9]. Section
+III describes how to extend the Turbo-CS algorithm for a
+generic denoiser. The construction of an extrinsic denoiser is
+discussed in Section IV. Section V studies the MSE evolution
+for D-Turbo-CS. Numerical comparisons of Turbo-CS with
+its counterparts are presented in Section VI. Section VII
+concludes the paper.
+II. P RELIMINARIES
+A. Compressed Sensing
+Consider the following real-valued linear system:
+y = Ax + n (1)
+where x∈ Rn is an unknown signal vector, A∈ Rm×n is a
+known constant matrix, and n is a white Gaussian noise vector
+with zero mean and covariance σ2I. Here, I represents the
+identity matrix of an appropriate size. Our goal is to recover x
+from the measurement y. In particular, this problem is known
+as compressed sensing when m < n and x is sparse.
+Basis Pursuit De-Noising (BPDN) is a well-known approach
+to the recovery of x in compressed sensing, with the problem
+formulated as
+ˆx = arg min
+x∈RN
+1
+2∥y− Ax∥2
+2 + λ∥x∥1. (2)
+where∥x∥p = ( ∑
+n|xn|p)1/p represents the lp-norm, xn is
+the nth entry of x, and λ is a regularization parameter. This
+problem can be solved by convex programming algorithms,
+such as the interior point method [17] and the proximal method
+[18]. Interior point method has cubic computational complex-
+ity, which is too expensive for high-dimensional applications
+such as imaging. Proximal methods have low per-iteration
+complexity. However, its convergence speed is typically slow.
+Message passing is a promising alternative to solve the
+BPDN problem in (2). To apply message passing, we ﬁrst
+notice that (2) can be viewed as a maximum a posteriori
+probability (MAP) estimation problem. Speciﬁcally, we assign
+a prior distribution p(x)∝ exp(−λ∥x∥1
+σ2 ) to x. Then, it is easy
+to verify that ˆx in (2) is equivalent to:
+ˆx = arg max
+x∈Rn
+p(x|y) (3)
+where p(x|y) = p(y|x)p(x)/p(y). In [19], a factor graph
+was established to represent above the probability model,
+based on which approximate message passing (AMP) was
+used to iteratively solve the inference problem in (3). As the
+established factor graph is dense in general, directly applying
+message passing to the graph leads to high complexity. To re-
+duce complexity, two approximations are introduced in AMP:
+First, messages from factor nodes to variable nodes are nearly
+Gaussian; second, messages from variable nodes to factor
+nodes can be calculated by using Taylor-series approximation
+to reduce computational cost. It was shown in [19] that the
+approximation error vanishes when m, n→∞ with a ﬁxed
+ratio.
+The convergence of the AMP algorithm requires that the
+elements of the sensing matrix A are sufﬁciently random.
+It was shown in [8] that AMP is asymptotically optimal
+when A is i.i.d. Gaussian and the behavior of AMP can be
+characterized by a scaler recursion called state evolution.
+B. Turbo Compressed Sensing
+MMSE 
+denoiser 
+LMMSE 
+estimator 
+ext 
+ext 
+xpost 
+A
+xpri 
+B = xext 
+A
+xext 
+B = xpri 
+A
+xpost 
+B
+ˆx y
+Module A Module B 
+Fig. 1: An illustration of the Turbo-CS algorithm proposed in [9].
+In many applications, the sensing matrix A is neither i.i.d.
+nor Gaussian. For example, to reduce storage and compu-
+tational complexity, measurements are usually taken from
+an orthogonal transform domain, such as DFT or DCT. In
+these scenarios, The performance of AMP deteriorates and
+the convergence of AMP is not guaranteed. This motivates the
+development of the Turbo-CS algorithm [9] described below.
+The block diagram of the Turbo-CS algorithm is illustrated
+in Fig. 1. Turbo-CS bears a structure similar to a turbo decoder
+[10], hence the name Turbo-CS. As illustrated in Fig. 1,
+the Turbo-CS algorithm consists of two modules. Module A
+is basically a linear minimum mean square error (LMMSE)
+estimator of x based on the measurement y and the messages
+from Module B. Module B performs minimum mean square
+error (MMSE) estimation that combines the prior distribution
+of x and the messages from Module A. The two modules are
+executed iteratively to reﬁne the estimate of x. The detailed
+operations of Turbo-CS are presented in Algorithm 1.
+We now give more details of Algorithm 1. Module A
+estimates x based on the measurement y in (1) with x
+a priori distributed as x ∼ N(xpri
+A , vpri
+A I). Given y with
+
+=== PDF PAGE 3 ===
+3
+Algorithm 1 Turbo-CS Algorithm
+Input: A, y, σ2, xpri
+A = 0
+1: while the stopping criterion is not met do
+2: xext
+A = xpri
+A + n
+m AT (y− Axpri
+A ) %Module A
+3: vext
+A =
+(n
+m− 1
+)
+vpri
+A + n
+m σ2
+4: xpri
+B = xext
+A , vpri
+B = vext
+A
+5: xpost
+B,i = E
+[
+xi|xpri
+B,i
+]
+%Module B
+6: vpost
+B = 1
+n
+∑n
+i=1 var
+[
+xi|xpri
+B,i
+]
+7: vpri
+A = vext
+B =
+(
+1
+vpost
+B
+− 1
+vpri
+B
+)−1
+8: xpri
+A = xext
+B = vext
+B
+(
+xpost
+B
+vpost
+B
+− xpri
+B
+vpri
+B
+)
+9: end while
+Output: xpost
+B
+x∼N (xpri
+A , vpri
+A I), the posterior distribution of each xi is
+still Gaussian with posterior mean and variance given by [20]
+xpost
+A,i = xpri
+A,i + vpri
+A
+vpri
+A + σ2 aT
+i (y− Axpri
+A ) (4a)
+vpost
+A = vpri
+A − m
+n
+(vpri
+A )2
+vpri
+A + σ2 , (4b)
+where ai is the ith column of A. Note that as the measurement
+y is linear in x, the a posteriori mean in (4a) is also called
+the LMMSE estimator of xi.
+The posterior distributions cannot be used directly in mes-
+sage passing due to the correlation issue. Instead, we need to
+calculate the so-called extrinsic message [10] for each xi by
+excluding the contribution of the input message of xi. That is,
+the extrinsic distribution of each xi satisﬁes
+Nxi (xpri
+A,i, vpri
+A,i)Nxi (xext
+A,i, vext
+A,i) .=Nxi (xpost
+A,i , vpost
+A,i ), (5)
+whereNx(m, v) = 1√
+2πv exp(− 1
+2v (x− m)2), and “ .=” repre-
+sents equality up to a constant multiplicative factor. From (5),
+the extrinsic mean and variance of xi are respectively given
+in [21] as
+xext
+A,i = vext
+A
+(
+xpost
+A,i
+vpost
+A
+−
+xpri
+A,i
+vpri
+A
+)
+(6a)
+vext
+A =
+(
+1
+vpost
+A
+− 1
+vpri
+A
+)−1
+. (6b)
+Combining (4) and (6), we obtain Lines 2 and 3 of Algorithm
+1.
+It is worth noting that (5) implies the independence of the
+input distortion xpri
+A,i− xi and the output distortion xext
+A,i−
+xi. Further more, for Gaussian distributions, independence is
+equivalent to uncorrelatedness. Thus, we have
+E
+[
+(xi− xpri
+A,i)(xi− xext
+A,i)
+]
+= 0, (7)
+where the expectation is taken over the joint probability
+distribution of xi, xpri
+A,i, and xext
+A,i.
+We now consider Module B. Recall that Module B estimates
+each xi by combining the prior distribution xi∼ p(xi) and
+the message from Module A. Note that the message xext
+A,i from
+Module A is now treated as an input of Module B, denoted
+by xpri
+B,i. Following [9], we model each xpri
+B,i as an observation
+of xi corrupted by an additive noise:
+xpri
+B,i = xi + npri
+B,i (8)
+where npri
+B,i∼N (0, vpri
+B ) is independent of xi. The a posteri-
+ori mean and variance of each xi for Module B are respectively
+given by
+xpost
+B,i = E[xi|xpri
+B,i]
+vpost
+B = 1
+n
+n∑
+i=1
+var[xi|xpri
+B,i], (9)
+where var [x|y] denotes conditional variance of x given y.
+Similar to (6), the extrinsic variance and mean of x for Module
+B are respectively given by Lines 7 and 8 of Algorithm 1. Also,
+similar to (7), the extrinsic distortion is uncorrelated with the
+prior distortion, i.e.
+E
+[
+(xi− xpri
+B,i)(xi− xext
+B,i)
+]
+= 0, (10)
+where the expectation is taken over the joint propability
+distribution of xi, xpri
+B,i and xext
+B,i. Later, we will see that (10)
+plays an important role in the extension of Turbo-CS.
+III. D ENOISING -BASED TURBO CS
+A. Problem Statement
+In Algorithm 1, the operation of Module B requires the
+knowledge of the prior distribution of x. However, such prior
+information is difﬁcult to acquire in many applications. Low-
+complexity robust denoisers, rather than the optimal MMSE
+denoiser, are usually employed in practice, even when the prior
+distribution of x is available.
+Turbo-CS with a generic denoiser is illustrated in Fig. 2.
+Compared with Fig. 1, the only difference is that Turbo-CS
+in Fig. 2 replaces the MMSE denoiser by a generic denoiser,
+deﬁned as
+xpost
+B = D(xpri
+B ; vpri
+B , θ), (11)
+where D(·) represents the denoising function with xpri
+B being
+the input, xpost
+B being the output, and vpri
+B and θ being the
+parameters. Note that the choice of θ will be speciﬁed when a
+speciﬁc denoiser is involved. For brevity, we may simplify the
+notation D(xpri
+B ; vpri
+B , θ) to D(xpri
+B ) in circumstances without
+causing ambiguity. Also, we denote the ith entry of xpost
+B as
+xpost
+B,i = Di(xpri
+B ). (12)
+With the above replacement, the main challenge is how
+to calculate the extrinsic message of each xi for Module B,
+without the prior knowledge of the distribution p(xi). Note
+that Lines 7 and 8 of Algorithm 1 cannot be used any more
+since they hold only for the MMSE denoiser.
+
+=== PDF PAGE 4 ===
+4
+Generic 
+denoiser 
+LMMSE 
+estimator 
+ext 
+ext 
+xpost 
+A
+xpri 
+B = xext 
+A
+xext 
+B = xpri 
+A
+xpost 
+B
+ˆx y
+Module A Module B 
+Fig. 2: An illustration of the denoising-based Turbo-CS algorithm.
+B. Extrinsic Messages for a Generic Denoiser
+We now describe how to calculate the extrinsic messages
+for a generic denoiser. Without loss of generality, denote the
+extrinsic output of Module B by xext
+B = Dext(xpri
+B ). We
+call Dext(xpri
+B ) a extrinsic denoiser. Similarly to Line 8 of
+Algorithm 1, we construct xext
+B by a linear combination of
+the a priori mean and the a posteriori mean:
+xext
+B = Dext(xpri
+B ) = c(xpost
+B − αxpri
+B ) (13)
+where c and α are coefﬁcients to be determined. Clearly, (13)
+is identical to Line 8 of Algorithm 1 by letting c = vext
+B
+vpost
+B
+and
+α = vpost
+B
+vpri
+B
+. Here, we require that c and α are chosen such that
+(i) The extrinsic distortion is uncorrelated with the prior
+distortion, i.e.
+E[(x− xpri
+B )T (x− xext
+B )] = 0; (14)
+(ii) E[∥xext
+B − x∥2] is minimized.
+From the discussions in Section II-B, the calculation of the
+extrinsic messages in Lines 8 and 9 satisﬁes the above two
+conditions when the MMSE denoiser is employed. Note that
+(14) is a relaxation of (10) since (10) implies (14) but the
+converse does not necessarily hold. Later we will see that
+this relaxation is good for many applications. What remains
+is to determine c and α satisfying conditions (i) and (ii) for a
+generic denoiser. This is elaborated in the following.
+1) Determining parameter α: As mentioned in Section
+II-B, the input message of Module B can be modeled by (8),
+where the noise part npri
+B,i is independent of xi. Then
+E[(x− xpri
+B )T (x− xext
+B )] = E[( npri
+B )T (x− xext
+B )] (15a)
+=
+n∑
+i=1
+E
+[
+npri
+B,ixext
+B,i
+]
+(15b)
+where (15a) follows from (8), and (15b) follows by noting
+E[(npri
+B )T x] = 0 . To proceed, we introduce the Stein’s lemma
+[22] as follows: For a normally distributed random variable
+y∼N (µy, σ2
+y), and a differentiable function h : R→ R such
+that E[|h′(y)|] <∞, we have
+σ2
+yE[h′(y)] = E[( y− µy)h(y)]. (16)
+Then
+E
+[
+npri
+B,ixext
+B,i
+]
+=cE
+[
+npri
+B,i(xpost
+B,i − α(xi + npri
+B,i))
+]
+(17a)
+=cE[npri
+B,ixpost
+B,i ]− cαE[npri
+B,ixi]
+− cαE[npri
+B,inpri
+B,i] (17b)
+=cE
+[
+npri
+B,iDi(xpri
+B )
+]
+− cαvpri
+B (17c)
+=cE
+[
+npri
+B,iDi(x + npri
+B )
+]
+− cαvpri
+B (17d)
+=cvpri
+B E
+[
+D′
+i(x + npri
+B )
+]
+− cαvpri
+B (17e)
+where D′
+i(x + npri
+B ) denotes the partial derivative of Di(x +
+npri
+B ) with respect to variable npri
+B,i and the expectation is
+taken over the joint probability distribution of npri
+B and x.
+In the above, (17a) follows from (8) and (13), (17c) from
+E[xpri
+B,ixi] = 0 and E[npri
+B,inpri
+B,i] = vpri
+B , and (17e) from the
+Steins’s lemma by letting y = npri
+B,i. Combining (14), (15b),
+and (17), we obtain
+α = 1
+n E
+[ n∑
+i=1
+D′
+i(xpri
+B )
+]
+(18a)
+≈ 1
+n
+n∑
+i=1
+D′
+i(xpri
+B ) (18b)
+= 1
+n div{D(xpri
+B )}, (18c)
+where div denotes divergence, and D′
+i(xpri
+B ) is the partial
+derivative of Di(xpri
+B ) with respect to xpri
+B,i. Note that the
+approximation in (18b) becomes accurate when n is large.
+Also, with this approximation, the calculation of α does not
+depend on the distribution of x.
+By substituting (18) into (13), we obtain
+xext
+B = c
+(
+xpost
+B − 1
+n div{D(xpri
+B )}xpri
+B
+)
+(19a)
+= c
+(
+D(xpri
+B )− 1
+n div{D(xpri
+B )}xpri
+B
+)
+(19b)
+= Dext(xpri
+B ), (19c)
+where the extrinsic denoiser Dext(·) is deﬁned as
+Dext(r) = c
+(
+D(r)− 1
+n div{D(xpri
+B )}r
+)
+. (20)
+The divergence of Dext(r) at r = xext
+B is zero by noting
+div{Dext(xpri
+B )} = c
+(
+div{D(xpri
+B )}− div{D(xpri
+B )}
+)
+= 0.
+(21)
+Thus, Dext(·) belongs to the family of divergence-free de-
+noisers proposed in [11].
+2) Determining parameter c: Ideally, we want to choose
+parameter c to satisfy condition (ii) below (14). However,
+the MSE is difﬁcult to evaluate as the distribution of x is
+unknown. To address this problem, we use the Stein’s unbiased
+risk estimate (SURE) [22] to approximate the MSE.
+To be speciﬁc, consider the signal model
+r = x + τ n, (22)
+
+=== PDF PAGE 5 ===
+5
+where n∈ Rn×1 is the additive Gaussian noise draw from
+N (0, I). The mean square error of denoiser D(r) is deﬁned
+by
+MSE = 1
+n E
+[
+∥D(r)− x∥2]
+. (23)
+The SURE of the MSE of D(r) is given by
+ˆMSE = 1
+n∥D(r)− r∥2 + 2τ 2
+n div{D(r)}− τ 2. (24)
+Compared with the MSE in (23), the SURE in (24) does
+not involve the distribution of x. We next use SURE as
+a surrogate for MSE and tune the denoiser by minimizing
+the SURE. Recall from (8) that xpri
+B can be represented as
+xpri
+B = x + npri
+B . Let τ =
+√
+vpri
+B . Then, applying (24) to
+Dext(xpri
+B ), we obtain
+ˆMSE = 1
+n∥Dext(xpri
+B )− xpri
+B ∥2 + 2vpri
+B
+n div{D(xpri
+B )}− vpri
+B
+= 1
+n∥Dext(xpri
+B )− xpri
+B ∥2− vpri
+B
+= 1
+n
+c
+(
+D(xpri
+B )− 1
+n div{D(xpri
+B )}xpri
+B
+)
+−xpri
+B
+
+2
+−vpri
+B
+(25)
+where the second step follows from (21), and the last step
+from (19). Minimizing the SURE given in (25), we obtain the
+optimal c given by
+copt =
+(xpri
+B )T
+(
+D(xpri
+B )− 1
+n div{D(xpri
+B )}xpri
+B
+)
+∥D(xpri
+B )− 1
+n div{D(xpri
+B )}xpri
+B ∥2 . (26)
+C. Denoising-based Turbo CS
+We are now ready to extend Turbo-CS for a generic
+denoiser. We refer to the extended algorithm as Denoising-
+based Turbo-CS (D-Turbo-CS). The details of D-Turbo-CS are
+presented in Algorithm 2.
+Algorithm 2 D-Turbo-CS Algorithm
+Input: A, y, σ2, xpri
+A = 0
+1: while the stopping criterion is not met do
+2: xext
+A = xpri
+A + n
+m AT (y− Axpri
+A ) %Module A
+3: vext
+A =
+(n
+m− 1
+)
+vpri
+A + n
+m σ2
+4: xpri
+B = xext
+A , vpri
+B = vext
+A
+5: xpost
+B = D(xpri
+B ; vpri
+B , θ) %Module B
+6: xext
+B = copt(xpost
+B + αxpri
+B )
+7: vext
+B = ∥y−Axext
+B ∥2−mσ2
+m
+8: xpri
+A = xext
+B , vpri
+A = vext
+B
+9: end while
+Output: xpost
+B
+Compared with Turbo-CS, D-Turbo-CS has the same oper-
+ations in Module A. But for Module B, D-Turbo-CS employs
+a generic denoiser, rather than the MMSE denoiser. Corre-
+spondingly, the extrinsic mean is calculated using Line 6 of
+Algorithm 2; the extrinsic variance is calculated in Line 7 by
+following Eqn. (71) in [16].
+IV. C ONSTRUCTION OF EXTRINSIC DENOISERS
+Various denoisers have been proposed in the literature for
+noise suppression. For example, the SURE-LET [13], the
+BM3D [23], and the dictionary learning [24] are developed
+for image denoising; the singular value thresholding (SVT)
+[25] is used for low-rank matrix denoising. In this section, we
+study the applications of these denoisers in D-Turbo-CS. We
+describe how to construct the corresponding extrinsic denoiser
+Dext(r; θ) for any given denoiser D(r; θ). Based on that, we
+further consider optimizing the denoiser parameter θ.
+A. Extrinsic SURE-LET Denoiser
+We start with the SURE-LET denoiser. A SURE-LET
+denoiser is constructed as a linear combination of some kernel
+functions. The combination coefﬁcients are determined by
+minimize the SURE of the MSE [13].
+Speciﬁcally, a SURE-LET denoiser is constructed as
+D(r; θ) =
+K∑
+k=1
+θkOψk(OT r) (27a)
+=
+K∑
+i=1
+θkΨk(r), (27b)
+where O ∈ Rn×n is an orthonormal transform matrix,
+ψk : Rn → Rn for k = 1 ,··· , K are kernel functions,
+θ = [ θ1, θ2,··· , θk]T , and Ψk(r) = Oψk(OT r) . O can
+be the Haar wavelet transform matrix or the DCT transfrom
+matrix.
+The choice of kernel functions {ψk} depends on the struc-
+ture of the input signals. For example, the authors in [26]
+proposed the following piecewise linear kernel functions for
+sparse signals:
+ψ1,i(r) =
+
+
+
+0 ri≤− 2β1, ri≥ 2β1
+−ri
+β1
+− 2 −2β1 < ri <−β1
+ri
+β1
+−β1≤ ri≤ β1
+−ri
+β1
++ 2 β1 < ri < 2β1
+(28)
+ψ2,i(r) =
+
+
+
+−1 ri≤− β2
+ri+β1
+β2−β1
+−β2 < ri <−β1
+0 −β1≤ ri≤ β1
+ri−β1
+β2−β1
+β1 < ri < β 2
+1 ri≥ β2
+(29)
+ψ3,i(r) =
+
+
+
+ri + β2 ri≤− β2
+0 −β2 < ri < β 2
+ri− β2 ri≥ β2
+(30)
+where ψk,i(r) represents the ith element of ψk(r), ri is the
+ith element of r, β1 and β2 are constants chosen based on the
+noise level τ 2. The recommended values of β1 and β2 can be
+found in [26].
+
+=== PDF PAGE 6 ===
+6
+For SURE-LET denoiser D(r; θ) in (27), the corresponding
+extrinsic denoiser Dext(r; θ) is given by
+Dext(r; θ)=c
+( K∑
+i=1
+θkΨk(r)−1
+n div
+{K∑
+i=1
+θkΨk(r)
+}
+r
+)
+(31a)
+=
+K∑
+i=1
+θ′
+k
+(
+Ψk(r)− 1
+n div{Ψk(r)}r
+)
+, (31b)
+where (31a) is from (20), and θ′
+k = cθk, for k = 1,··· , K.
+We next determine the optimal θ′ = [ θ′
+1,··· , θ′
+K]T by
+minimizing the SURE. From (24), the SURE of Dext(r, θ) is
+given by
+ˆMSE =1
+n∥Dext(r, θ)−r∥2 + 2τ 2
+n div{Dext(r)}− τ 2 (32a)
+= 1
+n
+
+K∑
+i=1
+θ′
+k
+(
+Ψk(r)− 1
+n div{Ψk(r)}r
+)
+−r
+
+2
+− τ 2 (32b)
+= 1
+n
+
+K∑
+k=1
+θ′
+k
+(
+ψk(˜r)− 1
+ndiv{ψk(˜r)}˜r
+)
+−˜r
+
+2
+−τ 2 (32c)
+where (32b) follows from (21) and (31), (32c) follows from
+Ψk(O ˜r) = Oψk(˜r) and div{Ψk(r)} = div{ψk(˜r)} with
+˜r = OT r.
+The optimal θ′ that minimizes ˆMSE in (32) is given by
+(θ′)opt = M−1b, (33a)
+where the (i, j)th entry of M∈ RK×K and the ith entry of
+b∈ RK×1 are respectively given by
+Mi,j = [ψext
+i (˜r)]T ψext
+j (˜r) (34a)
+bi = [ψext
+i (˜r)]T ˜r, (34b)
+with
+ψext
+k (˜r) = ψk(˜r)− 1
+n div{ψk(˜r)}˜r. (35)
+B. Extrinsic SVT Denoiser
+In many applications, data are arranged in a matrix form.
+Thus, we rearrange the signal vector x∈ Rn×1 into a matrix
+X∈ Rn1×n2 with n1n2 = n, and consider the recovery of a
+low-rank X from the noisy observation
+R = X + τ N , (36)
+where τ is the noise level, and N contains i.i.d. Gaussian
+noise with zero mean and unit variance. Let r be the rank of
+X. We assume that X is a low-rank matrix, i.e. r≪ n1, n2. A
+popular method for low-rank matrix denoising is the so-called
+singular value thresholding (SVT) [14]:
+SVT(R; θ) = arg min
+X
+1
+2∥R− X∥2
+F + θ∥X∥∗, (37)
+where θ > 0 is a regularization parameter, ∥·∥ F denotes the
+Frobenius norm, and ∥·∥ ∗ denotes the nuclear norm. The
+singular value decomposition of R is given by
+R = UΣVT =
+r∑
+i=1
+σiuivT
+i , (38)
+where Σ = diag{σ1, σ2,··· , σr} ∈ Rr×r, U =
+[u1, u2,··· , ur] ∈ Rn1×r satisﬁes UT U = I, and V =
+[v1, v2,··· , vr]∈ Rn2×r satisﬁes VT V = I. Then, the SVT
+denoiser in (37) has the following closed-form expression [14]:
+SVT(R; θ) =
+r∑
+i=1
+(σi− θ)+uivT
+i . (39)
+From [14], the divergence of the SVT denoiser SVT(R; θ) has
+a closed-form expression given by
+div{SVT(R; θ)} =|n1−n2|
+nm∑
+i=1
+(
+1− θ
+σi
+)
++
++
+nm∑
+i=1
+I(σi > θ)
++ 2
+nm∑
+i̸=j,i,j=1
+σi(σi− θ)+
+σ2
+i− σ2
+j
+.
+(40)
+where nm = min(n1, n2). For an SVT denoiser, we construct
+the extrinsic denoiser Dext(R; θ) based on (20) as
+Dext(R; θ)
+= c
+(
+SVT(R; θ)− 1
+ndiv{SVT(R; θ)}R
+)
+(41a)
+= c
+(
+USVT(Σ; θ)VT− 1
+n div{SVT(R; θ)}UΣVT
+)
+(41b)
+= cU
+(
+SVT(Σ; θ)− 1
+ndiv{SVT(R; θ)}Σ
+)
+VT (41c)
+= cUdiag (Φ(σ; θ)) VT , (41d)
+where
+Φ(σ; θ) = (σ−θ)+− 1
+ndiv{SVT(R; θ)}σ∈ Rr×1 (42a)
+σ = [σ1, σ2,··· , σr]T . (42b)
+We deﬁne the MSE and the SURE of Dext(R; θ) respec-
+tively as
+MSE = 1
+n∥Dext(R; θ)− X∥2
+F (43a)
+ˆMSE = 1
+n∥Dext(R; θ)−R∥2
+F + 2τ 2
+n div{Dext(R; θ)}−τ 2
+(43b)
+where the divergence here is given by
+div{Dext(R; θ)} =
+n1∑
+i=1
+n2∑
+j=1
+∂[Dext(R; θ)]i,j
+∂Ri,j
+. (43c)
+It’s clear that the divergence of Dext(R; θ) is zero. From
+(43b), the SURE of the MSE is given by
+ˆMSE = 1
+n∥Dext(R; θ)− R∥2
+F− τ 2 (44a)
+= 1
+n∥cUdiag(Φ(σ; θ))VT−UΣVT∥2
+F−τ 2 (44b)
+= 1
+n∥cΦ(σ; θ)− σ∥2
+2− τ 2. (44c)
+The optimal c that minimizes ˆMSE in (44) is given by
+copt = σTΦ(σ; θ)
+Φ(σ; θ)TΦ(σ; θ) . (45)
+
+=== PDF PAGE 7 ===
+7
+By substituting copt into (44), and after some straightforward
+manipulations, we obtain
+ˆMSE = 1
+n
+(
+− (Φ(σ; θ)T σ)2
+∥Φ(σ; θ)∥2
+2
++∥σ∥2
+2
+)
+− τ 2. (46)
+The optimal threshold θ that minimizes ˆMSE given in (46) can
+be obtained by solving the following optimization problem:
+max
+θ
+(Φ(σ; θ)T σ)2
+∥Φ(σ; θ)∥2
+2
+(47a)
+s.t. Φ(σ; θ) = (σ− θ)+− 1
+n div{SVT(R; θ)}σ. (47b)
+The problem in (47) is non-convex. However, since only one
+parameter θ∈ [0, max(σ)] is involved, we can solve (47) by
+exhaustive search.
+C. Other Extrinsic Denoisers
+Both the SURE-LET denoiser and the SVT denoiser have
+analytical expressions. However, there are other denoisers that
+can not be expressed in a closed form. The corresponding
+extrinsic denoisers also have no analytical expressions. We
+give two examples as follows.
+The ﬁrst example is the dictionary learning denoiser. Dictio-
+nary learning aims to ﬁnd a sparse representation for a given
+data set in the form of a linear combination of a set of basic
+elements. This set of basic elements is called a dictionary.
+Existing dictionary learning algorithms include K-SVD [27],
+iterative least square (ILS) [28], recursive least squares (RLS)
+[29], and the sequential generalization of K-means (SGK)
+[30]. Based on above dictionary learning algorithms, we
+can construct dictionary learning denoisers by following the
+approach in [24]. Speciﬁcally, consider a noisy image matrix
+R∈ Rn1×n2, where n1 and n2 are integers. We reshape R
+into a vector r∈ Rn×1, where n = n1n2. Also, we divide
+the whole image into blocks of size n3× n3, and reshape
+each block Ri,j into a vector ri,j, where n3 is an integer
+satisfying n3 ≪ n1, n2. Note that ri,j is related to r by
+ri,j = Ei,jr where Ei,j∈ Rn2
+3×n is the corresponding block
+extraction matrix. Then we use {ri,j} as the training set to
+train a dictionary Q∈ n2
+3× n4 using any of the dictionary
+learning algorithms mentioned above, where n4 is an integer
+satisfying n4 > n 2
+3. The image block ri,j can be expressed
+approximately as
+ri,j = Qαi,j, (48)
+where αi,j∈ Rn4×1 is the sparse representation of ri,j using
+the dictionary Q. Then, we update the whole image vector
+r based on the learned dictionary Q and coefﬁcients αi,j by
+averaging the denoised image block vectors as
+˜r=
+
+λI+
+∑
+i,j
+ET
+i,jEi,j
+
+
+−1 
+λr+
+∑
+i,j
+ET
+i,jQαi,j
+
+ , (49)
+where λ is a constant depending on the input noise level.
+Finally, we reshape the image vector ˜r back into an image
+matrix.
+The second example is the BM3D denoiser [23]. The de-
+noising process of BM3D is summarized as follows. First, the
+image matrix R is separated into image blocks of size s1× s1
+(with 7≤ s1 ≤ 13). For each image block, similar blocks
+are found and grouped together into a three-dimensional (3D)
+data array. Then, collaborative ﬁltering is used to denoise the
+3D data arrays. The ﬁltered blocks are then returned back to
+their original positions. Note that BM3D achieves the state-of-
+the-art visual quality among all the existing image denoisers.
+The above dictionary learning and BM3D denoisers have
+no close-form expressions, and so the divergences of these
+denoisers can not be calculated explicitly. Instead, we evaluate
+their divergences using the Monte Carlo method. Speciﬁcally,
+the divergence of D(R) can be estimated by
+div{D(R)}≈ E ˜N
+[⟨
+˜N ,
+(
+D(R + δ ˜N )−D(R)
+δ
+) ⟩]
+, (50)
+where δ is a small constant, ˜N ∈ Rn1×n2 is a perturbation
+matrix with the elements i.i.d. drawn from N (0, 1), and
+⟨A, B⟩ = ∑
+i,j Ai,jBi,j with Ai,j and Bi,j be the (i, j)th
+elements of A and B, respectively. The expectation in (50) can
+be approximated by sample average. It is observed in [15] that
+one sample is good enough for high-dimensional problems.
+V. E VOLUTION ANALYSIS OF D-T URBO -CS
+A. MSE Evolution
+The behavior of D-Turbo-CS can be characterized by the
+so-called MSE evolution. Denote the input normalized mean
+square error (NMSE) of Module A (or equivalently, the output
+NMSE of Module B) at iteration t as v(t), and the output
+NMSE of Module A (or equivalently, the input NMSE of
+Module B) at iteration t as τ 2(t), where NMSE is deﬁned
+by
+NMSE =∥ ˆx− x∥2
+2
+∥x∥2
+2
+. (51)
+Then, the MSE evolution is characterized by
+τ 2(t) =
+(n
+m− 1
+)
+v(t) + n
+m σ2 (52a)
+v(t + 1) = 1
+n E
+[Dext (x + τ (t)e)− x
+2
+2
+]
+, (52b)
+where the (52a) follows from Line 3 of Algorithm 2, (52b)
+follows from the assumption in (8), the expectation in (52b) is
+taken over e∼N (0, I), and v(0) is initialized as E[∥x∥2
+2]/n.
+We next examine the accuracy of the above MSE evolution.
+B. x with i.i.d. Entries
+We consider the situation of x with i.i.d. entries. In simula-
+tion, each xi in x is Gaussian-Bernoulli distributed with prob-
+ability density function p(xi) = (1−ρ)δ(xi)+ ρN (xi, 0, 1/ρ),
+where δ(·) is the Dirac delta function. The other settings are:
+the sparsity rate ρ = 0.27, the measurement rate m/n = 0.5,
+the signal length n = 20000, and the sensing matrix is chosen
+as the random partial DCT deﬁned by
+A1 = SW (53)
+where S ∈ Rm×n is a random row selection matrix which
+consists of randomly selected rows from a permutation matrix,
+
+=== PDF PAGE 8 ===
+8
+0 10 20 30 40 50 60 70
+Iteration
+10-6
+10-5
+10-4
+10-3
+10-2
+10-1
+100
+NMSE
+LET-Turbo-CS, simulation
+LET-Turbo-CS, evolution
+LET-AMP, simulation
+LET-AMP, evolution
+MMSE-Turbo-CS, simulation
+Fig. 3: The MSE comparison of LET-Turbo-CS and LET-AMP with
+the sensing matrix given by (53).
+Fig. 4: The QQplot of the estimation error xpri
+B − x in the 10th
+iteration of the LET-Turbo-CS algorithm with the sensing matrix
+given by (53).
+and W∈ Rn×n is the DCT matrix. In simulation, the SURE-
+LET denoiser with the kernel functions given in (28)-(30) is
+employed in D-Turbo-CS and D-AMP, with the corresponding
+algorithms denoted by LET-Turbo-CS and LET-AMP, respec-
+tively.
+As shown in Fig. 3, the MSE evolution of LET-Turbo-CS
+matches well with the simulation. In contrast, for LET-AMP,
+the state evolution deviates from the simulation. Also, LET-
+Turbo-CS outperforms LET-AMP1 considerably and performs
+close to MMSE-Turbo-CS in which the MMSE denoiser is
+employed. We also plot the QQplot of the estimation error
+of xpri
+B at iteration 10 of LET-Turbo-CS in Fig. 4. From the
+QQplot, we see that xpri
+B − x is close to zero-mean Gaussian,
+which agrees well with the assumption in (8). Later, we will
+1Note that, the performance of LET-AMP here is better than the original
+LET-AMP [26], because under the condition, LET-AMP diverges, and we
+replace the estimated variance ˆσ2 in D-AMP with a more robust estimate
+ˆσ2 =
+√
+1
+ln 2 median(|ˆx|) given in [31].
+0 5 10 15 20
+Iteration
+10-3
+10-2
+10-1
+100
+101
+NMSE
+BM3D-Turbo-CS, simulation
+BM3D-Turbo-CS, evolution
+BM3D-AMP, simulation
+BM3D-AMP, evolution
+Fig. 5: The MSE comparison of BM3D-Turbo-CS and BM3D-AMP
+with the sensing matrix given by (53).
+Fig. 6: The QQplot of the estimation error xpri
+B − x in the 2nd
+iteration of the BM3D-Turbo-CS algorithm with the sensing matrix
+given by (53).
+see that the Gaussianity of xpri
+B − x is a good indicator of the
+accuracy of the MSE evolution.
+C. x with Correlated Entries
+In many applications, signals are correlated and the prior
+distribution is unknown. For example, the adjacent pixels of
+a natural image are correlated and their distributions are not
+available. We next study the MSE evolution of D-Turbo-CS
+for compressive image recovery.
+In simulation, we generate signal x from the image “Fin-
+gerprint” of size 512× 512 taken from the Javier Portillas
+dataset [32] by reshaping the image into a vector of size
+262144×1. The denoiser is chosen as the BM3D denoiser, and
+the corresponding algorithms are denoted as BM3D-Turbo-CS
+and BM3D-AMP. We set the measurement rate m/n to 0.3.
+With the sensing matrix given in (53), the performance of
+BM3D-Turbo-CS and BM3D-AMP is simulated and shown in
+Fig. 5. We see that the simulation results of both algorithms do
+
+=== PDF PAGE 9 ===
+9
+not match with the MSE evolution. Also, we plot the QQplot
+of the estimation error xpri
+B − x in Fig. 6. We see that the
+distribution of xpri
+A − x is not quite Gaussian, and the mean
+of the distribution is not zero. This interprets the failure of the
+evolution prediction.
+0 5 10 15 20
+Iteration
+10-3
+10-2
+10-1
+NMSE
+BM3D-Turbo-CS, simulation
+BM3D-Turbo-CS, evolution
+BM3D-AMP, simulation
+BM3D-AMP, evolution
+Fig. 7: The MSE comparison of BM3D-Turbo-CS and BM3D-AMP
+with the sensing matrix given by (54).
+Fig. 8: The QQplot of the estimation error xpri
+B −x in the 2th iteration
+of the LET-Turbo-CS algorithm with the sensing matrix given by (54).
+We conjecture that the reason for the degradation of the
+simulation performance in Fig. 5 is that the correlation in x
+is not appropriately handled. So, we replace A1 by
+A2 = SW Θ (54)
+where Θ is a diagonal matrix with the random signs (1 or
+-1) in the diagonal. The simulation result with sensing matrix
+A2 is shown in Fig. 7. We see that now, the MSE evolution
+of BM3D-Turbo-CS matches well with the simulation. Also,
+BM3D-Turbo-CS outperforms BM3D-AMP in both converge
+rate and recovery quality. In Fig 8, the QQplot of the es-
+timation error of xpri
+B at iteration 2 of BM3D-Turbo-CS is
+plotted. We see that the estimation error is close to zero-mean
+Gaussian, similarly to the case of i.i.d. x. To summarize, the
+sensing matrix in (53) is good for i.i.d. x, while the sensing
+matrix in (54) is needed when the entries of x are correlated.
+VI. P ERFORMANCE COMPARISONS
+In this section, we provide numerical results of D-Turbo-CS
+for compressive image recovery and low-rank matrix recovery.
+For comparison, the recovery accuracy is measured by peak
+signal-to-noise ratio (PSNR):
+PNSR = 10 log10
+(MAX2
+MSE
+)
+, (55)
+where MAX denotes the maximum possible pixel value of the
+image.
+The stopping criterion of D-Turbo-CS is described as fol-
+lows. The D-Turbo-CS algorithm stops when its output at
+iteration t ˆx(t) satisﬁes∥ ˆx(t)− ˆx(t−1)∥2
+∥ ˆx(t−1)∥2 ≤ ϵ or when it is exce-
+cuted for over T iterations, where ϵ and T are predetermined
+constants.
+Fig. 9: The test images of size 512 × 512.
+A. Noiseless Image Recovery
+For noiseless compressive image recovery, we consider
+three denoisers mentioned in Section IV: the SURE-LET
+denoiser, the BM3D denoiser and the dictionary learning
+denoiser. The corresponding algorithms of D-Turbo-CS and D-
+AMP are denoted by LET-Turbo-CS and LET-AMP, BM3D-
+Turbo-CS and BM3D-AMP, and SGK-Turbo-CS and SGK-
+AMP. The EM-GM-AMP algorithm in [16] is also included
+for comparison. The test images are chosen from the Javier
+Portillas dataset, including “Lena”, “Boat”, “Barbara” and,
+“Fingerprint” in Fig. 9. The settings of ϵ and T are as follows:
+ϵ = 10−4 and T = 20 for SURE-LET; ϵ = 10−4 and T = 30
+for BM3D; ϵ = 10−4 and T = 20 for SGK.
+In Table I, we compare D-Turbo-CS with D-AMP and
+EM-GM-AMP for noiseless natural image recovery with the
+sensing matrix given in (54). We see that D-Turbo-CS outper-
+forms D-AMP and EM-GM-AMP for all the test images under
+almost all measurement rates and denoisers. To compare the
+reconstruction speed, we further report the reconstruction time
+
+=== PDF PAGE 10 ===
+10
+Image Name Lena Boat
+Measurement rate 5% 10% 20% 30% 50% 70% 5% 10% 20% 30% 50% 70%
+EM-GM-AMP [16] 21.56 23.33 25.22 26.89 29.50 32.38 19.55 21.06 22.87 24.70 27.78 30.95
+LET-AMP [26] - - - 22.09 31.38 34.57 - - 0.23 20.02 29.62 33.28
+LET-Turbo-CS 22.27 24.32 26.77 28.57 31.74 35.48 19.96 21.86 24.43 26.51 30.16 34.22
+BM3D-AMP [15] 28.44 31.77 33.90 34.36 38.55 39.48 26.15 28.83 31.67 33.54 35.46 39.21
+BM3D-Turbo-CS 29.28 31.88 34.35 35.88 38.60 42.64 26.15 29.03 32.32 34.30 37.32 40.92
+SGK-AMP [33] 7.67 8.27 27.92 29.85 33.17 35.87 5.35 5.53 25.49 28.07 31.42 34.57
+SGK-Turbo-CS 7.70 8.35 29.01 31.30 34.60 37.85 5.39 5.56 26.22 28.85 32.54 35.90
+Image Name Barbara Fingerprint
+Measurement rate 5% 10% 20% 30% 50% 70% 5% 10% 20% 30% 50% 70%
+EM-GM-AMP [16] 18.54 20.56 22.65 24.47 27.69 32.14 16.81 18.24 20.37 22.51 26.04 29.58
+LET-AMP [26] - - - 19.92 27.57 31.15 - - - 17.78 29.05 33.46
+LET-Turbo-CS 18.87 20.65 22.86 24.58 28.07 32.36 16.03 18.03 22.09 24.05 29.83 34.90
+BM3D-AMP [15] 26.74 29.52 32.81 35.21 38.46 41.66 18.18 22.75 26.61 28.59 32.07 36.44
+BM3D-Turbo-CS 26.73 30.40 34.23 36.46 39.91 43.37 18.04 24.53 27.73 30.28 34.51 38.91
+SGK-AMP [33] 5.94 6.35 25.58 28.20 32.13 35.78 4.59 4.76 20.32 23.98 28.49 32.39
+SGK-Turbo-CS 5.88 6.36 26.43 29.30 33.65 37.77 4.58 4.82 20.46 24.10 28.38 32.79
+TABLE I: The PSNR of the reconstructed images with sensing matrix A2.
+Image Name Lena Boat
+Measurement rate 5% 10% 20% 30% 50% 70% 5% 10% 20% 30% 50% 70%
+LET-AMP [26] 3.14 2.43 2.57 2.41 2.46 2.58 2.91 2.35 2.42 2.47 3.65 3.37
+LET-Turbo-CS 1.40 1.23 1.23 1.19 0.93 0.85 0.97 1.16 1.21 1.39 1.63 1.27
+Image Name Barbara Fingerprint
+Measurement rate 5% 10% 20% 30% 50% 70% 5% 10% 20% 30% 50% 70%
+LET-AMP [26] 3.48 3.55 3.11 3.86 3.58 3.24 4.41 3.61 3.41 3.30 3.10 4.08
+LET-Turbo-CS 1.44 1.58 1.37 1.41 1.75 1.46 1.30 2.40 3.08 3.02 1.69 1.46
+TABLE II: The recovery time of different images for sensing matrix A2. The unit of time is second.
+Sensing matrices A1 A2 A1 A2
+Image Name Lena Boat
+Measurement rate 30% 50% 70% 30% 50% 70% 30% 50% 70% 30% 50% 70%
+BM3D-AMP [15] 7.68 7.59 13.83 34.36 38.55 39.48 - 9.23 19.11 33.54 35.46 39.21
+BM3D-Turbo-CS 7.68 8.69 13.84 35.88 38.60 42.64 - 9.32 19.15 34.30 37.32 40.92
+Image Name Barbara Fingerprint
+Measurement rate 30% 50% 70% 30% 50% 70% 30% 50% 70% 30% 50% 70%
+BM3D-AMP [15] 5.88 9.93 21.06 35.21 38.46 41.66 - 7.9 20.05 28.59 32.07 36.44
+BM3D-Turbo-CS 5.88 10.18 21.07 36.46 39.91 43.37 - 8.39 20.07 30.28 34.51 38.91
+TABLE III: The PSNR of the reconstructed images for different sensing matrices.
+of LET-AMP and LET-Turbo-CS in Table II. Both algorithms
+are run until the stopping criterion is activated. We see that the
+reconstruction time of LET-Turbo-CS is much less than that
+of LET-AMP. In Table III, we list the PSNR of reconstructed
+images using BM3D-AMP and BM3D-Turbo-CS for sensing
+matrix A1 and A2. From the table, we see that the recovery
+quality for sensing matrix A1 is very poor, which is consistent
+with the observation in Fig. 5. To summarize, D-Turbo-CS
+has signiﬁcant advantages over D-AMP and EM-GM-AMP
+in compressive image recovery in both visual quality and
+recovery time.
+B. Low-Rank Matrix Recovery
+For low-rank matrix recovery, we use the SVT denoiser.
+The corresponding algorithms of D-Turbo-CS and D-AMP
+are denoted respectively by SVT-Turbo-CS and SVT-AMP.
+The low-rank matrix X is generated by the multiplication of
+two random matrices of size 128× 10 and 10× 128, with
+the elements of the two matrices independently drawn from
+N (0, 1).
+The NMSE comparison of SVT-Turbo-CS and SVT-AMP
+under the measurement rate δ = m/n = 0 .48 with sensing
+matrix given in (54) is shown in Fig. 10. We see that, SVT-
+0 5 10 15 20 25
+Iteration
+10-10
+10-8
+10-6
+10-4
+10-2
+100
+NMSE
+SVT-Turbo-CS, simulation
+SVT-Turbo-CS, evolution
+SVT-AMP, simulation
+SVT-AMP, evolution
+Rank=10 Rank=20
+Fig. 10: The performance comparison of SVT-Turbo-CS and SVT-
+AMP for low-rank matrix recovery with the sensing matrix A2.
+Turbo-CS signiﬁcantly outperforms SVT-AMP, and the MSE
+evolution of SVT-Turbo-CS agrees well with the simulation
+result.
+
+=== PDF PAGE 11 ===
+11
+VII. C ONCLUTIONS
+In this paper, we developed the D-Turbo-CS algorithm
+for compressed sensing. We discussed how to construct and
+optimize the so-called extrinsic denoisers for D-Turbo-CS. D-
+Turbo-CS does not require prior knowledge of the signal distri-
+bution, and so can be adopted in many applications including
+compressive image recovery and low-rank matrix recovery.
+Numerical results show that D-Turbo-CS outperforms D-AMP
+and EM-GM-AMP in terms of both recovery accuracy and
+convergence speed when partial orthogonal sensing matrices
+are involved.
+REFERENCES
+[1] D. L. Donoho, “Compressed sensing,” IEEE Trans. Inf. Theory , vol. 52,
+no. 4, pp. 1289–1306, Apr. 2006.
+[2] R. Tibshirani, “Regression shrinkage and selection via the lasso,”
+Journal of the Royal Statistical Society. Series B (Methodological) , pp.
+267–288, 1996.
+[3] S. G. Mallat and Z. Zhang, “Matching pursuits with time-frequency
+dictionaries,” IEEE Trans. Signal Process. , vol. 41, no. 12, pp. 3397–
+3415, 1993.
+[4] J. A. Tropp, “Greed is good: Algorithmic results for sparse approxima-
+tion,” IEEE Trans. Inf. Theory , vol. 50, no. 10, pp. 2231–2242, 2004.
+[5] R. D. Nowak, S. J. Wright et al. , “Gradient projection for sparse
+reconstruction: Application to compressed sensing and other inverse
+problems,” IEEE J. Sel. Topics Signal Process. , vol. 1, no. 4, pp. 586–
+597, 2007.
+[6] D. Needell and J. A. Tropp, “Cosamp: Iterative signal recovery from
+incomplete and inaccurate samples,” Applied and Computational Har-
+monic Analysis , vol. 26, no. 3, pp. 301–321, 2009.
+[7] D. L. Donoho, A. Maleki, and A. Montanari, “Message-passing al-
+gorithms for compressed sensing,” in Proc. Nat. Acad. Sci. , vol. 106,
+no. 45, Nov. 2009.
+[8] M. Bayati and A. Montanari, “The dynamics of message passing on
+dense graphs, with applications to compressed sensing,” IEEE Trans.
+Inf. Theory , vol. 57, no. 2, pp. 764–785, Feb. 2011.
+[9] J. Ma, X. Yuan, and L. Ping, “Turbo compressed sensing with partial
+DFT sensing matrix,” IEEE Signal Process. Lett. , vol. 22, no. 2, pp.
+158–161, Feb. 2015.
+[10] C. Berrou and A. Glavieux, “Near optimum error correcting coding and
+decoding: Turbo-codes,” IEEE Trans. Commun. , vol. 44, no. 10, pp.
+1261–1271, 1996.
+[11] J. Ma and L. Ping, “Orthogonal AMP,” IEEE Access, vol. 5, no. 14, pp.
+2020–2033, 2017.
+[12] Z. Xue, J. Ma, and X. Yuan, “D-OAMP: A denoising-based signal
+recovery algorithm for compressed sensing,” 2016. [Online]. Available:
+https://arxiv.org/abs/1610.05991
+[13] T. Blu and F. Luisier, “The SURE-LET approach to image denoising,”
+IEEE Trans. Image Process. , vol. 16, no. 11, pp. 2778–2786, 2007.
+[14] E. J. Candes, C. A. Sing-Long, and J. D. Trzasko, “Unbiased risk
+estimates for singular value thresholding and spectral estimators,” IEEE
+Trans. Signal Process. , vol. 61, no. 19, pp. 4643–4657, 2013.
+[15] C. A. Metzler, A. Maleki, and R. G. Baraniuk, “From denoising to
+compressed sensing,” IEEE Trans. Inf. Theory , vol. 62, no. 9, pp. 5117–
+5144, 2016.
+[16] J. P. Vila and P. Schniter, “Expectation-maximization Gaussian-mixture
+approximate message passing,” IEEE Trans. Signal Process. , vol. 61,
+no. 19, pp. 4658–4672, 2013.
+[17] A. S. Nemirovski and M. J. Todd, “Interior-point methods for optimiza-
+tion,” Acta Numerica , vol. 17, pp. 191–234, 2008.
+[18] N. Parikh, S. P. Boyd et al. , “Proximal algorithms.” F oundations and
+Trends in optimization , vol. 1, no. 3, pp. 127–239, 2014.
+[19] D. L. Donoho, A. Maleki, and A. Montanari, “Message passing algo-
+rithms for compressed sensing: I. motivation and construction,” in IEEE
+Information Theory Workshop on Information Theory (ITW 2010, Cairo).
+IEEE, 2010, pp. 1–5.
+[20] S. M. Kay, Fundamentals of Statistical Signal Processing: Practical
+Algorithm Development . Pearson Education, 2013, vol. 3.
+[21] Q. Guo and D. D. Huang, “A concise representation for the soft-in soft-
+out lmmse detector,” IEEE Commun. Lett. , vol. 15, no. 5, pp. 566–568,
+2011.
+[22] C. M. Stein, “Estimation of the mean of a multivariate normal distribu-
+tion,” The Annals of Statistics , pp. 1135–1151, 1981.
+[23] K. Dabov, A. Foi, V . Katkovnik, and K. Egiazarian, “Image denoising
+with block-matching and 3d ﬁltering,” in Electronic Imaging 2006 .
+International Society for Optics and Photonics, 2006.
+[24] M. Elad and M. Aharon, “Image denoising via sparse and redundant
+representations over learned dictionaries,” IEEE Trans. Image Process. ,
+vol. 15, no. 12, pp. 3736–3745, 2006.
+[25] J.-F. Cai, E. J. Cand `es, and Z. Shen, “A singular value thresholding al-
+gorithm for matrix completion,” SIAM Journal on Optimization , vol. 20,
+no. 4, pp. 1956–1982, 2010.
+[26] C. Guo and M. E. Davies, “Near optimal compressed sensing without
+priors: Parametric SURE approximate message passing,” IEEE Trans.
+Signal Process., vol. 63, no. 8, pp. 2130–2141, 2015.
+[27] M. Aharon, M. Elad, and A. Bruckstein, “K-SVD: An algorithm for
+designing overcomplete dictionaries for sparse representation,” IEEE
+Trans. Signal Process. , vol. 54, no. 11, pp. 4311–4322, 2006.
+[28] K. Engan, K. Skretting, and J. H. Husoy, “Family of iterative ls-based
+dictionary learning algorithms, ils-dla, for sparse signal representation,”
+Digital Signal Processing , vol. 17, no. 1, pp. 32–49, 2007.
+[29] K. Skretting and K. Engan, “Recursive least squares dictionary learning
+algorithm,” IEEE Trans. Signal Process. , vol. 58, no. 4, pp. 2121–2130,
+2010.
+[30] S. K. Sahoo and A. Makur, “Dictionary training for sparse representation
+as generalization of k-means clustering,” IEEE Signal Process. Lett. ,
+vol. 20, no. 6, pp. 587–590, 2013.
+[31] L. Anitori, A. Maleki, M. Otten, R. G. Baraniuk, and P. Hoogeboom,
+“Design and analysis of compressed sensing radar detectors,” IEEE
+Trans. Signal Process. , vol. 61, no. 4, pp. 813–827, 2013.
+[32] “CIV Test Images,” http://www.io.csic.es/PagsPers/JPortilla/
+image-processing/bls-gsm/63-test-images, accessed 2016-05-19.
+[33] Z. Li, H. Huang, and S. Misra, “Compressed sensing via dictionary
+learning and approximate message passing for multimedia internet of
+things,” IEEE Internet Things J. , vol. PP, no. 99, pp. 1–1, 2016.

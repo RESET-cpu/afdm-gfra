@@ -1,0 +1,40 @@
+{
+  "main.tex": [
+    {
+      "old": "frequency division multiplexing (AFDM) transmission scheme that exploits\nAFDM's Doppler robustness over doubly dispersive channels, and analyze\nits input-output relationship.",
+      "new": "frequency division multiplexing (AFDM) transmission scheme and analyze\nits input-output relationship."
+    },
+    {
+      "old": "GPJD combines channel posterior mean and variance estimates with posterior\nprobabilities of activity from a learned density-ratio estimator to account\nfor activity uncertainty in channel estimation.",
+      "new": "To reduce errors associated with a Gaussian approximation of the channel\nposterior, GPJD employs a learned density-ratio estimator to obtain\nposterior probabilities of activity."
+    }
+  ],
+  "sections/01_introduction.tex": [
+    {
+      "old": "offsets. However, the two-dimensional transformation in OTFS entails relatively high",
+      "new": "offsets. The effective channel in this scheme is a three-dimensional tensor\nat each antenna, which requires more observations for channel estimation\n\\cite{shen2025}. However, the two-dimensional transformation in OTFS entails relatively high"
+    },
+    {
+      "old": "prior. Consequently, the resulting likelihood ratio can yield inaccurate\nactivity probabilities even when the channel posterior moments are accurately\nestimated. These errors further affect the activity-weighted channel estimates\nexchanged with the linear estimation module.",
+      "new": "prior. Consequently, the resulting activity probabilities can be inaccurate,\naffecting the channel estimates exchanged with the linear estimation module."
+    },
+    {
+      "old": "The denoiser is trained using colored Gaussian noise with different covariance\nmatrices, and the learned\nprior provides channel posterior mean and variance estimates for message passing.",
+      "new": "To address the mismatch between denoiser-input errors and the white Gaussian\nnoise used for training, we train the denoiser using colored Gaussian noise\nwith different covariance matrices."
+    },
+    {
+      "old": "\\item We develop a message-passing JADCE receiver for the structured multi-frame AFDM\nobservation model. The receiver comprises multi-frame linear estimation (MFLE),\nwhich suppresses inter-user interference, and generative-prior-aided joint\ndenoising (GPJD), which performs MMSE denoising.\nIn GPJD, a learned density-ratio estimator compares the active and inactive\nobservation distributions under the effective-channel prior to obtain posterior\nprobabilities of activity. These probabilities are combined with channel posterior\nmean and variance estimates from the learned prior to account for activity\nuncertainty in channel estimation. The two modules iteratively exchange Gaussian\nextrinsic messages.",
+      "new": "\\item We develop a message-passing JADCE receiver for the multi-frame AFDM system.\nThe receiver combines multi-frame linear estimation (MFLE), which suppresses\ninter-user interference, with generative-prior-aided joint denoising (GPJD),\nwhich uses the learned effective-channel prior for MMSE denoising.\nTo reduce errors associated with a Gaussian approximation of the channel\nposterior, GPJD employs a learned density-ratio estimator to obtain\nposterior probabilities of activity. The two modules iteratively exchange\nGaussian extrinsic messages to perform JADCE."
+    }
+  ],
+  "sections/00_abstract_zh.md": [
+    {
+      "old": "提出多帧仿射频分复用（AFDM）传输方案，利用AFDM在双弥散信道下的多普勒鲁棒性，并分析其输入输出关系。",
+      "new": "提出多帧仿射频分复用（AFDM）传输方案，并分析其输入输出关系。"
+    },
+    {
+      "old": "GPJD将信道后验均值与方差估计与学习得到的密度比估计器提供的活动后验概率相结合，以在信道估计中考虑活动不确定性。",
+      "new": "为减少信道后验高斯近似带来的误差，GPJD采用学习得到的密度比估计器获得活动后验概率。"
+    }
+  ]
+}

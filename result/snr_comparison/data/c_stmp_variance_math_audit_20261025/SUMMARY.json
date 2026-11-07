@@ -1,0 +1,46 @@
+{
+  "status": "PASS_WITH_STATED_APPROXIMATIONS",
+  "created_unix": 1792933478.3038826,
+  "source_run": "D:\\afdm-gfra\\result\\snr_comparison\\data\\c_stmp_variance_em_50_20261025",
+  "source_complete_sha256": "9b8eed0bf4ab5956962c689535c36b4e07924a4ac911d149c4b5f1b884a0a910",
+  "inputs": 400,
+  "iterations": 27605,
+  "protected_assets_unchanged": 816,
+  "local_frozen_objective": {
+    "nonascending_beyond_roundoff": 0,
+    "min_gain_per_complex_coordinate": 0.0,
+    "max_ratio_update_relative_error": 0.0,
+    "max_shared_variance_relative_error": 0.0,
+    "max_expected_energy_relative_error": 1.1017276496847436e-16
+  },
+  "changing_linear_scale": {
+    "adjacent_iteration_pairs": 27205,
+    "old_frozen_objective_decreases_at_next_actual_variance": 2178,
+    "meaning": "This evaluates the preceding frozen local objective, not a global receiver likelihood; local ascent is not global ascent."
+  },
+  "final_mixture_moments": {
+    "max_mean_relative_error": 4.206466783793847e-17,
+    "max_covariance_relative_error": 1.4960811875430572e-16,
+    "max_variance_fixed_point_residual": 0.00037660101427755994
+  },
+  "approximation_counts": {
+    "projected_extrinsic_iterations": 641,
+    "conditional_variance_floor_iterations": 9092,
+    "existing_unsupported_fallback_iterations": 8
+  },
+  "guarantees": [
+    "Exact expected residual identity for the supplied joint moments.",
+    "Exact scalar Gaussian auxiliary-likelihood maximizer with query and approximate posterior held fixed.",
+    "Damped local ascent at the same linear reference variance; positive variance maintained.",
+    "Gaussian quotient exact for the projected covariance used in the subtraction."
+  ],
+  "not_proven": [
+    "A single common prior behind the learned conditional mean, derivative covariance and classifier.",
+    "The entire receiver optimizes one global EM/EC objective or has global convergence.",
+    "The adapted scalar equals the true conditional error covariance or makes the message Gaussian.",
+    "AER is monotone in SNR or improves in an unseen population."
+  ],
+  "receiver_runs": 0,
+  "training_runs": 0,
+  "receiver_modified": false
+}

@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "checked_unix": 1793907045.5468612,
+  "scope": "CPU preparation only; not GPU or experiment validation",
+  "pytest": {
+    "passed": 4,
+    "failed": 0,
+    "command": "python -B -m pytest src/tests/test_white_phase_frontend_20261106.py -q -p no:cacheprovider",
+    "warning": "Disabled cache provider leaves the repository cache_dir option unused; tests passed."
+  },
+  "syntax_checked_files": 6,
+  "plan_sha256": "dd02a7ae8ace3339e23b4e364e32a36304d9ede5c99ac56a35ca8b9b6f3f5140",
+  "test_source_sha256": "f4e800e194534151a5d81f6182f9a755d83311773060f7e55f8561838e2c6cee",
+  "package_source_hashes": {
+    "D:\\afdm-gfra\\src\\evaluation\\white_phase_frontend_20261106\\common.py": "30f60a640bf90298108d1563b1ca4086b6207086bf688bf787d7ca7fb4ad8e81",
+    "D:\\afdm-gfra\\src\\evaluation\\white_phase_frontend_20261106\\prepare.py": "e0e7f6cd6a7ff5a2e7abe30878d5b56cb9df2d46863ed39ec4c172c5dece15c7",
+    "D:\\afdm-gfra\\src\\evaluation\\white_phase_frontend_20261106\\receiver.py": "a10768cb173984928fa9bfa6b23dfa45e3c4f0e430dcd4b46a2170ea6bbcb74a",
+    "D:\\afdm-gfra\\src\\evaluation\\white_phase_frontend_20261106\\report.py": "a53c669a2fe742f355583d7be2a82368aafa9c8a00462a9bb647fcd128176360",
+    "D:\\afdm-gfra\\src\\evaluation\\white_phase_frontend_20261106\\run.py": "b5797207ffb2404037bda0dd93d36490244ec4f8b3ef8a71e886acef9d660dea",
+    "D:\\afdm-gfra\\src\\evaluation\\white_phase_frontend_20261106\\__init__.py": "fe6010d0315cbbd9fbdc42be106a345399306c6e699cd8b2d2566c83929b951d"
+  },
+  "reference_metadata_pairs": 6000,
+  "phase_and_numerical_sources_unchanged": true,
+  "actual_factory": "evaluation.white_phase_frontend_20261106.receiver:Receiver",
+  "binding_correction": "Original phase constructor is colored-only. New adapter uses verified white __init__/context while reusing frozen phase infer and numerical infer.",
+  "gpu_preflight_run": false,
+  "inference_started": false,
+  "training_started": false,
+  "launch_gate_status": "WAITING",
+  "launch_gate_reasons": [
+    "ablation has no complete verified receipt",
+    "Predecessor processes are still running"
+  ]
+}

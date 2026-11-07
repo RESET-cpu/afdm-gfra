@@ -1,0 +1,98 @@
+{
+  "status": "PASS",
+  "checked_local": "2026-11-05T08:17:54.459798+08:00",
+  "coordinator_pid": 124808,
+  "coordinator_created_unix": 1793837824.9392326,
+  "wrapper_pid": 128968,
+  "command": [
+    "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+    "-X",
+    "utf8",
+    "-B",
+    "D:\\afdm-gfra\\result\\snr_comparison\\data\\audits\\offgrid_iteration_diagnostic_20261105\\run.py",
+    "coordinate"
+  ],
+  "state": {
+    "stage": "RUNNING",
+    "completed": 5,
+    "total": 27,
+    "active": "budget7_scene0200_condition05",
+    "worker_pid": 110524,
+    "updated_unix": 1793837873.1165879,
+    "pid": 124808
+  },
+  "workers": [
+    {
+      "pid": 110524,
+      "ppid": 124808,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\afdm-gfra\\result\\snr_comparison\\data\\audits\\offgrid_iteration_diagnostic_20261105\\run.py",
+        "worker",
+        "--budget",
+        "7",
+        "--scene",
+        "200",
+        "--index",
+        "5"
+      ],
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "priority": 32,
+      "rss_gib": 0.004009246826171875
+    },
+    {
+      "pid": 37352,
+      "ppid": 110524,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\afdm-gfra\\result\\snr_comparison\\data\\audits\\offgrid_iteration_diagnostic_20261105\\run.py",
+        "worker",
+        "--budget",
+        "7",
+        "--scene",
+        "200",
+        "--index",
+        "5"
+      ],
+      "affinity": [
+        4
+      ],
+      "priority": 16384,
+      "rss_gib": 0.09229278564453125
+    }
+  ],
+  "source_prefix_check_first_case": "PASS",
+  "no_scientific_core_changes": true,
+  "stderr_bytes": 0
+}

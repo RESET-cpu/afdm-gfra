@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "scope": "CPU array-generation and matched-configuration check; no neural optimization, receiver inference, or GPU preflight",
+  "checks": {
+    "same_clean_channels": true,
+    "same_noise_powers": true,
+    "same_standard_gaussian_draws": true,
+    "same_following_base_rng": true,
+    "same_following_shape_rng": true,
+    "white_antenna_identity": true,
+    "white_column_identity": true,
+    "exact_white_corruption": true,
+    "colored_observations_differ": true,
+    "same_training_recipe": true
+  },
+  "samples": 16,
+  "formal_training_started": false
+}

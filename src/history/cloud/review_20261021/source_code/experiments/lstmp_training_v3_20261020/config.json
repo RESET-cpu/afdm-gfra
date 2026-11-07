@@ -1,0 +1,471 @@
+{
+  "schema": "afdm-lstmp-conditional-bce-v3",
+  "seed": 202610196000001,
+  "run_directory": "D:/afdm-gfra-cpu/runs/lstmp_conditional_bce_v3_depth10_20261020",
+  "initialization": "Every new layer independently loads the same 50k AWGN score; new activity output and log calibrations are zero.",
+  "device": "cuda",
+  "users": 40,
+  "shape": [
+    16,
+    16,
+    16
+  ],
+  "complex_variance_support": [
+    0.001,
+    100.0
+  ],
+  "receiver": {
+    "maximum_depth": 10,
+    "train_scenes": 4750,
+    "validation_scenes": 1900,
+    "test_scenes": 0,
+    "train_seed": 202610206100001,
+    "validation_seed": 202610206200001,
+    "test_seed": 202610206300001,
+    "snr_db": [
+      -4,
+      -2,
+      0,
+      2,
+      4,
+      6
+    ],
+    "learning_rate": 2e-05,
+    "calibration_learning_rate": 0.001,
+    "earlier_layer_loss_weight": 0.2,
+    "activity_threshold": 0.5,
+    "microbatch": 100,
+    "checkpoint_steps": 256,
+    "variance_soft_floor_temperature_ratio": 0.02,
+    "maximum_feedback_variance_ratio": 0.95,
+    "selection": "Mean final-layer conditional-channel loss + BCE; epoch0 eligible; earliest tie.",
+    "extensions": "Accepted general-A damped messages; independent pretrained first scores and activity heads; three independent scalar calibrations; no second score.",
+    "phase_mode": "known",
+    "noise_mode": "known",
+    "variance_calibration_order": "after_positive",
+    "cpu_cache_scenes": 64,
+    "conditions": {
+      "train": [
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -4
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -2
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 2
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 4
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 6
+        },
+        {
+          "users": 20,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 60,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 80,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 100,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 8,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 24,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 32,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 40,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 48,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.05,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.15,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.2,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.25,
+          "snr_db": 0
+        }
+      ],
+      "validation": [
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -4
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -2
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 2
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 4
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 6
+        },
+        {
+          "users": 20,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 60,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 80,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 100,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 8,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 24,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 32,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 40,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 48,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.05,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.15,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.2,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.25,
+          "snr_db": 0
+        }
+      ],
+      "test": [
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -4
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -2
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 2
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 4
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 6
+        },
+        {
+          "users": 20,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 60,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 80,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 100,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 8,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 24,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 32,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 40,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 48,
+          "activity_probability": 0.1,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.05,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.15,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.2,
+          "snr_db": 0
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.25,
+          "snr_db": 0
+        }
+      ]
+    },
+    "activity_learning_rate": 0.0001,
+    "generation_workers": 4,
+    "epoch_schedule": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "early_stopping": false,
+    "feedback_damping": {
+      "parameterization": "Gaussian natural parameters",
+      "coefficient": "min(1, initial_variance / proposed_extrinsic_variance)",
+      "scope": "Feedback only; current layer score, channel mean and activity logits unchanged"
+    },
+    "adaptation_epochs": 1,
+    "joint_epochs": 2,
+    "joint_lr_multiplier": 0.1
+  },
+  "scope": "Ten layers; explicit nineteen formal conditions; known phase/noise; independent physical scenes; no independent test or automatic ablation.",
+  "backbone": {
+    "kind": "direct_cai",
+    "config": {
+      "antennas": 16,
+      "side": 16,
+      "base_channels": 128,
+      "snr_db_min": -20,
+      "snr_db_max": 30,
+      "noise_conditioning": "continuous",
+      "input_transform": "legacy_image"
+    }
+  },
+  "pretrained_score": {
+    "path": "runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt",
+    "sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+    "global_complex_rms": 0.2647966452702405
+  },
+  "normalized_training_second_moment": 1.0004404181394917,
+  "cpu_threads": 4,
+  "allow_tf32": true,
+  "run_final_evaluation": false,
+  "protected_assets": [
+    "runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt",
+    "runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/second/second_best.pt",
+    "runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+    "runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/receiver.json",
+    "runs/proposed_50000_cuda_20261018/data/prior_definition.json"
+  ],
+  "execution": {
+    "activation_checkpointing": false,
+    "adam_implementation": "fused",
+    "selective_checkpoint": {
+      "minimum_depth": 6,
+      "minimum_users": 1,
+      "first_layers": 10
+    }
+  },
+  "objective": {
+    "channel": "true-active conditional squared error / fixed training mean scene energy",
+    "activity": "summed natural-proportion BCE / fixed training mean users",
+    "coefficients": [
+      1.0,
+      1.0
+    ],
+    "bce_updates_score": true
+  },
+  "seed_policy": "New disjoint physical scene seeds; initialization and epoch-order rules inherited from v2.",
+  "planned_updates": 142500,
+  "condition_design": "Union of four one-variable sweeps; default appears once; no Cartesian product."
+}
