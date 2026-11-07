@@ -161,10 +161,10 @@ def prepare(data, cfg):
 
 def method_style(method, index, data, cfg):
     if data.metadata.get('historical_protocol'):
-        from channel_denoising import historical_style
+        from plotting.historical_data import historical_style
         options = historical_style(method)
-    elif method in style.STYLES or method=='DU':
-        options = style.style('proposed' if method=='DU' else method)
+    elif method in style.STYLES:
+        options = style.style(method)
     else:
         options = dict(color=style.plt.get_cmap('tab10')(index%10), marker=['o','s','^','D','v'][index%5], linewidth=1.2)
     colored_denoiser = data.experiment=='channel_denoising' and method=='pretrained_colored_first'
@@ -221,8 +221,6 @@ def panel(fig, slot, rows, data, cfg, metric, title):
         group = sorted([r for r in rows if r['method']==method],key=lambda r:value(r,xkey))
         x = np.asarray([value(r,xkey) for r in group]); y = np.asarray([value(r,metric) for r in group])
         label = cfg['labels'].get(method, data.metadata.get('labels',{}).get(method,style.LABELS.get(method,method)))
-        if method in ('DU','proposed') and data.experiment!='channel_denoising' and method not in cfg['labels']:
-            label = 'DU'
         if data.experiment=='runtime_comparison':
             label += ' ('+str(group[0].get('backend','unspecified'))+')'
         options = method_style(method,i,data,cfg)
@@ -398,7 +396,7 @@ def execute_config(experiment, argv):
         else:
             notes.append('On logarithmic axes, observed zeros are shown in a separate strip; they are never replaced by epsilon.')
         if data.metadata.get('limitations'):notes.append('Source limitations: '+str(data.metadata['limitations']))
-        if data.metadata.get('historical_protocol'):notes.append('Historical Proposed curves are denoisers, not the DU receiver; Genie uses truth.')
+        if data.metadata.get('historical_protocol'):notes.append('Historical Proposed curves are first-network denoisers; Genie uses truth.')
         description=caption(data,notes)
         for name,obj in [('CONFIG.json',cfg),('PLOT_DATA.json',asdict(data))]:
             (out/name).write_text(json.dumps(obj,ensure_ascii=False,indent=2,allow_nan=False)+'\n',encoding='utf-8')

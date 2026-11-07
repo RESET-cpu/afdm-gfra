@@ -65,8 +65,7 @@ together; paths are resolved relative to the script directory.
 The default test set is `src/tests/public`: mathematical identities, channel
 reconstruction, scoring, current configuration contracts, portable asset
 paths, and command behavior. It does not require local research assets.
-[Research tests](src/tests/README.md) remain available separately, including
-historical checks whose assumptions no longer match the current mainline.
+[Research tests](src/tests/README.md) cover the current implementation separately. Original historical tests are in the frozen source archive.
 
 For comparison with the measured environment, use the version constraints:
 
@@ -154,22 +153,29 @@ channel example described in the reproduction map. PyMuPDF is listed in
 
 ## Training and the submission snapshot
 
-The white denoiser and classifier recipes are retained at
-`src/configs/training/white_preconditioned_matched_20261104.json` and
-`src/configs/training/white_activity_matched_20261104.json`. Their original
-entry points are `training.colored_preconditioned_20261024.formal` and
-`training.colored_activity_20261025.run`; the historical module names do not
-change the white-noise setting in these recipes. Both expose `--help` and
-`prepare`, `preflight`, `train` stages.
+Current white-only training uses `src/configs/training/gp_mp_first.json` and
+`gp_mp_activity.json`, with separate `_reproduction` output directories:
 
-These are frozen research recipes: they require the original 50,000/5,000
-channel banks, initialization and provenance records. The current classifier
-recipe also checks protected historical-run records. They are not a tested
-fresh-install, from-scratch training tutorial. The generic data-bank builder
-is `training.organized.stmp.data.build_bank`; its source record differs from
-the original generator record, so a newly generated bank must be validated
-and rebound in a separate candidate recipe. This preparation does not claim
-that retraining regenerates the original weight hashes.
+```text
+python run_experiments.py train gp-mp-first --help
+python run_experiments.py train gp-mp-activity --help
+python run_experiments.py train stmp --help
+python run_experiments.py train gnn --help
+```
+
+These require the original channel banks, initialization and provenance records,
+which are not all distributed with the inference weights. The extraction was
+checked against the original white branch for identical random draws, tensors,
+network outputs, losses and gradients; no full retraining was performed.
+`training.stmp.data.build_bank` can generate new banks, whose source identity
+must be independently validated and recorded in a new recipe.
+
+Original source and recipes are kept in
+[the frozen archive](archive/frozen_reproduction_20261107/README.md), outside the
+normal import path. Its explicit replay helper verifies original source hashes
+and relocates asset reads. Historical data and some historical models remain
+local requirements. Current study execution records actual source identity
+separately from unchanged original plans. See [validation evidence](archive/code_cleanup_20261107/README.md).
 
 The agreed white-network replacements are still in progress. The current
 code snapshot is suitable for review; an immutable submission tag should be

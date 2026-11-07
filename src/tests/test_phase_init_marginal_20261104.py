@@ -2,8 +2,8 @@
 import numpy as np
 import pytest
 from scipy.optimize import minimize_scalar
-from algorithm.C_STMP_phase_init_marginal_20261104 import initialization as init
-from system.receiver.phase_atoms import sensed_atom
+from receiver.gp_mp import initialization as init
+from channel.phase_atoms import sensed_atom
 
 
 @pytest.mark.parametrize('seed',[2,19,53])

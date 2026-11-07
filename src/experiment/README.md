@@ -8,7 +8,7 @@
 - `metrics.py`：预测与真值的评分。
 - `reporting.py`：结果聚合、区间与报告；图形生成已拆到 `plotting/summary.py`。
 
-新通用计划默认使用 `result/organized_default_20261107/`，使用 `src/configs/organized/algorithms.json`。`plan`、`inspect`、`run` 各司其职，`run` 才执行推断。不要让新代码直接续跑冻结批次；现有白噪声后续队列由总入口 `white_followup` 转交原执行模块。
+新通用计划默认使用 `result/organized_default_20261107/`，使用 `src/configs/organized/algorithms.json`。`plan`、`inspect`、`run` 各司其职，`run` 才执行推断。不要让新代码直接续跑冻结批次；白噪声后续队列和收敛协议位于 `studies/`。迁移执行另记实际源码身份，原计划及结果不覆盖；原模块仍可通过冻结归档的显式入口回放。
 
 ```text
 python run_experiments.py list

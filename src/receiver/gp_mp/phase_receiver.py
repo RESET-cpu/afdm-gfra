@@ -29,7 +29,7 @@ class PhaseReceiver(Receiver):
 
     def context(self):
         record = super().context()
-        record.update(method='GP-MP-EP', implementation='algorithm.GP_MP.phase_receiver:PhaseReceiver',
+        record.update(method='GP-MP-EP', implementation='receiver.gp_mp.phase_receiver:PhaseReceiver',
                       phase_mode='estimated', supplied_phase_operator_used=False,
                       oracle_phase_supplied=False, receiver_truth_used=False,
                       input_fields=['observation', 'pilot', 'activity_prior'],

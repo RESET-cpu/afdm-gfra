@@ -22,7 +22,8 @@ def evaluate_case(plan, models, scene, condition):
     from pathlib import Path
     from receiver.registry import build_algorithm
     from channel.observation import array_sha256
-    from receiver import denoising
+    from scenario.channel_samples import clean_channels
+    from experiment.metrics import denoising_metrics
     from experiment.storage import save_arrays
     from experiment.suite import checked_result
     from fileio import json_digest
@@ -32,7 +33,7 @@ def evaluate_case(plan, models, scene, condition):
     variance = condition['variance']
     scale = plan['model_binding']['STMP']['scale']
     seed = plan['base_seed']+scene
-    physical, selected, priors = denoising.clean_channels(seed, 40, 4, genie_scale=scale)
+    physical, selected, priors = clean_channels(seed, 40, 4, genie_scale=scale)
     truth = physical/scale
     rng = np.random.default_rng(np.random.SeedSequence([seed,8240]))
     epsilon = (rng.normal(size=truth.shape)+1j*rng.normal(size=truth.shape))/np.sqrt(2)
@@ -57,7 +58,7 @@ def evaluate_case(plan, models, scene, condition):
             models[method] = build_algorithm(method, binding=plan['model_binding'],
                 device=plan['device'], definitions=plan['algorithm_specs'])
         mean, metadata = models[method].infer(query, variance, priors=priors if spec.get('uses_truth') else None)
-        values = denoising.denoising_metrics(mean, truth)
+        values = denoising_metrics(mean, truth)
         analytic = 'analytic_error' in metadata
         if analytic:
             if not spec.get('uses_truth'):

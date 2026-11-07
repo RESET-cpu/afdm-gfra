@@ -12,7 +12,6 @@ from pathlib import Path
 import argparse
 import hashlib
 import json
-import resource
 import shutil
 import sys
 import time
@@ -21,20 +20,32 @@ import time
 import numpy as np
 import torch
 
-from project import ROOT, source_files
-from system.dictionary import AFDMGrid, physical_atoms
-from . import common
-from .common import physical_row_support
-from algorithm.baseline.gnn import (
-    CHECKPOINT_SCHEMA,
-    METHOD,
-    INTEGER_GRID,
-    GNNASPLSettings,
-    coefficient_nmse,
-    make_gnn_aspl_network,
-    project_channel_coefficients,
-)
-from utils import sha256, state_sha, write_json
+from workspace import ROOT
+from workspace import source_files
+from channel.dictionary import AFDMGrid
+from channel.dictionary import physical_atoms
+from training.gnn import common
+from training.gnn.common import physical_row_support
+from receiver.baseline.gnn import CHECKPOINT_SCHEMA
+from receiver.baseline.gnn import METHOD
+from receiver.baseline.gnn import INTEGER_GRID
+from receiver.baseline.gnn import GNNASPLSettings
+from receiver.baseline.gnn import coefficient_nmse
+from receiver.baseline.gnn import make_gnn_aspl_network
+from receiver.baseline.gnn import project_channel_coefficients
+from fileio import sha256
+from fileio import state_sha
+from fileio import write_json
+
+
+def peak_rss_bytes():
+    """Report peak process memory in bytes on the training host."""
+    if sys.platform == 'win32':
+        import psutil
+        return int(psutil.Process().memory_info().peak_wset)
+    import resource
+    value = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    return int(value if sys.platform == 'darwin' else value * 1024)
 
 
 TRAINING_MODE = "mixed_snr_grid"
@@ -589,7 +600,7 @@ def save_state(
         training_state_sha256=sha256(path),
         model_state_sha256=state["model_state_sha256"],
         cache=cache.statistics(),
-        peak_rss_bytes=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+        peak_rss_bytes=peak_rss_bytes(),
         training_completed=False,
     )
     write_json(a.output / "PROGRESS.json", progress)
@@ -910,7 +921,7 @@ def main(argv=None):
             training_recipe_sha256=recipe_sha,
             resume_count=resume_count,
             seconds=prior_seconds + time.perf_counter() - start,
-            peak_rss_bytes=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
+            peak_rss_bytes=peak_rss_bytes(),
             training_budget_scope=(
                 "bounded smoke only"
                 if a.smoke

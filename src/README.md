@@ -17,7 +17,7 @@
 | [experiment](experiment/README.md) | 条件扫描、计划、调用、保存、评分与汇总 | `experiment/suite.py`、`experiment/experiments/` |
 | [plotting](plotting/README.md) | 从已保存结果生成论文图和检查图 | `plotting/render_paper.py`、`plotting/manuscript/` |
 | `networks/` | 接收机和训练共用的网络定义、权重加载 | `networks/score.py` |
-| [training/organized](training/organized/README.md) | 训练目标、优化、保存和训练入口导航 | `training/organized/scores/`、`training/organized/stmp/` |
+| [training](training/README.md) | 训练目标、优化、保存和训练入口导航 | `training/scores/`、`training/stmp/` |
 | `workspace.py`、`fileio.py` | 路径、文件读写与哈希 | 不放算法或实验参数 |
 
 场景与波形组成观测，接收机只接收公开输入；实验层调用各模块并单独持有真值进行评分，绘图层读取已保存汇总。场景、波形和信道模块不导入接收机推断、实验或绘图。`genie_bound` 等使用真值的研究对照继续明确标记。
@@ -41,12 +41,12 @@ python run_experiments.py white_followup inspect
 
 `plot --check` 在临时目录重绘、比较，不覆盖正式图；图形依赖和字体见绘图说明。推断和训练需要另外显式执行，查询命令不会启动。
 
-## 冻结批次与旧目录
+## 冻结实验与待删内容
 
-`src/algorithm`、`src/system`、`src/evaluation` 和原训练代码保留为现有计划、配置和检查点的复现依赖。导频数阶段的 `PLAN.json` 对原文件记录了哈希，不能随日常整理改写。
+旧 `algorithm`、`system`、`evaluation` 和原训练入口已移出 `src`。
+保留实验需要的原始源码和配置在 [冻结归档](../archive/frozen_reproduction_20261107/README.md)，
+原逻辑路径与哈希不变。独立 DU 及重复旧快照在 `delete/`，不参与运行和发布。
 
-`src/networks` 直接复用原网络定义。整理后的训练实现放在 `src/training/organized`，与同目录内的冻结训练入口区分；它们没有覆盖原训练文件。
-
-`white_followup` 和已结束的 `convergence` 由总入口明确转交原执行模块。导频数的失败现场、状态与续跑条件不因代码整理改变。本次没有启动或恢复该实验。
-
-功能目录与原文件的逐项对应见 [MAPPING.json](../archive/code_organization_20261107/MAPPING.json)，验证范围与记录见 [目录上移复验](../archive/src_flatten_20261107/README.md)。后续算法改变使用独立配置和结果，不能自动用于续跑旧计划。
+当前 `white_followup` 和 `convergence` 位于 `experiment/studies/`。
+冻结计划的原始来源与当前实际执行源码分别核验和记录；原导频数失败现场未改动，也未续跑。
+整理与数值对照记录见 [本次核验](../archive/code_cleanup_20261107/README.md)。

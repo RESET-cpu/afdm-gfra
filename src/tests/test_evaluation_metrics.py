@@ -4,8 +4,8 @@ import json
 import numpy as np
 import pytest
 
-from evaluation import cli
-from evaluation.metrics import evaluate, score_arrays
+from experiment import cli
+from experiment.metrics import evaluate, score_arrays
 
 
 @pytest.mark.parametrize('entry', ['arrays', 'files', 'cli'])

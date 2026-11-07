@@ -5,14 +5,14 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from algorithm.STMP import phase, phase_iterations
-from algorithm.STMP.iterations import run_spatial_score
-from algorithm.STMP.records import SpatialConfig
-from algorithm import registry
-from evaluation import suite
-from evaluation.scenes import DEFAULT
-from system.receiver.unknown_phase import UnknownPhaseInput
-from utils import read_json
+from receiver.stmp import phase, phase_iterations
+from receiver.stmp.iterations import run_spatial_score
+from receiver.stmp.records import SpatialConfig
+from receiver import registry
+from experiment import suite
+from scenario.catalog import DEFAULT
+from channel.unknown_phase import UnknownPhaseInput
+from fileio import read_json
 
 
 class GaussianDenoiser:
@@ -148,7 +148,7 @@ def test_registered_stmp_estimates_raw_phase_without_shared_frontend(tmp_path,mo
     assert receipt['phase_seconds']==0 and not read_json(folder/'PHASE.json')['initialized']
     selected=registry.select(['STMP'],registry.load_catalog(),'receiver',noise_mode=noise_mode,phase_mode='known')
     assert selected['STMP']['phase_input']=='operator'
-    assert specs['STMP']['factory']=='algorithm.STMP.initialization_runtime_receiver:PhaseSTMPReceiver'
+    assert specs['STMP']['factory']=='receiver.stmp.initialization_runtime_receiver:PhaseSTMPReceiver'
     if noise_mode=='known':
         assert specs['STMP']['kwargs']=={'noise_mode':'known'}
     files=registry.source_files(specs['STMP'],registry.load_models(),'cpu')

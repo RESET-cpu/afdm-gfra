@@ -2,9 +2,9 @@
 from dataclasses import replace
 import numpy as np
 
-from algorithm.STMP import phase_periodic_combined_iterations as candidate
-from algorithm.STMP import phase_periodic_iterations as original
-from algorithm.STMP.records import SpatialConfig
+from receiver.stmp import phase_periodic_combined_iterations as candidate
+from receiver.stmp import phase_periodic_iterations as original
+from receiver.stmp.records import SpatialConfig
 from test_stmp_phase import GaussianDenoiser, public_input
 from test_stmp_phase_periodic import NeverFresh, fixed_change
 from test_stmp_phase_stopping import settings

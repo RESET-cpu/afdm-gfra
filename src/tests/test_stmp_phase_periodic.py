@@ -4,8 +4,8 @@ from dataclasses import replace
 import numpy as np
 import pytest
 
-from algorithm.STMP import phase_iterations, phase_periodic_iterations as periodic
-from algorithm.STMP.records import SpatialConfig
+from receiver.stmp import phase_iterations, phase_periodic_iterations as periodic
+from receiver.stmp.records import SpatialConfig
 from test_stmp_phase import GaussianDenoiser, public_input
 
 

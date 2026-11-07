@@ -1,7 +1,7 @@
 """Numerical equivalence of the independent runtime-only initializer."""
 import numpy as np
-from algorithm.proposed import phase_initialization as original
-from algorithm.STMP import runtime_initialization as candidate
+from receiver.frontend import phase_initialization as original
+from receiver.stmp import runtime_initialization as candidate
 
 
 def test_repeated_optimizer_value_does_not_recompute_or_alias_gradient():
@@ -58,7 +58,7 @@ def test_coordinate_and_joint_paths_are_exactly_preserved():
 
 def test_evaluator_releases_only_inactive_receiver_cache():
     from types import SimpleNamespace
-    from evaluation.receivers import activate
+    from experiment.runtime import activate
     calls=[]
     def receiver(name):
         return SimpleNamespace(_experiment_spec=dict(device_modules=[],backend='cpu'),

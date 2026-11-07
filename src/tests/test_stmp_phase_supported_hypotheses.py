@@ -1,6 +1,6 @@
 from copy import deepcopy
 from scipy.special import logit
-from algorithm.STMP.phase_supported_hypotheses import select_activity_hypothesis
+from receiver.stmp.phase_supported_hypotheses import select_activity_hypothesis
 
 
 def row(user,before,after):

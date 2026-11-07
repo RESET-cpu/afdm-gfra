@@ -34,7 +34,7 @@ def activity_forward(model, r, v, mean):
 
 
 def query_parts(data, chosen, rng, prior, settings, stage):
-    from training.STMP.auxiliary import draw_queries
+    from training.stmp.auxiliary import draw_queries
     parts = []
     for offset in range(0, len(chosen), settings['microbatch_size']):
         micro = chosen[offset:offset+settings['microbatch_size']]

@@ -41,7 +41,7 @@ def test_other_external_paths_are_not_rebound(tmp_path, monkeypatch):
 
 
 def test_working_models_keep_stmp_binding_without_retired_du():
-    source = workspace.CONFIGS/'final/models.json'
+    source = workspace.frozen_read_path(workspace.CONFIGS/'final/models.json')
     before = source.read_bytes()
     actual = registry.load_models()
     frozen = json.loads(before)

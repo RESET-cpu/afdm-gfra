@@ -1,19 +1,16 @@
+from workspace import physical_source_files
 """Shared physical labels, phase order, and source records for GNN training."""
 
 from pathlib import Path
 import numpy as np
 import torch
-from algorithm.baseline.gnn import (
-    PAPER_SHA256,
-    project_channel_coefficients,
-)
-from system.scenario.generate import (
-    CONDITION_GENERATOR_VERSION,
-    GENERATOR_VERSION,
-    generate_case,
-)
-from project import ROOT
-from utils import sha256
+from receiver.baseline.gnn import PAPER_SHA256
+from receiver.baseline.gnn import project_channel_coefficients
+from scenario.generate import CONDITION_GENERATOR_VERSION
+from scenario.generate import GENERATOR_VERSION
+from scenario.generate import generate_case
+from workspace import ROOT
+from fileio import sha256
 
 
 def grid_mode(arguments):
@@ -106,20 +103,20 @@ def phase_schedule(layers):
 
 def source_identity(trainer_path):
     """Bind new training runs to the actual package and its launch command."""
-    model = ROOT / "src/algorithm/baseline/gnn.py"
-    generator = ROOT / "src/system/scenario/generate.py"
-    dictionary = ROOT / "src/system/dictionary.py"
+    model = ROOT / "src/receiver/baseline/gnn.py"
+    generator = ROOT / "src/scenario/generate.py"
+    dictionary = ROOT / "src/channel/dictionary.py"
     paths = [
         model,
         generator,
-        ROOT / "src/utils.py",
-        ROOT / "src/project.py",
+        ROOT / "src/fileio.py",
+        ROOT / "src/workspace.py",
         Path(__file__).with_name("cli.py"),
-        ROOT / "src/algorithm/baseline/_common.py",
+        ROOT / "src/receiver/baseline/_common.py",
         Path(__file__).resolve().parent.parent / "__init__.py",
     ]
     paths += sorted(Path(__file__).resolve().parent.glob("*.py"))
-    paths += sorted((ROOT / "src/system").rglob("*.py"))
+    paths += physical_source_files()
     return dict(
         paper_sha256=PAPER_SHA256,
         paper_locator="Ding pp.3-5 Eqs.(12)-(28), Sec.III-C and IV-A",

@@ -2,10 +2,6 @@
 import torch
 
 
-def known_noise_baseline(method, *, config=None, device='cpu'):
-    """Use the existing supplied-noise solver without its noise-estimation frontend."""
-    from receiver.baseline._base import EstimatedNoiseBaselineReceiver
-    return EstimatedNoiseBaselineReceiver(method, config=config, device=device).base
 
 
 def synchronize(device):

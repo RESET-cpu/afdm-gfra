@@ -1,5 +1,5 @@
 """Original direct first-score DSM and frozen-first second-score trace losses."""
-from .score_matching import scalar_real_variance
+from training.scores.score_matching import scalar_real_variance
 
 
 def direct_first_loss(score, noisy, clean, complex_variance):

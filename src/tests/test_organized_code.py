@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from project import ROOT
+from workspace import ROOT, frozen_read_path
 
 
 def same_tree(a, b):
@@ -35,33 +35,51 @@ def test_frozen_source_files_keep_original_bytes():
     for row in mapping['files']:
         if row['source'] in excluded:
             continue  # Explicitly retired DU sources; retained sources still require identical bytes.
-        assert hashlib.sha256((ROOT/row['source']).read_bytes()).hexdigest() == row['source_sha256']
+        assert hashlib.sha256(frozen_read_path(ROOT/row['source']).read_bytes()).hexdigest() == row['source_sha256']
         if row['destination'] not in excluded or row['destination'] in moved:
-            assert (ROOT/moved.get(row['destination'], row['destination'])).is_file()
+            destination = moved.get(row['destination'], row['destination']).replace('training/organized/', 'training/')
+            assert (ROOT/destination).is_file()
 
 
 @pytest.mark.parametrize('mode', ['generate', 'unknown_phase'])
 def test_paired_scenario_observation_truth_and_metadata(mode):
-    old = importlib.import_module('system.scenario.'+mode)
+    import subprocess, sys, pickle
     new = importlib.import_module('scenario.'+mode)
     # Explicit small diagnostic scene, independent of the formal scene panel.
     args = (926451, 0., 1.)
     kwargs = dict(users=3, frames=3, activity_probability=.5)
-    same_tree(old.generate_case(*args, **kwargs), new.generate_case(*args, **kwargs))
+    script = """
+import sys,pickle
+from pathlib import Path
+sys.path.insert(0,str(Path.cwd()/'archive/frozen_reproduction_20261107/src'))
+import importlib
+m=importlib.import_module('system.scenario.'+sys.argv[1])
+sys.stdout.buffer.write(pickle.dumps(m.generate_case(926451,0.,1.,users=3,frames=3,activity_probability=.5)))
+"""
+    original = pickle.loads(subprocess.check_output([sys.executable,'-B','-c',script,mode],cwd=ROOT))
+    same_tree(original, new.generate_case(*args, **kwargs))
 
 
 @pytest.mark.parametrize('delay,doppler', [(2., 500.), (2.37, -700.5), (35.2, 100.25)])
 def test_integer_fractional_and_multiframe_waveform(delay, doppler):
-    from system.afdm.continuous import continuous_path_matrix as old
+    import subprocess, sys, pickle
     from waveform.afdm.continuous import continuous_path_matrix as new
     args = (16, delay, doppler, 1/1e6, 32, 3/32, .001)
-    np.testing.assert_array_equal(old(*args), new(*args))
+    script = """
+import sys,pickle
+from pathlib import Path
+sys.path.insert(0,str(Path.cwd()/'archive/frozen_reproduction_20261107/src'))
+from system.afdm.continuous import continuous_path_matrix
+sys.stdout.buffer.write(pickle.dumps(continuous_path_matrix(16,float(sys.argv[1]),float(sys.argv[2]),1/1e6,32,3/32,.001)))
+"""
+    original=pickle.loads(subprocess.check_output([sys.executable,'-B','-c',script,str(delay),str(doppler)],cwd=ROOT))
+    np.testing.assert_array_equal(original, new(*args))
 
 
 def test_receiver_configuration_and_metric_results_match():
-    from algorithm import registry as old
     from receiver import registry as new
-    before, after = old.load_catalog(), new.load_catalog()
+    before=json.loads(frozen_read_path(ROOT/'src/configs/algorithms.json').read_text())['algorithms']
+    after=new.load_catalog()
     assert before.keys() - {'DU', 'proposed'} == after.keys()
     for name, spec in after.items():
         assert new.factory(spec).__module__.startswith('receiver.')
@@ -73,7 +91,10 @@ def test_receiver_configuration_and_metric_results_match():
                 v['known_noise'].pop('factory', None)
             v['assets'] = [p for p in v.get('assets', []) if not p.endswith('.py')]
         assert a == b
-    from evaluation.metrics import score_arrays as old_score
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('frozen_metrics',frozen_read_path(ROOT/'src/evaluation/metrics.py'))
+    old_metrics=importlib.util.module_from_spec(spec);spec.loader.exec_module(old_metrics)
+    old_score=old_metrics.score_arrays
     from experiment.metrics import score_arrays as new_score
     truth = dict(channel=np.array([1., 0.]).reshape(2,1,1,1), activity=np.array([1,0]))
     output = dict(estimate=np.array([.75, .1]).reshape(2,1,1,1), activity_decision=np.array([1,1]))
@@ -98,7 +119,7 @@ def test_readonly_entry_points_and_frozen_followup_dispatch(monkeypatch, capsys)
     assert 'GP_MP' in capsys.readouterr().out
     assert main(['plot', '--list']) == 0
     assert 'channel_denoising' in capsys.readouterr().out
-    from evaluation.white_followup_20261107 import run
+    from experiment.studies.white_followup import run
     monkeypatch.setattr(run, 'main', lambda argv: ('frozen', argv))
     assert main(['white_followup', 'inspect']) == ('frozen', ['inspect'])
 

@@ -8,11 +8,11 @@ from pathlib import Path
 
 import pytest
 
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'evaluation/plots'))
+
 from test_paper_plotting import fixture, CONDITIONS
-from configurable import DEFAULT, prepare, render, resolve_config, panel, execute_config
-from plot_selection import load_saved, select
-import style
+from plotting.configurable import DEFAULT, prepare, render, resolve_config, panel, execute_config
+from plotting.plot_selection import load_saved, select
+import plotting.style as style
 
 
 @pytest.mark.parametrize('experiment', CONDITIONS)
@@ -112,7 +112,7 @@ def test_cli_manifest_and_no_overwrite(tmp_path):
     p=tmp_path/'config.json'
     p.write_text(json.dumps(dict(input='SUMMARY.json',output='out',selection={'methods':['STMP']},
                                 plot={'panels':['combined']},export={'formats':['png'],'dpi':50,'preview_dpi':40})))
-    from common import execute
+    from plotting.common import execute
     assert execute('snr_comparison',None,['--config',str(p)])==0
     manifest=json.loads((tmp_path/'out/FIGURES.json').read_text())
     assert manifest['inference_started'] is False
@@ -135,8 +135,8 @@ def test_reject_concurrent_and_unknown_method(tmp_path):
 
 def test_saved_baseline_threshold_preserves_float64_boundary(tmp_path):
     import numpy as np
-    from data import PlotData,digest
-    from plot_selection import scene_records
+    from plotting.data import PlotData,digest
+    from plotting.plot_selection import scene_records
     score=np.float32(.1)
     compact=tmp_path/'prediction.npz'
     np.savez(compact,truth_activity=np.array([True]),activity_score=np.array([score]),coefficient_energy=np.array([1.]))
@@ -155,7 +155,7 @@ def test_saved_baseline_threshold_preserves_float64_boundary(tmp_path):
 @pytest.mark.parametrize('experiment',CONDITIONS)
 def test_public_entries_use_shared_defaults_without_config(tmp_path,experiment,monkeypatch):
     import importlib
-    from configurable import method_style
+    from plotting.configurable import method_style
     source,plan,summary=fixture(tmp_path,experiment)
     if experiment=='channel_denoising':
         # The approved historical plot selects nine denoisers, including legacy IDs.
@@ -180,14 +180,14 @@ def test_public_entries_use_shared_defaults_without_config(tmp_path,experiment,m
         assert cfg['legend']['fontsize']==6 and cfg['legend']['handlelength']==2.6
         assert cfg['plot']['panels']==['combined'] and not cfg['plot']['show_panel_titles']
         return []
-    monkeypatch.setattr('configurable.render',capture)
-    entry=importlib.import_module(experiment)
-    assert entry.execute(experiment,entry.draw,['--input',str(source),'--output',str(tmp_path/'out')])==0
+    monkeypatch.setattr('plotting.configurable.render',capture)
+    from plotting.common import execute_public
+    assert execute_public(experiment,None,['--input',str(source),'--output',str(tmp_path/'out')])==0
     assert len(seen)==1
 
 
 def test_auto_legend_never_expands_limits_even_when_crowded():
-    from legend_layout import automatic_legend
+    from plotting.legend_layout import automatic_legend
     from matplotlib.legend import Legend
     fig,ax=style.plt.subplots(figsize=(3.5,3),layout='constrained')
     methods=[f'Curve {i}' for i in range(12)]

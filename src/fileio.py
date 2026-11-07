@@ -5,10 +5,11 @@ import hashlib
 import json
 import os
 import time
+from workspace import frozen_read_path
 
 def sha256(path):
     digest = hashlib.sha256()
-    with Path(path).open('rb') as stream:
+    with frozen_read_path(path).open('rb') as stream:
         for block in iter(lambda: stream.read(4 * 1024 * 1024), b''):
             digest.update(block)
     return digest.hexdigest()
@@ -20,7 +21,7 @@ def json_digest(value):
 
 
 def read_json(path):
-    path = Path(path)
+    path = frozen_read_path(path)
     if path.suffix == '.gz':
         with gzip.open(path, 'rt', encoding='utf-8-sig') as stream:
             return json.load(stream)

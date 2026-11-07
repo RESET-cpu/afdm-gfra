@@ -10,7 +10,7 @@ from unittest.mock import patch, Mock
 
 import numpy as np
 
-from evaluation.white_followup_20261107 import receivers as r
+from experiment.studies.white_followup import receivers as r
 
 
 class FollowupChecks(unittest.TestCase):
@@ -58,8 +58,8 @@ class FollowupChecks(unittest.TestCase):
                 with self.assertRaises(RuntimeError):r.no_other_execution(r.stage_folder('pilot_frames'))
 
     def test_import_does_not_initialize_torch(self):
-        program = ('import sys; import evaluation.white_followup_20261107.receivers; '
-                   'assert "torch" not in sys.modules; assert "algorithm.GP_MP.receiver" not in sys.modules')
+        program = ('import sys; import experiment.studies.white_followup.receivers; '
+                   'assert "torch" not in sys.modules; assert "receiver.gp_mp.receiver" not in sys.modules')
         subprocess.run([sys.executable,'-B','-c',program],check=True)
 
     def test_coverage_rejects_duplicate_missing_and_changed_condition(self):

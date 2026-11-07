@@ -19,7 +19,7 @@ python -m pytest -q
 ```
 
 示例只生成一个小型合成场景，不需要模型或原始数据。默认测试为 `src/tests/public`；
-历史研究检查保留原址，适用范围见 [测试说明](src/tests/README.md)。
+当前研究检查及冻结原件的适用范围见 [测试说明](src/tests/README.md)。
 原创代码暂保留版权，不设置开放许可证；第三方许可原样保留，见 [RIGHTS.md](RIGHTS.md)。
 当前为投稿准备中的源码版本，尚未宣称完整论文数值复现或发布最终投稿标签。
 
@@ -29,7 +29,7 @@ GitHub 保存代码、配置、论文、正式图表、精选小型汇总及当�
 
 2026-11-07 后续：白噪声去噪 12000 个查询已核验，图 4 和图 3 示例已采用，两版工作稿同步。[采用记录](paper/C-STMP/checks/white_denoising_adopted_20261107/README.md)。导频数阶段在完成 2906/12000 份后遇到任务文件读取权限错误，当前停止，尚未采用；完整核验及图稿采用后才进入用户数阶段。[进度](result/pilot_frames/data/white_mainline_500_20261107/STATUS.json)与[失败记录](result/pilot_frames/data/white_mainline_500_20261107/FAILURE.json)。
 
-2026-11-07：代码主线已整理为独立白噪声 `algorithm.GP_MP`，默认登记为 `GP_MP` / `GP_MP_EP`，旧 `C_STMP` 标识仅兼容指向白噪声版本。旧有色实现、登记及全部数据原位保留供复现。作者已授权按去噪、导频数、用户数、活动概率、跨信道的顺序补跑，每项核验并替换图稿后再开始下一项；状态见 [后续实验请求](result/white_followup_20261107/REQUEST.json)。
+2026-11-07：代码主线已整理为独立白噪声 `receiver.gp_mp`，默认登记为 `GP_MP` / `GP_MP_EP`，旧 `C_STMP` 标识仅兼容指向白噪声版本。旧有色实现与登记已移至独立冻结归档，原数据保持。作者已授权按去噪、导频数、用户数、活动概率、跨信道的顺序补跑，每项核验并替换图稿后再开始下一项；状态见 [后续实验请求](result/white_followup_20261107/REQUEST.json)。
 
 2026-11-07：白噪声网络主 SNR 的已知相位与估计相位结果均已完整核验并采用，每档 1000 场景。主图及两版工作稿同步，其他待替换曲线仍保留阶段说明。[采用与核验](paper/C-STMP/checks/white_snr_adopted_20261107/README.md)。
 
@@ -43,6 +43,8 @@ MIMO-AFDM 卫星物联网免授权随机接入研究：系统模型、接收算�
 
 DU 已按作者要求退出当前代码入口及 GitHub 清单，共用相位模块和 STMP 校准文件保留。
 本地待删目录及范围见 [DU 清理记录](archive/du_removal_20261107/README.md)。
+
+2026-11-07 后续代码整理：当前功能包已去除旧包重复副本，训练、推断、采样、评分和绘图分离；核验范围与证据见 [整理记录](archive/code_cleanup_20261107/README.md)。
 
 ## 常用入口
 
@@ -62,7 +64,7 @@ DU 已按作者要求退出当前代码入口及 GitHub 清单，共用相位模
 - 当前算法稿展示名为 **GP-MP**，估计相位版为 **GP-MP-EP**；`C-STMP` / `C_STMP` 仍是目录和历史实验标识。当前稿采用白噪声训练表述，图表替换状态见[稿件说明](paper/C-STMP/README.md)。
 - 论文当前编入三幅方法图与七幅实验图，矢量 PDF 统一在 [paper/C-STMP/figures/](paper/C-STMP/figures/)。不含评估协议附录的版本为 `main.tex` / `main.pdf`，包含该附录的完整版本为 `main_full.tex` / `main_full.pdf`；两版共享正文。2026-11-04 精简后，原信道推导附录移至内部文档，完整稿中的评估协议附录由 C 顺延为 B。
 - 白噪声主 SNR 两种相位各 6000 份已完成、核验并采用；收敛图采用 30 场景，活动证据消融采用 100 场景，均不继续原预算。
-- 当前默认绑定见 [FINAL.json](FINAL.json) 和[算法登记](src/configs/organized/algorithms.json)。有色版本退出当前入口，旧批次的冻结配置和源码保持；历史登记位于 [归档登记](src/configs/historical/algorithms_colored_20261107.json)。
+- 当前默认绑定见 [FINAL.json](FINAL.json) 和[算法登记](src/configs/organized/algorithms.json)。有色版本退出当前入口，旧批次的冻结配置和源码保持；历史登记位于 [冻结归档](archive/frozen_reproduction_20261107/README.md)。
 
 批次参数、样本范围和执行状态分别查对应的 `PLAN.json`、`README.md`、`STATUS.json` 与完成记录。历次启动、暂停、修订及不利结果说明完整保存在[整理前项目说明](archive/project_cleanup_20261030/ROOT_HISTORY.md)。
 
@@ -72,7 +74,7 @@ DU 已按作者要求退出当前代码入口及 GitHub 清单，共用相位模
 src/          按功能分目录：scenario、waveform、channel、receiver、experiment、plotting、networks、training
 src/configs/  工作代码登记与原科学参数、冻结配置
 src/tests/    当前检查与整理前后对照检查
-src/algorithm、system、evaluation 等原包保留给冻结批次复现
+archive/frozen_reproduction_20261107/  冻结实验原源码，显式回放
 result/       八类实验入口，以及保留的共享资源和兼容路径
 paper/        STMP、C-STMP 稿件及各自研究文档
 reference/    文献原文、专题阅读及写作资料
@@ -96,7 +98,7 @@ archive/      历史记录、目录映射及已归档的检查预览
 & .\.venv\Scripts\python.exe -B run_experiments.py white_followup inspect
 ```
 
-日常实验定义位于 `src/experiment/experiments/`，配置仍在 `src/configs/experiments/`，工作代码登记为 `src/configs/organized/algorithms.json`。新实验须显式创建独立输出计划；已有冻结计划继续使用原源码和配置。执行、检查和重绘用法见[实验说明](src/experiment/README.md)、[测试说明](src/tests/README.md)及[绘图说明](src/plotting/README.md)。
+日常实验定义位于 `src/experiment/experiments/`，配置仍在 `src/configs/experiments/`，工作代码登记为 `src/configs/organized/algorithms.json`。新实验须显式创建独立输出计划；已有冻结计划使用独立归档中的原源码和配置。执行、检查和重绘用法见[实验说明](src/experiment/README.md)、[测试说明](src/tests/README.md)及[绘图说明](src/plotting/README.md)。
 
 ## 论文目录
 

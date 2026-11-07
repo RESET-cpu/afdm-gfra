@@ -2,9 +2,9 @@
 from types import SimpleNamespace
 import numpy as np
 from scipy.special import logit
-from algorithm.STMP import phase_hypotheses as subject
-from algorithm.proposed.phase_math import observed_covariances
-from system.phase import phase_operator
+from receiver.stmp import phase_hypotheses as subject
+from receiver.frontend.phase_math import observed_covariances
+from channel.phase import phase_operator
 
 
 def entry(p,slope=0.,rho=.1):

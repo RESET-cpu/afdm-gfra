@@ -3,9 +3,9 @@ from dataclasses import replace
 from types import SimpleNamespace
 import numpy as np
 import pytest
-from algorithm.STMP import phase, phase_output_cycle
-from algorithm.STMP.records import SpatialConfig
-from system.receiver.unknown_phase import UnknownPhaseInput
+from receiver.stmp import phase, phase_output_cycle
+from receiver.stmp.records import SpatialConfig
+from channel.unknown_phase import UnknownPhaseInput
 
 
 def test_phase_specific_minimum_does_not_change_known_phase_controls(monkeypatch):

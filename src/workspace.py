@@ -1,5 +1,7 @@
 """Workspace locations and explicit resolution of paths in frozen metadata."""
 from pathlib import Path, PureWindowsPath
+import json
+from functools import lru_cache
 
 SOURCE = Path(__file__).resolve().parent
 ROOT = SOURCE.parent
@@ -12,9 +14,36 @@ def source_files():
     """Organized source files recorded by new experiment plans."""
     base = SOURCE
     files = [base/'workspace.py', base/'fileio.py']
-    for name in (*SOURCE_PACKAGES, 'training/organized'):
+    for name in SOURCE_PACKAGES:
         files.extend((base/name).rglob('*.py'))
     return sorted(files)
+
+
+@lru_cache(maxsize=4)
+def _frozen_sources(manifest):
+    return json.loads(manifest.read_text(encoding='utf-8'))['files'] if manifest.exists() else {}
+
+
+def frozen_read_path(value):
+    """Locate exact archived source bytes referenced by a frozen record.
+
+    Only declared original paths are redirected, and only for reading. Current
+    implementations, model assets, experiment outputs and write paths are not
+    substituted. The manifest distinguishes original STMP from current stmp.
+    """
+    path = repository_path(value)
+    try:
+        name = path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return path
+    entry = _frozen_sources(ROOT/'archive/frozen_reproduction_20261107/MANIFEST.json').get(name)
+    if entry is None:
+        return path
+    destination = (ROOT/entry['archive']).resolve()
+    archive = (ROOT/'archive/frozen_reproduction_20261107').resolve()
+    if not destination.is_relative_to(archive):
+        raise ValueError('Frozen source must remain inside its declared archive')
+    return destination
 
 
 def physical_source_files():

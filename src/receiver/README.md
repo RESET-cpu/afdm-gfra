@@ -9,7 +9,9 @@
 
 接收机对外提供 `infer`；实验层负责加载观测、计时、保存和对真值评分。GP-MP 的权重、数值设置和配置核验条件保持原样。新方法添加独立实现、登记和配置，不能修改旧计划来跳过哈希核验。
 
-有色版本已经退出默认入口，未从仓库删除。原 `src/algorithm/C_STMP*`、
-`src/training/colored_*` 和历史登记保留供旧实验追溯。当前 `gp_mp` 明确核验
+有色版本已经退出默认入口，未从仓库删除。原有色接收机、训练代码和登记已移入独立的
+`archive/frozen_reproduction_20261107`，供旧实验追溯。当前 `gp_mp` 明确核验
 训练记录中的 `max_strength=0`，查询使用 `vI`；旧检查点的 `colored` 格式名和
 兼容网络结构仍保留，不代表当前使用有色训练。`C_STMP` 默认登记仅是 GP-MP 的旧名称别名。
+
+基线实际运行源码由 `src/configs/organized/baseline_sources.json` 校验；原 `final/baseline_sources.json` 只维持原活动读出校准的身份，两者分别记录。

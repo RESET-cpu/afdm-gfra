@@ -8,11 +8,9 @@ from types import SimpleNamespace
 
 import pytest
 
-PLOTS = Path(__file__).resolve().parents[1] / 'evaluation' / 'plots'
-sys.path.insert(0, str(PLOTS))
-import data as plot_data
-import style
-from common import execute
+from plotting import data as plot_data
+from plotting import style
+from plotting.common import execute
 
 CONDITIONS = {
     'snr_comparison': [{'snr_db': s} for s in [-4, -2, 0, 2, 4, 6]],
@@ -105,26 +103,28 @@ def test_concurrent_runtime_rejected_before_output(tmp_path):
 
 @pytest.mark.parametrize('experiment', CONDITIONS)
 def test_each_entry_draws_actual_coordinates_and_fits_page(tmp_path, monkeypatch, experiment):
+    from copy import deepcopy
+    from plotting.configurable import DEFAULT, render
     source, _, _ = fixture(tmp_path, experiment)
     data = plot_data.load(source, experiment)
-    style.configure()
-    rendered = []
-
-    def inspect(fig, out, name):
-        style.compact_layout(fig)
+    cfg = deepcopy(DEFAULT)
+    cfg['experiment'] = experiment
+    cfg['export']['formats'] = ['png']
+    cfg['export']['dpi'] = 60
+    figures = []
+    save = style.plt.Figure.savefig
+    def inspect(fig, out, **kwargs):
         fig.canvas.draw()
         renderer = fig.canvas.get_renderer()
         for ax in fig.axes:
             if not ax.get_visible(): continue
             bounds = ax.get_tightbbox(renderer)
-            assert bounds.x0 >= -1 and bounds.y0 >= -1, (experiment, bounds)
-            assert bounds.x1 <= fig.bbox.x1 + 1 and bounds.y1 <= fig.bbox.y1 + 1, (experiment, bounds)
+            assert bounds.x0 >= -1 and bounds.y0 >= -1
+            assert bounds.x1 <= fig.bbox.x1 + 1 and bounds.y1 <= fig.bbox.y1 + 1
             assert len(ax.lines) == len(data.methods)
             if experiment == 'snr_comparison':
                 assert list(ax.lines[0].get_xdata()) == [-4, -2, 0, 2, 4, 6]
-        rendered.append(name)
-        style.plt.close(fig)
-
-    monkeypatch.setattr(style, 'save', inspect)
-    outputs, _ = importlib.import_module(experiment).draw(data, tmp_path, SimpleNamespace(aer_scale='auto'))
-    assert rendered == [name for name, _ in outputs]
+        figures.append(out)
+        save(fig, out, **kwargs)
+    monkeypatch.setattr(style.plt.Figure, 'savefig', inspect)
+    assert render(data, tmp_path, cfg) == figures

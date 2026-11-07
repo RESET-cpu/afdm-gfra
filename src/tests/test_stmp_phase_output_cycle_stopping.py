@@ -1,7 +1,7 @@
 """The stopping decision depends on the observable returned quantities."""
 import numpy as np
 
-from algorithm.STMP.phase_output_cycle_stopping import OutputCycleStopping
+from receiver.stmp.phase_output_cycle_stopping import OutputCycleStopping
 
 
 def test_internal_message_changes_do_not_mask_stable_outputs():

@@ -29,3 +29,15 @@ def score_arrays(arrays, truth):
                 nmse_db=float(10*np.log10(max(full_error/signal_energy, np.finfo(float).tiny))) if signal_energy > 0 else None,
                 active_nmse_db=float(10*np.log10(max(active_error/signal_energy, np.finfo(float).tiny))) if signal_energy > 0 else None,
                 per_user_error=error.tolist(), decisions=decision.tolist())
+
+
+def denoising_metrics(mean, truth, predicted_variance=None):
+    axes = tuple(range(1, truth.ndim))
+    error = np.sum(abs(mean-truth)**2, axis=axes)
+    energy = np.sum(abs(truth)**2, axis=axes)
+    arrays = dict(error=error, energy=energy)
+    if predicted_variance is not None:
+        arrays['predicted_error'] = np.asarray(predicted_variance)*int(np.prod(truth.shape[1:]))
+    if not all(np.isfinite(a).all() for a in arrays.values()):
+        raise FloatingPointError('Nonfinite denoising output or error prediction')
+    return arrays

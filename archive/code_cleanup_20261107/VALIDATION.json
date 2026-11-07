@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "current_tests": 272,
+  "test_command": "python -B -m pytest -q src/tests",
+  "public_tests": 38,
+  "formal_experiment_started": false,
+  "training_started": false,
+  "evidence": [
+    "BASELINE_PARITY.json",
+    "LEARNED_PARITY.json",
+    "PHASE_PARITY.json",
+    "ASSET_INTEGRITY.json",
+    "STUDY_BINDINGS.json",
+    "FIGURES.json",
+    "MODELS.json",
+    "INFERENCE_ASSETS.json",
+    "../retired_code_20261107/NUMERICAL_PARITY.json"
+  ],
+  "limitations": [
+    "No full Monte Carlo rerun or retraining",
+    "Historical full replay requires excluded data and historical models",
+    "Fresh GitHub checkout validation is recorded separately after publication"
+  ]
+}

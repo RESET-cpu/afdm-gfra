@@ -6,13 +6,13 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from algorithm import registry
-from algorithm.baseline import _validation
-from evaluation import suite, experiments
-from evaluation.experiments.channel_denoising import evaluate_case
-from project import ROOT
-from utils import read_json, sha256
-from system.observation import ReceiverInput
+from receiver import registry
+from receiver.baseline import _validation
+from experiment import suite, experiments
+from experiment.experiments.channel_denoising import evaluate_case
+from workspace import ROOT
+from fileio import read_json, sha256
+from channel.observation import ReceiverInput
 
 
 def write(path, value):
@@ -31,15 +31,15 @@ def test_independent_entry_and_updated_1000_scene_defaults(name):
     conditions = entry.conditions(config, args)
     if name == 'snr_comparison':
         assert conditions[:6] == original['conditions']
-        assert [c['snr_db'] for c in conditions] == [-4, -2, 0, 2, 4, 6, 8, 10]
+        assert [c['snr_db'] for c in conditions] == [-4, -2, 0, 2, 4, 6]
     else:
         assert conditions == original['conditions']
-    expected_methods = original['methods']
-    if name == 'channel_denoising':
-        expected_methods = expected_methods + ['pretrained_colored_first']
-    assert config['methods'] == expected_methods
-    assert config['scenes'] == 1000
+    assert 'proposed' not in config['methods']
+    assert 'pretrained_colored_first' not in config['methods']
+    assert all(m in registry.load_catalog() for m in config['methods'])
+    assert config['scenes'] == (1000 if name in ('snr_comparison','runtime_comparison','density_ratio_ablation') else 500)
     assert config['timing_repeats'] == original['timing_repeats']
+
 
 
 def test_unknown_duplicate_and_wrong_kind_methods_rejected():
@@ -57,14 +57,15 @@ def test_baseline_only_plan_does_not_require_unselected_network_weights():
     config, _ = suite.experiment_config('snr_comparison')
     binding = registry.load_models()
     # These files intentionally do not exist. A selected SOMP plan still works.
-    binding['proposed']['checkpoint'] = 'absent_proposed.pt'
-    binding['proposed']['run'] = 'absent_training'
     binding['STMP']['first_checkpoint'] = 'absent_first.pt'
     assets = suite.assets(binding, definitions, config, 'cpu')
     assert not any(p.endswith('.pt') for p in assets)
 
 
-def test_configured_receiver_runs_and_reports_without_editing_dispatch(tmp_path, monkeypatch):
+@pytest.mark.parametrize('experiment', [n for n in experiments.NAMES if n != 'channel_denoising'])
+def test_configured_receiver_runs_and_reports_without_editing_dispatch(tmp_path, monkeypatch, experiment):
+    import sys
+    monkeypatch.delitem(sys.modules, 'fixture_receiver', raising=False)
     # A deliberately synthetic contract fixture, not a research baseline.
     module = tmp_path/'fixture_receiver.py'
     module.write_text('''import numpy as np
@@ -81,8 +82,11 @@ class Receiver:
     specs = {name: dict(kind='receiver', factory='fixture_receiver:Receiver', label=name,
                        backend='cpu', kwargs={'gain':gain}) for name,gain in [('fixture_a',.5),('fixture_b',.6)]}
     catalog = write(tmp_path/'catalog.json', dict(schema='afdm-algorithm-catalog-v1',algorithms=specs))
-    _, config = suite.experiment_config('runtime_comparison')
-    config.update(methods=list(specs), snr_db=[0])
+    _, config = suite.experiment_config(experiment)
+    config.update(methods=list(specs), include_stmp=False, execution_status='READY', timing_repeats=1)
+    if 'values' in config: config['values'] = config['values'][:1]
+    if 'profiles' in config: config['profiles'] = config['profiles'][:1]
+    if 'snr_db' in config: config['snr_db'] = config['snr_db'][:1]
     configuration = write(tmp_path/'experiment.json', config)
     def small_assets(binding, definitions, config_path, device):
         files = {config_path}
@@ -96,27 +100,28 @@ class Receiver:
         return public,truth,dict(files={'truth':'synthetic'},phase_seconds=0.),tmp_path
     monkeypatch.setattr(suite, 'prepared_case', small_case)
     out = tmp_path/'run'
-    assert suite.main('runtime_comparison', ['plan','--smoke','--scenes','2','--device','cpu',
+    assert suite.main(experiment, ['plan','--smoke','--scenes','2','--device','cpu',
         '--config',str(configuration),'--catalog',str(catalog),'--output',str(out)]) == 0
     plan = read_json(out/'PLAN.json')
     assert plan['methods'] == list(specs)
     assert plan['reference_method'] == 'fixture_a'
     # Execution uses the frozen selected definitions, not a mutable catalog.
     write(catalog, dict(schema='afdm-algorithm-catalog-v1', algorithms={}))
-    assert suite.main('runtime_comparison', ['run','--output',str(out)]) == 0
+    assert suite.main(experiment, ['run','--output',str(out)]) == 0
     summary = read_json(out/'SUMMARY.json')
     assert {r['method'] for r in summary['rows']} == set(specs)
     assert summary['paired_differences'][0]['first'] == 'fixture_a'
     assert summary['rows'][0]['full_error'] != summary['rows'][1]['full_error']
-    assert (out/'runtime_accuracy.png').exists() and (out/'comparison.pdf').exists()
-    assert suite.main('runtime_comparison', ['run','--output',str(out)]) == 0
+    assert (out/'comparison.pdf').exists()
+    if experiment == 'runtime_comparison': assert (out/'runtime_accuracy.png').exists()
+    assert suite.main(experiment, ['run','--output',str(out)]) == 0
     module.write_text(module.read_text()+'\n# changed\n')
     with pytest.raises(ValueError, match='asset changed'):
         suite.verify(plan)
 
 
 def test_denoising_subset_loads_only_selected_method(tmp_path, monkeypatch):
-    from evaluation import denoising
+    from receiver import denoising
     monkeypatch.setattr(denoising, 'FirstChannelMean', lambda *a, **k: pytest.fail('Unselected network loaded'))
     specs = registry.select(['noisy'], registry.load_catalog(), 'denoiser')
     plan = dict(base_seed=suite.SMOKE_SEED,runtime_identity='test',device='cpu',cache=str(tmp_path),
@@ -132,8 +137,8 @@ def test_denoising_subset_loads_only_selected_method(tmp_path, monkeypatch):
 def test_new_independent_source_does_not_invalidate_existing_baseline(tmp_path, monkeypatch):
     source = tmp_path/'existing.py'
     source.write_text('VALUE = 1\n')
-    (tmp_path/'final').mkdir()
-    write(tmp_path/'final/baseline_sources.json', dict(sha256={'existing.py':sha256(source)}))
+    (tmp_path/'organized').mkdir()
+    write(tmp_path/'organized/baseline_sources.json', dict(sha256={'existing.py':sha256(source)}))
     monkeypatch.setattr(_validation,'ROOT',tmp_path)
     monkeypatch.setattr(_validation,'CONFIGS',tmp_path)
     (tmp_path/'new_baseline.py').write_text('VALUE = 2\n')
@@ -141,3 +146,18 @@ def test_new_independent_source_does_not_invalidate_existing_baseline(tmp_path, 
     source.write_text('VALUE = 3\n')
     with pytest.raises(ValueError, match='differs from the verified'):
         _validation.verify_current_sources()
+
+
+def test_denoising_plan_run_score_report(tmp_path):
+    _, config = suite.experiment_config('channel_denoising')
+    config.update(methods=['noisy', 'gaussian'], values=[.1], include_stmp=False)
+    path = write(tmp_path/'denoising.json', config)
+    out = tmp_path/'denoising'
+    assert suite.main('channel_denoising', ['plan', '--smoke', '--device', 'cpu',
+        '--config', str(path), '--output', str(out)]) == 0
+    assert suite.main('channel_denoising', ['run', '--output', str(out)]) == 0
+    result = read_json(out/'SUMMARY.json')
+    assert result['status'] == 'COMPLETE'
+    assert len(result['rows']) == 2
+    assert all(r['energy'] > 0 for r in result['rows'])
+    assert (out/'comparison.pdf').is_file()

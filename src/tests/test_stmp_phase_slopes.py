@@ -4,14 +4,14 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from algorithm.STMP import phase_slopes, phase_slopes_iterations
-from algorithm.proposed.phase_math import observed_covariances, stationary_maximum
-from algorithm.proposed.phase_update import objective
-from algorithm.STMP.records import SpatialConfig
-from system.receiver.unknown_phase import UnknownPhaseInput
-from algorithm.STMP.iterations import moment_damp
-from algorithm.STMP.linear import SpatialLinear
-from system.phase import phase_operator
+from receiver.stmp import phase_slopes, phase_slopes_iterations
+from receiver.frontend.phase_math import observed_covariances, stationary_maximum
+from receiver.frontend.phase_update import objective
+from receiver.stmp.records import SpatialConfig
+from channel.unknown_phase import UnknownPhaseInput
+from receiver.stmp.iterations import moment_damp
+from receiver.stmp.linear import SpatialLinear
+from channel.phase import phase_operator
 
 
 def normal(rng, shape):

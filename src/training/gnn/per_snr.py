@@ -25,28 +25,27 @@ import time
 import numpy as np
 import torch
 
-from algorithm.baseline.gnn import (
-    CHECKPOINT_SCHEMA,
-    INTEGER_GRID,
-    METHOD,
-    GNNASPLNetwork,
-    GNNASPLSettings,
-    coefficient_nmse,
-    project_channel_coefficients,
-)
-from system.dictionary import AFDMGrid, physical_atoms
-from utils import sha256, state_sha, write_json
+from receiver.baseline.gnn import CHECKPOINT_SCHEMA
+from receiver.baseline.gnn import INTEGER_GRID
+from receiver.baseline.gnn import METHOD
+from receiver.baseline.gnn import GNNASPLNetwork
+from receiver.baseline.gnn import GNNASPLSettings
+from receiver.baseline.gnn import coefficient_nmse
+from receiver.baseline.gnn import project_channel_coefficients
+from channel.dictionary import AFDMGrid
+from channel.dictionary import physical_atoms
+from fileio import sha256
+from fileio import state_sha
+from fileio import write_json
 
 
-from .common import (
-    grid_mode,
-    data_contract,
-    case,
-    coefficient_label,
-    physical_row_support,
-    phase_schedule,
-    source_identity as training_source_identity,
-)
+from training.gnn.common import grid_mode
+from training.gnn.common import data_contract
+from training.gnn.common import case
+from training.gnn.common import coefficient_label
+from training.gnn.common import physical_row_support
+from training.gnn.common import phase_schedule
+from training.gnn.common import source_identity as training_source_identity
 
 
 TRAINING_STATE_SCHEMA = "ding-gnn-aspl-training-state-v1"

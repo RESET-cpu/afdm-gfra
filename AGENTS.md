@@ -46,8 +46,8 @@
 ## 目录与运行
 
 先读根目录 README.md。场景、波形、信道、接收机、实验和绘图直接位于 `src` 下的
-对应目录，入口见 `src/README.md`。原源码包保留给已绑定哈希的冻结批次复现，路径
-对应见 `archive/code_organization_20261107/MAPPING.json`。
+对应目录，入口见 `src/README.md`。原源码包移入 `archive/frozen_reproduction_20261107`，
+用于已绑定哈希的冻结批次复现，原路径和哈希见其 `MANIFEST.json`。
 日常改动不要自动回写冻结实现。当前入口为 `run_experiments.py`，配置在 `src/configs`，
 检查在 `src/tests`，实验与数据在 `result`，研究文档在各稿件的 `paper/<方法>/docs`，参考资料在 `reference`。
 当前稿件范围为 `paper/STMP`、`paper/C-STMP`。2026-11-07 作者已要求移除 DU，
@@ -55,6 +55,6 @@
 状态见 `archive/du_removal_20261107/REMOVAL.json`，不得将待删副本重新加入当前入口或上传清单。
 共用相位模块、STMP 校准资产和共用场景登记保留。
 旧论文与文档路径通过 `archive/paper_layout_20261026/MAPPING.json` 查找，不恢复顶层旧稿或共享 `docs`。
-历史云端脚本及原测试保存在 `src/history`，依赖当时的目录布局；不将其作为当前版本入口。
+冗余历史脚本在 `delete/retired_code_20261107`；研究测试原件在冻结归档，当前检查在 `src/tests`。
 当前模型绑定以 `FINAL.json` 为准，原 `MAINLINE.json` 及历史记录保持原文，通过
 `result/layout_20261021/MAPPING.json` 查找搬移后的文件。不得自动启动批量实验或训练。

@@ -29,7 +29,7 @@ class Receiver:
 
     def context(self):
         return dict(
-            method='GP-MP', implementation='algorithm.GP_MP.receiver:Receiver',
+            method='GP-MP', implementation='receiver.gp_mp.receiver:Receiver',
             activity_evidence=self.configuration['activity_evidence'],
             classifier_loaded=self.configuration['activity_evidence'] == 'classifier',
             configuration=self.configuration, truth_loaded=False, array_response_loaded=False,

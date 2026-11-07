@@ -1,0 +1,106 @@
+{
+  "scope": "models",
+  "root": "D:\\afdm-gfra",
+  "checked": 8,
+  "missing": 0,
+  "hash_mismatches": 0,
+  "hashes_verified": true,
+  "status": "READY",
+  "scope_note": "Eight distributed model assets for GP-MP, STMP and GNN, including classifier initialization provenance and shared STMP phase calibration; no DU weights or raw scenes.",
+  "assets": [
+    {
+      "path": "result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt",
+      "sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+      "bytes": 130648201,
+      "scopes": [
+        "gp-mp",
+        "training",
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes",
+      "resolved_path": "D:\\afdm-gfra\\result\\channel_denoising\\data\\white_preconditioned_matched_20261104\\first_best.pt",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "result/models/gnn/checkpoint.pt",
+      "sha256": "a09f07dd6af6c8390a68d10b892f64fec316b4e7cd031350817e7ad679fa3f4e",
+      "bytes": 1117452,
+      "scopes": [
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes",
+      "resolved_path": "D:\\afdm-gfra\\result\\models\\gnn\\checkpoint.pt",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "result/models/proposed_10/phase_moments.npz",
+      "sha256": "2be9d73c11dd5b1bce0faec699470ae3df2af48862f4c033371dcfa401e41671",
+      "bytes": 990887,
+      "scopes": [
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes",
+      "resolved_path": "D:\\afdm-gfra\\result\\models\\proposed_10\\phase_moments.npz",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "result/runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt",
+      "sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+      "bytes": 130387209,
+      "scopes": [
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes",
+      "resolved_path": "D:\\afdm-gfra\\result\\runs\\proposed_50000_cuda_graph_20261018\\model\\first\\first_best.pt",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+      "sha256": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d",
+      "bytes": 3700751,
+      "scopes": [
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes",
+      "resolved_path": "D:\\afdm-gfra\\result\\runs\\proposed_auxiliary_100_cuda_graph_20261019\\n50000\\activity\\evidence_best.pt",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/second/second_best.pt",
+      "sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5",
+      "bytes": 130385799,
+      "scopes": [
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes",
+      "resolved_path": "D:\\afdm-gfra\\result\\runs\\proposed_auxiliary_100_cuda_graph_20261019\\n50000\\second\\second_best.pt",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/evidence_best.pt",
+      "sha256": "2fb9977d68ede2b451dc0ba712a8106f002f889d2e529147aa2eb271a337d854",
+      "bytes": 3700687,
+      "scopes": [
+        "gp-mp",
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes",
+      "resolved_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_classifier_matched_20261104\\evidence_best.pt",
+      "status": "VERIFIED"
+    },
+    {
+      "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/initialization.pt",
+      "sha256": "8630e5196c3611842d360bc60a107351202c0b1ff226eecd640986fa6c63ce9b",
+      "bytes": 3505901,
+      "scopes": [
+        "gp-mp",
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes",
+      "resolved_path": "D:\\afdm-gfra\\result\\snr_comparison\\data\\white_preconditioned_classifier_matched_20261104\\initialization.pt",
+      "status": "VERIFIED"
+    }
+  ],
+  "inference_started": false,
+  "training_started": false
+}

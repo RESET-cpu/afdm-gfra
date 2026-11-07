@@ -1,7 +1,7 @@
 """Coalesce GPU work without changing the CPU training-query random stream."""
 import numpy as np
 import torch
-from .direct_objectives import direct_first_loss
+from training.scores.direct_objectives import direct_first_loss
 
 
 def execution_batches(data, chosen, rng, recipe, make_batch, *, draw_size, execution_size):

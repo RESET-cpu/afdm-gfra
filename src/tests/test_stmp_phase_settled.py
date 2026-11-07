@@ -1,9 +1,9 @@
 """Phase updates require the same existing message/estimate/decision windows."""
 from types import SimpleNamespace
 import numpy as np
-from algorithm.STMP import phase_settled_iterations
-from algorithm.STMP.records import SpatialConfig
-from system.receiver.unknown_phase import UnknownPhaseInput
+from receiver.stmp import phase_settled_iterations
+from receiver.stmp.records import SpatialConfig
+from channel.unknown_phase import UnknownPhaseInput
 
 
 def test_due_phase_update_waits_for_existing_conditional_stability(monkeypatch):

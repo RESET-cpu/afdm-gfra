@@ -5,14 +5,14 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from algorithm.STMP.iterations import run_spatial_score
-from algorithm.STMP.records import SpatialConfig
-from algorithm.C_STMP_variance_em_20261025.iterations import run_spatial_score as gp_loop
-from evaluation.convergence_20261105.adapters import fixed_loop, bind_fixed_infer
-from evaluation.convergence_20261105.metrics import Collector, aggregate
-from evaluation.convergence_20261105.run import CONFIG, METHODS
-from system.observation import ReceiverInput
-from utils import read_json
+from receiver.stmp.iterations import run_spatial_score
+from receiver.stmp.records import SpatialConfig
+from receiver.gp_mp.iterations import run_spatial_score as gp_loop
+from experiment.studies.convergence.adapters import fixed_loop, bind_fixed_infer
+from experiment.studies.convergence.metrics import Collector, aggregate
+from experiment.studies.convergence.run import CONFIG, METHODS
+from channel.observation import ReceiverInput
+from fileio import read_json
 
 
 class GaussianFixture:
@@ -79,7 +79,7 @@ def test_binding_only_changes_one_instance():
 
 
 def test_real_sbl_loop_prefix_observer_and_final_reconstruction():
-    from algorithm.baseline import offgrid_sbl as kernel
+    from receiver.baseline import offgrid_sbl as kernel
     rng = np.random.default_rng(212)
     inputs = ReceiverInput(rng.normal(size=(2, 2, 16)) + 1j*rng.normal(size=(2, 2, 16)),
                            rng.normal(size=(2, 1, 16)) + 1j*rng.normal(size=(2, 1, 16)), .8)

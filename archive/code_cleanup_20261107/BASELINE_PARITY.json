@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "fixture": "one independent synthetic 3-user, 4-frame scene; full baseline solver settings",
+  "seed": 926451,
+  "methods": {
+    "somp": {
+      "status": "PASS",
+      "array_keys": [
+        "activity_decision",
+        "activity_score",
+        "coefficient_energy",
+        "coefficients",
+        "estimate",
+        "noise_variance_estimate",
+        "noise_variance_history",
+        "relative_coefficient_score"
+      ],
+      "max_channel_difference": 0.0,
+      "calibration_identity_preserved": true,
+      "seconds": 0.287038000067696
+    },
+    "gamp": {
+      "status": "PASS",
+      "array_keys": [
+        "activity_decision",
+        "activity_score",
+        "coefficient_energy",
+        "coefficients",
+        "estimate",
+        "noise_variance_estimate",
+        "noise_variance_history",
+        "relative_coefficient_score"
+      ],
+      "max_channel_difference": 0.0,
+      "calibration_identity_preserved": true,
+      "seconds": 0.23707099980674684
+    },
+    "gnn": {
+      "status": "PASS",
+      "array_keys": [
+        "activity_decision",
+        "activity_score",
+        "channel_energy",
+        "coefficient_energy",
+        "coefficient_variance",
+        "coefficients",
+        "estimate",
+        "noise_variance_estimate",
+        "noise_variance_history",
+        "relative_coefficient_score",
+        "row_probability"
+      ],
+      "max_channel_difference": 0.0,
+      "calibration_identity_preserved": true,
+      "seconds": 0.7100645999889821
+    },
+    "offgrid_sbl": {
+      "status": "PASS",
+      "array_keys": [
+        "activity_decision",
+        "activity_score",
+        "channel_energy",
+        "component_coefficients",
+        "component_user_ids",
+        "doppler_hz",
+        "estimate",
+        "folded_delay_samples",
+        "noise_variance_estimate",
+        "noise_variance_history"
+      ],
+      "max_channel_difference": 0.0,
+      "calibration_identity_preserved": true,
+      "seconds": 0.5764266001060605
+    }
+  },
+  "training_started": false,
+  "formal_experiment_started": false
+}

@@ -3,9 +3,9 @@ from dataclasses import replace
 import numpy as np
 import pytest
 
-from algorithm.STMP.phase_stopping import CycleStopping
-from algorithm.STMP import phase_iterations, phase_periodic_stopping_iterations as candidate
-from algorithm.STMP.records import SpatialConfig
+from receiver.stmp.phase_stopping import CycleStopping
+from receiver.stmp import phase_iterations, phase_periodic_stopping_iterations as candidate
+from receiver.stmp.records import SpatialConfig
 from test_stmp_phase import GaussianDenoiser, public_input
 from test_stmp_phase_periodic import NeverFresh, fixed_change
 

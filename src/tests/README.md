@@ -1,30 +1,20 @@
-# 当前检查
+# 检查
 
-默认 `python -m pytest -q` 运行 `public/` 内的 29 项发布检查，覆盖数值恒等式、
-完整信道重建、指标、当前配置、路径搬迁、资产检查和命令，不需要本地权重或历史结果。
-这些检查与以下研究检查分开维护，不把未运行的研究检查记作通过。
+```text
+python -m pytest -q
+python -m pytest -q src/tests
+```
 
-原研究测试继续保留原路径，避免破坏冻结记录。显式运行相应文件即可。
-2026-11-07 发布预审抽查 `test_configured_experiments.py` 和
-`test_layout.py::test_four_visible_top_level_folders`，结果为 7 通过、7 失败。
-失败原因是历史方法名称、SNR 范围及目录布局断言与现状不一致；并非已经修复的算法失败。
-默认入口改为发布检查，没有删除或放宽这些历史断言。旧研究检查还可能需要未上传的
-权重、历史计划和本机运行环境，不适合作为纯源码下载后的统一验收入口。
+第一条只运行 `public/`，无需权重或原始数据。第二条包含当前研究检查，需要已发布权重以及完整本地研究资产、Times New Roman 字体；不启动训练或正式批次。
 
-代码整理的对照检查为 `test_organized_code.py`、`test_organized_pipeline.py`：验证冻结源码哈希、场景与观测逐数组一致、波形算子一致、登记参数一致，以及合成接收机从计划到评分/汇总/绘图的完整调用。运行 `python -m pytest -q src/tests/test_organized_code.py src/tests/test_organized_pipeline.py`。
+- `public/`：数学恒等式、配置、资产、路径、公开命令及模块依赖边界。
+- `test_organized_code.py`：冻结源码身份，以及场景、波形和指标的前后对照。
+- `test_configured_experiments.py`：八类实验的计划、推断调用、评分、汇总和绘图；临时接收机明确是合成接口样例。
+- `test_stmp*`、`test_phase_init_marginal*`、`test_convergence*`：相位、消息更新、固定迭代和评分的数值检查。
+- `test_configurable_plots.py`、`test_paper_plotting.py`：汇总一致性、图例和出图边界。
+- `test_white_followup_receivers*`：后续实验的输入隔离、结果验证、配对、调度和采用条件。
 
-目录上移后的真实预训练网络对照与十图临时重绘结果见 `archive/src_flatten_20261107/`。这些检查没有启动训练或正式实验；旧测试中依赖历史配置状态的断言不等于当前主线验收。
-
-以下说明属于原研究检查；运行时显式给出对应文件路径。
-这里保留当前入口、共享场景、公共输入变换和评分检查；历史候选算法及训练测试原件位于 `src/history/tests`。
-目录迁移的已有场景回放与完整文件核验单独记录于 `result/layout_20261021`，不属于全量实验。
-
-`test_configured_experiments.py` 验证独立实验入口、配置选择、算法类别和新增方法的完整执行/评分/作图接入。
-其中临时接收机仅是接口测试数据，不是科研 baseline；不运行 STMP 或正式场景。
-
-`test_source_cleanup.py` 检查统一文件读写、模型配置解析、归位后的导入，以及 STMP 与消融共享的停止判定和文件保存。
-这部分使用合成测试对象，不加载三网络推断。已有诊断场景的逐数组回放记录在 `result/source_cleanup_20261021`。
-
-`test_proposed_phase_integration.py` 检查内部相位估计的原始输入边界、known/estimated 路由、
-噪声字段隔离、固定高斯目标的梯度及下降、端到端计时不重复叠加。
-原10份开发输入的完整CPU回放单独记录于 `result/mainline_message_gem_20261022/REPLAY_COMPLETE.json`。
+已退役算法专属测试及所有整理前测试原件保存在 `archive/frozen_reproduction_20261107/src/tests`；它们不在当前测试收集范围。重复的流程测试已移入 `delete/`。
+当前测试按已采用的白噪声主线更新路径与协议断言，没有放宽算法误差容差。
+真实预训练接收机前后对照、十图重绘和资产核验见 `archive/code_cleanup_20261107/`。
+这些验证不等同于重新训练和全量 Monte Carlo 复现。

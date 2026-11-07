@@ -74,10 +74,10 @@ def load_saved(source, experiment):
         data = load(source, experiment)
     elif experiment == 'channel_denoising':
         if plan.get('schema') == 'direct-awgn-colored-append-v1':
-            from channel_denoising_colored_20261025 import load_append
+            from plotting.historical_data import load_append
             data = load_append(source, experiment)
         else:
-            from channel_denoising import load_denoising
+            from plotting.historical_data import load_denoising
             data = load_denoising(source, experiment)
     else:
         # Frozen C-STMP snapshots have a completion seal and a different plan schema.

@@ -1,7 +1,7 @@
 """Independent calculus and likelihood checks for finite initialization starts."""
 import numpy as np
-from algorithm.STMP.phase_initialization_candidates import maxima, coordinate
-from algorithm.proposed.phase_math import observed_covariances
+from receiver.stmp.phase_initialization_candidates import maxima, coordinate
+from receiver.frontend.phase_math import observed_covariances
 
 
 def normal(rng,shape):

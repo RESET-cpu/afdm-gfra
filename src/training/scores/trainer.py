@@ -5,10 +5,11 @@ from pathlib import Path
 import time
 import numpy as np
 import torch
-from .score_matching import make_cai_batch
-from .direct_objectives import direct_first_loss, direct_second_loss
-from .device import restore_device_rng
-from utils import write_json
+from training.scores.score_matching import make_cai_batch
+from training.scores.direct_objectives import direct_first_loss
+from training.scores.direct_objectives import direct_second_loss
+from training.scores.device import restore_device_rng
+from fileio import write_json
 
 
 def cpu_state(model):

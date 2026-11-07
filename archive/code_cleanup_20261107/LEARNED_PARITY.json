@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "device": "cuda",
+  "fixture": "One independent 3-user, 4-frame scene; full unchanged iteration controls",
+  "seed": 926451,
+  "methods": {
+    "GP_MP": {
+      "status": "PASS",
+      "max_channel_difference": 0.0,
+      "iterations": [
+        60,
+        60
+      ],
+      "seconds": 8.188508599996567
+    },
+    "STMP": {
+      "status": "PASS",
+      "max_channel_difference": 0.0,
+      "iterations": [
+        150,
+        150
+      ],
+      "seconds": 12.141672300174832
+    }
+  },
+  "training_started": false,
+  "formal_experiment_started": false
+}

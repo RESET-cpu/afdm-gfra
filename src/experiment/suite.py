@@ -343,6 +343,8 @@ def run(out, plan):
     import torch
     from threadpoolctl import threadpool_limits
     verify(plan)
+    if any(s['factory'].startswith('algorithm.') for s in plan['algorithm_specs'].values()):
+        raise ValueError('Historical plan requires its frozen implementation; see archive/frozen_reproduction_20261107/README.md. Create a new plan to use current code.')
     if plan['execution_status'] == 'DEFERRED_BY_USER':
         print(json.dumps(dict(status='DEFERRED_BY_USER',reason='This experiment is deferred by its configuration.')))
         return 0

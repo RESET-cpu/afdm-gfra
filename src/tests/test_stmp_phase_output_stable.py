@@ -1,9 +1,9 @@
 """Current output/moment validity differs from convergence of damped messages."""
 from types import SimpleNamespace
 import numpy as np
-from algorithm.STMP import phase_output_stable_iterations as kernel
-from algorithm.STMP.records import SpatialConfig
-from system.receiver.unknown_phase import UnknownPhaseInput
+from receiver.stmp import phase_output_stable_iterations as kernel
+from receiver.stmp.records import SpatialConfig
+from channel.unknown_phase import UnknownPhaseInput
 
 
 def test_phase_waits_for_current_moments_without_requiring_message_residual_convergence(monkeypatch):

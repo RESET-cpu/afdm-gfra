@@ -43,7 +43,7 @@
       "label": "Off-grid SBL",
       "factory": "receiver.baseline._base:EstimatedNoiseBaselineReceiver",
       "known_noise": {
-        "factory": "experiment.runtime:known_noise_baseline"
+        "factory": "receiver.baseline.factory:known_noise_baseline"
       },
       "kwargs": {
         "method": "offgrid_sbl"
@@ -59,7 +59,7 @@
       "label": "GNN-ASPL",
       "factory": "receiver.baseline._base:EstimatedNoiseBaselineReceiver",
       "known_noise": {
-        "factory": "experiment.runtime:known_noise_baseline",
+        "factory": "receiver.baseline.factory:known_noise_baseline",
         "parameter_modules": [
           "native.model"
         ]
@@ -84,7 +84,7 @@
       "label": "GAMP-SBL",
       "factory": "receiver.baseline._base:EstimatedNoiseBaselineReceiver",
       "known_noise": {
-        "factory": "experiment.runtime:known_noise_baseline"
+        "factory": "receiver.baseline.factory:known_noise_baseline"
       },
       "kwargs": {
         "method": "gamp"
@@ -100,7 +100,7 @@
       "label": "SOMP",
       "factory": "receiver.baseline._base:EstimatedNoiseBaselineReceiver",
       "known_noise": {
-        "factory": "experiment.runtime:known_noise_baseline"
+        "factory": "receiver.baseline.factory:known_noise_baseline"
       },
       "kwargs": {
         "method": "somp"

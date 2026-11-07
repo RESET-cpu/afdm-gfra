@@ -12,7 +12,7 @@ from matplotlib.ticker import NullFormatter
 from matplotlib.ticker import MaxNLocator
 
 LABELS = {'STMP':'STMP','C_STMP':'C-STMP','offgrid_sbl':'Off-grid SBL','gnn':'GNN-ASPL','gamp':'GAMP-SBL',
-          'somp':'SOMP','proposed':'Proposed (10 layers)','STMP_gaussian':'STMP (Gaussian evidence)',
+          'somp':'SOMP','STMP_gaussian':'STMP (Gaussian evidence)',
           'noisy':'Noisy query','gaussian':'Gaussian mean','genie_bound':'Genie (truth used)',
           'pretrained_first':'Pretrained first score',
           'pretrained_colored_first':'Colored-trained first score'}
@@ -25,7 +25,6 @@ STYLES = {
     'gnn':dict(color='#745c9f',marker='^',linestyle='-.',linewidth=1.0),
     'gamp':dict(color='#b7802a',marker='D',linestyle=':',linewidth=1.0),
     'somp':dict(color='#6d7b8e',marker='x',linestyle='--',linewidth=1.0),
-    'proposed':dict(color='#2878b5',marker='*',linestyle='-',linewidth=1.2),
     'STMP_gaussian':dict(color='#20847c',marker='s',linestyle='--',linewidth=1.0),
     'noisy':dict(color='#6d7b8e',marker='x',linestyle='--',linewidth=1.0),
     'gaussian':dict(color='#20847c',marker='s',linestyle='--',linewidth=1.0),

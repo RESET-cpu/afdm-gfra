@@ -15,9 +15,6 @@ DESCRIPTIONS = {name: experiments.get(name).DESCRIPTION for name in experiments.
 
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
-    if argv and argv[0] == 'convergence':
-        from evaluation.convergence_20261105.run import main as convergence
-        return convergence(argv[1:])
     if argv and argv[0] in DESCRIPTIONS:
         return experiments.get(argv[0]).main(argv[1:])
     parser = argparse.ArgumentParser(description='White-network mainline experiment suite')
@@ -31,7 +28,6 @@ def main(argv=None):
     prepare.add_argument('--device', choices=['cuda', 'cpu'], default='cuda')
     inspect = commands.add_parser('inspect', help='Verify all default plans and assets; no inference')
     inspect.add_argument('--output', type=Path, default=suite.DEFAULT_OUTPUT)
-    commands.add_parser('convergence', help='Historical convergence entry; adopted 30-scene run is closed', add_help=False)
     for name, description in DESCRIPTIONS.items():
         experiment = commands.add_parser(name, help=description, add_help=False)
         experiment.add_argument('arguments', nargs=argparse.REMAINDER)

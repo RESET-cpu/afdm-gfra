@@ -8,7 +8,7 @@
 
 ## 保留的内容
 
-- `src/`、`run_experiments.py`、`requirements.txt`：算法、系统模型、网络定义、训练与数据生成代码、配置、测试、历史源码和现有许可证。`pyproject.toml` 只配置默认测试。
+- `src/`、`run_experiments.py`、`requirements.txt`：算法、系统模型、网络定义、训练与数据生成代码、配置、当前测试和现有许可证。`pyproject.toml` 只配置默认测试。
 - `paper/STMP`、`paper/C-STMP`：稿件源码、已有阅读 PDF、正式图表、研究文档、审稿决定和小型修订核验记录。DU 稿件与独立实现、模型、实验已从当前发布范围移除。
 - `reference/`：文献索引、阅读记录和写作资料；下载的第三方论文 PDF 与页面预览留在本地。
 - `result/`：精选实验计划、完成/失败说明、小型结果汇总、论文绘图汇总及模型/数据的描述信息；本次增加当前 GP-MP、STMP、GNN 所需的 7 个检查点及 1 个相位校准文件，使用 Git LFS 保存原始字节。清单见 `src/configs/release/weights.json`。未上传历史候选模型全集。
@@ -20,11 +20,11 @@
 
 未采用的历史权重、原始训练/验证/测试数据、逐场景预测与轨迹、运行日志、环境目录、编译缓存、临时截图、重复备份和大型压缩包均不在当前快照中。相位校准文件是模型运行资产，不是原始场景数据。部分历史文档链接仍需要本地完整研究目录才能访问。
 
-待删 DU 独立资产已按作者要求移入本地 `delete/`，不上传；共用资产及冻结绑定保持原文。GitHub 旧提交曾包含模型、数据或 DU 文件，本次不重写提交历史，所以旧版本仍可追溯。
+待删 DU 独立资产及冗余历史源码已按作者要求移入本地 `delete/`，不上传；共用资产及冻结绑定保持原文。GitHub 旧提交曾包含模型、数据或 DU 文件，本次不重写提交历史，所以旧版本仍可追溯。
 
 ## 阅读与复现
 
-当前工作算法入口是 `receiver.gp_mp`，冻结批次保留 `algorithm.GP_MP`，已知相位与估计相位登记为 `GP_MP` / `GP_MP_EP`。论文目录仍为 `paper/C-STMP`；白噪声主线及其他曲线的替换状态见根目录 README 和稿件说明。
+当前工作算法入口是 `receiver.gp_mp`，冻结批次的原 `algorithm.GP_MP` 移入独立归档，已知相位与估计相位登记为 `GP_MP` / `GP_MP_EP`。论文目录仍为 `paper/C-STMP`；白噪声主线及其他曲线的替换状态见根目录 README 和稿件说明。
 
 安装 Python 依赖后，可用以下命令查看入口并运行不需要权重的小型合成示例：
 
@@ -36,8 +36,10 @@ python run_experiments.py demo --output result/demo_first
 
 论文 PDF 和正式图表可以直接阅读。当前七组实验曲线所需的小型绘图 JSON 按 `src/configs/plots/manuscript.json` 保留。图 3 的信道示例还依赖未上传的 `scene000_example.npz`；其最终图形已保留。图形重绘还需绘图说明中列出的依赖和字体。
 
-当前推断权重可随 Git LFS 下载，核验命令见 `REPRODUCING.md`；训练数据和历史结果仍需另行提供。当前两项模型权重的路径及 SHA-256 在 `FINAL.json` 中，其他模型绑定见 `src/configs/final/models.json`。请核对这些记录，不能用任意新权重替代后声称复现冻结结果。
+当前推断权重可随 Git LFS 下载，核验命令见 `REPRODUCING.md`；训练数据和历史结果仍需另行提供。当前两项模型权重的路径及 SHA-256 在 `FINAL.json` 中，当前 STMP 绑定见 `src/configs/organized/models.json`。请核对这些记录，不能用任意新权重替代后声称复现冻结结果。
 
 ## 后续同步
 
 `.gitignore` 默认排除实验输出及权重、数组等文件。新增汇总应先检查其是否为聚合指标，再按具体文件路径加入 Git；不要整体强制加入 `result/`。本次按文件清单构建提交，保留原工作目录及暂存区中的研究修改。
+
+冻结实验必需的原源码和配置单列于 `archive/frozen_reproduction_20261107/`，不在当前导入路径。完整本地测试原件和重复备份不额外上传。

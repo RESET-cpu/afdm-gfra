@@ -1,0 +1,30 @@
+{
+  "objective": "Consolidate current research code by role, retire DU and colored-only implementations, and preserve reproducibility of retained experiments.",
+  "status": "LOCAL_VALIDATED",
+  "requirements": [
+    "One current implementation for scenario, waveform, channel, receivers, training, experiments and plotting; no duplicate old packages on the normal import path.",
+    "Current inference must not depend on training or experiment orchestration; sampling and scoring have separate owners.",
+    "White training has no dependency on retired colored packages and preserves the adopted numerical operations and RNG draws.",
+    "Independent DU assets remain under delete and excluded from GitHub.",
+    "Frozen scientific settings, weights, saved results and manuscript curves retain their identities; historical source required by retained experiments is explicitly archived.",
+    "All retained experiment families retain usable plan, execution, scoring and plotting paths, with actual end-to-end diagnostics and scientific parity checks.",
+    "Source inventories validate executed code; original calibration identities remain separately attributable.",
+    "Latest local code and selected weights are synchronized to GitHub after verification, preserving the pre-existing working index."
+  ],
+  "completed_evidence": [
+    "BASELINE_PARITY.json",
+    "LEARNED_PARITY.json",
+    "PHASE_PARITY.json",
+    "ASSET_INTEGRITY.json",
+    "STUDY_BINDINGS.json",
+    "FIGURES.json",
+    "MODELS.json",
+    "INFERENCE_ASSETS.json",
+    "../retired_code_20261107/NUMERICAL_PARITY.json"
+  ],
+  "pending": [
+    "Synchronize verified local source to GitHub and validate an independent checkout."
+  ],
+  "training_started": false,
+  "formal_experiment_started": false
+}

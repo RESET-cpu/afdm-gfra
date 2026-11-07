@@ -4,7 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from workspace import CONFIGS, ROOT, repository_path
+from workspace import CONFIGS, ROOT, repository_path, frozen_read_path
 
 
 def digest(path):
@@ -21,7 +21,7 @@ def inspect(scope='gp-mp', *, verify=False):
     for asset in manifest['assets']:
         if scope != 'all' and scope not in asset['scopes']:
             continue
-        path = repository_path(asset['path'])
+        path = frozen_read_path(repository_path(asset['path']))
         state = 'PRESENT' if path.is_file() else 'MISSING'
         if state == 'PRESENT':
             with path.open('rb') as stream:

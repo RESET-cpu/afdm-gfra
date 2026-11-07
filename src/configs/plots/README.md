@@ -1,6 +1,6 @@
 # 绘图配置
 
-当前 GP-MP-C 稿件的十幅图统一使用 [manuscript.json](manuscript.json)，由 [render_paper.py](../../evaluation/plots/render_paper.py) 读取。[命令与维护说明](../../evaluation/plots/manuscript/README.md)。
+当前 GP-MP-C 稿件的十幅图统一使用 [manuscript.json](manuscript.json)，由 [render_paper.py](../../plotting/render_paper.py) 读取。[命令与维护说明](../../plotting/manuscript/README.md)。
 
 配置保存图号、当前数据来源及哈希、算法展示名、曲线样式、图例和面板参数。数据路径以仓库根目录为基准；更新实验结果时需要核对场景范围、配对条件和数据来源，再更新绑定。默认只输出论文使用的 PDF。
 

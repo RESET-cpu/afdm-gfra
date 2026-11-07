@@ -46,7 +46,7 @@ def automatic_legend(ax, methods, options):
         selected=[(legend,record)]
         break
     if selected is None and len(methods)>1:
-        primary=[m for m in methods if m in ('C_STMP','STMP','DU','proposed')]
+        primary=[m for m in methods if m in ('GP_MP','GP_MP_EP','C_STMP','STMP')]
         other=[m for m in methods if m not in primary]
         splits=[]
         if len(primary)>=2 and len(other)>=2:splits.append((primary,other))
@@ -63,9 +63,13 @@ def automatic_legend(ax, methods, options):
             if selected:break
     if selected is None:
         # Constrained layout reserves space outside the axes, not extra data range.
-        legend=make(methods,'upper center',min(2,len(methods)),(.5,-.20))
+        columns = min(2, len(methods))
+        legend = make(methods, 'upper center', columns, (.5, -.20))
+        if legend.get_window_extent(renderer).width > ax.figure.bbox.width - 8:
+            columns = 1
+            legend = make(methods, 'upper center', columns, (.5, -.20))
         legend.set_in_layout(True)
-        selected=[(legend,dict(methods=methods,loc='outside below',ncol=min(2,len(methods))))]
+        selected = [(legend, dict(methods=methods, loc='outside below', ncol=columns))]
     for legend,_ in selected[:-1]:ax.add_artist(legend)
     ax.legend_=selected[-1][0]
     return [record for _,record in selected]

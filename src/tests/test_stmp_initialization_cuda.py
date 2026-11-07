@@ -2,9 +2,9 @@
 import numpy as np
 import pytest
 import torch
-from algorithm.STMP import runtime_initialization as reference
-from algorithm.STMP import gpu_initialization as candidate
-from algorithm.STMP.initialization_cuda import CudaInitialization
+from receiver.stmp import runtime_initialization as reference
+from receiver.stmp import gpu_initialization as candidate
+from receiver.stmp.initialization_cuda import CudaInitialization
 
 
 def problem():
