@@ -1,0 +1,53 @@
+{
+  "base_commit": "9ac940e477d9f2a81ff687c85ba488f5a106f88b",
+  "source": "paper/checks",
+  "destination": "delete/paper_checks_cleanup_20261108/paper/checks",
+  "local_files": 4733,
+  "local_bytes": 468066530,
+  "published_files": 1260,
+  "inventory_sha256": "4731ea90414011ade3dee74f20a39f09b63708cb8dbb155bf89cb6e79fa4916f",
+  "preserved_evidence": [
+    {
+      "source": "paper/checks/review_followup_20261103/scene372_sensitivity.json",
+      "destination": "archive/paper_checks_cleanup_20261108/evidence/scene372_sensitivity.json",
+      "bytes": 2568,
+      "sha256": "570737e8e9c510fd50ffadedbfdf781b978f03e7a50dc3f042908cd5ec3ba209",
+      "publish": true
+    },
+    {
+      "source": "paper/checks/review_followup_20261103/activity_by_snr.csv",
+      "destination": "archive/paper_checks_cleanup_20261108/evidence/activity_by_snr.csv",
+      "bytes": 1245,
+      "sha256": "7ff91ee052f774bf6dc013a7102ad7c2ec94e78fdc227574388a8caf118f14a5",
+      "publish": true
+    },
+    {
+      "source": "paper/checks/white_mainline_revision_20261105/PAIRED_CASES.csv",
+      "destination": "archive/paper_checks_cleanup_20261108/evidence/PAIRED_CASES.csv",
+      "bytes": 85606,
+      "sha256": "b71a1d435d8d8992e43a71d7128d1a55e61966a5f1535b936e133c3df2365c14",
+      "publish": false
+    }
+  ],
+  "status": "MOVED",
+  "permanent_link_count": 245,
+  "full_local_inventory": "delete/paper_checks_cleanup_20261108/INVENTORY.json",
+  "edited_documents": [
+    "paper/docs/REPRODUCTION.md",
+    "paper/docs/REVIEW_DECISIONS.md",
+    "paper/docs/TERMINOLOGY.md",
+    "paper/docs/WRITING_GUIDE.md",
+    "reference/literature/README.md",
+    "result/snr_comparison/data/white_phase_frontend_marginal_1000_20261106/README.md",
+    "result/snr_comparison/data/white_phase_frontend_marginal_1000_20261106/closing_20261107/COMPARISON.md",
+    "result/snr_comparison/figures/main_snr_estimated_phase_20261104/README.md",
+    "result/snr_comparison/figures/main_snr_white_20261107/README.md",
+    "result/user_count/figures/README.md",
+    "result/white_followup_20261107/README.md",
+    "paper/docs/README.md"
+  ],
+  "frozen_records_unchanged": [
+    "reference/writing_profile/pre_simulation_20261009/REVISION_LOG.md",
+    "result/channel_denoising/data/white_preconditioned_matched_20261104/FOLLOWUP.json"
+  ]
+}

@@ -1,6 +1,6 @@
 # 白噪声网络主 SNR 估计相位实验：已授权排队
 
-2026-11-07 完成：6000/6000、每档 1000 场景；SUMMARY VERIFIED、COMPLETION PASS，共 18000 份保存预测重评分完成，协调与工作进程已退出。主 SNR 图和两版工作稿已同步。[完整配对比较](closing_20261107/COMPARISON.md)；[核验与采用](../../../../paper/C-STMP/checks/white_snr_adopted_20261107/README.md)。以下准备状态说明保留为历史记录。
+2026-11-07 完成：6000/6000、每档 1000 场景；SUMMARY VERIFIED、COMPLETION PASS，共 18000 份保存预测重评分完成，协调与工作进程已退出。主 SNR 图和两版工作稿已同步。[完整配对比较](closing_20261107/COMPARISON.md)；[核验与采用](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_snr_adopted_20261107/README.md)。以下准备状态说明保留为历史记录。
 
 2026-11-06，作者明确要求按以下顺序接续：白噪声已知相位主 SNR → 另一线程的活动证据消融 → 白噪声网络估计相位主 SNR。
 

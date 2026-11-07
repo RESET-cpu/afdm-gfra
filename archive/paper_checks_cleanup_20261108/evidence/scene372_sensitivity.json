@@ -1,0 +1,91 @@
+{
+  "condition": {
+    "users": 80,
+    "snr_db": 0,
+    "frames": 16
+  },
+  "changed_scenes": [
+    372
+  ],
+  "original_fixed_damping": {
+    "scenes": 500,
+    "full_error": 197211.10195079143,
+    "signal_energy": 1128161.2319346871,
+    "nmse_db": -7.574398117810018,
+    "misses": 154,
+    "false_alarms": 76,
+    "decisions": 40000,
+    "aer_percent": 0.575,
+    "iteration_limit_count": 1,
+    "iteration_limit_percent": 0.2
+  },
+  "displayed_replacement": {
+    "scenes": 500,
+    "full_error": 106244.9205190674,
+    "signal_energy": 1128161.2319346871,
+    "nmse_db": -10.260629956139724,
+    "misses": 154,
+    "false_alarms": 6,
+    "decisions": 40000,
+    "aer_percent": 0.4,
+    "iteration_limit_count": 0,
+    "iteration_limit_percent": 0.0
+  },
+  "gp_mp_reference": {
+    "scenes": 500,
+    "full_error": 172954.53831992223,
+    "signal_energy": 1128161.2319346871,
+    "nmse_db": -8.144392092069962,
+    "misses": 338,
+    "false_alarms": 23,
+    "decisions": 40000,
+    "aer_percent": 0.9025,
+    "iteration_limit_count": 3,
+    "iteration_limit_percent": 0.6
+  },
+  "difference_db": 2.6862318383297055,
+  "scene372_original": {
+    "scene": "372",
+    "users": "80",
+    "method": "C_STMP",
+    "iterations": "600",
+    "stopping_reason": "MAX_ITERATIONS",
+    "active": "10",
+    "inactive": "70",
+    "misses": "0",
+    "false_alarms": "70",
+    "active_error": "14572.375386643682",
+    "signal_energy": "3081.0380307179707",
+    "full_error": "91365.43654769188",
+    "inactive_error": "76793.06116104822",
+    "nmse_db": "14.720848745849812",
+    "active_nmse_db": "6.748332911536004"
+  },
+  "scene372_replacement": {
+    "scene": "372",
+    "index": "3",
+    "method": "C_STMP",
+    "users": "80",
+    "frames": "16",
+    "activity_probability": "0.1",
+    "snr_db": "0",
+    "channel_model": "D",
+    "pilot": "dft",
+    "iterations": "547",
+    "converged": "True",
+    "stopping_reason": "CONVERGED",
+    "seconds": "147.32392110000364",
+    "active": "10",
+    "inactive": "70",
+    "misses": "0",
+    "false_alarms": "0",
+    "active_error": "399.18033256665717",
+    "signal_energy": "3081.0380307179707",
+    "full_error": "399.2551159678434",
+    "inactive_error": "0.0747834011861955",
+    "nmse_db": "-8.874465692525973",
+    "active_nmse_db": "-8.875279234024605"
+  },
+  "original_error_fraction_scene372": 0.46328749063270075,
+  "scope": "Read-only reaggregation of existing per-scene energies. No scenes removed and no figure altered."
+}

@@ -1,9 +1,0 @@
-# C-STMP 摘要
-
-### English Abstract
-
-This paper investigates grant-free random access in low Earth orbit satellite Internet-of-Things systems without global navigation satellite system (GNSS) assistance. To accommodate large differential delays and Doppler shifts across devices in the absence of GNSS-assisted timing and frequency precompensation, we first propose a multi-frame affine frequency division multiplexing (AFDM) transmission scheme and analyze its input-output relationship. Building on this model, we learn a score-based generative prior for the AFDM effective channel without requiring a sparse representation or grid-aligned delay–Doppler parameters, using colored Gaussian perturbations during training to account for correlated estimation errors in the receiver. Subsequently, the learned prior is incorporated into a message-passing (MP) receiver for minimum mean-squared error (MMSE) denoising, providing posterior mean and variance estimates without explicit high-dimensional integration. These posterior moments are combined with soft activity probabilities obtained from a learned density-ratio estimator, thereby incorporating activity uncertainty into channel estimation. The resulting soft information is iteratively exchanged with a linear estimation module for joint activity detection and channel estimation (JADCE). Numerical simulations demonstrate that the proposed receiver outperforms the baseline receiver in activity detection and channel estimation.
-
-### Chinese Abstract
-
-本文研究无全球导航卫星系统（GNSS）辅助的低轨卫星物联网免授权随机接入。针对缺少GNSS辅助的定时和频率预补偿时设备间的大差分时延与多普勒频移，首先提出多帧仿射频分复用（AFDM）传输方案，并分析其输入输出关系。在该模型基础上，学习AFDM有效信道的基于得分的生成式先验，无须采用稀疏表示或网格对齐的时延–多普勒参数；训练采用有色高斯扰动，以考虑接收机中相关的估计误差。随后，将所学先验引入消息传递（MP）接收机进行最小均方误差（MMSE）去噪，提供后验均值与方差估计，无须显式计算高维积分。这些后验矩与学习得到的密度比估计器提供的软活动概率相结合，从而将活动不确定性纳入信道估计。由此形成的软信息与线性估计模块迭代交换，以完成联合活动检测与信道估计（JADCE）。数值仿真表明，所提接收机在活动检测和信道估计方面优于基准接收机。

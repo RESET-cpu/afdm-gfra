@@ -4,4 +4,4 @@
 
 图源内部历史方法 ID 沿用于既有样式，当前网络和相位归属由 `metadata.method_bindings`、`source_sha256` 与实验完成收据确定。通过 `src/evaluation/plots/render_paper.py --figures snr_comparison` 生成现行论文图。
 
-详见[采用与核验](../../../../paper/C-STMP/checks/white_snr_adopted_20261107/README.md)及[完整比较](../../data/white_phase_frontend_marginal_1000_20261106/closing_20261107/COMPARISON.md)。
+详见[采用与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_snr_adopted_20261107/README.md)及[完整比较](../../data/white_phase_frontend_marginal_1000_20261106/closing_20261107/COMPARISON.md)。

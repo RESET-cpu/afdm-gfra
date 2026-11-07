@@ -22,4 +22,4 @@
 
 最多3个常驻worker，按RAM/VRAM启用；每worker2个CPU线程，模型与输入索引复用。SBL按原协议CPU运行。新失败、暂停、完整部分输出都须保留并诊断，不自动重试；STOP.json用于排空。进程身份必须结合PID、创建时间和完整命令；START/锁/STATE/LAUNCH共同判断。
 
-去噪采用证据在 `paper/C-STMP/checks/white_denoising_adopted_20261107/`；主线代码核验在 `archive/white_mainline_20261107/`。实时进度以各阶段STATUS为准，此文件不是完成凭据。
+去噪采用证据在 [paper/C-STMP/checks/white_denoising_adopted_20261107/](https://github.com/RESET-cpu/afdm-gfra/tree/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_denoising_adopted_20261107)；主线代码核验在 `archive/white_mainline_20261107/`。实时进度以各阶段STATUS为准，此文件不是完成凭据。

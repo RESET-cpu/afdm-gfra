@@ -4,13 +4,13 @@
 
 ## 2026-11-06 作者追加：公式编号粒度
 
-核心独立更新分别编号，同一表达式的连续推导共用编号，简短辅助定义放在邻近正文。观测模型及其噪声分布、同一预条件化形式及系数可成组保留。不把减少公式数量作为目标。重编号时同步正文、算法和图中的引用。[本轮实施](../checks/equation_numbering_revision_20261106/README.md)。
+核心独立更新分别编号，同一表达式的连续推导共用编号，简短辅助定义放在邻近正文。观测模型及其噪声分布、同一预条件化形式及系数可成组保留。不把减少公式数量作为目标。重编号时同步正文、算法和图中的引用。[本轮实施](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/equation_numbering_revision_20261106/README.md)。
 
 ## 2026-11-04 作者追加：实验分析的详略
 
-作者随后确认按“主要趋势＋有依据的一句解释，或一个代表性收益”实施；每段按需要选取，不机械地两者都补。当前主 SNR 采用 0 dB 下约 1.6 dB 的一个比较，导频采用同一目标下减少 25%，负载实验解释固定资源下的估计任务变化。导频结果接主 SNR，使精度比较自然过渡到资源需求。实施见[图序与结果修订](../checks/ch6_results_order_style_20261104/README.md)。
+作者随后确认按“主要趋势＋有依据的一句解释，或一个代表性收益”实施；每段按需要选取，不机械地两者都补。当前主 SNR 采用 0 dB 下约 1.6 dB 的一个比较，导频采用同一目标下减少 25%，负载实验解释固定资源下的估计任务变化。导频结果接主 SNR，使精度比较自然过渡到资源需求。实施见[图序与结果修订](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch6_results_order_style_20261104/README.md)。
 
-第六章参考 Cai 的段落任务与比较角度：总体趋势、主要方法差异、负载或导频的实际影响，以及跨信道表现。正文不逐点报数、不额外拆解主 SNR 的漏检/误警贡献，不重复图注条件或用末句重复前面的比较。密度比消融保留 AER 和达到迭代上限两项主要结果，具体错误类别计数留在已有证据及完整稿评估附录。能支持主要结论的代表性数字和必要机制解释仍保留；训练、统计及复现所需设置不因“少细节”而删去。[本轮实施](../checks/ch6_cai_revision_20261104/README.md)记录具体范围，不将本条扩大为其他章节的自动修改授权。
+第六章参考 Cai 的段落任务与比较角度：总体趋势、主要方法差异、负载或导频的实际影响，以及跨信道表现。正文不逐点报数、不额外拆解主 SNR 的漏检/误警贡献，不重复图注条件或用末句重复前面的比较。密度比消融保留 AER 和达到迭代上限两项主要结果，具体错误类别计数留在已有证据及完整稿评估附录。能支持主要结论的代表性数字和必要机制解释仍保留；训练、统计及复现所需设置不因“少细节”而删去。[本轮实施](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch6_cai_revision_20261104/README.md)记录具体范围，不将本条扩大为其他章节的自动修改授权。
 
 ## 2026-11-04 作者追加：公式与正文的呈现
 
@@ -18,13 +18,13 @@
 
 ## 2026-11-03 作者追加：第3–5章以 Cai 原段为骨架
 
-随后作者确认按分段合理性实施修订：保留有独立技术任务的分段，合并定义、特例、条件和交叉引用构成的碎段。当前实施见[分段与措辞修订](../checks/paragraph_revision_20261103/REVISION_NOTES.md)及[33段来源映射](../checks/paragraph_revision_20261103/PARAGRAPH_MAP.md)。有色观测模型与 Tweedie 公式、得分目标与去噪器训练、导数恒等式与数值计算、SVD 形式与复杂度可以分段；密度比新增部分按目标、训练、输出三项任务组织。本文推导、必要适配与原段改写须分别登记，不将合理分段等同于严格一一对应。
+随后作者确认按分段合理性实施修订：保留有独立技术任务的分段，合并定义、特例、条件和交叉引用构成的碎段。当前实施见[分段与措辞修订](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/paragraph_revision_20261103/REVISION_NOTES.md)及[33段来源映射](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/paragraph_revision_20261103/PARAGRAPH_MAP.md)。有色观测模型与 Tweedie 公式、得分目标与去噪器训练、导数恒等式与数值计算、SVD 形式与复杂度可以分段；密度比新增部分按目标、训练、输出三项任务组织。本文推导、必要适配与原段改写须分别登记，不将合理分段等同于严格一一对应。
 
 第三至第五章后续修订，采用更具体的要求：每个非新增正文段对应 Cai 的一个具体原段，沿该段的任务、句序及论证关系作必要增删替换。仅有相同章节标题、公式主题或术语不算通过；不能把一个原段随意切成多个短段，也不能把多个原段拼成一段后仍称一一对应。可删除不适用于本文的原段。确有本文新增方法内容，例如有色噪声训练、密度比估计、替代的方差计算，可以另开段并准确记录其来源和差异。
 
 段内句子可以借鉴 Ding、Huang、Shen、Xu、Wei 等论文，但须读完整原句与相邻语境，核对主语、操作对象、假设和结论；不得靠拆词组合或通用引式句声称整句有原文依据。本文技术条件不同，应记录必要适配，不能复制不适用的假设或原文数学错误。普通式后定义、特例和交叉引用优先留在对应段内。
 
-[此前47段核查](../checks/cai_paragraph_alignment_20261103/PARAGRAPH_AUDIT.md)记录修订前稿与蔡文28个原段的实际关系。当时结论为尚未满足严格一一对应；其中的合并建议已由上述作者确认的分段判断修正。当前实施及保留的差异以上述33段映射为准。此前逐句记录是历史语言与技术依据，不能作为当前段落一一对应已完成的证明。
+[此前47段核查](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/cai_paragraph_alignment_20261103/PARAGRAPH_AUDIT.md)记录修订前稿与蔡文28个原段的实际关系。当时结论为尚未满足严格一一对应；其中的合并建议已由上述作者确认的分段判断修正。当前实施及保留的差异以上述33段映射为准。此前逐句记录是历史语言与技术依据，不能作为当前段落一一对应已完成的证明。
 
 本规范用于本稿后续章节的英文写作、修订和自查，依据第二章修订中已经暴露的问题制定。核心要求是：**先读适用的原段原句，理解其技术对象和论证关系，再作必要替换；同时核对术语、句子含义和整段的连贯性。** 词形都在语料中出现过，只能说明词形有先例，不能证明整句话来自文献，也不能证明写得自然。
 
@@ -73,7 +73,7 @@
 
 后续核对时，应比较句子的主语、操作、对象、条件与结论。大部分实质内容都被替换后，即使保留了几个功能词，也不能继续称为原句的最小合理替换。优先寻找技术任务更接近的原段；本文特有定义则如实登记必要适配。
 
-已实施修改见[定义句与衔接修正](../checks/ch2_natural_expression_20261101/REVISION_NOTES.md)和逐行差异（仅本地历史资料：`paper/checks/ch2_natural_expression_20261101/CHANGES.diff`）。早期逐句对照保留为历史证据，其中被撤回的出处归类不能继续用作通过依据。
+已实施修改见[定义句与衔接修正](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_natural_expression_20261101/REVISION_NOTES.md)和逐行差异（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/ch2_natural_expression_20261101/CHANGES.diff`）。早期逐句对照保留为历史证据，其中被撤回的出处归类不能继续用作通过依据。
 
 ## 术语和语法表达分别怎样检查
 
@@ -113,7 +113,7 @@
 
 ## 第二章后续复核的七项问题及修正
 
-以下七项在编写本规范时登记，基线源文件 SHA-256 为 `64bdafcafa31bf07081d8a6f521d77291bfe2a9a0260f044f4af4e1e09ceb52b`。作者随后要求修正并完整展示第二章，已于 2026-11-01 落实。表内行号仍指基线版本；实际替换及出处支持范围见[本轮修正记录](../checks/ch2_remaining_fixes_20261101/REVISION_NOTES.md)。
+以下七项在编写本规范时登记，基线源文件 SHA-256 为 `64bdafcafa31bf07081d8a6f521d77291bfe2a9a0260f044f4af4e1e09ceb52b`。作者随后要求修正并完整展示第二章，已于 2026-11-01 落实。表内行号仍指基线版本；实际替换及出处支持范围见[本轮修正记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_remaining_fixes_20261101/REVISION_NOTES.md)。
 
 | 位置 | 已定位的问题 | 实际修正与边界 |
 |---|---|---|
@@ -158,10 +158,10 @@
 
 ## 依据记录
 
-- [原段原句历史对照](../checks/ch2_shen_cai_rewrite_20261101/SENTENCE_ALIGNMENT.md)：保留原句与版本记录；应连同后续更正阅读。
-- [定义句与衔接修正](../checks/ch2_natural_expression_20261101/REVISION_NOTES.md)：本规范中已改实例的依据及边界。
-- 对应差异（仅本地历史资料：`paper/checks/ch2_natural_expression_20261101/CHANGES.diff`）：实际源码改动。
-- [七项问题的后续修正](../checks/ch2_remaining_fixes_20261101/REVISION_NOTES.md)：本规范登记问题的实际处理、出处边界与核验。
+- [原段原句历史对照](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_shen_cai_rewrite_20261101/SENTENCE_ALIGNMENT.md)：保留原句与版本记录；应连同后续更正阅读。
+- [定义句与衔接修正](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_natural_expression_20261101/REVISION_NOTES.md)：本规范中已改实例的依据及边界。
+- 对应差异（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/ch2_natural_expression_20261101/CHANGES.diff`）：实际源码改动。
+- [七项问题的后续修正](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_remaining_fixes_20261101/REVISION_NOTES.md)：本规范登记问题的实际处理、出处边界与核验。
 - [术语出处](TERMINOLOGY.md)：术语及其适用含义的长期记录。
 
 本规范记录的是本稿已确认的写作要求和这次修订经验，不宣称上述编辑判断是 TWC 的官方规则。

@@ -70,11 +70,11 @@ For the adopted white experiments, the frozen execution records are:
 
 - GP-MP/GP-MP-EP model identity: `FINAL.json` and the two candidate binding
   files named there.
-- Main SNR adoption: `paper/checks/white_snr_adopted_20261107/README.md`.
+- Main SNR adoption: [paper/checks/white_snr_adopted_20261107/README.md](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_snr_adopted_20261107/README.md).
 - Denoising and Figure 3 adoption:
-  `paper/checks/white_denoising_adopted_20261107/README.md`.
+  [paper/checks/white_denoising_adopted_20261107/README.md](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_denoising_adopted_20261107/README.md).
 - Convergence adoption:
-  `paper/checks/convergence_30_adopted_20261106/README.md`.
+  [paper/checks/convergence_30_adopted_20261106/README.md](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/convergence_30_adopted_20261106/README.md).
 - Subsequent stage request: `result/white_followup_20261107/REQUEST.json`;
   pilot-frame partial results are preserved; the prior failure is retained in the resume record.
 

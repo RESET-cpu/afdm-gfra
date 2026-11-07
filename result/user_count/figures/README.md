@@ -1,4 +1,4 @@
-**2026-10-28 当前采用：** `paper/C-STMP/figures/user_count.pdf` 已更新为STMP K20/40 β0.2、K60/80/100 β0.1的500场景比较。源统计在 `../data/stmp_500_k60_k80_k100_beta01_20261027`；绘图配置和清理收据保留，冗余源图已退役。见 `paper/C-STMP/checks/user_count_beta01_500_20261028/VALIDATION.json`。
+**2026-10-28 当前采用：** `paper/C-STMP/figures/user_count.pdf` 已更新为STMP K20/40 β0.2、K60/80/100 β0.1的500场景比较。源统计在 `../data/stmp_500_k60_k80_k100_beta01_20261027`；绘图配置和清理收据保留，冗余源图已退役。见 [paper/C-STMP/checks/user_count_beta01_500_20261028/VALIDATION.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/user_count_beta01_500_20261028/VALIDATION.json)。
 
 # 当前论文图入口
 

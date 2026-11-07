@@ -56,4 +56,4 @@ NMSE 为能量汇总比值的 dB；AER 覆盖每档 40000 个设备判决。漏�
 
 原读取故障、写入故障及其修复和旧结果均保留。收尾核验没有重新执行推断。主 SNR 之外的图源替换和额外扫描仍属于后续工作，当前稿为工作稿。
 
-证据：[SUMMARY](../SUMMARY.json)、[COMPLETION](../COMPLETION.json)、[退出与绑定核验](COMPLETION_VERIFICATION.json)、[论文采用记录](../../../../../paper/C-STMP/checks/white_snr_adopted_20261107/README.md)。
+证据：[SUMMARY](../SUMMARY.json)、[COMPLETION](../COMPLETION.json)、[退出与绑定核验](COMPLETION_VERIFICATION.json)、[论文采用记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_snr_adopted_20261107/README.md)。

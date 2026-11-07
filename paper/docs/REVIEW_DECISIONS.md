@@ -2,31 +2,31 @@
 
 > 记录说明（2026-11-07）：下文按日期保留研究依据和作者决定，“当前”“最新”均指记录当时。现行图源与采用状态见 [REPRODUCTION.md](REPRODUCTION.md)，运行进度见[实验索引](../../result/README.md)。本轮整理仅更新导航，不改变原判断；移出的旧说明通过固定版本链接查阅。
 
-**2026-11-06 白噪声表述统一（作者主动要求）：** 作者在确认第六章与完整稿附录仍保留旧训练描述后，要求直接修改。现将这些位置统一为白高斯噪声、复协方差 $vI_D$、实协方差 $(v/2)I_{2D}$、既有方差加权损失与标量预条件；删去随机相关协方差采样、矩阵推广及其专用引用。摘要、引言与第四章已采用的数学链保持。图 5 和表 III 的 GP-MP 使用白噪声网络，图 4、6–10 的相关曲线仍保留历史训练结果，工作稿第六章开头集中说明数据归属及待替换状态，不将这些数值改称白噪声结果。本轮不运行训练、推断或重绘，不切换 FINAL/MAINLINE；已知相位白噪声批次的完成核验 PASS 仅说明保存结果已核验，不代表曲线已替换。两版编译与版面检查见[修订记录](../checks/white_noise_wording_20261106/README.md)。这是作者要求的表述修改，按既定阶段验收，不重开旧预审事项；历史记录保留原文。
+**2026-11-06 白噪声表述统一（作者主动要求）：** 作者在确认第六章与完整稿附录仍保留旧训练描述后，要求直接修改。现将这些位置统一为白高斯噪声、复协方差 $vI_D$、实协方差 $(v/2)I_{2D}$、既有方差加权损失与标量预条件；删去随机相关协方差采样、矩阵推广及其专用引用。摘要、引言与第四章已采用的数学链保持。图 5 和表 III 的 GP-MP 使用白噪声网络，图 4、6–10 的相关曲线仍保留历史训练结果，工作稿第六章开头集中说明数据归属及待替换状态，不将这些数值改称白噪声结果。本轮不运行训练、推断或重绘，不切换 FINAL/MAINLINE；已知相位白噪声批次的完成核验 PASS 仅说明保存结果已核验，不代表曲线已替换。两版编译与版面检查见[修订记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_noise_wording_20261106/README.md)。这是作者要求的表述修改，按既定阶段验收，不重开旧预审事项；历史记录保留原文。
 
 **2026-11-06 白噪声估计相位主 SNR 接续与阶段定稿安排（作者最新决定）：** 作者明确要求先完成当前白噪声已知相位主 SNR，再完成“查看进行中的实验”线程安排的四组活动证据消融，随后启动白噪声网络下的主 SNR 估计相位实验。新实验固定同一 1000 场景及六档 SNR，沿用当前边缘似然相位前端、vI 和接收机数值设置，仅采用已训练好的白噪声去噪器及匹配密度比分类器，不重训。新前端绑定与哈希已核对，自动跟进 `snr-2` 已建立，每 30 分钟检查前置核验和进程退出，尚未启动新推断。若消融支持贡献且估计相位结果没有明显变化，可以先固定核心论述与工作稿；后续逐步替换其余白噪声数据，补充导频、用户数、活动概率三类实验的估计相位曲线及 Off-grid SBL 另外两档（13/25）。后续扫描未在本次排队中启动；最终投稿版仍须图表、模型和说明一致，不能将历史有色网络数据标成白噪声结果，也不预先宣称新实验等价。此项按阶段验收，不因此重开已完成或已撤回的审议问题。见[接续安排](../../result/snr_comparison/data/white_phase_frontend_marginal_1000_20261106/README.md)。
 
-**2026-11-06 收敛图定稿（作者最新决定）：** 图 5 改为前 30 个配对场景（0–29）在 0 dB 下的 NMSE，仅保留 GP-MP、STMP 和基础 Off-grid SBL，图例不标预算 7，显示前 150 次迭代。每份保留结果实际执行 300 次迭代、关闭提前停止；按总误差能量与总活动信号能量汇总。替换原单场景 60/85 次停止的图注、正文解释和完整稿评估附录，统一绘图配置同步。作者停止原 50 场景收敛批次：215 份已完成，采用的 90 份保留，其余 125 份可恢复归档；永久删除受自动审批检查阻止。作者随后明确“白噪声不要停啊”，白噪声已从 5081/6000 恢复两个原始进程继续，相关数据未清理。本条覆盖旧单场景及等待 50 场景补图安排，不再要求该批次继续。见[实施与核验](../checks/convergence_30_adopted_20261106/README.md)。
+**2026-11-06 收敛图定稿（作者最新决定）：** 图 5 改为前 30 个配对场景（0–29）在 0 dB 下的 NMSE，仅保留 GP-MP、STMP 和基础 Off-grid SBL，图例不标预算 7，显示前 150 次迭代。每份保留结果实际执行 300 次迭代、关闭提前停止；按总误差能量与总活动信号能量汇总。替换原单场景 60/85 次停止的图注、正文解释和完整稿评估附录，统一绘图配置同步。作者停止原 50 场景收敛批次：215 份已完成，采用的 90 份保留，其余 125 份可恢复归档；永久删除受自动审批检查阻止。作者随后明确“白噪声不要停啊”，白噪声已从 5081/6000 恢复两个原始进程继续，相关数据未清理。本条覆盖旧单场景及等待 50 场景补图安排，不再要求该批次继续。见[实施与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/convergence_30_adopted_20261106/README.md)。
 
 **2026-11-05 两档 Off-grid SBL 搜索预算已获执行授权并加入 CPU 队列：** 作者要求“那两档off-grid SBL用V CPU来跑吧”。当前按已说明的本机 CPU 假设执行，独立队列已启动；启动核验时空余内存不足，处于等待预检，不能记作正式推断或性能验证已完成。新增档位采用此前候选组合：112 个时延中心不变，多普勒点 13/25、每用户候选 24/48、每轮偏移候选 96/192，其余求解设置及 120 轮上限保持。复用主 SNR 场景 0–999 和六档 SNR，两档共 12000 次推断，原预算结果复用。活动读出采用当前主图已确认的阈值并保持，不重新拟合；网格与候选规模同时改变。逐输入新进程、CPU 低优先级与内存门控，不干预白噪声训练；失败保留、不自动重试。此条取代旧记录中的两档尚未安排执行状态，参数选择是当前执行决定，不伪称过去已经冻结。见[执行计划与状态入口](../../result/snr_comparison/data/offgrid_search_budgets_1000_cpu_20261105/README.md)。
 
-**2026-11-04 EP 定义集中至算法介绍（作者最新要求）：** 作者认为无需在各图注重复相位条件，要求在 CGP-MP 介绍中说明 EP 表示估计相位。本轮在 VI-A3 比较算法中加入 CGP-MP 条目，以 “EP denotes estimated phases” 简洁定义，段首统一说明除 CGP-MP-EP 外使用已知相位；删除 SNR 与跨信道图注、VI-A4 设置及相邻实验段中的重复相位条件。一次估计并固定相位的方法与完整稿复现说明保持；十幅图、全部数据及算法未改。两版 PDF 保持 13/15 页，已完成编译和变动页检查。此条覆盖上一轮在图 6 图注重复解释 EP 的呈现方式。见[实施记录](../checks/ep_definition_placement_20261104/README.md)。
+**2026-11-04 EP 定义集中至算法介绍（作者最新要求）：** 作者认为无需在各图注重复相位条件，要求在 CGP-MP 介绍中说明 EP 表示估计相位。本轮在 VI-A3 比较算法中加入 CGP-MP 条目，以 “EP denotes estimated phases” 简洁定义，段首统一说明除 CGP-MP-EP 外使用已知相位；删除 SNR 与跨信道图注、VI-A4 设置及相邻实验段中的重复相位条件。一次估计并固定相位的方法与完整稿复现说明保持；十幅图、全部数据及算法未改。两版 PDF 保持 13/15 页，已完成编译和变动页检查。此条覆盖上一轮在图 6 图注重复解释 EP 的呈现方式。见[实施记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ep_definition_placement_20261104/README.md)。
 
-**2026-11-04 主 SNR 已加入完整估计相位结果：** 按作者要求，将 `c_stmp_phase_frontend_marginal_1000_20261104` 的六档 SNR、每档 1000 场景加入图 6，展示为 **CGP-MP-EP**，使用红色虚线三角；原六条曲线数值保持。相位批次已完成 6000/6000、失败 0，完成核验 PASS。图中共七种配置，除 CGP-MP-EP 外均用已知相位；白噪声消融尚未加入。新方法一次估计相位后固定运行原条件接收机，已同步第五章、Algorithm 1、附录 A、第六章设置与分析、完整稿评估附录 B，替换旧迭代相位精化描述。相位误差带来 0.30–0.61 dB 的 NMSE 增加，AER 接近但不完全相同；两次达到迭代上限的有限输出均保留。M4 本项完成，C1、新增 SBL 预算及其他未完成事项不受影响；不再沿用下文历史记录中的“新相位仍运行／待补曲线”状态。见[本轮实施核验](../checks/snr_estimated_phase_1000_20261104/README.md)。
+**2026-11-04 主 SNR 已加入完整估计相位结果：** 按作者要求，将 `c_stmp_phase_frontend_marginal_1000_20261104` 的六档 SNR、每档 1000 场景加入图 6，展示为 **CGP-MP-EP**，使用红色虚线三角；原六条曲线数值保持。相位批次已完成 6000/6000、失败 0，完成核验 PASS。图中共七种配置，除 CGP-MP-EP 外均用已知相位；白噪声消融尚未加入。新方法一次估计相位后固定运行原条件接收机，已同步第五章、Algorithm 1、附录 A、第六章设置与分析、完整稿评估附录 B，替换旧迭代相位精化描述。相位误差带来 0.30–0.61 dB 的 NMSE 增加，AER 接近但不完全相同；两次达到迭代上限的有限输出均保留。M4 本项完成，C1、新增 SBL 预算及其他未完成事项不受影响；不再沿用下文历史记录中的“新相位仍运行／待补曲线”状态。见[本轮实施核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/snr_estimated_phase_1000_20261104/README.md)。
 
-**2026-11-04 摘要明确 GPJD 中的生成式先验：** 作者指出 GPJD 的功能说明没有直接交代生成式先验。原摘要的模块全称与接收机起句已提到先验，但功能从句仅写 MMSE 去噪。本轮将 GPJD 从句改为 uses the learned generative prior for minimum mean-squared error (MMSE) denoising，并把接收机起句简化为 We then develop ...，将先验作用落在对应模块。中文摘要同步。沿用既有方法含义及 score-based 表述，未改变学习目标、算法或结论。两版 PDF 已更新并检查首页，保持 13/15 页，其余页渲染逐像素一致。此项按作者最新反馈覆盖此前为减少重复而省略 GPJD 从句中先验的写法。见[实施记录](../checks/abstract_gpjd_prior_20261104/README.md)。
+**2026-11-04 摘要明确 GPJD 中的生成式先验：** 作者指出 GPJD 的功能说明没有直接交代生成式先验。原摘要的模块全称与接收机起句已提到先验，但功能从句仅写 MMSE 去噪。本轮将 GPJD 从句改为 uses the learned generative prior for minimum mean-squared error (MMSE) denoising，并把接收机起句简化为 We then develop ...，将先验作用落在对应模块。中文摘要同步。沿用既有方法含义及 score-based 表述，未改变学习目标、算法或结论。两版 PDF 已更新并检查首页，保持 13/15 页，其余页渲染逐像素一致。此项按作者最新反馈覆盖此前为减少重复而省略 GPJD 从句中先验的写法。见[实施记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_gpjd_prior_20261104/README.md)。
 
-**2026-11-04 最新命名（作者要求减少连字符）：** 当前方法由 GP-MP-C 简化为 **CGP-MP**；C 仍指有色高斯噪声训练，GP 和 MP 的含义保持。估计相位版本相应称 **CGP-MP-EP**，同结构白噪声消融仍为 **GP-MP**，现有三网络适配基线仍为 **STMP**。这是作者指定的算法展示名，不是新增文献术语。正文、算法标题、七幅实验图例、当前说明及训练计划的展示名称已同步；STMP 保留 Xu 粉色 `#ff6699`，本文方法保留红色。内部标识、模型绑定、训练配置及已有数据不变，既定训练顺序和条件性论述方案继续有效。下文旧名称按记录时点理解。见[实施核验](../checks/algorithm_name_cgp_mp_20261104/README.md)。
+**2026-11-04 最新命名（作者要求减少连字符）：** 当前方法由 GP-MP-C 简化为 **CGP-MP**；C 仍指有色高斯噪声训练，GP 和 MP 的含义保持。估计相位版本相应称 **CGP-MP-EP**，同结构白噪声消融仍为 **GP-MP**，现有三网络适配基线仍为 **STMP**。这是作者指定的算法展示名，不是新增文献术语。正文、算法标题、七幅实验图例、当前说明及训练计划的展示名称已同步；STMP 保留 Xu 粉色 `#ff6699`，本文方法保留红色。内部标识、模型绑定、训练配置及已有数据不变，既定训练顺序和条件性论述方案继续有效。下文旧名称按记录时点理解。见[实施核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/algorithm_name_cgp_mp_20261104/README.md)。
 
-**2026-11-04 作者确认 STMP 基线与 GP-MP 白噪声消融的命名：** 现有三网络 GP-MP 统一改称 STMP，正文明确它是 Cai STMP 的 AFDM 适配版本，活动概率计算改为学习密度比估计。当前有色方法继续称 GP-MP-C；GP-MP 专指保持当前去噪网络结构、预条件、导数方差、分类器训练流程和接收机设置，仅将一阶训练扰动改为白高斯噪声的消融版本。分类器使用各自冻结的一阶网络重新训练，方差依各自一阶网络计算，这种联动属于训练干预的后续影响，不当作独立新增变量。Cai 的 AWGN 接口、本文有限维 AFDM 结构化观测，以及 Wei–Yuan L-STMP 引言（PDF p.1, Sec. I）对结构化压缩下 AWGN 条件的讨论共同构成动机；动机不代替有色训练收益的配对验证。STMP 与 GP-MP-C 是整体方法比较，GP-MP 与 GP-MP-C 用于训练噪声消融。白噪声训练仍按已授权的“相位完成核验并退出 → 一阶 200 轮 → 分类器 100 轮”顺序，未取消或改变预算。本次不启动训练、不加入未完成的消融曲线。见[实施记录](../checks/stmp_baseline_white_ablation_20261104/README.md)。
+**2026-11-04 作者确认 STMP 基线与 GP-MP 白噪声消融的命名：** 现有三网络 GP-MP 统一改称 STMP，正文明确它是 Cai STMP 的 AFDM 适配版本，活动概率计算改为学习密度比估计。当前有色方法继续称 GP-MP-C；GP-MP 专指保持当前去噪网络结构、预条件、导数方差、分类器训练流程和接收机设置，仅将一阶训练扰动改为白高斯噪声的消融版本。分类器使用各自冻结的一阶网络重新训练，方差依各自一阶网络计算，这种联动属于训练干预的后续影响，不当作独立新增变量。Cai 的 AWGN 接口、本文有限维 AFDM 结构化观测，以及 Wei–Yuan L-STMP 引言（PDF p.1, Sec. I）对结构化压缩下 AWGN 条件的讨论共同构成动机；动机不代替有色训练收益的配对验证。STMP 与 GP-MP-C 是整体方法比较，GP-MP 与 GP-MP-C 用于训练噪声消融。白噪声训练仍按已授权的“相位完成核验并退出 → 一阶 200 轮 → 分类器 100 轮”顺序，未取消或改变预算。本次不启动训练、不加入未完成的消融曲线。见[实施记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/stmp_baseline_white_ablation_20261104/README.md)。
 
 **2026-11-04 同结构白噪声对照获授权，等待相位实验结束：** 作者主动要求补 Pro 审稿第二、第三点，确认保持当前 GP-MP-C 去噪网络结构、预条件和训练设置，仅将训练扰动改为高斯白噪声，并明确授权开始训练。随后作者要求先完成当前相位实验，因此执行顺序为：`c_stmp_phase_frontend_marginal_1000_20261104` 的 6000 份结果完成核验且进程退出 → 白噪声去噪器 200 轮 → 同流程配套活动分类器 100 轮。白噪声配置、与有色版本字节一致的随机初始化、CPU 采样配对检查及一次性 GPU 预检已准备并通过；正式训练尚未启动。原 STMP 三份权重和当前有色权重均保留，不改冻结主线，不重开推理采用 C=vI 的决定。无额外有色训练收益不能直接归因全部整机提升为网络结构改动；还需区分方差估计、分类器、阻尼、停止规则与标量方差更新。阶段入口、依赖和解释范围见[训练计划](../../result/channel_denoising/data/white_preconditioned_matched_20261104/TRAINING_PLAN.json)。本条是作者本轮明确追加的训练授权，不把此前未授权状态当作当前状态；不据此启动未具体安排的批量接收机评估。
 
-**2026-11-04 表 III 补充漏检与虚警计数：** 作者讨论 Pro 审稿意见第四项后，明确要求将两类错误的数据直接加入表格，而非只补解释句。本轮在 learned density ratio 和 Gaussian approximation 两组下分别增加 Misses、False alarms 两列，列出六档 SNR 和 Pooled 计数，保留原 AER 与迭代上限比例；表格保持单栏、小号字号，使用折行表头与紧凑列间距容纳九列。正文引导句明确两类错误采用计数。数值采用已核验的[分 SNR 汇总](../checks/review_followup_20261103/activity_summary.json)，并与原批次 `GAUSSIAN_RETAINED_SUMMARY.json` 的共同完成子集及附录 B 计数核对。学习密度比累计漏检/虚警为 111/3，高斯近似为 187/31,207；这些是错误次数，不是条件漏检率或虚警率。作者此次要求取代此前对该表错误类别细分的删除安排；不扩展为新增概率校准或失效机理实验，不改变数据、表格比较范围或算法。表内 56 个数值均与保存汇总一致，两版 PDF 重新编译并完成变动页目视检查，保持 13/15 页，表 III 位于第 10 页，无未定义引用、越栏或缺字报告。
+**2026-11-04 表 III 补充漏检与虚警计数：** 作者讨论 Pro 审稿意见第四项后，明确要求将两类错误的数据直接加入表格，而非只补解释句。本轮在 learned density ratio 和 Gaussian approximation 两组下分别增加 Misses、False alarms 两列，列出六档 SNR 和 Pooled 计数，保留原 AER 与迭代上限比例；表格保持单栏、小号字号，使用折行表头与紧凑列间距容纳九列。正文引导句明确两类错误采用计数。数值采用已核验的[分 SNR 汇总](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/review_followup_20261103/activity_summary.json)，并与原批次 `GAUSSIAN_RETAINED_SUMMARY.json` 的共同完成子集及附录 B 计数核对。学习密度比累计漏检/虚警为 111/3，高斯近似为 187/31,207；这些是错误次数，不是条件漏检率或虚警率。作者此次要求取代此前对该表错误类别细分的删除安排；不扩展为新增概率校准或失效机理实验，不改变数据、表格比较范围或算法。表内 56 个数值均与保存汇总一致，两版 PDF 重新编译并完成变动页目视检查，保持 13/15 页，表 III 位于第 10 页，无未定义引用、越栏或缺字报告。
 
 **2026-11-04 导频能量说明精简：** 作者要求删除非必要的导频能量分析。已删除第六章“每设备总导频能量为 $QE_p$”及第二章 AFDM/OTFS 有效符号能量对应两句；前者未计入 CPP，不能继续称为总发射能量。保留导频归一化、接收 SNR 定义、CPP 长度、匹配带宽与时长的表示比较，以及固定每帧能量下减少 25% 导频帧数的实验结论。本稿不据这些结果声称完整系统能效或 AFDM 相对 OTFS 的能效优势，不新增总发射能量分析任务。实验数据、算法和其他预审事项不变。两版 PDF 已重新编译，仍为 13/15 页；仅第 4、8、9 页渲染发生变化，已完成目视检查，无未定义引用、越栏或缺字报告。
 
-**2026-11-04 绘图代码归并完成：** 十幅当前图已通过独立重绘及逐像素核验，使用统一入口；历史绘图脚本和重复图已移入可恢复归档。当前成图、正文与两版 PDF 未改，C1、单场景收敛及待补实验状态保持。见[归并记录](../checks/figure_consolidation_20261104/README.md)。
+**2026-11-04 绘图代码归并完成：** 十幅当前图已通过独立重绘及逐像素核验，使用统一入口；历史绘图脚本和重复图已移入可恢复归档。当前成图、正文与两版 PDF 未改，C1、单场景收敛及待补实验状态保持。见[归并记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/figure_consolidation_20261104/README.md)。
 
 更新日期：2026-11-04。适用稿件：`paper/main.tex` 与 `main_full.tex`。
 
@@ -34,15 +34,15 @@
 
 ## 后续使用方式
 
-**2026-11-04 最新完成：作者授权按代表性收益/必要解释继续修订，并调整图序与图例。** 导频帧数已接在主 SNR 后，当前图 7/8/9 分别为导频、设备数、活动概率；跨信道图 10 改为 A/B/C/D，仍由 D 训练。去噪图例移到图下方，共用算法样式统一；主 SNR 只增加 0 dB 下约 1.6 dB 的代表性 NMSE 收益，活动概率段明确固定观测资源。两版仍为 13/15 页。[本轮实施与核验](../checks/ch6_results_order_style_20261104/README.md)。下文历史记录的设备数“图 7”现为“图 8”，C1 状态不因改号而改变。作者随后提出多场景收敛及图注使用 p=0.1，当前仅完成[可行性核对与建议](../checks/ch6_results_order_style_20261104/CONVERGENCE_FOLLOWUP.md)，新批次未运行，图 5 仍是原单场景曲线。
+**2026-11-04 最新完成：作者授权按代表性收益/必要解释继续修订，并调整图序与图例。** 导频帧数已接在主 SNR 后，当前图 7/8/9 分别为导频、设备数、活动概率；跨信道图 10 改为 A/B/C/D，仍由 D 训练。去噪图例移到图下方，共用算法样式统一；主 SNR 只增加 0 dB 下约 1.6 dB 的代表性 NMSE 收益，活动概率段明确固定观测资源。两版仍为 13/15 页。[本轮实施与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch6_results_order_style_20261104/README.md)。下文历史记录的设备数“图 7”现为“图 8”，C1 状态不因改号而改变。作者随后提出多场景收敛及图注使用 p=0.1，当前仅完成[可行性核对与建议](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch6_results_order_style_20261104/CONVERGENCE_FOLLOWUP.md)，新批次未运行，图 5 仍是原单场景曲线。
 
-**2026-11-04 第六章最新完成状态：作者已授权按 Cai 的逐节对照直接调整，并追加要求一并精简展开过细的分析。** 已重组 VI-A、增加网络配置表、将基线改为分点及算法名加粗、将 VI-D 改为连续图引导段落，并核对各组主要趋势。主 SNR 段不再拆分漏检与误警；密度比消融中的具体错误计数及类别展开也从正文删除。重复图注参数、负载总结和无重训练说明已压缩；有实际比较作用的 25% 导频减少及单场景 60/85 次迭代保留。原始统计及完整稿评估附录继续保留。此项已完成，不再作为待选建议，也不把细分错误来源作为必须补写任务。两版目前为 **13/15 页**，结论均在第 12 页，43 篇参考文献与 46 个编号公式保持。见[本轮实施、数据核验与版面检查](../checks/ch6_cai_revision_20261104/README.md)。本次授权范围为第六章；其他章节的一般修订仍沿用既有确认方式，C1 及补充实验安排不变。以下各轮的页数和表号为当时快照，当前密度比比较表已因新增网络表顺延为表 III。
+**2026-11-04 第六章最新完成状态：作者已授权按 Cai 的逐节对照直接调整，并追加要求一并精简展开过细的分析。** 已重组 VI-A、增加网络配置表、将基线改为分点及算法名加粗、将 VI-D 改为连续图引导段落，并核对各组主要趋势。主 SNR 段不再拆分漏检与误警；密度比消融中的具体错误计数及类别展开也从正文删除。重复图注参数、负载总结和无重训练说明已压缩；有实际比较作用的 25% 导频减少及单场景 60/85 次迭代保留。原始统计及完整稿评估附录继续保留。此项已完成，不再作为待选建议，也不把细分错误来源作为必须补写任务。两版目前为 **13/15 页**，结论均在第 12 页，43 篇参考文献与 46 个编号公式保持。见[本轮实施、数据核验与版面检查](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch6_cai_revision_20261104/README.md)。本次授权范围为第六章；其他章节的一般修订仍沿用既有确认方式，C1 及补充实验安排不变。以下各轮的页数和表号为当时快照，当前密度比比较表已因新增网络表顺延为表 III。
 
 **2026-11-04 当前写作安排（作者最新决定）：先恢复主 SNR 六算法、已知相位、每档 1000 场景的图，并据此继续整个第六章的分析。** 旧估计相位曲线已从图 6 撤出，数据及旧评估说明保留存档；正在运行的新相位前端批次和 Off-grid SBL 两档新增搜索预算完成后再补入。此前“等待补充实验而暂缓整章分析”的安排由本条取代。一般语言修改仍按先分析、作者选择后实施执行，见[第六章当前分析](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_VI_SIX_METHOD_REVIEW_20261104.md)。本写作会话未启动、停止或干预实验。
 
 **2026-11-04 最新状态：摘要、引言及第二章的选定修改已完成；第三至第五章的 11 项修改也已全部获作者授权并实施。** [III–V 实施表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_III_V_LANGUAGE_REVIEW_20261104.md)记录最终写法：IV02 正面说明相同最优解，V05 正面列明内存统计对象；IV03 同步第六章两处名称。原分析表保留为历史快照，不再等待选择。三章的详细论述与衔接见[逻辑导读](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_III_V_LOGIC_GUIDE_20261104.md)。[第二章分析与实施记录](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_II_LANGUAGE_REVIEW_20261104.md)保留原候选表和讨论，顶部记录最终写法：删去重复类型说明，以 rows and columns 保留行列含义，用 Define 引出跨天线定义。[摘要与引言作者决定表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/ABSTRACT_INTRO_LANGUAGE_REVIEW_20261104.md)继续适用，不重提已保留的写法。变量、公式呈现、伪代码与六处正文精简已完成；此前[语言润色前复核](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/POLISH_READINESS_20261104.md)保持为检查记录。当前为 46 个编号公式、13/14 页；下文各轮 61/57/53/51 式记录均是历史快照。继续区分文献原式、必要模型适配和辅助表达，不因不是原文同形公式就删除合理关系，不恢复已撤回的符号表或多余推导。
 
-**2026-11-04 第六、七章最新状态：作者已授权并完成 VI01–VI07、VII01–VII02 九项调整。** 第六章五处小修、we select、矩阵预条件补引，以及结论的比较对象澄清和长句拆分均已实施。两版仍为 13/14 页，参考文献增至 43 篇；这些项目关闭，不重复列为待选择。见[完成记录](../checks/chapters_vi_vii_language_selected_20261104/README.md)。
+**2026-11-04 第六、七章最新状态：作者已授权并完成 VI01–VI07、VII01–VII02 九项调整。** 第六章五处小修、we select、矩阵预条件补引，以及结论的比较对象澄清和长句拆分均已实施。两版仍为 13/14 页，参考文献增至 43 篇；这些项目关闭，不重复列为待选择。见[完成记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/chapters_vi_vii_language_selected_20261104/README.md)。
 
 0. **2026-11-04 作者明确要求：语言润色先通读分析，列完整修改建议表供审核，不直接修改正文。** 前一轮直接改动引言的操作已撤回，引言及两版 PDF 恢复为该轮之前的版本。paper-polish/Humanizer 仅用于分析；待作者指定修改范围后才执行，不能把询问可行性当作全文修改授权。
    早期候选清单见[全文语言修改建议表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/LANGUAGE_REVIEW_20261104.md)，原有 31 项建议。后续修订已解决或取代 P03/P10/P11/P14/D02 等内容，当前状态以[复核表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/POLISH_READINESS_20261104.md)为准；旧摘录、行号和附录号不能直接套用现稿。未列建议的段落不代表漏读，也不要求为增加修改量而改写。
@@ -93,7 +93,7 @@
 - 上述均为助手建议，**作者尚未选定**。作者的条件性删场景提议没有被执行，也不能记成已同意恢复原结果、采用重试规则或重新开展实验。
 - 尚无与算法性能无关的输入损坏证据。仅因迭代未收敛或结果不利而删除这个合法场景，会造成筛选偏差。
 
-证据：逐场景敏感性复算（仅本地历史资料：`paper/checks/review_followup_20261103/scene372_sensitivity.json`）、原单场景诊断（仅本地历史资料：`result/user_count/data/c_stmp_80user_scene0372_beta02_gpu_20261026/REPORT.md`）、[当前附录 C](../sections/appendix_evaluation_protocol.tex)。
+证据：逐场景敏感性复算（[paper/checks/review_followup_20261103/scene372_sensitivity.json](../../archive/paper_checks_cleanup_20261108/evidence/scene372_sensitivity.json)）、原单场景诊断（仅本地历史资料：`result/user_count/data/c_stmp_80user_scene0372_beta02_gpu_20261026/REPORT.md`）、[当前附录 C](../sections/appendix_evaluation_protocol.tex)。
 
 ## M1：附录 C 与主稿的信息范围
 
@@ -193,7 +193,7 @@
 
 已更新 VI-C 的表 II、指标说明与结果描述；没有更改其他论文小节或附录 C。`main.pdf` 13 页、`main_full.pdf` 15 页，表 II 均位于第 10 页。编译及版面检查通过，参考文献仍为 42 篇。
 
-证据：分 SNR CSV（仅本地历史资料：`paper/checks/review_followup_20261103/activity_by_snr.csv`）、[完整汇总](../checks/review_followup_20261103/activity_summary.json)、修改差异（仅本地历史资料：`paper/checks/review_followup_20261103/CHANGES.diff`）、[核验记录](../checks/review_followup_20261103/VALIDATION.json)。
+证据：分 SNR CSV（[paper/checks/review_followup_20261103/activity_by_snr.csv](../../archive/paper_checks_cleanup_20261108/evidence/activity_by_snr.csv)）、[完整汇总](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/review_followup_20261103/activity_summary.json)、修改差异（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/review_followup_20261103/CHANGES.diff`）、[核验记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/review_followup_20261103/VALIDATION.json)。
 
 这完成了本轮作者同意的 M5 工作。此前提过的概率校准、置信区间及失效机理研究只是进一步分析建议，没有被确认成新增必做任务；不得以这些未执行建议为理由反复将 M5 标为未完成。现有统计也不宣称已经证明唯一失效原因。
 
@@ -211,13 +211,13 @@
 | m6 | 图 6/9 双面板可读性及全部实验图字号一致性 | 图 6/9 采用下方共享图例；图 4–10 图例均为 8 pt、坐标轴均为 8.5 pt。2026-11-04 按作者最新要求，将图 9 的 NMSE 显示范围设为 −20～0 dB、AER 保持 10⁻⁴～10⁻¹，连线在边界截断；全部原始数值、配色、线型和标记保持，本轮关闭 |
 | m7 | 技能词表命中两处 yielding；exceeding 为技术含义误报 | 不将机械词表匹配当作 AI 写作证据或主要审稿缺陷；未发现句间 em-dash |
 
-上述 m4–m6 初轮完成后，两版仍为 13/15 页、42 篇参考文献，图 6/9 位于第 10/11 页；当轮图 7、表 II、实验结果、相位实现及其他正文内容未改。检查范围、修改前副本、逐点验证和版面预览见 [m4–m6 修改记录](../checks/minor_m4_m5_m6_20261103/REVISION_NOTES.md)。m4 的关闭表示未发现需要修改的实际引用问题，不表示执行了原技能的所有风格偏好。
+上述 m4–m6 初轮完成后，两版仍为 13/15 页、42 篇参考文献，图 6/9 位于第 10/11 页；当轮图 7、表 II、实验结果、相位实现及其他正文内容未改。检查范围、修改前副本、逐点验证和版面预览见 [m4–m6 修改记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/minor_m4_m5_m6_20261103/REVISION_NOTES.md)。m4 的关闭表示未发现需要修改的实际引用问题，不表示执行了原技能的所有风格偏好。
 
-后续作者指出全篇字号一致性问题：图 6/9 的图例已经是 8 pt，其余实验图仍为 6 pt。按作者明确要求，现已将图 4/5/7/8/10 的图例补调至 8 pt，并调整必要间距，图 6/9 保持原文件。本次图 7 仅调整字号和布局，不改变数据或处理 C1。两版仍为 13/15 页；正文源码、实验数据、表 II 和方法示意图保持。完整记录见[实验图字号统一](../checks/figure_font_uniform_20261103/REVISION_NOTES.md)。
+后续作者指出全篇字号一致性问题：图 6/9 的图例已经是 8 pt，其余实验图仍为 6 pt。按作者明确要求，现已将图 4/5/7/8/10 的图例补调至 8 pt，并调整必要间距，图 6/9 保持原文件。本次图 7 仅调整字号和布局，不改变数据或处理 C1。两版仍为 13/15 页；正文源码、实验数据、表 II 和方法示意图保持。完整记录见[实验图字号统一](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/figure_font_uniform_20261103/REVISION_NOTES.md)。
 
-2026-11-04，作者首次指定图 9 的 NMSE 显示范围为 −15～0 dB、AER 为 10⁻⁴～10⁻¹，并要求超界曲线延伸到边界后截断，参考 Ding 的画法。已核对 Ding 第 5 页 Fig. 2 和 Fig. 3(b)，按此方式重绘；无需为这个明确的显示选择再次索要确认。保存的 72 个曲线点不变，当时 7 个点位于指定显示范围外，原值完整保留，连线由绘图器裁切；没有把数值压成边界值，也未筛选统计样本。两版 PDF 已更新，仍为 13/15 页。见[图 9 首次坐标显示范围记录](../checks/pilot_axis_limits_20261104/REVISION_NOTES.md)。
+2026-11-04，作者首次指定图 9 的 NMSE 显示范围为 −15～0 dB、AER 为 10⁻⁴～10⁻¹，并要求超界曲线延伸到边界后截断，参考 Ding 的画法。已核对 Ding 第 5 页 Fig. 2 和 Fig. 3(b)，按此方式重绘；无需为这个明确的显示选择再次索要确认。保存的 72 个曲线点不变，当时 7 个点位于指定显示范围外，原值完整保留，连线由绘图器裁切；没有把数值压成边界值，也未筛选统计样本。两版 PDF 已更新，仍为 13/15 页。见[图 9 首次坐标显示范围记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/pilot_axis_limits_20261104/REVISION_NOTES.md)。
 
-同日，作者查看后要求将左图下限由 −15 dB 改为 −20 dB。当前图 9 已采用 −20～0 dB，右图保持 10⁻⁴～10⁻¹；此前低于 −15 dB 的五个 NMSE 点均可显示，剩余两个超界点仍按原值连线并在上边界裁切。字号、尺寸、图例及 72 个原始曲线点保持。见[图 9 下限调整记录](../checks/pilot_nmse20_20261104/REVISION_NOTES.md)。
+同日，作者查看后要求将左图下限由 −15 dB 改为 −20 dB。当前图 9 已采用 −20～0 dB，右图保持 10⁻⁴～10⁻¹；此前低于 −15 dB 的五个 NMSE 点均可显示，剩余两个超界点仍按原值连线并在上边界裁切。字号、尺寸、图例及 72 个原始曲线点保持。见[图 9 下限调整记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/pilot_nmse20_20261104/REVISION_NOTES.md)。
 
 ## 2026-11-04：图 9 确认及后续实验讨论
 
@@ -239,7 +239,7 @@
 
 - 2026-11-04：作者要求优先审查大小写、上下标、公式来源和必要性。完成[当前变量与公式审查](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/NOTATION_FORMULA_REVIEW_20261104.md)，明确第二章 entries 及四行索引式可以压缩；提供保持观测和 vec 顺序的设备矩阵块候选，另发现当前 c1/c2 与 site 方差 c_k 同形。小尺寸代数核验与源稿哈希检查通过；没有直接修改稿件、编译或启动实验。所有候选仍待作者选定，旧符号审查中已解决事项不重开。
 - 2026-11-04：按作者要求通读当前英文主稿及 full 版附录，形成[完整语言修改建议表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/LANGUAGE_REVIEW_20261104.md)。本轮只保存分析文档，未实施候选改写；正文、公式、图表、书目及两版 PDF 均保持撤回后的版本。已有 C/M 决定不重开，第三至第五章段落结构保持。
-- 2026-11-04：作者提出先开展语言润色，助手直接修改了引言。作者随后纠正，要求先分析并列完整表格。该轮引言和两版 PDF 已撤回，恢复到此前确认的版本；撤回修改仅作历史留档。见[引言润色撤回记录](../checks/intro_language_polish_20261104/REVISION_NOTES.md)。后续遵循“先建议表、后按作者指定范围修改”。
+- 2026-11-04：作者提出先开展语言润色，助手直接修改了引言。作者随后纠正，要求先分析并列完整表格。该轮引言和两版 PDF 已撤回，恢复到此前确认的版本；撤回修改仅作历史留档。见[引言润色撤回记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/intro_language_polish_20261104/REVISION_NOTES.md)。后续遵循“先建议表、后按作者指定范围修改”。
 - 2026-11-03：首次 Supervisor-Skills 预审后，作者逐项纠正过严判断，要求查找旧实验并同意 M5 的分 SNR 报告。
 - 2026-11-03：助手复算 C1，查到 M2/M3 既有证据，撤回 M1 的 MAJOR 定级，将 M4 改为进行中事项；完成 M5 源码、PDF 与数据核验。
 - 2026-11-03：按作者要求建立本持久记录并接入阅读入口。后续修改在对应条目更新状态、证据和日期，保留历史决定，不重新生成互不关联的问题清单。
@@ -353,7 +353,7 @@ I01 按作者新要求删除 indices 罗列，直接写每根天线的有效信�
 
 ## 2026-11-04：第二章 S02–S04 完成，S01 讨论文字是否必要
 
-作者明确同意 S02/S03/S04，已落实三处语言修改并更新两版 PDF。S02 比较句拆分但不另起段，所有资源条件保留；S03 统一为 transmission block；S04 修正后验引出句。仅第二章对应三处正文和 PDF 改变，公式、图表、引用命令及其他正文保持。两版仍为 13/14 页、46 个编号公式、42 篇参考文献；第 4 页已目视检查，两版该页渲染一致。见[实施核验](../checks/ch2_language_selected_20261104/VALIDATION.json)。
+作者明确同意 S02/S03/S04，已落实三处语言修改并更新两版 PDF。S02 比较句拆分但不另起段，所有资源条件保留；S03 统一为 transmission block；S04 修正后验引出句。仅第二章对应三处正文和 PDF 改变，公式、图表、引用命令及其他正文保持。两版仍为 13/14 页、46 个编号公式、42 篇参考文献；第 4 页已目视检查，两版该页渲染一致。见[实施核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_language_selected_20261104/VALIDATION.json)。
 
 S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与上下标体现，而非选择原先只删 a 的方案。本轮判断：单纯重复矩阵类型的 `in a matrix form` 可整段删；`row and column indices` 可改成 `rows and columns`，但接收/发送符号对应关系不能由设备/天线下标代替。identity、diagonal、DAFT 等性质/功能说明以及 AFDM/OTFS 表示维度比较仍有信息作用。具体候选见[本轮讨论](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_II_LANGUAGE_REVIEW_20261104.md)，未改 S01 或邻近定义，不将该问题误记成作者要求全文禁用 matrix/indices。
 
@@ -367,7 +367,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 作者授权精简上一轮列出的四处，并指出 collect 不够合适。已在 II-B 同一段执行四项局部改写：有效信道用 can be expressed as 引式，row and column indices 简化为 rows and columns，跨天线 $\mathbf H_k$ 直接用 Define 引入，单路径响应删去 in a matrix form。此处 collect 是泛指汇集而非语法错误；选用 Define 是因为该句在定义一个已有公式明确给出排列的新符号，不需要新增拼接名称。没有将 collect/matrix/indices 设为全文禁用词。
 
-两版 PDF 已更新、编译及修改页检查通过，仍为 13/14 页、46 式、42 篇参考文献。所有行内及陈列数学内容、引用命令和其他章节保持；只有第 3 页文字变化，两版该页渲染一致。见[本轮差异与核验](../checks/ch2_concise_definitions_20261104/VALIDATION.json)。S01 及相邻三处关闭，不再反复列为待选择。
+两版 PDF 已更新、编译及修改页检查通过，仍为 13/14 页、46 式、42 篇参考文献。所有行内及陈列数学内容、引用命令和其他章节保持；只有第 3 页文字变化，两版该页渲染一致。见[本轮差异与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_concise_definitions_20261104/VALIDATION.json)。S01 及相邻三处关闭，不再反复列为待选择。
 
 ## 2026-11-04：第三至第五章语言分析完成，尚未修改
 
@@ -382,7 +382,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 作者先指出损失关系与内存排除条款带有防御性，随后明确要求两项按新建议改写、其余建议也全部实施。已完成 III01–III02、IV01–IV04、V01–V05；IV02 采用固定 C 下与 Σ 加权 score matching objective 具有相同最优解的正面表述，V05 直接列举 pilot matrix、SVD factors、channel messages、spatial covariances 的内存开销。这里仍限定统计对象，没有将该量级扩大为含网络的全部内存。IV03 同步 VI-A1/A2 的两处排列名称，不改变 vec 顺序、维度或 Kronecker 因子。
 
-本轮仅改四个章节源文件中的获批文字及两版 PDF；全部陈列公式、Algorithm 1、引用命令、图表资产和其他章节源文件保持。两版仍为 13/14 页、46 个编号公式、42 篇参考文献；无未定义引用或公式越栏，所有受影响页面已渲染检查。编译仍有已有类别的行宽不足和插入 PDF 版本提示，不影响交付。证据见[实施表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_III_V_LANGUAGE_REVIEW_20261104.md)与[核验结果](../checks/chapters_iii_v_language_selected_20261104/VALIDATION.json)。
+本轮仅改四个章节源文件中的获批文字及两版 PDF；全部陈列公式、Algorithm 1、引用命令、图表资产和其他章节源文件保持。两版仍为 13/14 页、46 个编号公式、42 篇参考文献；无未定义引用或公式越栏，所有受影响页面已渲染检查。编译仍有已有类别的行宽不足和插入 PDF 版本提示，不影响交付。证据见[实施表](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_III_V_LANGUAGE_REVIEW_20261104.md)与[核验结果](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/chapters_iii_v_language_selected_20261104/VALIDATION.json)。
 
 按作者要求另存[三章逻辑导读](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTERS_III_V_LOGIC_GUIDE_20261104.md)：III 定义消息传递与所需后验统计量；IV 给出均值、导数方差和密度比学习；V 组织 Gaussian site、迭代调度、参数处理与复杂度。导读解释当前稿件，不新增推导到正文，不将精确 Gaussian 观测恒等式等同于有限网络的精确估计，也不重开已讨论的技术路线选择。
 
@@ -393,14 +393,14 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 作者同时授权优化图 3 和调整因子图配色。已直接查看 Cai 期刊版 Fig. 3（PDF p.10／印刷 p.3584）、Huang Fig. 2（PDF p.3／印刷 p.2951）：图 3 保留网络示意、关键变量、方差汇总、活动概率与反馈关系，以公式编号替代解释性长标签；图 2 使用实验图已有深绿 #00704a 与红色 #ff0000，几何与符号保持。两图三格式及两版 PDF 已更新，13/14 页、46 式、42 篇参考文献保持；仅第 4/7 页渲染改变，源正文、公式、伪代码、实验图和配置均保持。图 3 主文字 8–9 pt；图 2 仅按授权改色，原字号保持。
 
-出处、设计取舍、复现入口和核验见[本轮记录](../checks/method_figures_simplified_20261104/README.md)。新图未引入 Huang 的采样算法或新实验热图，不因图形精简重开已确定的技术路线。
+出处、设计取舍、复现入口和核验见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/method_figures_simplified_20261104/README.md)。新图未引入 Huang 的采样算法或新实验热图，不因图形精简重开已确定的技术路线。
 
 
 ## 2026-11-04：图 3 先展示两模块迭代，再展开 GPJD
 
 作者明确修正图 3 的配色：具体框和线仍用黑色，只有 MFLE/GPJD 模块框采用绿/红并加粗；同时提出先展示两模块迭代，再展开 GPJD。已按此实现为左侧两模块闭环、右侧 GPJD 内部更新，使用无箭头黑色虚线标示展开。所有内部运算框、信息流箭头与网络连线为黑色；三个模块外框线宽 1.4 pt，名称黑色加粗。图 2 的上一轮配色保持，不把图 3 的新决定自动推广到其他图。
 
-只更新图 3 PDF/SVG/PNG、图注首句及两版 PDF；公式、伪代码、正文其他段落、书目与实验资产保持。两版仍为 13/14 页、46 式、42 篇参考文献，仅第 7 页渲染变化并已检查。具体设计、当前重绘入口、备份及核验见[本轮记录](../checks/receiver_overview_expansion_20261104/README.md)。以后沿用“总览—展开”的层级，不恢复上一版内部红色框线。
+只更新图 3 PDF/SVG/PNG、图注首句及两版 PDF；公式、伪代码、正文其他段落、书目与实验资产保持。两版仍为 13/14 页、46 式、42 篇参考文献，仅第 7 页渲染变化并已检查。具体设计、当前重绘入口、备份及核验见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/receiver_overview_expansion_20261104/README.md)。以后沿用“总览—展开”的层级，不恢复上一版内部红色框线。
 
 ## 2026-11-04：图 3 平行箭头、浅色填充与配色范围纠正
 
@@ -408,7 +408,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 这项作者纠正覆盖上一条记录中有关内部图示灰度化和展开框着色的实现，不改变既定的“总览—展开”布局。后续直接沿用，不再把“框和线用黑色”解释为所有图形元素去色。图 2 保持。
 
-三格式和两版 PDF 已更新；全部 TeX（含图注）、其他图和书目与修改前逐文件一致。两版仍为 13/14 页、46 式、42 篇参考文献，仅第 7 页变化；独立图与正文页已检查。见[本轮记录与核验](../checks/receiver_parallel_arrows_color_20261104/README.md)。
+三格式和两版 PDF 已更新；全部 TeX（含图注）、其他图和书目与修改前逐文件一致。两版仍为 13/14 页、46 式、42 篇参考文献，仅第 7 页变化；独立图与正文页已检查。见[本轮记录与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/receiver_parallel_arrows_color_20261104/README.md)。
 
 ## 2026-11-04：图 3 补全 Cai 式的去噪前后对照
 
@@ -416,7 +416,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 网络当前采用蓝／浅绿／橙节点，矩阵使用 viridis，此项覆盖上一条记录中绿／灰／红网络和浅红空网格的选择。保留左侧绿/红浅填充模块、两条平行反向直箭头、加粗黑色展开框、黑色内部文本框和信息流箭头，不重复标 GPJD。下方仍为本文 z_phi 分类器，不照搬 Cai 的第二个 score 网络。
 
-只修改图 3、对应图注和两版 PDF；原实验数据保持，无新增推断、训练或实验。两版仍为 13/14 页、46 式、42 篇参考文献，只有第 7 页变化并已检查。来源、固定样本选择、色标和核验见[本轮记录](../checks/receiver_denoising_pair_20261104/README.md)。后续不得恢复用空网格替代去噪前后对照，也不将该插图样本记为新的接收机实验结论。
+只修改图 3、对应图注和两版 PDF；原实验数据保持，无新增推断、训练或实验。两版仍为 13/14 页、46 式、42 篇参考文献，只有第 7 页变化并已检查。来源、固定样本选择、色标和核验见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/receiver_denoising_pair_20261104/README.md)。后续不得恢复用空网格替代去噪前后对照，也不将该插图样本记为新的接收机实验结论。
 
 ## 2026-11-04：图 3 流程语义核对
 
@@ -428,7 +428,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 作者明确授权修改，F01–F05 已全部落实：分类器输入在网络外汇合并标 ell_k；方差路径改为从输入进入式 (29) 的有限差分调用，再跨设备平均；原条件矩框增加 Gaussian site 名称；联合矩输出改标 Xhat_k、tbar_X；外信息式 (22) 与阻尼式 (39) 分开，中间标原始输出，末端标反馈状态。没有将单次 F_k 画为方差的唯一来源，也没有把 F_k 接进分类器隐藏层。
 
-原总览结构、平行反向箭头、浅色模块填充、黑框、网络配色及真实保存的去噪样本保持。site 保留条件、方差下限和第一轮阻尼规则仍由既有 Algorithm 1 说明，不新增满图的判断分支。图 3 三格式及两版 PDF 已更新；全部 TeX、其他图和书目哈希保持。主稿 13 页、完整稿 14 页，46 式、42 篇参考文献，仅第 7 页变化，已做变量/箭头对应与目视复核。见[实施及核验记录](../checks/receiver_flow_corrected_20261104/README.md)。五项关闭，不再重复列为待改事项。
+原总览结构、平行反向箭头、浅色模块填充、黑框、网络配色及真实保存的去噪样本保持。site 保留条件、方差下限和第一轮阻尼规则仍由既有 Algorithm 1 说明，不新增满图的判断分支。图 3 三格式及两版 PDF 已更新；全部 TeX、其他图和书目哈希保持。主稿 13 页、完整稿 14 页，46 式、42 篇参考文献，仅第 7 页变化，已做变量/箭头对应与目视复核。见[实施及核验记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/receiver_flow_corrected_20261104/README.md)。五项关闭，不再重复列为待改事项。
 
 ## 2026-11-04：图 3 减少数值细节与文字
 
@@ -436,9 +436,9 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 本项作者决定覆盖上一轮“单独显示有限差分、平均及阻尼框”的呈现方式。后续检查应保留核心依赖和变量准确性，不为逐项展示实现而恢复这些框或解释性文字；不将此设计精简重开为算法缺陷。分类器外部输入汇合、独立方差支路、Gaussian site 角色及共同方差输出继续保持。
 
-三格式与两版 PDF 已更新并检查，仍为 13/14 页、46 式、42 篇参考文献，只有第 7 页变化。全部 TeX、其他图及保存样本不变，未运行实验。见[本轮记录](../checks/receiver_concise_flow_20261104/README.md)。
+三格式与两版 PDF 已更新并检查，仍为 13/14 页、46 式、42 篇参考文献，只有第 7 页变化。全部 TeX、其他图及保存样本不变，未运行实验。见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/receiver_concise_flow_20261104/README.md)。
 
-2026-11-04 位置微调：按作者要求将图 3 式 (29) 框置于两侧竖向支路正中，左右横向连接段等长；其余沿用精简版。当前入口与核验见 [居中记录](../checks/receiver_variance_centered_20261104/README.md)。
+2026-11-04 位置微调：按作者要求将图 3 式 (29) 框置于两侧竖向支路正中，左右横向连接段等长；其余沿用精简版。当前入口与核验见 [居中记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/receiver_variance_centered_20261104/README.md)。
 
 ## 2026-11-04：图 3 居中后的摘要至第五章通读
 
@@ -458,7 +458,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 引言补 GP-MP 的含义，第五章首段用一句话解释 C；第四章直接说协方差是额外网络输入。正文、Algorithm 1 标题、六幅图例和两版 PDF 已同步，主稿 13 页、完整稿 14 页。公式、算法步骤、全部绘图数据、图 1–4 与内部实现标识保持。R01 名称说明已解决；R02 图注精简仍为可选、未实施项，不作为新缺陷催问。
 
-这项作者决定覆盖此前“名称尚未选定”和继续按 CCD 补全称的建议。历史记录保留旧名称用于溯源；后续当前稿统一使用 C。见[实施和核验记录](../checks/algorithm_name_c_20261104/REVISION_NOTES.md)。
+这项作者决定覆盖此前“名称尚未选定”和继续按 CCD 补全称的建议。历史记录保留旧名称用于溯源；后续当前稿统一使用 C。见[实施和核验记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/algorithm_name_c_20261104/REVISION_NOTES.md)。
 
 ## 2026-11-04：第六章待补充实验确定后统一分析
 
@@ -485,7 +485,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 作者确认 supervisor 指 pre-submission-reviewer。已逐段通读当前英文摘要、Notation、第一至第五章、图 1–3 和 Algorithm 1，并查看主稿第 1–8 页（第 8 页仅评阅第五章），见[本轮预审报告](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/SUPERVISOR_HUMANIZER_REVIEW_20261104.md)。未发现新增的实质错误、结构断点或必须修改的语言项；不重新使用旧 C/M 计数或整篇评分。R01 已解决，R02 仍属可选，不催促再次选择。
 
-重点复核一般 LMMSE、实复方差尺度、分类密度比与先验修正、site 接受/保留后的条件矩，以及递归阻尼的对象。式 (1)–(40) 编号连续，引用与书目键有效；32 个保护稿件资产哈希保持。没有改论文、PDF、图表或实验数据，没有重新编译或运行训练、推断。检查记录见 [CHECKS.json](../checks/supervisor_humanizer_20261104/CHECKS.json)。
+重点复核一般 LMMSE、实复方差尺度、分类密度比与先验修正、site 接受/保留后的条件矩，以及递归阻尼的对象。式 (1)–(40) 编号连续，引用与书目键有效；32 个保护稿件资产哈希保持。没有改论文、PDF、图表或实验数据，没有重新编译或运行训练、推断。检查记录见 [CHECKS.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/supervisor_humanizer_20261104/CHECKS.json)。
 
 交付前已复用上条新相位工作记录，并读取新批次 README。当前稿件内部的旧相位描述仍能对应，但若最终采用一次估计后固定相位的新前端，应同步第五章 L50–51、L119–120、L219–220、Algorithm 1 的相关引用及相位附录，再统一第六章设置和结果。这仍是既有版本同步事项，不作为新增 Major，也不把“保持摘要至第五章”解释为永久冻结旧相位描述。
 
@@ -498,7 +498,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 已通读第六章全部正文并核对图 4–10、表 I–II，形成[分节分析及语言候选](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/CHAPTER_VI_SIX_METHOD_REVIEW_20261104.md)。现有曲线足以分析已知相位条件下的主要性能；估计相位及提高 SBL 搜索预算的结论须等对应结果。SNR 六点 NMSE 均最低、AER 均低于 GP-MP 的表述有依据，不扩大为 AER 全点最优。图 7 的 C1 保持既有待定状态，不重开处置讨论。一般语言候选未实施。
 
-两版 PDF 已更新并目视检查，仍为 13/14 页、42 篇参考文献；公式和其余图不变，无未定义引用或越栏。原数据保持，没有运行或干预任何实验。[实施、备份及核验](../checks/snr_six_methods_20261104/README.md)。后续不得根据更早记录把图 6 误记为七曲线或每点 500 场景。
+两版 PDF 已更新并目视检查，仍为 13/14 页、42 篇参考文献；公式和其余图不变，无未定义引用或越栏。原数据保持，没有运行或干预任何实验。[实施、备份及核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/snr_six_methods_20261104/README.md)。后续不得根据更早记录把图 6 误记为七曲线或每点 500 场景。
 
 
 ## 2026-11-04：第六、七章六算法版本复审（仅分析）
@@ -516,7 +516,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 新增文献已核对官方 NeurIPS 页面、官方 BibTeX 及本地原文 Appendix B.1，式 (67)–(68)、(73)、(77)–(78)，对应本文现式 (42)。不把本文 loss weighting、网络或接收机归为该文方法。其他 42 条书目保持，当前共 43 篇。
 
-两版编译通过并完成变动页目视检查，仍为 13/14 页；所有数学表达、公式编号、参数、图表和其他章节源码保持。无未定义引用或越栏，26 项保护资产字节不变。没有训练、推断或实验调整，图 7 C1 和新实验安排保持。见[本轮完整记录](../checks/chapters_vi_vii_language_selected_20261104/README.md)、源码差异（仅本地历史资料：`paper/checks/chapters_vi_vii_language_selected_20261104/SOURCE_DIFF.txt`）和[核验](../checks/chapters_vi_vii_language_selected_20261104/VALIDATION.json)。
+两版编译通过并完成变动页目视检查，仍为 13/14 页；所有数学表达、公式编号、参数、图表和其他章节源码保持。无未定义引用或越栏，26 项保护资产字节不变。没有训练、推断或实验调整，图 7 C1 和新实验安排保持。见[本轮完整记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/chapters_vi_vii_language_selected_20261104/README.md)、源码差异（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/chapters_vi_vii_language_selected_20261104/SOURCE_DIFF.txt`）和[核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/chapters_vi_vii_language_selected_20261104/VALIDATION.json)。
 
 ## 2026-11-04：按作者要求逐节对照 Cai 的实验呈现方式（仅分析）
 
@@ -550,7 +550,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 ### 已有证据与结论边界
 
 - [方差推导及比较记录](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/C_STMP_DERIVATION_20261024.md) §8.2、§12.5 给出条件误差风险与导数误差的区别；§9–10 保留独立二阶网络的有利与不利结果。早期场景 200、0 dB 下，独立二阶网络比导数版本的 NMSE 好约 0.05 dB，实测耗时更短；8/10 dB 下对阻尼更敏感，增强阻尼后恢复收敛。这些使用旧分类器和历史接收机设置的开发结果，不能代替当前配置的最终性能消融，也不支持“二阶网络普遍更差”。
-- [活动消融核验](../checks/review_followup_20261103/activity_summary.json)覆盖 354 个共同物理场景、六档 SNR，每方法 2124 次配对运行；支持当前设置下密度比活动估计的收益。原始未完成记录及不利结果继续保留。
+- [活动消融核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/review_followup_20261103/activity_summary.json)覆盖 354 个共同物理场景、六档 SNR，每方法 2124 次配对运行；支持当前设置下密度比活动估计的收益。原始未完成记录及不利结果继续保留。
 - 如果后续只主张省去独立二阶训练及参数存储，可直接以实现和训练流程为依据；若要把性能提升主要归因于方差改动，则需固定去噪器、分类器及接收机设置的方差对照。已有独立二阶候选可供评估其复用条件，不据本条自动重训或启动新实验。
 - 有色训练消融无优势，不足以把 STMP 到当前算法的全部提升归于网络结构或方差计算；均值参数化、方差规则、阻尼和查询方差更新等差异仍须区分。省去第二个网络也不自动意味着每轮或整机推理更快。
 
@@ -564,17 +564,17 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 作者要求 STMP 改用粉红色，后续估计相位和白高斯噪声版本使用红色。现已将七幅实验图中的 STMP 统一改为 `#d65a9e`，保留原圆圈标记和虚线；GP-MP-C 保持 `#ff0000`、方块和实线。后续 GP-MP 与 GP-MP-C-EP 均采用 `#ff0000`，加入时以不同线型和标记区分，不提前加入未完成实验的曲线或空图例。
 
-统一绘图配置只改变九处 STMP 颜色值（含双面板的内外层设置），547 个绘图点、输入哈希、标签、坐标和其他样式不变。七幅图已重绘，两版论文重新编译并检查，仍为 13/15 页，仅第 10–12 页颜色变化；全文文本、全部 TeX、书目和三幅方法图保持。没有启动训练或推断，也未改变正在执行的相位实验或白噪声训练安排。配色写入绘图约定（历史路径，见迁移记录：`src/evaluation/plots/manuscript/README.md`），备份、数据核验与页面预览见[本轮记录](../checks/stmp_pink_palette_20261104/README.md)。
+统一绘图配置只改变九处 STMP 颜色值（含双面板的内外层设置），547 个绘图点、输入哈希、标签、坐标和其他样式不变。七幅图已重绘，两版论文重新编译并检查，仍为 13/15 页，仅第 10–12 页颜色变化；全文文本、全部 TeX、书目和三幅方法图保持。没有启动训练或推断，也未改变正在执行的相位实验或白噪声训练安排。配色写入绘图约定（历史路径，见迁移记录：`src/evaluation/plots/manuscript/README.md`），备份、数据核验与页面预览见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/stmp_pink_palette_20261104/README.md)。
 
 ### 作者纠正：粉红色应由红色稍微调浅
 
-作者明确指出“在红色的基础上稍微分一点”。上一轮 `#d65a9e` 偏紫，不符合该要求；现改为由纯红调浅的 `#ff6666`，GP-MP-C 及后续白噪声/估计相位变体继续用 `#ff0000`。本条覆盖上一轮具体粉红色值，后续不得恢复偏紫配色。七幅实验图和两版论文已同步并目视检查；仍为 13/15 页，仅第 10–12 页变化，547 个数据点及全文文本保持。见[纠正与核验](../checks/stmp_light_red_20261104/README.md)。
+作者明确指出“在红色的基础上稍微分一点”。上一轮 `#d65a9e` 偏紫，不符合该要求；现改为由纯红调浅的 `#ff6666`，GP-MP-C 及后续白噪声/估计相位变体继续用 `#ff0000`。本条覆盖上一轮具体粉红色值，后续不得恢复偏紫配色。七幅实验图和两版论文已同步并目视检查；仍为 13/15 页，仅第 10–12 页变化，547 个数据点及全文文本保持。见[纠正与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/stmp_light_red_20261104/README.md)。
 
 ### 作者最终指定：使用 Xu 原图的粉色
 
-作者进一步要求“你看看 xu 的那个粉色，你用那个吧”。已从 Surrey 开放机构库取得 Xu AFDM-GFRA 接受稿（仅本地历史资料：`reference/literature/xu2026_afdm_gfra_author.pdf`），查看印刷第 12 页（含封面的 PDF 第 13 页）图 9–11，直接读取其中 EP with sparse prior 曲线的矢量色值 RGB `(1, 0.4, 0.6)`，对应 **`#ff6699`**。此为当前唯一采用的 STMP 粉色，覆盖此前两次凭描述选择的色值。原文来源、文件哈希和取色定位见 [XU_SOURCE.json](../checks/stmp_xu_pink_20261104/XU_SOURCE.json)。
+作者进一步要求“你看看 xu 的那个粉色，你用那个吧”。已从 Surrey 开放机构库取得 Xu AFDM-GFRA 接受稿（仅本地历史资料：`reference/literature/xu2026_afdm_gfra_author.pdf`），查看印刷第 12 页（含封面的 PDF 第 13 页）图 9–11，直接读取其中 EP with sparse prior 曲线的矢量色值 RGB `(1, 0.4, 0.6)`，对应 **`#ff6699`**。此为当前唯一采用的 STMP 粉色，覆盖此前两次凭描述选择的色值。原文来源、文件哈希和取色定位见 [XU_SOURCE.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/stmp_xu_pink_20261104/XU_SOURCE.json)。
 
-七幅实验图均已按此原色重绘，并逐图验证输出 PDF 含相同矢量色值；两版论文已同步，仍为 13/15 页。547 个绘图点、全文文本、TeX、书目、三幅方法图和其他样式保持。GP-MP-C 及后续白噪声/估计相位版的纯红 `#ff0000` 约定保持。新图及正文第 10–12 页已目视检查，见[本轮记录](../checks/stmp_xu_pink_20261104/README.md)。
+七幅实验图均已按此原色重绘，并逐图验证输出 PDF 含相同矢量色值；两版论文已同步，仍为 13/15 页。547 个绘图点、全文文本、TeX、书目、三幅方法图和其他样式保持。GP-MP-C 及后续白噪声/估计相位版的纯红 `#ff0000` 约定保持。新图及正文第 10–12 页已目视检查，见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/stmp_xu_pink_20261104/README.md)。
 
 
 ## 2026-11-05：作者主动重开细网格 SBL 的迭代预算诊断（阶段结果）
@@ -641,7 +641,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 正文采用 GP-MP 与标量 v 记号。第六章和第五章示例继续明确 CGP-MP 的实际有色训练归属；保存的十幅图、实验数字、冻结实现与权重保持，不把其他工况、估计相位或跨信道实验直接改称白噪声结果。本次未开启训练或新增批量实验，未修改 FINAL.json。完整白噪声批次完成后再决定最终主图和模型绑定；已有实验的真实归属先保留。这是作者新授权的执行阶段，覆盖此前“本轮只讨论第二项、不改正式稿”的范围限制，不重开其他已撤回事项。
 
-证据：[阶段配对、修改与核验](../checks/white_mainline_revision_20261105/README.md)、[原始汇总](../checks/white_mainline_revision_20261105/PAIRED_SUMMARY.json)、逐场景指标（仅本地历史资料：`paper/checks/white_mainline_revision_20261105/PAIRED_CASES.csv`）、[术语出处](TERMINOLOGY.md)。
+证据：[阶段配对、修改与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_mainline_revision_20261105/README.md)、[原始汇总](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_mainline_revision_20261105/PAIRED_SUMMARY.json)、逐场景指标（仅本地历史资料：`archive/paper_checks_cleanup_20261108/evidence/PAIRED_CASES.csv`）、[术语出处](TERMINOLOGY.md)。
 
 
 ## 2026-11-05：按作者要求先统一 GP-MP 图例
@@ -651,25 +651,25 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-05：STMP 改用 Shen 原图亮粉色
 
-作者主动要求 STMP 换更亮的粉色并指定 Shen 原图。本次从本地 shen2025.pdf 第 13–14 页图 6–9 的 On-grid ConvSBL-GAMP+MP 矢量曲线读取 RGB(1,0,1)，采用 #ff00ff，覆盖此前 Xu #ff6699 及更早偏红配色决定。七幅实验图、双面板内外配置共九处颜色同步；GP-MP/GP-MP-EP 名称、红色和全部数据保持。没有修改正文文字、实验或模型绑定。证据见 [SHEN_SOURCE.json](../checks/stmp_shen_pink_20261105/SHEN_SOURCE.json) 和本轮 VALIDATION.json。
+作者主动要求 STMP 换更亮的粉色并指定 Shen 原图。本次从本地 shen2025.pdf 第 13–14 页图 6–9 的 On-grid ConvSBL-GAMP+MP 矢量曲线读取 RGB(1,0,1)，采用 #ff00ff，覆盖此前 Xu #ff6699 及更早偏红配色决定。七幅实验图、双面板内外配置共九处颜色同步；GP-MP/GP-MP-EP 名称、红色和全部数据保持。没有修改正文文字、实验或模型绑定。证据见 [SHEN_SOURCE.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/stmp_shen_pink_20261105/SHEN_SOURCE.json) 和本轮 VALIDATION.json。
 
 
 ## 2026-11-05：蓝色改用 Shen 原图亮蓝色
 
-作者要求蓝色也换成 Shen 的亮蓝色。直接从 shen2025.pdf 第13页图6–7矢量曲线读取 RGB(0,0,1)，将 Off-grid SBL 从 #0066cc 改为 #0000ff。六幅相关图及双面板内外配置共八处同步；原数据、图例名称、标记、线型、STMP 粉色、正文与冻结资产保持，两版 PDF 同步。来源及核验见 [本轮记录](../checks/offgrid_shen_blue_20261105/README.md)。
+作者要求蓝色也换成 Shen 的亮蓝色。直接从 shen2025.pdf 第13页图6–7矢量曲线读取 RGB(0,0,1)，将 Off-grid SBL 从 #0066cc 改为 #0000ff。六幅相关图及双面板内外配置共八处同步；原数据、图例名称、标记、线型、STMP 粉色、正文与冻结资产保持，两版 PDF 同步。来源及核验见 [本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/offgrid_shen_blue_20261105/README.md)。
 
 
 ## 2026-11-05：作者确认取消独立相位附录
 
 作者询问相位估计是否需要单列附录，并确认按建议开始实施。V-B 用三个段落与两个核心公式组说明多帧响应、边缘似然和一次估计后固定相位的接口；VI-A4 保留原搜索范围及全部候选/迭代预算。原附录逐字移至 docs/derivations/phase_estimation.tex，详细功率更新推导与搜索过程保存在配套 Markdown。
 
-本次仅调整论文组织，算法、冻结配置、权重、实验数值与图样式保持。主稿取消相位附录，完整稿仍单独包含评估协议附录，编号由 B 顺延为 A；这一编号变化不改变既有主稿与完整稿的信息范围决定。第五章、Algorithm 1、复杂度和评估协议的相位引用全部改为 V-B。出处与核验见[本轮记录](../checks/phase_into_ch5_20261105/README.md)。
+本次仅调整论文组织，算法、冻结配置、权重、实验数值与图样式保持。主稿取消相位附录，完整稿仍单独包含评估协议附录，编号由 B 顺延为 A；这一编号变化不改变既有主稿与完整稿的信息范围决定。第五章、Algorithm 1、复杂度和评估协议的相位引用全部改为 V-B。出处与核验见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/phase_into_ch5_20261105/README.md)。
 
 ## 2026-11-05：作者指出第二点贡献被弱化，按已有讨论恢复
 
 作者反馈摘要和引言第二点没有体现贡献与创新，要求沿用此前讨论。复核发现上一版过于侧重“输出与输入导数”的操作，削弱了学习信道先验、去噪器的不确定性量化与消息传递需求之间的关系。本次仅修订中英文摘要相关部分、引言对应动机及第二项贡献：学习有效信道先验；用同一训练好的信道去噪器估计均值和平均后验方差；为消息传递提供信道估计与不确定性，无须迭代后验采样或为方差估计额外训练。引言客观补回 Cai 二阶目标依赖一阶得分估计的说明，不在贡献段突出“减少一个网络”。
 
-保留先验与去噪器两个技术对象，不再使用“将先验参数化为条件均值去噪器”；摘要/引言不提预条件，第一、第三点原文保持。已有均值导数恒等式不是本文首创，也不据此宣称更快、更准、误差消除或后验一致性保证。详细原文定位、修改及验证见[本轮记录](../checks/second_contribution_restore_20261105/README.md)。两版仍为 13/14 页，未修改算法、实验或模型绑定。
+保留先验与去噪器两个技术对象，不再使用“将先验参数化为条件均值去噪器”；摘要/引言不提预条件，第一、第三点原文保持。已有均值导数恒等式不是本文首创，也不据此宣称更快、更准、误差消除或后验一致性保证。详细原文定位、修改及验证见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/second_contribution_restore_20261105/README.md)。两版仍为 13/14 页，未修改算法、实验或模型绑定。
 
 ## 2026-11-05：第二点进一步按原文的数学衔接讨论
 
@@ -679,7 +679,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-05：作者确认采用数学衔接三句
 
-作者明确确认“利用 Tweedie 公式建立得分函数与后验均值之间的联系……并省去独立二阶模型对应的训练与存储开销”，要求采用。本轮已将中文逐字写入摘要，将忠实英文译文同步到英文摘要和引言第二项。保留前面的信道先验学习句，第一、第三点及其他背景文字保持；不再把这一段标为待确认候选。仅为图文顺序调整了第六章浮动体源码位置，图文内容与数据不变。两版编译及版面检查通过，主稿 13 页、完整稿 15 页。见[采用与核验记录](../checks/second_contribution_adopted_20261105/README.md)。
+作者明确确认“利用 Tweedie 公式建立得分函数与后验均值之间的联系……并省去独立二阶模型对应的训练与存储开销”，要求采用。本轮已将中文逐字写入摘要，将忠实英文译文同步到英文摘要和引言第二项。保留前面的信道先验学习句，第一、第三点及其他背景文字保持；不再把这一段标为待确认候选。仅为图文顺序调整了第六章浮动体源码位置，图文内容与数据不变。两版编译及版面检查通过，主稿 13 页、完整稿 15 页。见[采用与核验记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/second_contribution_adopted_20261105/README.md)。
 
 ## 2026-11-05：按新版主张重新核定旧审稿问题
 
@@ -691,11 +691,11 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 新版第二项可核实的设计收益是利用已有条件均值导数关系，省去独立二阶模型及其依赖一阶得分估计的训练目标；不是发明该恒等式，也不保证消除去噪器误差或整体推理更快、更准。GP-MP 与适配 STMP 的性能对照仍是整套接收机比较，不能单独证明导数方差模块的性能增益；两者均使用密度比分类器，该模块的独立效果由正文已有活动概率替换实验支持。现有措辞并未要求进一步分解每个组件的增益，不据此新增强制消融。
 
-第六章与完整稿评估协议仍保留现有图表对应的实际有色训练设置。移除有色训练的创新主张与切换全部实验权重是不同事项；按既有决定等待完整白噪声配对核验及最终数据归属核定，不重复提出图例命名或进行中数据替换问题。证据见[新版贡献](../sections/01_introduction.tex)、[均值与方差关系](../sections/04_generative_priors.tex)、[实验表格和相位对照](../sections/06_simulation_results.tex)、[评估协议](../sections/appendix_evaluation_protocol.tex)及[阶段配对记录](../checks/white_mainline_revision_20261105/README.md)。
+第六章与完整稿评估协议仍保留现有图表对应的实际有色训练设置。移除有色训练的创新主张与切换全部实验权重是不同事项；按既有决定等待完整白噪声配对核验及最终数据归属核定，不重复提出图例命名或进行中数据替换问题。证据见[新版贡献](../sections/01_introduction.tex)、[均值与方差关系](../sections/04_generative_priors.tex)、[实验表格和相位对照](../sections/06_simulation_results.tex)、[评估协议](../sections/appendix_evaluation_protocol.tex)及[阶段配对记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_mainline_revision_20261105/README.md)。
 
 ## 2026-11-05：完成的两档 SBL 加入主 SNR 图
 
-作者要求把两档新增 SBL 画入主 SNR 图。12000 次新增推断和独立完成核验均已通过，图中增加 13／25 点配置，原 7 点曲线及其余 84 个绘图点保持。三档均用已确认亮蓝色，线型和标记区分，图例数字在图注中定义；VI-A3 同步列出网格及候选预算，避免把同时改变候选预算的实验解释为单独网格密度消融。未修改原始结果、运行参数、模型绑定或其他实验图。两版论文同步，仍为 13／15 页。见[本轮核验](../checks/snr_sbl_budgets_20261105/README.md)。
+作者要求把两档新增 SBL 画入主 SNR 图。12000 次新增推断和独立完成核验均已通过，图中增加 13／25 点配置，原 7 点曲线及其余 84 个绘图点保持。三档均用已确认亮蓝色，线型和标记区分，图例数字在图注中定义；VI-A3 同步列出网格及候选预算，避免把同时改变候选预算的实验解释为单独网格密度消融。未修改原始结果、运行参数、模型绑定或其他实验图。两版论文同步，仍为 13／15 页。见[本轮核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/snr_sbl_budgets_20261105/README.md)。
 
 ## 2026-11-05：一区定位复核与新增相关预印本
 
@@ -709,7 +709,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-06：四组活动证据表及消融预算调整
 
-作者确认表中同时展示 STMP Gaussian、STMP 学习密度比、白噪声 GP-MP Gaussian、白噪声 GP-MP 学习密度比，仅保留各档 AER（百分比）和达到 600 轮上限的比例，删除漏检、虚警及汇总行。当前表采用已从保存活动预测重新评分的场景 0–49；为避免误认为主 SNR 的每档 1000 场景，样本量仅在实验设置中简短注明。原始计数、旧 354 场景表和修改前 PDF 均保留于[修改与核验目录](../checks/activity_evidence_four_variants_50_20261106/README.md)。当前数据支持两组学习密度比均降低 AER，也如实保留 Gaussian STMP 优于 Gaussian GP-MP 的观察；不将其解释为已识别内部失效原因或单独方差模块的因果贡献。
+作者确认表中同时展示 STMP Gaussian、STMP 学习密度比、白噪声 GP-MP Gaussian、白噪声 GP-MP 学习密度比，仅保留各档 AER（百分比）和达到 600 轮上限的比例，删除漏检、虚警及汇总行。当前表采用已从保存活动预测重新评分的场景 0–49；为避免误认为主 SNR 的每档 1000 场景，样本量仅在实验设置中简短注明。原始计数、旧 354 场景表和修改前 PDF 均保留于[修改与核验目录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/activity_evidence_four_variants_50_20261106/README.md)。当前数据支持两组学习密度比均降低 AER，也如实保留 Gaussian STMP 优于 Gaussian GP-MP 的观察；不将其解释为已识别内部失效原因或单独方差模块的因果贡献。
 
 作者随后明确要求“现有的实验跑到100次就停掉吧”。按上下文将当前消融预算从每档 500 改为每档 100 个配对场景，即场景 0–99、六档 SNR、两组新增 Gaussian 共 1200 次，另两组各复用 600 次。原 PLAN、推断代码和既有结果保持，独立监控通过现有 STOP 接口停止派发并等待工作进程保存退出，保留可能的竞态多余结果。授权及停止监控在 `result/snr_comparison/data/activity_evidence_500_20261105/stop_after100_20261106/`；500-stmp 与 snr-2 已同步采用范围，不能恢复原 500 场景预算。
 
@@ -723,7 +723,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 所检查的核心公式链未见新的明显矛盾；Humanizer 未发现新的强制改写项，不因 `yielding` 等单个词项或正常技术段落形式而制造问题。现有三项贡献、作者确认的数学衔接、阶段验收安排、模型边界及配色继续保留。不重新打开已撤回的有色贡献与机制实验，不新增全组件消融，不对本轮给出总分。
 
-活动源码引用检查、表 III 48 个单元与保存汇总核对及两版版面检查通过；这些检查不等于重新评分全部原始结果或完成最终投稿验收。详见[复审报告](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/SUPERVISOR_HUMANIZER_REVIEW_20261106.md)和[核验记录](../checks/supervisor_humanizer_20261106/README.md)。
+活动源码引用检查、表 III 48 个单元与保存汇总核对及两版版面检查通过；这些检查不等于重新评分全部原始结果或完成最终投稿验收。详见[复审报告](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/SUPERVISOR_HUMANIZER_REVIEW_20261106.md)和[核验记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/supervisor_humanizer_20261106/README.md)。
 
 ## 2026-11-06：作者决定不补入 Ha 等预印本
 
@@ -745,7 +745,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 进一步删去消息均值和列向量的重复尺寸、向量化的逐层索引顺序、网络输入形状的再次展开、“所有设备更新适用于每个设备”等说明；在 Notation 中统一给出 vec 和单位阵，保留重要矩阵首次定义的尺寸、重排的行含义和实际协方差结构。摘要与引言贡献文字保持。附录 SNR 数量由七/六改为九/八，该复审项关闭。
 
-净减少约 410 个英文词项，主稿 13 页、完整稿 14 页，仍为 42 条参考文献。45 个编号公式及其他显示公式内容、算法步骤、表格和图文件保持；两版编译与版面检查通过。具体修改前副本、差异和核验见[本轮记录](../checks/conciseness_revision_20261106/README.md)。后续正文以首次清楚定义、随后直接使用为原则，不重复恢复已删的维度解释或防御性评论。
+净减少约 410 个英文词项，主稿 13 页、完整稿 14 页，仍为 42 条参考文献。45 个编号公式及其他显示公式内容、算法步骤、表格和图文件保持；两版编译与版面检查通过。具体修改前副本、差异和核验见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/conciseness_revision_20261106/README.md)。后续正文以首次清楚定义、随后直接使用为原则，不重复恢复已删的维度解释或防御性评论。
 
 ## 2026-11-06：按作者要求对照 Shen、Cai 检查公式排版
 
@@ -755,7 +755,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 ## 2026-11-06：两处公式拆行完成；作者追问全篇编号粒度
 
-按作者“可以，请你修改一下”的授权，式 (34)、(42) 已改为两行并保留原编号。数学内容一致，两版编译和目视检查通过，仍为 13／14 页。见[修改核验](../checks/equation_layout_revision_20261106/README.md)。
+按作者“可以，请你修改一下”的授权，式 (34)、(42) 已改为两行并保留原编号。数学内容一致，两版编译和目视检查通过，仍为 13／14 页。见[修改核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/equation_layout_revision_20261106/README.md)。
 
 作者在修改过程中进一步指出多条公式共用一个编号过多。本轮重新查看 Cai 的主要均值、方差、阻尼更新及 Shen 的相应更新，确认其多采用分别编号。Shen 式 (36) 虽将四个辅助参数共用一号，但不足以支持现稿将核心更新普遍合并。首次审阅对编号粒度的判断不充分，已在[报告](https://github.com/RESET-cpu/afdm-gfra/blob/fb2815c5b10a753b12e3bdecd4d4659d4f49b692/paper/docs/EQUATION_LAYOUT_REVIEW_20261106.md)纠正；建议独立核心更新分别编号、连续推导保留一号、辅助定义按需移至正文。目前全篇重编号尚未执行。此次复核由作者主动提出，不能再以此前不追求公式数量为由关闭该问题。
 
@@ -763,13 +763,13 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 作者采用的场景 0–99、六档 SNR、四组共 2400 份结果已核验通过：1200 次新 Gaussian 推断和 1200 份密度比复用。协调和工作进程已退出；停止时多派发的 1 份输出保留，原 500 场景计划不再继续。当前表 III 更新为每档 100 场景，仍只展示 AER (%) 与达到 600 轮比例 (%)；旧 50 场景快照、354 场景表及来源保留。
 
-两种接收机的学习密度比在六档下均降低 AER，均无迭代上限输出；Gaussian STMP 与 Gaussian GP-MP 分别有 9 次和 225 次上限输出，均纳入统计。全量活动预测已重评分；历史 STMP 的 594 份 NMSE 由保留逐用户误差复核，其他 1806 份由完整信道预测重评分。结果入口见[100 场景核验](../../result/snr_comparison/data/activity_evidence_500_20261105/adopted100_20261106/README.md)，表格和两版 PDF 见[修改记录](../checks/activity_evidence_four_variants_100_20261106/README.md)。
+两种接收机的学习密度比在六档下均降低 AER，均无迭代上限输出；Gaussian STMP 与 Gaussian GP-MP 分别有 9 次和 225 次上限输出，均纳入统计。全量活动预测已重评分；历史 STMP 的 594 份 NMSE 由保留逐用户误差复核，其他 1806 份由完整信道预测重评分。结果入口见[100 场景核验](../../result/snr_comparison/data/activity_evidence_500_20261105/adopted100_20261106/README.md)，表格和两版 PDF 见[修改记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/activity_evidence_four_variants_100_20261106/README.md)。
 
 ## 2026-11-06：作者授权全文公式分组与编号整理，已完成
 
 作者确认按独立更新分别编号、连续推导保留一号、辅助定义移至邻近正文的原则实施。原 45 个编号调整为 59 个；均值、方差、阻尼、样本协方差、边缘协方差、SVD 标量关系与 Gaussian 活动证据等分别编号。相位参数、矩阵拼接、有限差分缩写、分类器输入及导频能量等定义移入正文。数学关系、算法步骤和实验表保持。
 
-正文与 Algorithm 1 的引用均指向对应更新；图 3 的五处公式号同步，并改为由主稿编译标签生成。两版编译及版面检查通过，仍为 13／14 页，42 条参考文献。已完成的 100 场景活动证据表保持。图 3 除公式号之外逐像素一致，其他九幅图逐字节保持。此前全篇编号粒度问题关闭；见[修订与完整编号映射](../checks/equation_numbering_revision_20261106/README.md)。
+正文与 Algorithm 1 的引用均指向对应更新；图 3 的五处公式号同步，并改为由主稿编译标签生成。两版编译及版面检查通过，仍为 13／14 页，42 条参考文献。已完成的 100 场景活动证据表保持。图 3 除公式号之外逐像素一致，其他九幅图逐字节保持。此前全篇编号粒度问题关闭；见[修订与完整编号映射](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/equation_numbering_revision_20261106/README.md)。
 
 
 ## 2026-11-06：作者确认最终摘要并授权写入
@@ -778,14 +778,14 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 此前第二点贡献的详细数学衔接仍在正文，本次仅改变摘要叙述粒度。未扩展修改引言。沿用并补充 Manor–Michaeli、Dytso 和 Menon–Ong 的具体出处；没有新增参考文献或实验。
 
-英文摘要 212 词。两版编译完成，main/main_full 为 13／14 页；PDF 摘要与确认文本逐字符归一化核对通过，首页逐像素一致并完成目视检查，无越栏、缺字或未定义引用。源文件摘要之外保持，见 [修改与核验](../checks/abstract_final_20261106/README.md)。
+英文摘要 212 词。两版编译完成，main/main_full 为 13／14 页；PDF 摘要与确认文本逐字符归一化核对通过，首页逐像素一致并完成目视检查，无越栏、缺字或未定义引用。源文件摘要之外保持，见 [修改与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_final_20261106/README.md)。
 
 
 ## 2026-11-06：采用作者手动修订的摘要
 
 作者在已采用摘要基础上手动修订并贴回完整文本。采用其最新一版：首句增加设备不进行时间和频率预补偿，恢复 Based on this model，并在接收机构造前增加 then。逐字采用英文措辞，中文同步。新增条件与 §II-A 已有“不预补偿时延及多普勒”设定一致；不采用前一条被替换且含重复拼接的版本。
 
-当前英文 219 词；两版为 13／14 页，PDF 摘要与作者文本一致，无越栏、缺字或未定义引用；首页逐像素一致。主文件摘要之外保持。[修改与核验](../checks/abstract_author_revision_20261106/README.md)。
+当前英文 219 词；两版为 13／14 页，PDF 摘要与作者文本一致，无越栏、缺字或未定义引用；首页逐像素一致。主文件摘要之外保持。[修改与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_author_revision_20261106/README.md)。
 
 ## 2026-11-06：作者要求通读引言，复核故事及贡献必要性
 
@@ -806,7 +806,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 此前引言故事审阅仅作为建议记录；本次采用的是作者随后逐句确认的版本，不表示全部建议均被采用。尤其不恢复作者已否定的“消息传递为何需要均值方差”长句。无新增实验、参考文献或模型定义。
 
-两版编译完成，正文版／完整稿仍为 13／14 页，42 条参考文献、59 个公式标签。PDF 三项贡献与确认文字归一化核对一致；引言及正文衔接页面检查通过，两版前三页逐像素一致。摘要、其他章节、书目和图文件均保持。见[采用文本、差异与核验](../checks/introduction_final_20261106/README.md)。
+两版编译完成，正文版／完整稿仍为 13／14 页，42 条参考文献、59 个公式标签。PDF 三项贡献与确认文字归一化核对一致；引言及正文衔接页面检查通过，两版前三页逐像素一致。摘要、其他章节、书目和图文件均保持。见[采用文本、差异与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/introduction_final_20261106/README.md)。
 
 
 ## 2026-11-06：摘要、引言与结论的对应关系核查
@@ -828,7 +828,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 保留共享有效信道表示与新增观测的关系；以信道估计和平均方差概括去噪器，不重复 posterior、输出与输入导数的逐项说明；明确 MFLE、GPJD 两模块及密度比免于显式边缘似然计算的作用。性能与导频结果采用定性措辞，保留同等信道估计性能的比较含义；保留已有跨 NTN-TDL profile 无需重训练的结果，不列具体性能数字或基线数量。此前三处同步建议已落实，不要求恢复实验数字或泛化收尾。
 
-两版编译与页面检查通过，仍为 13／14 页，42 条参考文献、59 个公式标签。摘要、引言、其他章节、书目与图文件哈希保持；无新增实验或模型定义。见[修改与核验](../checks/conclusion_alignment_20261106/README.md)及[原文位置与逐句对应](../checks/conclusion_alignment_20261106/REFERENCE_ALIGNMENT.md)。
+两版编译与页面检查通过，仍为 13／14 页，42 条参考文献、59 个公式标签。摘要、引言、其他章节、书目与图文件哈希保持；无新增实验或模型定义。见[修改与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/conclusion_alignment_20261106/README.md)及[原文位置与逐句对应](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/conclusion_alignment_20261106/REFERENCE_ALIGNMENT.md)。
 
 
 ## 2026-11-06：参考 Cai、Shen 开展语言润色，第一轮完成
@@ -837,7 +837,7 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 摘要、引言和刚确认的结论检查后保持，不为追求变化再次改写主线。正文有明确条件概率含义的 conditional／posterior 保留。模型、公式、算法、全部实验数值和图表、引文序列均保持；未重新打开旧文献补引、实验替换或阶段验收事项。
 
-两版编译与版面检查通过，仍为 13／14 页，42 条参考文献及 59 个公式标签。逐项记录区分母本段落结构、术语沿用和本文普通语法修正，不以零散词汇来源冒称完整原句。见[本轮记录](../checks/language_polish_20261106/README.md)及[14 项修改前后与来源](../checks/language_polish_20261106/LANGUAGE_EDITS.md)。
+两版编译与版面检查通过，仍为 13／14 页，42 条参考文献及 59 个公式标签。逐项记录区分母本段落结构、术语沿用和本文普通语法修正，不以零散词汇来源冒称完整原句。见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/language_polish_20261106/README.md)及[14 项修改前后与来源](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/language_polish_20261106/LANGUAGE_EDITS.md)。
 
 
 ## 2026-11-06：第 II–VI 章说明书式叙述修订，已完成
@@ -846,21 +846,21 @@ S01 中作者进一步询问 indices、matrix 是否可由大小写、加粗与�
 
 III 章明确两个模块分别利用的似然与先验，衔接活动假设下的去噪和联合矩；IV 章连起得分、均值导数、方差及分类活动更新；V 章保留 MFLE/GPJD、site 及消息交换，改为围绕估计关系叙述，单主径相位近似仍在模型处给出；VI 章将网络训练和比较设置组织成完整段落。结果趋势、代表性数字、不利结果和工作稿数据状态均保持。
 
-仅五个正文分章改变。摘要、引言、结论、附录、公式、算法框、图表和全部实验数值保持；既定实验替换事项不重开。两版仍为 13/14 页、42 条参考文献、59 个公式标签，编译与版面检查通过。本轮是对上一轮轻量润色的进一步叙述修改，旧语言记录对应旧版本；当前改前改后、实际来源层次和核验见[本轮记录](../checks/chapters_ii_vi_narrative_20261106/REVISION_NOTES.md)。
+仅五个正文分章改变。摘要、引言、结论、附录、公式、算法框、图表和全部实验数值保持；既定实验替换事项不重开。两版仍为 13/14 页、42 条参考文献、59 个公式标签，编译与版面检查通过。本轮是对上一轮轻量润色的进一步叙述修改，旧语言记录对应旧版本；当前改前改后、实际来源层次和核验见[本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/chapters_ii_vi_narrative_20261106/REVISION_NOTES.md)。
 
 
 ## 2026-11-06：第四章按三个估计对象组织，已实施
 
 作者否定按得分匹配等工具命名小节的方案，并提出均值、方差和活动概率各一小节。本轮采用 IV-A Channel Mean Estimation、IV-B Channel Variance Estimation、IV-C Activity Probability Estimation。原 A/B 的均值关系与训练合为一节；二阶 Tweedie 协方差式移至方差节，与均值导数方差估计相接；活动节推导保持。此项更新第四章原四小节组织要求，后续不为贴合 Cai 的一阶/二阶得分学习目录恢复四节。
 
-公式含义和算法不变，仅三个公式顺序调整，交叉引用已同步。正文 13 页、完整稿 14 页；实际变化的第 5–9 页已检查。见[结构调整记录](../checks/ch4_moments_activity_structure_20261106/README.md)。
+公式含义和算法不变，仅三个公式顺序调整，交叉引用已同步。正文 13 页、完整稿 14 页；实际变化的第 5–9 页已检查。见[结构调整记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch4_moments_activity_structure_20261106/README.md)。
 
 
 ## 2026-11-06：补足第四章两处推导衔接，已完成
 
 作者同意对照 Cai 补足已有论证，按此前限定的两处实施。IV-A 明确 DSM 与匹配含噪信道分布得分的均方误差目标具有相同最优解；IV-B 明确对 Tweedie 均值求导并与协方差式比较，再以联合去噪所需的平均方差说明取迹，承接原有散度及随机方向数值估计。没有增加编号公式、证明或第二个方差网络，保留均值／方差／活动概率三小节。
 
-公式内容与编号、活动小节及其他章节保持。两版编译通过，仍为 13/14 页、42 条参考文献、59 个公式标签；受排版影响的第 5–8 页已检查。见[修订及核验](../checks/ch4_derivation_bridges_20261106/README.md)。
+公式内容与编号、活动小节及其他章节保持。两版编译通过，仍为 13/14 页、42 条参考文献、59 个公式标签；受排版影响的第 5–8 页已检查。见[修订及核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch4_derivation_bridges_20261106/README.md)。
 
 ## 2026-11-06：作者确认第三段以 AFDM 低复杂度调制作为背景动机
 
@@ -868,7 +868,7 @@ III 章明确两个模块分别利用的似然与先验，衔接活动假设下�
 
 Ding §I/PDF p.1 与 Huang §I/p.2949 提供低复杂度实现的背景依据；Bemani §II-B 式 (16) 后的逆变换及 §III-A 式 (18) 支撑实现结构。采用低复杂度调制的正面描述，不恢复对所有 OTFS 实现的无条件复杂度排序。此次由作者主动提出并确认，与此前限制普遍复杂度比较的决定一致。
 
-本轮仅采用这一处背景段修订，三项贡献、第六段活动检测及贡献前过渡句均保持原文；聊天中的其他候选不视为已采纳。修改前副本、差异及编译核验见 [本轮记录](../checks/afdm_intro_complexity_20261106/README.md)。
+本轮仅采用这一处背景段修订，三项贡献、第六段活动检测及贡献前过渡句均保持原文；聊天中的其他候选不视为已采纳。修改前副本、差异及编译核验见 [本轮记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/afdm_intro_complexity_20261106/README.md)。
 
 ### 后续：按作者反馈删除背景段的满分集表述
 
@@ -881,7 +881,7 @@ Ding §I/PDF p.1 与 Huang §I/p.2949 提供低复杂度实现的背景依据；
 
 删除原句从活动概率误差到信道估计误差的因果推断；不采用通用贝叶斯似然比较作为研究缺口。后验矩与边缘似然的区别属于本稿分析，不归为 Cai 的原文结论。上述高斯近似仅指活动更新中的后验投影，不表示取消等效 AWGN 模型。前文方差段、三项贡献及其他章节保持。
 
-两版编译完成，仍为 13/14 页、42 条参考文献、59 个公式标签。Menon 首次引用提前后编号自动调整；版面检查通过，非阻塞留白提示已记录。详见[修订与核验](../checks/activity_intro_revision_20261106/README.md)。本条更新此前聊天及引言故事审阅中关于活动检测开头的候选建议，不将那些未采纳建议作为当前稿要求。
+两版编译完成，仍为 13/14 页、42 条参考文献、59 个公式标签。Menon 首次引用提前后编号自动调整；版面检查通过，非阻塞留白提示已记录。详见[修订与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/activity_intro_revision_20261106/README.md)。本条更新此前聊天及引言故事审阅中关于活动检测开头的候选建议，不将那些未采纳建议作为当前稿要求。
 
 
 ## 2026-11-06：作者主动要求复查引言是否仍有因果倒置
@@ -900,7 +900,7 @@ Ding §I/PDF p.1 与 Huang §I/p.2949 提供低复杂度实现的背景依据；
 
 保留 AFDM 低复杂度两句、去噪器导数与不确定性的数学衔接、已修改的活动检测段、三项贡献和第二章的信道表示比较。此项完成上一条中的两条建议，不要求恢复已删句。
 
-两版编译与版面检查完成，仍为 13/14 页、42 条参考文献、59 个公式标签，引用与公式编号保持；无越栏、缺字或未定义引用。详见[修订与核验](../checks/intro_causal_cleanup_20261106/README.md)。
+两版编译与版面检查完成，仍为 13/14 页、42 条参考文献、59 个公式标签，引用与公式编号保持；无越栏、缺字或未定义引用。详见[修订与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/intro_causal_cleanup_20261106/README.md)。
 
 
 ## 2026-11-06：作者要求重点复查第 II–V 章故事与说明书感
@@ -925,7 +925,7 @@ Cai 的活动更新已有高斯解析式 (30)，本稿 q_1 的积分困难与密
 
 本轮落实经作者校正后的 R4 及 R2 的局部表述修订。R1/R3 的第五章组织建议未实施；Gaussian site、接受/保留规则、算法和模型均不变。没有把统计量定义改成学习网络输出的精确等式，没有把 Cai 的高斯解析活动更新说成高维积分求解。
 
-两版编译及第 5–7 页版面检查通过，仍为 13/14 页、59 个公式标签、42 条参考文献，公式与引用编号保持。仅两个正文源文件和两版 PDF 更新；其余受保护稿件资产保持。详见[修订与核验](../checks/ch3_framework_boundary_20261107/README.md)。
+两版编译及第 5–7 页版面检查通过，仍为 13/14 页、59 个公式标签、42 条参考文献，公式与引用编号保持。仅两个正文源文件和两版 PDF 更新；其余受保护稿件资产保持。详见[修订与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch3_framework_boundary_20261107/README.md)。
 
 
 ## 2026-11-07：白噪声主 SNR 估计相位与图稿采用完成
@@ -936,7 +936,7 @@ Cai 的活动更新已有高斯解析式 (30)，本稿 q_1 的积分困难与密
 
 主 SNR 图 6 的两条 GP-MP 曲线已替换，其他七种配置、颜色、图例及浅网格保持。正文仅同步工作稿数据状态、0 dB 对 STMP 优势约 1.5 dB 和估计相位损失 0.28–0.60 dB。保留其他线程已采用的摘要、引言、结论和第三/四章修订，不接管已由另一线程完成的 100 场景消融表。两版编译和目视检查通过，仍为 13/14 页、42 条参考文献，公式和引用保持。
 
-按照作者既定阶段，保留当前核心叙述作为工作稿。图 4、7–10 的其他白噪声替换、导频/用户数/活动概率的估计相位曲线和额外 Off-grid SBL（13/25）仍属后续范围；没有启动这些扫描，不宣称最终投稿定稿。详见[采用与核验](../checks/white_snr_adopted_20261107/README.md)。
+按照作者既定阶段，保留当前核心叙述作为工作稿。图 4、7–10 的其他白噪声替换、导频/用户数/活动概率的估计相位曲线和额外 Off-grid SBL（13/25）仍属后续范围；没有启动这些扫描，不宣称最终投稿定稿。详见[采用与核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_snr_adopted_20261107/README.md)。
 
 ## 2026-11-07：作者授权白噪声代码主线整理与后续逐项替换
 
@@ -952,4 +952,4 @@ Cai 的活动更新已有高斯解析式 (30)，本稿 q_1 的积分困难与密
 
 白噪声去噪已完成原 500 个配对场景、六档 AWGN、每场景 4 个信道，共 12000 个查询，保存预测全量重评分及输入/输出哈希核验通过。图 4 仅替换 GP-MP 六个点，另 48 个点和样式保持；图 3 保持原示例选择，替换为同场景保存的白噪声输出。新旧 GP-MP 去噪曲线最大绝对差为 0.25734 dB，低 SNR GP-MP 更好及高 SNR STMP 更好的原趋势保持。
 
-正文仅更新已采用数据范围为图 4–6，图 7–10 仍待逐项替换。两版工作稿编译并目视检查第 7、8、10 页通过，仍为 13/14 页；其他章节与八幅图哈希保持。该项 ADOPTION PASS，下一项按授权进入导频数扫描。详见 [去噪采用核验](../checks/white_denoising_adopted_20261107/README.md)。
+正文仅更新已采用数据范围为图 4–6，图 7–10 仍待逐项替换。两版工作稿编译并目视检查第 7、8、10 页通过，仍为 13/14 页；其他章节与八幅图哈希保持。该项 ADOPTION PASS，下一项按授权进入导频数扫描。详见 [去噪采用核验](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_denoising_adopted_20261107/README.md)。

@@ -94,9 +94,9 @@
 | [dytso2023_conditional_mean_published.pdf](dytso2023_conditional_mean_published.pdf) | Conditional Mean Estimation in Gaussian Noise: A Meta Derivative Identity With Applications；IEEE TIT 69(3):1883–1898, 2023；DOI 10.1109/TIT.2022.3216012 | NSF 机构库存储的正式版；p.1 式(3)、p.3 Prop.1 式(17) |
 | [shastri2022_dgec_published.pdf](shastri2022_dgec_published.pdf) | Denoising Generalized Expectation-Consistent Approximation for MR Image Recovery；IEEE JSAIT 3(3):528–542, 2022；DOI 10.1109/JSAIT.2022.3207109 | 作者站点提供的正式版；p.8 III-B、式(38) |
 
-[下载来源与 SHA-256](../../paper/C-STMP/checks/published_references_20261103/SOURCES.json)。C-STMP 稿同时将 Metzler 和 Zou/Xu 条目改为正式发表记录；Wei 预印本从当前稿的参考文献删除，按作者要求保留引言论述，文献库原文件不删除。详见[修订记录](../../paper/C-STMP/checks/published_references_20261103/REVISION_NOTES.md)。
+[下载来源与 SHA-256](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/published_references_20261103/SOURCES.json)。C-STMP 稿同时将 Metzler 和 Zou/Xu 条目改为正式发表记录；Wei 预印本从当前稿的参考文献删除，按作者要求保留引言论述，文献库原文件不删除。详见[修订记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/published_references_20261103/REVISION_NOTES.md)。
 
 
 ## 2026-11-04：Xu AFDM-GFRA 作者稿
 
-新增 [xu2026_afdm_gfra_author.pdf](xu2026_afdm_gfra_author.pdf)，Xu 等，*AFDM-aided Grant-Free Random Access for LEO SIoT: Performance Analysis and Near-optimal Joint Detection*，DOI 10.1109/TCOMM.2025.3628748。从 Surrey 开放机构库下载接受稿，含封面共 14 页；本轮核对印刷第 12 页（PDF 第 13 页）图 9–11 的粉色为 RGB (1, 0.4, 0.6)，用于作者指定的论文配色参考。[来源、SHA-256 与取色记录](../../paper/C-STMP/checks/stmp_xu_pink_20261104/XU_SOURCE.json)。此前关于尚未取得本地 Xu PDF 的记录为历史状态。
+新增 [xu2026_afdm_gfra_author.pdf](xu2026_afdm_gfra_author.pdf)，Xu 等，*AFDM-aided Grant-Free Random Access for LEO SIoT: Performance Analysis and Near-optimal Joint Detection*，DOI 10.1109/TCOMM.2025.3628748。从 Surrey 开放机构库下载接受稿，含封面共 14 页；本轮核对印刷第 12 页（PDF 第 13 页）图 9–11 的粉色为 RGB (1, 0.4, 0.6)，用于作者指定的论文配色参考。[来源、SHA-256 与取色记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/stmp_xu_pink_20261104/XU_SOURCE.json)。此前关于尚未取得本地 Xu PDF 的记录为历史状态。
