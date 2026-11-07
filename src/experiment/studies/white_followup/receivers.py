@@ -72,6 +72,17 @@ def state_read(path):
             time.sleep(.05)
 
 
+def job_read(path):
+    """Allow up to two seconds for a published job's Windows sharing lock."""
+    for attempt in range(41):
+        try:
+            return read_json(path)
+        except PermissionError:
+            if attempt == 40:
+                raise
+            time.sleep(.05)
+
+
 def is_live(token):
     try:
         p = psutil.Process(token['pid'])
@@ -475,7 +486,7 @@ def worker(stage, session, slot, method):
                         break
                     time.sleep(.2)
                     continue
-                position = read_json(job)['task_position']
+                position = job_read(job)['task_position']
                 task = tasks[position]
                 if task['method'] != method or 'reuse' in task:
                     raise ValueError('Wrong worker method or dispatch of reusable task')

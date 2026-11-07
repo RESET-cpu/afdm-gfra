@@ -117,6 +117,51 @@ class FollowupChecks(unittest.TestCase):
             self.assertEqual(value.activity_prior,.1)
             self.assertFalse(hasattr(value,'operator'))
 
+    def test_job_read_is_bounded_and_does_not_retry_invalid_content(self):
+        with patch.object(r, 'read_json', side_effect=[PermissionError(), {'task_position': 1088}]) as read, patch.object(r.time, 'sleep') as sleep:
+            self.assertEqual(r.job_read('job000906.json'), {'task_position': 1088})
+            self.assertEqual(read.call_count, 2)
+            sleep.assert_called_once_with(.05)
+        with patch.object(r, 'read_json', side_effect=PermissionError()) as read, patch.object(r.time, 'sleep'):
+            with self.assertRaises(PermissionError):
+                r.job_read('job000906.json')
+            self.assertEqual(read.call_count, 41)
+        for error in (json.JSONDecodeError('bad', 'x', 0), FileNotFoundError()):
+            with patch.object(r, 'read_json', side_effect=error) as read:
+                with self.assertRaises(type(error)):
+                    r.job_read('job000906.json')
+                self.assertEqual(read.call_count, 1)
+
+    @unittest.skipUnless(sys.platform == 'win32', 'Windows file sharing semantics')
+    def test_job_read_recovers_from_real_windows_sharing_lock(self):
+        import ctypes
+        from ctypes import wintypes
+        import threading
+        kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                                     wintypes.LPVOID, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
+        kernel.CreateFileW.restype = wintypes.HANDLE
+        kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+        kernel.CloseHandle.restype = wintypes.BOOL
+        with tempfile.TemporaryDirectory(dir=self.temp_root) as temp:
+            path = Path(temp) / 'job000906.json'
+            r.write_json(path, {'task_position': 1088})
+            handle = kernel.CreateFileW(str(path), 0x80000000, 0, None, 3, 0x80, None)
+            if handle == wintypes.HANDLE(-1).value:
+                raise ctypes.WinError(ctypes.get_last_error())
+            try:
+                with self.assertRaises(PermissionError):
+                    r.read_json(path)
+            except BaseException:
+                kernel.CloseHandle(handle)
+                raise
+            release = threading.Timer(.15, kernel.CloseHandle, args=(handle,))
+            release.start()
+            try:
+                self.assertEqual(r.job_read(path), {'task_position': 1088})
+            finally:
+                release.join()
+
     def example(self,ep=False):
         configuration=dict(ep=dict(damping=.4))
         plan=dict(receiver_configuration=configuration,configuration_snapshots={'GP_MP_EP':{'fixed':'binding'}})

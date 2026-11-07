@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "scope": "Queue I/O repair; no numerical operations or scientific configuration changed",
+  "source": "src/experiment/studies/white_followup/receivers.py",
+  "before_sha256": "f93f73a4006b0ee897b739b62ddebd35bcee8e7af45c1e2db7943ecf9b91b43a",
+  "after_sha256": "cea05350f43a85b6168ed61bcb84c35498371bfbdb2f1d0acaf0f8256fadd16b",
+  "change": "Read an already published task with at most 40 permission-error waits of 0.05 seconds; malformed/missing records still fail immediately.",
+  "inference_retries": false,
+  "scientific_functions_ast_unchanged": true,
+  "tests": {
+    "passed": 27,
+    "seconds": 2.8,
+    "files": [
+      "src/tests/test_white_followup_receivers_20261107.py",
+      "src/tests/test_organized_code.py"
+    ],
+    "real_windows_sharing_lock_reproduced": true,
+    "persistent_permission_failure_bounded": true,
+    "malformed_json_not_retried": true
+  },
+  "original_source_inventory": "archive/pilot_resume_20261107/before/archive/code_cleanup_20261107/CURRENT_SOURCES.json",
+  "prior_source_inventory_sha256": "0cc3a38f9a36769dabda754740f71ea7c1ed19b83580f27fda0dfeb0c80b0d69",
+  "created_unix": 1794060097.663105,
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "run",
+    "verification_status": "VERIFIED",
+    "scope": "Queue fix only; formal stage pending"
+  },
+  "prior_public_commit": "61834c835efc56efab2e445c21e1676b682448c9"
+}

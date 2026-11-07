@@ -27,7 +27,7 @@ GitHub 保存代码、配置、论文、正式图表、精选小型汇总及当�
 
 2026-11-07 代码整理：场景、波形、信道、接收机、实验、绘图、网络和训练直接按功能放在 [src](src/README.md) 下。根入口保持 `run_experiments.py`，增加 `plot --list` / `plot --check`。原源码保留给冻结批次复现，模型、数据、参数与正式图不变。[映射与验证](archive/src_flatten_20261107/README.md)。
 
-2026-11-07 后续：白噪声去噪 12000 个查询已核验，图 4 和图 3 示例已采用，两版工作稿同步。[采用记录](paper/checks/white_denoising_adopted_20261107/README.md)。导频数阶段在完成 2906/12000 份后遇到任务文件读取权限错误，当前停止，尚未采用；完整核验及图稿采用后才进入用户数阶段。[进度](result/pilot_frames/data/white_mainline_500_20261107/STATUS.json)与[失败记录](result/pilot_frames/data/white_mainline_500_20261107/FAILURE.json)。
+2026-11-07 后续：白噪声去噪 12000 个查询已核验，图 4 和图 3 示例已采用，两版工作稿同步。[采用记录](paper/checks/white_denoising_adopted_20261107/README.md)。导频数阶段的任务读取权限错误已修复；已有 2906/12000 份结果全量重评分通过，22:03 按原计划启动断点续跑，剩余 9094 份，尚未完成或采用。完整核验及图稿采用后才进入用户数阶段。[恢复与验证](archive/pilot_resume_20261107/README.md)。GitHub 状态为提交时快照，本地 STATUS.json 为运行进度。
 
 2026-11-07：代码主线已整理为独立白噪声 `receiver.gp_mp`，默认登记为 `GP_MP` / `GP_MP_EP`，旧 `C_STMP` 标识仅兼容指向白噪声版本。旧有色实现与登记已移至独立冻结归档，原数据保持。作者已授权按去噪、导频数、用户数、活动概率、跨信道的顺序补跑，每项核验并替换图稿后再开始下一项；状态见 [后续实验请求](result/white_followup_20261107/REQUEST.json)。
 
