@@ -53,7 +53,7 @@ SMOKE_SEED = 202610219900001
 
 
 def assets(binding, definitions, config_path, device):
-    files = {ROOT / 'src/configs/final/models.json', REGISTRY / 'PLAN.json', REGISTRY / 'SCENES.csv',
+    files = {CONFIGS / 'organized/models.json', REGISTRY / 'PLAN.json', REGISTRY / 'SCENES.csv',
              REGISTRY / 'SEED_SEPARATION.json', REGISTRY / 'PAIRING_CHECK.json'}
     files.update(source_files())
     files.update((ROOT / 'src/configs/final').glob('*.json'))
@@ -61,16 +61,6 @@ def assets(binding, definitions, config_path, device):
     files.add(config_path)
     for spec in definitions.values():
         files.update(algorithms.source_files(spec, binding, device))
-    if any(s.get('training_provenance') == 'proposed' for s in definitions.values()):
-        spec = binding['proposed']
-        run = Path(spec['run'])
-        complete = read_json(run / 'COMPLETE.json')
-        if (complete['completed_updates'] != 142500 or complete['selected_sha256'] != spec['checkpoint_sha256']
-                or (run / 'RUNNING.lock').exists()):
-            raise ValueError('Completed ten-layer training and selected weights must agree')
-        if sha256(run / 'MANIFEST.json') != spec['manifest_sha256'] or sha256(ROOT / spec['config']) != spec['config_sha256']:
-            raise ValueError('Training provenance or final inference configuration changed')
-        files.update((run / 'COMPLETE.json', run / 'MANIFEST.json', ROOT / spec['config']))
     return {str(p.resolve()): sha256(p) for p in sorted(files)}
 
 
@@ -177,7 +167,7 @@ def make_plan(name, args):
         cache=str(cache), phase_mode=phase_mode, noise_mode=noise_mode,
         bootstrap_replicates=10000, bootstrap_seed=2026102198,
         timing='One warmup per method/shape, CUDA synchronization. Internal phase initialization/updates are included in receiver time; external frontend time is added separately. Cached results keep original timing.',
-        ablation_scope='Controlled learned-vs-Gaussian-site evidence on STMP only; ten-layer is a full-receiver reference, not a matched ablation.',
+        ablation_scope='Controlled learned-vs-Gaussian-site evidence on STMP.',
         denoising_scope='Configured first-network means on paired known-variance AWGN queries; colored-trained networks use C=vI. No receiver layer, second score or activity network is evaluated.',
         amendments=['User requested 1000 MC scenes for all future experiments, including runtime comparison; registry IDs 0..999.',
                     'User requested pretrained first-score denoising only.', 'User deferred STMP three-network execution and its activity-evidence ablation.'],

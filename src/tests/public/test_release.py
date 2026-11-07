@@ -40,15 +40,20 @@ def test_other_external_paths_are_not_rebound(tmp_path, monkeypatch):
     assert workspace.repository_path('configs/organized/algorithms.json') == workspace.CONFIGS/'organized/algorithms.json'
 
 
-def test_model_relocation_preserves_hashes_and_frozen_json(tmp_path, monkeypatch):
+def test_working_models_keep_stmp_binding_without_retired_du():
     source = workspace.CONFIGS/'final/models.json'
     before = source.read_bytes()
-    monkeypatch.setattr(workspace, 'ROOT', tmp_path)
     actual = registry.load_models()
     frozen = json.loads(before)
-    assert Path(actual['proposed']['checkpoint']).is_relative_to(tmp_path)
-    assert actual['proposed']['checkpoint_sha256'] == frozen['proposed']['checkpoint_sha256']
+    assert 'proposed' not in actual
+    assert actual['STMP'] == json.loads((workspace.ROOT/frozen['STMP_configuration']).read_text())
     assert source.read_bytes() == before
+
+
+@pytest.mark.parametrize('method', ['DU', 'proposed'])
+def test_retired_du_is_not_a_current_receiver(method):
+    with pytest.raises(ValueError, match='Unregistered'):
+        registry.select([method], registry.load_catalog(), 'receiver')
 
 
 def test_documented_diagnostic_selects_only_gp_mp():
@@ -99,3 +104,19 @@ def test_asset_check_reports_missing_and_changed_bytes(tmp_path, monkeypatch):
     after = assets.inspect(verify=True)
     assert after['missing'] == 1 and after['hash_mismatches'] == 1
     assert not after['inference_started']
+
+
+@pytest.mark.parametrize('verify', [False, True])
+def test_asset_check_rejects_lfs_pointer_without_model_bytes(tmp_path, monkeypatch, verify):
+    from experiment import assets
+    (tmp_path/'release').mkdir()
+    (tmp_path/'weight.pt').write_text('version https://git-lfs.github.com/spec/v1\n'
+                                    'oid sha256:'+'1'*64+'\nsize 12345\n')
+    manifest = dict(scope_notes={'models': 'model fixture'}, assets=[
+        dict(path='weight.pt', scopes=['models'], sha256='1'*64)])
+    (tmp_path/'release/assets.json').write_text(json.dumps(manifest))
+    monkeypatch.setattr(assets, 'CONFIGS', tmp_path)
+    monkeypatch.setattr(assets, 'repository_path', lambda value: tmp_path/value)
+    report = assets.inspect('models', verify=verify)
+    assert report['status'] == 'INCOMPLETE' and report['missing'] == 1
+    assert report['assets'][0]['status'] == 'LFS_POINTER'

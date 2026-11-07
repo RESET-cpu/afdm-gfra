@@ -1,34 +1,6 @@
 {
   "schema": "afdm-algorithm-catalog-v1",
   "algorithms": {
-    "proposed": {
-      "kind": "receiver",
-      "group": "proposed",
-      "label": "DU (deep unfolded, 10 layers)",
-      "factory": "receiver.du.inference:ProposedReceiver",
-      "estimates_phase_internally": true,
-      "known_noise": {
-        "kwargs": {
-          "noise_mode": "known"
-        }
-      },
-      "model_kwargs": {
-        "binding": ""
-      },
-      "backend": "device",
-      "device_modules": [
-        "model"
-      ],
-      "model_files": {
-        "proposed": [
-          "checkpoint",
-          "phase_config",
-          "phase_moment"
-        ]
-      },
-      "training_provenance": "proposed",
-      "alias_of": "DU"
-    },
     "STMP": {
       "kind": "receiver",
       "group": "STMP",
@@ -206,33 +178,6 @@
           "first_checkpoint"
         ]
       }
-    },
-    "DU": {
-      "kind": "receiver",
-      "group": "DU",
-      "label": "DU (deep unfolded, 10 layers)",
-      "factory": "receiver.du.inference:ProposedReceiver",
-      "estimates_phase_internally": true,
-      "known_noise": {
-        "kwargs": {
-          "noise_mode": "known"
-        }
-      },
-      "model_kwargs": {
-        "binding": ""
-      },
-      "backend": "device",
-      "device_modules": [
-        "model"
-      ],
-      "model_files": {
-        "proposed": [
-          "checkpoint",
-          "phase_config",
-          "phase_moment"
-        ]
-      },
-      "training_provenance": "proposed"
     },
     "GP_MP": {
       "kind": "receiver",

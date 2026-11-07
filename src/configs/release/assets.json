@@ -5,7 +5,8 @@
     "gp-mp": "GP-MP/GP-MP-EP inference bindings and scene registry; comparator weights and full training data are separate.",
     "figures": "Saved plotting inputs and current compiled equation labels for all ten figures; fonts and final reference PDFs for --check are documented separately.",
     "training": "Archived white-training inputs, bank files and explicit recipe bindings; protected historical-run records and runtime preflights are still required. Not a certification of fresh retraining.",
-    "all": "Union of the documented inference, plotting and archived-training prerequisites; does not certify complete numerical reproduction."
+    "all": "Union of the documented inference, plotting and archived-training prerequisites; does not certify complete numerical reproduction.",
+    "models": "Eight distributed model assets for GP-MP, STMP and GNN, including classifier initialization provenance and shared STMP phase calibration; no DU weights or raw scenes."
   },
   "assets": [
     {
@@ -69,9 +70,10 @@
       "bytes": 130648201,
       "scopes": [
         "gp-mp",
-        "training"
+        "training",
+        "models"
       ],
-      "distribution": "external asset; not in source snapshot"
+      "distribution": "included through Git LFS; original model asset bytes"
     },
     {
       "path": "result/channel_denoising/data/white_preconditioned_matched_20261104/initialization/first.pt",
@@ -200,6 +202,24 @@
       "distribution": "source or small provenance record"
     },
     {
+      "path": "result/models/gnn/checkpoint.pt",
+      "sha256": "a09f07dd6af6c8390a68d10b892f64fec316b4e7cd031350817e7ad679fa3f4e",
+      "bytes": 1117452,
+      "scopes": [
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes"
+    },
+    {
+      "path": "result/models/proposed_10/phase_moments.npz",
+      "sha256": "2be9d73c11dd5b1bce0faec699470ae3df2af48862f4c033371dcfa401e41671",
+      "bytes": 990887,
+      "scopes": [
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes"
+    },
+    {
       "path": "result/pilot_frames/figures/full_grid_final_20261026/PLOT_DATA.json",
       "sha256": "9b3e75bd7f3dd628b4e1bf456d952ad8aff6445407aa71472b8c305dbbfe6dc0",
       "bytes": 32776,
@@ -218,6 +238,15 @@
       "distribution": "source or small provenance record"
     },
     {
+      "path": "result/runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt",
+      "sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+      "bytes": 130387209,
+      "scopes": [
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes"
+    },
+    {
       "path": "result/runs/proposed_50000_cuda_graph_20261018/training.json",
       "sha256": "bc93359b3c2d5c0bc481d42b3f0f628e6eeaeae2116e419d466fc7b4885b911d",
       "bytes": 5494,
@@ -227,6 +256,15 @@
       "distribution": "source or small provenance record"
     },
     {
+      "path": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+      "sha256": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d",
+      "bytes": 3700751,
+      "scopes": [
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes"
+    },
+    {
       "path": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/specification.json",
       "sha256": "c5fff435a4d6d5c0a8870292b2015fc472775756b6a3b1c6e72f32529055011d",
       "bytes": 10974,
@@ -234,6 +272,15 @@
         "training"
       ],
       "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/second/second_best.pt",
+      "sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5",
+      "bytes": 130385799,
+      "scopes": [
+        "models"
+      ],
+      "distribution": "included through Git LFS; original model asset bytes"
     },
     {
       "path": "result/snr_comparison/data/c_stmp_derivative_1000_20261025/inference/PLAN.json",
@@ -267,9 +314,10 @@
       "sha256": "2fb9977d68ede2b451dc0ba712a8106f002f889d2e529147aa2eb271a337d854",
       "bytes": 3700687,
       "scopes": [
-        "gp-mp"
+        "gp-mp",
+        "models"
       ],
-      "distribution": "external asset; not in source snapshot"
+      "distribution": "included through Git LFS; original model asset bytes"
     },
     {
       "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/history.json",
@@ -285,9 +333,10 @@
       "sha256": "8630e5196c3611842d360bc60a107351202c0b1ff226eecd640986fa6c63ce9b",
       "bytes": 3505901,
       "scopes": [
-        "gp-mp"
+        "gp-mp",
+        "models"
       ],
-      "distribution": "external asset; not in source snapshot"
+      "distribution": "included through Git LFS; original model asset bytes"
     },
     {
       "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/specification.json",

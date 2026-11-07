@@ -6,7 +6,7 @@ import time
 
 import numpy as np
 
-from receiver.du.phase_math import observed_covariances
+from receiver.frontend.phase_math import observed_covariances
 from receiver.stmp.phase_slopes import update as update_phase
 from channel.phase import phase_operator
 from receiver.stmp.gaussian import gaussian_extrinsic

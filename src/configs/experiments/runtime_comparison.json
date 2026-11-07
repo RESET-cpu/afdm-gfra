@@ -2,7 +2,7 @@
   "schema": "afdm-experiment-v1",
   "experiment": "runtime_comparison",
   "methods": [
-    "proposed",
+    "GP_MP",
     "offgrid_sbl",
     "gnn",
     "gamp",
@@ -10,7 +10,7 @@
   ],
   "scenes": 1000,
   "timing_repeats": 3,
-  "reference_method": "proposed",
+  "reference_method": "GP_MP",
   "include_stmp": false,
   "execution_status": "READY",
   "snr_db": [

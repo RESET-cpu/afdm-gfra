@@ -1,6 +1,6 @@
 # 算法
 
-算法通过 [src/configs/algorithms.json](../configs/algorithms.json) 登记，由 `registry.py` 构造。具体实验使用计划中保存的算法配置。
+本目录保留冻结批次源码。日常入口使用 [工作登记](../configs/organized/algorithms.json) 和 `receiver.registry`；本目录旧登记与混合历史绑定不代表当前方法清单。
 
 | 位置 | 用途 |
 |---|---|
@@ -9,7 +9,7 @@
 | `C_STMP_variance_em_20261025/` | 历史有色接收机；退出默认登记，冻结源码保留 |
 | `C_STMP_phase_selection_20261030/` | 历史相位候选，保留用于旧结果复现 |
 | `C_STMP/`、其他 `C_STMP_*`、`candidates/` | 既有实现和研究候选；保留原路径供配置、测试及历史结果引用 |
-| `proposed/` | 固定十层深度展开；登记名 `DU` 与保留的 `proposed` 别名 |
+| `proposed/` | 旧路径保留的共用相位计算模块；DU 已退出工作入口和发布清单 |
 | `baseline/` | `somp.py`、`gamp.py`、`gnn.py`、`offgrid_sbl.py` 四个基准实现 |
 | `registry.py` | `build_algorithm` 统一构造入口及 `build_receiver` 接收机检查入口 |
 

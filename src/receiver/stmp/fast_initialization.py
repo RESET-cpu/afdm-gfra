@@ -9,8 +9,8 @@ import numpy as np
 from scipy.linalg import cho_factor
 from scipy.linalg import cho_solve
 from scipy.optimize import minimize
-from receiver.du.phase_math import observed_covariances
-from receiver.du.phase_math import stationary_maximum
+from receiver.frontend.phase_math import observed_covariances
+from receiver.frontend.phase_math import stationary_maximum
 
 
 class _MemoizedObjective:

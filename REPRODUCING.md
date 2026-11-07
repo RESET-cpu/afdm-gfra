@@ -4,13 +4,35 @@ This is a research source snapshot. Its current proposed method is **GP-MP**;
 the receiver with estimated phase is **GP-MP-EP**. The paper remains under
 `paper/C-STMP`. Copyright is retained; see [RIGHTS.md](RIGHTS.md).
 
-The source does not include trained weights, training arrays, or per-scene
-predictions. A small CPU example and the default tests work without them.
+Selected GP-MP, STMP and GNN model assets are distributed through Git LFS.
+Training arrays and per-scene predictions are excluded. A small CPU example
+and the default tests work without weights.
 Running the example does not reproduce a GP-MP performance curve.
 
 ## Download the source and prepare dependencies
 
-Download the repository ZIP from GitHub and extract it, or clone the repository. Use Python 3.11 or newer in a new environment. The measured reference setup
+To obtain both source and weights, install [Git LFS](https://git-lfs.com/), then run:
+
+```text
+git lfs install
+git clone https://github.com/RESET-cpu/afdm-gfra.git
+cd afdm-gfra
+git lfs pull
+```
+
+The repository remains private, so repository access is required. The eight
+model assets total about 404 MB; their exact paths and hashes are listed in
+[weights.json](src/configs/release/weights.json). They include the classifier
+initialization checked by GP-MP provenance and the STMP phase calibration
+moments. Historical candidate checkpoints and training initialization banks
+are not part of this selection.
+
+GitHub ZIP downloads may contain only LFS pointer files, depending on the
+repository archive setting. The asset checker reports these as `LFS_POINTER`;
+use the Git LFS clone above if this occurs. Source-only examples and tests
+also work from a ZIP download.
+
+Use Python 3.11 or newer in a new environment. The measured reference setup
 is Python 3.13.1 on Windows 11; exact dependency and hardware versions are in
 [ENVIRONMENT.json](ENVIRONMENT.json). Other operating systems and Python
 versions have not been validated by this preparation run.
@@ -62,11 +84,12 @@ across all platforms by this snapshot.
 
 ```text
 python run_experiments.py assets --scope gp-mp
+python run_experiments.py assets --scope models --verify
 python run_experiments.py assets --scope gp-mp --verify --report result/asset_check.json
 ```
 
 The first command checks file presence. `--verify` streams SHA-256 checks
-without loading checkpoints. Exit code 1 means missing or changed assets,
+without loading checkpoints. Exit code 1 means missing, pointer-only or changed assets,
 not that an experiment ran. The expected paths, sizes, and hashes are in
 [assets.json](src/configs/release/assets.json). No command downloads assets.
 
@@ -77,18 +100,19 @@ The two current weights are identified in [FINAL.json](FINAL.json):
 
 The binding also needs its prior definition, training specifications,
 completion/history records and scene registry. The inventory lists these
-alongside the weights. Restore the same directory structure from an
-author-supplied, authorized asset copy and verify the hashes. There is no
-public download endpoint in this snapshot. Do not substitute arbitrary
+alongside the weights. These inference records and selected weights are
+included in the repository; use `git lfs pull` to obtain the actual binary
+files and verify their hashes. Do not substitute arbitrary
 weights and label the output a reproduction of the frozen manuscript.
-Comparator weights and calibration records are additional dependencies;
-`--scope gp-mp` does not certify every baseline.
+`--scope models` checks all eight distributed model assets; `--scope gp-mp`
+also checks the GP-MP provenance and scene registry. Neither check certifies
+complete numerical reproduction or retraining.
 
 The working receiver resolves the known old `D:\afdm-gfra\...` prefix to the
 current checkout. Frozen JSON files are not rewritten. Other external paths
 are not silently redirected. Run the inventory command from the extracted repository root.
 
-## Run a new diagnostic with restored GP-MP assets
+## Run a new diagnostic with the downloaded GP-MP assets
 
 The following commands are for the reader to execute after asset validation.
 They were not used to start a formal experiment during release preparation.
@@ -112,7 +136,8 @@ test timings are recorded in the validation report.
 Figure-by-figure sources, commands, sample budgets and current replacement
 status are listed in [the manuscript reproduction map](paper/C-STMP/docs/REPRODUCTION.md).
 Saved-aggregate plotting is distinct from rerunning receivers and retraining.
-The latter two require assets excluded from the source snapshot.
+Retraining needs excluded training arrays; historical figure reproduction
+can also require saved arrays or older checkpoints outside this selection.
 
 ```text
 python run_experiments.py plot --list

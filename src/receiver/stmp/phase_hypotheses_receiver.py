@@ -8,7 +8,7 @@ from dataclasses import replace
 from dataclasses import asdict
 import numpy as np
 from fileio import sha256
-from receiver.du import phase_initialization
+from receiver.frontend import phase_initialization
 from channel.unknown_phase import UnknownPhaseInput
 from receiver.stmp.phase import PhaseSTMPReceiver as LegacyPhaseSTMPReceiver
 from receiver.stmp.denoiser import Denoiser

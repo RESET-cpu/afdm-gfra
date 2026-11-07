@@ -10,8 +10,8 @@ from scipy.linalg import cho_factor
 from scipy.linalg import cho_solve
 from scipy.optimize import minimize
 from receiver.stmp.initialization_cuda import CudaInitialization
-from receiver.du.phase_math import observed_covariances
-from receiver.du.phase_math import stationary_maximum
+from receiver.frontend.phase_math import observed_covariances
+from receiver.frontend.phase_math import stationary_maximum
 
 
 class _MemoizedObjective:

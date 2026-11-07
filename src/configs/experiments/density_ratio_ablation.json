@@ -2,13 +2,12 @@
   "schema": "afdm-experiment-v1",
   "experiment": "density_ratio_ablation",
   "methods": [
-    "proposed",
     "STMP",
     "STMP_gaussian"
   ],
   "scenes": 1000,
   "timing_repeats": 1,
-  "reference_method": "proposed",
+  "reference_method": "STMP",
   "include_stmp": false,
   "execution_status": "DEFERRED_BY_USER",
   "values": [

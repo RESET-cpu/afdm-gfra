@@ -29,9 +29,15 @@ def same_tree(a, b):
 
 def test_frozen_source_files_keep_original_bytes():
     mapping = json.loads((ROOT/'archive/code_organization_20261107/MAPPING.json').read_text())
+    retirement = json.loads((ROOT/'archive/du_removal_20261107/REMOVAL.json').read_text())
+    excluded = {row['path'] for row in retirement['excluded_sources']}
+    moved = {row['source']: row['destination'] for row in retirement['moved_working_helpers']}
     for row in mapping['files']:
+        if row['source'] in excluded:
+            continue  # Explicitly retired DU sources; retained sources still require identical bytes.
         assert hashlib.sha256((ROOT/row['source']).read_bytes()).hexdigest() == row['source_sha256']
-        assert (ROOT/row['destination']).is_file()
+        if row['destination'] not in excluded or row['destination'] in moved:
+            assert (ROOT/moved.get(row['destination'], row['destination'])).is_file()
 
 
 @pytest.mark.parametrize('mode', ['generate', 'unknown_phase'])
@@ -56,7 +62,7 @@ def test_receiver_configuration_and_metric_results_match():
     from algorithm import registry as old
     from receiver import registry as new
     before, after = old.load_catalog(), new.load_catalog()
-    assert before.keys() == after.keys()
+    assert before.keys() - {'DU', 'proposed'} == after.keys()
     for name, spec in after.items():
         assert new.factory(spec).__module__.startswith('receiver.')
         a, b = deepcopy(before[name]), deepcopy(spec)

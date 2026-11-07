@@ -13,7 +13,7 @@ from fileio import sha256
 from channel.observation import ReceiverInput
 from receiver.frontend.noise_estimation import estimate_spatial_noise
 from channel.unknown_phase import UnknownPhaseInput
-from receiver.du import phase_initialization
+from receiver.frontend import phase_initialization
 from receiver.stmp.denoiser import Denoiser
 from receiver.stmp.receiver import Receiver
 from receiver.stmp import phase_iterations

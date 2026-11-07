@@ -1,0 +1,64 @@
+{
+  "schema": "afdm-distributed-model-assets-v1",
+  "date": "2026-11-07",
+  "storage": "git-lfs",
+  "total_bytes": 404436887,
+  "files": [
+    {
+      "role": "GP-MP conditional mean",
+      "path": "result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt",
+      "bytes": 130648201,
+      "sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+      "storage": "git-lfs"
+    },
+    {
+      "role": "GP-MP activity classifier",
+      "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/evidence_best.pt",
+      "bytes": 3700687,
+      "sha256": "2fb9977d68ede2b451dc0ba712a8106f002f889d2e529147aa2eb271a337d854",
+      "storage": "git-lfs"
+    },
+    {
+      "role": "GP-MP classifier initialization provenance",
+      "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/initialization.pt",
+      "bytes": 3505901,
+      "sha256": "8630e5196c3611842d360bc60a107351202c0b1ff226eecd640986fa6c63ce9b",
+      "storage": "git-lfs"
+    },
+    {
+      "role": "STMP first-order network",
+      "path": "result/runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt",
+      "bytes": 130387209,
+      "sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+      "storage": "git-lfs"
+    },
+    {
+      "role": "STMP second-order network",
+      "path": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/second/second_best.pt",
+      "bytes": 130385799,
+      "sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5",
+      "storage": "git-lfs"
+    },
+    {
+      "role": "STMP activity classifier",
+      "path": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt",
+      "bytes": 3700751,
+      "sha256": "1066693a17f4472412df17df15bfea8ed25542bfab95756713cafad94cfd2d6d",
+      "storage": "git-lfs"
+    },
+    {
+      "role": "GNN baseline checkpoint",
+      "path": "result/models/gnn/checkpoint.pt",
+      "bytes": 1117452,
+      "sha256": "a09f07dd6af6c8390a68d10b892f64fec316b4e7cd031350817e7ad679fa3f4e",
+      "storage": "git-lfs"
+    },
+    {
+      "role": "STMP phase calibration moments (shared model asset, not raw scenes)",
+      "path": "result/models/proposed_10/phase_moments.npz",
+      "bytes": 990887,
+      "sha256": "2be9d73c11dd5b1bce0faec699470ae3df2af48862f4c033371dcfa401e41671",
+      "storage": "git-lfs"
+    }
+  ]
+}

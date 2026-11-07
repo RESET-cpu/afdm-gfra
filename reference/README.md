@@ -6,7 +6,7 @@
 | [专题阅读与核查](reviews/README.md) | 阅读笔记、提取文本、页面截图、作者代码及历史核验记录 |
 | [写作资料](writing_profile/README.md) | 语料清单、风格卡、表达参考与章节蓝图 |
 
-论文正文和参考文献表分别位于 [STMP](../paper/STMP/README.md)、[DU](../paper/DU/README.md)、[C-STMP](../paper/C-STMP/README.md)。术语及公式定位随各稿件维护：[STMP](../paper/STMP/docs/TERMINOLOGY.md)、[DU](../paper/DU/docs/TERMINOLOGY.md)、[C-STMP](../paper/C-STMP/docs/TERMINOLOGY.md)。
+论文正文和参考文献表分别位于 [STMP](../paper/STMP/README.md)、[C-STMP](../paper/C-STMP/README.md)。术语及公式定位随各稿件维护：[STMP](../paper/STMP/docs/TERMINOLOGY.md)、[C-STMP](../paper/C-STMP/docs/TERMINOLOGY.md)。
 
 2026-10-26 整理：9 个分散的调研目录及原章节结构摘录归入 `reviews/`；57 份 PDF 按内容合并为 50 份，保留不同版本。详见[整理记录与旧路径映射](../archive/reference_layout_20261026/README.md)。
 

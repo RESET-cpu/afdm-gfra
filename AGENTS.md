@@ -28,7 +28,7 @@
    表述须采用已有论文的原词或忠实中文译名，核对原文含义并记录章节、公式或页码；不得
    自造术语、缩写或把自拟组合包装成既有名称。无对应名称时，使用已有术语和公式直接
    描述操作。术语依据记录于对应稿件的 `paper/STMP/docs/TERMINOLOGY.md`、
-   `paper/C-STMP/docs/TERMINOLOGY.md` 或 `paper/DU/docs/TERMINOLOGY.md`；共用定义变更时同步相关稿件。
+   `paper/C-STMP/docs/TERMINOLOGY.md`；共用定义变更时同步相关稿件。
 
 8. **云端副本使用独立 Git。** 本仓库是经用户授权创建的 `AFDM-GFRA-cloud` 工作副本，
    可在此提交修改。原本地 `JADCEDD` 研究目录仍停用 Git，不得在原目录初始化或恢复
@@ -50,7 +50,10 @@
 对应见 `archive/code_organization_20261107/MAPPING.json`。
 日常改动不要自动回写冻结实现。当前入口为 `run_experiments.py`，配置在 `src/configs`，
 检查在 `src/tests`，实验与数据在 `result`，研究文档在各稿件的 `paper/<方法>/docs`，参考资料在 `reference`。
-`paper` 顶层只保留 `STMP`、`C-STMP`、`DU` 三个文件夹，各自保存完整稿件与相关文档。
+当前稿件范围为 `paper/STMP`、`paper/C-STMP`。2026-11-07 作者已要求移除 DU，
+独立 DU 资产不再发布；按作者后续要求移入根目录 `delete/`，由作者手动删除。
+状态见 `archive/du_removal_20261107/REMOVAL.json`，不得将待删副本重新加入当前入口或上传清单。
+共用相位模块、STMP 校准资产和共用场景登记保留。
 旧论文与文档路径通过 `archive/paper_layout_20261026/MAPPING.json` 查找，不恢复顶层旧稿或共享 `docs`。
 历史云端脚本及原测试保存在 `src/history`，依赖当时的目录布局；不将其作为当前版本入口。
 当前模型绑定以 `FINAL.json` 为准，原 `MAINLINE.json` 及历史记录保持原文，通过

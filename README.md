@@ -1,7 +1,16 @@
 # AFDM-GFRA
 
 论文配套代码的使用、无权重示例、资产检查及复现边界见 **[REPRODUCING.md](REPRODUCING.md)**。
-从 GitHub 下载并解压源码后，在项目目录中安装依赖并运行：
+模型权重通过 Git LFS 提供。需要权重时，先安装 Git LFS，再下载仓库：
+
+```text
+git lfs install
+git clone https://github.com/RESET-cpu/afdm-gfra.git
+cd afdm-gfra
+git lfs pull
+```
+
+在项目目录中安装依赖并运行：
 
 ```text
 python -m pip install -r requirements.txt
@@ -14,7 +23,7 @@ python -m pytest -q
 原创代码暂保留版权，不设置开放许可证；第三方许可原样保留，见 [RIGHTS.md](RIGHTS.md)。
 当前为投稿准备中的源码版本，尚未宣称完整论文数值复现或发布最终投稿标签。
 
-GitHub 保存代码、配置、论文、正式图表与精选小型汇总；权重和原始数据保留在本地。详见 [GitHub 内容与复现范围](GITHUB_CONTENTS.md)。
+GitHub 保存代码、配置、论文、正式图表、精选小型汇总及当前 GP-MP、STMP、GNN 的模型资产；原始数据仍保留在本地。权重清单见 [模型资产](src/configs/release/weights.json)，可运行 `python run_experiments.py assets --scope models --verify` 核验。详见 [GitHub 内容与复现范围](GITHUB_CONTENTS.md)。
 
 2026-11-07 代码整理：场景、波形、信道、接收机、实验、绘图、网络和训练直接按功能放在 [src](src/README.md) 下。根入口保持 `run_experiments.py`，增加 `plot --list` / `plot --check`。原源码保留给冻结批次复现，模型、数据、参数与正式图不变。[映射与验证](archive/src_flatten_20261107/README.md)。
 
@@ -30,7 +39,10 @@ GitHub 保存代码、配置、论文、正式图表与精选小型汇总；权�
 
 当前论文绘图已统一：[整理后的绘图入口](src/plotting/README.md)；[现行图目录](paper/C-STMP/figures/README.md)。日常入口为 `python run_experiments.py plot`，原绘图脚本保留供旧记录复现。
 
-MIMO-AFDM 卫星物联网免授权随机接入研究：系统模型、接收算法、实验与三份论文稿件。
+MIMO-AFDM 卫星物联网免授权随机接入研究：系统模型、接收算法、实验与 STMP、GP-MP 稿件。
+
+DU 已按作者要求退出当前代码入口及 GitHub 清单，共用相位模块和 STMP 校准文件保留。
+本地待删目录及范围见 [DU 清理记录](archive/du_removal_20261107/README.md)。
 
 ## 常用入口
 
@@ -50,7 +62,7 @@ MIMO-AFDM 卫星物联网免授权随机接入研究：系统模型、接收算�
 - 当前算法稿展示名为 **GP-MP**，估计相位版为 **GP-MP-EP**；`C-STMP` / `C_STMP` 仍是目录和历史实验标识。当前稿采用白噪声训练表述，图表替换状态见[稿件说明](paper/C-STMP/README.md)。
 - 论文当前编入三幅方法图与七幅实验图，矢量 PDF 统一在 [paper/C-STMP/figures/](paper/C-STMP/figures/)。不含评估协议附录的版本为 `main.tex` / `main.pdf`，包含该附录的完整版本为 `main_full.tex` / `main_full.pdf`；两版共享正文。2026-11-04 精简后，原信道推导附录移至内部文档，完整稿中的评估协议附录由 C 顺延为 B。
 - 白噪声主 SNR 两种相位各 6000 份已完成、核验并采用；收敛图采用 30 场景，活动证据消融采用 100 场景，均不继续原预算。
-- 当前默认绑定见 [FINAL.json](FINAL.json) 和[算法登记](src/configs/algorithms.json)。有色版本退出当前入口，旧批次的冻结配置和源码保持；历史登记位于 [归档登记](src/configs/historical/algorithms_colored_20261107.json)。
+- 当前默认绑定见 [FINAL.json](FINAL.json) 和[算法登记](src/configs/organized/algorithms.json)。有色版本退出当前入口，旧批次的冻结配置和源码保持；历史登记位于 [归档登记](src/configs/historical/algorithms_colored_20261107.json)。
 
 批次参数、样本范围和执行状态分别查对应的 `PLAN.json`、`README.md`、`STATUS.json` 与完成记录。历次启动、暂停、修订及不利结果说明完整保存在[整理前项目说明](archive/project_cleanup_20261030/ROOT_HISTORY.md)。
 
@@ -62,7 +74,7 @@ src/configs/  工作代码登记与原科学参数、冻结配置
 src/tests/    当前检查与整理前后对照检查
 src/algorithm、system、evaluation 等原包保留给冻结批次复现
 result/       八类实验入口，以及保留的共享资源和兼容路径
-paper/        STMP、C-STMP、DU 三份完整稿件及各自研究文档
+paper/        STMP、C-STMP 稿件及各自研究文档
 reference/    文献原文、专题阅读及写作资料
 archive/      历史记录、目录映射及已归档的检查预览
 ```
@@ -92,12 +104,11 @@ archive/      历史记录、目录映射及已归档的检查预览
 |---|---|
 | [C-STMP](paper/C-STMP/README.md) | 当前 GP-MP 算法工作稿、七幅实验图和研究依据 |
 | [STMP](paper/STMP/README.md) | 三网络 STMP 稿件及研究文档 |
-| [DU](paper/DU/README.md) | 十层深度展开稿件及训练、推导记录 |
 
 各稿件的正文、图片、参考文献、术语出处和检查记录均在其自身目录维护。
 
 ## 版本与历史
 
-当前执行和模型绑定从 [FINAL.json](FINAL.json)、[算法登记](src/configs/algorithms.json)及具体批次计划核对；[MAINLINE.json](MAINLINE.json) 是保留原文的历史主线记录。候选修改使用独立的实现、配置、权重和结果路径，冻结资产不随日常整理移动。
+当前执行和模型绑定从 [FINAL.json](FINAL.json)、[算法登记](src/configs/organized/algorithms.json)及具体批次计划核对；[MAINLINE.json](MAINLINE.json) 是保留原文的历史主线记录。候选修改使用独立的实现、配置、权重和结果路径，冻结资产不随日常整理移动。
 
 旧路径通过[结果映射](result/layout_20261021/MAPPING.json)、[论文映射](archive/paper_layout_20261026/MAPPING.json)和[参考资料映射](archive/reference_layout_20261026/MAPPING.json)查找。`src/history/` 仅用于溯源。新增阶段记录写入对应批次或稿件文档，本页保留稳定导航和简短状态。

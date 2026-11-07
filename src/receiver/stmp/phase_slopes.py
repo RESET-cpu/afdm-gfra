@@ -9,9 +9,9 @@ from scipy.linalg import cho_factor
 from scipy.linalg import cho_solve
 from scipy.linalg import solve_triangular
 
-from receiver.du.phase_math import quadratic_objective
-from receiver.du.phase_math import stationary_maximum
-from receiver.du.phase_update import objective
+from receiver.frontend.phase_math import quadratic_objective
+from receiver.frontend.phase_math import stationary_maximum
+from receiver.frontend.phase_update import objective
 
 
 def conditional_quadratic(gram, projected, y, noise, frames, beta, gamma):

@@ -1,9 +1,9 @@
 """Independent STMP candidate: check observed activity evidence for phase alternatives."""
 import time
 import numpy as np
-from receiver.du.phase_math import observed_covariances
-from receiver.du.phase_update import update as update_phase
-from receiver.du.phase_update import objective
+from receiver.frontend.phase_math import observed_covariances
+from receiver.frontend.phase_update import update as update_phase
+from receiver.frontend.phase_update import objective
 from channel.phase import phase_operator
 from receiver.stmp.gaussian import gaussian_extrinsic
 from receiver.stmp.gaussian import hermitian

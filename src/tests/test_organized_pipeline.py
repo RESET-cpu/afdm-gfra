@@ -61,8 +61,6 @@ def test_baseline_only_plan_does_not_require_unselected_network_weights():
     config, _ = suite.experiment_config('snr_comparison')
     binding = registry.load_models()
     # These files intentionally do not exist. A selected SOMP plan still works.
-    binding['proposed']['checkpoint'] = 'absent_proposed.pt'
-    binding['proposed']['run'] = 'absent_training'
     binding['STMP']['first_checkpoint'] = 'absent_first.pt'
     assets = suite.assets(binding, definitions, config, 'cpu')
     assert not any(p.endswith('.pt') for p in assets)

@@ -1,4 +1,12 @@
-# Weights and raw arrays are excluded from the current GitHub snapshot.
+# Selected model assets use Git LFS; raw arrays remain excluded.
 *.pdf -text
 *.png -text
 *.jpg -text
+result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt filter=lfs diff=lfs merge=lfs -text
+result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/evidence_best.pt filter=lfs diff=lfs merge=lfs -text
+result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/initialization.pt filter=lfs diff=lfs merge=lfs -text
+result/runs/proposed_50000_cuda_graph_20261018/model/first/first_best.pt filter=lfs diff=lfs merge=lfs -text
+result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/second/second_best.pt filter=lfs diff=lfs merge=lfs -text
+result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/evidence_best.pt filter=lfs diff=lfs merge=lfs -text
+result/models/gnn/checkpoint.pt filter=lfs diff=lfs merge=lfs -text
+result/models/proposed_10/phase_moments.npz filter=lfs diff=lfs merge=lfs -text

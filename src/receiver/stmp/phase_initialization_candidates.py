@@ -7,11 +7,11 @@ at zero power ranks infinitesimal changes, not finite-power likelihood values.
 import time
 import numpy as np
 from scipy.optimize import minimize
-from receiver.du.phase_math import observed_covariances
-from receiver.du.phase_initialization import factor_value
-from receiver.du.phase_initialization import local_objective
-from receiver.du.phase_initialization import directional_phase
-from receiver.du.phase_initialization import joint
+from receiver.frontend.phase_math import observed_covariances
+from receiver.frontend.phase_initialization import factor_value
+from receiver.frontend.phase_initialization import local_objective
+from receiver.frontend.phase_initialization import directional_phase
+from receiver.frontend.phase_initialization import joint
 
 
 def maxima(coefficients, previous):

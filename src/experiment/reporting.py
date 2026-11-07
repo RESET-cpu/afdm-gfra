@@ -139,8 +139,6 @@ def finish(out,plan):
           '本次配置方法：'+ '、'.join(labels[m] for m in plan['methods'])+'。',
           '不在测试场景上选择模型或门限。','',
           '以下信道 NMSE 为误差能量与信号能量汇总后的比值；不同实验共用的场景不是独立重复实验。','']
-    if 'proposed' in plan['methods']:
-        text += ['十层固定使用验证集选择的 epoch 1、10 层权重。','']
     if denoise:
         text += ['去噪只评估预训练的一阶网络，不评估逐层网络、二阶网络或活动网络。genie 曲线显式使用真实几何、功率和 LOS 信息。','',
                  '|条件|方法|NMSE (dB)|','|---|---|---:|']
@@ -150,7 +148,7 @@ def finish(out,plan):
         noise_text = '已知噪声方差（使用模拟真值）' if plan['noise_mode']=='known' else '从观测估计噪声方差'
         text += [f'信息条件：{phase_text}；{noise_text}。','']
         if any(s.get('phase_input')=='raw' for s in plan['algorithm_specs'].values()):
-            text += ['Proposed 的内部相位初始化和9次层间更新已计入接收机时间；基线的公共相位前端单独累加。时延比较图与端到端配对区间包含双方全部相位代价。','']
+            text += ['接收机内部相位处理计入接收机时间，外部相位前端单独累加；端到端时延包含各方法实际使用的全部相位处理。','']
         if plan['noise_mode']=='known' and 'gamp' in plan['methods']:
             text += ['GAMP-SBL 使用给定噪声方差设置原有 Gamma 先验，保留原算法内部噪声更新；known 表示提供真值信息，不表示冻结全部内部更新。','']
         text += ['|条件|方法|NMSE (dB)|AER|漏检率|虚警率|漏检/虚警|接收机内计时秒|端到端秒|显存 MiB|',
@@ -162,11 +160,12 @@ def finish(out,plan):
                  f"每个方法和输入形状使用独立场景预热一次；每个测试场景测量 {plan['timing_repeats']} 次取中位数，再按场景汇总均值、P50、P95；统计单位仍为物理场景。",
                  '显存测量前其他接收机已移至 CPU。参数量及显存与时延分别报告，不将运行更快直接写成参数更少。']
         if plan['experiment']=='density_ratio_ablation':
-            text += ['密度比消融中，受控对比仅为 STMP 的 learned/Gaussian 两臂；十层为完整模型参考。']
+            text += ['密度比消融比较 STMP 的 learned/Gaussian 两种活动证据。']
     (out/'REPORT.md').write_text('\n'.join(text)+'\n',encoding='utf-8')
     audit=dict(status='PASSED',method_condition_groups=len(rows),scene_method_results=len(per_scene),
                all_planned_results_present=True,compact_rescoring_passed=True,reference_sha256=references,
-               proposed_sha256=plan['model_binding']['proposed']['checkpoint_sha256'],
+               model_assets_sha256={p: h for p, h in plan['assets'].items()
+                                    if Path(p).suffix in ('.pt', '.pth', '.npz')},
                original_policy_sha256=plan['formal_panel_sha256'])
     write_json(out/'RESULT_AUDIT.json',audit)
     names=['SUMMARY.json','summary.csv','per_scene.csv','paired.csv','RESULT_AUDIT.json','REPORT.md','comparison.png','comparison.pdf']

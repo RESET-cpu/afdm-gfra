@@ -8,7 +8,7 @@ from scipy.linalg import cho_factor
 from scipy.linalg import cho_solve
 from scipy.special import expit
 from scipy.special import logit
-from receiver.du.phase_math import observed_covariances
+from receiver.frontend.phase_math import observed_covariances
 from receiver.stmp.phase_initialization_candidates import maxima
 from channel.phase import phase_operator
 

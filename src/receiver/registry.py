@@ -31,11 +31,8 @@ def load_catalog(path=None):
 
 def load_models():
     """Resolve the single STMP configuration into a self-contained model record."""
-    value = read_json(CONFIGS / 'final/models.json')
+    value = read_json(CONFIGS / 'organized/models.json')
     value['STMP'] = read_json(repository_path(value.pop('STMP_configuration')))
-    for key in ('run', 'checkpoint'):
-        if key in value.get('proposed', {}):
-            value['proposed'][key] = str(repository_path(value['proposed'][key]))
     return value
 
 

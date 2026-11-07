@@ -13,7 +13,7 @@
 | [scenario](scenario/README.md) | 卫星几何、设备活动、物理路径、配对场景与 NTN-TDL 条件 | `scenario/generate.py`、`scenario/profiles.py` |
 | [waveform](waveform/README.md) | AFDM 变换、连续时延多普勒路径算子、导频 | `waveform/afdm/continuous.py`、`waveform/pilot.py` |
 | [channel](channel/README.md) | 物理参数、阵列、有效信道、观测噪声及输入结构 | `channel/config.py`、`channel/observation.py` |
-| [receiver](receiver/README.md) | GP-MP、STMP、DU、传统基准、相位与噪声估计 | `receiver/registry.py`、`receiver/gp_mp/receiver.py` |
+| [receiver](receiver/README.md) | GP-MP、STMP、传统基准、相位与噪声估计 | `receiver/registry.py`、`receiver/gp_mp/receiver.py` |
 | [experiment](experiment/README.md) | 条件扫描、计划、调用、保存、评分与汇总 | `experiment/suite.py`、`experiment/experiments/` |
 | [plotting](plotting/README.md) | 从已保存结果生成论文图和检查图 | `plotting/render_paper.py`、`plotting/manuscript/` |
 | `networks/` | 接收机和训练共用的网络定义、权重加载 | `networks/score.py` |
