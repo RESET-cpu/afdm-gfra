@@ -67,7 +67,7 @@ def channel_stack(p,x,y,values):
 
 def receiver():
     # Compile the manuscript first so figure references follow its equation labels.
-    aux=(ROOT/'paper/C-STMP/main.aux').read_text(encoding='utf-8')
+    aux=(ROOT/'paper/main.aux').read_text(encoding='utf-8')
     numbers=dict(re.findall(r'\\newlabel\{(eq:[^}]+)\}\{\{([^}]+)\}',aux))
 
     def eqref(first,last=None):

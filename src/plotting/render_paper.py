@@ -100,7 +100,7 @@ def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--config',type=Path,default=DEFAULT_CONFIG)
     parser.add_argument('--figures',nargs='+',help='Default: all ten figures, in manuscript order')
-    parser.add_argument('--output',type=Path,help='Default: paper/C-STMP/figures; generated files are replaced')
+    parser.add_argument('--output',type=Path,help='Default: paper/figures; generated files are replaced')
     parser.add_argument('--formats',nargs='+',choices=['pdf','svg','png'],default=['pdf'])
     parser.add_argument('--list',action='store_true',help='List figures and sources without rendering')
     parser.add_argument('--check',action='store_true',help='Render in a temporary folder and compare with current paper figures')

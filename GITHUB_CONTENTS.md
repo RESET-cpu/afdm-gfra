@@ -9,7 +9,7 @@
 ## 保留的内容
 
 - `src/`、`run_experiments.py`、`requirements.txt`：算法、系统模型、网络定义、训练与数据生成代码、配置、当前测试和现有许可证。`pyproject.toml` 只配置默认测试。
-- `paper/STMP`、`paper/C-STMP`：稿件源码、已有阅读 PDF、正式图表、研究文档、审稿决定和小型修订核验记录。DU 稿件与独立实现、模型、实验已从当前发布范围移除。
+- `paper/`：稿件源码、已有阅读 PDF、正式图表、研究文档、审稿决定和小型修订核验记录。STMP、DU 旧稿均已移出当前发布范围；STMP 算法代码和比较结果继续保留。
 - `reference/`：文献索引、阅读记录和写作资料；下载的第三方论文 PDF 与页面预览留在本地。
 - `result/`：精选实验计划、完成/失败说明、小型结果汇总、论文绘图汇总及模型/数据的描述信息；本次增加当前 GP-MP、STMP、GNN 所需的 7 个检查点及 1 个相位校准文件，使用 Git LFS 保存原始字节。清单见 `src/configs/release/weights.json`。未上传历史候选模型全集。
 - `FINAL.json`、`MAINLINE.json` 与精选归档记录：当前绑定、冻结历史、目录映射与采用依据。
@@ -24,7 +24,7 @@
 
 ## 阅读与复现
 
-当前工作算法入口是 `receiver.gp_mp`，冻结批次的原 `algorithm.GP_MP` 移入独立归档，已知相位与估计相位登记为 `GP_MP` / `GP_MP_EP`。论文目录仍为 `paper/C-STMP`；白噪声主线及其他曲线的替换状态见根目录 README 和稿件说明。
+当前工作算法入口是 `receiver.gp_mp`，冻结批次的原 `algorithm.GP_MP` 移入独立归档，已知相位与估计相位登记为 `GP_MP` / `GP_MP_EP`。论文目录仍为 `paper`；白噪声主线及其他曲线的替换状态见根目录 README 和稿件说明。
 
 安装 Python 依赖后，可用以下命令查看入口并运行不需要权重的小型合成示例：
 

@@ -2,7 +2,7 @@
 
 This is a research source snapshot. Its current proposed method is **GP-MP**;
 the receiver with estimated phase is **GP-MP-EP**. The paper remains under
-`paper/C-STMP`. Copyright is retained; see [RIGHTS.md](RIGHTS.md).
+`paper`. Copyright is retained; see [RIGHTS.md](RIGHTS.md).
 
 Selected GP-MP, STMP and GNN model assets are distributed through Git LFS.
 Training arrays and per-scene predictions are excluded. A small CPU example
@@ -133,7 +133,7 @@ test timings are recorded in the validation report.
 ## Reproduce figures and understand their status
 
 Figure-by-figure sources, commands, sample budgets and current replacement
-status are listed in [the manuscript reproduction map](paper/C-STMP/docs/REPRODUCTION.md).
+status are listed in [the manuscript reproduction map](paper/docs/REPRODUCTION.md).
 Saved-aggregate plotting is distinct from rerunning receivers and retraining.
 Retraining needs excluded training arrays; historical figure reproduction
 can also require saved arrays or older checkpoints outside this selection.

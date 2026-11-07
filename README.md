@@ -27,19 +27,19 @@ GitHub 保存代码、配置、论文、正式图表、精选小型汇总及当�
 
 2026-11-07 代码整理：场景、波形、信道、接收机、实验、绘图、网络和训练直接按功能放在 [src](src/README.md) 下。根入口保持 `run_experiments.py`，增加 `plot --list` / `plot --check`。原源码保留给冻结批次复现，模型、数据、参数与正式图不变。[映射与验证](archive/src_flatten_20261107/README.md)。
 
-2026-11-07 后续：白噪声去噪 12000 个查询已核验，图 4 和图 3 示例已采用，两版工作稿同步。[采用记录](paper/C-STMP/checks/white_denoising_adopted_20261107/README.md)。导频数阶段在完成 2906/12000 份后遇到任务文件读取权限错误，当前停止，尚未采用；完整核验及图稿采用后才进入用户数阶段。[进度](result/pilot_frames/data/white_mainline_500_20261107/STATUS.json)与[失败记录](result/pilot_frames/data/white_mainline_500_20261107/FAILURE.json)。
+2026-11-07 后续：白噪声去噪 12000 个查询已核验，图 4 和图 3 示例已采用，两版工作稿同步。[采用记录](paper/checks/white_denoising_adopted_20261107/README.md)。导频数阶段在完成 2906/12000 份后遇到任务文件读取权限错误，当前停止，尚未采用；完整核验及图稿采用后才进入用户数阶段。[进度](result/pilot_frames/data/white_mainline_500_20261107/STATUS.json)与[失败记录](result/pilot_frames/data/white_mainline_500_20261107/FAILURE.json)。
 
 2026-11-07：代码主线已整理为独立白噪声 `receiver.gp_mp`，默认登记为 `GP_MP` / `GP_MP_EP`，旧 `C_STMP` 标识仅兼容指向白噪声版本。旧有色实现与登记已移至独立冻结归档，原数据保持。作者已授权按去噪、导频数、用户数、活动概率、跨信道的顺序补跑，每项核验并替换图稿后再开始下一项；状态见 [后续实验请求](result/white_followup_20261107/REQUEST.json)。
 
-2026-11-07：白噪声网络主 SNR 的已知相位与估计相位结果均已完整核验并采用，每档 1000 场景。主图及两版工作稿同步，其他待替换曲线仍保留阶段说明。[采用与核验](paper/C-STMP/checks/white_snr_adopted_20261107/README.md)。
+2026-11-07：白噪声网络主 SNR 的已知相位与估计相位结果均已完整核验并采用，每档 1000 场景。主图及两版工作稿同步，其他待替换曲线仍保留阶段说明。[采用与核验](paper/checks/white_snr_adopted_20261107/README.md)。
 
-2026-11-06：当前 GP-MP 稿的训练说明与附录已统一为白噪声形式；尚未替换的历史实验曲线在工作稿第六章集中注明，图表数据保持。[修订与核验](paper/C-STMP/checks/white_noise_wording_20261106/README.md)。
+2026-11-06：当前 GP-MP 稿的训练说明与附录已统一为白噪声形式；尚未替换的历史实验曲线在工作稿第六章集中注明，图表数据保持。[修订与核验](paper/checks/white_noise_wording_20261106/README.md)。
 
-2026-11-04：完整相位估计结果已加入主 SNR 图，展示名 **CGP-MP-EP**；每档 1000 场景，两版论文已同步。[结果与核验](paper/C-STMP/checks/snr_estimated_phase_1000_20261104/README.md)。下文旧 500 场景批次状态为历史快照。
+2026-11-04：完整相位估计结果已加入主 SNR 图，展示名 **CGP-MP-EP**；每档 1000 场景，两版论文已同步。[结果与核验](paper/checks/snr_estimated_phase_1000_20261104/README.md)。下文旧 500 场景批次状态为历史快照。
 
-当前论文绘图已统一：[整理后的绘图入口](src/plotting/README.md)；[现行图目录](paper/C-STMP/figures/README.md)。日常入口为 `python run_experiments.py plot`，原绘图脚本保留供旧记录复现。
+当前论文绘图已统一：[整理后的绘图入口](src/plotting/README.md)；[现行图目录](paper/figures/README.md)。日常入口为 `python run_experiments.py plot`，原绘图脚本保留供旧记录复现。
 
-MIMO-AFDM 卫星物联网免授权随机接入研究：系统模型、接收算法、实验与 STMP、GP-MP 稿件。
+MIMO-AFDM 卫星物联网免授权随机接入研究：系统模型、接收算法、实验与当前 GP-MP 稿件。
 
 DU 已按作者要求退出当前代码入口及 GitHub 清单，共用相位模块和 STMP 校准文件保留。
 本地待删目录及范围见 [DU 清理记录](archive/du_removal_20261107/README.md)。
@@ -50,8 +50,8 @@ DU 已按作者要求退出当前代码入口及 GitHub 清单，共用相位模
 
 | 要找的内容 | 入口 |
 |---|---|
-| 当前算法稿与阅读 PDF | [C-STMP 稿件](paper/C-STMP/README.md) · [main.pdf](paper/C-STMP/main.pdf) · [写作与修订规范](paper/C-STMP/docs/WRITING_GUIDE.md) |
-| 再次预审前必读：已讨论问题与剩余事项 | [预审讨论记录](paper/C-STMP/docs/REVIEW_DECISIONS.md) |
+| 当前算法稿与阅读 PDF | [当前稿件](paper/README.md) · [main.pdf](paper/main.pdf) · [写作与修订规范](paper/docs/WRITING_GUIDE.md) |
+| 再次预审前必读：已讨论问题与剩余事项 | [预审讨论记录](paper/docs/REVIEW_DECISIONS.md) |
 | 实验数据、状态与论文用图 | [实验索引](result/README.md) |
 | 代码、配置与检查 | [代码导读](src/README.md) · [实验用法](src/experiment/README.md) |
 | 文献原文与阅读记录 | [参考资料](reference/README.md) |
@@ -61,8 +61,8 @@ DU 已按作者要求退出当前代码入口及 GitHub 清单，共用相位模
 
 2026-11-07 核对：
 
-- 当前算法稿展示名为 **GP-MP**，估计相位版为 **GP-MP-EP**；`C-STMP` / `C_STMP` 仍是目录和历史实验标识。当前稿采用白噪声训练表述，图表替换状态见[稿件说明](paper/C-STMP/README.md)。
-- 论文当前编入三幅方法图与七幅实验图，矢量 PDF 统一在 [paper/C-STMP/figures/](paper/C-STMP/figures/)。不含评估协议附录的版本为 `main.tex` / `main.pdf`，包含该附录的完整版本为 `main_full.tex` / `main_full.pdf`；两版共享正文。2026-11-04 精简后，原信道推导附录移至内部文档，完整稿中的评估协议附录由 C 顺延为 B。
+- 当前算法稿展示名为 **GP-MP**，估计相位版为 **GP-MP-EP**；`C-STMP` / `C_STMP` 仍是目录和历史实验标识。当前稿采用白噪声训练表述，图表替换状态见[稿件说明](paper/README.md)。
+- 论文当前编入三幅方法图与七幅实验图，矢量 PDF 统一在 [paper/figures/](paper/figures/)。不含评估协议附录的版本为 `main.tex` / `main.pdf`，包含该附录的完整版本为 `main_full.tex` / `main_full.pdf`；两版共享正文。2026-11-04 精简后，原信道推导附录移至内部文档，完整稿中的评估协议附录由 C 顺延为 B。
 - 白噪声主 SNR 两种相位各 6000 份已完成、核验并采用；收敛图采用 30 场景，活动证据消融采用 100 场景，均不继续原预算。
 - 当前默认绑定见 [FINAL.json](FINAL.json) 和[算法登记](src/configs/organized/algorithms.json)。有色版本退出当前入口，旧批次的冻结配置和源码保持；历史登记位于 [冻结归档](archive/frozen_reproduction_20261107/README.md)。
 
@@ -76,7 +76,7 @@ src/configs/  工作代码登记与原科学参数、冻结配置
 src/tests/    当前检查与整理前后对照检查
 archive/frozen_reproduction_20261107/  冻结实验原源码，显式回放
 result/       八类实验入口，以及保留的共享资源和兼容路径
-paper/        STMP、C-STMP 稿件及各自研究文档
+paper/        当前稿件、图表及研究文档
 reference/    文献原文、专题阅读及写作资料
 archive/      历史记录、目录映射及已归档的检查预览
 ```
@@ -104,7 +104,7 @@ archive/      历史记录、目录映射及已归档的检查预览
 
 | 稿件 | 内容 |
 |---|---|
-| [C-STMP](paper/C-STMP/README.md) | 当前 GP-MP 算法工作稿、七幅实验图和研究依据 |
+| [C-STMP](paper/README.md) | 当前 GP-MP 算法工作稿、七幅实验图和研究依据 |
 | [STMP](paper/STMP/README.md) | 三网络 STMP 稿件及研究文档 |
 
 各稿件的正文、图片、参考文献、术语出处和检查记录均在其自身目录维护。
