@@ -1,8 +1,24 @@
 # AFDM-GFRA
 
+论文配套代码的使用、无权重示例、资产检查及复现边界见 **[REPRODUCING.md](REPRODUCING.md)**。
+从 GitHub 下载并解压源码后，在项目目录中安装依赖并运行：
+
+```text
+python -m pip install -r requirements.txt
+python run_experiments.py demo --output result/demo_first
+python -m pytest -q
+```
+
+示例只生成一个小型合成场景，不需要模型或原始数据。默认测试为 `src/tests/public`；
+历史研究检查保留原址，适用范围见 [测试说明](src/tests/README.md)。
+原创代码暂保留版权，不设置开放许可证；第三方许可原样保留，见 [RIGHTS.md](RIGHTS.md)。
+当前为投稿准备中的源码版本，尚未宣称完整论文数值复现或发布最终投稿标签。
+
 GitHub 保存代码、配置、论文、正式图表与精选小型汇总；权重和原始数据保留在本地。详见 [GitHub 内容与复现范围](GITHUB_CONTENTS.md)。
 
-2026-11-07 后续：白噪声去噪 12000 个查询已核验，图 4 和图 3 示例已采用，两版工作稿同步。[采用记录](paper/C-STMP/checks/white_denoising_adopted_20261107/README.md)。导频数阶段已启动，完整核验及图稿采用后才进入用户数阶段；[进度](result/pilot_frames/data/white_mainline_500_20261107/STATUS.json)与[本项说明](result/pilot_frames/data/white_mainline_500_20261107/README.md)。
+2026-11-07 代码整理：场景、波形、信道、接收机、实验、绘图、网络和训练直接按功能放在 [src](src/README.md) 下。根入口保持 `run_experiments.py`，增加 `plot --list` / `plot --check`。原源码保留给冻结批次复现，模型、数据、参数与正式图不变。[映射与验证](archive/src_flatten_20261107/README.md)。
+
+2026-11-07 后续：白噪声去噪 12000 个查询已核验，图 4 和图 3 示例已采用，两版工作稿同步。[采用记录](paper/C-STMP/checks/white_denoising_adopted_20261107/README.md)。导频数阶段在完成 2906/12000 份后遇到任务文件读取权限错误，当前停止，尚未采用；完整核验及图稿采用后才进入用户数阶段。[进度](result/pilot_frames/data/white_mainline_500_20261107/STATUS.json)与[失败记录](result/pilot_frames/data/white_mainline_500_20261107/FAILURE.json)。
 
 2026-11-07：代码主线已整理为独立白噪声 `algorithm.GP_MP`，默认登记为 `GP_MP` / `GP_MP_EP`，旧 `C_STMP` 标识仅兼容指向白噪声版本。旧有色实现、登记及全部数据原位保留供复现。作者已授权按去噪、导频数、用户数、活动概率、跨信道的顺序补跑，每项核验并替换图稿后再开始下一项；状态见 [后续实验请求](result/white_followup_20261107/REQUEST.json)。
 
@@ -12,7 +28,7 @@ GitHub 保存代码、配置、论文、正式图表与精选小型汇总；权�
 
 2026-11-04：完整相位估计结果已加入主 SNR 图，展示名 **CGP-MP-EP**；每档 1000 场景，两版论文已同步。[结果与核验](paper/C-STMP/checks/snr_estimated_phase_1000_20261104/README.md)。下文旧 500 场景批次状态为历史快照。
 
-当前论文绘图已统一：[十图生成与复现说明](src/evaluation/plots/manuscript/README.md)；[现行图目录](paper/C-STMP/figures/README.md)。历史绘图脚本和重复图已归档，默认生成入口为 `src/evaluation/plots/render_paper.py`。
+当前论文绘图已统一：[整理后的绘图入口](src/plotting/README.md)；[现行图目录](paper/C-STMP/figures/README.md)。日常入口为 `python run_experiments.py plot`，原绘图脚本保留供旧记录复现。
 
 MIMO-AFDM 卫星物联网免授权随机接入研究：系统模型、接收算法、实验与三份论文稿件。
 
@@ -23,7 +39,7 @@ MIMO-AFDM 卫星物联网免授权随机接入研究：系统模型、接收算�
 | 当前算法稿与阅读 PDF | [C-STMP 稿件](paper/C-STMP/README.md) · [main.pdf](paper/C-STMP/main.pdf) · [写作与修订规范](paper/C-STMP/docs/WRITING_GUIDE.md) |
 | 再次预审前必读：已讨论问题与剩余事项 | [预审讨论记录](paper/C-STMP/docs/REVIEW_DECISIONS.md) |
 | 实验数据、状态与论文用图 | [实验索引](result/README.md) |
-| 代码、配置与检查 | [代码导读](src/README.md) · [实验用法](src/evaluation/README.md) |
+| 代码、配置与检查 | [代码导读](src/README.md) · [实验用法](src/experiment/README.md) |
 | 文献原文与阅读记录 | [参考资料](reference/README.md) |
 | 历史记录、旧路径及整理清单 | [归档索引](archive/README.md) |
 
@@ -41,7 +57,10 @@ MIMO-AFDM 卫星物联网免授权随机接入研究：系统模型、接收算�
 ## 项目目录
 
 ```text
-src/          算法、物理模型、网络、训练、实验、配置与测试
+src/          按功能分目录：scenario、waveform、channel、receiver、experiment、plotting、networks、training
+src/configs/  工作代码登记与原科学参数、冻结配置
+src/tests/    当前检查与整理前后对照检查
+src/algorithm、system、evaluation 等原包保留给冻结批次复现
 result/       八类实验入口，以及保留的共享资源和兼容路径
 paper/        STMP、C-STMP、DU 三份完整稿件及各自研究文档
 reference/    文献原文、专题阅读及写作资料
@@ -65,7 +84,7 @@ archive/      历史记录、目录映射及已归档的检查预览
 & .\.venv\Scripts\python.exe -B run_experiments.py white_followup inspect
 ```
 
-实验实现位于 `src/evaluation/experiments/`，配置位于 `src/configs/experiments/`，算法登记位于 `src/configs/algorithms.json`。新实验须显式创建独立输出计划；已有计划按其中保存的配置执行。执行、检查和重绘用法见[实验说明](src/evaluation/README.md)、[测试说明](src/tests/README.md)及[绘图说明](src/configs/plots/README.md)。
+日常实验定义位于 `src/experiment/experiments/`，配置仍在 `src/configs/experiments/`，工作代码登记为 `src/configs/organized/algorithms.json`。新实验须显式创建独立输出计划；已有冻结计划继续使用原源码和配置。执行、检查和重绘用法见[实验说明](src/experiment/README.md)、[测试说明](src/tests/README.md)及[绘图说明](src/plotting/README.md)。
 
 ## 论文目录
 

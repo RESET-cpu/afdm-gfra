@@ -45,7 +45,10 @@
 
 ## 目录与运行
 
-先读根目录 README.md。当前入口为 `run_experiments.py`，配置在 `src/configs`，
+先读根目录 README.md。场景、波形、信道、接收机、实验和绘图直接位于 `src` 下的
+对应目录，入口见 `src/README.md`。原源码包保留给已绑定哈希的冻结批次复现，路径
+对应见 `archive/code_organization_20261107/MAPPING.json`。
+日常改动不要自动回写冻结实现。当前入口为 `run_experiments.py`，配置在 `src/configs`，
 检查在 `src/tests`，实验与数据在 `result`，研究文档在各稿件的 `paper/<方法>/docs`，参考资料在 `reference`。
 `paper` 顶层只保留 `STMP`、`C-STMP`、`DU` 三个文件夹，各自保存完整稿件与相关文档。
 旧论文与文档路径通过 `archive/paper_layout_20261026/MAPPING.json` 查找，不恢复顶层旧稿或共享 `docs`。

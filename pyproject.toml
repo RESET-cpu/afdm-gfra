@@ -1,31 +1,4 @@
-[build-system]
-requires = ["setuptools>=68"]
-build-backend = "setuptools.build_meta"
-
-[project]
-name = "afdm-gfra"
-version = "0.4.0"
-description = "Generative-model-aided grant-free random access for MIMO-AFDM satellite IoT"
-requires-python = ">=3.10"
-dependencies = ["numpy>=2.0", "scipy", "torch", "threadpoolctl", "PyYAML", "matplotlib"]
-
-[project.scripts]
-jadce = "evaluation.cli:main"
-
-[tool.setuptools]
-py-modules = ["project", "utils"]
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = [
-    "algorithm", "algorithm.*", "evaluation", "evaluation.*",
-    "networks", "networks.*", "system", "system.*", "training", "training.*",
-]
-
-[tool.setuptools.package-data]
-"networks" = ["cai_models/LICENSE"]
-
 [tool.pytest.ini_options]
-testpaths = ["src/tests"]
+testpaths = ["src/tests/public"]
 pythonpath = ["src"]
 cache_dir = "result/tmp/pytest_cache"

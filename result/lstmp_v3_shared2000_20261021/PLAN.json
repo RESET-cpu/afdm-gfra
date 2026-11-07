@@ -1,0 +1,653 @@
+{
+  "schema": "afdm-shared-test-panel-v1",
+  "panel_id": "lstmp_v3_shared2000_20261021",
+  "status": "SCENE_POLICY_FIXED_EXECUTION_ADAPTATION_PENDING",
+  "material_passport": {
+    "origin_skill": "academic-research-suite / experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-10-21",
+    "verification_status": "UNVERIFIED",
+    "version_label": "shared_scene_plan_v1"
+  },
+  "authorization": "User confirmed: replace the former 500-scene tests with 2000 shared physical scene identities.",
+  "scene_count": 2000,
+  "base_seed": 202610219100001,
+  "last_seed": 202610219102000,
+  "independent_unit": "physical_scene_id",
+  "observations_generated": 0,
+  "inferences_completed": 0,
+  "defaults": {
+    "users": 40,
+    "frames": 16,
+    "activity_probability": 0.1,
+    "snr_db": 0,
+    "channel_model": "D",
+    "pilot": "dft"
+  },
+  "phase_mode": "estimated",
+  "noise_mode": "estimated",
+  "new_model": {
+    "checkpoint": "D:\\afdm-gfra-cpu\\runs\\lstmp_conditional_bce_v3_depth10_fast_20261020\\checkpoints\\depth_10\\best.pt",
+    "sha256": "6fbd2dc91375762e1eae1e24e53c046989d6c806a7afef73a55c85de2049f2c5",
+    "depth": 10,
+    "selected_epoch": 1,
+    "activity_threshold": 0.5
+  },
+  "experiments": {
+    "snr_comparison": {
+      "scenes": 2000,
+      "scene_registry": "SCENES.csv",
+      "selection": {
+        "start": 0,
+        "stop_exclusive": 2000
+      },
+      "base_seed": 202610219100001,
+      "variable": "snr_db",
+      "values": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "conditions": [
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -4,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -2,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 2,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 4,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 6,
+          "channel_model": "D",
+          "pilot": "dft"
+        }
+      ],
+      "input_condition_keys": [
+        "K40_Q16_p0.1_snr-4_D_dft",
+        "K40_Q16_p0.1_snr-2_D_dft",
+        "K40_Q16_p0.1_snr0_D_dft",
+        "K40_Q16_p0.1_snr2_D_dft",
+        "K40_Q16_p0.1_snr4_D_dft",
+        "K40_Q16_p0.1_snr6_D_dft"
+      ]
+    },
+    "pilot_frames": {
+      "scenes": 2000,
+      "scene_registry": "SCENES.csv",
+      "selection": {
+        "start": 0,
+        "stop_exclusive": 2000
+      },
+      "base_seed": 202610219100001,
+      "variable": "frames",
+      "values": [
+        8,
+        16,
+        24,
+        32,
+        40,
+        48
+      ],
+      "conditions": [
+        {
+          "users": 40,
+          "frames": 8,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 24,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 32,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 40,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 48,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        }
+      ],
+      "input_condition_keys": [
+        "K40_Q8_p0.1_snr0_D_dft",
+        "K40_Q16_p0.1_snr0_D_dft",
+        "K40_Q24_p0.1_snr0_D_dft",
+        "K40_Q32_p0.1_snr0_D_dft",
+        "K40_Q40_p0.1_snr0_D_dft",
+        "K40_Q48_p0.1_snr0_D_dft"
+      ]
+    },
+    "user_count": {
+      "scenes": 2000,
+      "scene_registry": "SCENES.csv",
+      "selection": {
+        "start": 0,
+        "stop_exclusive": 2000
+      },
+      "base_seed": 202610219100001,
+      "variable": "users",
+      "values": [
+        20,
+        40,
+        60,
+        80,
+        100
+      ],
+      "conditions": [
+        {
+          "users": 20,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 60,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 80,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 100,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        }
+      ],
+      "input_condition_keys": [
+        "K20_Q16_p0.1_snr0_D_dft",
+        "K40_Q16_p0.1_snr0_D_dft",
+        "K60_Q16_p0.1_snr0_D_dft",
+        "K80_Q16_p0.1_snr0_D_dft",
+        "K100_Q16_p0.1_snr0_D_dft"
+      ]
+    },
+    "activity_probability": {
+      "scenes": 2000,
+      "scene_registry": "SCENES.csv",
+      "selection": {
+        "start": 0,
+        "stop_exclusive": 2000
+      },
+      "base_seed": 202610219100001,
+      "variable": "activity_probability",
+      "values": [
+        0.05,
+        0.1,
+        0.15,
+        0.2,
+        0.25
+      ],
+      "conditions": [
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.05,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.15,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.2,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.25,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        }
+      ],
+      "input_condition_keys": [
+        "K40_Q16_p0.05_snr0_D_dft",
+        "K40_Q16_p0.1_snr0_D_dft",
+        "K40_Q16_p0.15_snr0_D_dft",
+        "K40_Q16_p0.2_snr0_D_dft",
+        "K40_Q16_p0.25_snr0_D_dft"
+      ]
+    },
+    "cross_channel": {
+      "scenes": 2000,
+      "scene_registry": "SCENES.csv",
+      "selection": {
+        "start": 0,
+        "stop_exclusive": 2000
+      },
+      "base_seed": 202610219100001,
+      "profiles": [
+        "D",
+        "A",
+        "B",
+        "C"
+      ],
+      "snr_db": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6
+      ],
+      "conditions": [
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -4,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -2,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 2,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 4,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 6,
+          "channel_model": "D",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -4,
+          "channel_model": "A",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -2,
+          "channel_model": "A",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "A",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 2,
+          "channel_model": "A",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 4,
+          "channel_model": "A",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 6,
+          "channel_model": "A",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -4,
+          "channel_model": "B",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -2,
+          "channel_model": "B",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "B",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 2,
+          "channel_model": "B",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 4,
+          "channel_model": "B",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 6,
+          "channel_model": "B",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -4,
+          "channel_model": "C",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": -2,
+          "channel_model": "C",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 0,
+          "channel_model": "C",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 2,
+          "channel_model": "C",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 4,
+          "channel_model": "C",
+          "pilot": "dft"
+        },
+        {
+          "users": 40,
+          "frames": 16,
+          "activity_probability": 0.1,
+          "snr_db": 6,
+          "channel_model": "C",
+          "pilot": "dft"
+        }
+      ],
+      "input_condition_keys": [
+        "K40_Q16_p0.1_snr-4_D_dft",
+        "K40_Q16_p0.1_snr-2_D_dft",
+        "K40_Q16_p0.1_snr0_D_dft",
+        "K40_Q16_p0.1_snr2_D_dft",
+        "K40_Q16_p0.1_snr4_D_dft",
+        "K40_Q16_p0.1_snr6_D_dft",
+        "K40_Q16_p0.1_snr-4_A_dft",
+        "K40_Q16_p0.1_snr-2_A_dft",
+        "K40_Q16_p0.1_snr0_A_dft",
+        "K40_Q16_p0.1_snr2_A_dft",
+        "K40_Q16_p0.1_snr4_A_dft",
+        "K40_Q16_p0.1_snr6_A_dft",
+        "K40_Q16_p0.1_snr-4_B_dft",
+        "K40_Q16_p0.1_snr-2_B_dft",
+        "K40_Q16_p0.1_snr0_B_dft",
+        "K40_Q16_p0.1_snr2_B_dft",
+        "K40_Q16_p0.1_snr4_B_dft",
+        "K40_Q16_p0.1_snr6_B_dft",
+        "K40_Q16_p0.1_snr-4_C_dft",
+        "K40_Q16_p0.1_snr-2_C_dft",
+        "K40_Q16_p0.1_snr0_C_dft",
+        "K40_Q16_p0.1_snr2_C_dft",
+        "K40_Q16_p0.1_snr4_C_dft",
+        "K40_Q16_p0.1_snr6_C_dft"
+      ]
+    },
+    "channel_denoising": {
+      "scenes": 2000,
+      "scene_registry": "SCENES.csv",
+      "selection": {
+        "start": 0,
+        "stop_exclusive": 2000
+      },
+      "base_seed": 202610219100001,
+      "users": 40,
+      "candidates_per_scene": 4,
+      "values": [
+        0.001,
+        0.01,
+        0.1,
+        1.0,
+        10.0,
+        100.0
+      ],
+      "independent_scene_count": 2000,
+      "queries_per_noise_variance": 8000,
+      "noise_mode": "known_awgn",
+      "module_scope": "Pretrained channel prior; not the full ten-layer receiver"
+    },
+    "density_ratio_ablation": {
+      "scenes": 2000,
+      "scene_registry": "SCENES.csv",
+      "selection": {
+        "start": 0,
+        "stop_exclusive": 2000
+      },
+      "base_seed": 202610219100001,
+      "status": "AWAITING_NEW_ARCHITECTURE_CONTRAST_DEFINITION",
+      "legacy_snr_reference": [
+        -4,
+        -2,
+        0,
+        2,
+        4,
+        6,
+        8
+      ],
+      "executable": false,
+      "note": "Scene sharing and count confirmed; old three-network ablation is not relabeled as a ten-layer ablation."
+    },
+    "convergence": {
+      "scenes": 20,
+      "scene_registry": "SCENES.csv",
+      "selection": {
+        "start": 0,
+        "stop_exclusive": 20
+      },
+      "base_seed": 202610219100001,
+      "snr_db": [
+        -4,
+        0,
+        4
+      ],
+      "pilots": [
+        "dft",
+        "hadamard"
+      ],
+      "note": "Original 20-scene size retained; predetermined prefix of the shared registry."
+    }
+  },
+  "unique_conditions_in_four_primary_sweeps": 19,
+  "scene_condition_pairs_in_four_primary_sweeps": 38000,
+  "reuse": {
+    "input_key": "{panel_id}/{scene_id}/{condition_key}",
+    "same_condition": "Reuse identical observation, truth and valid frontend cache across methods and experiments.",
+    "changed_condition": "Rebuild the appropriate observation; retain matched geometry and random streams where the physical model allows.",
+    "result_key": "Input identity plus algorithm, weights, inference controls and execution identity; never method name alone.",
+    "performance_reuse": "Only after input/model/config/source hashes match.",
+    "timing": "Historical cached inference times do not count as newly measured timing; observer overhead is excluded."
+  },
+  "statistics": {
+    "bootstrap_replicates": 10000,
+    "unit": "physical_scene_id",
+    "shared_indices_across_methods_conditions_and_experiments": true,
+    "note": "Shared experiments and the four denoising queries are not additional independent replications."
+  },
+  "execution_entrypoint": null,
+  "remaining_work": [
+    "Ten-layer integration into the full experiment runner",
+    "Full model/data identity and seed audit",
+    "Freeze physical input generation and cache bindings",
+    "Define ablations appropriate to the new architecture"
+  ],
+  "scene_registry_sha256": "30c2610430229429df574733185ac80a11d3261a5fe13d299934558659a00b7a",
+  "preparation_source_sha256": "13ec46ccc54437654346dda842e597d163db31d143a5061ad5106877b95dee06"
+}

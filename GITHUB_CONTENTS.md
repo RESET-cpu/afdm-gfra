@@ -1,10 +1,14 @@
 # GitHub 内容与复现范围
 
+本快照包括 2026-11-07 的代码分区、目录上移、路径修复和源码使用说明。
+从 GitHub 下载后安装依赖，直接运行根目录脚本；使用与复现指南见
+[REPRODUCING.md](REPRODUCING.md)，许可状态见 [RIGHTS.md](RIGHTS.md)。
+
 本次快照日期为 2026-11-07，目标为私有仓库 `RESET-cpu/afdm-gfra`。全部内容以本地最新工作目录为准，不合入远端过时文件。保留本地当前目录布局及研究状态；本次上传没有启动训练或批量实验。
 
 ## 保留的内容
 
-- `src/`、`run_experiments.py`、`pyproject.toml`：算法、系统模型、网络定义、训练与数据生成代码、配置、测试、历史源码和现有许可证。
+- `src/`、`run_experiments.py`、`requirements.txt`：算法、系统模型、网络定义、训练与数据生成代码、配置、测试、历史源码和现有许可证。`pyproject.toml` 只配置默认测试。
 - `paper/STMP`、`paper/C-STMP`、`paper/DU`：稿件源码、已有阅读 PDF、正式图表、研究文档、审稿决定和小型修订核验记录。
 - `reference/`：文献索引、阅读记录和写作资料；下载的第三方论文 PDF 与页面预览留在本地。
 - `result/`：精选实验计划、完成/失败说明、小型结果汇总、论文绘图汇总及模型/数据的描述信息。目录名中的 `data` 或 `models` 不表示包含原始样本或权重。
@@ -20,13 +24,14 @@
 
 ## 阅读与复现
 
-当前算法入口是 `algorithm.GP_MP`，已知相位与估计相位登记为 `GP_MP` / `GP_MP_EP`。论文目录仍为 `paper/C-STMP`；白噪声主线及其他曲线的替换状态见根目录 README 和稿件说明。
+当前工作算法入口是 `receiver.gp_mp`，冻结批次保留 `algorithm.GP_MP`，已知相位与估计相位登记为 `GP_MP` / `GP_MP_EP`。论文目录仍为 `paper/C-STMP`；白噪声主线及其他曲线的替换状态见根目录 README 和稿件说明。
 
-安装 Python 项目依赖后，可用以下命令查看入口，不加载权重或执行实验：
+安装 Python 依赖后，可用以下命令查看入口并运行不需要权重的小型合成示例：
 
 ```text
 python -B run_experiments.py list
 python -B run_experiments.py snr_comparison --help
+python run_experiments.py demo --output result/demo_first
 ```
 
 论文 PDF 和正式图表可以直接阅读。当前七组实验曲线所需的小型绘图 JSON 按 `src/configs/plots/manuscript.json` 保留。图 3 的信道示例还依赖未上传的 `scene000_example.npz`；其最终图形已保留。图形重绘还需绘图说明中列出的依赖和字体。
@@ -35,4 +40,4 @@ python -B run_experiments.py snr_comparison --help
 
 ## 后续同步
 
-`.gitignore` 默认排除实验输出及权重、数组等文件。新增汇总应先检查其是否为聚合指标，再按具体文件路径加入 Git；不要整体强制加入 `result/`。本次使用独立暂存目录构建提交，保留原工作目录的未提交研究修改。
+`.gitignore` 默认排除实验输出及权重、数组等文件。新增汇总应先检查其是否为聚合指标，再按具体文件路径加入 Git；不要整体强制加入 `result/`。本次按文件清单构建提交，保留原工作目录及暂存区中的研究修改。

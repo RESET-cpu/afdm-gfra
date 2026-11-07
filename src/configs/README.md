@@ -1,5 +1,7 @@
 # 配置
 
+日常入口使用 [organized/algorithms.json](organized/algorithms.json)，工厂和直接源码路径指向 `src` 下对应功能目录。原登记与下列配置保留为冻结记录，数值参数和模型绑定未因代码整理改变。[代码导读](../README.md)。
+
 当前模型绑定见 [final/models.json](final/models.json)，十层推断参数见 [final/receiver.json](final/receiver.json)。
 正式计划见 [result/final2000](../../result/final2000/READINESS.json)，日常入口为根目录 `run_experiments.py`。
 

@@ -1,0 +1,33 @@
+{
+  "schema": "workspace-layout-migration-v1",
+  "moves": {
+    "results": "result",
+    "configs": "src/configs",
+    "tests": "src/history/tests",
+    "scripts": "src/history/scripts",
+    "experiment": "src/history/experiment",
+    "experiments": "src/history/experiments",
+    "cloud": "src/history/cloud",
+    "run.py": "src/history/run.py",
+    "data": "result/data",
+    "models": "result/models",
+    "runs": "result/runs",
+    "output": "result/output",
+    "tmp": "result/tmp",
+    "docs": "paper/docs",
+    "references": "reference",
+    "paper/literature": "reference/literature",
+    "paper/writing_profile": "reference/writing_profile"
+  },
+  "frozen_records": "Moved byte-for-byte; original embedded paths retained as historical provenance",
+  "excluded": [
+    ".git",
+    ".venv",
+    ".pytest_cache",
+    "__pycache__",
+    "this migration directory"
+  ],
+  "historical_plan_archive": {
+    "results/final2000": "result/layout_20261021/before/final2000"
+  }
+}

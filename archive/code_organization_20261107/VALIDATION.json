@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "imported_modules": 193,
+  "frozen_sources_unchanged": 188,
+  "pilot_source_and_config_bindings_verified": 124,
+  "model_bindings_unchanged": true,
+  "tests": {
+    "passed": 13,
+    "command": "python -B -m pytest -q src/tests/test_organized_code.py src/tests/test_organized_pipeline.py"
+  },
+  "checkpoint_parity": "CHECKPOINT_VALIDATION.json",
+  "figure_parity": "PLOT_VALIDATION.json",
+  "pilot_stage": "FAILED",
+  "pilot_completed": 2906,
+  "training_started": false,
+  "formal_experiment_started": false,
+  "errors": []
+}

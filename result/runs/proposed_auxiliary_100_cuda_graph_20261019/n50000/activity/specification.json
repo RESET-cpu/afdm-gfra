@@ -1,0 +1,198 @@
+{
+  "schema": "full-geometry-route12-training-specification-v1",
+  "stage": "activity",
+  "configuration": {
+    "schema": "proposed-three-stage-training-v1",
+    "generator": "known_phase_geometry_v3",
+    "scale": 0.2647966452702405,
+    "normalization": "fixed_population_coordinate_scale",
+    "shape": [
+      16,
+      16,
+      16
+    ],
+    "noise_support": [
+      0.001,
+      100.0
+    ],
+    "prior_definition": "runs\\proposed_50000_cuda_20261018\\data\\prior_definition.json",
+    "bank": {
+      "users": 40,
+      "candidates_per_scene": 4,
+      "train_samples": 50000,
+      "validation_samples": 5000,
+      "train_seed_base": 2026100601000000,
+      "validation_seed_base": 2026100602000000,
+      "spread_range_s": [
+        3e-08,
+        5e-08
+      ],
+      "selection": "Uniform candidate indices before activity masking; no direction, energy or receiver-output selection",
+      "minimum_free_bytes": 2147483648
+    },
+    "first": {
+      "initial_checkpoint": "runs\\proposed_50000_cuda_20261018\\initialization\\first.pt",
+      "initial_checkpoint_sha256": "1ff7105ad62ba3bb0d509501fe7fbd317a7361286649c74ade53404e9230fd63",
+      "objective": "direct_cai_dsm",
+      "seed": 202610180720001,
+      "validation_seed": 202610180720002,
+      "batch_size": 64,
+      "microbatch_size": 16,
+      "learning_rate": 0.0001,
+      "minimum_learning_rate": 1e-06,
+      "ema_decay": 0.999,
+      "gradient_clip": 1.0,
+      "checkpoint_seconds": 120,
+      "maximum_epochs": 200,
+      "minimum_epochs": 200,
+      "validation_patience": 201,
+      "meaningful_relative_improvement": 0.001,
+      "selection": "Minimum fixed-noise validation objective, including initial baseline",
+      "stopping": "Exactly 200 complete data epochs; no validation early stop",
+      "continuation": {
+        "execution_only": true,
+        "checkpoint": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\last.pt",
+        "checkpoint_sha256": "fae6dfa7d8b4911bfd1fcaf5080dead359d38b0ebababa759674ffd0ae00c74a",
+        "specification": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\specification.json",
+        "specification_sha256": "557c17e121c95269a996d400bde12678d52d585afbf0bb4719c704cbfdd8c8ee",
+        "best_checkpoint": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\first_best.pt",
+        "best_checkpoint_sha256": "31b5cc8d33b13771e580870a9ed9e7f2a8b96fe5f87b20bdb5d659baf07f454b",
+        "baseline": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\baseline.json",
+        "baseline_sha256": "0f16c5691e48eb53b9aa2a60429740f2234f15db564c930d53100f679d47e06f"
+      },
+      "output": "runs\\proposed_50000_cuda_graph_20261018\\model\\first"
+    },
+    "runtime": {
+      "device": "cuda",
+      "threads": 1
+    },
+    "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+    "data_files": {
+      "train": "data\\proposed\\train_channel.npy",
+      "validation": "data\\proposed\\validation_channel.npy"
+    },
+    "moments_file": "data\\proposed\\train_moments.npz",
+    "second": {
+      "initial_checkpoint": "runs\\proposed_50000_cuda_20261018\\initialization\\second.pt",
+      "initial_checkpoint_sha256": "15a97dddf8b3c85f9a1cb6b32ed321046092f8da59ac5240785885f8d5c646e4",
+      "objective": "direct_cai_global_trace",
+      "seed": 202610180720003,
+      "validation_seed": 202610180720004,
+      "batch_size": 64,
+      "microbatch_size": 16,
+      "learning_rate": 0.0001,
+      "minimum_learning_rate": 1e-06,
+      "ema_decay": 0.999,
+      "gradient_clip": 1.0,
+      "checkpoint_seconds": 120,
+      "maximum_epochs": 100,
+      "minimum_epochs": 100,
+      "validation_patience": 101,
+      "meaningful_relative_improvement": 0.001,
+      "selection": "Minimum fixed-noise validation objective, including initial baseline",
+      "stopping": "Exactly 100 complete data epochs; no validation early stop"
+    },
+    "activity": {
+      "initial_checkpoint": "runs\\proposed_50000_cuda_20261018\\initialization\\activity.pt",
+      "initial_checkpoint_sha256": "e39c2e4c9a1fb6e02af3c404237d18544f9e1a02efd80314e77cfca9267f4357",
+      "objective": "balanced_binary_cross_entropy; frozen_final_first_full_mean",
+      "training_class_prior": 0.5,
+      "seed": 202610180720005,
+      "validation_seed": 202610180720006,
+      "batch_size": 32,
+      "microbatch_size": 16,
+      "learning_rate": 0.0003,
+      "minimum_learning_rate": 1e-06,
+      "ema_decay": 0.999,
+      "gradient_clip": 1.0,
+      "checkpoint_seconds": 120,
+      "maximum_epochs": 100,
+      "minimum_epochs": 100,
+      "validation_patience": 101,
+      "meaningful_relative_improvement": 0.001,
+      "selection": "Minimum fixed-noise validation objective, including initial baseline",
+      "stopping": "Exactly 100 complete data epochs; no validation early stop"
+    },
+    "first_checkpoint": "runs\\proposed_50000_cuda_graph_20261018\\model\\first\\first_best.pt",
+    "first_training_record": "runs\\proposed_50000_cuda_graph_20261018\\model\\first\\complete.json",
+    "first_training_specification": "runs\\proposed_50000_cuda_graph_20261018\\model\\first\\specification.json",
+    "second_checkpoint": "runs\\proposed_auxiliary_100_cuda_graph_20261019\\n50000\\second\\second_best.pt",
+    "second_training_record": "runs\\proposed_auxiliary_100_cuda_graph_20261019\\n50000\\second\\complete.json",
+    "second_training_specification": "runs\\proposed_auxiliary_100_cuda_graph_20261019\\n50000\\second\\specification.json",
+    "receiver_template": "configs/proposed.json",
+    "random_start_training": {
+      "initialization": "random",
+      "pretraining_samples": 0,
+      "smoke_only": false,
+      "source_recipe": "scripts/train_proposed_sizes.py",
+      "selection": "Fixed-noise validation only; no test-based model selection"
+    },
+    "cuda_execution": {
+      "first": {
+        "batch_size": 64,
+        "foreach_ema": true,
+        "cuda_graph": true
+      },
+      "precision": "float32",
+      "random_query_draw_size": 16,
+      "effective_optimizer_batch_unchanged": true,
+      "validation_execution_unchanged": true,
+      "second": {
+        "cuda_graph": true,
+        "foreach_ema": true,
+        "original_microbatches": true,
+        "optimizer_batch_unchanged": true
+      },
+      "activity": {
+        "cuda_graph": true,
+        "foreach_ema": true,
+        "original_microbatches": true,
+        "optimizer_batch_unchanged": true
+      }
+    },
+    "output": "runs\\proposed_auxiliary_100_cuda_graph_20261019\\n50000",
+    "execution_continuation": {
+      "parent": "runs\\proposed_auxiliary_200_cuda_20261018",
+      "benchmark": "runs\\auxiliary_cuda_benchmark_20261018\\measured\\BENCHMARK.json",
+      "benchmark_sha256": "aaa3d1c3e96ace554971944ff44d66daefce89832faac3e394fc47bf439b43e9",
+      "objective_and_schedule_unchanged": true
+    },
+    "budget_revision": {
+      "parent": "runs\\proposed_auxiliary_200_cuda_graph_20261018",
+      "old_epochs": 200,
+      "new_epochs": 100,
+      "cumulative": true,
+      "learning_rate_schedule": "Cosine schedule now ends at the new final epoch; past updates preserved"
+    }
+  },
+  "first_sha256": "0de5200240f2c04be2940457375499bf344f7c4e446bd1c5d0649573162c427b",
+  "second_sha256": "a0f44780cd2cf9881bc636e8835f21aed82d6b966f34b1e89d75b84a06c428d5",
+  "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+  "device": "cuda",
+  "source_sha256": {
+    "scripts\\train_proposed.py": "c8cec8031f005b704fb9afa8036f54d7c563f8e81a8831190a16f720246c24bf",
+    "src\\afdm_jadcedd\\experiment\\training\\proposed\\__init__.py": "8397dd95283b0458e742012cbe2c4959fe1ae162e8d7445d2a3a4b9c379cd42d",
+    "src\\afdm_jadcedd\\experiment\\training\\proposed\\auxiliary.py": "45d58f4d534e52baac3d0ac2748d8f3f09c835f84c96b2ac172314ba0748b49a",
+    "src\\afdm_jadcedd\\experiment\\training\\proposed\\cli.py": "395a0bd9890a275d18a12a9f8ad0514051b560e8482926f7fee25065baf9ba40",
+    "src\\afdm_jadcedd\\experiment\\training\\proposed\\common.py": "4de2945dd74daf4bf26ac53ac673bf75686c7f39d65ca221ce025e9b345912de",
+    "src\\afdm_jadcedd\\experiment\\training\\proposed\\continuation.py": "d64240cad820e6d51565248841476b3a015705006dfdfb35cd29991f0afecba6",
+    "src\\afdm_jadcedd\\experiment\\training\\proposed\\data.py": "6f1f2fd9e637dc2b52c0ce03d78b132f8d564e0da905f43a14988c6e0aa8a1cb",
+    "src\\afdm_jadcedd\\experiment\\training\\proposed\\first.py": "b564f318b19bca61f011c7370c1d5ae28b77b3c9868a0b47bef3ce62f3012a4f",
+    "src\\afdm_jadcedd\\experiment\\training\\scores\\__init__.py": "f7062f41983045d817533906b3d933a6eebf35418efc2d0f9bc9fd3647e2ee28",
+    "src\\afdm_jadcedd\\experiment\\training\\scores\\checkpoints.py": "97105daf0860953414e1403e834eb6fc4302c0ae806811d8b854f27ca8763c22",
+    "src\\afdm_jadcedd\\experiment\\training\\scores\\cuda_execution.py": "6fd13922d52097b47ba25972b51d71e1e38d41178226b172e953435603ae89af",
+    "src\\afdm_jadcedd\\experiment\\training\\scores\\cuda_graph_auxiliary.py": "7886ae36012710dc94b3a5b366e7b2891d18ddda0f808ebc119b9558309d42c4",
+    "src\\afdm_jadcedd\\experiment\\training\\scores\\cuda_graph_first.py": "99f9885cfae35a7aadcca2109dcaa709c4e83ff774634253e0a18096f4936a9b",
+    "src\\afdm_jadcedd\\experiment\\training\\scores\\device.py": "6035b4f56d9449cd50a4149687475fb871e7f24d71482c2670f651ac25a6f933",
+    "src\\afdm_jadcedd\\experiment\\training\\scores\\direct_objectives.py": "d00efe5e5f44e59cc4830f6f224b5bbdfbf76bed81a1ef985e59893cc21c6f5e",
+    "src\\afdm_jadcedd\\experiment\\training\\scores\\score_matching.py": "4c765466866adb7c50f90d2a14fc694c7b18625dc77357311fc9951a1799bc65",
+    "src\\afdm_jadcedd\\experiment\\training\\scores\\trainer.py": "1956e7cd2f344f0c03c90b3c74376cba13ab8a917452795acf7a28a29854e207",
+    "src\\afdm_jadcedd\\algorithm\\proposed\\network.py": "be0b0a452bb64bb654e1065f9e906be3db9df95708f523a5dbb53366c9febc20",
+    "src\\afdm_jadcedd\\algorithm\\proposed\\activity.py": "5b269d487c1224cb18de017aed88b176e5a4afdb119fdd1bd3ede6d3aa2f5911",
+    "src\\afdm_jadcedd\\algorithm\\proposed\\configuration.py": "bd33ace095ce7f70e75e54ae677be7a086653fa9f9cdf17db547f3d87b5ce10a",
+    "src\\afdm_jadcedd\\algorithm\\proposed\\cai_models\\__init__.py": "a1ce7f50e3aa8a680f7e041c195392ad91a47cca596378eb5322ef7ee160e4d8",
+    "src\\afdm_jadcedd\\algorithm\\proposed\\cai_models\\layers.py": "40ece1a54cf43e8687a41979d7b0b874f56950f622c15f88f4e289dd98c823ab",
+    "src\\afdm_jadcedd\\algorithm\\proposed\\cai_models\\ncsn_channel_diffusion.py": "8e9c9614dad8813a21562915903e480f6d21b3ac4ba45d938f84593e5a0c527a",
+    "src\\afdm_jadcedd\\algorithm\\proposed\\cai_models\\normalization.py": "f0bd151174513a7523d820b1c8257c10d581e76bf810eaf5adce2e64550e267d"
+  }
+}

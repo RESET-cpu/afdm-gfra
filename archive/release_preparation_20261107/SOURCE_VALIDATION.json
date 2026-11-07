@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "artifact_directory": "D:\\afdm-gfra\\tmp\\source_download_z_m2jmri",
+  "project_installed": false,
+  "weights_or_raw_data_copied": false,
+  "dependency_environment": "existing verified dependencies, isolated source imports; not a fresh network installation",
+  "training_started": false,
+  "formal_experiment_started": false,
+  "checks": [
+    {
+      "check": "no_project_install",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "seconds": 0.13854939979501069
+    },
+    {
+      "check": "list",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "seconds": 1.503511399962008
+    },
+    {
+      "check": "help",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "seconds": 1.4530352000147104
+    },
+    {
+      "check": "demo",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "seconds": 0.6251892999280244
+    },
+    {
+      "check": "plot_list",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "seconds": 0.053046700078994036
+    },
+    {
+      "check": "missing_assets",
+      "exit_code": 1,
+      "expected_exit": 1,
+      "seconds": 0.05213299999013543
+    },
+    {
+      "check": "public_tests",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "seconds": 2.235235699918121
+    }
+  ]
+}

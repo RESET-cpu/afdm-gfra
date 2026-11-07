@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "removed_package_directory": true,
+  "compiled_files": 193,
+  "imported_modules": 192,
+  "frozen_sources_unchanged": 188,
+  "pilot_source_and_config_bindings_verified": 124,
+  "model_bindings_unchanged": true,
+  "default_plot_config_verified": true,
+  "training_provenance_paths_verified": true,
+  "pilot_stage": "FAILED",
+  "pilot_completed": 2906,
+  "training_started": false,
+  "formal_experiment_started": false,
+  "tests": {
+    "passed": 13,
+    "command": "python -B -m pytest -q src/tests/test_organized_code.py src/tests/test_organized_pipeline.py"
+  },
+  "checkpoint_parity": "CHECKPOINT_VALIDATION.json",
+  "figure_parity": "PLOT_VALIDATION.json",
+  "navigation_links_verified": true,
+  "module_entry_verified": true
+}

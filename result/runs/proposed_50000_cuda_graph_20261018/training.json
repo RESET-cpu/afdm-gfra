@@ -1,0 +1,135 @@
+{
+  "schema": "proposed-three-stage-training-v1",
+  "generator": "known_phase_geometry_v3",
+  "scale": 0.2647966452702405,
+  "normalization": "fixed_population_coordinate_scale",
+  "shape": [
+    16,
+    16,
+    16
+  ],
+  "noise_support": [
+    0.001,
+    100.0
+  ],
+  "prior_definition": "runs\\proposed_50000_cuda_20261018\\data\\prior_definition.json",
+  "bank": {
+    "users": 40,
+    "candidates_per_scene": 4,
+    "train_samples": 50000,
+    "validation_samples": 5000,
+    "train_seed_base": 2026100601000000,
+    "validation_seed_base": 2026100602000000,
+    "spread_range_s": [
+      3e-08,
+      5e-08
+    ],
+    "selection": "Uniform candidate indices before activity masking; no direction, energy or receiver-output selection",
+    "minimum_free_bytes": 2147483648
+  },
+  "first": {
+    "initial_checkpoint": "runs\\proposed_50000_cuda_20261018\\initialization\\first.pt",
+    "initial_checkpoint_sha256": "1ff7105ad62ba3bb0d509501fe7fbd317a7361286649c74ade53404e9230fd63",
+    "objective": "direct_cai_dsm",
+    "seed": 202610180720001,
+    "validation_seed": 202610180720002,
+    "batch_size": 64,
+    "microbatch_size": 16,
+    "learning_rate": 0.0001,
+    "minimum_learning_rate": 1e-06,
+    "ema_decay": 0.999,
+    "gradient_clip": 1.0,
+    "checkpoint_seconds": 120,
+    "maximum_epochs": 200,
+    "minimum_epochs": 200,
+    "validation_patience": 201,
+    "meaningful_relative_improvement": 0.001,
+    "selection": "Minimum fixed-noise validation objective, including initial baseline",
+    "stopping": "Exactly 200 complete data epochs; no validation early stop",
+    "continuation": {
+      "execution_only": true,
+      "checkpoint": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\last.pt",
+      "checkpoint_sha256": "fae6dfa7d8b4911bfd1fcaf5080dead359d38b0ebababa759674ffd0ae00c74a",
+      "specification": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\specification.json",
+      "specification_sha256": "557c17e121c95269a996d400bde12678d52d585afbf0bb4719c704cbfdd8c8ee",
+      "best_checkpoint": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\first_best.pt",
+      "best_checkpoint_sha256": "31b5cc8d33b13771e580870a9ed9e7f2a8b96fe5f87b20bdb5d659baf07f454b",
+      "baseline": "runs\\proposed_50000_cuda_optimized_20261018\\model\\first\\baseline.json",
+      "baseline_sha256": "0f16c5691e48eb53b9aa2a60429740f2234f15db564c930d53100f679d47e06f"
+    }
+  },
+  "runtime": {
+    "device": "cuda",
+    "threads": 1
+  },
+  "prior_definition_sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+  "data_files": {
+    "train": "data\\proposed\\train_channel.npy",
+    "validation": "data\\proposed\\validation_channel.npy"
+  },
+  "moments_file": "data\\proposed\\train_moments.npz",
+  "second": {
+    "initial_checkpoint": "runs\\proposed_50000_cuda_20261018\\initialization\\second.pt",
+    "initial_checkpoint_sha256": "15a97dddf8b3c85f9a1cb6b32ed321046092f8da59ac5240785885f8d5c646e4",
+    "objective": "direct_cai_global_trace",
+    "seed": 202610180720003,
+    "validation_seed": 202610180720004,
+    "batch_size": 64,
+    "microbatch_size": 16,
+    "learning_rate": 0.0001,
+    "minimum_learning_rate": 1e-06,
+    "ema_decay": 0.999,
+    "gradient_clip": 1.0,
+    "checkpoint_seconds": 120,
+    "maximum_epochs": 80,
+    "minimum_epochs": 20,
+    "validation_patience": 15,
+    "meaningful_relative_improvement": 0.001,
+    "selection": "Minimum fixed-noise validation objective, including initial baseline"
+  },
+  "activity": {
+    "initial_checkpoint": "runs\\proposed_50000_cuda_20261018\\initialization\\activity.pt",
+    "initial_checkpoint_sha256": "e39c2e4c9a1fb6e02af3c404237d18544f9e1a02efd80314e77cfca9267f4357",
+    "objective": "balanced_binary_cross_entropy; frozen_final_first_full_mean",
+    "training_class_prior": 0.5,
+    "seed": 202610180720005,
+    "validation_seed": 202610180720006,
+    "batch_size": 32,
+    "microbatch_size": 16,
+    "learning_rate": 0.0003,
+    "minimum_learning_rate": 1e-06,
+    "ema_decay": 0.999,
+    "gradient_clip": 1.0,
+    "checkpoint_seconds": 120,
+    "maximum_epochs": 100,
+    "minimum_epochs": 20,
+    "validation_patience": 15,
+    "meaningful_relative_improvement": 0.001,
+    "selection": "Minimum fixed-noise validation objective, including initial baseline"
+  },
+  "first_checkpoint": "models/proposed/first.pt",
+  "first_training_record": "models/proposed/training_records/first/complete.json",
+  "first_training_specification": "models/proposed/training_records/first/specification.json",
+  "second_checkpoint": "models/proposed/second.pt",
+  "second_training_record": "models/proposed/training_records/second/complete.json",
+  "second_training_specification": "models/proposed/training_records/second/specification.json",
+  "receiver_template": "configs/proposed.json",
+  "random_start_training": {
+    "initialization": "random",
+    "pretraining_samples": 0,
+    "smoke_only": false,
+    "source_recipe": "scripts/train_proposed_sizes.py",
+    "selection": "Fixed-noise validation only; no test-based model selection"
+  },
+  "cuda_execution": {
+    "first": {
+      "batch_size": 64,
+      "foreach_ema": true,
+      "cuda_graph": true
+    },
+    "precision": "float32",
+    "random_query_draw_size": 16,
+    "effective_optimizer_batch_unchanged": true,
+    "validation_execution_unchanged": true
+  }
+}

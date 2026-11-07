@@ -1,0 +1,401 @@
+{
+  "schema": "afdm-release-assets-v1",
+  "date": "2026-11-07",
+  "scope_notes": {
+    "gp-mp": "GP-MP/GP-MP-EP inference bindings and scene registry; comparator weights and full training data are separate.",
+    "figures": "Saved plotting inputs and current compiled equation labels for all ten figures; fonts and final reference PDFs for --check are documented separately.",
+    "training": "Archived white-training inputs, bank files and explicit recipe bindings; protected historical-run records and runtime preflights are still required. Not a certification of fresh retraining.",
+    "all": "Union of the documented inference, plotting and archived-training prerequisites; does not certify complete numerical reproduction."
+  },
+  "assets": [
+    {
+      "path": "paper/C-STMP/main.aux",
+      "sha256": "1485320c4141670dddade0711a33f55e7bf7bac97ff9d4edc7c2b7dcdd3e34e2",
+      "bytes": 22451,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "generated locally by compiling main.tex; excluded from source snapshot"
+    },
+    {
+      "path": "reference/literature/cai2026_stmp_v2.pdf",
+      "sha256": "f0e6f8acbeec4ca91ecdadb3f51471026646f7d6f338cb051f663a6ba66178cf",
+      "bytes": 3517510,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "reference/literature/shen2025.pdf",
+      "sha256": "49ba5402794cb29bdbd39c10ed5146e10291e15d2db222e4e57f8b13ae3f7abd",
+      "bytes": 2165186,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/activity_probability/figures/stmp_c_stmp_500_20261026/PLOT_DATA.json",
+      "sha256": "f5a931bf2f8e80332c786a308b2dbda05e1e5f6541f54b95a9e52169752f6373",
+      "bytes": 36817,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/channel_denoising/data/white_preconditioned_matched_20261104/EVALUATION_PLAN.json",
+      "sha256": "124f6e1bf100dd2a37e7f3939c24329b130153fe63290a5d012deafbc2706fd0",
+      "bytes": 8378,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/channel_denoising/data/white_preconditioned_matched_20261104/complete.json",
+      "sha256": "6b71af29467551d7939cae196df7c22739c0c236976df77e76454b6fbb7449f1",
+      "bytes": 2512,
+      "scopes": [
+        "gp-mp",
+        "training"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/channel_denoising/data/white_preconditioned_matched_20261104/first_best.pt",
+      "sha256": "82f7535dbceaaac382bb6e9832462c3d98055f88980883b39a0c80d3936ab446",
+      "bytes": 130648201,
+      "scopes": [
+        "gp-mp",
+        "training"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/channel_denoising/data/white_preconditioned_matched_20261104/initialization/first.pt",
+      "sha256": "1ff7105ad62ba3bb0d509501fe7fbd317a7361286649c74ade53404e9230fd63",
+      "bytes": 130366867,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/channel_denoising/data/white_preconditioned_matched_20261104/specification.json",
+      "sha256": "327e85315a7b6845500e13c090699ac2f63a9ab11db67e6c6378d740d8e42d03",
+      "bytes": 8444,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/channel_denoising/figures/white_mainline_500_20261107/PLOT_DATA.json",
+      "sha256": "f928bfa154ec3e6fcb576937e4933432bad8bda881c56e71a48a0003e289dbd3",
+      "bytes": 30560,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/channel_denoising/figures/white_mainline_500_20261107/scene000_example.npz",
+      "sha256": "02d7176ca5c69819e79c658818785f41f0ea2b04f6209bbd7ef2aa2e13cbdd90",
+      "bytes": 2376954,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/cross_channel/figures/full_500_paper_20261028/PLOT_DATA.json",
+      "sha256": "3ae6c6ac2f66b48b2f8a9d58e42ff8f962610de9772828b117641b4f328b431a",
+      "bytes": 145506,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/data/proposed/train_channel.npy",
+      "sha256": "3b7ad9f2a06a64e020dde863807882e8795ccdb825799a468651ddc6db735b1f",
+      "bytes": 1638400128,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/data/proposed/train_identities.npy",
+      "sha256": "445f4ade5fb30dc5e07fe23a2b276e7c8abc115eeeac236a2e20944eb5b7c96b",
+      "bytes": 800128,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/data/proposed/train_moments.npz",
+      "sha256": "dd94c4eda65c459183f08e5d102130b3c731da7fbeaf6c15466f5a98bd642ebe",
+      "bytes": 131884,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/data/proposed/validation_channel.npy",
+      "sha256": "2b3cd347df5a869948bbd40c74d119764880a998bb82a39ffae8301a7f9f8b0a",
+      "bytes": 163840128,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/data/proposed/validation_identities.npy",
+      "sha256": "a7c065dc608db8914cdaa430e3172db015e2020514e9f998e23cce91773e9434",
+      "bytes": 80128,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/lstmp_v3_shared2000_20261021/PAIRING_CHECK.json",
+      "sha256": "759aacf1fbf5c23d54d1b2d385f54b1677a3de7376ccc44a4358f1c81c3cae77",
+      "bytes": 747,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/lstmp_v3_shared2000_20261021/PLAN.json",
+      "sha256": "025b7732b7396d32318acfe1c5f9baea21210ec81328ba075a8dfa4da852af2f",
+      "bytes": 17231,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/lstmp_v3_shared2000_20261021/SCENES.csv",
+      "sha256": "30c2610430229429df574733185ac80a11d3261a5fe13d299934558659a00b7a",
+      "bytes": 62911,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/lstmp_v3_shared2000_20261021/SEED_SEPARATION.json",
+      "sha256": "9fb59b2d1c1f5275544f68d74eabddf3ff78786c4bf9e4b5bae0e0e3bbafc949",
+      "bytes": 5306,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/pilot_frames/figures/full_grid_final_20261026/PLOT_DATA.json",
+      "sha256": "9b3e75bd7f3dd628b4e1bf456d952ad8aff6445407aa71472b8c305dbbfe6dc0",
+      "bytes": 32776,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/runs/proposed_50000_cuda_20261018/data/prior_definition.json",
+      "sha256": "404acaa7845bd616fc42c555ba31b14662395c3c17f2b9fb53cd8bd1dcf3a6ed",
+      "bytes": 374598,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/runs/proposed_50000_cuda_graph_20261018/training.json",
+      "sha256": "bc93359b3c2d5c0bc481d42b3f0f628e6eeaeae2116e419d466fc7b4885b911d",
+      "bytes": 5494,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/runs/proposed_auxiliary_100_cuda_graph_20261019/n50000/activity/specification.json",
+      "sha256": "c5fff435a4d6d5c0a8870292b2015fc472775756b6a3b1c6e72f32529055011d",
+      "bytes": 10974,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/snr_comparison/data/c_stmp_derivative_1000_20261025/inference/PLAN.json",
+      "sha256": "fb4eca4fa9189189c31f2f61437dde2f7269ccb091412d2cab9b3d433f25143a",
+      "bytes": 45286,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/LAUNCH.json",
+      "sha256": "da68f3b0026ba09a2293759b61e4537339e615753d337e0ddf5ca75c2e36d791",
+      "bytes": 2667,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/complete.json",
+      "sha256": "a58b5da831ad58dad13e0d8fb164fa4f643a2d144a9e652c5182ff1df0936fa7",
+      "bytes": 904,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/evidence_best.pt",
+      "sha256": "2fb9977d68ede2b451dc0ba712a8106f002f889d2e529147aa2eb271a337d854",
+      "bytes": 3700687,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/history.json",
+      "sha256": "4803949cf61b3fddca615326fea6c172ae4cedd1d24f3a8ec80f48eec15f0c04",
+      "bytes": 249112,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/initialization.pt",
+      "sha256": "8630e5196c3611842d360bc60a107351202c0b1ff226eecd640986fa6c63ce9b",
+      "bytes": 3505901,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "external asset; not in source snapshot"
+    },
+    {
+      "path": "result/snr_comparison/data/white_preconditioned_classifier_matched_20261104/specification.json",
+      "sha256": "fb1a0993b2023f48ebe76580034d59a370755d0b600e16395ea99c42160c5a73",
+      "bytes": 18918,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/snr_comparison/figures/convergence_first30_300_20261105/PAPER_PLOT_DATA.json",
+      "sha256": "d61d655e94e5ab4798b5c4bebc9ae14fef36ead05751a46c909a8157c26cbc7d",
+      "bytes": 73905,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/snr_comparison/figures/main_snr_white_20261107/PLOT_DATA.json",
+      "sha256": "8699091d0a480c517fbdbc5abb9448d60d05e00e6c93ee184c9c81680940f496",
+      "bytes": 51676,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "result/user_count/figures/redraw_beta01_500_20261028/PLOT_DATA.json",
+      "sha256": "63ad4bcb9ac14bbc09a5d558cedb81fc6c154fa8836d15bed5e4dae14e69b3cf",
+      "bytes": 39134,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "src/algorithm/C_STMP_phase_init_marginal_20261104/initialization.py",
+      "sha256": "4236557cce326f90141f656154c2eaea3729a31361acd4dbddf6b0130483404f",
+      "bytes": 9094,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "src/configs/candidates/C_STMP_variance_em_20261025.json",
+      "sha256": "044d906052bf9150b9dbc09a64efaa545af6f70972cd96fd18f75a8e840f23b8",
+      "bytes": 3507,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "src/configs/candidates/GP_MP_white_phase_frontend_marginal_20261106.json",
+      "sha256": "953e40a4bd56951d299a36cde895cdb21e27ad1dcd7dca89d8e8735eac81f1de",
+      "bytes": 743,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "src/configs/candidates/GP_MP_white_preconditioned_matched_20261104.json",
+      "sha256": "98953511f77f8f9612e4fe129bdaa36ce55c674335e097749d6e4667533872eb",
+      "bytes": 4733,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "src/configs/final/phase.json",
+      "sha256": "351fe661bc20f6c49a311d324e062b6731bcd496a8f3483dbf1e20e19ed81672",
+      "bytes": 268,
+      "scopes": [
+        "gp-mp"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "src/configs/plots/manuscript.json",
+      "sha256": "f817fcf1155678df725cfe161f8457a9902f48aa1a29b207d086adf52c6f6c3e",
+      "bytes": 31903,
+      "scopes": [
+        "figures"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "src/configs/training/white_activity_matched_20261104.json",
+      "sha256": "2a65aa4593cfc6614830ba82cc0013f80355ba7188905bcf16447cfbc96675b5",
+      "bytes": 3213,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "source or small provenance record"
+    },
+    {
+      "path": "src/configs/training/white_preconditioned_matched_20261104.json",
+      "sha256": "a55b26d46ea2a998348d84944f92148dfa933079373e954794de6ae91fab87ba",
+      "bytes": 2918,
+      "scopes": [
+        "training"
+      ],
+      "distribution": "source or small provenance record"
+    }
+  ]
+}

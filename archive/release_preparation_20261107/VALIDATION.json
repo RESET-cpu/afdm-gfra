@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "frozen_sources_unchanged": 188,
+  "pilot_source_and_config_bindings_verified": 124,
+  "model_bindings_unchanged": true,
+  "citation_metadata_parsed": true,
+  "source_download_validation": "SOURCE_VALIDATION.json",
+  "checkpoint_parity": "CHECKPOINT_VALIDATION.json",
+  "figure_parity": "PLOT_VALIDATION.json",
+  "asset_inventory": "ASSET_VALIDATION.json",
+  "public_tests_passed": 25,
+  "organization_tests_passed": 13,
+  "training_started": false,
+  "formal_experiment_started": false,
+  "project_install_required": false,
+  "limitations": [
+    "Not a fresh network dependency installation test.",
+    "No full receiver sweep or from-scratch retraining performed.",
+    "Historical research checks remain separate; known stale checks are documented in src/tests/README.md.",
+    "Weights and raw data are excluded from the source snapshot."
+  ]
+}
