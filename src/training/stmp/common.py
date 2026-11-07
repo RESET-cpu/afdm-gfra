@@ -19,16 +19,17 @@ def resolve(path):
 
 def relative(path):
     path = Path(path).resolve()
-    return str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path)
+    return path.relative_to(ROOT).as_posix() if path.is_relative_to(ROOT) else str(path)
 
 
 def source_hashes():
-    training = ROOT / 'src/training/organized'
-    model = ROOT / 'src/receiver/stmp'
-    paths = sorted((training / 'stmp').glob('*.py'))
-    paths += sorted((training / 'scores').glob('*.py'))
-    paths += [model / 'activity.py', model / 'configuration.py']
-    paths += sorted((ROOT/'src/networks').rglob('*.py'))
+    paths = [ROOT/'src/workspace.py', ROOT/'src/fileio.py', ROOT/'src/training/__init__.py']
+    for name in ('training/stmp', 'training/scores', 'receiver/stmp', 'receiver/frontend',
+                 'networks', 'scenario', 'waveform', 'channel'):
+        directory = ROOT/'src'/name
+        if not directory.is_dir():
+            raise FileNotFoundError(directory)
+        paths.extend(sorted(directory.rglob('*.py')))
     return {relative(path): sha256(path) for path in paths}
 
 

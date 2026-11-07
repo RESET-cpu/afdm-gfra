@@ -1,7 +1,7 @@
 """Numerical equivalence of the independent runtime-only initializer."""
 import numpy as np
 from receiver.frontend import phase_initialization as original
-from receiver.stmp import runtime_initialization as candidate
+from receiver.stmp import gpu_initialization as candidate
 
 
 def test_repeated_optimizer_value_does_not_recompute_or_alias_gradient():

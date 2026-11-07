@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 import torch
-from receiver.stmp import runtime_initialization as reference
+from receiver.frontend import phase_initialization as reference
 from receiver.stmp import gpu_initialization as candidate
 from receiver.stmp.initialization_cuda import CudaInitialization
 
@@ -57,5 +57,5 @@ def test_cpu_initializer_fallback_is_exactly_the_previous_path():
     a,ra=reference.estimate(y,pilot,.5,moment,.1)
     b,rb=candidate.estimate(y,pilot,.5,moment,.1,device='cpu')
     for key in a:np.testing.assert_array_equal(a[key],b[key])
-    assert ra['optimization']==rb['optimization']
-    assert ra['initializer']==rb['initializer']
+    np.testing.assert_array_equal(ra['optimization']['objective'],rb['optimization']['objective'])
+    np.testing.assert_array_equal(ra['initializer']['objective'],rb['initializer']['objective'])

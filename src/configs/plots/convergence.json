@@ -1,83 +1,12 @@
 {
   "version": 1,
   "experiment": "convergence",
-  "input": "../../../result/snr_comparison/data/c_stmp_current_convergence_20261026_scene0200_snr0",
-  "output": "../../../result/snr_comparison/figures/convergence_current_paper_20261026",
-  "selection": {
-    "methods": [
-      "C_STMP",
-      "STMP"
-    ]
-  },
+  "input": null,
+  "output": null,
   "plot": {
     "x": "iteration",
     "metrics": [
       "nmse_db",
-      "aer"
-    ],
-    "panels": [
-      "combined"
-    ],
-    "title": "",
-    "show_panel_titles": false
-  },
-  "axes": {
-    "x": {
-      "label": "Receiver iteration",
-      "ticks": [
-        1,
-        20,
-        40,
-        60,
-        85
-      ]
-    },
-    "aer": {
-      "scale": "linear",
-      "limits": [
-        0,
-        1
-      ],
-      "ticks": [
-        0,
-        0.2,
-        0.4,
-        0.6,
-        0.8,
-        1
-      ]
-    }
-  },
-  "styles": {
-    "C_STMP": {
-      "markevery": [
-        0,
-        9,
-        19,
-        29,
-        39,
-        49,
-        59
-      ]
-    },
-    "STMP": {
-      "markevery": [
-        0,
-        9,
-        19,
-        29,
-        39,
-        49,
-        59,
-        69,
-        79,
-        84
-      ]
-    }
-  },
-  "legend": {
-    "loc": "upper right",
-    "combined_metrics": [
       "aer"
     ]
   }

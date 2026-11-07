@@ -48,6 +48,10 @@ def select(methods, definitions, kind, *, noise_mode='estimated', phase_mode='es
             raise ValueError('Unregistered algorithm: '+method)
         if definitions[method]['kind'] != kind:
             raise ValueError(f'{method} is not a {kind}')
+        modes = definitions[method].get('phase_modes', ('known', 'estimated'))
+        if phase_mode not in modes:
+            raise ValueError(f'{method} requires phase_mode={" or ".join(modes)}; '
+                             'use GP_MP for known-phase GP-MP inference')
     selected = {name: deepcopy(definitions[name]) for name in methods}
     if noise_mode == 'known':
         for name, spec in selected.items():

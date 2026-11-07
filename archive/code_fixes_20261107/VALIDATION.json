@@ -1,0 +1,140 @@
+{
+  "status": "PASS",
+  "tests": {
+    "tests": "230",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "2",
+    "time": "21.409"
+  },
+  "retired_files": 56,
+  "replaced_plot_templates": 9,
+  "moved_files": 65,
+  "changed_current_files": [
+    "src/README.md",
+    "src/configs/README.md",
+    "src/experiment/README.md",
+    "src/experiment/reporting.py",
+    "src/plotting/README.md",
+    "src/plotting/render_paper.py",
+    "src/receiver/registry.py",
+    "src/tests/README.md",
+    "src/tests/test_organized_code.py",
+    "src/tests/test_source_cleanup.py",
+    "src/tests/test_stmp_initialization_cuda.py",
+    "src/tests/test_stmp_phase_stopping.py",
+    "src/tests/test_stmp_runtime.py",
+    "src/training/gnn/mixed.py",
+    "src/training/gp_mp/activity.py",
+    "src/training/stmp/cli.py",
+    "src/training/stmp/common.py",
+    "src/receiver/stmp/denoiser.py",
+    "src/receiver/stmp/receiver.py",
+    "src/receiver/stmp_ablation/denoiser.py",
+    "src/receiver/stmp_ablation/receiver.py",
+    "src/experiment/studies/provenance.py",
+    "src/configs/organized/algorithms.json",
+    "src/configs/organized/baseline_sources.json",
+    "src/configs/plots/activity_probability.json",
+    "src/configs/plots/channel_denoising.json",
+    "src/configs/plots/convergence.json",
+    "src/configs/plots/cross_channel.json",
+    "src/configs/plots/density_ratio_ablation.json",
+    "src/configs/plots/manuscript.json",
+    "src/configs/plots/pilot_frames.json",
+    "src/configs/plots/README.md",
+    "src/configs/plots/runtime_comparison.json",
+    "src/configs/plots/snr_comparison.json",
+    "src/configs/plots/user_count.json",
+    "src/configs/release/assets.json",
+    "src/configs/training/STMP.json",
+    "GITHUB_MANIFEST.json",
+    ".gitignore"
+  ],
+  "python_files_parsed": 204,
+  "json_files_parsed": 45,
+  "stale_retired_imports": 0,
+  "weights_verified": 8,
+  "frozen_files_verified": 438,
+  "final_mainline_entrypoint_unchanged": true,
+  "runtime_original_bytes_verified": true,
+  "current_execution": {
+    "source_manifest": "archive/code_fixes_20261107/CURRENT_SOURCES.json",
+    "source_manifest_sha256": "fde12f10aeec6f1ef454cdab75af289e4560f0a05dc8f84704f54f3675f22b03",
+    "frozen_plan_sources": "Original source bytes retained in the relocation archive",
+    "executed_sources": "Current source inventory; numerical parity evidence linked in the manifest"
+  },
+  "pilot": {
+    "state": {
+      "pid": 114716,
+      "created_unix": 1794064713.4441805,
+      "command": [
+        "D:\\afdm-gfra\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\afdm-gfra\\.runtime\\pilot_20261107\\run_experiments.py",
+        "white_followup",
+        "coordinate",
+        "--stage",
+        "pilot_frames"
+      ],
+      "stage": "RUNNING",
+      "session": "1794064716915845800",
+      "completed": 3482,
+      "planned": 12000,
+      "active_workers": 1,
+      "workers": [
+        {
+          "pid": 100408,
+          "created_unix": 1794064949.1680555,
+          "command": [
+            "D:\\afdm-gfra\\.runtime\\pilot_20261107\\.venv\\Scripts\\python.exe",
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "experiment.studies.white_followup.receivers",
+            "worker",
+            "--stage",
+            "pilot_frames",
+            "--session",
+            "1794064716915845800",
+            "--slot",
+            "0",
+            "--method",
+            "GP_MP"
+          ],
+          "method": "GP_MP",
+          "started_unix": 1794064949.2144115
+        }
+      ],
+      "updated_unix": 1794065693.4935849,
+      "method": "GP_MP",
+      "method_dispatched": 84
+    },
+    "execution": {
+      "source_manifest": "archive/code_cleanup_20261107/CURRENT_SOURCES.json",
+      "source_manifest_sha256": "6695192a5af7767bdcb766a1cbe170c140b7bff88a04e77999f1d933e5ad49eb",
+      "frozen_plan_sources": "Original source bytes retained in the relocation archive",
+      "executed_sources": "Current source inventory; numerical parity evidence linked in the manifest"
+    },
+    "plan_verified": true
+  },
+  "assets": {
+    "checked": 48,
+    "hash_mismatches": 0,
+    "missing": 0,
+    "log": "tmp/code_fixes_20261107/assets.log"
+  },
+  "parity": "Exact arrays, states and diagnostics; elapsed timing excluded",
+  "figures": {
+    "count": 8,
+    "pixel_identical": true
+  },
+  "limitations": [
+    "Two CUDA tests skipped while the existing pilot experiment uses the GPU",
+    "No new batch experiment, training run or full paper reproduction was started",
+    "Training provenance and template checks do not certify full retraining"
+  ]
+}

@@ -119,7 +119,6 @@ def main(argv=None):
     parser.add_argument('--check-assets', action='store_true', help='Hash-check banks, initial weights and teacher records.')
     args = parser.parse_args(argv)
     config = load_recipe(args.config, prior_path=args.prior, data_directory=args.data_dir, device=args.device)
-    prior = None if args.stage == 'data' else load_prior(config)
     if args.inspect or args.check_assets:
         report = dict(status='INSPECTED', configuration=relative(args.config),
                       stages=['first', 'second', 'activity'], runtime=config['runtime'],
@@ -131,6 +130,7 @@ def main(argv=None):
         return 0
     if args.stage is None or args.output is None:
         parser.error('--stage and --output are required for data generation or training')
+    prior = None if args.stage == 'data' else load_prior(config)
     config = with_output(config, args.output, teachers='run' if args.stage == 'all' else args.teachers)
     if args.stage == 'data':
         build_bank(config, args.output, args.config)

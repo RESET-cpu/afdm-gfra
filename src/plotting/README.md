@@ -16,4 +16,4 @@ python run_experiments.py plot --check
 - `style.py`、`legend_layout.py`：样式、图例。
 - `summary.py`：通用实验的诊断图。
 
-[manuscript.json](../configs/plots/manuscript.json) 保存当前图源。依赖为 NumPy、Matplotlib、PyMuPDF 和 Times New Roman 字体。方法图还需要配置中的文献素材、编译标签及本地信道示例；这些素材并未全部发布。
+[manuscript.json](../configs/plots/manuscript.json) 保存当前图源。依赖为 NumPy、Matplotlib、PyMuPDF 和 Times New Roman 字体。系统图和接收机图分别核验各自的文献素材、编译标签或本地信道示例；这些素材并未全部发布。因子图可独立绘制，不依赖上述额外素材。

@@ -8,6 +8,21 @@ from fileio import write_json
 from fileio import sha256
 
 
+def rate(numerator, denominator):
+    """An empty reference class has an undefined rate, not a zero error rate."""
+    return numerator / denominator if denominator else None
+
+
+def rate_array(numerator, denominator):
+    numerator = np.asarray(numerator, dtype=float)
+    return np.divide(numerator, denominator, out=np.full_like(numerator, np.nan),
+                     where=np.asarray(denominator) != 0)
+
+
+def percent(value):
+    return 'N/A' if value is None else f'{value:.3%}'
+
+
 def write_csv(path, rows):
     if not rows:
         return
@@ -24,9 +39,11 @@ def pair_intervals(a, b, plan):
     def delta(t):
         return np.stack([10*np.log10(t[...,0]/t[...,6]),
             (t[...,2]+t[...,3]-t[...,7]-t[...,8])/(t[...,4]+t[...,5]),
-            (t[...,2]-t[...,7])/t[...,4], (t[...,3]-t[...,8])/t[...,5]],axis=-1)
+            rate_array(t[...,2]-t[...,7], t[...,4]),
+            rate_array(t[...,3]-t[...,8], t[...,5])],axis=-1)
     observed = delta(data.sum(axis=0))
-    result = dict(zip(['delta_nmse_db','delta_aer','delta_miss_rate','delta_false_alarm_rate'],observed.tolist()))
+    result = dict(zip(['delta_nmse_db','delta_aer','delta_miss_rate','delta_false_alarm_rate'],
+                       [float(v) if np.isfinite(v) else None for v in observed]))
     differences=np.asarray([r['metrics']['nmse_db']-s['metrics']['nmse_db'] for r,s in zip(a,b,strict=True)])
     result.update(nmse_scene_better=int((differences < -1e-12).sum()), nmse_scene_worse=int((differences > 1e-12).sum()),
                   nmse_scene_difference_min=float(differences.min()),nmse_scene_difference_max=float(differences.max()))
@@ -45,9 +62,14 @@ def pair_intervals(a, b, plan):
         boot.append(delta(data[selected].sum(axis=1)))
         time_boot.append((ta[selected]-tb[selected]).mean(axis=1))
         end_time_boot.append((ea[selected]-eb[selected]).mean(axis=1))
-    low,high=np.quantile(np.concatenate(boot),[.025,.975],axis=0)
+    samples = np.concatenate(boot)
+    low,high=np.quantile(samples,[.025,.975],axis=0)
     for i,key in enumerate(['nmse_db','aer','miss_rate','false_alarm_rate']):
-        result['delta_'+key+'_ci95']=[float(low[i]),float(high[i])]
+        result['delta_'+key+'_ci95']=([float(low[i]),float(high[i])]
+                                    if np.isfinite([low[i],high[i]]).all() else None)
+        undefined = int(np.count_nonzero(~np.isfinite(samples[:,i])))
+        if undefined:
+            result['delta_'+key+'_undefined_resamples'] = undefined
     result['mean_receiver_seconds_difference_ci95']=np.quantile(np.concatenate(time_boot),[.025,.975]).tolist()
     result['mean_end_to_end_seconds_difference_ci95']=np.quantile(np.concatenate(end_time_boot),[.025,.975]).tolist()
     return result
@@ -106,7 +128,8 @@ def finish(out,plan):
                         ('full_error','signal_energy','misses','false_alarms','active','inactive')}
                 summary.update(totals,nmse_db=float(10*np.log10(totals['full_error']/totals['signal_energy'])),
                     aer=(totals['misses']+totals['false_alarms'])/(totals['active']+totals['inactive']),
-                    miss_rate=totals['misses']/totals['active'],false_alarm_rate=totals['false_alarms']/totals['inactive'],
+                    miss_rate=rate(totals['misses'],totals['active']),
+                    false_alarm_rate=rate(totals['false_alarms'],totals['inactive']),
                     mean_receiver_seconds=float(np.mean([r['receiver_seconds'] for r in records])),
                     p50_receiver_seconds=float(np.median([r['receiver_seconds'] for r in records])),
                     p95_receiver_seconds=float(np.quantile([r['receiver_seconds'] for r in records],.95)),
@@ -154,7 +177,8 @@ def finish(out,plan):
         text += ['|条件|方法|NMSE (dB)|AER|漏检率|虚警率|漏检/虚警|接收机内计时秒|端到端秒|显存 MiB|',
                  '|---|---|---:|---:|---:|---:|---:|---:|---:|---:|']
         for r in rows:
-            text.append(f"|{r['parameters']}|{labels[r['method']]}|{r['nmse_db']:.4f}|{r['aer']:.3%}|{r['miss_rate']:.3%}|{r['false_alarm_rate']:.3%}|{r['misses']}/{r['false_alarms']}|{r['mean_receiver_seconds']:.4f}|{r['mean_end_to_end_seconds']:.4f}|{r['peak_allocated_mib']}|")
+            text.append(f"|{r['parameters']}|{labels[r['method']]}|{r['nmse_db']:.4f}|{r['aer']:.3%}|{percent(r['miss_rate'])}|{percent(r['false_alarm_rate'])}|{r['misses']}/{r['false_alarms']}|{r['mean_receiver_seconds']:.4f}|{r['mean_end_to_end_seconds']:.4f}|{r['peak_allocated_mib']}|")
+        text += ['', '无对应活跃/非活跃样本时，漏检率/虚警率记为 N/A（JSON 为 null）。含未定义重抽样值的相应区间不报告，未删除场景或重抽样。']
         text += ['','逐场景差值及 10000 次配对重抽样区间见 paired.csv 和 SUMMARY.json；单场景运行不计算区间。',
                  '实际计算后端逐方法列明；不能把 CPU/GPU 跨后端时延比值归因于算法本身。',
                  f"每个方法和输入形状使用独立场景预热一次；每个测试场景测量 {plan['timing_repeats']} 次取中位数，再按场景汇总均值、P50、P95；统计单位仍为物理场景。",

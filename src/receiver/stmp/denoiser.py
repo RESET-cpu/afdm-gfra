@@ -44,17 +44,19 @@ class Denoiser:
         self.activity_weight_residual_tolerance = activity_weight_residual_tolerance
         self.activity_stopping_reference = activity_stopping_reference
         self.previous_activity = None
-        if (
-            evidence is None
-            or tuple(moments.noise_support) != tuple(evidence.noise_support)
-            or evidence.training_class_prior != 0.5
-        ):
-            raise ValueError("Same-query support and balanced classifier required")
+        self.validate_evidence(moments, evidence)
         self.evidence = evidence
         self.classifier_calls = self.classifier_samples = 0
         self.classifier_seconds = 0.0
         self.activity_evidence_calls = self.activity_evidence_samples = 0
         self.activity_evidence_seconds = 0.0
+
+    @staticmethod
+    def validate_evidence(moments, evidence):
+        if (evidence is None
+                or tuple(moments.noise_support) != tuple(evidence.noise_support)
+                or evidence.training_class_prior != 0.5):
+            raise ValueError("Same-query support and balanced classifier required")
 
     def message_is_fresh(self, accepted, residual, weight_change):
         """Inspect the current site and the configured probability residual."""
@@ -141,7 +143,7 @@ class Denoiser:
         # Activity uses the same current query and score mean, including when
         # the Gaussian site was retained rather than updated (T15).
         evidence_seconds = classifier_seconds = 0.0
-        use_evidence = use_classifier = supported
+        use_evidence = use_classifier = supported and self.evidence is not None
         if use_evidence:
             self.last["failure_phase"] = "classifier" if use_classifier else "activity_evidence"
             evidence_started = time.perf_counter()

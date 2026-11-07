@@ -24,4 +24,4 @@ python run_experiments.py pilot_frames run --output result/my_pilot_frames
 python run_experiments.py white_followup inspect
 ```
 
-导频数批次已完成任务读取修复并从原断点恢复，见[恢复记录](../../archive/pilot_resume_20261107/README.md)。它需要完整本地输入和原计划，不能仅凭 GitHub 中的汇总文件续跑。运行进度以本地批次状态为准。
+导频数批次已完成任务读取修复并从原断点恢复，见[恢复记录](../../archive/pilot_resume_20261107/README.md)。本轮源码清理前，已将该批次转至字节一致的独立执行副本；后续本地续跑命令及核验记录见[本轮修改](../../archive/code_fixes_20261107/README.md)。它需要完整本地输入和原计划，不能仅凭 GitHub 中的汇总文件续跑。运行进度以本地批次状态为准。

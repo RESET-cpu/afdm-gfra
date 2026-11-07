@@ -20,6 +20,6 @@
 | final/baseline_sources.json | 原活动读出校准身份 |
 | training/STMP.json | STMP 训练配方；不会自动启动训练 |
 
-已退役 DU 的独立配置移入根目录 `delete/`。历史配置及混合绑定保留原文，不参与当前方法选择。
+已退役 DU、未采用的 STMP 相位候选和旧有色噪声训练配方移入根目录 `delete/`。仍由现用权重或计划引用的历史配置保留原文；字段与旧方法名用于溯源，不是新增方法入口。
 配置接入没有改变各算法的参数、权重或活动门限。创建新实验见 [实验说明](../experiment/README.md)。
 `receiver.registry.load_models()` 解析当前 STMP 配置引用。实验计划内保存完整配置，供后续核验与复现。

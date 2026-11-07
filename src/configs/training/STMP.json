@@ -48,7 +48,7 @@
     "stopping": "Validation plateau after minimum_epochs, or declared maximum training budget; maximum budget alone is not proof of convergence"
   },
   "runtime": {
-    "device": "mps",
+    "device": "cpu",
     "threads": 1
   },
   "prior_definition_sha256": "f20b1e25eae1037daff03db58c816a7acc4ccc382c89520016e47e5385b8bc9d",
@@ -102,5 +102,5 @@
   "second_checkpoint": "models/proposed/second.pt",
   "second_training_record": "models/proposed/training_records/second/complete.json",
   "second_training_specification": "models/proposed/training_records/second/specification.json",
-  "receiver_template": "configs/proposed.json"
+  "receiver_template": "src/configs/final/STMP.json"
 }

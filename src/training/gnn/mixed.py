@@ -21,7 +21,6 @@ import numpy as np
 import torch
 
 from workspace import ROOT
-from workspace import source_files
 from channel.dictionary import AFDMGrid
 from channel.dictionary import physical_atoms
 from training.gnn import common
@@ -701,7 +700,10 @@ def main(argv=None):
         )
         snapshot = a.output / "source_snapshot"
         manifest = {}
-        for path in source_files():
+        for name, expected in source['source_sha256'].items():
+            path = ROOT / name
+            if sha256(path) != expected:
+                raise ValueError('Training source changed before snapshot: ' + name)
             relative = path.relative_to(ROOT)
             dest = snapshot / relative
             dest.parent.mkdir(parents=True, exist_ok=True)

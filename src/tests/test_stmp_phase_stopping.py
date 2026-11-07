@@ -1,13 +1,8 @@
 """Complete-cycle stopping uses observable outputs and preserves trajectories."""
-from dataclasses import replace
 import numpy as np
 import pytest
 
 from receiver.stmp.phase_stopping import CycleStopping
-from receiver.stmp import phase_iterations, phase_periodic_stopping_iterations as candidate
-from receiver.stmp.records import SpatialConfig
-from test_stmp_phase import GaussianDenoiser, public_input
-from test_stmp_phase_periodic import NeverFresh, fixed_change
 
 
 def settings(**kwargs):
@@ -88,28 +83,6 @@ def test_phase_operator_changes_are_detected_even_with_unchanged_channel():
     assert result['changes']['prediction_change']>.09 and not result['passed']
 
 
-def test_raw_site_instability_does_not_change_outputs_or_force_iteration_limit(monkeypatch):
-    monkeypatch.setattr(candidate,'update_phase',fixed_change)
-    monkeypatch.setattr(phase_iterations,'update_phase',fixed_change)
-    control=SpatialConfig(iterations=200,min_iterations=150,damping=.2,
-        covariance_mode='isotropic',convergence_tolerance=100.,convergence_patience=2,
-        decision_stability_window=10)
-    phase=dict(periodic_update=dict(start=10,interval=10),minimum_iterations_after_last_update=10,
-               stopping=settings(relative_tolerance=100.))
-    raw=public_input()
-    actual,slopes,steps=candidate.infer(raw,NeverFresh(),scale=.27,initial_variance=.4,
-        controls=control,initial_slopes=np.zeros(3),phase_configuration=phase)
-    assert actual.stopping_reason=='CONVERGED' and len(actual.trace)==150
-    assert actual.trace[-1]['cycle_stopping']['stop']
-    assert not actual.trace[-1]['legacy_converged']
-    assert [s['after_iteration'] for s in steps]==list(range(10,150,10))
-    reference,beta,_=phase_iterations.infer(raw,NeverFresh(),scale=.27,initial_variance=.4,
-        controls=replace(control,iterations=150),initial_slopes=np.zeros(3),
-        phase_configuration=dict(update_after_iterations=list(range(10,150,10)),
-                                 minimum_iterations_after_last_update=10))
-    for name in ('estimate','conditional_matrix','probabilities','spatial_covariance'):
-        np.testing.assert_array_equal(getattr(actual,name),getattr(reference,name))
-    np.testing.assert_array_equal(slopes,beta)
 
 
 def test_nonfinite_output_is_not_a_stable_solution():

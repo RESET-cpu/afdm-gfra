@@ -89,12 +89,16 @@ def prepare(cfg, out):
     protected = cfg.get('protected_files', {})
     check_hashes(protected)
     source_paths = [ROOT/'src/workspace.py', ROOT/'src/fileio.py', ROOT/'src/receiver/stmp/activity.py',
-        ROOT/'src/receiver/stmp/prior.py', ROOT/'src/training/stmp/auxiliary.py',
+        ROOT/'src/training/stmp/auxiliary.py',
         ROOT/'src/training/scores/cuda_graph_auxiliary.py', ROOT/'src/training/scores/device.py']
-    # Include dependencies and the independent trainer; snapshot only actual files.
-    for folder in ('src/training/gp_mp', 'src/receiver/gp_mp', 'src/networks', 'src/networks/cai_models'):
-        source_paths.extend((ROOT/folder).glob('*.py'))
-    sources = {str(p.relative_to(ROOT)): sha256(p) for p in source_paths if p.is_file()}
+    # Bind the actual trainer and shared training/score dependencies.
+    for folder in ('src/training/gp_mp', 'src/training/stmp', 'src/training/scores',
+                   'src/receiver/gp_mp', 'src/receiver/stmp', 'src/networks'):
+        directory = ROOT/folder
+        if not directory.is_dir():
+            raise FileNotFoundError(directory)
+        source_paths.extend(directory.rglob('*.py'))
+    sources = {p.relative_to(ROOT).as_posix(): sha256(p) for p in sorted(set(source_paths))}
     specification = dict(schema=cfg['schema'], configuration=cfg,
         data_paths={k: str(v.relative_to(ROOT)) for k,v in paths.items()}, data_hashes=data_hashes,
         prior_definition=str(prior_path.relative_to(ROOT)), prior_definition_sha256=sha256(prior_path),

@@ -19,9 +19,9 @@
 
 ## 模型和执行版本
 
-- [FINAL.json](../FINAL.json)：当前 GP-MP 模型身份。
+- [FINAL.json](../FINAL.json)：冻结的 GP-MP 模型身份；其中旧源码路径用于核验历史记录。当前实现为 `receiver/gp_mp/`，当前方法登记为 `configs/organized/algorithms.json`。
 - [算法登记](configs/organized/algorithms.json)：方法名称、工厂、数值配置和资源。
 - [STMP 模型登记](configs/organized/models.json)：STMP 配置和共享相位配置。
 - [实验配置](configs/experiments)：新实验的方法、场景数和扫描条件。
 
-`experiment/studies/` 保存特定研究批次的执行流程。导频数续跑使用已验证的当前实现，原计划和本次执行源码分别记录；说明见[恢复记录](../archive/pilot_resume_20261107/README.md)。其他冻结批次按[冻结归档说明](../archive/frozen_reproduction_20261107/README.md)执行。
+`experiment/studies/` 保存特定研究批次的执行流程。正在进行的导频批次使用清理前的独立执行副本，原计划、权重和源码身份保持不变；说明见[本轮修改与验证](../archive/code_fixes_20261107/README.md)。其他冻结批次按[冻结归档说明](../archive/frozen_reproduction_20261107/README.md)执行。

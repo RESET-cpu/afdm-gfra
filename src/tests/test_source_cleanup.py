@@ -19,11 +19,11 @@ from fileio import read_json, write_json, sha256, json_digest
 
 
 def test_json_unicode_bom_gzip_and_identity(tmp_path):
-    value = {'璇存槑': '鍏变韩鍦烘櫙', 'results': [1, .5, None]}
+    value = {'说明': '共享场景', 'results': [1, .5, None]}
     path = tmp_path/'record.json'
     write_json(path, value)
     assert read_json(path) == value
-    assert '鍏变韩鍦烘櫙' in path.read_text(encoding='utf-8')
+    assert '共享场景' in path.read_text(encoding='utf-8')
     assert sha256(path) == hashlib.sha256(path.read_bytes()).hexdigest()
     assert json_digest(value) == json_digest(dict(reversed(list(value.items()))))
     path.write_text(json.dumps(value), encoding='utf-8-sig')

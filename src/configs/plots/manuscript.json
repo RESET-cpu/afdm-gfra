@@ -4,15 +4,24 @@
   "figures": {
     "system_multiframe": {
       "number": 1,
-      "kind": "method"
+      "kind": "method",
+      "dependencies": [
+        "reference/literature/shen2025.pdf"
+      ]
     },
     "factor_graph": {
       "number": 2,
-      "kind": "method"
+      "kind": "method",
+      "dependencies": []
     },
     "learned_receiver": {
       "number": 3,
-      "kind": "method"
+      "kind": "method",
+      "dependencies": [
+        "reference/literature/cai2026_stmp_v2.pdf",
+        "result/channel_denoising/figures/white_mainline_500_20261107/scene000_example.npz",
+        "paper/main.aux"
+      ]
     },
     "channel_denoising": {
       "number": 4,
@@ -1180,6 +1189,7 @@
   "method_sources": {
     "reference/literature/shen2025.pdf": "49ba5402794cb29bdbd39c10ed5146e10291e15d2db222e4e57f8b13ae3f7abd",
     "reference/literature/cai2026_stmp_v2.pdf": "f0e6f8acbeec4ca91ecdadb3f51471026646f7d6f338cb051f663a6ba66178cf",
-    "result/channel_denoising/figures/white_mainline_500_20261107/scene000_example.npz": "02d7176ca5c69819e79c658818785f41f0ea2b04f6209bbd7ef2aa2e13cbdd90"
+    "result/channel_denoising/figures/white_mainline_500_20261107/scene000_example.npz": "02d7176ca5c69819e79c658818785f41f0ea2b04f6209bbd7ef2aa2e13cbdd90",
+    "paper/main.aux": "1485320c4141670dddade0711a33f55e7bf7bac97ff9d4edc7c2b7dcdd3e34e2"
   }
 }

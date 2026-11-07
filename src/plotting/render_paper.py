@@ -22,8 +22,11 @@ def sha(path):
 def verify_sources(config,names):
     sources={config['figures'][n]['source']:config['figures'][n]['source_sha256']
              for n in names if config['figures'][n]['kind']=='experiment'}
-    if any(config['figures'][n]['kind']=='method' for n in names):
-        sources.update(config['method_sources'])
+    for name in names:
+        cfg = config['figures'][name]
+        if cfg['kind']=='method':
+            for path in cfg['dependencies']:
+                sources[path] = config['method_sources'][path]
     for relative,expected in sources.items():
         if sha(ROOT/relative)!=expected:
             raise ValueError(f'Saved input changed; review its provenance before updating: {relative}')

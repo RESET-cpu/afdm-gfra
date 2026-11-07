@@ -32,13 +32,18 @@ def test_frozen_source_files_keep_original_bytes():
     retirement = json.loads((ROOT/'archive/du_removal_20261107/REMOVAL.json').read_text())
     excluded = {row['path'] for row in retirement['excluded_sources']}
     moved = {row['source']: row['destination'] for row in retirement['moved_working_helpers']}
+    cleanup = json.loads((ROOT/'archive/code_fixes_20261107/REMOVAL.json').read_text())
+    retired = {row['source'] for row in cleanup['files'] if not row['replaced']}
     for row in mapping['files']:
         if row['source'] in excluded:
             continue  # Explicitly retired DU sources; retained sources still require identical bytes.
         assert hashlib.sha256(frozen_read_path(ROOT/row['source']).read_bytes()).hexdigest() == row['source_sha256']
         if row['destination'] not in excluded or row['destination'] in moved:
             destination = moved.get(row['destination'], row['destination']).replace('training/organized/', 'training/')
-            assert (ROOT/destination).is_file()
+            if destination in retired:
+                assert not (ROOT/destination).exists()
+            else:
+                assert (ROOT/destination).is_file()
 
 
 @pytest.mark.parametrize('mode', ['generate', 'unknown_phase'])
@@ -84,7 +89,9 @@ def test_receiver_configuration_and_metric_results_match():
     for name, spec in after.items():
         assert new.factory(spec).__module__.startswith('receiver.')
         a, b = deepcopy(before[name]), deepcopy(spec)
-        # Only source locations change, never scientific arguments or weights.
+        # Scientific arguments and weights stay unchanged; the EP phase contract is now explicit.
+        if name == 'GP_MP_EP':
+            assert b.pop('phase_modes') == ['estimated']
         for v in (a, b):
             v.pop('factory')
             if 'known_noise' in v:
@@ -103,7 +110,7 @@ def test_receiver_configuration_and_metric_results_match():
 
 def test_physics_does_not_import_inference_experiments_or_plotting():
     base = ROOT/'src'
-    prohibited = ('receiver', 'experiment', 'plotting', 'training.organized')
+    prohibited = ('receiver', 'experiment', 'plotting', 'training')
     for area in ('scenario', 'waveform', 'channel'):
         for path in (base/area).rglob('*.py'):
             for node in ast.walk(ast.parse(path.read_text(encoding='utf-8'))):

@@ -27,6 +27,8 @@ from receiver.stmp.denoiser import Denoiser
 
 
 class Receiver:
+    denoiser_type = Denoiser
+
     def __init__(self, configuration, *, device="auto"):
         self.configuration = deepcopy(configuration)
         self.checkpoints = verify(self.configuration)["checkpoint_sha256"]
@@ -68,7 +70,7 @@ class Receiver:
             raise ValueError("16-antenna/16x16 four-field input required")
         c = self.configuration
         floor = c["conditional_variance_floor_checkpoint_normalized"] / self.model.scale_ratio**2
-        self.denoiser = Denoiser(
+        self.denoiser = self.denoiser_type(
             self.model,
             self.evidence,
             activity_prior=inputs.activity_prior,
@@ -112,7 +114,8 @@ class Receiver:
         record = self.context()
         record.pop("failed_denoiser_diagnostics")
         effective = deepcopy(c)
-        effective.update(device=self.device, activity_prior=float(inputs.activity_prior))
+        effective.update(device=self.device, activity_prior=float(inputs.activity_prior),
+                         activity_evidence=record['activity_evidence'])
         record.update(
             status="COMPLETE",
             configuration=effective,

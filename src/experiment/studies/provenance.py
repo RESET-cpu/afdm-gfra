@@ -5,7 +5,7 @@ import json
 
 from workspace import ROOT
 
-MANIFEST = 'archive/code_cleanup_20261107/CURRENT_SOURCES.json'
+MANIFEST = 'archive/code_fixes_20261107/CURRENT_SOURCES.json'
 
 
 def execution_identity():
