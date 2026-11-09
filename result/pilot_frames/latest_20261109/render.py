@@ -37,10 +37,10 @@ def main():
     for legend in list(fig.legends):
         legend.remove()
     # Match the main SNR figure's three-column legend and handle spacing.
-    fig.subplots_adjust(bottom=.75/2.65)
+    fig.subplots_adjust(bottom=.85/2.65)
     fig.legend(*ax.get_legend_handles_labels(),loc='lower center',
-               bbox_to_anchor=(.5,.003),ncol=3,
-               **dict(engine.LEGEND, **all_cfg['snr_comparison']['legend_style'], labelspacing=0, borderpad=.2))
+               bbox_to_anchor=(.5,.015),ncol=3,
+               **dict(engine.LEGEND, **all_cfg['snr_comparison']['legend_style']))
     engine.validate(fig, curves, cfg)
     OUT.mkdir(exist_ok=True)
     for ext in ('png','pdf'):
