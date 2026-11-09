@@ -26,3 +26,7 @@ python run_experiments.py white_followup inspect
 ```
 
 本地实时状态文件位于 `pilot_frames/data/white_mainline_500_20261107/STATUS.json`，不纳入静态发布清单。检查时的进度快照见[本轮验证记录](../archive/code_fixes_20261107/VALIDATION.json)，GitHub 不提供实时进度。完整输入与逐场景预测不随小型汇总发布；当前批次完成并通过全量核验、更新图稿后，再进入下一阶段。
+
+## 最新导频图（2026-11-09）
+
+[查看三列图例版导频 NMSE 图与复现说明](pilot_frames/latest_20261109/README.md)。8、12、16、20、24 帧，九条曲线，每点 500 场景；仅更新独立实验结果，论文采用另行处理。

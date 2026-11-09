@@ -1,0 +1,1153 @@
+{
+  "status": "VERIFIED",
+  "experiment": "pilot_frames",
+  "metrics": [
+    "nmse_db"
+  ],
+  "methods": [
+    "GP_MP",
+    "GP_MP_EP",
+    "offgrid13",
+    "offgrid25",
+    "STMP",
+    "offgrid_sbl",
+    "gnn",
+    "gamp",
+    "somp"
+  ],
+  "rows": [
+    {
+      "method": "GP_MP",
+      "index": 0,
+      "parameters": {
+        "users": 40,
+        "frames": 8,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 8,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 74713.78435166688,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -8.884380783891267,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "GP_MP",
+      "index": 1,
+      "parameters": {
+        "users": 40,
+        "frames": 12,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 12,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 39864.70537833765,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -11.612502541724925,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "GP_MP",
+      "index": 2,
+      "parameters": {
+        "users": 40,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 29281.560537037254,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -12.952445945678281,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "GP_MP",
+      "index": 3,
+      "parameters": {
+        "users": 40,
+        "frames": 20,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 20,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 23782.407870118248,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -13.8558298992035,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "GP_MP",
+      "index": 4,
+      "parameters": {
+        "users": 40,
+        "frames": 24,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 24,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 20427.550655036826,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -14.516225168333364,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "GP_MP_EP",
+      "index": 0,
+      "parameters": {
+        "users": 40,
+        "frames": 8,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 8,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 82174.7163857893,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -8.47100599092067,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "GP_MP_EP",
+      "index": 1,
+      "parameters": {
+        "users": 40,
+        "frames": 12,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 12,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 42814.451371314506,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -11.302484296431048,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "GP_MP_EP",
+      "index": 2,
+      "parameters": {
+        "users": 40,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 31580.236436975807,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -12.62423435754669,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "GP_MP_EP",
+      "index": 3,
+      "parameters": {
+        "users": 40,
+        "frames": 20,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 20,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 25667.578824657103,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -13.5245390853696,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "GP_MP_EP",
+      "index": 4,
+      "parameters": {
+        "users": 40,
+        "frames": 24,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 24,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 21877.60274213697,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -14.218390808807285,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid13",
+      "index": 0,
+      "parameters": {
+        "users": 40,
+        "frames": 8,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 8,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 127417.07928633394,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -6.566111671837664,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid13",
+      "index": 1,
+      "parameters": {
+        "users": 40,
+        "frames": 12,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 12,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 98831.7344982148,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -7.669423956378447,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid13",
+      "index": 2,
+      "parameters": {
+        "users": 40,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 84982.87979440672,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -8.325073691078938,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid13",
+      "index": 3,
+      "parameters": {
+        "users": 40,
+        "frames": 20,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 20,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 77032.19823340638,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -8.751665216378651,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid13",
+      "index": 4,
+      "parameters": {
+        "users": 40,
+        "frames": 24,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 24,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 71787.97748325946,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -9.057870950223753,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid25",
+      "index": 0,
+      "parameters": {
+        "users": 40,
+        "frames": 8,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 8,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 146410.16886384579,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -5.962675714116897,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid25",
+      "index": 1,
+      "parameters": {
+        "users": 40,
+        "frames": 12,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 12,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 112117.72663312682,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -7.121645297835981,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid25",
+      "index": 2,
+      "parameters": {
+        "users": 40,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 96983.90792637385,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -7.7513913309515825,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid25",
+      "index": 3,
+      "parameters": {
+        "users": 40,
+        "frames": 20,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 20,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 87099.18475009224,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -8.2182472292073,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid25",
+      "index": 4,
+      "parameters": {
+        "users": 40,
+        "frames": 24,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 24,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 81017.47890712963,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -8.532600882128,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "STMP",
+      "index": 0,
+      "parameters": {
+        "users": 40,
+        "frames": 8,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 8,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 1706789613.2274804,
+      "signal_energy": 577881.528653338,
+      "nmse_db": 34.70341178326305,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "STMP",
+      "index": 1,
+      "parameters": {
+        "users": 40,
+        "frames": 12,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 12,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 192241.30271276349,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -4.779921121645733,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "STMP",
+      "index": 2,
+      "parameters": {
+        "users": 40,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 41688.2671558314,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -11.418249696353044,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "STMP",
+      "index": 3,
+      "parameters": {
+        "users": 40,
+        "frames": 20,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 20,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 32890.87925586149,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -12.447633295226199,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "STMP",
+      "index": 4,
+      "parameters": {
+        "users": 40,
+        "frames": 24,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 24,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 27295.47983864032,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -13.257480795902234,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid_sbl",
+      "index": 0,
+      "parameters": {
+        "users": 40,
+        "frames": 8,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 8,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 125566.75866187412,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -6.629641292782427,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid_sbl",
+      "index": 1,
+      "parameters": {
+        "users": 40,
+        "frames": 12,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 12,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 95301.31618795755,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -7.8273991430695915,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid_sbl",
+      "index": 2,
+      "parameters": {
+        "users": 40,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 81400.85521452315,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -8.512098452409614,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid_sbl",
+      "index": 3,
+      "parameters": {
+        "users": 40,
+        "frames": 20,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 20,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 72651.92381238977,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -9.005916941022937,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "offgrid_sbl",
+      "index": 4,
+      "parameters": {
+        "users": 40,
+        "frames": 24,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 24,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 68293.03898454549,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -9.274623740446868,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "gnn",
+      "index": 0,
+      "parameters": {
+        "users": 40,
+        "frames": 8,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 8,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 254818.76774012527,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -3.5560740173765346,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "gnn",
+      "index": 1,
+      "parameters": {
+        "users": 40,
+        "frames": 12,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 12,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 189120.6628469611,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -4.850998315855449,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "gnn",
+      "index": 2,
+      "parameters": {
+        "users": 40,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 163222.78980508342,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -5.490580163956738,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "gnn",
+      "index": 3,
+      "parameters": {
+        "users": 40,
+        "frames": 20,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 20,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 149496.31086354883,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -5.872083372820911,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "gnn",
+      "index": 4,
+      "parameters": {
+        "users": 40,
+        "frames": 24,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 24,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 140051.6474819298,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -6.155505909790757,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "gamp",
+      "index": 0,
+      "parameters": {
+        "users": 40,
+        "frames": 8,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 8,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 282085.6066120241,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -3.1145788605229234,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "gamp",
+      "index": 1,
+      "parameters": {
+        "users": 40,
+        "frames": 12,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 12,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 229426.8682143847,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -4.011945361089373,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "gamp",
+      "index": 2,
+      "parameters": {
+        "users": 40,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 201056.10203198038,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -4.5852155451166645,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "gamp",
+      "index": 3,
+      "parameters": {
+        "users": 40,
+        "frames": 20,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 20,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 183436.4188958257,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -4.9835324957390625,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "gamp",
+      "index": 4,
+      "parameters": {
+        "users": 40,
+        "frames": 24,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 24,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 170882.34710363223,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -5.291416124313358,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "somp",
+      "index": 0,
+      "parameters": {
+        "users": 40,
+        "frames": 8,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 8,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 356586.92484598537,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -2.096733983086164,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "somp",
+      "index": 1,
+      "parameters": {
+        "users": 40,
+        "frames": 12,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 12,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 273769.9404423546,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -3.244530514561677,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "somp",
+      "index": 2,
+      "parameters": {
+        "users": 40,
+        "frames": 16,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 16,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 235120.99734733443,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -3.905473976641183,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    },
+    {
+      "method": "somp",
+      "index": 3,
+      "parameters": {
+        "users": 40,
+        "frames": 20,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 20,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 211270.6551502539,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -4.36999633881374,
+      "verification": {
+        "full_array_rescoring": 500
+      }
+    },
+    {
+      "method": "somp",
+      "index": 4,
+      "parameters": {
+        "users": 40,
+        "frames": 24,
+        "activity_probability": 0.1,
+        "snr_db": 0,
+        "channel_model": "D",
+        "pilot": "dft"
+      },
+      "users": 40,
+      "frames": 24,
+      "activity_probability": 0.1,
+      "snr_db": 0,
+      "channel_model": "D",
+      "pilot": "dft",
+      "scenes": 500,
+      "full_error": 194625.9500061445,
+      "signal_energy": 577881.528653338,
+      "nmse_db": -4.72638067488378,
+      "verification": {
+        "retained_per_user_error_reaggregation_not_full_channel_rescoring": 500
+      }
+    }
+  ],
+  "scene_count": 500,
+  "energy_aggregated_nmse": true,
+  "no_scene_exclusions": true,
+  "verification_counts": {
+    "full_array_rescoring": 15000,
+    "retained_per_user_error_reaggregation_not_full_channel_rescoring": 7500
+  },
+  "note": "Retrospective paired scenes. Legacy compact errors and frozen aggregates are explicitly distinguished."
+}
