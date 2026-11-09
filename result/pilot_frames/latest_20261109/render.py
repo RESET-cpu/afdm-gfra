@@ -29,18 +29,18 @@ def main():
     fig, curves = engine.draw('user_count', raw, cfg)
     ax = fig.axes[0]
     ax.set_xlabel('Number of pilot frames', labelpad=1)
-    ax.set_ylim(-20,0)
-    ax.set_yticks([-20,-15,-10,-5,0])
+    ax.set_ylim(-15,0)
+    ax.set_yticks([-15,-10,-5,0])
     for line in ax.lines:
         line.set_clip_on(True)
         line.set_clip_path(ax.patch)
     for legend in list(fig.legends):
         legend.remove()
     # Match the main SNR figure's three-column legend and handle spacing.
-    fig.subplots_adjust(bottom=.85/2.65)
+    fig.subplots_adjust(bottom=.75/2.65)
     fig.legend(*ax.get_legend_handles_labels(),loc='lower center',
-               bbox_to_anchor=(.5,.015),ncol=3,
-               **dict(engine.LEGEND, **all_cfg['snr_comparison']['legend_style']))
+               bbox_to_anchor=(.5,.003),ncol=3,
+               **dict(engine.LEGEND, **all_cfg['snr_comparison']['legend_style'], labelspacing=0, borderpad=.2))
     engine.validate(fig, curves, cfg)
     OUT.mkdir(exist_ok=True)
     for ext in ('png','pdf'):
@@ -48,8 +48,8 @@ def main():
     receipt = dict(summary_sha256=sha(HERE/'SUMMARY.json'), renderer_sha256=sha(Path(__file__)),
                    reference='src/plotting/manuscript/experiments.py:draw(user_count)',
                    size_inches=list(fig.get_size_inches()), curves=curves, data_unchanged=True,
-                   axes_limits=[-20,0], legend_columns=3,
-                   points_outside_display=[r for r in raw['rows'] if not -20<=r['nmse_db']<=0])
+                   axes_limits=[-15,0], legend_columns=3,
+                   points_outside_display=[r for r in raw['rows'] if not -15<=r['nmse_db']<=0])
     (OUT/'PLOT_CHECKS.json').write_text(json.dumps(receipt,indent=2),encoding='utf-8')
     print(OUT/'pilot_frames_nmse.png')
 
