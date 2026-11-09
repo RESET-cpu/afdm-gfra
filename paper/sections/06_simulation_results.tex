@@ -1,29 +1,20 @@
 \section{Simulation Results}
 \label{sec:simulations}
 
-\noindent\textit{Working-draft data status:}
-GP-MP uses the white-noise-trained networks in
-Figs.~\ref{fig:cstmp-denoising}--\ref{fig:cstmp-snr}
-and Table~\ref{tab:activity-evidence}; GP-MP-EP in Fig.~\ref{fig:cstmp-snr}
-uses the same networks. The GP-MP results in
-Figs.~\ref{fig:cstmp-pilots}--\ref{fig:cstmp-cross} use earlier checkpoints
-with different training perturbations and await replacement.
-
 \subsection{Simulation Settings}
 \label{sec:simulation-settings}
 
 \subsubsection{Channel Dataset and System Parameters}
-Table~\ref{tab:simulation-parameters} summarizes the default settings.
-Devices are uniformly distributed over the beam footprint, with delays,
-Doppler shifts, and array responses determined by the geometry.
-Large-scale effects are compensated. We use the NTN-TDL-D profile
-\cite{shen2025}, with a delay spread drawn uniformly from $[30,50]$~ns,
-a line-of-sight gain of fixed amplitude and uniform phase, and proper
-complex Gaussian diffuse gains. Path parameters remain fixed per block.
-The training and validation sets contain $50{,}000$ and $5{,}000$ clean
-$16\times16\times16$ channels, respectively, drawn from disjoint sets
-of scenes. Each scene provides four channel samples before multiplication
-by $\alpha_k$.
+The default system parameters are listed in
+Table~\ref{tab:simulation-parameters}. Devices are uniformly distributed
+within the satellite beam, and their delays, Doppler shifts, and array
+responses follow the satellite-device geometry. Large-scale effects are
+compensated. Channels follow the NTN-TDL-D profile \cite{shen2025},
+with delay spread uniformly distributed over $[30,50]$~ns. The
+line-of-sight gain has fixed amplitude and uniform phase, and the
+diffuse gains are proper complex Gaussian.
+We generate $50{,}000$ training channels and $5{,}000$ validation
+channels of size $16\times16\times16$.
 
 For $Q\leq KN$, the pilots are constructed from distinct DFT rows
 $r_q\in\{0,\ldots,KN-1\}$, with a column permutation
@@ -37,13 +28,9 @@ $\phi_{kn}\sim\mathcal U[0,2\pi)$:
 \end{equation}
 with $\sum_{n=0}^{N-1}|[\mathbf p_{qk}]_n|^2=E_p$.
 
-Independent Bernoulli activity variables with nominal probability $p$ are
-conditioned on at least one active device. The receiver prior uses the
-resulting marginal activity probability $\rho=p/[1-(1-p)^K]$.
-The received SNR is the ratio of the average noiseless signal power per
-complex observation to the noise variance. The signal power is averaged
-over the $QMN$ entries of $\mathbf A\mathbf X$ in each scene, and
-$\sigma^2$ is chosen to achieve the specified SNR.
+The received SNR is defined as the average signal power over the $QMN$
+entries of $\mathbf A\mathbf X$ divided by $\sigma^2$. We set
+$\sigma^2$ separately for each scene to obtain the specified SNR.
 
 \begin{table}[!t]
 \caption{Simulation Parameters}
@@ -78,7 +65,7 @@ Default $(K,Q,p)$ & $(40,16,0.1)$ \\
 \label{sec:network-settings}
 \label{sec:training-settings}
 The denoiser uses the RefineNet \cite{lin2017} variant in
-\cite[Appendix~A]{song2019}, with $2M$ real and imaginary input maps over
+\cite{song2019}, with $2M$ real and imaginary input maps over
 $N\times N$ DAFT coordinates.
 Each stage contains two residual blocks, each with two
 $3\times3$ convolutions, conditional instance normalization, and
@@ -121,7 +108,7 @@ Fully connected layers & $128,1$ & --- \\
 Noise conditioning uses an embedding of $\log(v)/5$, formed by two
 $64$-unit fully connected layers with sigmoid-weighted linear unit
 (SiLU) activations and linearly projected to the normalization layers.
-The denoiser also adopts the preconditioning in \cite[Sec.~5]{karras2022}:
+The denoiser also adopts the preconditioning in \cite{karras2022}:
 
 \begin{equation}
  \begin{aligned}
@@ -155,39 +142,34 @@ stage outputs. The flattened features and five scalars are combined by
 the fully connected layers in Table~\ref{tab:network-architectures},
 with SiLU between them, to produce one logit per device.
 
-Training minimizes \eqref{eq:first-loss} with the preconditioning in
-\eqref{eq:mean-preconditioning}, using $v$ sampled uniformly on a
-logarithmic scale over $[10^{-3},10^2]$.
-The denoiser is optimized using Adam for $200$ epochs with batch size
-$64$, initial learning rate $10^{-4}$, and exponential moving average
-decay $0.999$. Model selection uses the lowest validation loss under
-fixed noise realizations. The STMP reference uses the same clean
-channels and number of epochs.
+We train the denoiser by minimizing \eqref{eq:first-loss} with the
+preconditioning in \eqref{eq:mean-preconditioning}. The variance $v$
+is sampled uniformly on a logarithmic scale over $[10^{-3},10^2]$.
+We use Adam for $200$ epochs with batch size $64$, initial learning
+rate $10^{-4}$, and exponential moving average decay $0.999$.
+STMP uses the same clean channels and number of epochs.
 
-With the denoiser fixed, the classifier is trained from random
-initialization by minimizing \eqref{eq:classifier-loss} for $100$ epochs,
-with batch size $32$ and initial learning rate $3\times10^{-4}$.
-The classifier is also selected by validation loss.
-Classifier training and receiver evaluation use white Gaussian noise
-with covariance $v\I$.
+With the denoiser fixed, we train the classifier using
+\eqref{eq:classifier-loss} for $100$ epochs, with batch size $32$
+and initial learning rate $3\times10^{-4}$. For both networks, we select
+the model with the lowest validation loss.
 
 \subsubsection{Compared Receivers}
 \label{sec:compared-receivers}
-We evaluate GP-MP and five baselines. All use known phases except
-for GP-MP-EP:
+We compare GP-MP with five baselines. GP-MP-EP uses estimated phases;
+the other configurations use known phases:
 \begin{itemize}[leftmargin=*,topsep=2pt,itemsep=2pt,parsep=0pt]
-\item \textbf{GP-MP:} The proposed receiver; EP denotes estimated phases.
+
 \item \textbf{STMP:} We adapt STMP \cite{cai2026} to the multi-frame
 AFDM model, retaining its white-noise-trained first- and second-order
 score networks for conditional mean and variance estimation. We replace
 its Gaussian-message-based activity-probability update with a learned
 density-ratio estimator trained using the corresponding first-order network.
 \begin{samepage}
-\item \textbf{Simultaneous orthogonal matching pursuit (SOMP):}
-\cite{TroppGilbertStrauss2006SOMP}
-This greedy method sequentially selects
-dictionary atoms shared by the receive antennas and estimates their
-coefficients by least squares. We use an integer delay--Doppler dictionary
+\item \textbf{Simultaneous orthogonal matching pursuit (SOMP)}
+\cite{TroppGilbertStrauss2006SOMP}: This method selects dictionary atoms
+shared by the receive antennas and estimates their coefficients by
+least squares. We use an integer delay--Doppler dictionary
 and select up to $64$ atoms.
 \par
 \end{samepage}
@@ -209,6 +191,57 @@ are paired with $12$, $24$, and $48$ retained candidates per device
 and $48$, $96$, and $192$ offset candidates per iteration, respectively;
 all three configurations use $112$ delay grid points.
 \end{itemize}
+
+\subsubsection{Evaluation Settings and Metrics}
+\label{sec:receiver-settings}
+\label{sec:stopping-criteria}
+Phase estimation in GP-MP-EP covers $d\in[0,N)$ and
+$|\nu|\leq\nu_{\max}$, where $\nu_{\max}$ is the channel model's Doppler
+bound. Pilot correlations over $128$ phase bins identify three coarse
+candidates. The Doppler values corresponding to each candidate phase
+within this bound form the initial search set, from which the best
+$12$ are refined by at most $25$ L-BFGS-B iterations per candidate.
+
+All receivers estimate the noise variance from the observations.
+STMP and GP-MP use an activity threshold of $0.5$ and default damping factors
+of $0.2$ and $0.4$, respectively.
+Their iterations are bounded by $I_{\min}=60$ and $I_{\max}=600$,
+with a relative-change tolerance of $5\times10^{-4}$.
+After $I_{\min}$ iterations, convergence is assessed from the stability
+of channel and activity estimates and the consistency of variance
+updates.
+\ifdefined\FullManuscript
+The complete stopping checks and tolerances are given in
+Appendix~\ref{app:implementation-settings}.
+\fi
+
+GP-MP uses $L_z=1$ and $\delta_{\rm FD}=10^{-2}$ in
+\eqref{eq:derivative-trace}. The average conditional variance has a
+lower bound $\tau_{\min}=10^{-4}$.
+
+The evaluation protocol specifies $1{,}000$ Monte Carlo trials per
+operating point.
+\ifdefined\FullManuscript
+Appendix~\ref{app:evaluation-protocol} gives the evaluation protocol.
+\fi
+
+For scenes $e\in\mathcal T$, the normalized mean-squared error (NMSE)
+is the total squared Frobenius error between
+$\widehat{\mathbf X}_{ek}$ and $\mathbf X_{ek}$ divided by the total
+squared Frobenius norm of $\mathbf X_{ek}$. Both totals include all
+scenes in $\mathcal T$ and all $K$ devices;
+the ratio is expressed in decibels. For channel denoising, the same
+metric uses $\mathbf H$ in place of $\mathbf X$ and is accumulated
+over individual channel samples. The activity error rate (AER) is the
+total number of missed detections and false alarms divided by
+$K|\mathcal T|$.
+
+\begin{figure}[!t]
+\centering
+\makebox[\columnwidth][c]{\includegraphics[width=88.9mm]{channel_denoising.pdf}}
+\caption{Channel denoising under AWGN with known variance.}
+\label{fig:cstmp-denoising}
+\end{figure}
 
 \begin{table}[!t]
 \caption{Activity Detection Performance and Iteration-Limit Rates}
@@ -239,86 +272,26 @@ $6$ & $4.225$ & $0$ & $0.025$ & $0$ & $27.425$ & $11$ & $0.025$ & $0$ \\
 \end{tabular}
 \end{table}
 
-\subsubsection{Evaluation Settings and Metrics}
-\label{sec:receiver-settings}
-\label{sec:stopping-criteria}
-Phase estimation in GP-MP-EP covers $d\in[0,N)$ and
-$|\nu|\leq\nu_{\max}$, where $\nu_{\max}$ is the channel model's Doppler
-bound. Pilot correlations over $128$ phase bins identify three coarse
-candidates. The Doppler values corresponding to each candidate phase
-within this bound form the initial search set, from which the best
-$12$ are refined by at most $25$ L-BFGS-B iterations per candidate
-within a differentiable interval of the waveform. Coordinate refinement
-starts from zero powers and uses two sweeps in descending order of
-initial pilot-correlation scores, with the current parameters retained
-among the candidates.
-
-All receivers estimate the noise variance from the observations.
-STMP and GP-MP use activity threshold $0.5$ and default damping factors
-of $0.2$ and $0.4$, respectively.
-Their iterations are bounded by $I_{\min}=60$ and $I_{\max}=600$,
-with relative-change tolerance $5\times10^{-4}$.
-After $I_{\min}$ iterations, convergence is assessed from the stability
-of channel and activity estimates and the consistency of variance
-updates. Runs that reach $I_{\max}$ return the last iterate.
-\ifdefined\FullManuscript
-The complete stopping checks and tolerances are given in
-Appendix~\ref{app:implementation-settings}.
-\fi
-
-GP-MP uses $L_z=1$ and $\delta_{\rm FD}=10^{-2}$ in
-\eqref{eq:derivative-trace}, with the random sign vectors reused across
-iterations. The common variance has a lower bound $\tau_{\min}=10^{-4}$.
-
-Receiver comparisons use paired scenes, with the same scenes reused
-across conditions. Each SNR point uses $1{,}000$ scenes, whereas each
-point in the pilot-frame, device-count, activity-probability, and
-cross-profile figures uses $500$ scenes.
-The activity-update comparison in Table~\ref{tab:activity-evidence}
-uses $100$ paired scenes per SNR.
-\ifdefined\FullManuscript
-Appendix~\ref{app:evaluation-protocol} gives the evaluation protocol.
-\fi
-
-For scene indices $e\in\mathcal T$ at a given condition, the
-normalized mean-squared error (NMSE) is the sum of squared Frobenius
-errors between $\widehat{\mathbf X}_{ek}$ and $\mathbf X_{ek}$, divided
-by the sum of squared Frobenius norms of $\mathbf X_{ek}$.
-Both sums cover all scenes in $\mathcal T$ and all $K$ devices, including
-inactive devices; the ratio is reported in decibels.
-For direct channel denoising, $\mathbf X$ is replaced by
-$\mathbf H$ and the sums run over individual channel samples.
-The activity error rate (AER) is the total number of missed detections
-and false alarms divided by the $K|\mathcal T|$ device decisions.
-
-\begin{figure}[!t]
-\centering
-\makebox[\columnwidth][c]{\includegraphics[width=88.9mm]{channel_denoising.pdf}}
-\caption{Channel denoising under AWGN with known variance.}
-\label{fig:cstmp-denoising}
-\end{figure}
-
 \begin{figure}[!t]
 \centering
 \makebox[\columnwidth][c]{\includegraphics[width=88.9mm]{convergence.pdf}}
-\caption{NMSE versus iteration over $30$ paired scenes at
-$0$~dB, with $K=40$, $Q=16$, and $p=0.1$.}
+\caption{NMSE versus iteration at $0$~dB, with $K=40$, $Q=16$,
+and $p=0.1$.}
 \label{fig:cstmp-convergence}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
 \makebox[\columnwidth][c]{\includegraphics[width=88.9mm]{snr_comparison.pdf}}
-\caption{Channel NMSE and AER versus SNR with $K=40$, $Q=16$, and
-$p=0.1$, using $1{,}000$ paired scenes per point. Numbers in the
-Off-grid SBL labels indicate the Doppler grid points.}
+\caption{Channel NMSE and AER versus SNR with $K=40$, $Q=16$,
+and $p=0.1$.}
 \label{fig:cstmp-snr}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
 \makebox[\columnwidth][c]{\includegraphics[width=88.9mm]{pilot_frames.pdf}}
-\caption{Channel NMSE and AER versus the number of pilot frames at
+\caption{Channel NMSE versus the number of pilot frames at
 $0$~dB, with $K=40$ and $p=0.1$.}
 \label{fig:cstmp-pilots}
 \end{figure}
@@ -343,48 +316,43 @@ $0$~dB, with $K=40$ and $Q=16$.}
 \centering
 \includegraphics[width=177.8mm]{cross_channel.pdf}
 \caption{Channel NMSE for NTN-TDL profiles A, B, C, and D (from left
-to right). Each point uses $500$ paired physical scenes, $K=40$,
-$Q=16$, and $p=0.1$. The learned receivers are trained
-on profile D and evaluated without retraining.}
+to right), with $K=40$, $Q=16$, and $p=0.1$.}
 \label{fig:cstmp-cross}
 \end{figure*}
 
 \subsection{Channel Denoising Performance}
 \label{sec:denoising-performance}
-Following \cite[Sec.~VI-B]{cai2026}, we first assess channel denoising
-under AWGN using $\mathbf R=\mathbf H+\mathbf W$, with
-$\vect(\mathbf W)\sim\CN(\mathbf0,v\I)$, known $v$, and nominal SNR
-$-10\log_{10}v$. At each of six SNRs from $-20$ to $30$~dB, both
-neural estimators use the same $2{,}000$ samples from $500$ scenes and
-the same white-noise realizations. The following reference methods are included:
+We first evaluate the channel denoisers under
+$\mathbf R=\mathbf H+\mathbf W$, where
+$\vect(\mathbf W)\sim\CN(\mathbf0,v\I)$ and $v$ is known.
+The nominal SNR is $-10\log_{10}v$ and takes six values from
+$-20$ to $30$~dB. The reference estimators are:
 \begin{itemize}[leftmargin=*,topsep=2pt,itemsep=2pt,parsep=0pt]
 \item \textbf{Least squares (LS):} The estimate is the noisy observation
 $\mathbf R$.
 \item \textbf{Gaussian-prior estimate:} The estimate is
 $\widehat P_H\mathbf R/(\widehat P_H+v)$, where $\widehat P_H$ is the
-training-channel power defined in Section~\ref{sec:schedule}.
+training-channel power.
 \item \textbf{Genie-aided conditional MMSE:} We compute the analytic
 conditional MSE of the remaining Gaussian gains given the true path
 geometry, powers, and line-of-sight gain.
 \end{itemize}
-The four sparse-recovery methods in Section~\ref{sec:compared-receivers}
-are also evaluated using an identity observation operator and known AWGN
-variance. They retain their receiver settings and GNN weights;
-GAMP-SBL retains its internal noise-variance update.
+We also evaluate the four sparse-recovery baselines in this denoising
+setting.
 
-In Fig.~\ref{fig:cstmp-denoising}, both learned denoisers outperform LS
-and the Gaussian-prior estimate across the evaluated range.
-Their NMSE continues to decrease with SNR, whereas the four sparse-recovery
-methods approach error floors, leaving a wider gap at moderate and high SNR.
-The GP-MP denoiser has lower NMSE at low SNR,
-whereas the STMP denoiser is more accurate at high SNR.
-Both learned denoisers have higher NMSE than the genie-aided reference,
-which uses true path information.
+Figure~\ref{fig:cstmp-denoising} shows that both learned denoisers
+achieve lower NMSE than LS and the Gaussian-prior estimate throughout
+the tested SNR range. Their advantage over the sparse-recovery baselines
+increases at moderate and high SNR, where these baselines approach error
+floors while the NMSE of the learned denoisers continues to decrease.
+The GP-MP denoiser yields lower NMSE at low SNR, whereas the STMP
+denoiser yields lower NMSE at high SNR.
+Both remain above the genie-aided reference.
 
 \subsection{Effect of Density Ratio Estimation}
 \label{sec:activity-evidence}
-The effect of density ratio estimation is evaluated by comparing the
-learned activity update with the Gaussian approximation, for which
+To assess density ratio estimation, we compare the learned activity
+update with the Gaussian approximation
 
 \begin{align}
  \ell_k^{\rm G}&=\frac{\norm{\mathbf R_k}_F^2}{v}
@@ -396,79 +364,89 @@ learned activity update with the Gaussian approximation, for which
  \label{eq:gaussian-activity}
 \end{align}
 
-Each receiver, STMP and GP-MP, is evaluated with both activity updates
-under otherwise identical settings. The two GP-MP variants share the
-white-noise-trained denoiser, with the matched classifier used for
-density ratio estimation. Table~\ref{tab:activity-evidence} reports AER
-over all runs and the percentage reaching the $600$-iteration limit
-(Limit).
+For both STMP and GP-MP, we change only the activity update and keep
+the remaining settings fixed. Table~\ref{tab:activity-evidence} reports
+the AER over
+all runs and the percentage reaching the $600$-iteration limit (Limit).
 
-For both receivers, the learned density ratio gives lower AER at every
-evaluated SNR, with no runs reaching the iteration limit. With the
-Gaussian approximation, STMP has lower AER than GP-MP throughout the
-evaluated range and reaches the iteration limit less frequently. The
-comparison therefore supports the use of learned density ratios in
-both receivers, with a larger improvement for GP-MP.
+Table~\ref{tab:activity-evidence} shows that, for both receivers, the
+learned activity update yields lower AER than the Gaussian update at
+every tested SNR. No run using the learned update reaches the iteration
+limit, whereas some runs using the Gaussian update do. The improvement
+is larger for GP-MP, although STMP performs better
+under the Gaussian update. These results support the effectiveness of
+density ratio estimation for activity detection under the learned
+channel prior.
 
 \subsection{JADCE Performance}
 \label{sec:jadce-performance}
-Unless stated otherwise, the receivers use the defaults in
-Table~\ref{tab:simulation-parameters} and the evaluation settings in
-Section~\ref{sec:receiver-settings}.
+Unless stated otherwise, the default parameters in
+Table~\ref{tab:simulation-parameters} are used.
 
-Figure~\ref{fig:cstmp-convergence} compares the NMSE trajectories of
-GP-MP, STMP, and Off-grid SBL over $30$ paired scenes, with early
-stopping disabled. GP-MP approaches a lower NMSE in fewer iterations
-than STMP, while Off-grid SBL levels off at a higher NMSE.
+Figure~\ref{fig:cstmp-convergence} compares the NMSE trajectories with
+early stopping disabled. The GP-MP curve
+stabilizes earlier and at a lower NMSE than STMP. Off-grid SBL also
+levels off, but with a larger estimation error. GP-MP therefore achieves
+a more accurate channel estimate within fewer iterations than STMP.
 
-Figure~\ref{fig:cstmp-snr} compares channel NMSE and AER over
-$-4$ to $6$~dB. GP-MP achieves the lowest NMSE throughout this range.
-Its advantage over STMP is more pronounced at low SNR and narrows as
-SNR increases. At $0$~dB, GP-MP achieves an NMSE approximately
-$1.5$~dB lower than STMP. Off-grid SBL has the lowest NMSE among the four
-sparse-recovery baselines. The NMSE of these baselines decreases more
-slowly with SNR than that of the learned receivers, so the gap between
-the two groups grows.
+Figure~\ref{fig:cstmp-snr} compares channel NMSE and AER over SNRs
+from $-4$ to $6$~dB. GP-MP achieves the lowest NMSE throughout this
+range, with an approximately $1.5$~dB advantage over STMP at $0$~dB.
+Its advantage over STMP decreases as SNR increases, whereas the gap
+to the sparse-recovery baselines widens. Off-grid SBL is the most
+accurate of the four sparse-recovery baselines, and GP-MP outperforms
+all three Off-grid SBL configurations.
 
 The AER also generally decreases with SNR. GP-MP has lower AER than
-STMP throughout the range and outperforms the four sparse-recovery
-baselines at moderate and high SNR.
+STMP throughout this SNR range and outperforms the four sparse-recovery
+baselines at moderate and high SNR. These results demonstrate improved
+JADCE performance with a denoiser that provides channel estimates and
+average variance without a separately trained variance model.
 
 With estimated phases, GP-MP-EP incurs an NMSE increase of
-$0.28$--$0.60$~dB relative to GP-MP over the evaluated SNR range,
-while its AER remains close to the known-phase reference.
+$0.28$--$0.60$~dB relative to GP-MP, while its AER remains close to
+the known-phase result. This comparison shows that estimating the
+phases from pilot observations retains most of the known-phase
+receiver's performance over this SNR range.
 
-Figure~\ref{fig:cstmp-pilots} shows the effect of the number of pilot frames.
-Additional frames provide further observations of the same effective
-channels at fixed per-frame energy, and generally improve both channel
-estimation and activity detection. Among the evaluated frame counts,
-GP-MP first reaches $-14$~dB NMSE at $Q=24$, whereas STMP requires
-$Q=32$. This corresponds to $25\%$ fewer pilot frames for the same
-NMSE target.
+Figure~\ref{fig:cstmp-pilots} shows channel NMSE as $Q$ increases from
+$8$ to $24$. With fixed energy per frame, additional frames provide more
+observations and generally reduce NMSE. GP-MP and GP-MP-EP achieve
+lower NMSE than all baselines at each frame count. For an NMSE target
+of $-12$~dB, both reach the target at $16$ frames, compared with $20$
+frames for STMP, corresponding to a $20\%$ reduction in pilot frames.
 
-Figure~\ref{fig:cstmp-users} compares the channel NMSE for $K=20$--$100$.
-At fixed activity probability and pilot-frame count, increasing $K$
-enlarges the set of candidate channels and raises the expected number
-of active devices. All methods exhibit higher NMSE as this load increases.
-GP-MP maintains the lowest NMSE, and its advantage over STMP grows
-with the number of candidate devices.
+STMP exhibits severe degradation at low pilot counts: its NMSE is
+$34.70$~dB at $Q=8$ and $-4.78$~dB at $Q=12$, compared with
+$-8.88$~dB and $-11.61$~dB for GP-MP, respectively. This pronounced
+loss indicates that STMP is more sensitive to limited pilot observations.
+GP-MP-EP incurs an NMSE increase of $0.30$--$0.41$~dB relative to
+GP-MP across these frame counts.
 
-Figure~\ref{fig:cstmp-activity} examines the effect of increasing the
-nominal activity probability from $0.05$ to $0.25$ with a fixed candidate
-set. With fixed pilot and antenna resources, more active channels must
-be recovered, and all methods exhibit higher NMSE. GP-MP retains
-the lowest NMSE, and its advantage over STMP increases with activity
-probability.
+Figure~\ref{fig:cstmp-users} compares NMSE as the number of candidate
+devices increases from $K=20$ to $100$. With the activity probability
+and pilot-frame count fixed, both the number of candidate channels and
+the expected number of active devices increase. The NMSE therefore
+increases for all methods. GP-MP
+maintains the lowest NMSE, with a growing advantage over STMP as $K$
+increases. This demonstrates its effectiveness at higher device loads
+with the available pilot and antenna resources.
+
+Figure~\ref{fig:cstmp-activity} shows NMSE for nominal activity
+probabilities from $0.05$ to $0.25$. Increasing the activity probability
+increases the expected number of active devices, while the numbers of
+candidate devices, pilot frames, and receive antennas remain fixed.
+The NMSE increases for all methods. GP-MP maintains the lowest NMSE,
+with a smaller increase than STMP. Its larger advantage at higher
+activity probabilities indicates
+better tolerance to increasing activity loads.
 
 \subsection{Comparison Across Channel Profiles}
-Performance beyond the training distribution is evaluated on NTN-TDL
-profiles A, B, and C using the networks trained on profile D without
-retraining. These evaluations vary the power delay profiles and fading
-distributions while retaining the geometry, pilots, and receiver
-settings, with $500$ paired scenes per condition.
+To examine performance under channel mismatch, we apply the networks
+trained on NTN-TDL-D to profiles A, B, and C without retraining.
 
-Figure~\ref{fig:cstmp-cross} shows that GP-MP achieves lower NMSE than
-the four sparse-recovery baselines on every evaluated profile.
-This result indicates that the learned effective-channel prior remains
-useful beyond the training profile. The difference relative to STMP
-is smaller and varies with the profile and SNR.
+Figure~\ref{fig:cstmp-cross} shows that GP-MP outperforms the four
+sparse-recovery baselines on all four profiles. This indicates that the
+learned prior remains effective across these channel profiles. The relative
+performance of the two learned receivers depends on the profile and
+SNR; STMP is more accurate on profiles A and B at $6$~dB.

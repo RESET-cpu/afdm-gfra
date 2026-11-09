@@ -1,6 +1,6 @@
 # 相位估计的完整推导与搜索流程
 
-2026-11-05，按作者确认，将相位估计的核心方法并入论文 V-B，搜索预算并入 VI-A4。原相位附录逐字保存在 [phase_estimation.tex](phase_estimation.tex)，不再作为独立附录编译；其中旧标签仅用于历史推导溯源。本文算法不变：先估计一次相位，再固定相位运行 GP-MP。
+2026-11-05，按作者确认，将相位估计的核心方法并入论文 V-B，搜索预算并入 VI-A4。原相位附录保存在 GitHub [固定版本](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/docs/derivations/phase_estimation.tex)，不再作为独立附录编译；其中旧标签仅用于历史推导溯源。本文算法不变：先估计一次相位，再固定相位运行 GP-MP。
 
 ## 来源与模型
 

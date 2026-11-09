@@ -52,26 +52,23 @@ system (GNSS) assistance, where devices operate without time and frequency
 precompensation. We propose a multi-frame affine frequency division
 multiplexing (AFDM) transmission scheme that accommodates large differential
 delays and Doppler shifts across devices and analyze its input-output
-relationship. Additional pilot frames provide more observations without
-increasing the number of channel coefficients to be estimated. Based on this
-model, we learn a score-based generative channel prior directly from AFDM
+relationship. Based on this model, we learn a score-based generative channel
+prior directly from AFDM
 effective-channel samples, without imposing sparse or grid-aligned channel
 assumptions. From the learned prior, we construct a minimum mean-squared
-error (MMSE) channel denoiser that also quantifies estimation uncertainty
-for message passing. We then incorporate the denoiser into a message-passing
+error (MMSE) channel denoiser that also quantifies estimation uncertainty.
+We then incorporate the denoiser into a message-passing
 (MP) receiver with two modules: multi-frame linear estimation (MFLE), which
 suppresses inter-user interference; and generative-prior-aided joint
 denoising (GPJD), which jointly updates channel and activity estimates. GPJD
 employs a density-ratio estimator that learns the likelihood ratio required
-for activity detection directly from samples, bypassing explicit evaluation
-of the marginal likelihood under the learned channel prior. The two modules
+for activity detection. The two modules
 iteratively exchange soft information for joint activity detection and
 channel estimation (JADCE). Numerical simulations demonstrate that the
 proposed receiver outperforms the baseline receiver in activity detection
 and channel estimation, while requiring fewer pilot frames to reach the same
 channel-estimation target.
 \end{abstract}
-% GP-MP formulation; Section VI identifies the training condition of each result.
 \begin{IEEEkeywords}
 Affine frequency division multiplexing, grant-free
 random access, joint activity detection and channel estimation,

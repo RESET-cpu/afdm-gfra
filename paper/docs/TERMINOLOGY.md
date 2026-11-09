@@ -3118,29 +3118,29 @@ Gaussian外信息自然参数相除对应实现中投影、裁剪后的P_used；
 
 ## 2026-10-26：接收部分严格采用 Cai 完整原句
 
-按作者最新要求，接收部分改为 Cai2026 摘要（PDF p.1）的两句完整原文，分别以 We propose to incorporate 和 This design enables 开头。两句并非相邻摘录，但句内词序、用词与标点均未改动；仅统一 PDF 排版连字和换行。完整摘录、PDF 哈希及逐句匹配位置见 [CAI_VERBATIM_RECEIVER.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/CAI_VERBATIM_RECEIVER.json)。没有将原文含 novel 的 TMP 框架句当作本稿新增框架贡献，也没有照搬方差学习句以暗示另训二阶得分网络。正文中的 TMP 结构、雅可比方差与活动分类器保持原定义。performance limit 为研究目标，MMSE 为条件均值目标，不作理论极限已达到的声明。句子来源明确归于 Cai；具体边界见 [SENTENCE_SOURCES.md](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/SENTENCE_SOURCES.md)，差异见 CAI_VERBATIM_RECEIVER_REVISION.diff（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/abstract_original_words_20261026/CAI_VERBATIM_RECEIVER_REVISION.diff`）。
+按作者最新要求，接收部分改为 Cai2026 摘要（PDF p.1）的两句完整原文，分别以 We propose to incorporate 和 This design enables 开头。两句并非相邻摘录，但句内词序、用词与标点均未改动；仅统一 PDF 排版连字和换行。完整摘录、PDF 哈希及逐句匹配位置见 [CAI_VERBATIM_RECEIVER.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/CAI_VERBATIM_RECEIVER.json)。没有将原文含 novel 的 TMP 框架句当作本稿新增框架贡献，也没有照搬方差学习句以暗示另训二阶得分网络。正文中的 TMP 结构、雅可比方差与活动分类器保持原定义。performance limit 为研究目标，MMSE 为条件均值目标，不作理论极限已达到的声明。句子来源明确归于 Cai；具体边界见 [SENTENCE_SOURCES.md](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/SENTENCE_SOURCES.md)，差异见 CAI_VERBATIM_RECEIVER_REVISION.diff（仅本地历史资料：`paper/checks/abstract_original_words_20261026/CAI_VERBATIM_RECEIVER_REVISION.diff`）。
 
 缩写工具未能自动识别 minimum mean-squared error (MMSE) 中连字符连接的双 M/S 首字母，人工对照 Cai 原句确认定义正确；不为适配检查器改写原句或添加豁免。
 
 
 ## 2026-10-26：接收部分明确承接第二点的所学先验
 
-作者指出，Cai 原摘要首次引出先验的句子放在本稿第二点之后会重复引出先验。本次在该句中以 the learned channel prior 回指本稿第4–5句同一次有色噪声训练所得先验，并增加 Finally（Cai PDF p.3）标明第三步；其余句式保留 Cai 摘要（PDF p.1），下一句 MMSE 去噪仍完整照录。第一句现为明确记录的最小衔接改写，不能再称整句照录；没有新增技术术语、另一先验或额外训练。逐段出处及完整差异见 [CAI_RECEIVER_TRANSITION.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/CAI_RECEIVER_TRANSITION.json) 和 RECEIVER_TRANSITION_REVISION.diff（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/abstract_original_words_20261026/RECEIVER_TRANSITION_REVISION.diff`）。
+作者指出，Cai 原摘要首次引出先验的句子放在本稿第二点之后会重复引出先验。本次在该句中以 the learned channel prior 回指本稿第4–5句同一次有色噪声训练所得先验，并增加 Finally（Cai PDF p.3）标明第三步；其余句式保留 Cai 摘要（PDF p.1），下一句 MMSE 去噪仍完整照录。第一句现为明确记录的最小衔接改写，不能再称整句照录；没有新增技术术语、另一先验或额外训练。逐段出处及完整差异见 [CAI_RECEIVER_TRANSITION.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/CAI_RECEIVER_TRANSITION.json) 和 RECEIVER_TRANSITION_REVISION.diff（仅本地历史资料：`paper/checks/abstract_original_words_20261026/RECEIVER_TRANSITION_REVISION.diff`）。
 
 
 ## 2026-10-26：以已有先验为接收机前提的衔接
 
-根据作者对 Finally 的反馈，采用 Cai2026 第 V-A 节（PDF p.9）原句 With the two score networks available, we are able to obtain ... 的 With ... available 结构，适配为 With the learned channel prior available，并将后续重复名词短语改为 it。主句仍采用其摘要（PDF p.1）的引入消息传递表述，下一句 MMSE 去噪保持完整原文。这里仅适配连接句式，不引入 Cai 的两个得分网络，也不声称第一句逐字照录。来源与差异见 [CAI_PRIOR_AVAILABLE.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/CAI_PRIOR_AVAILABLE.json) 和 PRIOR_AVAILABLE_REVISION.diff（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/abstract_original_words_20261026/PRIOR_AVAILABLE_REVISION.diff`）。
+根据作者对 Finally 的反馈，采用 Cai2026 第 V-A 节（PDF p.9）原句 With the two score networks available, we are able to obtain ... 的 With ... available 结构，适配为 With the learned channel prior available，并将后续重复名词短语改为 it。主句仍采用其摘要（PDF p.1）的引入消息传递表述，下一句 MMSE 去噪保持完整原文。这里仅适配连接句式，不引入 Cai 的两个得分网络，也不声称第一句逐字照录。来源与差异见 [CAI_PRIOR_AVAILABLE.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/CAI_PRIOR_AVAILABLE.json) 和 PRIOR_AVAILABLE_REVISION.diff（仅本地历史资料：`paper/checks/abstract_original_words_20261026/PRIOR_AVAILABLE_REVISION.diff`）。
 
 
 ## 2026-10-26：摘要删除性能极限的目标性表述
 
-根据作者反馈，删除接收部分的 so as to push towards the performance limit of JADCE 及对应中文，仅保留将第二点所学先验引入消息传递，并由下一句说明 MMSE 去噪器的作用。删减没有引入新词、技术术语或结果主张；第一句仍为此前已披露的 Cai 句式适配，第二句仍为 Cai 摘要完整原文。依据与范围见 [CAI_RECEIVER_CONCISE.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/CAI_RECEIVER_CONCISE.json)，差异见 REMOVE_PERFORMANCE_ASPIRATION.diff（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/abstract_original_words_20261026/REMOVE_PERFORMANCE_ASPIRATION.diff`）。
+根据作者反馈，删除接收部分的 so as to push towards the performance limit of JADCE 及对应中文，仅保留将第二点所学先验引入消息传递，并由下一句说明 MMSE 去噪器的作用。删减没有引入新词、技术术语或结果主张；第一句仍为此前已披露的 Cai 句式适配，第二句仍为 Cai 摘要完整原文。依据与范围见 [CAI_RECEIVER_CONCISE.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/CAI_RECEIVER_CONCISE.json)，差异见 REMOVE_PERFORMANCE_ASPIRATION.diff（仅本地历史资料：`paper/checks/abstract_original_words_20261026/REMOVE_PERFORMANCE_ASPIRATION.diff`）。
 
 
 ## 2026-10-26：摘要恢复设计与作用的整体承接
 
-整段重新核对后，保留传输—先验—接收顺序，将第二点写为直接学习含分数时延与多普勒的有效信道先验，并以 The training 回指同一次有色噪声训练。接收部分恢复 Cai2026 摘要（PDF p.1）的 turbo message passing (TMP) framework、models the entire channel matrix as a super node 与 rather than factorizing it element-wise，使后句 This design 有具体前项。句首沿用其 §V-A（PDF p.9）的 With ... available 结构，谓语用其 §I-A（PDF p.2）的 we employ，删除 novel 以表明采用既有框架。第一句是来源明确的句式适配，第二句保持完整原文；联合建模范围为每个用户的整块信道，跨用户先验仍按原模型近似分解。结句的 the original score-based TMP receiver 是本项目原 STMP 基线说明，score-based TMP 见 Cai 摘要；不作为自创方法名称。对应关系、实际方法边界及源文件差异见 [COHESION_CHECK.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/COHESION_CHECK.json)、[SENTENCE_SOURCES.md](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/SENTENCE_SOURCES.md) 与 COHESION_REVISION.diff（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/abstract_original_words_20261026/COHESION_REVISION.diff`）。
+整段重新核对后，保留传输—先验—接收顺序，将第二点写为直接学习含分数时延与多普勒的有效信道先验，并以 The training 回指同一次有色噪声训练。接收部分恢复 Cai2026 摘要（PDF p.1）的 turbo message passing (TMP) framework、models the entire channel matrix as a super node 与 rather than factorizing it element-wise，使后句 This design 有具体前项。句首沿用其 §V-A（PDF p.9）的 With ... available 结构，谓语用其 §I-A（PDF p.2）的 we employ，删除 novel 以表明采用既有框架。第一句是来源明确的句式适配，第二句保持完整原文；联合建模范围为每个用户的整块信道，跨用户先验仍按原模型近似分解。结句的 the original score-based TMP receiver 是本项目原 STMP 基线说明，score-based TMP 见 Cai 摘要；不作为自创方法名称。对应关系、实际方法边界及源文件差异见 [COHESION_CHECK.json](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/COHESION_CHECK.json)、[SENTENCE_SOURCES.md](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/abstract_original_words_20261026/SENTENCE_SOURCES.md) 与 COHESION_REVISION.diff（仅本地历史资料：`paper/checks/abstract_original_words_20261026/COHESION_REVISION.diff`）。
 
 
 ## 2026-10-26：接收段在保留技术含义的前提下与 Cai 原句区分
@@ -3459,7 +3459,7 @@ remains approximately constant over consecutive frames 的表达参考 Shen 式(
 | II-C：联合检测估计目标与后验分解 | Cai，§II-B开头及式(5)，印刷p.3578 | 依原文适配：使用Bayesian inference framework、Bayes' theorem与joint posterior distribution等既有用语；保留本文终端独立先验、块内联合分布、固定A及噪声方差的条件。 |
 | II-C末段：先验表征与后验计算两项困难 | Cai，§II-B两项困难及其后承接段，印刷p.3579 | 依原文适配：先说明共同物理参数造成的联合分布刻画困难，再说明解析先验可得时仍存在高维积分；以学习先验和去噪器消息计算承接。没有将Cai的总结句逐字搬入，也未新增无需积分或精确推断的主张。 |
 
-原文核对入口：`reference/reviews/section_structure_20261009/cai.txt`、`reference/reviews/section_structure_20261009/shen.txt`、`delete/paper_checks_cleanup_20261108/paper/checks/abstract_sources_20261026/huang2026.txt`；Li与Bemani采用上述arXiv版本。原句沿用共两处，其余为有来源的适配或本文模型自身的说明，不能据此宣称第二章基本由参考文献原句组成。未修改摘要、引言、公式、算法或实验设置，未重新编译PDF。
+原文核对入口：`reference/reviews/section_structure_20261009/cai.txt`、`reference/reviews/section_structure_20261009/shen.txt`、`paper/checks/abstract_sources_20261026/huang2026.txt`；Li与Bemani采用上述arXiv版本。原句沿用共两处，其余为有来源的适配或本文模型自身的说明，不能据此宣称第二章基本由参考文献原句组成。未修改摘要、引言、公式、算法或实验设置，未重新编译PDF。
 
 核验：十个编号公式逐项一致；有效主文件及其输入文件无重复标签、缺失引用或未定义文献键，环境和括号检查通过。除第二章外，已核对的稿件TeX、参考文献及PDF哈希保持不变。缩写检查基于临时去除TeX命令的引言与第二章文本，下列行号仅对应检查文本；四项覆盖限制已人工核对其全称，不把部分覆盖报告称为完整通过。检查临时文件已清除。
 
@@ -3761,7 +3761,7 @@ e为估计单位相位乘真实单位相位的共轭；计算范围为q>0的全�
 
 ## 2026-10-31：按作者要求恢复原引言
 
-引言恢复到本轮压缩前、已经完成全篇术语统一的版本，文件与 `delete/paper_checks_cleanup_20261108/paper/checks/compress_20261030/before/sections/01_introduction.tex` 完全一致。恢复背景、方法动机和贡献的完整说明，并重新保留“approximately constant”等原有限定；其余章节的压缩和已核定术语不变，没有新增名称或引用，也不改变共用定义。中英文摘要保持原文。当前阅读稿为 13 页，完整记录见[恢复引言](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/restore_introduction_20261031/REVISION_NOTES.md)。
+引言恢复到本轮压缩前、已经完成全篇术语统一的版本，文件与 `checks/compress_20261030/before/sections/01_introduction.tex` 完全一致。恢复背景、方法动机和贡献的完整说明，并重新保留“approximately constant”等原有限定；其余章节的压缩和已核定术语不变，没有新增名称或引用，也不改变共用定义。中英文摘要保持原文。当前阅读稿为 13 页，完整记录见[恢复引言](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/restore_introduction_20261031/REVISION_NOTES.md)。
 
 ## 2026-10-31：附录 A、B、D 的内容移入对应正文
 
@@ -4010,7 +4010,7 @@ array response vector、directional cosines、common Doppler shift、AFDM modula
 
 已核得的修订依据包括：pilot resources 对应 Cai PDF p.1 的 resources for pilot transmission；arrival angles 可采用 Li §II-B／PDF p.4 的 angles-of-arrival；跨帧相位可使用 Shen PDF p.5 的 phase rotation，并在句子中说明 accumulates across multiple frames。这里只登记原词，不在本轮改写正文。Cai 的 transmit power budget 不自动等于本文 pilot energy，不为满足词面审计而混淆能量与功率。
 
-完整定位、原词上下文、检索范围、在线证据和未改正文的校验保存在 [checks/ch2_all_names_20261101](https://github.com/RESET-cpu/afdm-gfra/tree/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_all_names_20261101)。名称出处通过不代表本文公式、假设或完整句子均来自该文献；此前任何全章“所有内容均出自已有论文”的笼统保证，以本次逐项限定替代。本轮仅更新核查文档与索引，第二章、其他章节、书目和 main.pdf 均保持，不更改共用定义。
+完整定位、原词上下文、检索范围、在线证据和未改正文的校验保存在 `checks/ch2_all_names_20261101`。名称出处通过不代表本文公式、假设或完整句子均来自该文献；此前任何全章“所有内容均出自已有论文”的笼统保证，以本次逐项限定替代。本轮仅更新核查文档与索引，第二章、其他章节、书目和 main.pdf 均保持，不更改共用定义。
 
 ## 2026-11-01：按作者要求替换全部可处理的具名表达
 
@@ -4069,7 +4069,7 @@ pilot energy 改为直接写原来的范数条件 ‖p_qk‖²=E_p 对所有 k�
 
 ## 2026-11-02：第二章按逐段审查完善论述与衔接
 
-作者在 14 段审查后授权修改第二章。实际改句、原段页码及支持范围见 [修订记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_flow_revision_20261102/REVISION_NOTES.md)，对应 逐行差异（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/ch2_flow_revision_20261102/CHANGES.diff`）。本轮没有改变术语定义、公式或模型，也没有新增方法名。
+作者在 14 段审查后授权修改第二章。实际改句、原段页码及支持范围见 [修订记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_flow_revision_20261102/REVISION_NOTES.md)，对应 逐行差异（仅本地历史资料：`paper/checks/ch2_flow_revision_20261102/CHANGES.diff`）。本轮没有改变术语定义、公式或模型，也没有新增方法名。
 
 | 表达或关系 | 已核出处 | 本文归属与修订范围 |
 |---|---|---|
@@ -4239,7 +4239,7 @@ Shen Fig.1／PDF p.3 的卫星、覆盖椭圆与 UPA，以及 Cai Fig.3／p.10 �
 
 ## 2026-11-03：系统图改为统一接入场景
 
-本轮仅改系统图的构图，见记录（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/method_system_scene_20261103/README.md`）。多帧 AFDM 导频、共同活动状态、参考信道及跨帧相位仍对应第二章 Transmission Scheme；跨帧相位关系放在信道一侧。UPA、共同延迟补偿和观测矩阵均为第二章已有定义，没有新增术语。Shen Fig.1／PDF p.3 的卫星、覆盖椭圆及 UPA 矢量图形继续保留并注明来源。
+本轮仅改系统图的构图，见记录（仅本地历史资料：`paper/checks/method_system_scene_20261103/README.md`）。多帧 AFDM 导频、共同活动状态、参考信道及跨帧相位仍对应第二章 Transmission Scheme；跨帧相位关系放在信道一侧。UPA、共同延迟补偿和观测矩阵均为第二章已有定义，没有新增术语。Shen Fig.1／PDF p.3 的卫星、覆盖椭圆及 UPA 矢量图形继续保留并注明来源。
 
 ## 2026-11-03：大差分时延与多普勒下的异步前导码检测候选
 
@@ -4885,3 +4885,205 @@ III-B3 关于信道与活动不确定性的句子解释本稿已有协方差两�
 沿用 conditional mean、average variance、channel prior、high-dimensional integrals、Bernoulli–Gaussian approximation、Gaussian extrinsic messages，无新增方法名或缩写。Cai 作者稿 `cai2026_stmp_v2.pdf` §III-B1，PDF p.7，式 (22)–(23) 及其后段落，支持“定义后验矩，再指出高维积分困难”的技术语境；§IV 首段与 IV-A，PDF p.8，支持下一章再给出 score 表示与学习计算的分工。本轮已重新读取完整相关段落与相邻内容，正文是适配本稿 q_tr、H_k 和平均方差定义后的改写，不是逐字引文。
 
 活动概率中 q_1 的高维积分困难是本稿既有观测密度公式的直接说明；Cai §III-B2 式 (30) 为高斯外信息下的解析活动更新，不作为该分支的相同算法依据。III-B3 继续使用原有 Liu/Cai 引文，只调整已定义统计量到联合近似的叙述顺序。没有修改共用定义，不需同步 STMP/DU。[逐项改动与支持范围](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch3_framework_boundary_20261107/README.md)。
+
+
+## 2026-11-08：逐句核验后的术语与对象确认
+
+- **array response vector**：恢复既有 Li–Gao–Xia §II-B 式(2)及相邻阵列段的完整名称；本轮读取版本见逐句记录 II-016。正文说明同设备路径共享该向量，公式保持。
+- **posterior spatial covariance**：III-B3 的 M×M 矩阵沿 N² 个信道系数求平均，空间维保留；不能将其平均对象写成 across antennas。它来自本稿 Bernoulli–Gaussian 混合矩的直接计算，Cai III-B3 提供混合矩到外信息的论证顺序。
+- **Gaussian approximation to the posterior**：近似对象为后验分布，均值为点估计；III-030 明确对象，不改原矩或回传更新。
+- **Monte Carlo method / divergence**：Metzler 作者稿 [arXiv:1406.4175](https://arxiv.org/pdf/1406.4175)，§V-B、PDF p.15；本文中央差分和随机符号方向沿用既有推导。IV-023采用原方法名称并直接说明中央差分。
+- **negative log marginal likelihood**：本稿 logdet+trace 为最小化的负对数目标。Tipping–Faul [PMLR正式PDF](https://proceedings.mlr.press/r4/tipping03a/tipping03a.pdf)，§2.1 式(7)–(8)在PDF第2页；此前作者排版稿页码属于另一版本。多列复Gaussian形式仍为本文适配。
+- **average conditional variance**：VI的 tau_min 对应 V 中汇总的条件方差 tau^post，不是系统噪声方差。训练两类别的白Gaussian扰动用 vI，系统观测噪声用 sigma²I；正文明确各自对象。
+
+完整句子、精确来源与处理见 [逐句核验](SENTENCE_REVIEW_20261108.md)。
+
+## 2026-11-08：第二章经作者逐段确认后入稿
+
+作者确认采用聊天中的第二章原段适配稿，并用随后核实的三句建模假设替换其中的初稿表述。总述、物理链路、多帧组织及跨帧讨论以 Shen 第二章（本地 PDF pp.3–5）为段落底稿；导频、活动变量、观测矩阵及后验分解以 Cai 正式版第二章（PDF pp.3–4，印刷 pp.3577–3578）为底稿。AFDM 波形和本文矩阵排列按本稿模型适配，不归为 Cai/Shen 的相同公式。
+
+- **common Doppler shift**：Huang §II，式(2)及后段，PDF p.2／印刷 p.2950，以静止地面用户为参考，并明确同一 S2G 链路各路径共享 Doppler term；原文理由还包括较远星地距离下较小的路径角度差异。正文保留 `is assumed to be common to all propagation paths`，不把静止本身当作充分条件。
+- **common array response / angles of arrival**：Li–Gao–Xia §II-B，PDF p.4、式(3)之前，说明长距离使同一用户不同路径的 AoAs 趋于一致，并给出 θ_(k,q)=θ_k、g_(k,q)=g_k；本稿 a_k 对应其 g_k。该因果与共同 Doppler 分开陈述。
+- **approximately constant in the delay-Doppler domain**：Shen §II-B，式(10)后，PDF pp.4–5，明确有效信道在连续 Q 帧内近似不变，并分析 delay/Doppler 的变化。本稿采用该准静态假设，不再把路径增益、时延、多普勒及到达角四项罗列登记为 Shen 的直接原句；跨帧相位仍显式保留。
+- **Kronecker product**：Shen Notations，PDF p.3，原词 `⊗ denotes Kronecker product`。本稿 H_k 的 Kronecker 形式是原各天线转置信道横向拼接的代数等价式，维度 N×MN；普通转置及天线排列保持。
+- **unit-gain path / effective pilot matrix / block-sparsity structure**：沿用本稿已定义的单径响应、相位并入导频和活动零块；删去 D_(ν,g)、B_d、H_(k,m)、g_q 等中间记号不改变其运算。Cai §II-A、式(4)后（PDF p.4）支持 block-sparsity 的表达；P 的行正交条件没有转移为 A 的行正交假设。
+
+本轮直接读取的本地来源：Shen `/Users/wangbo/Desktop/OTFS/shen2025_large_differential_delay_doppler.pdf`；Cai `/Users/wangbo/Desktop/桌面 - 王博的MacBook Pro/论文/JADCE/(2026 JSAC) Joint_Activity_Detection_and_Channel_Estimation_for_Massive_Connectivity_Where_Message_Passing_Meets_Score-Based_Generative_Priors.pdf`；Huang 和 Li 分别为 `/Users/wangbo/Desktop/科研/hybrid access/references/satellite_parameter_review_20261018/huang2026.pdf` 和同目录 `li2023.pdf`。正文仅保留文献编号，精确定位保存在本条。
+
+### 第二章再次审阅后的三处适配修正
+
+作者确认本轮审阅建议后，共同多普勒句中的 satellite-to-ground link 改为已定义的 TSL，以适配本文上行场景，Huang 的共同多普勒假设及引用保持。跨帧式前明确共同 ν_k 与帧起点变化的因果，属于本稿式(7)的直接结果；式后采用 Under the quasi-static assumption，保持 approximately constant。Shen §II-A 式(1)（PDF p.3）是时延–多普勒–空间域表达，本稿式(1)是 h_k(t_c,τ)，因此删除此前由母句迁移而来的 of (1) in the delay-Doppler domain 回指，准静态依据仍为 Shen §II-B、PDF pp.4–5。式(9)前明确 effective pilot matrix 名称；后验引式沿用 Cai §II-B 式(5)前的 Bayes/独立性表述，调整主语及条件位置。没有新增术语、引用或模型假设。
+
+### 两项信道假设的简短依据
+
+共同 Doppler 句补入 `the long satellite-to-ground distance leads to only a small angular spread across multipath components`，直接依据 Huang §II、式(2)后解释句（PDF p.2／印刷 p.2950）。随后共同 AoA 句承接同一物理原因，Li 的引用及共同阵列响应定义保持。
+
+跨帧准静态段采用 Shen §II-B、式(10)后（PDF p.5）的“代表性仰角与帧数→参数变化→短块近似”顺序，数值按本文配置重新计算。取圆轨道、轨道面内固定地面设备、初始仰角50°，地球半径6371 km、轨道高度600 km、载频2 GHz、光速299792458 m/s、地球引力常数3.986004418e14 m³/s²；卫星速度7561.7331 m/s。N=16、N_CPP=336、带宽480 kHz，Q=16给出T=11.733333 ms。块内固定共同延迟参考。
+
+令r_s=R+h、ω=sqrt(μ/r_s³)、γ=acos[(R/r_s)cos(50°)]−50°，沿轨接近设备的斜距为r(t)=sqrt[r_s²+R²−2r_sR cos(γ−ωt)]。由ν(t)=(f_c/c)r'(t)、Δτ=[r(T)−r(0)]/c，得到|Δν|=3.333378 Hz、|Δτ|=0.173851 μs（0.083449 T_s）。固定初始Doppler的块末相位偏差为2π(f_c/c)|r(T)−r(0)−r'(0)T|=0.122869 rad。正文分别取3.33 Hz、0.174 μs、0.123 rad；此为所述代表性几何的计算例子，未作为接收机实验结果。独立计算一致，编号公式和参考文献保持。
+
+
+## 2026-11-08：第三章确认稿的句式来源与标量方差精简
+
+作者允许以 Cai、Shen 等论文的用句和段落推进为依据，并按本文模型适配。第三章采用已在聊天逐段展示的五组修订；本条区分原文依据与本文公式解释，不将适配后的整句标为逐字引文。
+
+- **逐列线性估计与逐设备块去噪**：Cai 正式版第3579页、§III首段，原句含 `separately estimates each column of X`、`Module B is a denoiser of Xk exploiting the priors`。本稿将两模块职责用 while 连接，并代入多帧似然、完整设备信道矩阵及活动先验。
+- **Gaussian posterior / mean and covariance**：Cai 第3579页、§III-A式(6)后，先说明两高斯密度的乘积仍为高斯，再求均值和协方差。本文压缩成引式句，保留一般有效导频矩阵下的完整均值、协方差公式。
+- **模块输入、输出与回传**：Shen 作者稿PDF第6页右栏、§III-A，原文采用 `processes the received signal Y along with this soft message`、`is returned ... as the likelihood` 和 `takes ... as input and produces the soft message`。本稿按两模块关系衔接；末尾回传同时对应 Cai 第3582页、§III-B末段的 `serving as the prior message of module A in the next iteration`。未引入 Shen 的 GAMP、三模块划分或不同先验。
+- **联合矩及共同标量方差**：Cai 第3581页、§III-B3式(32)–(38)，提供 Bernoulli–Gaussian 混合均值、方差及平均投影顺序。本文不再展示 U_k、C_X,k 中间层，直接保留 tbar_X=(1/K)sum_k[p_k t_k+p_k(1-p_k)||H_k^post||_F²/D]。等价性来自 tr(U_k U_k^H)=||H_k^post||_F² 和 D=MN²；原式(23)删除，原式(24)现为(23)。
+- **两项方差解释**：`conditional channel variance` 沿用本文已定义 t_k；第一项是 p_k 加权的条件方差，第二项为活动不确定性，是本稿混合矩公式的直接解释。`activity uncertainty` 可见 Cai §III-B1、式(15)后。本句按本稿公式适配，不声称是 Cai/Shen 的完整原句。
+
+III-B1、III-B2的原有文字及近似号保持。原 `posterior spatial covariance` 核验作为历史记录保留；当前正文改为直接标量表达。当前实现仍可能计算空间矩阵，其复杂度计数保持。
+
+来源：Cai本地正式版 `/Users/wangbo/Desktop/桌面 - 王博的MacBook Pro/论文/JADCE/(2026 JSAC) Joint_Activity_Detection_and_Channel_Estimation_for_Massive_Connectivity_Where_Message_Passing_Meets_Score-Based_Generative_Priors.pdf`；Shen本地作者稿 `/Users/wangbo/Desktop/OTFS/shen2025_large_differential_delay_doppler.pdf`。正文仍仅使用文献编号。
+
+
+## 2026-11-08：第四、五章确认稿的表达依据与联合核验
+
+- **得分网络与训练目标**：Cai 正式版 §IV-B、印刷第3582页、式(46)–(48)采用未知得分、参数化网络、DSM 目标的推进；Vincent 的 DSM 等价关系支持本稿已有训练目标。本文按实表示的噪声方差 v/2 与去噪器参数化适配，两个固定 v 下的最优解说明均保留。
+- **conditional covariance / normalized trace / average variance**：Dytso 作者稿 §IV、Proposition 1、式(22)、PDF第5页给出均值导数与条件协方差关系；Manor–Michaeli §3.2式(11)、PDF第4–5页及 §4.1式(15)、第6页支持由去噪器估计不确定性的技术路线。Cai §IV-C、印刷第3583页、式(53)前先说明只需协方差的迹。本稿采用自身的导数方差方法，不采用 Cai 的第二个得分网络。
+- **Monte Carlo method / variance estimate**：Metzler §V-B、PDF第15页为散度数值估计依据；本稿随机符号方向与中央差分保持原公式。本次只明确结果是 variance estimate。
+- **estimated log likelihood ratio / activity update**：Menon–Ong §3式(6)–(8)及 §4.2式(16)–(17)、PDF第3页，支持类别概率与密度比联系。本文使用平衡训练、同一方差采样分布和已有活动先验，先说明训练输出的估计对象，再代入对数几率式。
+- **Gaussian site / update / retained parameters**：沿用 Vehtari 等的 site 术语与本文原公式。更新条件及保留分支直接来自本稿 Algorithm 1 和 src/receiver/stmp/denoiser.py 第123–138、171–180行，属于本文实现说明。正文顺序为条件、更新式、另一分支、与当前似然的组合。
+- **single path / common Doppler shift / line-of-sight component**：单径近似及相位处理为本文原有方法；补入的动机来自本稿第二章共同 Doppler 与第六章默认 NTN-TDL-D/既有 Rician 参数。没有将多径模型改为精确单径模型，也不将本稿该近似归为 Cai/Shen 的算法。
+- **recursive damping / expected Gaussian negative log likelihood**：沿用 Rangan 与 Vila 的原引文和术语。按本稿实际顺序先输入阻尼，再使用 kappa^(i)bar_v^(i)，联合去噪后更新下一轮比例，最后反馈阻尼。Cai §V-A/B、印刷第3583–3584页及 Shen §III-A、PDF第6页和 §III-C 的算法整合段支持按消息流组织的表达；具体方差更新及执行时序仍以本文公式和实现为准。
+
+本轮无新缩写或方法名。以上区分文献中的组织/用语依据与本文公式的直接说明，不把适配后的句子标为整句原文。Cai/Shen 使用本文件前条所列本地 PDF；其余技术来源沿用此前逐句核验对应的本地原文与定位。
+
+
+### 2026-11-08：Gaussian site 段的推导与执行分工
+
+Cai 正式版第3581页（PDF第7页）§III-B1式(26)–(27)给出高斯外信息相除，§III-B3式(33)–(34)给出与输入消息的组合；第3584页（PDF第10页）Algorithm 2 第13行直接调用外信息更新式。本文保留对应推导及既有 site 术语；方差条件与参数保留规则保留在本稿算法表中，以现行实现为依据。上述文献位置支持外信息推导的表达，不作为本文条件保留规则的来源。本次仅调整叙述分工，无新术语或算法变化。
+
+
+## 2026-11-08：第三章原段适配稿正式采用
+
+第三章以 Cai 正式版第三章为段落及用句依据，采用本文的 MP 框架、逐列线性估计和逐设备块联合去噪表达。精确段落映射及已采用的文字调整见 [第三章来源记录](../checks/ch3_5_proposal_20261108/ch3_minimal_sources.json)。以下位置均为此前已核对的本地正式版 PDF。
+
+- **message-passing framework / sum-product rule / expectation propagation / linear estimator / joint denoiser**：Cai 第3579页（PDF第5页）第三章首段给出两个模块迭代及其估计对象。本文使用功能描述，具体接收机和模块命名由第五章算法介绍。
+- **Gaussian belief / LMMSE estimator / scalar variance / extrinsic message**：Cai 第3579–3580页 III-A，原式(6)–(11)。本文保留一般有效导频矩阵下的均值矩阵和列协方差，再取迹形成共享方差；不使用 Cai 特定矩阵结构下的简化更新。高斯乘积、配方、相除及消息传递用句按本文对象适配。
+- **MMSE denoising / Gaussian pseudo-likelihood / channel prior / high-dimensional integrals**：Cai 第3580–3581页 III-B1，原式(20)–(23)及相邻段落。本文条件于活动状态，使用 q_tr；t_k 在单个设备的 D 个复信道系数上平均。高维积分句为计算对象的客观说明。
+- **Bernoulli distribution / posterior probability of activity**：Cai 第3581页 III-B2，原式(28)–(30)给出相应分布与贝叶斯活动更新的表述。本文式(19)–(21)对 q_tr 边缘化得到活动似然，不把该非高斯边缘化等同于 Cai 的高斯信道外信息计算；p_k 为 pstar 的实际近似。
+- **Bernoulli–Gaussian pdf / Gaussian projection / projected Gaussian belief**：Cai 第3581页 III-B3，原式(32)–(42)；回传关系见第3582页。本文式(23)合并混合方差及平均操作，对所有设备与全部信道系数平均；投影后的高斯密度用于随后的外信息相除。
+
+作者随后要求删除无推导增量的说明。采用稿保留均值、方差、投影、消息相除及变量传递关系，精简导航、重复参数、重复高斯性质及重复 MMSE/活动概率解释。外信息正值的独立说明句已删除；第五章已有的 b 截断范围及算法步骤保持。此决定更新此前将该独立说明句列为必须保留的文字要求。编号公式、近似号和算法规则均未改动。
+
+
+## 2026-11-08：信道外信息推导移入第三章
+
+作者确认采用 Cai 的章节分工：消息关系集中于第三章，第四章给出学习计算，第五章接入训练模型并汇总实际算法。Cai 正式版第3581页（本地PDF第7页）III-B1式(22)–(27)先定义去噪矩、再求信道外信息，III-B3式(32)–(34)先组合信道消息、再形成 Bernoulli–Gaussian 分布；第五章第3583页（PDF第9页）式(55)–(56)及相邻段落接入训练好的网络。本次仅借鉴上述组织与已有术语，活动概率仍按本稿 q_tr 边缘化，不转用 Cai 的高斯活动似然。
+
+- **Gaussian belief / Gaussian site / extrinsic message**：将原第五章式(38)–(39)移至III-B1末，现为式(19)–(20)；原式(40)–(41)移至III-B3开头，现为式(24)–(25)。四条代数关系逐字保持，Vehtari 的 site 引文随段落前移。相除与组合的文献位置同上，site术语依据仍为Vehtari §2.1、§5.3。
+- **channel mean / shared average variance**：III-B1用 F_k 表示当轮去噪均值，tau^post 表示共享去噪方差。式(17)的左端由H_k^post改为F_k；式(18)改为(1/(KD))sum_k tr Cov(vec(H_k)|R_k,alpha_k=1)的近似，明确对全部K个设备、D个复信道系数平均。此为原第五章设备平均操作的前置定义，与Cai式(23)的共享方差组织对应；不更改先平均、后施加下界的算法次序。
+- **conditional channel moments**：H_k^post与t_k由式(24)–(25)的site组合给出，再用于式(26)–(29)的联合估计与反馈。第四章保留每设备tau^star的导数关系，并补其设备平均与共享方差目标的衔接。第五章用F_k=F_theta(R_k,v)实例化一般去噪均值；分类器仍输入F_k。没有提前在第三章介绍网络或具体模块名称。
+- **receiver integration**：第五章A采用Cai第五章“训练模型接入框架—实际算法”的推进，保留网络输出、共享方差、相位与初始化及算法汇总，删除已经迁移的推导和重复反馈说明。site执行分支继续只放算法表。
+
+图3现分别引用式(19)–(20)与(24)–(25)，不将二者合成包含中间活动推导的连续区间。其余引用同步为(37)、(41)、(26)–(27)、(28)–(29)；图中去噪器的第二参数同步为正文采用的标量v，绘图源同步更新。图的示例数据、连线和其他标记保持。
+
+## 2026-11-08：第四章原文适配重写草稿（待采用）
+
+作者要求重新按原始论文组织第四章。此次生成独立审阅草稿，正式第四章和两版正式 PDF 尚未替换。逐段原文锚点、必要适配及公式核验见[第四章来源记录](../checks/ch3_5_proposal_20261108/ch4_source_sources.json)。
+
+- **Bridging Score Function and MMSE Denoising / First-Order Score Matching**：采用 Cai 正式版 IV-A、IV-B 的原标题及推进顺序，PDF 第8–9页、印刷第3582–3583页，式(43)–(49)。复实堆叠、v/2、采样噪声方差、现有训练权重及 denoiser 参数化按本稿替换。固定 v 的 score-MSE 目标由原正文文字展开为不编号公式。
+- **conditional covariance / Jacobian / divergence / Monte Carlo method**：Manor–Michaeli §3.2式(11)、PDF第4–5页及 §4.1式(15)、第6页；Dytso 作者稿式(3)和 §IV Proposition 1式(22)；Metzler 作者稿 §V-B、PDF第15页。本文按复坐标平均取迹，保留既有随机符号方向与中央差分，这些是本稿适配。
+- **class-conditional densities / Bayes-optimal logit / density ratio**：Menon–Ong §3式(6)、PDF第2页给出类别几率与密度比；§2.1–2.2给出 Bayes-optimal scorer 和 logistic loss 的 logit link；§4开头及 §4.2式(16)–(17)、PDF第3页给出均衡训练和对应比值估计。草稿的 Bayes-optimal logit 是以上对象在本文交叉熵表达下的称呼，随后以 trained classifier / estimate 区分实际网络；两类样本构造、共同 v 分布、F_theta 特征与实际活动先验修正均为本稿适配。
+
+
+### 同日：第四章草稿仅调整顺序
+
+作者确认按前章的均值、方差、活动概率三个未知量编排，并明确要求保留已有内容。本轮将上轮 A/B 合并为 Channel Mean Estimation，将协方差整段和公式移至 Channel Variance Estimation 开头，Activity Probability Estimation 保持。上述 Cai 原标题仅作为上一轮草稿记录，当前候选使用三小节标题。所有正文块、公式及引用逐字保留；公式编号随顺序恢复为 DSM(32)、去噪损失(33)、协方差(34)。预览仍为13页，本轮未写入正式正文及两版正式PDF。核验见[仅顺序调整记录](../checks/ch3_5_proposal_20261108/ch4_reorder_checks.json)。
+
+作者随后确认 A 标题为 Channel Mean Estimation via Denoising Score Matching，C 标题为 Activity Probability Estimation Based on Density Ratios；B 保留 Channel Variance Estimation。DSM 术语依据沿用 Cai IV-B／Vincent，density ratios 沿用 Menon–Ong §3／§4.2。此次仅扩展候选 A、C 标题，未改正文。
+
+第四章候选 A 标题最终确认为 Channel Mean Estimation with a Score-Based Generative Prior。score-based generative priors 沿用 Cai 第四章章题及 IV-A/B，PDF 第8–9页、印刷第3582–3583页；单数形式对应本稿学习的信道先验。B、C 标题及正文保持。
+
+
+## 2026-11-08：第五章原文适配重写候选（待采用）
+
+作者要求第五章沿用第三、四章的原文适配标准。当前候选保留 Overall Algorithm、Parameter Estimation and Numerical Implementation、Computational Complexity Analysis 三小节；逐段原文锚点和本稿适配见[第五章来源记录](../checks/ch3_5_proposal_20261108/ch5_source_sources.json)。
+
+- **hybrid structure / integration / forward pass**：Cai V-A、印刷3583／PDF9，以及 V-C、3585／PDF11。接入对象为本稿去噪器、导数方差和活动分类器；MFLE为解析线性估计，GPJD使用学习模型。网络调用次数及操作成本采用本稿现有计算。
+- **sample covariance / eigenvalues / minimum description length**：Nadakuditi–Edelman II–II-A，印刷2626–2627／PDF2–3，对 Wax–Kailath 的样本特征值MDL规则作明确介绍。保留本稿噪声估计式、低秩/空间白噪声条件及固定噪声估计的时序。
+- **Gaussian prior / marginal likelihood**：Tipping–Faul §2.1，PDF2，式(2)–(8)。本文复矩阵观测、相位响应、独立增益方差及负对数目标按现有模型适配。L-BFGS-B沿用Zhu等摘要与§1的有界优化方法；坐标更新组合及Doppler到有效导频的关系为本稿已有定义。
+- **recursive damping / variance update**：Cai V-B1、3583–3584／PDF9–10提供两向阻尼句式；Rangan VAMP III-C式(26)–(27)、作者PDF6支持前轮阻尼状态的递归插值。Vila–Schniter III-A式(22)–(27)、4661／PDF4提供固定近似后验下的高斯方差求导。候选补明令导数为零的引式步骤，方差目标、κ索引和更新时序保持。
+- **complexity analysis**：Cai V-C、3585／PDF11的网络前向计算说明与Shen III-C末尾、PDF10的逐模块计数组织。全部复杂度阶数、内存、SVD关系、AFDM/OTFS调制条件均沿用本稿既有内容。Shen此处正确位置是III-C末尾。
+
+
+### 同日：第五章候选语态适配
+
+作者确认将第五章重复的作者动作句改为以研究对象作主语的表述。Cai V-B2（印刷3584／PDF10）交替采用作者主动句和 scaled input is given by 等表达；Shen III-C末尾（PDF9–10）以作者提出算法、计算复杂度受具体操作决定等不同主语组织文字。本轮据此作语法适配，未增加专业术语或方法名称；各方法的原文出处仍以上述逐段来源记录为准。公式、条件、操作次序与论断强度保持。
+
+
+### 同日：第四五章确认稿正式采用
+
+作者已确认将上述第四五章原文适配候选及第五章语态调整写入正式正文。此前“候选／待采用”记载为历史阶段，当前以paper/sections中的采用稿为准。逐段来源与方法术语保持；新的第一至五章通读建议记录在ch1_5_review_after_adoption.json，尚未追加修改。
+
+
+## 2026-11-08：跨帧有效信道的句子表述
+
+作者确认以直接说明矩阵关系的普通句法替代 shared effective-channel representation 这一概括。引言现用 “the received pilot frames to be expressed in terms of the same effective channel matrix for each device”；结论相应说明各帧观测依赖每个设备的同一个有效信道矩阵。the same 是句中的限定语，不登记为新的技术名称。引言与OTFS的比较直接指明 the effective channel matrix in our model。
+
+技术依据为本稿第二章的跨帧关系 H_k^(q)=exp(jq beta_k)H_k、相位并入 A_k 以及 Y=sum_k A_k X_k+W；这几句是本文公式的直接说明。Shen §II-B、式(10)后、PDF pp.4–5 使用 effective channel、remains approximately constant over Q consecutive frames、quasi-static property，并说明多帧增加观测；原文为 https://arxiv.org/html/2412.20806v1#S2.SS2 。这些原词和关系提供表达依据，不将改后句称为Shen的逐字原句。
+
+本轮未找到 shared effective-channel representation 的可靠完整文献用例；此前将其登记为本文描述不构成文献术语依据。现行三处写法以上述作者确认结果为准，保留早期记录以便追溯。数学含义、比较条件、引用和编号保持。
+
+
+### 同日：多帧贡献的精简表述
+
+按作者最新确认，引言以跨帧有效信道的Doppler-induced phase rotations直接引出增加导频帧的观测收益；结论以multi-frame AFDM transmission scheme、input-output relationship及观测收益概括第一项贡献。两处不再重复说明各帧观测对应的矩阵关系。该关系仍由第二章式(8)–(10)定义，技术含义及上述Shen §II-B的来源记录保持；本轮未引入新术语。现行措辞以正式正文为准。
+
+
+## 2026-11-08：第六章 Cai／Shen 参考分析候选
+
+本轮没有新增方法名称或缩写。以下记录分析组织与既有术语的出处，具体比较仍使用本稿实验数据。逐段映射见 [第六章来源记录](../checks/ch6_reference_revision_20261108/SOURCES.json)。
+
+- **channel denoising / genie-aided MMSE / forward pass**：Cai VI-B，PDF第11–12页、印刷第3585–3586页，先独立比较去噪，再进入完整接收机评估；本稿保留自身genie条件及高SNR排序，仅说明均值网络的一次前向计算。
+- **convergence / NMSE / activity error rate**：Cai VI-C的Fig.5–7讨论，PDF第12–13页、印刷第3586–3587页；Shen V的Fig.5、7和9讨论，PDF第12–14页。本稿按实际曲线分别说明NMSE与AER，约40轮后曲线基本稳定不等同于满足接收机停止规则。
+- **number of devices / pilot length**：Cai VI-C的Fig.8与Fig.10讨论，PDF第13–14页、印刷第3587–3588页，以共同误差目标比较可支持设备数和导频开销。本稿对象分别为candidate devices和pilot frames，报告满足目标的已测点；Shen V的Fig.6讨论，PDF第13页，提供多帧观测的分析组织。
+- **activity probability / phase estimation**：Shen V的Fig.7–9讨论，PDF第14页，及Cai VI-C的Fig.9讨论，PDF第13页、印刷第3587页。本稿负载分析限定固定资源下待恢复活动信道增加；相位比较采用本稿known-phase与estimated-phase设置。
+- **channel mismatch / without retraining**：Cai VI-C的Fig.11讨论，PDF第13–14页、印刷第3587–3588页。训练与测试profile分别使用本稿NTN-TDL设置，保留profile A/B在6 dB时STMP更优的观测。
+
+当前为独立审阅候选。来源全文沿用本地cai.txt与shen.txt及此前登记的原始PDF，未将参考论文的数值、算法差异或机制解释直接转移为本文结论。
+
+
+### 同日：第六章以 Shen 为主的分析组织
+
+按作者最新要求，当前候选以 Shen 第V节的整体趋势、主要比较、结果意义为主要组织依据：Fig.5–6讨论位于作者稿PDF第13页，Fig.7–9位于第14页。Cai 第VI-B与VI-C仅补充独立去噪及跨信道部分的参考。密度比消融是本文独有的实验，Shen只提供段落组织参照；相位设置仍使用本文定义。本文关于无需单独训练方差模型的说明来自现有第四、五章，不借整机结果宣称方差估计更准或推理更快。
+
+本轮未引入新方法名、缩写或技术术语。具体段落及来源定位见[Shen为主的第六章来源记录](../checks/ch6_shen_revision_20261108/SOURCES.json)。
+
+作者随后明确要求将该第六章候选直接写入正式正文，现已逐字采用。上述来源与术语依据保持，正式稿及两版PDF同步完成，见同目录ADOPTION.json。
+
+
+## 2026-11-09：第三、五章语言修订中的消息指代
+
+作者确认四处语言修改，并要求核查消息的方向性称谓。第三章现按上下文使用 this message、prior message 和 Gaussian message from the linear estimator，分别指前一句已定义的高斯消息、线性估计使用的先验消息和线性估计器传向联合去噪器的消息。消息来源和相除对象保持原有公式含义。
+
+- **Gaussian message / Gaussian belief / likelihood**：Cai 正式版 III-A，印刷第3579页／PDF第5页，式(6)及相邻段落明确节点间消息、似然与belief的乘积关系。本稿式(12)前用 this message 回指已写出的 CN(x_j; x_j^pri, gamma I)，并保留Ma2017原引文。
+- **prior message / message from the linear estimator**：Cai III-A，印刷第3580页／PDF第6页，式(10)–(11)后说明线性模块外信息传向去噪模块；III-B3末，印刷第3582页／PDF第8页，说明返回消息作为下一轮线性模块的prior message。本稿沿用对应方向和作用，未新增方法名称。
+- **MMSE denoising / GPJD与MFLE分工 / 训练尺度归一化**：沿用[第三章来源记录](../checks/ch3_5_proposal_20261108/ch3_minimal_sources.json)与[第五章来源记录](../checks/ch3_5_proposal_20261108/ch5_source_sources.json)。GPJD使用训练去噪器和分类器；全局训练条目RMS的除法及噪声方差除以s²保持。
+
+
+## 2026-11-09：按具体统计量统一均值与方差表述
+
+作者要求全文尽量使用明确的均值、方差或协方差名称。现行主稿及评估协议附录的可见文字逐项检索后，第三章计算说明采用 channel mean and shared average variance，第四章章首采用 channel mean and variance；定义与公式保持。本条沿用并再次确认2026-11-03完整搭配核查中的具体统计量原则，后续改稿优先按对象命名。
+
+Cai正式版III-B1、印刷第3580–3581页／PDF第6–7页使用posterior mean and variance描述计算对象；同章Gaussian projection段的matched first- and second-order moments描述匹配性质，不能据此将所有均值／方差说明改成笼统的channel moments。Shen当前本地全文未检出moment(s)，IV-A／PDF第11页使用posterior means and variances。已有相应出处见本文件2026-11-03条目；本轮全文核对结果为主稿与完整稿的可见文字均无moment或moments。内部公式标签保持以维持引用稳定。
+
+第二章以without increasing the number of unknown channel coefficients说明观测数量增加而未知系数数量不变。underdetermined限定于式(10)的linear system，Q<KN的维数关系保持；这一条件来自本稿A的Q×KN维数，不推断使用先验后无法估计。
+
+
+## 2026-11-09：对象明确的措辞与新版导频结果
+
+本轮按作者确认采用五组语言修改，并在作者明确授权后采用新版导频实验。未新增算法名、缩写或专业术语。
+
+- unknown phases 是对本文第五章“已知或估计一次的相位”这一参数状态的直接描述；message-passing updates 沿用第三章、第五章的现有消息更新关系，Gaussian message / extrinsic message 的来源仍为 Cai (2026) §III 与本文件此前登记。附录完整句是本文配置说明，不宣称为 Cai 原句。
+- denoiser、NMSE、activity update 沿用本文第四章、VI-B、VI-C及既有术语记录。独立去噪比较与整机比较的对象区分可参见 Cai (2026) §VI-B；本轮具体排序由本文图4决定。活动更新的比较由表III决定，不由密度比这个数值本身执行操作。
+- expected number of active devices 直接描述第二章设备活动概率模型的统计含义，并沿用第六章设备数分析中的原有表达，不把概率增加写成每个场景都确定增加活跃设备。
+- severe degradation / sensitive to limited pilot observations 是本文导频曲线的普通结果描述，不是新机制或算法名称。数值依据为 result/pilot_frames/latest_20261109/SUMMARY.json，GitHub固定提交50dd757cdca668f5ddf357d8033434b957d1577d；依据位置为STMP的Q=8、12行及GP_MP对应行。−12 dB目标下16/20帧与20%节省限定于已测试帧数，见同目录ADOPTION.json。既有正文全部编号公式和文献来源保持。
+
+
+## 2026-11-09：Monte Carlo统计设置与图注组织
+
+- **Monte Carlo trials**：Cai (2026), *Joint Activity Detection and Channel Estimation for Massive Connectivity: Where Message Passing Meets Score-Based Generative Priors*, VI-A3 “Evaluation Settings”，正式版PDF第11页／印刷第3585页。原文集中说明NMSE与检测错误概率每点分别平均500与5,000次Monte Carlo trials。本稿沿用该统计术语；每点1,000次为作者确定的评估协议，不能归为Cai原有参数。[本地核对文本](../../reference/reviews/section_structure_20261009/cai.txt)第2038–2044行。
+- **图注组织参考**：Shen (2025)本地版本第V节，PDF第13–14页图5–9，图注主要交代收敛／SNR／导频数／设备活动概率等比较对象和固定参数。全文未检出Monte Carlo或trials，故不以其支持统一1,000次的说法。[本地核对文本](../../reference/reviews/section_structure_20261009/shen.txt)第1495、1519、1539及1601–1602行。此项是组织参考，不新增专业术语或实验结论。

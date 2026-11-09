@@ -20,7 +20,7 @@
       "dependencies": [
         "reference/literature/cai2026_stmp_v2.pdf",
         "result/channel_denoising/figures/white_mainline_500_20261107/scene000_example.npz",
-        "paper/build/main.aux"
+        "paper/main.aux"
       ]
     },
     "channel_denoising": {
@@ -621,13 +621,23 @@
     "pilot_frames": {
       "number": 7,
       "kind": "experiment",
-      "source": "result/pilot_frames/figures/full_grid_final_20261026/PLOT_DATA.json",
-      "source_sha256": "9b3e75bd7f3dd628b4e1bf456d952ad8aff6445407aa71472b8c305dbbfe6dc0",
+      "source": "result/pilot_frames/latest_20261109/SUMMARY.json",
+      "source_sha256": "33a15cab02bff837ebfd34f15ce09a8a2e437bace9198891ada9a8581eeb4e99",
       "styles": {
-        "C_STMP": {
+        "GP_MP": {
           "color": "#ff0000",
           "marker": "s",
           "linestyle": "-",
+          "linewidth": 0.9,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "GP_MP_EP": {
+          "color": "#ff0000",
+          "marker": "^",
+          "linestyle": "--",
           "linewidth": 0.9,
           "markersize": 3.5,
           "markeredgewidth": 0.7,
@@ -648,6 +658,26 @@
           "color": "#0000ff",
           "marker": "s",
           "linestyle": "--",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "offgrid13": {
+          "color": "#0000ff",
+          "marker": "o",
+          "linestyle": "-.",
+          "linewidth": 0.65,
+          "markersize": 3.5,
+          "markeredgewidth": 0.7,
+          "markerfacecolor": "white",
+          "clip_on": false
+        },
+        "offgrid25": {
+          "color": "#0000ff",
+          "marker": "v",
+          "linestyle": ":",
           "linewidth": 0.65,
           "markersize": 3.5,
           "markeredgewidth": 0.7,
@@ -686,227 +716,41 @@
         }
       },
       "labels": {
-        "C_STMP": "GP-MP",
+        "GP_MP": "GP-MP",
+        "GP_MP_EP": "GP-MP-EP",
         "STMP": "STMP",
-        "offgrid_sbl": "Off-grid SBL",
+        "offgrid_sbl": "Off-grid SBL (7)",
+        "offgrid13": "Off-grid SBL (13)",
+        "offgrid25": "Off-grid SBL (25)",
         "gnn": "GNN-ASPL",
         "gamp": "GAMP-SBL",
         "somp": "SOMP"
       },
       "methods": [
-        "C_STMP",
+        "GP_MP",
+        "GP_MP_EP",
         "STMP",
         "offgrid_sbl",
+        "offgrid13",
+        "offgrid25",
         "gnn",
         "gamp",
         "somp"
       ],
       "size_inches": [
         3.5,
-        2.5
+        2.65
       ],
-      "point_count": 72,
+      "point_count": 45,
       "x": "frames",
-      "panel_config": {
-        "version": 1,
-        "experiment": "pilot_frames",
-        "input": "result/pilot_frames/figures/full_grid_final_20261026/PLOT_DATA.json",
-        "selection": {
-          "methods": null,
-          "conditions": {},
-          "scenes": {},
-          "per_scene": null
-        },
-        "labels": {
-          "C_STMP": "GP-MP",
-          "STMP": "STMP",
-          "offgrid_sbl": "Off-grid SBL",
-          "gnn": "GNN-ASPL",
-          "gamp": "GAMP-SBL",
-          "somp": "SOMP"
-        },
-        "styles": {
-          "C_STMP": {
-            "color": "#ff0000",
-            "marker": "s",
-            "linestyle": "-",
-            "linewidth": 0.9,
-            "markersize": 3.5,
-            "markeredgewidth": 0.7,
-            "markerfacecolor": "white",
-            "clip_on": false
-          },
-          "STMP": {
-            "color": "#ff00ff",
-            "marker": "o",
-            "linestyle": "--",
-            "linewidth": 0.9,
-            "markersize": 3.5,
-            "markeredgewidth": 0.7,
-            "markerfacecolor": "white",
-            "clip_on": false
-          },
-          "offgrid_sbl": {
-            "color": "#0000ff",
-            "marker": "s",
-            "linestyle": "--",
-            "linewidth": 0.65,
-            "markersize": 3.5,
-            "markeredgewidth": 0.7,
-            "markerfacecolor": "white",
-            "clip_on": false
-          },
-          "gnn": {
-            "color": "#00a0a0",
-            "marker": "^",
-            "linestyle": "-.",
-            "linewidth": 0.65,
-            "markersize": 3.5,
-            "markeredgewidth": 0.7,
-            "markerfacecolor": "white",
-            "clip_on": false
-          },
-          "gamp": {
-            "color": "#2e8b57",
-            "marker": "D",
-            "linestyle": ":",
-            "linewidth": 0.65,
-            "markersize": 3.5,
-            "markeredgewidth": 0.7,
-            "markerfacecolor": "white",
-            "clip_on": false
-          },
-          "somp": {
-            "color": "#123d2a",
-            "marker": "x",
-            "linestyle": "--",
-            "linewidth": 0.65,
-            "markersize": 3.5,
-            "markeredgewidth": 0.7,
-            "markerfacecolor": "white",
-            "clip_on": false
-          }
-        },
-        "plot": {
-          "x": "frames",
-          "metrics": [
-            "nmse_db",
-            "aer"
-          ],
-          "facet": null,
-          "facet_order": null,
-          "panels": [
-            "combined",
-            "separate"
-          ],
-          "title": "",
-          "show_panel_titles": false,
-          "annotate": null,
-          "facet_columns": 2
-        },
-        "axes": {
-          "x": {
-            "limits": [
-              8,
-              48
-            ],
-            "label": "Number of pilot frames",
-            "labelpad": 0,
-            "tickpad": 4
-          },
-          "nmse_db": {
-            "labelpad": 0,
-            "tickpad": 4,
-            "limits": [
-              -20,
-              0
-            ],
-            "ticks": [
-              -20,
-              -15,
-              -10,
-              -5,
-              0
-            ]
-          },
-          "aer": {
-            "scale": "log",
-            "zeros": "separate",
-            "labelpad": 0,
-            "tickpad": 4,
-            "limits": [
-              0.0001,
-              0.1
-            ],
-            "ticks": [
-              0.0001,
-              0.001,
-              0.01,
-              0.1
-            ]
-          }
-        },
-        "legend": {
-          "show": false,
-          "loc": "upper right",
-          "ncol": 1,
-          "fontsize": 6,
-          "groups": [],
-          "combined_metrics": [
-            "aer"
-          ],
-          "frameon": true,
-          "framealpha": 1,
-          "fancybox": false,
-          "labelspacing": 0.1,
-          "handlelength": 2.6,
-          "handletextpad": 0.4,
-          "borderpad": 0.3
-        },
-        "figure": {
-          "panel_size": [
-            1.75,
-            2.2
-          ],
-          "separate_panel_size": [
-            3.5,
-            2.2
-          ],
-          "font_family": "Times New Roman",
-          "font_size": 8.5,
-          "layout": {
-            "w_pad": 0.01,
-            "h_pad": 0.02,
-            "wspace": 0,
-            "hspace": 0
-          },
-          "grid": true,
-          "minor_grid": true,
-          "major_grid_color": "#b9b9b9",
-          "major_grid_alpha": 0.65,
-          "major_grid_linewidth": 0.45,
-          "minor_grid_color": "#d4d4d4",
-          "minor_grid_alpha": 0.45,
-          "minor_grid_linewidth": 0.35
-        },
-        "export": {
-          "formats": [
-            "pdf",
-            "svg",
-            "png"
-          ],
-          "dpi": 600,
-          "preview_dpi": 180
-        }
+      "legend_style": {
+        "handlelength": 1.65,
+        "columnspacing": 0.55
       },
-      "legend_order": [
-        "C_STMP",
-        "STMP",
-        "offgrid_sbl",
-        "gnn",
-        "gamp",
-        "somp"
-      ]
+      "metrics": [
+        "nmse_db"
+      ],
+      "status": "Adopted 2026-11-09; 500 paired scenes per point; see result/pilot_frames/latest_20261109/ADOPTION.json."
     },
     "user_count": {
       "number": 8,
@@ -1190,6 +1034,6 @@
     "reference/literature/shen2025.pdf": "49ba5402794cb29bdbd39c10ed5146e10291e15d2db222e4e57f8b13ae3f7abd",
     "reference/literature/cai2026_stmp_v2.pdf": "f0e6f8acbeec4ca91ecdadb3f51471026646f7d6f338cb051f663a6ba66178cf",
     "result/channel_denoising/figures/white_mainline_500_20261107/scene000_example.npz": "02d7176ca5c69819e79c658818785f41f0ea2b04f6209bbd7ef2aa2e13cbdd90",
-    "paper/build/main.aux": "1485320c4141670dddade0711a33f55e7bf7bac97ff9d4edc7c2b7dcdd3e34e2"
+    "paper/main.aux": "837174686bd68ff6135482634cdd7c28e5e149e2fd6ccd1ceff4bad9f820ba83"
   }
 }

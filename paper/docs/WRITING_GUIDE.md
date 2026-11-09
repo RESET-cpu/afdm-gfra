@@ -73,7 +73,7 @@
 
 后续核对时，应比较句子的主语、操作、对象、条件与结论。大部分实质内容都被替换后，即使保留了几个功能词，也不能继续称为原句的最小合理替换。优先寻找技术任务更接近的原段；本文特有定义则如实登记必要适配。
 
-已实施修改见[定义句与衔接修正](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_natural_expression_20261101/REVISION_NOTES.md)和逐行差异（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/ch2_natural_expression_20261101/CHANGES.diff`）。早期逐句对照保留为历史证据，其中被撤回的出处归类不能继续用作通过依据。
+已实施修改见[定义句与衔接修正](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_natural_expression_20261101/REVISION_NOTES.md)和逐行差异（仅本地历史资料：`paper/checks/ch2_natural_expression_20261101/CHANGES.diff`）。早期逐句对照保留为历史证据，其中被撤回的出处归类不能继续用作通过依据。
 
 ## 术语和语法表达分别怎样检查
 
@@ -160,7 +160,7 @@
 
 - [原段原句历史对照](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_shen_cai_rewrite_20261101/SENTENCE_ALIGNMENT.md)：保留原句与版本记录；应连同后续更正阅读。
 - [定义句与衔接修正](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_natural_expression_20261101/REVISION_NOTES.md)：本规范中已改实例的依据及边界。
-- 对应差异（仅本地历史资料：`delete/paper_checks_cleanup_20261108/paper/checks/ch2_natural_expression_20261101/CHANGES.diff`）：实际源码改动。
+- 对应差异（仅本地历史资料：`paper/checks/ch2_natural_expression_20261101/CHANGES.diff`）：实际源码改动。
 - [七项问题的后续修正](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/ch2_remaining_fixes_20261101/REVISION_NOTES.md)：本规范登记问题的实际处理、出处边界与核验。
 - [术语出处](TERMINOLOGY.md)：术语及其适用含义的长期记录。
 

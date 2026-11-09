@@ -1,6 +1,6 @@
 {
-  "snapshot_date": "2026-11-08",
-  "content_source": "Current source, manuscript, figures, summaries and eight model assets. Historical paper checks are accessed through pinned Git links; obsolete checks directory removed.",
+  "snapshot_date": "2026-11-09",
+  "content_source": "Published repository with the current main manuscript, LaTeX sections, figures and manuscript documentation synchronized on 2026-11-09; existing code and experiment results retained.",
   "excluded": "Retired standalone DU/colored implementations and unused STMP candidates; delete/, .runtime/, raw datasets, per-scene predictions, logs and caches. Mutable live pilot STATUS.json is local only; validation records contain dated snapshots. Historical paper/checks/ and local-only per-scene evidence remain excluded. Manuscript build outputs, duplicate figure exports and the unused second-order appendix are excluded.",
   "lfs_note": "LFS rows record original model file bytes and SHA-256; Git tree contains corresponding pointers.",
   "files": [
@@ -2786,33 +2786,33 @@
     },
     {
       "path": "paper/README.md",
-      "bytes": 1556,
-      "sha256": "11f368a18895c526af73f09ba38f49d15e5680eb9b123b4648c0ef9a5d459c78"
+      "bytes": 1301,
+      "sha256": "e1294e94fa68ff4a2e64bf0015c89f52c8df6e608fb3fb4292a9296ff8e71a24"
     },
     {
       "path": "paper/docs/README.md",
-      "bytes": 1510,
-      "sha256": "e15394d9876109b9411526865d813092c1fcf0de49c3a55e78173d277bd5e565"
+      "bytes": 1114,
+      "sha256": "528932c444429083679f2267311ce5ff040184fa3658f71d0d67ed971c071788"
     },
     {
       "path": "paper/docs/REPRODUCTION.md",
-      "bytes": 6269,
-      "sha256": "167e0738e871217669435a3fdda51297cbaaf83347d9dc1f63f02ed7d5f6fd75"
+      "bytes": 6818,
+      "sha256": "8b94ed1798b313bbfa60715334a5d77f97b3dc7a5c28e7d6f849ce47495ab86f"
     },
     {
       "path": "paper/docs/REVIEW_DECISIONS.md",
-      "bytes": 164937,
-      "sha256": "396b80bdbd1d445fbe68309a0027bf92f90417814a9ed5f6ce4a5657057c259f"
+      "bytes": 224546,
+      "sha256": "9f62df2658dc5efcf143f247460fe4d5113ef5284f056bdefdcee3cb3b135384"
     },
     {
       "path": "paper/docs/TERMINOLOGY.md",
-      "bytes": 829969,
-      "sha256": "cc7b649418f971f5ebd3dc97503bd0b4b6982a93da9e7ec50ea1f770e661c331"
+      "bytes": 862628,
+      "sha256": "237aee0b6dc3fcc8755b406c2a62f30a4c783068d82c43797636390811299e98"
     },
     {
       "path": "paper/docs/WRITING_GUIDE.md",
-      "bytes": 23079,
-      "sha256": "ad81a96dd77aea50ee222a343c72a186f7638d56ab9677504410f1aacf83836c"
+      "bytes": 23005,
+      "sha256": "ae05c6b1067bb9bdaf8a14c67e24c42819560894f0bb8e6444e79611ef65c72a"
     },
     {
       "path": "paper/docs/derivations/afdm_channel_model.tex",
@@ -2821,8 +2821,8 @@
     },
     {
       "path": "paper/docs/derivations/phase_estimation.md",
-      "bytes": 3250,
-      "sha256": "fb189e848b8c31ac6ca1dba12464754d633425eb08a9d42e64c6dc995b572270"
+      "bytes": 3351,
+      "sha256": "a33caaffbd3e19911946d9c5972fcddf3f5c46e4adbded80b18061de1ecee6d0"
     },
     {
       "path": "paper/docs/derivations/phase_estimation.tex",
@@ -2836,8 +2836,8 @@
     },
     {
       "path": "paper/figures/README.md",
-      "bytes": 1181,
-      "sha256": "2914dbb7b75addf0f1b355df9eb6d038db5922470daf9b04fbee01ca33266f55"
+      "bytes": 1182,
+      "sha256": "72a56fbf1dd2ab31c287f5944b989de9953f85bdf6045943a41093677d9a5f7d"
     },
     {
       "path": "paper/figures/activity_probability.pdf",
@@ -2866,13 +2866,13 @@
     },
     {
       "path": "paper/figures/learned_receiver.pdf",
-      "bytes": 358393,
-      "sha256": "b0f441d0cfaec2c2205fd761b28f6c56949f4e770936735ffabcd3201728e873"
+      "bytes": 581927,
+      "sha256": "3100b1288e4522924809995f0332a027ea06758c67cc95fb114b7ecea8fab001"
     },
     {
       "path": "paper/figures/pilot_frames.pdf",
-      "bytes": 38608,
-      "sha256": "45994ad078d4864de292894017cdb713b4f342ae5212e7de9a78a91bd651547f"
+      "bytes": 36153,
+      "sha256": "41f5e64dd8923d9bf2a55eff4fa8455a01a21f02e18df17d7130b7ff3b3b63b7"
     },
     {
       "path": "paper/figures/snr_comparison.pdf",
@@ -2891,23 +2891,13 @@
     },
     {
       "path": "paper/main.pdf",
-      "bytes": 621825,
-      "sha256": "3b72e94c6401ff14cf7f2188c5d5bb88651f378782339f7db3b958d7be12b239"
+      "bytes": 1089176,
+      "sha256": "d3ade8e75c0b95ee838973848d7260ad0f4118d9928d9c2ec04bec866fe6b914"
     },
     {
       "path": "paper/main.tex",
-      "bytes": 4769,
-      "sha256": "5558a6d71aedaba273dd2657eb6a488bbb60c50722b204fc97cb80f06c94eb0b"
-    },
-    {
-      "path": "paper/main_full.pdf",
-      "bytes": 630589,
-      "sha256": "cc586f62d7436bd9a8e0ef9d03b23d26c6b4022426ab463cabe28dedffdf0c1a"
-    },
-    {
-      "path": "paper/main_full.tex",
-      "bytes": 138,
-      "sha256": "fe7174623f617cb68a3ec5defecefd866c74be9e3008550a7727b61ab28c17c2"
+      "bytes": 4434,
+      "sha256": "b0f9d99ac000ce86fd142071ff4aab079b47d1b5923674b92105fe61e1162ef0"
     },
     {
       "path": "paper/references.bib",
@@ -2916,48 +2906,48 @@
     },
     {
       "path": "paper/sections/00_abstract_zh.md",
-      "bytes": 1422,
-      "sha256": "20bccb01f5b041357a23999c6ae8c6816a7bd5e9a9e689808f9980a6d8b57238"
+      "bytes": 1242,
+      "sha256": "67c2c41452dd8d8c5f14246ee427f535eace74d64297d56bbb8196810709893c"
     },
     {
       "path": "paper/sections/01_introduction.tex",
-      "bytes": 8600,
-      "sha256": "d1014004f12286a6d68d921b6514f67b831b59ab0d1717af938059dd4dbd6262"
+      "bytes": 7878,
+      "sha256": "2e16320799987450503805de1a1d9726731482208fc46efd872f9524e4c05b6e"
     },
     {
       "path": "paper/sections/02_system_model.tex",
-      "bytes": 11724,
-      "sha256": "9eff2999ff6bd79a74d70e998d23acfb2f7eb268ec5182c4a79e112a6d9cc042"
+      "bytes": 12218,
+      "sha256": "b973b12125e8f97b3fe61b4b334c76ac435c4ba4eda2cb7478a50d42f1dce3e7"
     },
     {
       "path": "paper/sections/03_bayesian_receiver_design.tex",
-      "bytes": 7061,
-      "sha256": "a4780e537c647d839fea993eb8a187d2110047451801398f650edfc6a2edc4a2"
+      "bytes": 8177,
+      "sha256": "bc26a6996a3bccbaf718484954314af7509f3ab756dedba11686b0f42f2418e8"
     },
     {
       "path": "paper/sections/04_generative_priors.tex",
-      "bytes": 7994,
-      "sha256": "7554c307538cef9e0d76cf1776b323b5291049f27ea8a54d6efead88a3960121"
+      "bytes": 7196,
+      "sha256": "f5b660123decc1617408bed1025f0e8c3f316dd6d7523b8710784b2127ce2e68"
     },
     {
       "path": "paper/sections/05_overall_algorithm.tex",
-      "bytes": 13114,
-      "sha256": "2e59dce74c83b02c66b0c9aa524f285d68177eefd14e0efd1274cf7820275f8d"
+      "bytes": 11662,
+      "sha256": "5944579b8f464518f6cbcd04b56c4926b7cdaf54cb31b37331144c3e12290fce"
     },
     {
       "path": "paper/sections/06_simulation_results.tex",
-      "bytes": 21902,
-      "sha256": "33c629cccf9f1c09595c5e4a448ec39da85f4522ad49fb0760208f2a510690fb"
+      "bytes": 20114,
+      "sha256": "c98efebc330feee22b711e0391a10e0c5a9adcc13398044f2ef27e75f0c1b391"
     },
     {
       "path": "paper/sections/07_conclusion.tex",
-      "bytes": 1353,
-      "sha256": "aa1c4aae48d38d28379d07ed2a86e40981e8d670b42234df660c11f7e9adb881"
+      "bytes": 1346,
+      "sha256": "3ccff0b89ce972f4bc8f96888d0b72c33ca40a5a63948f5bacbc870b63afdd06"
     },
     {
       "path": "paper/sections/appendix_evaluation_protocol.tex",
-      "bytes": 7083,
-      "sha256": "2985ebdf75d8a75e82ca038a294fe2fec420847481aa36cd9b4056bcd48a6efc"
+      "bytes": 8883,
+      "sha256": "dc43db543c8e1176830d776b30d8c98d360c3b7cfd466792df01456e51b721f7"
     },
     {
       "path": "pyproject.toml",
@@ -9244,8 +9234,8 @@
     },
     {
       "path": "src/configs/plots/manuscript.json",
-      "bytes": 32314,
-      "sha256": "dbfa5719875cb7a7ae5c5549d79a43c4a04166e84ad259a3eca4ce9ed5641de2"
+      "bytes": 28417,
+      "sha256": "427149a24f90c33c0367f1d2be4d5ab17f08a25b4326c805172f303222aee05a"
     },
     {
       "path": "src/configs/plots/pilot_frames.json",
@@ -9269,8 +9259,8 @@
     },
     {
       "path": "src/configs/release/assets.json",
-      "bytes": 16337,
-      "sha256": "3b5d9ac2b34ce28ad5aaa5bda773b991a4f40897e8bc0a7572cff4585a95bf2d"
+      "bytes": 16312,
+      "sha256": "eabb00d32768e62e6badb684d74c46c6c81fb5351d2456ffce327ca0d656da79"
     },
     {
       "path": "src/configs/release/gp_mp_diagnostic.json",

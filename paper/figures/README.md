@@ -15,4 +15,4 @@
 
 图源、样本预算和采用状态统一见[逐图复现说明](../docs/REPRODUCTION.md)。绘图入口见[使用说明](../../src/plotting/README.md)，绑定见[manuscript.json](../../src/configs/plots/manuscript.json)。此目录保存论文采用图，实验的中间图和实时状态保存在对应结果目录。
 
-只保留论文编译所需的 PDF。需要 PNG 或 SVG 时，可使用 `--formats pdf png svg --output result/figure_preview` 导出预览。
+当前仅保留正文引用的 PDF。需要展示用 PNG 或 SVG 时，通过绘图入口指定格式，并输出到对应实验结果目录。

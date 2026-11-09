@@ -15,23 +15,49 @@ estimate, the corresponding activity classifier, and the input
 variance update in Section~\ref{sec:variance-update}.
 The two configurations use the same clean training channels and number of
 denoiser training epochs.
-The network versions used for the reported results are specified
-at the start of Section~\ref{sec:simulations}.
+
+GP-MP uses the white-noise-trained networks in
+Figs.~\ref{fig:cstmp-denoising}--\ref{fig:cstmp-pilots}
+and Table~\ref{tab:activity-evidence}; GP-MP-EP in
+Figs.~\ref{fig:cstmp-snr} and \ref{fig:cstmp-pilots} uses the same networks.
+The GP-MP results in Figs.~\ref{fig:cstmp-users}--\ref{fig:cstmp-cross} use earlier checkpoints
+with different training perturbations and await replacement.
+
 The activity-probability comparison in Section~\ref{sec:activity-evidence}
 changes only the probability calculation within each receiver.
-GP-MP-EP uses the same weights and conditional receiver as the
-corresponding known-phase GP-MP configuration, with
-the one-time phase estimate in Section~\ref{sec:phase-estimation}.
+GP-MP-EP uses the same network weights and message-passing updates
+as the corresponding known-phase GP-MP configuration, with phases
+estimated once as described in Section~\ref{sec:phase-estimation}.
 
 \subsection{Paired Scenes and Parameter Selection}
+\label{app:paired-scenes}
+
+We draw independent Bernoulli activity indicators with nominal probability
+$p$ and retain scenes with at least one active device. The receiver uses the
+resulting marginal probability $\rho=p/[1-(1-p)^K]$.
+
+The evaluation protocol specifies $1{,}000$ Monte Carlo trials per
+operating point. The counts below record the batches currently represented
+in the working-draft figures and table; the remaining trials will be
+completed before finalizing the corresponding results.
 
 The comparisons in Section~\ref{sec:simulations} use saved, paired physical
-scenes. The SNR figure uses scenes $0$--$999$ at each point for all
+scenes, with scene seeds reused across conditions.
+The SNR figure uses scenes $0$--$999$ at each point for all
 nine configurations. GP-MP-EP uses estimated phases, and the other eight
 use known phases.
-The pilot comparison uses $500$ paired scenes.
+The pilot comparison reports channel NMSE for all nine configurations
+at $Q\in\{8,12,16,20,24\}$, using $500$ paired scenes per point.
 The device-count, activity-probability, and cross-profile
 comparisons also use scenes $0$--$499$ at each condition.
+The channel-denoising comparison uses $2{,}000$ channel samples from
+$500$ scenes at each SNR. Both neural denoisers use the same channel
+samples and noise realizations. The sparse-recovery baselines use an
+identity observation operator and known AWGN variance, retaining their
+receiver settings and GNN weights; GAMP-SBL retains its internal
+noise-variance update.
+The convergence comparison uses $30$ paired
+scenes, and the activity-update comparison uses $100$ paired scenes per SNR.
 Some evaluation scenes were used during method development and
 selection of baseline activity thresholds; the adopted baseline activity decision rules are
 reused without refitting. The reported SNR range was narrowed after
@@ -42,8 +68,8 @@ reach the iteration limit.
 \subsection{Activity Probability Comparison}
 \label{app:activity-evidence-protocol}
 
-Table~\ref{tab:activity-evidence} uses the first completed paired scenes,
-with the sample size given in Section~\ref{sec:receiver-settings}.
+Table~\ref{tab:activity-evidence} currently uses the first $100$ completed
+paired scenes per SNR.
 All four variants use the same saved observations, known phases, and
 noise variances estimated from the observations, with single-precision
 inference and TF32 disabled.
@@ -86,27 +112,35 @@ Fig.~\ref{fig:cstmp-snr}, STMP and GP-MP reach the iteration limit
 in one and three runs, respectively, all at $-4$~dB. GP-MP-EP reaches
 the limit in two runs, one at $-4$~dB and one at $-2$~dB. The remaining
 outputs of these three configurations satisfy the stopping criterion.
-At $Q=8$, STMP and GP-MP reach the iteration limit in
-$462$ and two out of $500$ scenes, respectively;
-all runs at the evaluated $Q\geq16$ satisfy the stopping criterion.
 
 The activity-probability and cross-profile sweeps retain damping factors $0.2$
 for STMP and $0.4$ for GP-MP. All $2{,}500$ proposed-receiver
 runs in the activity-probability experiment meet the stopping criterion. STMP reaches the limit in one
 scene at each of $p=0.20$ and $0.25$.
 The activity sampling and receiver prior are as defined in
-Section~\ref{sec:simulation-settings}; the horizontal axis denotes
+Appendix~\ref{app:paired-scenes}; the horizontal axis denotes
 the nominal probability $p$.
 
 For the cross-profile comparison, all $12{,}000$ outputs of each learned
 receiver satisfy the receiver stopping criterion.
 The experiment varies the tabulated power delay profiles and
-fading distributions at fixed geometry, without retraining or changing the
-stopping rules. Path gains remain fixed within each block, so the comparison concerns
+fading distributions at fixed geometry, pilots, and receiver settings,
+without retraining or changing the stopping rules. Path gains remain fixed within each block, so the comparison concerns
 the evaluated delay and fading profiles.
 
 \subsection{Additional Implementation Settings}
 \label{app:implementation-settings}
+
+Each training or validation scene supplies four clean channel samples
+before multiplication by $\alpha_k$. Denoiser model selection uses fixed
+validation-noise realizations. The classifier is randomly initialized
+and trained with the denoiser fixed.
+
+For phase estimation, each L-BFGS-B refinement is restricted to a
+differentiable interval of the waveform. Coordinate refinement starts
+from zero powers and uses two sweeps in descending order of initial
+pilot-correlation scores, with the current parameters retained among
+the candidates.
 
 The normalization constant is $s=0.2647966453$.
 The tolerances for changes in activity probabilities and site parameters,
