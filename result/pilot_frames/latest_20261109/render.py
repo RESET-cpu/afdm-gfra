@@ -37,9 +37,9 @@ def main():
     for legend in list(fig.legends):
         legend.remove()
     # Match the main SNR figure's three-column legend and handle spacing.
-    fig.subplots_adjust(bottom=.85/2.65)
+    fig.subplots_adjust(left=.155, right=.965, bottom=.28925023748689727, top=.9754716981132076)
     fig.legend(*ax.get_legend_handles_labels(),loc='lower center',
-               bbox_to_anchor=(.5,.015),ncol=3,
+               bbox_to_anchor=(.5,.008),ncol=3,borderaxespad=0,
                **dict(engine.LEGEND, **all_cfg['snr_comparison']['legend_style']))
     engine.validate(fig, curves, cfg)
     OUT.mkdir(exist_ok=True)
