@@ -1,21 +1,13 @@
 \section{Learning Channel Denoising and Activity Detection}
 \label{sec:learning}
 
-In this section, we introduce score-based representations of the channel
-mean and variance to circumvent the high-dimensional integrals in channel estimation.
-We then apply denoising score matching for channel denoising and binary
-classification for activity detection.
-
 \subsection{Channel Mean Estimation with a Score-Based Generative Prior}
 \label{sec:score-denoising}
 \label{sec:channel-learning}
 
-Under the active hypothesis in \eqref{eq:pseudo-awgn},
-$\mathbf H\sim q_{\rm tr}$ is observed in independent proper complex
-Gaussian noise with covariance $v\I_D$, where $v>0$.
-Stacking the real and imaginary parts of $\vect(\mathbf H)$ and
-$\vect(\mathbf R)$ into $\mathbf h_{\mathbb R}$ and $\mathbf u$,
-respectively, we rewrite the AWGN observation model as
+Under the active hypothesis in \eqref{eq:pseudo-awgn} with $v>0$,
+we stack the real and imaginary parts of $\vect(\mathbf H)$ and $\vect(\mathbf R)$
+into $\mathbf h_{\mathbb R}$ and $\mathbf u$, respectively, to write
 \begin{equation}
  \mathbf u=\mathbf h_{\mathbb R}+\sqrt{v/2}\,\bm\epsilon,
  \qquad \bm\epsilon\sim\mathcal N(\mathbf0,\I_{2D}).
@@ -24,7 +16,7 @@ respectively, we rewrite the AWGN observation model as
 
 At fixed $v$, let $q_v^{\mathbb R}$ denote the density of $\mathbf u$.
 For the model in \eqref{eq:training-query}, Tweedie's formula
-\cite{efron2011,dytso2023} gives the conditional mean as
+\cite{efron2011,dytso2023} gives the posterior mean as
 \begin{equation}
  \mathbf m_{\mathbb R}(\mathbf u,v)
  =\mathbf u+\frac v2\nabla_{\mathbf u}
@@ -34,25 +26,22 @@ For the model in \eqref{eq:training-query}, Tweedie's formula
 where $\nabla_{\mathbf u}\log q_v^{\mathbb R}$ is the first-order score
 function of $q_v^{\mathbb R}$.
 
-For a specific value of $v$, our goal is to learn a first-order score
-network $\mathbf s_\theta(\cdot,v):\mathbb R^{2D}\to\mathbb R^{2D}$
-parameterized by $\theta$ with the following score matching objective:
+For a given value of $v$, we train a score network
+$\mathbf s_\theta(\cdot,v):\mathbb R^{2D}\to\mathbb R^{2D}$
+parameterized by $\theta$ using the following score matching objective:
 \begin{equation*}
  \min_\theta\;
  \E_{\mathbf u\sim q_v^{\mathbb R}}
  \left[\norm{\mathbf s_\theta(\mathbf u,v)
  -\nabla_{\mathbf u}\log q_v^{\mathbb R}(\mathbf u)}^2\right].
 \end{equation*}
-This objective cannot be directly used as the loss function since
-$\nabla_{\mathbf u}\log q_v^{\mathbb R}(\mathbf u)$ is unknown.
-The above objective has the same minimizers as the denoising score
-matching objective \cite{vincent2011}, whose target is the conditional
+This objective has the same minimizers
+as the denoising score matching objective \cite{vincent2011}, whose target is the conditional
 Gaussian score $-2(\mathbf u-\mathbf h_{\mathbb R})/v$.
 
-In practice, the score-based MMSE denoiser is required to operate across
-a range of noise levels. We therefore combine the denoising score
-matching objectives for different values of $v$ with weight $v/(4D)$
-to establish a unified objective:
+To train the score-based MMSE denoiser across a range of noise levels,
+we combine the denoising score matching objectives for different values
+of $v$ with weight $v/(4D)$:
 \begin{equation}
  \mathcal L_{\rm DSM}(\theta)=
  \E\left[\frac{v}{4D}
@@ -73,18 +62,16 @@ yields
  \norm{\mathbf f_\theta(\mathbf u,v)-\mathbf h_{\mathbb R}}^2\right].
  \label{eq:first-loss}
 \end{equation}
-The conditional mean $\mathbf m_{\mathbb R}(\mathbf u,v)$ minimizes
-this loss over all estimators of $\mathbf h_{\mathbb R}$ from
-$(\mathbf u,v)$. Reshaping the real and imaginary outputs gives the
+The posterior mean $\mathbf m_{\mathbb R}(\mathbf u,v)$ minimizes
+\eqref{eq:first-loss}. Reshaping the real and imaginary outputs gives the
 complex-valued estimate $\mathbf F_\theta(\mathbf R,v)$.
 
 \subsection{Channel Variance Estimation}
 \label{sec:conditional-error}
 
-Likewise, the conditional covariance matrix
+Likewise, the posterior covariance matrix
 $\mathbf P_{\mathbb R}=\operatorname{Cov}(\mathbf h_{\mathbb R}\mid\mathbf u,v)$
-can be obtained through the second-order Tweedie's formula
-\cite{dytso2023} as
+can be obtained through the second-order Tweedie's formula as
 \begin{equation}
  \mathbf P_{\mathbb R}
  =\frac v2\I_{2D}+\frac{v^2}{4}
@@ -96,15 +83,14 @@ Differentiating \eqref{eq:tweedie-mean} with respect to $\mathbf u$
 at fixed $v$ gives the following compact expressions for the covariance
 in \eqref{eq:tweedie-covariance} and its normalized trace:
 \begin{align}
- \mathbf P_{\mathbb R}&=\frac v2\mathbf J_m,
+ \mathbf P_{\mathbb R}&=\frac v2\frac{\partial\mathbf m_{\mathbb R}}{\partial\mathbf u},
  \label{eq:mean-derivative-covariance}\\
- \tau^\star&=\frac{v}{2D}\operatorname{div}\mathbf m_{\mathbb R}.
+ \frac{\tr(\mathbf P_{\mathbb R})}{D}&=\frac{v}{2D}\operatorname{div}\mathbf m_{\mathbb R}.
  \label{eq:mean-derivative-variance}
 \end{align}
-Here $\mathbf J_m=\partial\mathbf m_{\mathbb R}/\partial\mathbf u$
-denotes the Jacobian of $\mathbf m_{\mathbb R}$, and $\tau^\star$ is the
-average conditional variance per complex coordinate.
-This suggests that the average conditional variance can be estimated
+Here $\tr(\mathbf P_{\mathbb R})/D$ is obtained by averaging
+the posterior variances over the complex coordinates.
+Accordingly, the posterior variance can be estimated
 by computing the divergence of the trained denoiser $\mathbf f_\theta$
 \cite{manor2024}.
 
@@ -112,7 +98,7 @@ The divergence is estimated by a Monte Carlo method \cite{metzler2016},
 using $L_z$ independent random sign vectors $\mathbf z_\ell$ with
 $\E[\mathbf z_\ell\mathbf z_\ell^{\mathsf T}]=\I_{2D}$.
 Central finite differences along $\mathbf w_\ell=\sqrt{v/2}\,\mathbf z_\ell$,
-with step $\delta_{\rm FD}>0$, give an estimate of the average conditional variance:
+with step $\delta_{\rm FD}>0$, give an estimate of the posterior variance:
 \begin{equation}
  \widehat\tau_\theta(\mathbf R,v)
  =\frac{1}{2\delta_{\rm FD} D L_z}\sum_{\ell=1}^{L_z}
@@ -122,26 +108,84 @@ with step $\delta_{\rm FD}>0$, give an estimate of the average conditional varia
 where $\Delta_\ell \mathbf f_\theta
  =\mathbf f_\theta(\mathbf u+\delta_{\rm FD}\mathbf w_\ell,v)
  -\mathbf f_\theta(\mathbf u-\delta_{\rm FD}\mathbf w_\ell,v)$.
+Averaging $\widehat\tau_\theta(\mathbf R_k,v)$ over all devices gives
+$\tau^{\rm post}$ in \eqref{eq:conditional-channel-variance}.
 
 \subsection{Activity Probability Estimation Based on Density Ratios}
 \label{sec:density-ratio}
 
-The density ratio $q_{1,v}/q_{0,v}$ can be estimated from samples with
-binary labels $a\in\{0,1\}$, where
-$q_{1,v}$ and $q_{0,v}$ are the class-conditional densities at fixed $v$
-\cite{menon2016}. For the activity prior $\rho$, Bayes' rule implies
+For the activity prior $p$, Bayes' rule relates the activity probability
+in \eqref{eq:local-activity} to the likelihood ratio as
 \begin{equation}
  \log\frac{p^\star(\mathbf R,v)}{1-p^\star(\mathbf R,v)}
- =\log\frac{\rho}{1-\rho}
+ =\log\frac{p}{1-p}
   +\log\frac{q_{1,v}(\mathbf R)}{q_{0,v}(\mathbf R)}.
  \label{eq:activity-log-odds}
 \end{equation}
 
+Given a local mean estimate $\mathbf F$ and variance $\tau\in(0,v)$,
+define the Gaussian site parameters as
+$\tau^{\rm ext}=(\tau^{-1}-v^{-1})^{-1}$ and
+$\mathbf E=\tau^{\rm ext}(\mathbf F/\tau-\mathbf R/v)$,
+following \eqref{eq:site-update}--\eqref{eq:site-mean}.
+The corresponding Gaussian activity update is \cite{cai2026}
+\begin{equation}
+ \begin{aligned}
+ p_{\rm G}(\mathbf R,v)=\sigmoid\!\Bigg(&\logit p
+ +\frac{\norm{\mathbf R}_F^2}{v}
+ -\frac{\norm{\mathbf R-\mathbf E}_F^2}{\tau^{\rm ext}+v}\\
+ &-D\log\left(1+\frac{\tau^{\rm ext}}{v}\right)\Bigg),
+ \end{aligned}
+ \label{eq:gaussian-activity}
+\end{equation}
+where $\logit x=\log[x/(1-x)]$ and $\sigmoid x=(1+e^{-x})^{-1}$.
+Even with the exact posterior mean and covariance, the Gaussian update
+can overestimate the activity probability, as shown below.
+
+\begin{proposition}
+\label{prop:gaussian-activity-bias}
+Consider \eqref{eq:pseudo-awgn} with
+\begin{equation*}
+ \vect(\mathbf H)\mid S\sim\CN(\mathbf0,S\I_D),
+\end{equation*}
+where $S>0$ is nonconstant and $\E[S]<\infty$.
+For $v>0$ and $0<p<1$, define $B=v/(v+S)$.
+At $\mathbf R=\mathbf0$, evaluating \eqref{eq:gaussian-activity}
+using the exact active-conditioned posterior mean and covariance gives
+\begin{equation}
+ \begin{aligned}
+ &\logit p_{\rm G}(\mathbf0,v)-\logit p^\star(\mathbf0,v)\\
+ &\qquad=\log\frac{\bigl(\E[B^{D+1}]\bigr)^D}
+                         {\bigl(\E[B^D]\bigr)^{D+1}}>0.
+ \end{aligned}
+ \label{eq:gaussian-activity-bias}
+\end{equation}
+\end{proposition}
+
+\begin{IEEEproof}
+At $\mathbf R=\mathbf0$, the exact active-conditioned posterior mean
+is zero and its covariance is $t_0\I_D$, where
+$t_0=v\bigl(1-\E[B^{D+1}]/\E[B^D]\bigr)\in(0,v)$.
+The true likelihood ratio is
+$q_{1,v}(\mathbf0)/q_{0,v}(\mathbf0)=\E[B^D]$, whereas
+substituting $\mathbf F=\mathbf0$ and $\tau=t_0$ into
+\eqref{eq:gaussian-activity} yields the approximate likelihood ratio
+$(1-t_0/v)^D$. Taking logarithms gives
+\eqref{eq:gaussian-activity-bias}.
+The strict inequality follows from Jensen's inequality applied to the
+nonconstant random variable $B^D$ and the strictly convex function
+$x\mapsto x^{1+1/D}$.
+\end{IEEEproof}
+
+Proposition~\ref{prop:gaussian-activity-bias} motivates estimating the
+likelihood ratio directly from labeled observations through the connection
+between class-probability estimation and density-ratio estimation
+\cite{menon2016}.
+
 For training, we set $\Pr(a=1)=1/2$.
-Samples from the active class $a=1$ are generated as
-$\mathbf R=\mathbf H+\mathbf W$, with $\mathbf H\sim q_{\rm tr}$,
-whereas samples from the inactive class $a=0$ are generated as
-$\mathbf R=\mathbf W$.
+Active $(a=1)$ and inactive $(a=0)$ samples are generated as
+$\mathbf R=\mathbf H+\mathbf W$ and $\mathbf R=\mathbf W$,
+respectively, with $\mathbf H\sim q_{\rm tr}$.
 The noise satisfies $\vect(\mathbf W)\sim\CN(\mathbf0,v\I_D)$
 independently of $\mathbf H$, and both classes use the same sampling
 distribution of $v$.
@@ -153,20 +197,19 @@ binary cross-entropy loss
  \label{eq:classifier-loss}
 \end{equation}
 where $z_\phi=z_\phi(\mathbf R,v,\mathbf F_\theta(\mathbf R,v))$.
-For the balanced training distribution, the Bayes-optimal logit is
+For the balanced training distribution, this loss is minimized by
 \begin{equation}
  z^\star(\mathbf R,v)=
        \log\frac{q_{1,v}(\mathbf R)}{q_{0,v}(\mathbf R)}.
  \label{eq:ideal-logit}
 \end{equation}
 
-Given a trained classifier $z_\phi$, we use
-$\ell_k=z_\phi(\mathbf R_k,v,\mathbf F_k)$ as an estimate of the log
-likelihood ratio, where $\mathbf F_k=\mathbf F_\theta(\mathbf R_k,v)$.
+The trained classifier output $z_\phi(\mathbf R_k,v,\mathbf F_k)$
+estimates the log likelihood ratio, where
+$\mathbf F_k=\mathbf F_\theta(\mathbf R_k,v)$.
 Substituting this estimate into \eqref{eq:activity-log-odds} gives the
 activity update
 \begin{equation}
- p_k=\sigmoid(\logit\rho+\ell_k),
+ p_k=\sigmoid\!\left(\logit p+z_\phi(\mathbf R_k,v,\mathbf F_k)\right).
  \label{eq:activity-probability}
 \end{equation}
-where $\logit a=\log[a/(1-a)]$ and $\sigmoid b=(1+e^{-b})^{-1}$.

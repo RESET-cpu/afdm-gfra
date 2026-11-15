@@ -4,9 +4,9 @@
 |---|---|---|
 | 1 | 系统与多帧 AFDM | [system_multiframe.pdf](system_multiframe.pdf) |
 | 2 | 设备块因子图 | [factor_graph.pdf](factor_graph.pdf) |
-| 3 | 接收机与 GPJD | [learned_receiver.pdf](learned_receiver.pdf) |
+| 3 | GP-MP 接收机流程 | [learned_receiver.pdf](learned_receiver.pdf) |
 | 4 | 信道去噪 | [channel_denoising.pdf](channel_denoising.pdf) |
-| 5 | 配对场景收敛 | [convergence.pdf](convergence.pdf) |
+| 5 | NMSE 随迭代次数变化 | [convergence.pdf](convergence.pdf) |
 | 6 | SNR | [snr_comparison.pdf](snr_comparison.pdf) |
 | 7 | 导频帧数 | [pilot_frames.pdf](pilot_frames.pdf) |
 | 8 | 候选设备数 | [user_count.pdf](user_count.pdf) |

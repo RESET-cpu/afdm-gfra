@@ -2,45 +2,40 @@
 \label{sec:system}
 
 We consider a LEO satellite-enabled grant-free random access system
-as illustrated in Fig.~\ref{fig:system-multiframe}, where AFDM is adopted
-to mitigate the doubly dispersive effect \cite{huang2026} inherent in
-terrestrial-satellite links (TSLs). The system comprises $K$
-single-antenna terrestrial devices that communicate with a LEO satellite
-equipped with a uniform planar array (UPA) consisting of $M=M_yM_z$
-antennas. During each transmission block, active devices share the same
-time-frequency resources to transmit their pilots to the satellite.
-Additionally, we assume that these terrestrial devices operate without
-GNSS assistance and do not pre-compensate for delay and Doppler shifts
-\cite{shen2025}.
+as illustrated in Fig.~\ref{fig:system-multiframe}.
+The system comprises $K$ single-antenna terrestrial devices that communicate
+with a LEO satellite equipped with a uniform planar array (UPA)
+consisting of $M=M_yM_z$ antennas.
+AFDM is adopted to mitigate the doubly dispersive effect inherent in
+terrestrial-satellite links (TSLs).
+During each transmission block, active devices share the same
+time-frequency resources to transmit their pilots to the satellite
+without GNSS assistance or device-side delay and Doppler precompensation.
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{system_multiframe.pdf}
 \caption{LEO satellite grant-free access with multi-frame AFDM pilot
-transmission. The insets show the frame structure of active device $k$
-and the satellite UPA. Device activity is fixed over the $Q$ frames.
-Satellite, footprint, and array artwork
-is adapted from \cite{shen2025}.}
+transmission.}
 \label{fig:system-multiframe}
 \end{figure}
 
 \subsection{Terrestrial-Satellite Link Model}
 
-The TSLs experience fast variations due to the high mobility of the LEO
-satellite. Hence, this time variation and multipath propagation require a
+The high mobility of the LEO satellite causes fast variations in the
+TSLs. Together with multipath propagation, these variations require a
 doubly dispersive channel model for accurate TSL characterization
-\cite{shen2025}. For stationary terrestrial devices, the Doppler shift
+\cite{shen2025,huang2026,li2023}. For stationary terrestrial devices, the Doppler shift
 $\nu_k$ is assumed to be common to all propagation paths within the same
 TSL, since the long satellite-to-ground distance leads to only a small
-angular spread across multipath components \cite{huang2026}.
-The angles of arrival of these paths are approximately identical,
-so that they
-share the same array response vector $\mathbf a_k$ \cite{li2023}.
+angular spread across multipath components.
+These paths also share approximately identical angles of arrival and hence
+the same array response vector $\mathbf a_k$.
 We assume that the channel in the delay-Doppler domain remains
-approximately constant over the $Q$ frames of a transmission block
-\cite{shen2025}. Then, taking the start of the block as $t_{\rm c}=0$,
+approximately constant over the $Q$ frames of a transmission block.
+Then, taking the start of the block as $t_{\rm c}=0$,
 the channel impulse response from the $k$th device to the satellite
-after common-delay compensation by $\tau_{\rm c}$ can be represented as
+after receiver-side common-delay compensation by $\tau_{\rm c}$ can be represented as
 
 \begin{equation}
  \mathbf h_k(t_{\rm c},\tau)
@@ -73,8 +68,8 @@ $\mu_{z,k}$, respectively.
 \subsection{Transmission Scheme}
 \label{sec:transmission-scheme}
 
-The multi-frame AFDM transmission scheme is proposed to handle the large
-differential delay and Doppler shift. In this scheme, each active device
+To handle the large differential delay and Doppler shift, we propose a
+multi-frame AFDM transmission scheme in which each active device
 transmits pilots over $Q$ consecutive frames within one transmission
 block. While AFDM modulation and demodulation are performed separately
 for each frame, the receiver jointly processes the resulting observations.
@@ -88,11 +83,10 @@ and $\mathbf P=[\mathbf P_1,\ldots,\mathbf P_K]\in\mathbb C^{Q\times KN}$,
 where $(\cdot)^{\mathsf T}$ denotes transpose.
 We impose the condition that
 $\mathbf P\mathbf P^{\mathsf H}=KE_p\I_Q$, where
-$\|\mathbf p_{qk}\|^2=E_p$ for all $k$ and $q$
-\cite{cai2026}.
+$\|\mathbf p_{qk}\|^2=E_p$ for all $k$ and $q$.
 
 Through the inverse discrete affine Fourier transform (IDAFT)
-\cite{ding2026}, $\mathbf p_{qk}$ is mapped to the time-domain signal
+\cite{bemani2022}, $\mathbf p_{qk}$ is mapped to the time-domain signal
 given by
 
 \begin{equation}
@@ -112,16 +106,15 @@ The corresponding discrete affine Fourier transform (DAFT) matrix is
  \label{eq:daft}
 \end{equation}
 
-Assume that the chirp-periodic prefix (CPP) duration is greater than
-or equal to the maximum differential delay, i.e.,
+Assume a chirp-periodic prefix (CPP) of $N_{\rm CPP}$ samples,
+with duration greater than or equal to the maximum differential delay, i.e.,
 $N_{\rm CPP}T_s\geq\max_{k,\ell}\tau_{k\ell}$.
-Here $T_s=1/(N\Delta f)$ is the sampling interval, with $\Delta f$
-denoting the subcarrier spacing, and
-$T_{\rm frame}=(N+N_{\rm CPP})T_s$ is the duration of an AFDM frame
-with CPP.
+Here $T_s=1/(N\Delta f)$ is the sampling interval, where $\Delta f$
+denotes the subcarrier spacing.
+The duration of an AFDM frame with CPP is $T_{\rm frame}=(N+N_{\rm CPP})T_s$.
 
 Next, we use a continuous-time AFDM waveform
-\cite{bemani2023thesis} with a chirp-periodic prefix extension
+\cite{bemani2023thesis} with a CPP extension
 \cite{bemani2022} to model fractional delays. The basis function for
 chirp subcarrier $n$ at time $\xi T_s$ is given by
 \begin{equation}
@@ -133,8 +126,15 @@ where $w_\xi=\langle\xi\rangle_N$,
 $\langle x\rangle_N=x-N\lfloor x/N\rfloor$,
 $\zeta_n(w)=\lfloor2c_1w+n/N\rfloor$, and $2Nc_1\in\mathbb N_+$.
 
-After CPP removal and DAFT demodulation, the effective channel from the
-$k$th device to the satellite in frame $0$ can be expressed as
+The effective channels across frames satisfy the following relation.
+
+\begin{proposition}
+\label{prop:multiframe-channel}
+Suppose that the CPP covers all differential delays and that the path
+gains, delays, array responses, and device Doppler shifts in
+\eqref{eq:physical-channel} remain constant over the $Q$ frames.
+With the same AFDM parameters and waveform construction in each frame,
+the effective channel from device $k$ in frame $0$ is
 \begin{equation}
  \mathbf H_k=\mathbf a_k^{\mathsf T}\otimes
  \left[\sum_{\ell=1}^{L_k}g_{k\ell}
@@ -150,21 +150,45 @@ of a unit-gain path with delay $dT_s$ and Doppler shift $\nu$, given by
  \left[e^{\mathrm j2\pi\nu T_s(g+t)}\varphi_n(t-d)\right]_{t,n=0}^{N-1}.
  \label{eq:path-operator-system}
 \end{equation}
-Here $t_{\rm c}=(g+t)T_s$ for $t=0,\ldots,N-1$ after removing
-the CPP, and $g=N_{\rm CPP}$ for frame $0$.
+Here $t_{\rm c}=(g+t)T_s$ after CPP removal, with
+$g=N_{\rm CPP}$ for frame $0$.
 
-In frame $q$, the useful samples start at time
-$N_{\rm CPP}T_s+qT_{\rm frame}$. Since all paths of device $k$ share
-the Doppler shift $\nu_k$, the effective channel in frame $q$ can be
-expressed as
+For $q=0,\ldots,Q-1$, the effective channel in frame $q$ satisfies
 \begin{equation}
  \mathbf H_k^{(q)}=e^{\mathrm jq\beta_k}\mathbf H_k,
  \label{eq:twc-frame-channel}
 \end{equation}
 where $\beta_k\equiv2\pi\nu_kT_{\rm frame}\pmod{2\pi}$
 and $\beta_k\in[-\pi,\pi)$.
-Under the quasi-static assumption, $\mathbf H_k$ remains approximately
-constant over the $Q$ frames. For example, consider a circular orbit and
+Hence, all frames can be represented using the same $\mathbf H_k$ and
+the effective pilot matrix
+\begin{equation}
+ \mathbf A_k=\diag\{e^{\mathrm jq\beta_k}\}_{q=0}^{Q-1}\mathbf P_k,
+ \label{eq:effective-pilot}
+\end{equation}
+where $\mathbf A=[\mathbf A_1,\ldots,\mathbf A_K]$.
+These relations allow fractional delays and Doppler shifts.
+\end{proposition}
+
+\begin{IEEEproof}
+The CPP ensures that each useful sample depends only on the current
+frame. For a unit-gain path, sampling the delayed waveform and applying
+the DAFT gives \eqref{eq:path-operator-system}; summing the paths with
+their gains and array responses gives \eqref{eq:channel}.
+In frame $q$, the useful samples start at
+$N_{\rm CPP}T_s+qT_{\rm frame}$, so that
+\begin{equation*}
+ \mathbf G\!\left(d,\nu_k;N_{\rm CPP}+\frac{qT_{\rm frame}}{T_s}\right)
+ =e^{\mathrm jq\beta_k}\mathbf G(d,\nu_k;N_{\rm CPP}).
+\end{equation*}
+Since all paths of device $k$ share $\nu_k$, this phase factor can be
+taken outside the path sum, yielding \eqref{eq:twc-frame-channel}.
+Absorbing it into each pilot row gives \eqref{eq:effective-pilot}.
+\end{IEEEproof}
+
+The blockwise constant parameters in Proposition~\ref{prop:multiframe-channel}
+approximate the slowly varying delay-Doppler channel.
+For example, consider a circular orbit and
 a ground device in the orbital plane with an initial elevation angle of
 $50^\circ$. The simulation parameters with $Q=16$ give a block duration
 of $11.73$~ms and absolute
@@ -173,48 +197,40 @@ $0.174~\mu$s. The delay variation is below one-tenth of $T_s$, while
 retaining the initial Doppler shift gives a phase deviation of
 approximately $0.123$~rad at the block end.
 
-Absorbing the phase rotation
-$e^{\mathrm jq\beta_k}$ into the pilots gives the effective pilot matrix
-\begin{equation}
- \mathbf A_k=\diag\{e^{\mathrm jq\beta_k}\}_{q=0}^{Q-1}\mathbf P_k,
- \label{eq:effective-pilot}
-\end{equation}
-where $\mathbf A=[\mathbf A_1,\ldots,\mathbf A_K]$.
-
-It is observed in \eqref{eq:channel} that the effective channel at each
-receive antenna is represented as an $N\times N$ matrix, corresponding
-to one block of $\mathbf H_k$. The multi-frame OTFS scheme in
-\cite{shen2025} uses an $L\times N\times N$ tensor for $N$
-subcarriers and $L$ OFDM symbols per frame. The dense AFDM channel representation
-contains $MN^2$ channel entries per device, compared with
-$MLN^2$ in that OTFS representation. With the same subcarrier spacing
+The dense AFDM representation in \eqref{eq:channel} contains $MN^2$
+channel entries per device, with an $N\times N$ effective channel matrix
+at each receive antenna. The multi-frame OTFS scheme in \cite{shen2025}
+uses an $L\times N\times N$ tensor per receive antenna, containing
+$MLN^2$ entries per device for $N$ subcarriers and $L$ OFDM symbols
+per frame. With the same subcarrier spacing
 and prefix length, $L$ AFDM frames span the duration of one OTFS
 frame and contain the same number of useful samples.
 
 \subsection{Problem Formulation}
 
 Each device determines whether to access the channel in an independent
-and identically distributed (i.i.d.) manner. We use an indicator
-variable $\alpha_k$ to model the device activity as
+and identically distributed (i.i.d.) manner. We represent device activity
+by $\alpha_k$, defined as
 \[
  \alpha_k=\begin{cases}
  1,&\text{if the $k$th device is active},\\
  0,&\text{otherwise}.
  \end{cases}
 \]
-Let $\rho$ represent the probability of a device being active, i.e.,
-$\Pr(\alpha_k=1)=\rho$, where $\rho\ll1$. As a result, only a small
+Let $p$ represent the probability of a device being active, i.e.,
+$\Pr(\alpha_k=1)=p$, where $p\ll1$. As a result, only a small
 subset of the devices is active in any given transmission block. Each
 device's activity state remains fixed throughout the block.
 
-Let $\mathbf X_k=\alpha_k\mathbf H_k$. Denote by
+Let $\mathbf X_k=\alpha_k\mathbf H_k$, and denote by
 $\mathbf Y_q\in\mathbb C^{M\times N}$ the received signal during the
 $q$th AFDM frame after CPP removal and DAFT demodulation. Define
 $\mathbf Y=[\vect(\mathbf Y_0^{\mathsf T}),\ldots,
 \vect(\mathbf Y_{Q-1}^{\mathsf T})]^{\mathsf T}$ and
 $\mathbf X=[\mathbf X_1^{\mathsf T},\ldots,
-\mathbf X_K^{\mathsf T}]^{\mathsf T}$. We express the received signal
-$\mathbf Y$ over the $Q$ AFDM frames in a more compact form as
+\mathbf X_K^{\mathsf T}]^{\mathsf T}$. By
+Proposition~\ref{prop:multiframe-channel}, the received signal $\mathbf Y$
+over the $Q$ AFDM frames can be written as
 \begin{equation}
  \mathbf Y=\sum_{k=1}^K\mathbf A_k\mathbf X_k+\mathbf W
  =\mathbf A\mathbf X+\mathbf W,
@@ -226,29 +242,25 @@ $\mathbf X\in\mathbb C^{KN\times MN}$.
 The elements of $\mathbf W$ are drawn i.i.d. from $\CN(0,\sigma^2)$.
 Due to the sporadic access of the devices, matrix $\mathbf X$ exhibits
 a block-sparsity structure. Specifically, if the $k$th device is
-inactive, we have $\mathbf X_k=\alpha_k\mathbf H_k=\mathbf0$
-\cite{cai2026}.
+inactive, we have $\mathbf X_k=\alpha_k\mathbf H_k=\mathbf0$.
 
 Since the $Q$ frames share the same $\mathbf X$, additional pilot frames
 provide more observations without increasing the number of unknown
 channel coefficients. The linear system in \eqref{eq:mmv} is
 underdetermined when $Q<KN$.
 
-In this paper, we aim to simultaneously detect the active devices and
-estimate the corresponding channels based on the observation $\mathbf Y$
-under a Bayesian inference framework. Fractional delays and Doppler
-shifts cause power leakage that can weaken the sparsity of $\mathbf H_k$
-\cite{huang2026}.
+We aim to jointly detect the active devices and estimate their channels
+from the observation $\mathbf Y$. Fractional delays and Doppler
+shifts cause power leakage that can weaken the sparsity of $\mathbf H_k$.
 We therefore use the training-channel distribution
 $q_{\rm tr}(\mathbf H_k)$ as a prior on the full channel matrix,
 without imposing sparsity or factorizing the prior element-wise.
 We assume that the pairs $(\mathbf H_k,\alpha_k)$ are independent
 across devices, and that $\mathbf H_k$ is independent of $\alpha_k$.
 
-According to Bayes' theorem and these independence relationships, the
-joint posterior distribution conditioned on the estimated effective
-pilot matrix $\widehat{\mathbf A}$ and noise variance $\widehat\sigma^2$
-can be expressed as \cite{cai2026}
+Under these independence assumptions, the posterior distribution
+conditioned on the estimated effective pilot matrix $\widehat{\mathbf A}$
+and noise variance $\widehat\sigma^2$ can be factorized as
 
 \begin{equation}
  \begin{aligned}
@@ -265,7 +277,7 @@ Here
 $p(\mathbf y_j\mid\mathbf x_j)=\CN(\mathbf y_j;
 \widehat{\mathbf A}\mathbf x_j,\widehat\sigma^2\I_Q)$,
 $p(\mathbf X_k\mid \mathbf H_k,\alpha_k)$ enforces $\mathbf X_k=\alpha_k\mathbf H_k$, and
-$p(\alpha_k)=\rho^{\alpha_k}(1-\rho)^{1-\alpha_k}$.
-The inference targets are the MMSE estimate
+$p(\alpha_k)=p^{\alpha_k}(1-p)^{1-\alpha_k}$.
+The inference targets are the minimum mean-squared error (MMSE) estimate
 $\E_q[\mathbf X_k\mid\mathbf Y]$ and the posterior activity probability
 $q(\alpha_k=1\mid\mathbf Y)$.

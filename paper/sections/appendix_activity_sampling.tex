@@ -1,0 +1,9 @@
+\section{Activity Sampling in the Simulations}
+\label{app:activity-sampling}
+
+Independent Bernoulli activity vectors with parameter $p$ are
+conditioned on at least one active device. The resulting marginal
+probability is $p_{\rm eff}=p/[1-(1-p)^K]$.
+In the simulations, the receiver uses $p_{\rm eff}$ in place of $p$
+in its activity-prior-dependent updates, retaining a factorized
+Bernoulli approximation to the conditional joint distribution.

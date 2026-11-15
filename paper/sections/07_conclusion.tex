@@ -3,20 +3,23 @@
 
 % Included in both manuscript versions on 2026-11-03 at the author's request.
 In this paper, we investigated GNSS-independent GFRA for LEO satellite
-IoT systems. We proposed a multi-frame AFDM transmission scheme that
+IoT systems. The proposed multi-frame AFDM scheme
 accommodates large differential delays and Doppler shifts without
-device-side precompensation and derived its input-output relationship.
-Additional pilot frames provide more observations without
-increasing the number of channel coefficients to be estimated. We learned
-a score-based generative prior for AFDM effective channels without imposing
-sparse or grid-aligned channel assumptions, and developed a denoiser that
-provides channel estimates and average variance without requiring a
-separately trained variance model. We incorporated this denoiser into a
-message-passing JADCE receiver comprising MFLE and GPJD. The learned
-density-ratio estimator in GPJD enables activity detection under the
-learned prior without explicit marginal-likelihood evaluation. Simulation
-results demonstrated improved activity detection and channel estimation
-over the adapted STMP baseline, with fewer pilot frames required for
-comparable channel-estimation performance. The receiver also achieved
-lower NMSE than the sparse-recovery baselines across the tested NTN-TDL
-profiles without retraining.
+device-side precompensation, while its compact effective-channel
+representation allows observations from additional pilot frames to be
+combined without increasing the number of unknown channel coefficients.
+Building on this representation, we developed the GP-MP receiver to
+jointly infer device activity and effective channels. Channel estimation
+exploits a score-based generative prior learned from effective-channel
+samples without imposing sparse or grid-aligned assumptions. The
+analytical relationship between the posterior mean and variance further
+allows the same denoiser to provide the channel estimates and uncertainty
+information required by the receiver, without a separately trained
+variance model. These estimates are combined with activity probabilities
+obtained through density-ratio estimation, which evaluates the activity likelihood
+ratio without a Gaussian approximation.
+Simulation results demonstrated that this transmission and receiver
+design improves both activity detection and channel estimation over the
+adapted STMP baseline. These gains also reduce the required number
+of pilot frames: with fixed energy per frame, GP-MP reached the
+$-12$~dB NMSE target with 16 pilot frames, compared with 20 for STMP.

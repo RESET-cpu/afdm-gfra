@@ -2,118 +2,127 @@
 \label{sec:introduction}
 
 Sixth-generation (6G) wireless networks are expected to provide ubiquitous
-connectivity for a massive number of Internet-of-Things (IoT) devices
-\cite{cai2026,xu2026}. To serve devices in remote areas with limited terrestrial
-coverage, low Earth orbit (LEO) satellites complement cellular networks for
-applications such as smart agriculture and climate monitoring \cite{shen2025,kodheli2021}. These
-power-limited devices transmit short packets sporadically, with only a small
-fraction active at a given time \cite{shen2025,cai2026,mei2022}. In grant-based random
-access, handshaking before transmission incurs significant
-signaling overhead, while the long propagation delay of terrestrial-satellite links
-further increases access latency \cite{cai2026,xu2026}. Accordingly, grant-free
-random access (GFRA) allows active devices to transmit pilots and data directly
-without first obtaining a grant \cite{cai2026,xu2026}.
+connectivity for massive Internet of Things (IoT) deployments
+\cite{cai2026,xu2026}. To serve devices in remote areas with limited
+terrestrial coverage, low Earth orbit (LEO) satellites complement cellular
+networks for applications such as smart agriculture and climate monitoring
+\cite{shen2025,kodheli2021}. These power-limited devices transmit short
+packets sporadically, with only a small fraction active at any given time
+\cite{cai2026,shen2025,mei2022}. In grant-based random access,
+pre-transmission handshaking incurs substantial signaling overhead, while the
+long propagation delay of terrestrial--satellite links further increases
+access latency \cite{cai2026,xu2026}. To reduce latency and signaling
+overhead, grant-free random access (GFRA) allows active devices to transmit
+pilots and data directly without waiting for a scheduling grant
+\cite{cai2026,xu2026}.
 
-Supporting GFRA over LEO links requires handling large delays and Doppler shifts
-caused by long propagation distances and high satellite mobility. The 3rd Generation
-Partnership Project (3GPP) Release 17 framework addresses these effects through
-device-side precompensation assisted by the global navigation satellite system
-(GNSS) \cite{3gpp38300}. With such precompensation, many existing satellite GFRA
-schemes assume perfect compensation or small residual delays and Doppler shifts at
-the receiver \cite{shen2025}. Frequent estimation and compensation increase
-energy consumption and reduce battery lifetime, making these schemes less suitable
-for power-limited remote IoT devices \cite{shen2025}. This motivates reducing
-dependence on GNSS, consistent with the GNSS-independent operation considered in the
-Release 19 study on satellite access \cite{3gpp22865}. With reduced reliance on
-device-side precompensation, the satellite receiver must accommodate
-large differential delays and Doppler shifts, which can cause severe inter-symbol
-and inter-carrier interference in conventional orthogonal frequency division
-multiplexing (OFDM) systems \cite{shen2025,huang2026}.
+Reliable communication over LEO links requires handling large delays and
+Doppler shifts caused by long propagation distances and high satellite
+mobility. The 3rd Generation Partnership Project (3GPP) Release 17 framework
+addresses these effects through device-side precompensation assisted by the
+global navigation satellite system (GNSS) \cite{3gpp38300}. With GNSS
+assistance, active devices can align their uplink transmissions so that
+signals arriving at the satellite receiver exhibit only small residual delays
+and Doppler shifts \cite{shen2025,li2023}. However, low-cost IoT devices may
+not be equipped with GNSS receivers or may fail to obtain valid positioning
+due to signal blockage or interference. To support satellite access under
+these conditions, the 3GPP Release 19 study specifically considers
+GNSS-independent operation \cite{3gpp22865}. Without device-side
+precompensation, the satellite receiver must accommodate large differential
+delays and Doppler shifts, which cause severe inter-symbol and inter-carrier
+interference in conventional orthogonal frequency division multiplexing (OFDM)
+systems \cite{shen2025,huang2026}.
 
-Orthogonal time frequency space (OTFS) modulation exploits the quasi-static
-properties of channels in the delay--Doppler domain to mitigate these effects
-\cite{shen2025,hadani2017}. In \cite{shen2025}, multi-frame OTFS transmission
-handles large differential delays and Doppler shifts at the satellite receiver,
-allowing devices to operate without GNSS assistance or precompensation of these
-offsets. Affine frequency division multiplexing (AFDM)
-offers a low-complexity modulation structure based on one-dimensional chirp
-signals \cite{ding2026,huang2026}. Its modulator can be implemented using a
-single inverse fast Fourier transform and two stages of pointwise chirp
-multiplication \cite{bemani2022}.
+To mitigate such doubly dispersive effects, delay--Doppler and chirp-based
+modulation schemes have been investigated. Orthogonal time frequency space
+(OTFS) modulation exploits the quasi-static channel representation in the
+delay--Doppler domain \cite{shen2025,hadani2017}. Alternatively, affine
+frequency division multiplexing (AFDM) provides a low-complexity modulation
+structure based on one-dimensional chirp signals \cite{huang2026,ding2026}.
+Its modulator can be implemented using a single inverse fast Fourier transform
+(IFFT) and two stages of pointwise chirp multiplication \cite{bemani2022}.
+Moreover, its chirp parameters can be configured according to the delay and
+Doppler spreads, making AFDM a promising candidate for satellite access
+\cite{bemani2022}.
 
-Since device activity and channels are unknown at the receiver, AFDM-GFRA
+Since device activity states and channels are unknown at the receiver, GFRA
 requires joint activity detection and channel estimation (JADCE)
-\cite{ding2026}. Existing
-methods exploit sporadic device activity to formulate JADCE as a compressed sensing
-(CS) problem and incorporate structured priors to model channel sparsity
-\cite{shen2025,ding2026,ke2020}. The scheme in \cite{ding2026} further uses a graph neural
-network to adaptively learn sparsity patterns, while retaining a predefined
-delay--Doppler grid for the sparse channel representation. In practical
-propagation environments, significant power leakage caused by fractional Doppler
-shifts and fractional time delays can weaken the sparsity of the effective channel
-matrix \cite{huang2026}. This motivates learning effective-channel
-priors from data to capture channel structures beyond the assumed sparse
-representation \cite{cai2026,huang2026}.
+\cite{cai2026,shen2025,zhang2020_brmp}. Existing methods exploit sporadic
+device activity to formulate JADCE as a compressed sensing (CS) problem
+\cite{liu2018,zhang2019_dnn_bsbl}, incorporating structured priors to capture
+channel sparsity \cite{shen2025,ding2026,shen2022_mimootfs,ke2020} and spatial
+correlation \cite{djelouat2024_hierarchical}. For AFDM systems, a graph neural
+network (GNN) was developed in \cite{ding2026} to adaptively learn sparsity
+patterns, though the channel remains represented on a predefined
+delay--Doppler grid.
 
-Score-based generative models learn channel priors from samples by estimating the
-score function of the channel distribution \cite{song2019,arvinte2023}. In
-\cite{huang2026}, score-based learning is performed directly on the AFDM effective
-channel to address fractional delay--Doppler off-grid leakage in channel estimation.
-For massive random access, \cite{ying2026} proposes a two-stage algorithm that first
-identifies active devices through a Transformer-based detector and then uses
-generative diffusion models for joint channel estimation and data detection.
-However, both approaches rely on iterative posterior sampling, which requires
-repeated score function evaluations and incurs substantial computational cost
+In practical propagation environments, however, power leakage caused by
+fractional delays and Doppler shifts can weaken the sparsity of the AFDM
+effective channel matrix \cite{huang2026}. While off-grid sparse Bayesian
+learning (SBL) and grid-refinement methods account for fractional delay or
+Doppler parameters in OTFS \cite{WeiEtAl2022OffgridSBL} and AFDM
+\cite{li2025_afdm_sbl,luo2026_afdm_fdfd}, they still rely on a sparse path
+representation. This motivates data-driven channel estimation using learned
+denoisers \cite{metzler2016,he2018_ldamp} or generative priors
+\cite{balevi2021_generative} to capture channel structures beyond the assumed
+sparse model \cite{cai2026,huang2026}.
+
+Score-based generative models learn channel priors directly from samples for
+channel estimation
+\cite{song2019,arvinte2023,zhou2025_diffusion,chen2025_variational,fesl2024_diffusion}.
+For AFDM, score-based learning has been applied to the effective channel to
+address off-grid leakage \cite{huang2026}. For massive random access, a
+two-stage receiver was proposed in \cite{ying2026} that first identifies
+active devices via a Transformer-based detector and then performs joint
+channel estimation and data detection using diffusion models. However, both
+approaches rely on iterative posterior sampling, which requires repeated
+score-function evaluations and incurs high computational complexity
 \cite{huang2026,ying2026}.
 
-The score-based turbo message passing (STMP) algorithm in \cite{cai2026}
-incorporates generative channel priors for JADCE without iterative posterior
-sampling. Through Tweedie's formulas, first- and second-order score networks provide
-channel estimates and variances for single-step minimum mean-squared error (MMSE)
-denoising under equivalent additive white Gaussian noise (AWGN) observations.
-For activity detection, STMP computes activity probabilities using Gaussian extrinsic messages
-obtained by projecting the channel posterior onto a Gaussian distribution
-\cite{cai2026}. For a non-Gaussian channel prior, however, matching the mean and
-variance does not generally preserve the marginal likelihood. The relation between
-density ratios and class probabilities \cite{menon2016} offers an alternative:
-estimating the activity likelihood ratio directly from samples, without relying
-on this Gaussian approximation or explicitly evaluating the marginal likelihood.
+To avoid iterative posterior sampling, the score-based turbo message passing
+(STMP) algorithm incorporates generative channel priors into JADCE for OFDM
+systems \cite{cai2026}. However, when applied to finite-dimensional AFDM
+systems, its Gaussian approximation of the channel posterior may not accurately
+capture the activity likelihoods associated with structured effective channels.
+Its use of separate score networks for channel mean and variance estimation
+also increases model storage requirements for onboard deployment.
 
-Against this background, we investigate GNSS-independent AFDM-GFRA for
-LEO satellite IoT systems. Our main contributions are summarized as follows:
+Against this background, we investigate GNSS-independent AFDM GFRA for LEO
+satellite IoT systems. Our main contributions are summarized as follows:
 
 \begin{enumerate}[label=\arabic*)]
-\item We propose a multi-frame AFDM transmission scheme that accommodates large
-differential delays and Doppler shifts at the satellite receiver without
-requiring device-side precompensation. We derive the input-output relationship
-and show that the effective channels across frames differ only by
-Doppler-induced phase rotations.
-Additional pilot frames therefore provide more observations without
-increasing the number of channel coefficients to be estimated. Compared with
-the multi-frame OTFS representation of Shen et al.~\cite{shen2025}, the
-effective channel matrix in our model contains fewer coefficients.
 
-\item We learn a score-based generative prior for AFDM effective channels without
-imposing sparse or grid-aligned channel assumptions. Building on Tweedie's
-formula and the relation between denoiser derivatives and estimation
-uncertainty, we develop a channel denoiser that provides both channel estimates
-and average variance without requiring a separately trained variance model.
+\item We propose a multi-frame AFDM transmission scheme to handle large differential
+delays and Doppler shifts at the satellite receiver without device-side
+precompensation. By deriving the input--output relationship, we show that the
+effective channels across frames differ only by Doppler-induced phase
+rotations. Consequently, transmitting additional pilot frames provides more
+observations without increasing the number of unknown channel coefficients.
 
-\item We develop a message-passing JADCE receiver whose generative-prior-aided
-joint denoising (GPJD) module combines the proposed channel denoiser with a
-learned density-ratio estimator. The estimator enables activity detection
-under the learned channel prior without explicit marginal-likelihood
-evaluation. GPJD iteratively exchanges extrinsic messages with the
-multi-frame linear estimation (MFLE) module, which jointly processes the
-pilot frames to suppress inter-user interference. Simulations show that
-the proposed receiver outperforms the STMP baseline adapted to AFDM in activity
-detection and channel estimation, and requires fewer pilot frames to achieve
-the same channel-estimation accuracy.
+\item We develop a message-passing receiver for JADCE that iterates between
+multi-frame linear estimation (MFLE) for inter-user interference suppression
+and generative-prior-aided joint denoising (GPJD). To handle fractional delays
+and Doppler shifts without sparse or grid-aligned assumptions, GPJD employs a
+score-based generative prior learned from AFDM effective-channel samples.
+Exploiting the analytical relationship between the posterior mean and
+variance, the same denoiser provides both channel and variance estimates
+without a separately trained variance model. Moreover, activity probabilities
+are updated using a density-ratio estimator trained via binary classification,
+avoiding a Gaussian approximation when evaluating the activity likelihood ratio.
+
+\item Numerical results show that the proposed receiver outperforms the adapted STMP
+baseline in both activity detection and channel estimation, requiring fewer
+pilot frames to achieve the same estimation accuracy. The results also confirm
+the effectiveness of the density-ratio activity update, the robustness of
+pilot-based phase estimation, and strong generalization across non-terrestrial
+network tapped delay line (NTN-TDL) channel profiles without retraining.
+
 \end{enumerate}
 
 The remainder of this paper is organized as follows. Section~\ref{sec:system}
 presents the system model and the multi-frame AFDM input--output relationship.
 Sections~\ref{sec:algorithm}--\ref{sec:overall} describe the message-passing
-framework, the learned channel denoiser and activity classifier, and the overall algorithm with its computational
-complexity analysis, respectively. Section~\ref{sec:simulations} presents the
-simulation results. Section~\ref{sec:conclusion} concludes this paper.
+framework, the learned channel denoiser and activity classifier, and the
+overall algorithm with its computational complexity analysis, respectively.
+Section~\ref{sec:simulations} presents the simulation results, and
+Section~\ref{sec:conclusion} concludes this paper.

@@ -32,9 +32,8 @@ estimated once as described in Section~\ref{sec:phase-estimation}.
 \subsection{Paired Scenes and Parameter Selection}
 \label{app:paired-scenes}
 
-We draw independent Bernoulli activity indicators with nominal probability
-$p$ and retain scenes with at least one active device. The receiver uses the
-resulting marginal probability $\rho=p/[1-(1-p)^K]$.
+The activity sampling and receiver prior follow
+Appendix~\ref{app:activity-sampling}.
 
 The evaluation protocol specifies $1{,}000$ Monte Carlo trials per
 operating point. The counts below record the batches currently represented
@@ -101,9 +100,9 @@ These damping factors were selected retrospectively.
 
 Figure~\ref{fig:cstmp-convergence} uses the first $30$ paired scenes
 at $0$~dB. For this experiment, GP-MP uses the AWGN-trained denoiser
-and its matched activity classifier. GP-MP, STMP, and the baseline Off-grid SBL configuration
+and its matched activity classifier. GP-MP and STMP
 each execute $300$ iterations with early stopping disabled; the figure
-shows the first $150$ iterations. At each iteration, NMSE is computed
+shows the first $75$ iterations. At each iteration, NMSE is computed
 from the total error energy divided by the total active-channel energy
 over these scenes, followed by conversion to dB.
 
@@ -136,13 +135,49 @@ before multiplication by $\alpha_k$. Denoiser model selection uses fixed
 validation-noise realizations. The classifier is randomly initialized
 and trained with the denoiser fixed.
 
-For phase estimation, each L-BFGS-B refinement is restricted to a
+The clean channel samples have size $16\times16\times16$.
+The denoiser input contains $2M$ real and imaginary maps over
+$N\times N$ DAFT coordinates.
+Noise conditioning uses an embedding of $\log(v)/5$, formed by two
+$64$-unit fully connected layers with sigmoid-weighted linear unit
+(SiLU) activations and linearly projected to the normalization layers.
+
+The classifier estimates the log likelihood ratio from $4M$ real and
+imaginary maps of $\mathbf R$ and $\mathbf F_\theta(\mathbf R,v)$,
+scaled by $\sqrt{2/(1+v)}$, together with five scalars:
+$\log(v)/5$, logarithmic transforms of input/output/residual energies
+normalized by $Dv$, and a sign-preserving logarithmic transform of the
+real inner product normalized by $Dv$.
+Its three convolutional stages each contain two $3\times3$ convolutions
+with SiLU activations and padding $1$. Downsampling uses stride $2$ in
+the first convolution of stages~2--3; the remaining convolutions use
+stride $1$.
+Noise conditioning is provided by a $64$-unit fully connected SiLU
+embedding of $\log(v)/5$, whose linear projections are added to the
+stage outputs. The flattened features and five scalars are combined by
+the fully connected layers in Table~\ref{tab:network-architectures},
+with SiLU between them, to produce one logit per device.
+
+For the SNR comparison, the $7$, $13$, and $25$ Doppler grid points
+are paired with $12$, $24$, and $48$ retained candidates per device
+and $48$, $96$, and $192$ offset candidates per iteration, respectively;
+all three configurations use $112$ delay grid points.
+
+For phase estimation, pilot correlations over $128$ phase bins identify
+three coarse candidates. The Doppler values corresponding to each candidate
+phase within the channel model's Doppler bound form the initial search set,
+from which the best
+$12$ are refined by at most $25$ L-BFGS-B iterations per candidate.
+
+Each L-BFGS-B refinement is restricted to a
 differentiable interval of the waveform. Coordinate refinement starts
 from zero powers and uses two sweeps in descending order of initial
 pilot-correlation scores, with the current parameters retained among
 the candidates.
 
-The normalization constant is $s=0.2647966453$.
+The channel and observation quantities
+$(\mathbf H_k,\mathbf X_k,\mathbf Y,\mathbf W)$ are divided by
+$s=0.2647966453$, and the noise variance is divided by $s^2$.
 The tolerances for changes in activity probabilities and site parameters,
 and for deviations from the moving average of activity probabilities
 are $10^{-3}$, $0.1$, and $10^{-3}$, respectively, with
@@ -150,13 +185,13 @@ $\zeta_{\rm hist}=0.2$, $L_s=5$, and $L_d=10$.
 
 The stopping rule monitors relative changes in $\widehat{\mathbf X}$ and $v$,
 the maximum change in activity probability $\max_k|p_k^{(i)}-p_k^{(i-1)}|$, and
-$d_{\rm var}^{(i)}=|v_{\rm tar}^{(i)}-v^{(i)}|/
+$|v_{\rm tar}^{(i)}-v^{(i)}|/
 \max\{v_{\rm tar}^{(i)},v^{(i)}\}$.
 It also requires accepted site updates with stable precision
 $(\tau_k^{\rm ext})^{-1}$ and natural parameter $\mathbf E_k/\tau_k^{\rm ext}$, together with a small difference from the previous exponential moving average, $\max_k|p_k^{(i)}-w_k^{(i-1)}|$.
 After this comparison, update
 $w_k^{(i)}=(1-\zeta_{\rm hist})w_k^{(i-1)}+\zeta_{\rm hist} p_k^{(i)}$, starting from
-$w_k^{(0)}=\rho$.
+$w_k^{(0)}=p_{\rm eff}$.
 After $I_{\min}$ iterations, all these conditions must hold for $L_s$
 consecutive iterations and hard activity decisions must remain unchanged
 for $L_d$ iterations; otherwise, return the last iterate at $I_{\max}$.

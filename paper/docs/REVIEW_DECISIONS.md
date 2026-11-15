@@ -1,5 +1,97 @@
 # GP-MP 预审问题、讨论决定与剩余事项
 
+**2026-11-12 STMP相关工作精简已采用：** 作者确认将STMP段落改为三句：概括其无需迭代后验采样的JADCE方法，说明分别用于信道均值与方差估计的score networks增加星载部署的模型存储需求，再引出有限维AFDM结构化有效信道下高斯后验近似对活动似然的局限。采用已确认的“increases model storage requirements for onboard deployment”。摘要、背景其余段落和三条贡献保持。删去原段落的展开后，将MMSE和AWGN的全称移到正文新的首次出现位置。
+
+来源及含义见本次[术语依据](TERMINOLOGY.md)；实际采用文本和差异见[段落](../../archive/paper_cleanup_20261114/checks/stmp_intro_concise_20261112_155324/ADOPTED_PARAGRAPH.tex)、[差异](../../archive/paper_cleanup_20261114/checks/stmp_intro_concise_20261112_155324/CHANGES.diff)。编译仍为13页，首页渲染保持，第2–13页重排或引用编号变化后目视通过；104个标签编号、41条文献集合保持，无越栏、缺字或未定义引用。绘图和发布登记同步main.aux的哈希及大小。见[源码核验](../../archive/paper_cleanup_20261114/checks/stmp_intro_concise_20261112_155324/source_validation.json)、[PDF核验](../../archive/paper_cleanup_20261114/checks/stmp_intro_concise_20261112_155324/pdf_validation.json)。
+
+**2026-11-12 标题调整已采用：** 作者确认题目使用“Generative-Model-Aided Grant-Free Random Access for GNSS-Independent AFDM Satellite IoT Systems”。已修改main.tex标题并调整其三行换行，使Satellite IoT Systems保持在同一行。主稿编译仍为13页，首页目视通过，第2–13页PDF内容流及main.aux保持；摘要、引言和其余正文未改。见[修改记录](../../archive/paper_cleanup_20261114/checks/title_afdm_20261112_112056/CHANGE.json)与[核验](../../archive/paper_cleanup_20261114/checks/title_afdm_20261112_112056/VALIDATION.json)。
+
+**2026-11-12 老师批注对应的新引言已写入：** 作者要求将最新聊天稿写入论文。本轮采用作者最后提供的六段背景与三项贡献，并落实随后讨论的两处收尾：AFDM背景末句仅说明啁啾参数可按时延与多普勒扩展配置及其卫星接入潜力；第一条贡献直接说明跨帧有效信道仅相差多普勒相位旋转。紧凑表示与Shen多帧OTFS的特定比较保留在第一条贡献。研究动机改为未配备GNSS或无法获得有效定位的接入需求；补明预补偿效果、段落中心句、OTFS到AFDM的连接及一般GFRA的JADCE需求；文献编号不再作句子主语。接收机贡献采用已讨论的均值—方差解析关系及密度比活动更新，第三条保留限定后的整机、导频、相位与跨NTN-TDL结果。
+
+作者原稿、两处收尾调整及实际写入文本分别见[原文](../../archive/paper_cleanup_20261114/checks/introduction_adopted_20261112_110650/AUTHOR_TEXT.tex)、[调整清单](../../archive/paper_cleanup_20261114/checks/introduction_adopted_20261112_110650/ADAPTATIONS.json)、[新引言](../../archive/paper_cleanup_20261114/checks/introduction_adopted_20261112_110650/ADOPTED_INTRODUCTION.tex)。逐字反向核验确认正文除这两处及LaTeX引用/格式转换外与作者原文相符；原引言末尾的全文组织段保留。摘要、其他章节、图件及模型绑定保持。旧数字引用[26]/[28]映射为dytso2023/manor2024；提前引用后文献编号自动顺延，41条文献集合保持，未修改文献内容。图中没有需同步的硬编码参考文献号；104个标签及公式编号保持。编译仍为13页，核验见[源码](../../archive/paper_cleanup_20261114/checks/introduction_adopted_20261112_110650/source_validation.json)与[PDF](../../archive/paper_cleanup_20261114/checks/introduction_adopted_20261112_110650/pdf_validation.json)。main.aux变化已同步绘图和发布登记中的哈希及大小。
+
+**2026-11-12 摘要均值与方差句补充已采用：** 作者确认以“the analytical relationship between posterior mean and variance”简述同一去噪器提供两类估计的依据。本轮仅替换摘要对应一句，保留“without requiring a separately trained variance model”，摘要现为238词。该句概括本文IV-B中的后验均值函数与后验协方差关系，不将已有恒等式作为本文原创。
+
+核验：编译13页，重排的第1–3页目视通过，第4–13页渲染逐字节一致；104个标签、41条文献编号及main.aux保持。引言、其余正文、图件与模型绑定未变。见[修改差异](../../archive/paper_cleanup_20261114/checks/abstract_mean_variance_20261112_102202/CHANGES.diff)、[源码核验](../../archive/paper_cleanup_20261114/checks/abstract_mean_variance_20261112_102202/source_validation.json)及[PDF核验](../../archive/paper_cleanup_20261114/checks/abstract_mean_variance_20261112_102202/pdf_validation.json)。
+
+**2026-11-12 作者确认摘要本轮定稿：** 作者提供最终英文原文并表示可定稿。本轮按该原文逐字写入main.tex，仅调整源码换行，摘要231词。行文依次为GNSS-independent研究问题及无设备端预补偿的接收挑战、多帧AFDM及观测收益、消息传递接收机中的信道与活动估计、整机和导频性能结论。作者所选连接、can限定及两处第一人称保持。对照老师摘要批注，动机、方案意义和接收机连贯性已得到实质回应；本轮只确认摘要，引言批注另按后续安排处理。
+
+来源及技术含义沿用本文II-B、III-B、IV和VI及现有术语依据。作者原文、[差异](../../archive/paper_cleanup_20261114/checks/abstract_final_20261112_101018/CHANGES.diff)及[批注对应与核验](../../archive/paper_cleanup_20261114/checks/abstract_final_20261112_101018/REPORT.txt)已保存。摘要以外正文、图件、公式、文献与模型绑定保持。编译13页，第1–4页目视通过，第5–13页渲染逐字节一致；104个标签及41条文献编号保持，无越栏、缺字或未定义引用。分页变化导致main.aux更新，绘图及发布登记仅同步哈希。见[源码核验](../../archive/paper_cleanup_20261114/checks/abstract_final_20261112_101018/source_validation.json)、[PDF核验](../../archive/paper_cleanup_20261114/checks/abstract_final_20261112_101018/pdf_validation.json)和[登记更新](../../archive/paper_cleanup_20261114/checks/abstract_final_20261112_101018/aux_registry_update.json)。
+
+
+**2026-11-12 摘要与贡献段的行文调整已采用：** 作者主动要求继续完善，并确认上一轮四点建议，要求用词用句参照已有论文。本轮摘要直接引出多帧 AFDM 传输方案，随后说明跨帧有效信道表示及观测收益；方差句明确去噪器输出与输入导数的不同用途，保留单一去噪目标与无需单独训练方差模型的关系。摘要由216词变为207词。引言第二条以简短接收机介绍起句，只在末尾说明GPJD/MFLE的结合及外信息交换，并拆开长句；第三条增加已有表III中学习活动更新相较高斯近似降低活动错误率的结果，限定于测试SNR。该对照与后续整机STMP比较分别陈述。第一条贡献及引言其余文字保持。
+
+句式组织参考Shen作者稿摘要及I节贡献（PDF第1–2页）、Cai正式版I-A（PDF第2页／印刷第3576页）；导数方差依据仍为Manor–Michaeli §3.2式(11)、§4.1式(15)及本文IV-A/B，活动更新新增结果来自本文VI-C表III。沿用已有术语，未新增方法名称或扩大性能主张。详见[修改差异](../../archive/paper_cleanup_20261114/checks/abstract_contributions_polish_20261112_011531/CHANGES.diff)、[句式与技术依据](../../archive/paper_cleanup_20261114/checks/abstract_contributions_polish_20261112_011531/SOURCES.json)和[修订文本与核验说明](../../archive/paper_cleanup_20261114/checks/abstract_contributions_polish_20261112_011531/REPORT.txt)。
+
+核验：主稿编译为13页，第1–2页目视检查通过，第3–13页渲染逐字节一致；104个标签编号、41条文献编号、main.aux及图件保持。未出现越栏、缺字或未定义引用，原有underfull及PDF版本提示保持。数值、公式、引用、比较对象与范围核验通过；活动更新结果为作者授权加入的已有证据摘要。正文其他章节、模型绑定及实验数据保持。见[源码核验](../../archive/paper_cleanup_20261114/checks/abstract_contributions_polish_20261112_011531/source_validation.json)及[PDF核验](../../archive/paper_cleanup_20261114/checks/abstract_contributions_polish_20261112_011531/pdf_validation.json)。
+
+**2026-11-11 摘要及引言接收机贡献同步采用：** 作者要求写入已确认摘要，并使引言第二条明确区分两项方法：生成式先验用于信道去噪；活动似然比通过二元分类学习。摘要采用对话确认的216词版本；引言第二条先介绍消息传递接收机，再分别介绍信道估计、活动检测及模块结合。第一、三条保持。两部分均明确同一去噪训练目标与无需额外方差网络的关系。原稿备份、[修改差异](../../archive/paper_cleanup_20261114/checks/abstract_contributions_20261111_220031/CHANGES.diff)、[摘要](../../archive/paper_cleanup_20261114/checks/abstract_contributions_20261111_220031/ABSTRACT.txt)、[贡献列表](../../archive/paper_cleanup_20261114/checks/abstract_contributions_20261111_220031/CONTRIBUTIONS.tex)可供核对。本条取代此前摘要尚未写入的状态。
+
+依据：直接学习AFDM有效信道先验沿用Huang2026摘要及引言；本文紧凑表示和跨帧共享见II-B及式(8)–(10)。denoising objective见本文式(33)，导数方差依据Manor–Michaeli ICLR2024 §3.2式(11)、§4.1式(15)。binary classification与density-ratio estimation关系依据Menon–Ong ICML2016 §3式(6)–(8)，本文IV-C式(38)–(41)及活跃/非活跃训练样本定义；判别器可使用去噪输出，但它不直接评估生成式先验的边缘似然。GPJD/MFLE保留已批准模块名称。
+
+核验：数值、公式、引用及104个标签编号保持。编译13页，无越栏、缺字、未定义引用；第1–9页重排后均已目视检查。main.aux因页面信息变化而更新，绘图和发布登记仅同步其哈希及大小，图件未重绘。源文件与PDF核验见[记录](../../archive/paper_cleanup_20261114/checks/abstract_contributions_20261111_220031/pdf_validation.json)。未运行训练或实验。
+
+
+**2026-11-11 引言贡献重组已采用：** 作者要求合并原第二、三条方法贡献为新的接收机贡献，将性能优势单列为第三条。第一条保持。新第二条先介绍 MFLE/GPJD 框架，再分别介绍有效信道先验及均值—方差去噪、活动似然比学习；新第三条沿用现有结果的 STMP 比较、导频需求及无需重训的跨 NTN-TDL 配置比较。跨配置仅与稀疏恢复基线比较。摘要本轮未修改，对话中拟定的摘要仍未写入 main.tex。
+
+single denoising objective 描述本文 IV-A 式(33)（eq:first-loss）的训练方式，方差通过 IV-B 式(35)–(37)的输入导数计算，不表示额外监督方差或已证明统一训练必然提高精度。来源：Manor–Michaeli ICLR2024 §3.2 式(11)、§4.1 式(15)；Cai 正式版 IV-B/IV-C 式(48)–(54)用于对比两类学习目标；活动似然比沿用 Menon–Ong ICML2016 §3 式(6)–(8)。贡献组织参考 Cai I-A 的框架—算法—实验层次，不将已有框架或导数恒等式冒称为本文原创。原文提取：reference/reviews/section_structure_20261009/cai.txt、reference/reviews/derivative_variance_review_20261025/text/01_manor_michaeli_2024_posterior.txt。
+
+核验：第一条、main.tex（含摘要）保持；数值、公式、引用和标签保持，main.aux逐字节相同。主稿13页，变动页2、3已目视检查，无越栏、缺字或未定义引用；保留已有underfull及图件PDF版本提示。未运行实验或训练。见[修改差异](../../archive/paper_cleanup_20261114/checks/contributions_receiver_20261111_214017/CHANGES.diff)、[源码核验](../../archive/paper_cleanup_20261114/checks/contributions_receiver_20261111_214017/source_validation.json)、[PDF核验](../../archive/paper_cleanup_20261114/checks/contributions_receiver_20261111_214017/pdf_validation.json)。
+
+
+**2026-11-10 方差表述统一（已采用；第二个贡献暂缓）：** 作者要求参照 Cai 的用法统一全文，随后明确第二个贡献保留原文待审。本轮仅修改 IV-B 三处、VI-A 一处、结论一处：统计量使用 posterior variance / variance estimate(s)，在 IV-B 式(36)后用句子明确其对复数坐标的后验方差求平均。III-B 已有求平均说明、算法中的平均操作及 exponential moving average 保留。引言逐字节保持，第二个贡献中的原表述尚未修改。
+
+来源：Cai 正式版 III-B1 式(23)按设备和列内系数求平均，正文仍称 posterior variance；IV-C 式(53)前说明只需后验协方差的迹。两文平均维度不完全相同，仅采用其统计量命名方式，不改本文定义。见[原文提取](../../reference/reviews/section_structure_20261009/cai.txt)。Manor–Michaeli ICLR2024 §3.2 式(11)支持后验协方差与均值去噪器输入导数的关系，见[原文提取](../../reference/reviews/derivative_variance_review_20261025/text/01_manor_michaeli_2024_posterior.txt)。本轮没有新增术语或新贡献断言。
+
+核验：数值、数学表达、引用和标签保持；main.aux 逐字节相同。主稿编译为13页，变动页6、9、11已目视检查，无越栏、缺字或未定义引用；保留已有 underfull 与图件PDF版本提示。未运行训练或实验。见[修改差异](../../archive/paper_cleanup_20261114/checks/variance_wording_20261110/CHANGES.diff)、[源文件核验](../../archive/paper_cleanup_20261114/checks/variance_wording_20261110/source_validation.json)及[PDF核验](../../archive/paper_cleanup_20261114/checks/variance_wording_20261110/pdf_validation.json)。
+
+
+**2026-11-10 作者确定初稿首页脚注内容：** 首页左下角采用一段作者姓名、单位和邮箱；按本轮明确要求删除基金及通讯作者占位段，此决定取代此前相应占位和样式安排。五位作者、已确认单位及四个邮箱保持，Z. Hu邮箱仍明确占位。PDF仍为13页，前3页排版顺延并完成目视检查，第4–13页逐像素保持；标签与引用值保持，main.aux来源校验值已同步。见[实际修改](../../archive/paper_cleanup_20261114/checks/author_footnote_20261110/CHANGES.diff)和[验证记录](../../archive/paper_cleanup_20261114/checks/author_footnote_20261110/VALIDATION.json)。
+
+**2026-11-10 首页作者信息按Shen作者版组织：** 按作者要求，参考Shen arXiv:2412.20806v1第1页，将通讯作者单列，单位段采用姓名首字母和姓氏，四个已确认的北邮邮箱合并共用域名。Z. Hu邮箱仍单独明确占位；通讯作者和基金名称／编号沿用此前作者要求的占位，尚待提供。作者顺序、会员级别和完整单位保持。此处为作者指定的样式对齐，不视为TWC强制要求。PDF仍为13页，仅首页改变，首页目视检查通过，main.aux保持。见[来源及修改说明](../../archive/paper_cleanup_20261114/checks/author_frontmatter_shen_20261110/SOURCE_AND_CHANGES.json)、[实际差异](../../archive/paper_cleanup_20261114/checks/author_frontmatter_shen_20261110/CHANGES.diff)和[验证记录](../../archive/paper_cleanup_20261114/checks/author_frontmatter_shen_20261110/VALIDATION.json)。
+
+**2026-11-10 作者顺序调整：** 按作者要求将Changhao Liu移至Shirui Zuo之前，当前顺序为Bo Wang、Wenpeng Jing、Zhiqun Hu、Changhao Liu、Shirui Zuo，首页邮箱同步排序。PDF仍为13页，仅首页改变，首页排版已目视检查；main.aux保持。见[验证记录](../../archive/paper_cleanup_20261114/checks/author_order_20261110/VALIDATION.json)。
+
+**2026-11-10 作者单位已补充：** 按作者提供的完整英文单位，将全体作者的单位脚注补为“Beijing Key Laboratory of Network System Architecture and Convergence, Beijing Laboratory of Advanced Information Networks, Beijing University of Posts and Telecommunications, Beijing 100876, China”。邮箱保持。主稿仍为13页，前3页有排版顺延，已目视检查；第4–13页逐像素保持，标签与引用保持。main.aux仅输出顺序改变，来源校验值已同步。见[修改记录](../../archive/paper_cleanup_20261114/checks/author_affiliation_20261110/CHANGES.diff)和[验证记录](../../archive/paper_cleanup_20261114/checks/author_affiliation_20261110/VALIDATION.json)。
+
+**2026-11-10 作者邮箱已补充：** 按作者给出的邮箱前缀及统一域名，Bo Wang为wangb@bupt.edu.cn，Wenpeng Jing为jingwenpeng@bupt.edu.cn，Shirui Zuo为zsr0224@bupt.edu.cn，Changhao Liu为liuch@bupt.edu.cn；按既定作者顺序写入首页脚注。Zhiqun Hu邮箱仍待作者提供。主稿13页，仅首页邮箱文字改变，其余12页逐像素保持；首页已目视检查，main.aux保持。见[邮箱映射](../../archive/paper_cleanup_20261114/checks/author_emails_20261110/AUTHORS.json)及[验证记录](../../archive/paper_cleanup_20261114/checks/author_emails_20261110/VALIDATION.json)。
+
+**2026-11-10 三处表达简化已采用（当前用法）：** 作者指出三个组合短语不自然，本轮对III-B1、IV-C和VI-B进行局部改写。III-B1使用posterior mean and variance，并在式(18)后说明方差对所有设备和信道系数取平均；IV-C用“For the balanced training distribution, this loss is minimized by”直接引出式(40)；VI-B基线名称采用Genie-aided MMSE，给定真实路径几何、功率和LoS增益的条件以及解析条件MSE说明保持。公式、算法、引用和数据未改。
+
+非Cai/Shen依据：Manor–Michaeli ICLR2024 §3.1–3.2式(2)、(6)–(11)支持posterior mean/variance；Menon–Ong ICML2016 §2.1–2.2、§3式(6)–(8)、§4支持分类损失最小化后的理想输出；Ito等TWC2025，*Joint Channel, CFO, and Data Estimation via Bayesian Inference for Multi-User MIMO-OFDM Systems*，“D. NMSE Performance of Channel Estimates”，印刷p.1910／含馆藏封面的PDF p.14，直接使用Genie-aided MMSE。后者仅提供完整名称及说明组织的用例，本文给定的参数按自身模型保留。见[来源定位](../../archive/paper_cleanup_20261114/checks/terminology_plain_expression_20261110/SOURCES.json)、[实际修改](../../archive/paper_cleanup_20261114/checks/terminology_plain_expression_20261110/CHANGES.diff)、[修改后文字](../../archive/paper_cleanup_20261114/checks/terminology_plain_expression_20261110/REVIEW.md)。
+
+此条覆盖上一轮75项术语表T25、T40、T65中这三处的保留状态；旧表作为核查时点的快照。数学含义成立不等于组合名称自然，今后优先使用已有核心术语，并用句子说明必要限定。编译和目视检查通过，主稿13页，仅5/6/9页改变；main.aux逐字节不变，编号及引用保持。
+
+**2026-11-10 作者确认13处posterior用语并要求全文术语核查：已完成。** 本轮按作者“可以，请你修改吧”落实13处已列候选，仅修改III–VI中的统计量名称，公式、条件和术语对象保持；不对其他conditional机械替换。更新PDF为13页，数学表达、引用、104个标签编号不变，main.aux逐字节相同。审核范围扩展至标题、摘要、引言、II–VII、图表与算法，并检查附录用语；核查本身不授权改写既定摘要、引言或重命名模块。
+
+[全文术语表](../../archive/paper_cleanup_20261114/checks/terminology_audit_20261110/TERM_AUDIT.md)按75组登记来源及使用边界。四个作者批准名称GP-MP、GP-MP-EP、MFLE、GPJD保留并明确为本文命名；13组描述或适配不伪称参考论文完整原词；NTN-TDL等标准来源与论文来源区分。重点纠正/明确Gaussian site、AER、Ying交叉熵版本定位以及中央差分/随机方向估计的出处归属。部分来源复用此前核对，不记为此次重新通读。此轮未启动训练或实验，未调整既定研究主线。来源明细、前后差异和验证见[本轮记录](../../archive/paper_cleanup_20261114/checks/terminology_audit_20261110/AUDIT.json)、[修改](../../archive/paper_cleanup_20261114/checks/terminology_audit_20261110/CHANGES.diff)、[验证](../../archive/paper_cleanup_20261114/checks/terminology_audit_20261110/VALIDATION.json)。
+
+**2026-11-10 第三章过渡句采用 posterior，完成本轮学术故事修改：** 作者确认第 2 项使用 posterior 后，将含 posterior mean and variance 的过渡句加入第三章末，回指式(17)–(18)及活动概率式(23)，引出下一章的去噪器和密度比估计器；第四章原有重复概述删除，直接进入IV-A。第 1 项已取消，第 3、4、5 项此前已采用，第 6 项保持原结论，本轮六项至此均已处理。作者另要求查找类似用语，本次检查主入口、全部章节及附录源码，发现13处可选的术语一致性调整，涉及III-B1/III-B3、IV-A/IV-B、V-A、VI-A。它们原有 conditional 表述在对应模型下成立，不标作数学错误；建议在后验统计量语境统一为 posterior，候选见[清单](../../archive/paper_cleanup_20261114/checks/posterior_transition_20261110/TERMINOLOGY_REVIEW.json)，尚未采用。条件Gaussian score、类条件密度、conditional instance normalization、Genie基线中的条件MSE及明确的条件关系语句保持。此次实际修改仅第三章末和第四章开头，公式、数值、引用、标签编号、图件与研究主线保持。编译后13页，仅第5页像素变化并完成目视检查，其余12页及main.aux保持；无越栏、缺字或未定义引用。见[实际差异](../../archive/paper_cleanup_20261114/checks/posterior_transition_20261110/CHANGES.diff)和[核验](../../archive/paper_cleanup_20261114/checks/posterior_transition_20261110/VALIDATION.json)。
+
+**2026-11-10 学术故事第 3、4、5 项正式采用：** 作者确认取消第 1 项，确认按简化版本修改第 4 项；结合前轮已确认的第 3、5 项，本轮采用三处文字调整：IV-C 开头回指式(23)，V-A 先给图3及完整接收机组成，再保留原有输出量定义，VI-D 导频分析提前给出同一NMSE目标下的帧数比较。第 2 项过渡句仍讨论中，第三章末尾及第四章原有开头保持；第 6 项结论保持。作者询问 conditional 含义及 Cai/Shen 用法后，复核发现 Cai 对应位置使用 posterior mean and variance（III-B1、IV-A、V-A，印刷 pp.3581–3583），Shen 作者版v1 IV-B/PDF p.11 使用 posterior means and variances；两文其他位置也使用条件概率相关表述，但不能把这些一般用例当作 conditional mean and variance 的原词依据。建议过渡句采用 posterior mean and variance 并回指式(17)–(18)，尚未写入正文。三处已采用修改的数学、数值、引用、编号与图件保持，编译为13页；变动页6、7、8、10已目视检查，无越栏、缺字或未定义引用。复杂度小节标题自然移至第8页，全部编号保持；图表分组保持。main.aux来源校验值及大小已同步。见[实际差异](../../archive/paper_cleanup_20261114/checks/story_adopted_20261110_items_3_4_5/CHANGES.diff)和[核验](../../archive/paper_cleanup_20261114/checks/story_adopted_20261110_items_3_4_5/VALIDATION.json)。
+
+**2026-11-10 学术故事六项建议的逐项审阅（正文尚未修改）：** 作者同意第 3 项（IV-C 开头明确密度比估计用于计算式(23)的活动概率）及第 5 项（图7分析提前呈现相同NMSE目标下的导频帧数比较）；第 6 项结论扩写不采用，保留现稿。作者主动要求核对第 1 项在 Cai 中的对应说明，并建议第 2 项移至第三章末尾、调整 channel mean / shared average variance 的过渡句措辞，同时要求第 4 项第五章总览更简洁。本轮仅复核与重拟候选，不将同意采用的第 3、5 项视为已经写入正文。Cai 正式版 III-B3、式(35)–(42)，印刷 p.3581，及第三章末尾 p.3582，已有活动概率进入均值、方差及外信息的公式关系，但对应段落未另写上一轮建议的独立解释句；因此代理建议第 1 项不新增。来源见[正式版第7页提取](../../reference/reviews/activity_detector_review_20261024/cai2026_selected_pages.txt)和[全文提取](../../reference/reviews/section_structure_20261009/cai.txt)。第 2 项待审候选在第三章末用 conditional mean and variance 并回指式(17)–(18)，同时回指活动概率式(23)，引出下一章的 channel denoiser 和 density-ratio estimator；共享和平均的数学定义保持，第四章重复概述可随该候选一并精简。第 4 项待审候选只说明将已训练去噪器和活动分类器并入 MP 框架形成 GP-MP，图3段落前移，原有必要的量定义保留；不重复模块运算说明。Cai V-A、印刷 p.3583 确实使用 derived analytically，但其出现不构成本稿必须保留该表达的理由。第 1、2、4 项的新建议仍待作者决定，正文、PDF及研究资产保持。
+
+**2026-11-10 第 5 项命名获确认，13 项语言修改全部完成：** 作者确认使用 score network，现已采用第 5 项完整润色句，将 s_theta 的网络名称简化为 score network。数学定义处的 first-order score function 与 STMP 基线的一阶/二阶网络名称保持。主稿仍为 13 页，仅第 5 页发生排版变化，已目视检查；公式、引用、其他正文与图件保持。见[本项差异](../../archive/paper_cleanup_20261114/checks/language_adopted_20261110/completion_f05/CHANGES.diff)及[验证记录](../../archive/paper_cleanup_20261114/checks/language_adopted_20261110/completion_f05/VALIDATION.json)。此前待讨论状态至此完成。
+
+**2026-11-10 作者逐项确认语言建议并询问命名与章节安排：** 已实施 F01–F04、F06–F13 共 12 项；F03 按作者要求将 namely 替换为 i.e.。F05 的网络命名由作者主动提出讨论，原句暂保留，建议对 s_theta 使用 score network、对 f_theta 使用既有 channel denoiser/denoiser；first-order score function 仍可用于说明对数密度梯度，STMP 基线的一阶/二阶网络称呼保持。Cai IV-B 式(48)–(49)明确将多个噪声水平的目标合并，VI-A2另给噪声范围和训练参数，因此 F06 的目标定义保留第四章，具体采样与优化设置保留第六章。F07 原本就在第五章，继续作为接收机数值实现说明；Cai 对应位置是 V-B2、式(59)–(65)，但其逐样本功率及推断缩放不同于本稿固定训练集 RMS，不移植其归一化公式。实际差异、来源与保真检查见[实施记录](../../archive/paper_cleanup_20261114/checks/language_adopted_20261110/EDITS.json)、[命名建议](../../archive/paper_cleanup_20261114/checks/language_adopted_20261110/NAMING_DISCUSSION.json)和[核查记录](../../archive/paper_cleanup_20261114/checks/language_adopted_20261110/VALIDATION.json)。摘要与引言、公式、引用、图件、数值及研究主线保持；主稿仍为 13 页。
+
+**2026-11-10 作者要求更新活动概率图：** 已下载 GitHub 提交 `6013d4791ef0b5b45590014fd2536e9968f0bff7` 的原始 PDF/PNG 并核对对象校验值，用原始 PDF 替换论文图 9。新图为九条曲线，包含 GP-MP-EP 与 Off-grid SBL 的 7/13/25 三档设置，横轴 nominal activity probability 为 0.05–0.25。原图、图源配置与稿件 PDF 保存在 `archive/activity_figure_update_20261110_6013d47/before/`；采用来源见[记录](../../result/activity_probability/latest_20261109/ADOPTION.json)。原有图注和结果趋势描述与新图一致，保持正文文字；前轮 13 项语言建议仍待审阅。本次只采用图件，该提交未提供数值汇总、模型绑定及样本预算，不将旧活动概率批次的来源套用到新图。未运行推断或训练，未切换研究主线。
+
+**2026-11-10 重新筛选后的最终语言建议（待作者逐项审阅）：** 作者要求在重新评价范文与改稿收益后给出最终建议。结合原段落保留 13 处，集中调整系统配置的信息顺序、框架组成说明、重复铺垫、归一化/阻尼说明与结果/结论中的重复表达；其余沿用现稿。当前建议见[完整增删对照](../../archive/paper_cleanup_20261114/checks/language_review_20261110/review.html)、[逐项原句与来源](../../archive/paper_cleanup_20261114/checks/language_review_20261110/PROPOSALS.json)和[保真检查](../../archive/paper_cleanup_20261114/checks/language_review_20261110/VALIDATION.json)。来源定位区分短语、句法/段落组织与技术关系，不把改写句当作文献原句。所有数学表达、数字、交叉引用及技术引用顺序保持；复杂度处只删重复总括，全部具体成本项保持。正文、PDF、图件与文献库未改，13 页排版在作者决定采用后检查。前述 30 项不再作为整体采用建议；此 13 项仍待作者审核，不代表已经确认。
+
+**2026-11-09 作者质疑语言范文筛选与改稿收益：** 作者认为上一轮参考文献的语言质量可能不足，且部分改句不如现稿，主动要求重新评价。对照后，代理不再推荐整体采用前述 30 项“最终建议”：R06 弱化了 i.i.d. 所修饰的接入决策，R11 加长了原有简洁比例关系，R12 拆句后重复 joint denoiser，R13 删除 therefore 后削弱了从 AWGN 模型到 MMSE 去噪的推导衔接；这些项应优先保留现稿。文献包含 JSAC、TSP、TIT 等正式发表的工作，不能据此次改稿效果否定其学术质量；方法出处、语言范文和具体改句收益须分别评价。单个通用短语或连接词的出处不能证明整句改善，来源数和删词数不作为质量验收标准。当前正文继续作为基准，前述候选稿保留作讨论记录，尚无本轮采用授权；少数明确去重项仍可单独审阅。后续语言审阅须结合完整段落，明确改善的歧义、冗余或衔接，并保留既定术语与数学关系。
+
+**2026-11-09 最终语言建议须有具体措辞依据（作者追加）：** 作者要求最终改句的用词、句式、语序与连接方式均有参考文献依据。本轮重新核对原始论文相关正文，将技术关系依据与语言依据分列，为 30 项建议补充短语原文、章节/公式/页码和句法采用方式，并据此修订候选文字。语言依据涉及 23 篇非 Cai、Shen 论文；引号内为核对过的短语，完整修订句按本稿研究对象组织，不标作参考论文原句。当前审阅入口为[最终完整增删对照](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/final_language_review/review.html)，附[干净改句](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/final_language_review/CLEAN.txt)、[逐条语言出处](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/final_language_review/PROPOSALS.json)及[保真检查](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/final_language_review/VALIDATION.json)。候选文字合计减少约 128 个英文词；公式、数字、交叉引用、技术引用顺序及术语名称通过核对，假设、近似限定和结论范围逐项保留。R24 只删重复总括句，具体复杂度分析仍在。建议尚待作者审阅，正文、PDF、图件及文献库保持；采用后检查 13 页排版。此前审阅版本保留为讨论快照，当前候选文字以上述最终审阅稿为准。
+
+**2026-11-09 扩充语言润色的实际参考范围（作者追加）：** 作者指出前轮反复使用少数论文，要求扩大来源。本轮在已有 12 篇润色语料上补入 You、Bemani、Zhou、Chen、Senel、Ma、Xue、Metzler、Kschischang、Dytso、Vincent、Gutmann 等 12 篇原始论文，核对与改句相关的章节、公式及实验段落；“新增”指加入本轮润色语料，部分论文已在项目参考库，不表示首次发现或已逐页通读全文。现有 30 条建议中，23 条的来源对应得到更新，实际使用 22 篇论文；Rangan 的使用由 9 条减为 4 条，保留其对 EP 近似、标量投影及阻尼的直接支持。每条区分模型/操作依据与表达组织参考，明确不同信道、补偿、活动负载和实验条件的采用范围。30 条候选文字、编号与增删标记保持前版，尚未采用到正文；正文、PDF、图件及文献库的哈希均保持。当前入口为[扩充语料后的完整审阅稿](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/broader_corpus_review/review.html)，并附[24 篇语料登记](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/broader_corpus_review/CORPUS.json)、[逐项依据](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/broader_corpus_review/PROPOSALS.json)、[检索与阅读范围](../../reference/reviews/language_corpus_expansion_20261109/SEARCH_AND_READING.json)和[保真核查](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/broader_corpus_review/VALIDATION.json)。以下前版记录作为讨论快照保留；后续审阅沿用当前来源映射。
+
+**2026-11-09 扩大语言润色与降重范围（作者追加，来源逐项复核）：** 作者认为上一轮九项不足，要求继续润色、去重，且所有建议必须有非 Cai、Shen 论文支撑。范围仍为第二至第七章，摘要与第一章保持，既定术语和公式保持；沿用完整标出新增/删除后供作者审核的方式。现有草案经逐项核对与修订，形成 30 个审阅单元（II 8、III 7、IV 5、V 4、VI 5、VII 1），见[当前完整标记对照](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/non_cai_shen_review/review.html)、[精确改句及逐项来源](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/non_cai_shen_review/PROPOSALS.json)和[保真检查](../../archive/paper_cleanup_20261114/checks/language_dedup_expanded_20261109/non_cai_shen_review/VALIDATION.json)。每项均记录非 Cai、Shen 文献的章节、公式或页码，并区分技术关系支持与表达组织参考。候选句段合计减少约 190 个英文词；正文、PDF、图件及文献库尚未修改，采用后再编译核查 13 页排版。公式、数字、引用、既定术语名称和论断范围保持；R24 仅删除后文已经展开的复杂度总括句。此前草案保留为审阅快照。局部连续词序对照不等于正式查重率，不通过改动专业名称、数字、公式或引用来减少匹配。当前要求允许按本稿内容重组句法及说明，既有技术依据继续保留；此前九项已完成状态不变。
+
+**2026-11-09 第二章以后语言精修（作者逐项审核，九项均已完成）：** 第 1、2、4、7、8、9 项先按作者确认实施；随后作者确认第 3、5、6 项的新版本并要求修改，现已全部完成。第二章直接用 alpha_k 定义设备活动，目标句专注联合检测与信道估计，后验引出采用 posterior distribution 与 can be factorized as；第三章继续介绍 message-passing framework。数学含义、条件变量及技术引用保持。措辞参考优先使用 Cai/Shen 之外已核对论文，已有术语按作者确认范围处理。修改涉及第二、三、五章文字，摘要、引言、其他章节源码、图件、文献库和公式保持。主稿仍为 13 页；最后三项仅第 4 页发生排版变化，已检查，其余 12 页渲染一致。初批[实施差异](../../archive/paper_cleanup_20261114/checks/language_dedup_selected_20261109/CHANGES.diff)、最后三项[最终改句与依据](../../archive/paper_cleanup_20261114/checks/language_dedup_selected_20261109/completion_3_5_6/EDITS.json)及[验证记录](../../archive/paper_cleanup_20261114/checks/language_dedup_selected_20261109/completion_3_5_6/VALIDATION.json)。此前待审清单仅保留为讨论快照，本轮没有待作者选择的语言项；不更改算法或研究主线。
+
+**2026-11-09 初稿与终稿的篇幅安排（作者确认）：** 当前稿件为控制在 13 页的初稿，解释与讨论的详略按这一阶段的篇幅约束评价，优先保证核心推导完整、公式准确、前后衔接清楚和表述紧凑。作者计划后续终稿可扩展到 15–16 页，届时再按需要展开关键公式的直观解释、方法之间的联系及结果讨论。当前较紧凑的解释密度属于阶段性写作取舍；后续复核沿用这一安排，扩写留到终稿阶段结合实际内容决定。
+
 > 记录说明（2026-11-07）：下文按日期保留研究依据和作者决定，“当前”“最新”均指记录当时。现行图源与采用状态见 [REPRODUCTION.md](REPRODUCTION.md)，运行进度见[实验索引](../../result/README.md)。本轮整理仅更新导航，不改变原判断；移出的旧说明通过固定版本链接查阅。
 
 **2026-11-06 白噪声表述统一（作者主动要求）：** 作者在确认第六章与完整稿附录仍保留旧训练描述后，要求直接修改。现将这些位置统一为白高斯噪声、复协方差 $vI_D$、实协方差 $(v/2)I_{2D}$、既有方差加权损失与标量预条件；删去随机相关协方差采样、矩阵推广及其专用引用。摘要、引言与第四章已采用的数学链保持。图 5 和表 III 的 GP-MP 使用白噪声网络，图 4、6–10 的相关曲线仍保留历史训练结果，工作稿第六章开头集中说明数据归属及待替换状态，不将这些数值改称白噪声结果。本轮不运行训练、推断或重绘，不切换 FINAL/MAINLINE；已知相位白噪声批次的完成核验 PASS 仅说明保存结果已核验，不代表曲线已替换。两版编译与版面检查见[修订记录](https://github.com/RESET-cpu/afdm-gfra/blob/9ac940e477d9f2a81ff687c85ba488f5a106f88b/paper/checks/white_noise_wording_20261106/README.md)。这是作者要求的表述修改，按既定阶段验收，不重开旧预审事项；历史记录保留原文。
@@ -964,7 +1056,7 @@ Cai 的活动更新已有高斯解析式 (30)，本稿 q_1 的积分困难与密
 
 ## 2026-11-08：第 II–VI 章逐句审阅与文风修订完成
 
-按作者授权，先修正冗余引用、重复章节指引及不自然的表达，再以 Cai 的论证顺序为主调整第 II–VI 章表述，最后检查篇幅。逐项核对 Cai、Shen、Huang、Ding、Xu 原文的模型、推断、学习实现和结果段；出处位置与 125 个正文段落的审阅覆盖见[本轮记录](STYLE_REVIEW_20261108.md)。
+按作者授权，先修正冗余引用、重复章节指引及不自然的表达，再以 Cai 的论证顺序为主调整第 II–VI 章表述，最后检查篇幅。逐项核对 Cai、Shen、Huang、Ding、Xu 原文的模型、推断、学习实现和结果段；出处位置与 125 个正文段落的审阅覆盖见[本轮记录](../../archive/paper_cleanup_20261114/reviews/STYLE_REVIEW_20261108.md)。
 
 引用标注组由 61 处减至 44 处，章节回指由 23 处减至 4 处；保留方法来源、图形改绘归属及算法所需定位。第三章按条件信道矩、活动概率、联合矩及外信息展开，第四章承接学习求解，第五章按接收机组合、一次性预处理和迭代参数更新组织，第六章按条件、结果与解释衔接。公式、表格、图件、算法规则与实验数值保持，摘要、引言和结论未在本轮改写。
 
@@ -975,7 +1067,7 @@ Cai 的活动更新已有高斯解析式 (30)，本稿 q_1 的积分困难与密
 
 作者明确要求本轮实际逐句核验，并强调不要防御性表达。已对当前五章全部正文句、图注、公式引出/解释及算法语义步骤逐项阅读，对照指定原文、本文公式及已采用配置/数据，形成334个语言单元的独立记录。覆盖检查不承担审阅判断；每个保留项均有具体理由。
 
-按问题修正、表述修订、页数核验的顺序完成24处修改：15处澄清术语、对象、条件、缩放方向、目标名称或结果表达，9处精简重复及调整表述。论证仍以Cai为主，正文直接交代方法与结果，出处和核验过程保存在[逐句记录](SENTENCE_REVIEW_20261108.md)。上一轮STYLE_REVIEW已准确标为段落修订记录。
+按问题修正、表述修订、页数核验的顺序完成24处修改：15处澄清术语、对象、条件、缩放方向、目标名称或结果表达，9处精简重复及调整表述。论证仍以Cai为主，正文直接交代方法与结果，出处和核验过程保存在[逐句记录](../../archive/paper_cleanup_20261114/reviews/SENTENCE_REVIEW_20261108.md)。上一轮STYLE_REVIEW已准确标为段落修订记录。
 
 所有独立公式、表格、图件、算法规则、实验数据和既有编号保持；摘要、引言、结论与附录源码保持。主稿/完整稿/候选预览13/14/13页，41条引用文献，编译与版面检查通过；无越栏、缺字或未定义引用。未调整排版参数，未运行实验或训练。
 
@@ -1067,7 +1159,7 @@ Gaussian site 段直接陈述 tau^post<v 时更新，否则保留，再与当前
 
 全部14条第三章编号公式、22个标签及全文公式/图表/算法编号保持；主稿与完整稿分别为13/14页。41篇文献保持，因采用稿中 Turbo-CS 的引用提前，Ma2015与Ma2017分别为[21]/[22]，其余文献编号保持。图3中的公式编号核对一致，图文件未修改；绘图配置仅同步新 main.aux 的来源哈希。正文实质变更只在第三章，引言另有一处章节命名同步；其余章节、书目、实验、模型和实现保持。
 
-两版编译通过，无未定义引用、越栏或缺字。主稿全部页面及完整稿其余页面已完成目视核验，公式、图表、算法和参考文献排版正常。来源、修改范围及核验结果见 [第三章采用记录](../checks/ch3_5_proposal_20261108/ch3_minimal_sources.json)。本轮备份、差异、编译输出和页面核验位于 `/var/folders/ln/cxl1w3fj5l7bw7y1jc2tc4gw0000gn/T/afdm_ch3_final_adopt_20261108_gqu06xq2`。
+两版编译通过，无未定义引用、越栏或缺字。主稿全部页面及完整稿其余页面已完成目视核验，公式、图表、算法和参考文献排版正常。来源、修改范围及核验结果见 [第三章采用记录](../../archive/paper_cleanup_20261114/checks/ch3_5_proposal_20261108/ch3_minimal_sources.json)。本轮备份、差异、编译输出和页面核验位于 `/var/folders/ln/cxl1w3fj5l7bw7y1jc2tc4gw0000gn/T/afdm_ch3_final_adopt_20261108_gqu06xq2`。
 
 
 ## 2026-11-08：按Cai分工重组第三、五章，已采用
@@ -1098,7 +1190,7 @@ Gaussian site 段直接陈述 tau^post<v 时更新，否则保留，再与当前
 
 作者要求保留已有第四章重写稿的内容，仅按均值、方差、活动概率调整顺序。已将候选的 Tweedie 均值关系和 DSM 训练合并至 Channel Mean Estimation；协方差段移至 Channel Variance Estimation 开头；Activity Probability Estimation 全节保持。小节标题和标签位置相应调整。除结构标题与标签外，正文块集合逐字一致，数字、引文键、术语及全部公式保持，重排后的衔接复核通过。
 
-本轮只更新审阅候选及其13页预览，未写入正式正文和正式PDF。预览第四章第5–6页已目视核验，无未定义引用、越栏或缺字。当前候选及来源见[第四章来源记录](../checks/ch3_5_proposal_20261108/ch4_source_sources.json)，逐块核验见[重排核验](../checks/ch3_5_proposal_20261108/ch4_reorder_checks.json)。
+本轮只更新审阅候选及其13页预览，未写入正式正文和正式PDF。预览第四章第5–6页已目视核验，无未定义引用、越栏或缺字。当前候选及来源见[第四章来源记录](../../archive/paper_cleanup_20261114/checks/ch3_5_proposal_20261108/ch4_source_sources.json)，逐块核验见[重排核验](../../archive/paper_cleanup_20261114/checks/ch3_5_proposal_20261108/ch4_reorder_checks.json)。
 
 
 ## 2026-11-08：摘要两处精简已采用
@@ -1123,11 +1215,11 @@ Gaussian site 段直接陈述 tau^post<v 时更新，否则保留，再与当前
 
 ## 2026-11-08：第五章原文适配重写审阅稿
 
-作者要求第五章按第三、四章相同标准重写。已生成独立候选，沿用三小节结构：整体算法按Cai先接入学习估计量、再介绍整体集成；参数部分依次说明噪声、相位、归一化、输入阻尼、方差更新和反馈；复杂度按每块、每轮及总成本展开。Cai/Shen及各方法原始文献的逐段位置见[第五章来源记录](../checks/ch3_5_proposal_20261108/ch5_source_sources.json)。
+作者要求第五章按第三、四章相同标准重写。已生成独立候选，沿用三小节结构：整体算法按Cai先接入学习估计量、再介绍整体集成；参数部分依次说明噪声、相位、归一化、输入阻尼、方差更新和反馈；复杂度按每块、每轮及总成本展开。Cai/Shen及各方法原始文献的逐段位置见[第五章来源记录](../../archive/paper_cleanup_20261114/checks/ch3_5_proposal_20261108/ch5_source_sources.json)。
 
 13条编号公式、图、Algorithm 1、全部标签和引用键均逐字保持（源码CRLF保持）。新增的求导置零句仅解释现有期望高斯目标到v_tar的计算，独立数学复核及递归阻尼时序核对通过。数字计数保持；GP-MP和MFLE各增加两次出现，用于整体集成与复杂度段落，名称和含义保持。未运行训练或实验。
 
-与最新第四章候选合并的[审阅预览](../checks/ch3_5_proposal_20261108/ch45_source_preview.pdf)为13页，公式编号42–54和41篇文献编号保持。已检查第6–9页，图、算法和公式排版正常，无未定义引用、越栏或缺字。正式正文及正式PDF未覆盖。备份和核验位于 `/var/folders/ln/cxl1w3fj5l7bw7y1jc2tc4gw0000gn/T/afdm_ch5_source_rewrite_20261108_s8ryiwh6`。
+与最新第四章候选合并的[审阅预览](../../archive/paper_cleanup_20261114/checks/ch3_5_proposal_20261108/ch45_source_preview.pdf)为13页，公式编号42–54和41篇文献编号保持。已检查第6–9页，图、算法和公式排版正常，无未定义引用、越栏或缺字。正式正文及正式PDF未覆盖。备份和核验位于 `/var/folders/ln/cxl1w3fj5l7bw7y1jc2tc4gw0000gn/T/afdm_ch5_source_rewrite_20261108_s8ryiwh6`。
 
 
 ### 同日：第五章候选的叙述主语调整
@@ -1143,7 +1235,7 @@ Gaussian site 段直接陈述 tau^post<v 时更新，否则保留，再与当前
 
 已逐段逐句通读I–V全部正文、公式引出与解释、图注及Algorithm 1，并交叉复核模型到算法的承接。未发现新的模型、变量或算法衔接矛盾。当前分工为II给观测与目标，III推导消息和待求统计量，IV按三个未知量给出学习计算，V组合为算法并处理参数、数值实现和复杂度。必要条件与既有决定保持。
 
-本轮新增建议只涉及第四章四处语言：开场develop DSM改为准确的apply；合并DSM优化等价与相同最优解的重复说明；精简Monte Carlo段连续的作者动作和average/averaging重复；将活动小节的Suppose we wish改为直接陈述既定任务。四项均未追加写入正文。第一章此前记录的三项可选精简仍为待采纳建议，不作为新发现。具体覆盖与定位见[第一至五章通读记录](../checks/ch3_5_proposal_20261108/ch1_5_review_after_adoption.json)。
+本轮新增建议只涉及第四章四处语言：开场develop DSM改为准确的apply；合并DSM优化等价与相同最优解的重复说明；精简Monte Carlo段连续的作者动作和average/averaging重复；将活动小节的Suppose we wish改为直接陈述既定任务。四项均未追加写入正文。第一章此前记录的三项可选精简仍为待采纳建议，不作为新发现。具体覆盖与定位见[第一至五章通读记录](../../archive/paper_cleanup_20261114/checks/ch3_5_proposal_20261108/ch1_5_review_after_adoption.json)。
 
 主稿和完整稿已编译并更新为13/14页，41篇参考文献及公式编号保持；图3公式标签核对一致，图文件保持。主稿与上轮已检查预览逐像素相同，本轮复查第5页；完整稿前9页与主稿一致，第10–14页完成视觉检查。无未定义引用、越栏或缺字。正式main.aux与绘图配置中的来源哈希同步，未调整版式参数或启动实验。备份、差异及核验：`/var/folders/ln/cxl1w3fj5l7bw7y1jc2tc4gw0000gn/T/afdm_ch45_adopt_review_20261108_04mz31yw`。
 
@@ -1154,7 +1246,7 @@ Gaussian site 段直接陈述 tau^post<v 时更新，否则保留，再与当前
 
 全部显示及行内数学、标签、回指、引用顺序逐字保持。数字与术语计数在归一化源码换行后通过；原始计数将跨行的denoising score matching误分为不同词组，此换行因素另有原始记录，未更改专业术语。推导条件与论断强度保持。主稿/完整稿已更新为13/14页，41篇文献及全部编号保持。两版仅第5–6页像素变化，变动页面彼此相同并已目视检查，其余页逐像素保持。无未定义引用、越栏或缺字。main.aux与绘图来源哈希保持一致。
 
-四项在[通读记录](../checks/ch3_5_proposal_20261108/ch1_5_review_after_adoption.json)中标为已完成；此前采用候选保留为历史快照，当前正文以正式sections为准。备份、差异和核验：`/var/folders/ln/cxl1w3fj5l7bw7y1jc2tc4gw0000gn/T/afdm_ch4_four_edits_20261108_55nawmwb`。
+四项在[通读记录](../../archive/paper_cleanup_20261114/checks/ch3_5_proposal_20261108/ch1_5_review_after_adoption.json)中标为已完成；此前采用候选保留为历史快照，当前正文以正式sections为准。备份、差异和核验：`/var/folders/ln/cxl1w3fj5l7bw7y1jc2tc4gw0000gn/T/afdm_ch4_four_edits_20261108_55nawmwb`。
 
 
 ## 2026-11-08：跨帧有效信道采用直接表述
@@ -1188,7 +1280,7 @@ Gaussian site 段直接陈述 tau^post<v 时更新，否则保留，再与当前
 
 文字建议集中于：密度比消融增加一组代表性数值并突出其证据作用；对已有三档Off-grid SBL联合搜索配置作简短解释；衔接独立去噪与整机性能的不同排序。保留A–E结构、高SNR下STMP去噪较好的结果及跨信道A/B上的例外，不从整机比较推断单一组件的因果贡献。上述建议均待作者选择。
 
-详见[本轮审阅及量化核对](../checks/ch6_review_20261108/REVIEW.json)。核对基于现有绘图汇总与采用记录，未新增推断、训练或逐场景预测重评分；稿件源码、PDF、图件与实验资产保持。
+详见[本轮审阅及量化核对](../../archive/paper_cleanup_20261114/checks/ch6_review_20261108/REVIEW.json)。核对基于现有绘图汇总与采用记录，未新增推断、训练或逐场景预测重评分；稿件源码、PDF、图件与实验资产保持。
 
 
 ## 2026-11-08：第六章按 Cai 与 Shen 的分析角度生成审阅候选
@@ -1199,12 +1291,12 @@ Gaussian site 段直接陈述 tau^post<v 时更新，否则保留，再与当前
 
 A小节、全部数学环境、表格、图件、标签和引用保持。预览为13页、41篇参考文献，编号核对一致；第10–13页完成视觉检查，无越栏、缺字、未定义引用或图文碰撞。数字／术语出现次数因新增分析句而变化，具体新增数值已与来源逐项核对，未将自动计数差异当作全部通过。正式章节、两版正式PDF及研究资产未覆盖，未运行实验或训练。
 
-候选、逐段对照、来源映射及核验见 [第六章候选目录](../checks/ch6_reference_revision_20261108/)。本条记录为审阅阶段，正式稿仍以当前 sections 为准。
+候选、逐段对照、来源映射及核验见 [第六章候选目录](../../archive/paper_cleanup_20261114/checks/ch6_reference_revision_20261108)。本条记录为审阅阶段，正式稿仍以当前 sections 为准。
 
 
 ### 同日：第六章改以 Shen 的整体分析为主
 
-作者进一步要求以 Shen 为主要参照，重点分析总体趋势及主要优势。已据此生成[新的第六章审阅候选](../checks/ch6_shen_revision_20261108/)，各段按实验变量、整体比较及对应意义推进；Cai 仅补充独立去噪与跨信道部分的组织参考。主SNR保留一组代表性增益，导频保留既有25%节省，相位保留既有损失范围；表III以跨SNR的活动更新效果为主，设备数与活动概率以固定资源下的负载趋势为主。候选直接说明整机改善与无需单独训练方差模型这一既有设计特点，但不将整机差距归因于单独的方差模块。
+作者进一步要求以 Shen 为主要参照，重点分析总体趋势及主要优势。已据此生成[新的第六章审阅候选](../../archive/paper_cleanup_20261114/checks/ch6_shen_revision_20261108)，各段按实验变量、整体比较及对应意义推进；Cai 仅补充独立去噪与跨信道部分的组织参考。主SNR保留一组代表性增益，导频保留既有25%节省，相位保留既有损失范围；表III以跨SNR的活动更新效果为主，设备数与活动概率以固定资源下的负载趋势为主。候选直接说明整机改善与无需单独训练方差模型这一既有设计特点，但不将整机差距归因于单独的方差模块。
 
 复核认为现有分析维度覆盖主要研究主张，当前优先完善贡献与证据的对应，不新增强制组件消融。图7–10的数据更新仍按既定阶段进行，本轮不改变采用状态。独立去噪高SNR排序、跨信道A/B在6 dB的例外，以及已知／估计相位比较的范围均保留。
 
@@ -1217,7 +1309,7 @@ A小节、全部数学环境、表格、图件、标签和引用保持。预览�
 
 已向作者解释：附录主SNR迭代上限统计仍为旧结果，GP-MP的三次与GP-MP-EP的两次应按当前已采用结果同步为两次与零次；本轮仅说明，未更改该段。图7–10继续保持现有采用状态，不启动或调整实验。当前正式第六章即Shen为主的采用稿，不再作为待合并候选。
 
-详见[采用核验](../checks/ch6_shen_revision_20261108/ADOPTION.json)。原稿副本、编译与页面核验保存于 `/var/folders/ln/cxl1w3fj5l7bw7y1jc2tc4gw0000gn/T/afdm_ch6_adopt_20261108_gjvd8jqs`。
+详见[采用核验](../../archive/paper_cleanup_20261114/checks/ch6_shen_revision_20261108/ADOPTION.json)。原稿副本、编译与页面核验保存于 `/var/folders/ln/cxl1w3fj5l7bw7y1jc2tc4gw0000gn/T/afdm_ch6_adopt_20261108_gjvd8jqs`。
 
 
 ## 2026-11-08：作者报告 Q=8 调整阻尼后恢复性能，继续采用白噪声训练
@@ -1323,7 +1415,7 @@ VI-A统一写为“The evaluation protocol specifies $1{,}000$ Monte Carlo trial
 
 ## 2026-11-09：按文献对照重新评估实验图表分组
 
-作者认为上一轮虽然使去噪图先于表III，但图片分散、阅读割裂，要求对照已有论文判断更合适的做法。因此本轮重开的是图表排版安排，不涉及实验或正文结论。逐页查看Cai正式版、Shen作者版及Arvinte–Tamir录用作者版，并核对TWC官方图表随正文放置要求。记录见[定点核对](../checks/layout_review_20261109/corpus_manifest.md)。
+作者认为上一轮虽然使去噪图先于表III，但图片分散、阅读割裂，要求对照已有论文判断更合适的做法。因此本轮重开的是图表排版安排，不涉及实验或正文结论。逐页查看Cai正式版、Shen作者版及Arvinte–Tamir录用作者版，并核对TWC官方图表随正文放置要求。记录见[定点核对](../../archive/paper_cleanup_20261114/checks/layout_review_20261109/corpus_manifest.md)。
 
 推荐图4与图5占第10页顶部两栏，表III放在图5下方；图6–9在第11页保持两栏各两幅的完整组，图10继续跨栏。该安排兼顾图组完整、图4在表III前及相关文字的位置，不将不同文献中的具体浮动位置当作期刊硬规定。
 
@@ -1341,7 +1433,7 @@ VI-A统一写为“The evaluation protocol specifies $1{,}000$ Monte Carlo trial
 
 ## 2026-11-09：全文按 Cai / Shen 对照精简
 
-作者要求删除训练/验证场景互斥说明，并进一步明确：即使影响模型定义、比较条件或结论含义的限定，也须核对 Cai 和 Shen 的实际写法。本轮据此重开全文冗余审查，通读摘要、第I–VII章、图注和算法，对照两篇原文的模型、推导及实验章节，正式采用正文23处局部替换，附录合并4处操作细节。逐类证据、取舍及修改文本见[对照记录](../checks/concision_review_20261109/REVIEW.md)。
+作者要求删除训练/验证场景互斥说明，并进一步明确：即使影响模型定义、比较条件或结论含义的限定，也须核对 Cai 和 Shen 的实际写法。本轮据此重开全文冗余审查，通读摘要、第I–VII章、图注和算法，对照两篇原文的模型、推导及实验章节，正式采用正文23处局部替换，附录合并4处操作细节。逐类证据、取舍及修改文本见[对照记录](../../archive/paper_cleanup_20261114/checks/concision_review_20261109/REVIEW.md)。
 
 正文删除场景互斥声明、重复贡献收益、重复模型选择和噪声分布说明、算法中已给出的随机向量复用与最后迭代返回说明，以及结果句尾重复的tested/evaluated settings。每场景信道构造、固定验证噪声、配对种子、去噪基线实现和局部搜索步骤保存到评估附录源文件；附录不编入main。导频目标改为达到−12 dB时16帧与20帧的直接比较，仍为20%减少；所有低导频数值、排序和跨信道例外保持。
 
@@ -1354,11 +1446,551 @@ VI-A统一写为“The evaluation protocol specifies $1{,}000$ Monte Carlo trial
 
 作者要求先提供意见，再逐项决定。本轮仅落实作者同意的第3、4、5、6、7、9项，共9处局部替换：调整i.i.d.位置，补足by exploiting、冠词和marginalizing over，明确Gaussian投影与求导句的动作关系，补足活动阈值和停止容差表达。修改涉及第II、III、IV、VI节。后续语言润色继续先给意见，区分语法问题与可选风格偏好；引用编号作主语的既有表达可以保留。
 
-公式、数值、技术术语、引用及其支持关系、结论强度均保持。全部图表、算法、标签与文献编号保持。主稿编译后仍为13页；第4、5、6、9页目视检查通过，其余页面逐像素一致。无越栏、缺字或未定义引用告警，原有underfull和PDF版本提示保留。未作额外排版调整。逐处修改及核验见[修改清单](../checks/language_polish_20261109/EDITS.json)与[核验记录](../checks/language_polish_20261109/VALIDATION.json)。
+公式、数值、技术术语、引用及其支持关系、结论强度均保持。全部图表、算法、标签与文献编号保持。主稿编译后仍为13页；第4、5、6、9页目视检查通过，其余页面逐像素一致。无越栏、缺字或未定义引用告警，原有underfull和PDF版本提示保留。未作额外排版调整。逐处修改及核验见[修改清单](../../archive/paper_cleanup_20261114/checks/language_polish_20261109/EDITS.json)与[核验记录](../../archive/paper_cleanup_20261114/checks/language_polish_20261109/VALIDATION.json)。
 
 
 ### 同日：补充落实第2、8项语言修改
 
 作者确认后，第II节采用While句式，说明逐帧独立调制解调与接收端联合处理的关系；第V节算法介绍改为“Algorithm … presents the pseudocode for GP-MP.”。参考用法核对：Shen作者版第4页II-B介绍独立调制解调及接收端联合处理；Cai正式版第8页使用pseudocode，第10页使用pseudo-code。此处采用本稿局部润色，并非逐字引用。
 
-两处替换的数学、数值、术语和引用核验通过，技术含义与结论保持。main.pdf仍为13页，第3、6页目视检查通过，其余页面逐像素一致。main.aux与图件字节保持，无越栏、缺字或未定义引用告警。差异及备份路径见[核验记录](../checks/language_polish_20261109/items_2_8/VALIDATION.json)。
+两处替换的数学、数值、术语和引用核验通过，技术含义与结论保持。main.pdf仍为13页，第3、6页目视检查通过，其余页面逐像素一致。main.aux与图件字节保持，无越栏、缺字或未定义引用告警。差异及备份路径见[核验记录](../../archive/paper_cleanup_20261114/checks/language_polish_20261109/items_2_8/VALIDATION.json)。
+
+
+## 2026-11-09：NMSE比较措辞
+
+按作者确认，将第六章两处incurs an NMSE increase改为the NMSE of GP-MP-EP is ... dB higher than that of GP-MP。数值、单位、方法名称、比较方向、引用及结论保持。主稿重新编译为13页，全部标签与文献编号保持；第11–13页目视核验通过。自然分页变化使VI-E小节起始移至第11页，未调整排版参数。main.aux的绘图及资产来源哈希同步。核验见[本轮记录](../../archive/paper_cleanup_20261114/checks/language_polish_20261109/nmse_wording/VALIDATION.json)。
+
+
+## 2026-11-09：实验结果分析聚焦与收敛图调整
+
+作者逐项确认后，本轮精简表III后的次要接收机排序比较，删除SNR分析中重复的方差模型训练说明；跨信道分析保留两个学习接收机的相对性能取决于profile与SNR的概括，不再逐点列举，图中全部结果保持。此前记录中的逐点分析要求由本次作者确认更新。图8、9分析及导频分析保持。
+
+收敛图和对应文字现集中比较GP-MP与STMP，绘图配置采用原始汇总中的两组共300个点；原始数据不变。关闭提前停止的说明仅保留于评估协议附录，附录中的图5方法列表同步。未运行训练或实验。
+
+main.pdf仍为13页，公式、表格、引用与全部标签编号保持；图5重绘校验通过，第10–13页目视检查通过。绘图来源、复现说明与main.aux来源哈希同步。记录见[本轮核验](../../archive/paper_cleanup_20261114/checks/experiment_analysis_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：首页作者信息占位
+
+按作者要求，在main.tex首页脚注中加入基金名称／编号、通信作者、学院／实验室、邮编及其余作者邮箱占位，均以方括号明确标识。沿用现有作者顺序、IEEE会员身份、学校及Bo Wang邮箱。此轮供排版使用，具体资料待作者提供。编译后13页，仅首页文字变化，首页目视检查通过，main.aux保持。记录见[核验](../../archive/paper_cleanup_20261114/checks/author_placeholders_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：正式采用实验图表分组
+
+作者指出当前图表排版再次分散，要求修复。本轮在最新正文、收敛图和作者信息占位基础上采用分组：第10页图4左上、图5右上、表III在图5下方；第11页图6与7位于左栏、图8与9位于右栏；第12页图10跨栏。图5和表III放入同一浮动块，各自保留独立图／表标题与编号；实验单栏图采用顶部浮动，顶部占比设为0.8，避免将三项挤入同一栏。该实现取代此前只移动源码位置的临时方案。
+
+未改正文、公式、图注、表格数值、图尺寸或图件。13页、全部标签编号及41篇文献编号保持；第1–9页逐像素一致，第10–13页目视检查通过，无越栏或未定义引用。main.aux来源哈希同步。见[核验](../../archive/paper_cleanup_20261114/checks/figure_grouping_20261109/VALIDATION.json)、[第10页](../../archive/paper_cleanup_20261114/checks/figure_grouping_20261109/page10.png)及[第11页](../../archive/paper_cleanup_20261114/checks/figure_grouping_20261109/page11.png)。
+
+
+## 2026-11-09：图1–3图注精简
+
+作者要求参考Cai、Shen精简图注。图1保留多帧AFDM卫星免授权接入主题与图形改编来源；插图对象和跨帧活动状态的重复解释删除，活动状态定义仍在II-C正文。图2保留式(11)、圆／方节点释义与先验分支来源；按设备块构图和列似然的解释仍由公式、正文及图中标识承担。图3采用Block diagram of GP-MP，并保留去噪示意来源。
+
+参照范围：Cai正式版PDF第4、5、10页图1–3；Shen作者版PDF第3、6、7页图1–3。Cai图2、3本身较详细，故本轮不是把简短图注宣称为统一期刊规定；采用Shen简洁主题式图注及本文所需的节点释义。
+
+源文件仅三处图注改变；正文、公式、图件、引用及编号保持。编译后13页，第2–13页目视检查通过，实验章节分组保持。main.aux来源哈希与大小同步。见[修改](../../archive/paper_cleanup_20261114/checks/captions_1_3_20261109/EDITS.json)、[来源](../../archive/paper_cleanup_20261114/checks/captions_1_3_20261109/SOURCES.json)和[核验](../../archive/paper_cleanup_20261114/checks/captions_1_3_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：去噪图例顺序与75轮收敛展示
+
+按作者要求，图4图例按逐行阅读顺序排列为GP-MP、STMP、Off-grid SBL；GNN-ASPL、GAMP-SBL、SOMP；LS、Gaussian prior、Genie MMSE。仅图例顺序变化，54个数据点及线型保持。图5展示GP-MP与STMP的第1–75轮，绘图配置控制显示范围，原始完整数据保持；两条曲线共150点均与保存数据逐点一致。附录及复现说明中的显示轮数同步为75，实际执行轮数保持300。
+
+重绘与编译通过，13页，只有第10页像素变化；其他页面、main.aux及全部编号保持。图表分组和尺寸保持，目视核验通过。见[绘图记录](../../archive/paper_cleanup_20261114/checks/legend_convergence75_20261109/PLOT_REPORT.json)与[核验](../../archive/paper_cleanup_20261114/checks/legend_convergence75_20261109/VALIDATION.json)。
+
+
+### 同日：去噪图例按列排列
+
+按作者最新指定，图4图例统一采用按列阅读顺序：第一列GP-MP、STMP、Off-grid SBL；第二列GNN-ASPL、GAMP-SBL、SOMP；第三列LS、Gaussian prior、Genie MMSE。重绘和编译通过，13页，仅第10页图例变化，其余页面逐像素保持。曲线及75轮收敛展示保持。核验见[记录](../../archive/paper_cleanup_20261114/checks/denoising_legend_columns_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：结论衔接确认稿采用
+
+作者确认后，将本轮最终结论逐字写入正文：用Then承接生成先验学习，以Based on this learned prior引出GP-MP接收机，明确去噪器与密度比估计器的用途。保留多帧观测收益、非稀疏／非栅格对齐建模特点、无需单独训练方差模型、无需显式边缘似然计算及既有实验结论。衔接组织参考Shen作者稿VI Conclusion（PDF第15页）的Then与based on句式，具体对象按本稿方法表述。
+
+编译后13页，仅第12页发生像素变化；main.aux、编号、其他页面及实验图表分组保持。第12页目视检查通过。见[修改差异](../../archive/paper_cleanup_20261114/checks/conclusion_adopted_20261109/CHANGES.diff)与[核验](../../archive/paper_cleanup_20261114/checks/conclusion_adopted_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：算法框顶部横线
+
+按作者明确指示，将Algorithm 1顶部横线由默认0.4 pt加粗为0.8 pt。算法内容、缩进、其他横线及字号保持。重新编译13页，仅第7页像素变化，main.aux及其他页面保持，第7页目视检查通过。核验见[记录](../../archive/paper_cleanup_20261114/checks/algorithm_toprule_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：Notation首行缩进
+
+对照Cai正式版PDF第3页的Notations段落，按作者要求移除main.tex中Notation之前的noindent，恢复IEEEtran普通段落首行缩进；标题斜体和符号说明内容保持。13页，仅第2页像素变化，main.aux及其他页面保持。缩进显示检查通过，见[核验](../../archive/paper_cleanup_20261114/checks/notation_indent_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：维度展开与操作罗列的细粒度精简
+
+作者确认上一轮精简建议，并进一步明确应筛查具体维度、索引展开及详细操作的罗列。本轮按该要求重新核对全文，采用15处正文局部修改：压缩重复采样索引、合并AFDM/OTFS维度说明、以逐块赋值替代重复矩阵堆叠、删除概述中已由算法给出的平均与下限步骤，以及精简网络输入打包、逐层嵌入/卷积配置、候选搜索预算、停止说明和结果重复句。移出的张量尺寸、数值变换、层配置、候选预算与归一化对象写入已有评估附录源码；附录仍不编入main。具体逐项前后文本及Cai/Shen依据见[实施记录](../../archive/paper_cleanup_20261114/checks/fine_detail_revision_20261109/REPORT.txt)。
+
+首次定义观测模型的维度及堆叠、实复数方差换算、有限差分、预条件化、核心算法步骤、AFDM/OTFS维数收益及比较条件保留；不按“有维度/有步骤”机械删除。新的网络简述描述本文实际输入与功能，不声称两篇含有同构分类器。摘要、引言、学习推导和结论原文保持。
+
+文字精简后移动图4及图5/表III的源码位置，恢复第10页两栏分组、第11页图6–9、第12页图10跨栏。main.pdf仍13页；显示公式环境、算法、图表内容、58个编号公式、全部标签编号及41篇文献保持。内联堆叠等价改写、重复索引删除和数字迁移分别登记，不将全文数字出现次数宣称为保持。变动页3、5–13已目视检查，1、2、4页逐像素保持；无越栏、缺字或未定义引用。main.aux来源哈希同步。未运行训练/实验，未上传GitHub。见[核验](../../archive/paper_cleanup_20261114/checks/fine_detail_revision_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：第II–VI章细粒度第二轮筛查
+
+作者要求再查第2–6章。本轮在上一轮修改基础上逐句检查维度、索引、堆叠及操作罗列，仅采用3处局部去重：删除VI章式(55)后的逐元素导频能量展开（II-B已有同一范数约束）、删除Gaussian-prior基线对训练信道功率的第二次定义、删除V章反馈阻尼段在后续公式前重复的一句预告。式(55)末逗号同步改为句号，数学内容不变。II、III、IV正文保持；V中Y_s与II中Y的不同排列、IV中的实复数尺度与2D维数及必要分布定义保留，不因本轮复查而机械缩减。逐章判定及三处前后文本见[记录](../../archive/paper_cleanup_20261114/checks/fine_detail_second_pass_20261109/REPORT.txt)。
+
+主稿仍13页，仅7–9页像素变化并完成目视检查，其余10页逐像素保持；58个公式编号、全部标签/引文编号、算法、图表及实验分组保持。数字计数因删去重复能量展开而变化，已单独解释。无越栏、缺字或未定义引用。未运行训练/实验，未上传GitHub。见[核验](../../archive/paper_cleanup_20261114/checks/fine_detail_second_pass_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：第II–VI章变量定义核查
+
+作者要求检查变量定义中的错误、重复和冗余。此次核对首次定义、符号复用、维度/索引及跨章角色，采用5处简短修正：明确N_CPP为采样点数、W_s为噪声矩阵、p为名义设备活动概率、T及e为评估场景集合及其索引；logit/sigmoid定义的示意自变量统一为x。最后一项是可读性改进，不将原函数写法认定为数学错误。
+
+主观测和相位观测的不同排列保持；p、rho、p_k以及不同阶段的均值/方差变量各有用途，不机械合并。rho与p的采样关系仍按此前决定仅留在附录。无需为已由公式/表格定义的量再补重复尺寸或操作说明。核查结论限于此次阅读与一致性检查，不宣称完成独立理论证明。见[记录](../../archive/paper_cleanup_20261114/checks/variable_definitions_20261109/REPORT.txt)及[逐项修改](../../archive/paper_cleanup_20261114/checks/variable_definitions_20261109/EDITS.json)。
+
+编译后13页；显示公式、算法、图表及编号保持。变动页3、6、7、8、9目视检查通过，其余8页逐像素保持，实验图表分组保持；无越栏、缺字或未定义引用。附录源码未改，未运行训练/实验，未上传GitHub。见[核验](../../archive/paper_cleanup_20261114/checks/variable_definitions_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：评估指标记号与活动概率措辞精简
+
+作者确认采用直接文字说明评估范围，并要求活动概率使用简洁名称。VI章NMSE改用已有X_k及其估计，文字明确累计全部评估场景、全部K个设备；AER分母写为K与评估场景数的乘积。原总误差/总能量口径保持。p在正文、图9图注及结果分析中统一称device activity probability或activity probability，图9横轴同步。采样协议及p与rho关系继续保留于既有附录。
+
+图9从保存数据重绘，30个曲线点逐项保持，像素变化仅横轴标题区域。主稿13页，只有第8、9、11页变化并完成目视检查，公式及文献编号、实验图表分组保持，无越栏、缺字或未定义引用。main.aux来源记录同步。未运行训练或实验。见[修改](../../archive/paper_cleanup_20261114/checks/metric_notation_20261109/CHANGES.diff)、[绘图核验](../../archive/paper_cleanup_20261114/checks/metric_notation_20261109/PLOT_REPORT.json)及[整体核验](../../archive/paper_cleanup_20261114/checks/metric_notation_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：全文变量命名必要性审计
+
+作者要求核对全篇是否存在不必要命名及自造名称。本轮只审计，逐组检查正文、算法、图表，另读附录源码。结论不采用“所有符号都来自参考文献”的表述：已有专业概念有来源，本文量的字母/上下标可自行定义，GP-MP/GP-MP-EP/MFLE/GPJD是此前批准的作者名称。没有发现必须继续删除的主稿记号；ell_k因图3及高斯近似对照而保留，其他短中间量按表达用途判断。未新增符号表或修改正文/图件。完整清单和证据边界见[审计报告](../../archive/paper_cleanup_20261114/checks/naming_scope_audit_20261109/REPORT.txt)。
+
+
+### 2026-11-09：作者追问ell_k/ell_k^G的必要性后补充对照
+
+直接复读Cai正式版III-B2式(30)（PDF7）：直接给出活动后验概率，没有额外命名本文的两种log-ratio。Shen作者版III-A式(21)（PDF7）采用能量检测；III-B式(24)–(25)同时为较长的概率消息引入辅助量rho_A，故不能将两文概括为从不设置中间变量，也不能把Shen能量判决直接移植为本文活动更新。
+
+先前“有图中复用/对照用途，所以保留”的判断只说明可以保留，不能证明必须保留。根据作者希望减少一次性别名的偏好，现建议IV-C直接将z_phi(R_k,v,F_k)写入sigmoid；VI-C直接将高斯近似的解析表达式写入p_k，图3相应使用已有分类器输出标识。保留统计量的文字解释，不再需要ell_k及ell_k^G别名。此为精简建议，未写入正文或图件，概率公式的计算含义不变。
+
+
+## 2026-11-09：短表达式别名专项复查（建议，未采用）
+
+作者要求按ell_k同类问题再读全文。此次不只判断符号是否有用，而检查直接代入能否减少记忆负担且保留清晰度。新增建议精简N_s、J_m、tau_star、G_0共4个记号：分别直接使用QN、均值Jacobian表达式、tr(P_R)/D，以及把G_0的标量相位并入原指数。公式内容及编号标签可保持。此前“未发现其他值得精简”的笼统判断由本轮更细的筛查更新；并非发现新的模型错误。b、f_L、Delta_ell f、C_iter等因多处复用或替代长表达式而保留。附录d_var另列可选清理，不混入主稿问题。未修改正文、图或PDF。见[报告](../../archive/paper_cleanup_20261114/checks/alias_review_20261109/REPORT.txt)及[逐项方案](../../archive/paper_cleanup_20261114/checks/alias_review_20261109/PROPOSALS.json)。
+
+
+## 2026-11-09：别名精简正式采用
+
+作者确认后，采用N_s、J_m、tau_star、G_0的直接代入方案，并将学习/高斯活动更新直接写为相应分类器输出/解析表达式，省去ell_k及ell_k^G；图3输出标识和绘图源码同步为z_phi。附录去掉d_var别名，保留偏差表达式。物理模型、统计计算及算法步骤保持。该条将此前两轮待采用建议更新为已采用。
+
+末尾两条高斯对照公式合并为式(57)，其他公式编号保持；主稿仍13页，仅6、7、10页变化并完成目视检查，图表分组保持。图3因配置路径中的示例数据/参考PDF缺失，采用现有PDF的局部矢量文字更新，标识区域外像素保持；未称为全图重新生成。源代码和aux来源记录同步。详见[记录](../../archive/paper_cleanup_20261114/checks/alias_adopted_20261109/REPORT.txt)、[差异](../../archive/paper_cleanup_20261114/checks/alias_adopted_20261109/CHANGES.diff)和[核验](../../archive/paper_cleanup_20261114/checks/alias_adopted_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：别名精简后全文通读
+
+按作者要求重新通读当前摘要至结论、公式、算法与图表，并查看13页PDF。本轮未发现新增的必须修改项；不再为删除符号而改动已清楚的表达。57个连续编号公式、41篇文献、104个标签核对通过，图3公式引用与正文匹配，实验图表分组保持。复杂度段的空间协方差操作经当前调用链确认仍实际执行，不因正文标量化便认定为残留。正文/PDF/图件保持，既定实验和终稿事项按原决定处理。见[通读记录](../../archive/paper_cleanup_20261114/checks/readthrough_after_alias_20261109/REPORT.txt)及[核验](../../archive/paper_cleanup_20261114/checks/readthrough_after_alias_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：参考文献格式与公开出版记录核查
+
+按作者要求，对主稿实际41条书目检查IEEE格式与公开出版记录。41条均找到对应公开记录，未发现虚构条目；29篇期刊、9篇会议、2份3GPP文件、1篇博士论文须按类型区别。Ding[10]目前查到In Press/Early Access；Huang[8]有多个索引对应现有DOI及卷页，但本轮未取得IEEE原页，保留出版商级核验边界，不宣称41条全部直接通过官方页面核查。
+
+待采用的格式建议：保护[3]Doppler、[32][40][41]Bayesian及[39]Part的大小写；补NeurIPS页码；核准[10]IEEE在线发布日期后规范early access日期格式；传统期刊月份及学位论文地点作为信息补全。Zou会议版作者顺序和RefineNet现有IEEE页码有依据，不误改为预印本顺序或CVF另一套页码。正文引用与书目41条一一对应、首引顺序一致。本轮未改references.bib、正文或PDF。详细来源层次、局限及逐条记录见[核查报告](../../archive/paper_cleanup_20261114/checks/reference_audit_20261109/REPORT.txt)和[结构化清单](../../archive/paper_cleanup_20261114/checks/reference_audit_20261109/AUDIT.json)。
+
+
+## 2026-11-09：参考文献格式修正采用
+
+作者要求完善上一轮核查问题后，修正16条书目：Doppler/Bayesian/Part大小写保护，NeurIPS页码，7条已核实期刊月份，博士论文地点，Menon的PMLR丛书信息，以及Ding的Early Access日期。Ding的Surrey记录本轮明确读到First online publication date为2026-09-01，区别于2026-08-28接受日期，故采用该日；不冒称来自本轮IEEE原页核查。Huang出版商原页核验边界保留，无证据不改卷页。
+
+主稿仍13页、41条书目，第1–11页逐像素保持，第12–13页目视通过；全部公式/标签和引用编号映射保持。最终BibTeX无错误，无未定义引用或越栏，aux来源哈希同步。未改正文或图件。见[修改与核验](../../archive/paper_cleanup_20261114/checks/reference_revision_20261109/REPORT.txt)、[差异](../../archive/paper_cleanup_20261114/checks/reference_revision_20261109/CHANGES.diff)及[验证](../../archive/paper_cleanup_20261114/checks/reference_revision_20261109/VALIDATION.json)。
+
+
+## 2026-11-09：Huang 本地正式出版 PDF 核验完成
+
+作者提醒检查本地下载版本后，在相邻 hybrid access 研究目录找到 huang2026.pdf，已提取首页及末页并目视核对首页。IEEE 出版版明确标注 Wireless Communications Letters，第15卷，2026年，2949–2953页，DOI 10.1109/LWC.2026.3689601；出版日期2026-05-01，当前版本日期2026-05-08。作者、题名及现有书目卷页均一致，无须依赖在线页面取得这些字段。本条更新前述Huang出版商级核验待办为已完成（依据本地出版商PDF，非网页）；不将网络访问失败视为文献问题。未修改正文、书目或主稿PDF。来源路径、哈希及字段证据见[本地核验](../../archive/paper_cleanup_20261114/checks/reference_revision_20261109/HUANG_LOCAL_VERIFICATION.json)。
+
+
+## 2026-11-12：引言文献扩充与衔接修改正式采用
+
+作者审阅完整引言及最后三段修订后明确要求写入正文。本轮采用最终确认文字：将新增研究自然并入预补偿、JADCE、稀疏恢复、结构化先验与学习信道先验的既有论述；离网估计补充集中为一句。AFDM 波形段以参数可配置性及卫星接入适用性收尾；接收机相关工作直接承接稀疏建模与分数时延／多普勒问题。学习权重文献并入 CS 建模句；score-based generative models 统一概括相应学习先验研究；AFDM 与两阶段接收机的描述以方法作主语、引用置于句末。STMP 说明增加 OFDM-based grant-free random access 的原应用背景。
+
+引言包含30条不同引用，新增11条书目（9篇期刊论文、2篇预印本），另4条既有方法／建模文献在引言中增引。原41条实际引用全部保留，全文现52条，按首次引用顺序重新编号。新条目的作者、卷期页码及出版状态按出版商、作者机构、作者公开记录及 arXiv 页面核对，来源见[文献依据](../../archive/paper_cleanup_20261114/checks/introduction_30refs_adopted_20261112_204345/SOURCES.json)。摘要、三项贡献、章节安排、II–VII正文、公式、算法与图件源文件保持。
+
+编译后仍13页；30条引言引用恰为[1]–[30]，104个标签的编号值保持，无未定义引用、缺字或越栏。已检查全部页面，重点放大核对引言与参考文献；第10、11页逐像素保持，实验图表分组保持。main.aux及绘图配置的来源哈希、大小记录同步；未运行训练或实验。见[采用稿](../../archive/paper_cleanup_20261114/checks/introduction_30refs_adopted_20261112_204345/ADOPTED_INTRODUCTION.tex)、[差异](../../archive/paper_cleanup_20261114/checks/introduction_30refs_adopted_20261112_204345/INTRODUCTION.diff)及[核验](../../archive/paper_cleanup_20261114/checks/introduction_30refs_adopted_20261112_204345/PDF_VALIDATION.json)。
+
+
+## 2026-11-12：II–V 引用精简与方法图图注调整
+
+作者要求精简第二至第五章的引用，避免对普通代数更新逐式归因，并明确要求删除三张方法图图注中的来源说明。本轮将引用位置由36处减至16处（II：15→5；III：7→2；IV：6→5；V：8→4）。系统模型出处集中在模型首次引入处，AFDM变换改引原始波形来源；MP/EP基础集中在第三章开头。删除高斯条件均值／协方差前的逐式引文，以及零活动块、后验分解、Gaussian site、混合分布、阻尼和复杂度计数处的重复引用。Tweedie、DSM、均值导数与方差、随机散度估计、密度比、MDL、边缘似然及方差更新等实际使用的理论／方法依据保留；相位目标的来源改置于方法引入句。内部公式对应和原型核查记录继续保留，本次是引用位置与表达的精简。
+
+图1的卫星、覆盖区域和阵列改由独立几何图元绘制；图3去噪网络图标由独立节点和边绘制，图中信道示例、文字、数值与连线保留。图2由本稿后验分解绘制，画面逐像素保持。三处图注现只保留主题及必要节点释义。绘图代码、依赖、当前图源说明和PDF元数据同步；绘图依赖不再要求两份参考论文的图形文件。既有历史来源记录不回溯改写。图3本轮局部替换图标，未宣称从缺少的本地样本文件重新生成整张图。
+
+重新编译仍为13页，全文47条实际引用，引言30条及编号[1]–[30]保持。II–V显示公式逐字保持，104个标签编号保持，摘要、引言、VI–VII源码与七幅实验图保持。无越栏、缺字或未定义引用；第1、10–12页逐像素保持，其余页面已检查。未运行训练或实验。见[修改明细](../../archive/paper_cleanup_20261114/checks/citations_and_captions_20261112_210943/EDITS.json)、[图形核验](../../archive/paper_cleanup_20261114/checks/citations_and_captions_20261112_210943/FIGURE_VALIDATION.json)与[PDF核验](../../archive/paper_cleanup_20261114/checks/citations_and_captions_20261112_210943/PDF_VALIDATION.json)。
+
+
+## 2026-11-12：II–V 近似句式与引用范围清理
+
+作者要求继续检查第二至第五章容易引起借鉴／抄袭疑虑的表述。本轮通读并对照本地Cai、Shen参考稿，确认活动模型解释、标量协方差近似、左右消息流动和协方差段开头等句式较接近；另依据历史术语记录检查场景与传输方案的引入。共14处局部改写：按本稿物理对象、后验分解、模块接口与计算操作重新组织文字；Manor出处移到已知均值导数关系，后续独立说明对训练去噪器的应用。第五章未发现须继续改写的同类问题，保持原文。基础方法与理论的引用保留，II–V仍16处引用，全文47条，引言30条。
+
+此次替换与参考稿贴近的句式，不以删除实际方法依据来表示原创；辅助文本比对仅作定位，不作为正式查重结果或算法新颖性认证。既往“整句仅替换符号”等写法不作为当前段落的写作要求，技术术语继续依照文献原义。
+
+显示公式、算法、数值、模型假设、近似性质和全部图件保持；104个标签值与全部文献编号保持。重新编译13页，无越栏、缺字或未定义引用；第2–6页目视核对通过，其余8页逐像素保持。未运行训练或实验。见[报告](../../archive/paper_cleanup_20261114/checks/sections_ii_v_prose_20261112_214443/REPORT.md)、[逐项修改](../../archive/paper_cleanup_20261114/checks/sections_ii_v_prose_20261112_214443/EDITS.json)及[PDF核验](../../archive/paper_cleanup_20261114/checks/sections_ii_v_prose_20261112_214443/PDF_VALIDATION.json)。
+
+
+## 2026-11-12：II–V 修改范围确认
+
+作者明确本轮目标仅为删除“沿用某篇论文”“某个公式由某篇论文给出”等显式来源说明，语言风格暂不调整。因此上一条“II–V近似句式与引用范围清理”中的14处语言改写全部撤回，II–V源码恢复为已完成引用精简和图注调整后的版本。前一轮已确认的36→16处引用精简、图注及图形修改保留。
+
+按本次限定重新复核全部16处引用及周边语句，未发现需新增删除的同类明确归因说明。OTFS维度比较介绍的是对比方案；模型和基础理论引用仍按先前约定保留。不再把句式接近或普通措辞作为本轮修改依据。
+
+重新编译13页，47条书目、104个标签编号保持；与语言改写前PDF的13页逐像素一致，无越栏、缺字或未定义引用。未改公式、算法、图件或实验。见[范围与恢复核验](../../archive/paper_cleanup_20261114/checks/sections_ii_v_attribution_20261112_215914/VALIDATION.json)。
+
+
+## 2026-11-12：作者询问是否可定稿后的投稿收尾核查
+
+本轮仅评估，不修改论文或启动实验。判断为研究主线和正文结构可收口，当前PDF仍需完成既定实验收尾及投稿格式信息。图10仍指向20261028历史500场景结果，最终白噪声模型替换状态在实验索引和图源登记中仍为待完成；此前统一1000次的最终评估口径与当前导频500场景、收敛30场景的关系仍需在终稿时落实，沿用已约定阶段验收，不将其重新列为算法缺陷。图8、9已替换；本地记录止于图件采用，不据此把旧场景372问题归到新图。M1–M5已关闭／留档状态保持。
+
+新增格式证据：本轮直接核对[TWC现行指南](https://www.comsoc.org/publications/journals/ieee-twc/policies-guidelines)，摘要范围75–200词，初稿上限13页。当前摘要按空格计238词，需保留已认可逻辑并压缩；13页满足页数上限。此为作者主动询问最终投稿状态及新核对的官方要求，不以语言偏好重开摘要故事。首页仍有Z. Hu邮箱占位，需定稿前补齐。详见[评估记录](../../archive/paper_cleanup_20261114/checks/submission_readiness_20261112_220719/ASSESSMENT.json)。
+
+
+## 2026-11-12：194词摘要正式采用
+
+作者审阅精简稿及删除线／加粗对照后确认采用。已将确认的194词摘要写入main.tex，除源码换行外与候选稿逐字一致，替换此前238词版本。保留GNSS-independent问题、多帧AFDM紧凑表示和观测收益、学习信道先验的动机、同一去噪器的均值与方差估计、密度比活动检测及既有性能比较；压缩模块迭代展开和重复说明。此前投稿收尾检查中的摘要长度项已完成。
+
+仅摘要文字改变，主文件其余内容、全部分节、图件和书目库保持。编译仍13页、47条引用，104个标签值及全部文献编号保持，无越栏、缺字或未定义引用。第1–4页重排并目视检查通过，第5–13页逐像素保持；来源登记同步核验。见[采用摘要](../../archive/paper_cleanup_20261114/checks/abstract_194words_20261112_223922/ABSTRACT.txt)、[差异](../../archive/paper_cleanup_20261114/checks/abstract_194words_20261112_223922/CHANGES.diff)及[核验](../../archive/paper_cleanup_20261114/checks/abstract_194words_20261112_223922/PDF_VALIDATION.json)。未运行训练或实验。
+
+
+## 2026-11-12：结论逻辑衔接稿正式采用
+
+作者确认采用本轮180词结论，按“AFDM跨帧观测结构—接收机联合推断—性能与导频收益”的顺序组织。已逐字写入正文，仅作LaTeX负号及空格转换。均值与方差解析关系、学习先验及密度比估计沿用现有术语依据；16帧与20帧达到−12 dB NMSE的比较沿用VI-D的现有结果，保留每帧能量固定的条件。
+
+仅结论文字改变，摘要、其余正文、公式、图件和书目库保持。编译仍为13页，104个标签值及47条文献编号保持，无越栏、缺字或未定义引用。第11–13页重排并完成目视检查，其余10页逐像素保持；图6–9与图10的分组位置保持。来源登记同步核验。见[采用文本](../../archive/paper_cleanup_20261114/checks/conclusion_adopted_20261112_231727/CONCLUSION.txt)、[差异](../../archive/paper_cleanup_20261114/checks/conclusion_adopted_20261112_231727/CHANGES.diff)和[核验](../../archive/paper_cleanup_20261114/checks/conclusion_adopted_20261112_231727/PDF_VALIDATION.json)。本次未运行实验。
+
+
+## 2026-11-12：199词摘要润色稿正式采用
+
+作者提供Gemini润色摘要并确认写入。采用全部5处措辞调整：Internet of Things、yield more observations、the receiver's channel denoiser、the posterior mean and variance及the proposed receiver；除源码换行外与作者提供文本逐字一致，按空格计199词。技术含义、论证结构和结果方向保持，专业术语沿用现有依据。
+
+仅摘要文字变化，引言、结论、其他分节、公式、图件和书目库保持。编译仍13页，104个标签值及47条文献编号保持；无越栏、缺字或未定义引用。首页目视检查通过，第2–13页逐像素保持；来源登记校验通过，无需更新。见[采用文本](../../archive/paper_cleanup_20261114/checks/abstract_199words_20261112_233828/ABSTRACT.txt)、[修改差异](../../archive/paper_cleanup_20261114/checks/abstract_199words_20261112_233828/CHANGES.diff)及[核验](../../archive/paper_cleanup_20261114/checks/abstract_199words_20261112_233828/PDF_VALIDATION.json)。未运行实验。
+
+
+## 2026-11-12：引言八项措辞修改采用
+
+作者确认采用评阅中选定的8项修改：Internet of Things、pre-transmission handshaking、terrestrial–satellite、device-side precompensation、fractional delays and Doppler shifts、representation in [3]、fewer unknown coefficients以及Numerical results show。已对照修改前版本逐项核验，除源码换行外恰为这8项。技术术语沿用既有依据；unknown coefficients对应本文II-B/II-C的有效信道表示和待估计系数。引用写法依据IEEE Editorial Style Manual for Authors的References段，编号[3]及其支撑范围保持。
+
+摘要、结论、其他分节、图件和书目库保持。引言仍含30篇文献；编译仍13页，104个标签值及47条文献编号保持。第1–2页目视核对通过，第3–13页逐像素保持，无越栏、缺字或未定义引用；来源登记校验通过，无需更新。见[八项修改](../../archive/paper_cleanup_20261114/checks/introduction_eight_edits_20261112_234525/EDITS.json)、[差异](../../archive/paper_cleanup_20261114/checks/introduction_eight_edits_20261112_234525/CHANGES.diff)及[核验](../../archive/paper_cleanup_20261114/checks/introduction_eight_edits_20261112_234525/PDF_VALIDATION.json)。本次未运行实验。
+
+
+## 2026-11-12：结论四处措辞修改采用
+
+作者确认后采用四处调整：posterior mean前补the；密度比活动估计句以avoiding a Gaussian approximation of the channel posterior说明该方法特点；The improvement also reduces改为These gains also reduce；16 frames明确为16 pilot frames。已核验除源码换行外恰为上述四处修改。专业术语与含义沿用摘要、引言及IV-C已有依据，每帧能量固定的比较条件与原有定量结果保持。
+
+摘要、引言、其他分节、图件和书目库保持。编译仍13页，104个标签值及47条文献编号保持。第11–12页目视检查通过，其余11页逐像素保持，无越栏、缺字或未定义引用；来源登记校验通过，无需更新。见[采用结论](../../archive/paper_cleanup_20261114/checks/conclusion_four_edits_20261112_235018/CONCLUSION.txt)、[四处修改](../../archive/paper_cleanup_20261114/checks/conclusion_four_edits_20261112_235018/EDITS.json)及[核验](../../archive/paper_cleanup_20261114/checks/conclusion_four_edits_20261112_235018/PDF_VALIDATION.json)。本次未运行实验。
+
+
+## 2026-11-13：Gemini全文建议的针对性核对
+
+作者要求评价外部评阅意见，本轮仅核对建议，不修改正文或启动实验。逐项对照源码和PDF后，十条勘误中确认仍有Z. Hu邮箱占位；其余九条未证实，其中p与rho有不同定义，不能按意见机械统一。几何计算应以当前波束内最近点为公共时延参考；最外侧128 km波束的端点差分约696.7 μs，与699 μs上界相容，原30°最小仰角无需改名。固定子载波间隔时CPP采样点数随N增加，不能采用“增大N即可降低CPP比例”的解释。
+
+相位近似适用场景在V-B已有说明，进一步展开一次性C_phase计数可作为局部完善建议；不将未展示跨NLoS估计相位曲线直接判为算法失败，也不重开已完成的M4。表III支持活动更新比较，不据此断言有限差分与裁剪导致失效的完整因果链。既定图10与最终评估口径收尾状态保持。详细核对、源码哈希、计算和图像证据见[记录](../../archive/paper_cleanup_20261114/checks/gemini_full_review_20261113/REVIEW.json)及[计算](../../archive/paper_cleanup_20261114/checks/gemini_full_review_20261113/calculations.json)。
+
+
+## 2026-11-13：相位估计复杂度补充建议（未采用）
+
+作者要求考虑补充相位估计复杂度。本轮沿GP-MP-EP实际调用路径核对receiver.gp_mp.initialization，确认协方差逆、目标、局部细化与estimate等核心函数与冻结实现AST一致。每次设备坐标更新准备协方差逆及其与观测乘积的成本可写为O(K³+Q²N²(K+M))；这些量在该次更新的候选评估中复用，当前稠密路径矩阵实现的每次目标及梯度评估为O(N³+Q²N²+QNM)。粗搜索、候选数量与坐标轮数共同决定累计C_phase，且只在每块接收机迭代前执行一次。
+
+已给出简短候选段落，完整含粗搜索网格和FFT相位格点的计数保留在核对记录中；未将优化器迭代上限等同于函数求值次数。正文及算法保持，未运行训练、推断或性能测试。见[候选段落](../../archive/paper_cleanup_20261114/checks/phase_complexity_proposal_20261113/PROPOSED_PARAGRAPH.tex)与[逐项计数](../../archive/paper_cleanup_20261114/checks/phase_complexity_proposal_20261113/ANALYSIS.json)。
+
+
+## 2026-11-13：相位估计复杂度段落正式采用
+
+作者确认将审阅后的段落写入第五章复杂度分析。已逐字采用，说明每次设备更新的协方差计算量 O(K³+Q²N²(K+M))、Woodbury 恒等式下 K×K 矩阵分解的来源，以及复用协方差逆后每次目标与梯度评估的计算量 O(N³+Q²N²+QNM)。总成本 C_phase 包含粗搜索和坐标更新，已知相位时为零。术语依据及实现计数沿用本轮候选核对记录。
+
+仅替换 V-C 中该段落，其他正文、公式、算法、书目与图件源文件保持。编译仍13页，104个标签编号和47条文献编号保持；第1–7页逐像素保持，第8–13页重排并完成目视检查，无越栏、缺字或未定义引用。图6–9保持在第11页，图10保持在第12页。main.aux 的当前来源哈希与大小记录已同步；未运行训练或实验。见[采用文本](../../archive/paper_cleanup_20261114/checks/phase_complexity_adopted_20261113_003519/ADOPTED_PARAGRAPH.tex)、[修改差异](../../archive/paper_cleanup_20261114/checks/phase_complexity_adopted_20261113_003519/CHANGES.diff)及[核验](../../archive/paper_cleanup_20261114/checks/phase_complexity_adopted_20261113_003519/PDF_VALIDATION.json)。
+
+
+## 2026-11-13：Gemini 第II–VI章润色建议核查（未采用）
+
+作者要求评价新一轮全文润色建议。本轮逐项对照当前分节源码、既有术语与审阅决定，并核查 IEEE Editorial Style Manual for Authors（2024-07-29版，p.24数学表达规则14）及 Cai、Shen 原文。句首 Eqns. 应改为 Equations，不能按建议直接删除；a LEO、second-order Tweedie’s formula、block-sparsity structure 均不因该意见判为错误。当前正文已有 n_z、N、elevation、phi、v、活动概率标点及 signal covariance rank，相关勘误不成立。
+
+可择要采用的内容包括 precompensate 拼写统一、scene 改用既有 Monte Carlo trial 术语、Bernoulli–Gaussian distribution 表述、目标说明去重，以及第VI章设备数／活动概率段落减少重复用词。正式采用前保留 same minimizers 的含义、噪声方差除以 s²、图9参数 p、聚合NMSE定义和 close to 的比较强度；GP-MP-EP仍描述为估计相位版本。此次仅提供审阅取舍，未修改正文、PDF、算法或实验。包含全局及分章重复项在内的37项核对见[逐项记录](../../archive/paper_cleanup_20261114/checks/gemini_polishing_review_20261113/REVIEW.json)。
+
+
+## 2026-11-13：第II–VI章八类局部润色正式采用
+
+作者确认采用上一轮筛选的8类修改，共10处替换：precompensate拼写统一；句首Eqns.改为Equations；第VI章三处scene改为trial；Bernoulli–Gaussian pdf改为distribution；IV-A目标函数说明去重并保留same minimizers；明确冻结去噪器参数；设备数与活动概率两个结果段落压缩重复措辞。保留固定活动概率／导频数量条件、活跃设备期望数量、NMSE变化方向及原有性能结论强度。修改仅涉及II、III、IV、VI四个分节；摘要、引言、V章、结论、附录、公式、算法、图件与书目保持。
+
+数值、引用、数学表达式及保护术语检查通过，人工语义复核确认数学含义及比较方向保持。编译仍13页、104个标签编号与47条文献编号保持；第2、4、5、6、8、9、11页目视核对通过，其余6页逐像素保持，无越栏、缺字或未定义引用。main.aux保持，当前图源登记校验通过，无须更新。未运行训练或实验。见[逐项修改](../../archive/paper_cleanup_20261114/checks/polishing_eight_edits_20261113_010532/EDITS.json)、[差异](../../archive/paper_cleanup_20261114/checks/polishing_eight_edits_20261113_010532/CHANGES.diff)、[语义核验](../../archive/paper_cleanup_20261114/checks/polishing_eight_edits_20261113_010532/SEMANTIC_AUDIT.json)及[PDF核验](../../archive/paper_cleanup_20261114/checks/polishing_eight_edits_20261113_010532/PDF_VALIDATION.json)。
+
+
+## 2026-11-13：导师原始批注与最新稿的完整对照
+
+作者询问导师此前批注是否全部处理。本轮重新读取用户上传的 jwp-11.11-main.pdf，逐页提取25处批注标记（全部在第1–2页），另提取首页嵌入的红字摘要总体建议，并目视核对首页高亮范围。引言13处标记已有逐项对应；摘要明确GNSS-independent问题、目的先行的AFDM方案、共享紧凑表示及观测收益、学习先验的原因、均值与方差设计及独立活动估计，this model指代问题已消除。原题MIMO高亮现对应标题删除MIMO；该标记无文字，不推断其他意图。
+
+结论：未发现遗漏的明确内容与逻辑意见。第一人称建议按“少用”落实，当前摘要保留两处we；红字指定的句序按论证功能落实，挑战和目的合并在一句中，不将这些处理视为未完成项。此结论是本轮对照判断，并非导师再次确认。仅保存核查记录，未修改正文或PDF，也未开展新的研究审查或实验。见[25处逐项对照及红字建议](../../archive/paper_cleanup_20261114/checks/teacher_comments_status_20261113/RECONCILIATION.json)。
+
+
+## 2026-11-13：Gemini新版PDF错位与漏符号说法核查
+
+作者要求确认新版PDF是否存在第3页串行及其余五处问题。本轮直接查看最新PDF第1、3、6、8、11页及局部高分辨率图像，并逐项对照源码。确认六项中只有首页Z. Hu邮箱占位符真实存在，沿用既有待补状态。第3页左栏下部为II-B引导和导频定义，右栏为式(3)–(8)，beta说明及轨道算例紧随式(8)，无交叉串行；且第3页与上一轮润色前逐像素一致。Figure 7句中的Q、式(2)下的n_z及分类器参数phi均在源码和PDF中正确显示。表I实际为Differential-delay range，不是Differentialdelay -range。
+
+上述错读符合双栏阅读顺序及数学符号识别错误的表现，未据此推断Gemini内部具体处理过程。当前段落顺序无需恢复或移动；本轮未修改正文、PDF或编译文件。见[逐项核验](../../archive/paper_cleanup_20261114/checks/gemini_layout_claims_20261113/VERIFICATION.json)、[第3页图像](../../archive/paper_cleanup_20261114/checks/gemini_layout_claims_20261113/page_03.png)及同目录局部截图。
+
+
+## 2026-11-13：活动更新偏差命题及短证明正式采用
+
+作者确认按审阅后的方案补入正文。IV-C 在贝叶斯对数几率关系之后定义单设备高斯活动更新，将原 VI-C 式(57)前移为式(39)，并新增 Proposition 1 及式(40)：对不同方差的零均值复高斯混合先验，在零观测处，即使采用精确局部后验均值及各向同性协方差，高斯活动更新仍产生严格为正的对数几率偏差。正文保留短证明，使用现有高斯消息更新与 Jensen 不等式；密度比训练随后衔接。没有把该先验族作为实际 NTN-TDL 模型，也没有宣称文献上的首次发现。
+
+采纳外部评阅中补齐局部站点定义和前移公式的建议；不采纳从零点正偏差直接推导虚警率升高或归因 Table III 的解释。Table III 继续仅报告 AER 和迭代上限比例。命题使用精确单设备局部矩，独立于当前跨设备方差平均；不扩展为完整算法收敛或性能保证。
+
+VI-C 删除重复的高斯公式并回引式(39)，说明设备输入的代入。图3活动概率引用从(41)同步为(43)，因配置的原始信道示例缺失，采用已有矢量图中文字编号的局部替换；不是全图重绘，编号区域外像素一致。绘图源本身已按 main.aux 动态读取编号，无需改动。其余公式按引用标签自动重排，算法、数据和权重保持。
+
+主稿编译仍13页；详细排版、标签、来源登记与差异核验见[本轮记录](../../archive/paper_cleanup_20261114/checks/activity_theory_adopted_20261113_103548/VALIDATION.json)及[修改差异](../../archive/paper_cleanup_20261114/checks/activity_theory_adopted_20261113_103548/CHANGES.diff)。未运行训练或接收机实验。
+
+
+## 2026-11-13：命题与证明的格式核查（正文保持）
+
+作者质疑新增 Proposition 1 / Proof 的格式，要求对照已有论文。已提取当前PDF第6页、师兄可移动天线稿第7–8页及Final.pdf第8–9页的字体，并查看实际页面。当前命题为斜体标题加冒号、正体正文，Proof为斜体标题加冒号、正体证明、实心结束方块；Final.pdf为粗体定理标题加句点、斜体命题正文、正体证明；可移动天线稿为粗体命题标题、正体命题正文，三者样式并不相同。
+
+核对IEEE Editorial Style Manual for Authors（2024-07-29版）pp.11–12：命题标题按三级标题、证明标题按四级标题处理，分别首行缩进1em及2em，斜体标题加冒号。IEEEtran HOWTO §XII/§XII-A（p.15）支持newtheorem及IEEEproof，实心QED为默认、空心可选。另以本机实际使用的IEEEtran编译最小样例，日志确认begintheorem明确指定正体正文与斜体标题。因此当前格式符合模板默认，不将其他论文的字体样式视为强制要求；本轮不修改正文或PDF。证据见[核查记录](../../archive/paper_cleanup_20261114/checks/proposition_format_review_20261113/VERIFICATION.json)。
+
+
+## 2026-11-13：扩大命题与证明排版对照样本（正文保持）
+
+按作者要求新增核对9篇论文PDF，其中6篇对应TWC论文：Wang等AFDM前导码（2025，正式发表排版）、Shen（2025，作者稿）、Zhou等NOMA-OTFS（2023，作者稿）、Zhu等LAMP（2021，作者稿）、Liu等Rician MLE（2024，作者稿）、Bemani等AFDM（2023，作者稿）。前五个所检查版本为斜体命题/定理标题加冒号、正体陈述；Bemani为粗体标题加句点、斜体陈述。另核对TSP作者稿、IoTJ投稿稿与技术报告作补充，不混入TWC计数。
+
+当前IEEEtran默认格式有实际论文支持。Proof正文均为正体，标题标点、空实方块和首行缩进存在版本差异；Shen和Wang所检查PDF的Proof约1em缩进，Zhu与Liu作者稿约2em，与当前模板一致。不能由此便利样本推断全刊占比，也不把作者稿格式等同于出版社强制排版。此次保留正文与PDF。详见[报告](../../archive/paper_cleanup_20261114/checks/proposition_format_expanded_20261113/REPORT.txt)及[PDF字体与坐标证据](../../archive/paper_cleanup_20261114/checks/proposition_format_expanded_20261113/FONT_EVIDENCE.json)。
+
+
+## 2026-11-13：按Shen作者稿统一Proof缩进（正式采用）
+
+作者指定参考Shen的格式。通过IEEEtran提供的IEEEproofindentspace接口将Proof首行缩进由2个parindent改为1个，与Proposition及Shen作者稿约1em的首行缩进一致。沿用斜体标题、冒号、正体陈述及证明、实心QED；短证明保留正文，未移动到附录。
+
+重新编译并目视核对第6页通过。仍13页，仅第6页像素变化，其余12页逐像素保持；main.aux逐字节一致，公式与引用编号保持，无需更新图源登记。备份及核验见[记录](../../archive/paper_cleanup_20261114/checks/shen_proof_style_20261113/VALIDATION.json)。
+
+
+## 2026-11-13：多帧AFDM传输关系命题正式采用
+
+作者确认将传输方案的有效信道与跨帧关系整理成正式命题。II-B在连续时间波形之后新增Proposition 1，整合原式(6)–(9)，明确CPP覆盖差分时延、块内路径增益/时延/阵列响应/设备多普勒固定及各帧采用相同AFDM构造。短证明从延迟波形与DAFT得到单径算子，利用绝对采样时刻增加q T_frame提出共同多普勒相位，再由多径叠加得到H_k^(q)=exp(j q beta_k)H_k及有效导频。允许分数时延与分数多普勒；命题后的轨道算例继续说明块内参数固定是物理近似。II-C式(10)回引该命题。
+
+原编号公式、算法和模型保持；未增加AFDM独有、最小自由度、可辨识性或性能保证的结论。原IV-C活动更新偏差命题自动顺延为Proposition 2。沿用Shen样式的1em证明缩进、斜体标题与实心QED。
+
+编译仍13页、58个编号公式及47条文献；只有原命题编号从1变为2，其他已有标签编号保持。第1–2页逐像素保持，第3–13页重排后目视检查通过，无越栏、缺字或未定义引用。main.aux来源哈希及大小登记已同步，图件无需重绘。未运行训练或接收机实验。见[采用文本](../../archive/paper_cleanup_20261114/checks/transmission_proposition_20261113_110223/ADOPTED_PROPOSITION.tex)、[修改差异](../../archive/paper_cleanup_20261114/checks/transmission_proposition_20261113_110223/CHANGES.diff)及[核验](../../archive/paper_cleanup_20261114/checks/transmission_proposition_20261113_110223/VALIDATION.json)。
+
+
+## 2026-11-13：三篇稿件理论创新的同标准来源核查
+
+作者主动质疑“我方没有理论创新”的评价并要求调研，因此重新核查当前PDF及两份师兄PDF的关键推导与原始来源。结论：撤回“没有理论创新”的绝对判断。我方Proposition 2给出指定高斯活动更新在非退化尺度混合先验、零观测处的显式严格正偏差，属于可辩护的问题特定理论分析增量；Proposition 1属于建模推导，单去噪器方差与独立密度比活动更新属于有理论依据的方法设计。已知恒等式、Gaussian条件化或Jensen的使用不取消新增结论。
+
+两篇师兄稿同样大量依赖已有UatF、SCA/SDR、分式规划、结构矩阵分解与Rician随机矩阵工具，其价值在具体SINR/DE与系统结构结论。终稿理论覆盖和推导工作量优势可保留，但不能用定理数量、闭式表达或证明长度替代理论原创性评价，也不能只对我方要求基础数学工具原创。定向核查未找到Prop2同一结果，不作全球首次认证；不扩张为所有EP或整机性能保证。仅保存评估和来源记录，正文、PDF、实验保持。见[综合报告](../../archive/paper_cleanup_20261114/checks/theory_novelty_comparison_20261113/REPORT.txt)、[范围与文件哈希](../../archive/paper_cleanup_20261114/checks/theory_novelty_comparison_20261113/SCOPE.json)及该目录三篇独立来源核查。
+
+
+## 2026-11-13：补入LCH初稿后核查初终稿差异
+
+作者提供论文lch.pdf并要求重新查看。核对其13页全文及终稿关键原页：初稿已有SSP/MSP、LRZF、两阶段tabu与JPL、复杂度分析和四类实验；终稿新增逐卫星正则化BCD-GSS优化、RMT确定性等价及附录、正式收敛/渐近结论，并补收敛图、WMMSE、不完美CSI和DE验证。LRZF等价性Lemma主要将已有代数关系显式证明。求逆矩阵由用户侧HH^H转至天线侧H^HH，MSP从单一正则化转为逐卫星块对角，属于实质变化，不能概括为只加包装。
+
+评价：终稿整体覆盖优势仍保留；若用LCH初稿替代终稿，不再有充分依据认为其明显领先我方当前稿。倾向我方当前稿与两份师兄初稿处于接近水平、综合略在前；不因缺少Theorem标签否定初稿建模和算法推导，也不推断这些新增内容由何种审稿意见导致。本轮只保存版本核查，不修改论文或运行实验。见[报告](../../archive/paper_cleanup_20261114/checks/lch_draft_final_comparison_20261113/REPORT.txt)及[逐项版本对应](../../archive/paper_cleanup_20261114/checks/lch_draft_final_comparison_20261113/CHANGES.json)。
+
+
+## 2026-11-13：作者确认当前正文版本定稿，暂停扩展
+
+作者明确要求：“正文先不改了，就按这个版本定稿，图10和实验次数后续统一处理，暂时不再补理论和实验。”当前正文内容据此定稿，不继续主动润色、扩展理论或新增实验。图10更新及实验次数说明与实际采用批次统一保留为后续集中处理事项；不因本条确认认定这些事项已完成。后续讨论遵循这一范围，除作者另行要求或出现实质性新证据，不重开已完成内容。
+
+本轮仅记录决定并保留当前PDF快照及正文来源哈希，未修改论文正文、图件、模型登记或实验结果。见[版本记录](../../archive/paper_cleanup_20261114/checks/draft_content_finalized_20261113_122936/STATUS.json)与[定稿PDF快照](../../archive/paper_cleanup_20261114/checks/draft_content_finalized_20261113_122936/main.pdf)。
+
+
+## 2026-11-13：活动概率符号统一，采样说明置于附录（正式采用）
+
+作者要求正文统一活动概率符号，采样条件和先验修正仅在附录说明。正文II–V及图3统一使用p，与现有实验表格、图注和曲线保持一致；原rho对应公式仅替换符号，不改变公式编号或算法数值。附录A说明以p生成Bernoulli活动向量并条件化于至少一台设备活跃，给出p_eff=p/[1-(1-p)^K]，明确实验接收机在相关更新中以p_eff代入p，并保留因子化Bernoulli近似。附录说明保留于源文件，仅在启用FullManuscript时编入；当前main.pdf不含附录，正文不展开该采样细节。原完整评估附录回引附录A，初始化符号同步。
+
+图3采取单个矢量文字替换，区域外像素保持；绘图源同步。主稿仍13页，原有标签编号与书目逐字节保持，变动页完成目视核验，无越栏、缺字或未定义引用。来源登记同步main.aux。旧稿已备份，算法、配置、权重和实验数据保持，未启动实验。见[核验](../../archive/paper_cleanup_20261114/checks/activity_notation_20261113_124831/VALIDATION.json)及[差异](../../archive/paper_cleanup_20261114/checks/activity_notation_20261113_124831/CHANGES.diff)。此决定更新此前正文p/rho分别使用的约定。
+
+
+## 2026-11-13：确认当前主稿暂不编入附录
+
+作者再次明确附录暂不进入当前论文PDF。本轮将采样附录与完整评估附录一并置于FullManuscript条件内，默认编译不含附录。正文与图3统一使用p的修改、附录源文件中的采样条件及p_eff说明均保留。此前误将采样附录编入主稿的状态已纠正，上条记录已同步当前约定。
+
+重新编译仍13页；变动仅第12–13页，二页与符号统一前的定稿PDF逐像素一致，前11页与本轮修改前保持。无未定义引用、缺字或越栏；main.aux来源登记同步。未运行实验。见[核验](../../archive/paper_cleanup_20261114/checks/appendix_build_scope_20261113_161845/VALIDATION.json)。
+
+
+## 2026-11-13：恢复既定实验图表分组
+
+作者指出图片排列变化。对照历史PDF确认：活动偏差命题加入后，图5/表III、图8–9和图10已向后分页，后续符号统一及附录撤回的相对核验未识别其偏离既定分组。本轮将图4–10浮动体的源码块整体提前至VI-A评估设置之前，恢复第10页图4左上、图5右上及其下表III；第11页左栏图6/7、右栏图8/9；第12页图10跨栏。
+
+严格反向核验确认仅移动浮动体源码块，正文顺序、公式、图注、表格数值、图尺寸和图件内容保持。13页，既有标签编号和书目保持，附录不编入。核验同时检查各图的实际页码、栏位和纵向顺序，并完成第10–13页目视检查；第1–9页逐像素保持。后续修改须继续按这些实际图位核验，不能仅以相对上一版PDF不变认定分组正确。main.aux登记已同步；未运行实验。见[核验](../../archive/paper_cleanup_20261114/checks/figure_grouping_restore_20261113_162735/VALIDATION.json)及[差异](../../archive/paper_cleanup_20261114/checks/figure_grouping_restore_20261113_162735/CHANGES.diff)。
+
+
+## 2026-11-13：补齐Z. Hu邮箱
+
+作者提供邮箱前缀huzhiqun，按同单位既有bupt.edu.cn域名将首页邮箱补为huzhiqun@bupt.edu.cn，并按作者顺序并入邮箱列表。占位及待确认注释已移除。主稿编译仍13页，仅首页像素变化，第2–13页逐像素保持，main.aux逐字节一致；首页脚注目视通过，无越栏、缺字或未定义引用。图表排列保持，附录仍不编入；未运行实验。见[核验](../../archive/paper_cleanup_20261114/checks/author_email_hu_20261113_164544/VALIDATION.json)。
+
+
+## 2026-11-13：精简 VI-D 开头
+
+按作者要求，删除 VI-D 开头重复交代默认参数的整句，直接进入图5收敛结果；默认参数已由 VI-A 与表I说明。此次仅删除该句，数值、技术表述、比较结论与实验设置保持。编译仍13页，第11–12页完成目视检查；图4–10的位置及分组保持，main.aux逐字节一致。见[核验](../../archive/paper_cleanup_20261114/checks/jadce_opening_20261113_170950/VALIDATION.json)。
+
+
+## 2026-11-13：全文逐句精简复核
+
+作者要求逐句核对全文中的防御性和重复性语言。本轮通读当前主稿摘要、I–VII章、图注、表注及算法说明，检查句内、相邻句段和已定义内容的重复；附录源文件补充阅读，沿用当前主稿不编入的约定。共13处局部替换，涉及II、III、IV、VI章：删除命题1证明末尾的重复声明，合并LMMSE公式前后释义，精简IV-A已有噪声模型的复述，将命题2后的两句重复解释改为直接衔接密度比估计，删除VI-A重复定义与预条件说明，并精简VI-C/D/E重复评价结果的收尾。
+
+数学条件、科学定义、比较方向及结果保持；显示公式、算法步骤、表格与文献引用逐项核验一致。默认参数仍由VI-A首次说明，VI-D直接进入结果。后续新增解释须检查是否已有定义或结论承载，结果段落以具体比较推进。
+
+编译仍13页，全部图的页码和栏位保持，图4–10继续采用已约定分组；图2通过调整源码声明位置保持第5页左栏，图内容与尺寸保持。第4–13页完成目视检查，标签编号及书目一致，无越栏、缺字或未定义引用。main.aux来源登记同步。见[通读记录](../../archive/paper_cleanup_20261114/checks/sentence_review_20261113_171442/REVIEW.json)、[13处修改](../../archive/paper_cleanup_20261114/checks/sentence_review_20261113_171442/EDITS.json)及[核验](../../archive/paper_cleanup_20261114/checks/sentence_review_20261113_171442/VALIDATION.json)。
+
+
+## 2026-11-14：采用GitHub新版跨信道图
+
+按作者要求，从GitHub提交ddb9f8668e9ec801ca00f72a6616b72aa4b9bdb6下载跨信道原始矢量PDF，核验Git blob SHA后逐字节替换图10。新版包含NTN-TDL-A、B、C三个面板及GP-MP、GP-MP-EP、STMP和四个稀疏恢复基线。图注同步三个profile，VI-E将结果范围改为三个profile，并明确比较GP-MP/GP-MP-EP与稀疏恢复基线，保留GP-MP相对STMP随profile和SNR变化的描述。图源绑定改为supplied_pdf，来源、哈希、资源登记和实验索引同步。旧图保存在本轮before目录。
+
+编译仍13页，仅第12页变化，图10保持第12页跨栏；其余12页逐像素一致。图4–9分组、公式标签编号与文献保持，附录仍不编入。第12页目视核验通过。采用的是发布图件，此提交未附数值汇总或逐场景记录，采用记录据实际核验范围填写；未运行训练或实验。见[采用记录](../../result/cross_channel/figures/white_known_ep_500/ADOPTION.json)及[核验](../../archive/paper_cleanup_20261114/checks/cross_channel_adopted_20261114_084227/VALIDATION.json)。
+
+
+## 2026-11-14：同步新版收敛图与跨信道图
+
+作者通知两图再次更新。本轮采用GitHub提交6c965cc436559d9757209657796df478325e09d4的原始矢量PDF，图5显示GP-MP/STMP的1–150次迭代，图10使用底部单行图例。两个下载文件均核验Git blob SHA；图源绑定、来源哈希与采用记录同步，旧资产保存在本轮before目录。
+
+正文与图注仍适用并保持原文。编译仍13页，仅第10、12页像素变化，全部图和表III的位置与替换前一致；其余11页逐像素保持。main.aux和书目逐字节一致，两页目视检查通过。见[核验](../../archive/paper_cleanup_20261114/checks/two_figures_updated_20261114_085606/VALIDATION.json)。
+
+
+## 2026-11-14：第六章图文结论逐项核验
+
+作者要求检查第六章实验结论能否与图对应。本轮逐段对照VI-B–E、表III及图4–10；图4/6/7使用当前绑定汇总数据，图5/8/9/10从当前矢量PDF读取曲线并目视核查。图4按绘图配置中的标签映射解释内部方法名。确认定量增益、方法排序、趋势、导频阈值和相位损失均与现稿匹配。0 dB的GP-MP对STMP优势1.533 dB；图7的16/20帧、20%减少与34.70/-4.78/-8.88/-11.61 dB数值均成立。
+
+跨信道B型6 dB时STMP略低于GP-MP（从矢量图读出约0.041 dB），现稿“相对性能随profile和SNR变化”的说法适用。未发现需修正的图文结论，正文、图件与PDF保持；未运行训练或实验。见[逐图结论](../../archive/paper_cleanup_20261114/checks/chapter6_figure_consistency_20261114_090410/REPORT.json)、[数值核验](../../archive/paper_cleanup_20261114/checks/chapter6_figure_consistency_20261114_090410/NUMERICAL_CHECKS.json)及[图线/表格核验](../../archive/paper_cleanup_20261114/checks/chapter6_figure_consistency_20261114_090410/PLOT_AND_TABLE_CHECKS.json)。
+
+
+## 2026-11-14：突出跨信道实验的具体优势
+
+作者要求跨信道结果更直接。VI-E保留D训练、A/B/C直接应用的设置，将结果段改为：GP-MP与GP-MP-EP在三个profile的整个测试SNR范围内均优于四个稀疏恢复基线；0 dB时GP-MP比STMP低约1.2–1.5 dB；GP-MP-EP曲线接近GP-MP。数值取自前轮已核验的矢量图，A/B/C在0 dB分别约1.162/1.161/1.533 dB。
+
+仅修改该结果段。编译13页，第12–13页目视通过，其余页保持；图表位置、标签编号及书目保持，main.aux登记同步。见[差异](../../archive/paper_cleanup_20261114/checks/cross_channel_text_20261114_090703/CHANGES.diff)及[核验](../../archive/paper_cleanup_20261114/checks/cross_channel_text_20261114_090703/VALIDATION.json)。
+
+
+## 2026-11-14：对照Cai与Shen校准实验结论表达
+
+作者询问我方实验结论是否采用与Cai/Shen相同的写作标准。本轮核对Cai作者稿arXiv:2506.00581v2的VI-C（Fig.5–13，尤其Fig.11跨CDL）及Shen作者稿arXiv:2412.20806v1的V（Fig.5–9）。Cai直接概括全SNR基线优势、低导频优势及跨信道表现，并对训练随机化与网络泛化作解释；Shen以明确优势、代表性数字和系统含义组织结果，同时在off-grid随Q退化等实质趋势处给出相应条件。
+
+判断：我方此前以“相对性能随profile和SNR变化”收尾的跨信道段落过于泛化，压低了已被图支持的优势；当前修订采用明确比较对象、覆盖范围和0 dB增益，与两篇的主要结果表达方式相近。我方已经验证的性能优势和跨信道适应表现可以直接陈述，单个约0.04 dB接近重合点不应主导整段；全范围/全基线量词仍应与图一致。基于曲线的结果解释与对原因的独立验证须按同一标准区分，不能只对我方要求额外证明。此次仅对照与记录，正文及PDF保持。
+
+原文：[Cai VI-C](https://arxiv.org/html/2506.00581v2#S6.SS3)、[Shen V](https://arxiv.org/html/2412.20806v1#S5)。
+
+
+## 2026-11-14：恢复正文评估次数设置
+
+按作者要求，在VI-A恢复“The evaluation protocol specifies $1{,}000$ Monte Carlo trials per operating point.”。沿用作者已确定的最终评估设置与后续补齐安排，本轮仅恢复该句并编译，不改变实验数据。PDF仍13页，图表页码与左右栏分组保持；图9因文字回流向下约14.90 pt，仍在第11页右栏。第10–13页目视通过，书目保持，main.aux来源哈希已同步。见[核验](../../archive/paper_cleanup_20261114/checks/restore_trial_setting_20261114/VALIDATION.json)。
+
+
+## 2026-11-14：整理论文目录
+
+按作者要求，将历次检查、备份与截图、两份2026-11-08审阅原件、未引用旧图及编译日志归入根目录archive/paper_cleanup_20261114。迁移文件逐项核验哈希，当前研究文档267条本地证据链接及两份图件采用记录已更新；固定Git版本链接和归档原件保持。主稿、附录源文件、参考文献、十张正式图、PDF、main.aux/main.bbl及主线登记均逐字节保持。导航和全部LaTeX输入、图件依赖核验通过。后续历史路径以[迁移映射](../../archive/paper_cleanup_20261114/MAPPING.json)为准，目录说明见[归档入口](../../archive/paper_cleanup_20261114/README.md)。
+
+
+## 2026-11-14：核对GPT Pro修改建议（仅建议）
+
+作者要求筛选值得采纳的建议，并剔除特别防御的改动。逐条核对当前正文、既有决定和相关实现后，仅建议两类正文局部明确：摘要/结论将高斯近似的作用范围锚定活动似然比；VI-A将相位时延搜索说明为模N。基线活动判决规则有复现价值，宜整理到复现材料或已有附录。未采纳Pro“15项必须修改”的判断：归一化初始化、块内近似、共享协方差、方差散度/调用数、相位比较条件及结果范围已交代；L用于已定义的OTFS时长比较，不应改Q；STMP和GP-MP-EP命名保持。模型存储动机不以实际星载测试为前提。不能照抄其固定波束中心解释或未经逐批核验的数据独立/验证集调阈值断言。site方差下标与调制复杂度短语只属可选，不列必要修改。详细取舍见[逐项核对](../../archive/gpt_pro_suggestions_review_20261114/REVIEW.json)。本轮未改正文、PDF、图件、公式或实验。
+
+
+## 2026-11-14：采用活动似然比范围澄清
+
+作者仅采纳GPT Pro建议中的高斯近似作用范围澄清。本轮只改摘要和结论各一句，将“不依赖高斯近似”直接关联活动似然比计算；引言原句已明确required likelihood ratio，保持。此前建议的时延说明和基线复现补充本轮不实施，不继续列为作者待办。公式、方法名称、图件和实验不变。主稿重新编译13页，仅第1、12页像素变化；全部图表位置、main.aux和书目逐字节保持，两页目视检查通过。见[修改差异](../../archive/activity_likelihood_wording_20261114/CHANGES.diff)及[核验](../../archive/activity_likelihood_wording_20261114/VALIDATION.json)。
+
+
+## 2026-11-14：TWC投稿前终审
+
+作者要求最终投稿审查并评分。本轮核验当前13页PDF、58个编号公式、47篇文献的交叉引用、10图3表及图源哈希；图源与前轮数值核验一致，主要推导和算法未出现新增实质性问题。按当前官网，首投13页上限满足；上一轮措辞改动后摘要按连字符词计一词为201词，需缩短至200以内。另按已约定进度，实验次数补齐仍须在实际提交前落实：当前导频采用汇总仍为500，最新远端未新增完成记录。不重新提出此前放弃的防御性扩写和命名变更。主观综合82/100，建议以TWC为目标投稿；分数不是录用概率。稿件/图件保持，本轮未运行实验或投稿。见[终审报告](../../archive/twc_submission_audit_20261114/REPORT.json)、[检查](../../archive/twc_submission_audit_20261114/CHECKS.json)与[官网核验](../../archive/twc_submission_audit_20261114/twc_official_requirements.md)。
+
+
+## 2026-11-14：摘要词数与Shen发表稿比较
+
+作者指出201词偏差很小并要求核查Shen。IEEE Xplore记录10839280（TWC 24(4), 2876–2893, DOI 10.1109/TWC.2025.3525738）及作者机构库10993/66360展示的摘要，以空白分词、连字符复合词计一词为235词，拆分连字符为249词；本稿按前一口径为201词。TWC官网75–200词规定保持事实，但发表实例显示不能将201词推断为自动退稿或研究稿未成熟。此前将其列为必须处理的提交阻碍过于严格，应定位为轻微格式偏差；不为减少一个词损伤句间衔接。本轮未改摘要或PDF。来源：https://ieeexplore.ieee.org/document/10839280/ 与 https://orbilu.uni.lu/handle/10993/66360 。
+
+
+## 2026-11-14：摘要与引言润色稿正式采用
+
+作者确认将本次聊天中的最终纯净版写入正文。摘要采用更紧凑的因果衔接及方法概述；引言精简背景和接收机贡献，并以effectiveness、robustness和strong generalization概括已有实验结果。STMP段保留原有两句局限分析，本文贡献围绕多帧AFDM传输及JADCE接收机组织。背景与第一条贡献中的Shen多帧方案展开及系数数量比较按作者要求删除，相关基础引用和第二章技术说明保持。
+
+逐段反向转换引用和LaTeX格式后，与作者确认的纯净版完全一致。仅摘要和引言正文变更；其他章节、Notation、公式、图件、实验与模型登记保持。采用文字见[确认稿](../../archive/abstract_introduction_20261114_124902/APPROVED_TEXT.json)，修改见[差异](../../archive/abstract_introduction_20261114_124902/CHANGES.diff)。
+
+编译仍为13页；107个标签编号及47条文献编号、书目保持；无越栏、缺字或未定义引用。第1–6页完成目视核验，第7–13页逐像素保持；实验图4–10与表III的既定页码和分组保持。main.aux的绘图与发布来源登记已同步，未运行训练或实验。见[源码核验](../../archive/abstract_introduction_20261114_124902/SOURCE_VALIDATION.json)与[PDF核验](../../archive/abstract_introduction_20261114_124902/PDF_VALIDATION.json)。
+
+
+## 2026-11-14：第二章四处轻修正式采用
+
+作者确认最终纯净版并要求写入。此次仅采用四处局部调整：章首合并导频传输与无GNSS/无设备端预补偿说明；II-A精简共同阵列响应的衔接句；II-B使用已定义的CPP缩写；II-C将相邻两句连接为“Let …, and denote by …”。array response vector保留，术语原文已再次核对Li–Gao–Xia §II-B式(2)后及随后阵列建模段。
+
+数学表达式、引用键、标签、标题、命题、证明、数值算例、维度比较及其他章节保持。逐字核验恰为确认的四处替换，见[采用修改](../../archive/system_model_light_edit_20261114_140347/EDITS.json)、[差异](../../archive/system_model_light_edit_20261114_140347/CHANGES.diff)及[源码核验](../../archive/system_model_light_edit_20261114_140347/SOURCE_VALIDATION.json)。
+
+编译仍13页；107个标签编号、47条文献编号、书目及main.aux逐字节保持。第2–4页目视检查通过，其余10页逐像素保持；图4–10与表III的既定页码和分组保持，无越栏、缺字或未定义引用。无需修改图源与发布哈希登记，未运行训练或实验。见[PDF核验](../../archive/system_model_light_edit_20261114_140347/PDF_VALIDATION.json)。
+
+
+## 2026-11-14：补充三处跨节衔接
+
+作者确认采用本轮审阅的前三处局部修订。II-A在共同延时补偿前补充receiver-side，明确接收端操作；IV-B在式(37)及其差分定义后说明，将各设备的方差估计取平均得到式(18)的tau^post；VI-A2在分类器输入中显式列出v，并说明五个标量特征由这些输入计算得到。
+
+实际修改仅上述三处文字，逐字核验见[采用清单](../../archive/manuscript_connections_20261114_212432/EDITS.json)及[差异](../../archive/manuscript_connections_20261114_212432/CHANGES.diff)。独立源码复核通过，显示公式、引用键、标签及原换行格式保持，20个其他保护文件哈希一致。
+
+编译后仍13页；107个标签编号、47条文献编号、书目及main.aux保持。第3、6、9、10页完成目视核验，其余9页逐像素保持；图4–10与表III分组保持，无越栏、缺字或未定义引用。main.aux无需更新来源登记。未运行训练或实验。见[源码核验](../../archive/manuscript_connections_20261114_212432/SOURCE_VALIDATION.json)与[PDF核验](../../archive/manuscript_connections_20261114_212432/PDF_VALIDATION.json)。
+
+
+## 2026-11-14：采用三类语言修订
+
+作者确认将本轮审阅的三类修改写入正文。第一类：摘要和引言第二条贡献将高斯近似的作用范围限定为活动似然比计算，与结论对应。第二类：采用本次聊天已展示的第三、四章标注稿，共11处局部调整，包括精简重复释义、合并公式引出和过渡、明确后验均值与协方差、以can overestimate引出命题2，以及合并两类样本生成说明。第三类：第六章收敛和导频两段改为由结果引出图件，保持比较内容与数值。
+
+共修改5个正文文件、15处文字。最新接收端共同时延、单设备方差平均及分类器特征来源的三处衔接继续保留。显示公式的数学内容、命题条件和证明、算法、实验数值、文献引用和结论强度保持；式(22)、(26)末标点随合句调整。第三条贡献中的effectiveness、robustness和strong generalization保持。独立源码审核通过，18个其他保护文件哈希一致。采用文字见[清单](../../archive/manuscript_language_refinement_20261114_214208/EDITS.json)、[差异](../../archive/manuscript_language_refinement_20261114_214208/CHANGES.diff)及[源码核验](../../archive/manuscript_language_refinement_20261114_214208/SOURCE_VALIDATION.json)。
+
+编译仍为13页；107个标签编号与47条文献编号、书目保持。第3页逐像素保持，其余12页已目视核验，无越栏、缺字或未定义引用；图2、图3及实验图4–10与表III的既定页码和分组保持。main.aux中的页码信息随排版变化，绘图与发布登记仅同步该文件校验值与大小。未运行训练或实验。见[PDF核验](../../archive/manuscript_language_refinement_20261114_214208/PDF_VALIDATION.json)与[登记差异](../../archive/manuscript_language_refinement_20261114_214208/REGISTRY_CHANGES.diff)。
+
+
+## 2026-11-14：相位估计动机采用物理信道表述
+
+作者确认将V-B中“the default NTN-TDL-D channel”改为“terrestrial–satellite links”，以LoS分量说明单径近似的动机，具体NTN-TDL-D配置继续在VI-A说明。本轮只替换这一短语并调整源码换行；single-path approximation、共同Doppler估计用途、全部公式及算法保持。参考论文的组织并不统一：Shen作者稿§V才在正文选定NTN-TDL-D；Huang正式稿§II、p.2950已明确采用该profile。此次采用依据是本稿一般系统模型—算法—具体仿真配置的结构及作者确认。
+
+用户另询问文献是否强调单径近似。当前核对到Shen§I（作者稿PDF p.2）将Li–Chen–Meng的NTN接入工作[26]概括为“focused on the line-of-sight path”；不能据此将本文仅相位前端的单径近似归为Shen/Huang的既有算法。本文式(46)及其后观测式每设备使用一个时延–Doppler响应，仅以所得相位构造后端感知矩阵，后端多径信道模型保持。本轮未据该问题扩写正文或添加引用。
+
+编译仍13页，仅第7页变化并完成目视检查；其余12页逐像素保持。107个标签、47条文献、main.aux和书目逐字节一致，图表分组保持，无越栏、缺字或未定义引用。独立源码复核通过，未运行训练或实验。见[修改](../../archive/phase_motivation_20261114_220513/CHANGES.diff)、[源码核验](../../archive/phase_motivation_20261114_220513/SOURCE_VALIDATION.json)及[PDF核验](../../archive/phase_motivation_20261114_220513/PDF_VALIDATION.json)。
+
+
+## 2026-11-14：相位响应定义的简洁表述
+
+按作者反馈，V-B直接以“With the common scalar phase absorbed into the path gain, the response of a single path is”引出式(46)。相位估计用途沿用段首，随后每设备一个响应及显式近似观测式保持，数学模型、算法、数值和引用不变。独立语义核查确认该表述准确。
+
+编译13页，仅第7页变化并完成目视检查；其余12页逐像素保持。107个标签、47条文献、main.aux、书目及图表位置保持，无越栏、缺字或未定义引用。未运行训练或实验。见[修改](../../archive/phase_response_wording_20261114_221051/CHANGES.diff)和[核验](../../archive/phase_response_wording_20261114_221051/PDF_VALIDATION.json)。
+
+
+## 2026-11-14：采用表III与图5的结果引出语句
+
+作者确认两处修改：VI-C以“As shown in Table III, for both receivers, …”引出既有活动更新比较；VI-D采用“Fig. 5 illustrates the NMSE convergence trajectories at 0 dB, where GP-MP stabilizes in fewer iterations and achieves a lower steady-state NMSE than STMP.”。0 dB与图5既有图注一致，较少迭代及更低稳定后NMSE对应当前图5曲线。其余正文、实验数值、公式、算法与引用保持；独立源码复核确认恰为两处替换。
+
+编译仍13页，第10–13页文字回流并完成目视检查；第1–9页逐像素保持。107个标签编号、47条文献编号及书目保持，图4–10和表III继续采用既定页码、栏位与分组。main.aux随排版更新，两处来源登记已同步校验值。无越栏、缺字或未定义引用，未运行训练或实验。见[采用修改](../../archive/results_wording_20261114_221237/EDITS.json)、[源码核验](../../archive/results_wording_20261114_221237/SOURCE_VALIDATION.json)及[PDF核验](../../archive/results_wording_20261114_221237/PDF_VALIDATION.json)。
+
+
+## 2026-11-14：全文额外辩护性解释专项复查
+
+作者因外部评语中的“单帧高维张量等效”要求检查当前全文。逐段阅读当前摘要、I–VII章、算法、图注和表注，并对照已采用决定及13页PDF中的相关措辞。检查范围为未经定义的等效关系、替仿真规模追加理由、替近似作泛化辩护，以及用解释替代实验结果；本轮没有发现需要据此删除或重写的句子。
+
+VI-A直接列出N=16、默认K=40，VI-D报告K=20–100；没有以维度解释参数选择。II-B的MN²与MLN²比较及等时长/有效采样点数说明用于AFDM/OTFS表示比较，未推广为大N或大K等效；块内变化算例对应既有几何计算和2026-11-08作者确认的近似依据。III–IV的Gaussian消息、训练分布和方差平均说明用于推导接口；命题2的条件与短证明保持，VI-C没有据此归因整机AER或收敛。V-B单径响应作为式(46)定义引出，噪声估计的低秩条件及已知/估计相位设置均为模型和算法信息。VI的相位损失、去噪器高低SNR差异及跨profile结果按图报告。
+
+上述必要说明继续保留；本轮未修改正文、PDF、图件或实验，主稿与七章源码及PDF的检查前后哈希一致。
+
+
+## 2026-11-14：引言STMP段的论述顺序
+
+作者确认仅调整STMP段两项问题的次序：先说明有限维AFDM有效信道下高斯后验近似与活动似然计算的问题，再说明双网络的星载模型存储开销。保留原有场景与判断强度，衔接使用However与also。第二条贡献及IV-B保持原文。
+
+逐字核验确认仅该段一次替换，其他正文、公式、引用及第二章保持。使用编辑器内置compile_latex_document对保存的引言文件检查，项目主文件paper/main.tex编译成功。见[修改](../../archive/introduction_stmp_order_20261114_224442/CHANGES.diff)及[核验](../../archive/introduction_stmp_order_20261114_224442/VALIDATION.json)。
+
+
+## 2026-11-14：本轮五视角模拟预审
+
+作者要求再次预审，采用 academic-research-suite 的分角色流程，结合当前源码、现有13页PDF、关键参考文献、采用结果汇总及既有审稿决定进行核查。综合建议为Minor Revision，未发现新增Major或Critical问题；这不是正式期刊外审或录用预测。
+
+保留两项轻微事项：最新摘要按连字符词计一词为206词，维持既有轻微格式偏差定位；最终实验批次和报告信息继续按既定安排验收，当前主SNR每点1000、采用导频汇总每点500，表III保持已批准的每档100个配对场景。本轮未新增扩样、全组件消融或防御性扩写要求。整机收益不能单独归因于某一部件这一反论证已核查，现稿区分去噪器、活动更新和整机比较，未发现实际的过强归因。
+
+本条记录预审意见，不表示作者已批准新改稿。八个主稿源码文件检查前后哈希一致；未修改论文或图件，未运行训练、批量实验或重新编译。详见[预审报告](../../archive/pre_review_20261114_humanizer_followup/REPORT.md)、[修订事项](../../archive/pre_review_20261114_humanizer_followup/revision_roadmap.json)和[最终核验](../../archive/pre_review_20261114_humanizer_followup/final_verification.json)。
+
+
+## 2026-11-14：重新核对老师PDF的隐藏批注与最新稿
+
+作者再次提供jwp-11.11-main(1).pdf，要求完整检查标黄隐藏批注。本轮确认该文件与11月13日核对原件SHA256相同，重新扫描全部13页及217个活动批注对象：25处意见标记均在第1–2页，包括9处高亮、10处插入、6处删除，其中17处带文字；25个Popup为对应容器，167个Link为引用链接，未发现未挂在页面上的批注对象。首页嵌入红字总评另行完整核对。
+
+针对最新源码及现有PDF，明确的内容和逻辑意见均已实质回应。摘要we由原稿4处减为2处，按“少用”落实；红字句序按挑战、目的、机制收益和总分结构落实。MIMO与Accordingly两处纯高亮无文字，只确认当前分别删除MIMO、改为明确的目的状语，不推断未写出的意图。本轮未发现需为回应这些批注再扩写的明确缺口，也未修改正文或图件。此条为对照判断，不表示老师重新确认或作者授权新改稿。
+
+见[25处标记及红字总评完整对照](../../archive/supervisor_comments_audit_20261114/REPORT.md)、[结构化对应](../../archive/supervisor_comments_audit_20261114/RECONCILIATION.json)与[覆盖及源码保持核验](../../archive/supervisor_comments_audit_20261114/VERIFICATION.json)。
+
+
+## 2026-11-15：作者确认当前正文定稿
+
+作者在核对导师隐藏批注及首页红字建议后明确表示“可以，那就定稿了吧”。据此将当前主稿与七章正文登记为文字定稿，参考文献随版本保存。摘要最终使用“Building on this scheme”，该单词替换已在前一修改轮通过编辑器内置编译。后续文字修改以作者新要求为准；已登记的实验批次验收继续按既定安排执行。
+
+本轮未改正文，已保存九个源码文件的逐字节快照并核验一致。见[定稿记录](../../archive/manuscript_text_final_20261115/README.md)及[源码校验清单](../../archive/manuscript_text_final_20261115/MANIFEST.json)。

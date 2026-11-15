@@ -13,6 +13,8 @@
 \interdisplaylinepenalty=2500
 
 \newcounter{algorithm}
+\newtheorem{proposition}{Proposition}
+\renewcommand{\IEEEproofindentspace}{\parindent}
 \renewcommand{\thealgorithm}{\arabic{algorithm}}
 \algrenewcommand\algorithmicrequire{\textbf{Input:}}
 \algrenewcommand\algorithmicensure{\textbf{Output:}}
@@ -30,44 +32,47 @@
 \newcommand{\imag}{\operatorname{Im}}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 
-\title{Generative-Model-Aided Grant-Free Random Access for GNSS-Independent MIMO-AFDM Satellite IoT Systems}
+\title{Generative-Model-Aided Grant-Free Random\\
+Access for GNSS-Independent AFDM\\
+Satellite IoT Systems}
 % Author order and IEEE membership grades supplied by the author.
 \author{Bo~Wang,~\IEEEmembership{Student~Member,~IEEE,}
 Wenpeng~Jing,~\IEEEmembership{Member,~IEEE,}
 Zhiqun~Hu,~\IEEEmembership{Member,~IEEE,}
-Shirui~Zuo,~\IEEEmembership{Student~Member,~IEEE,}
-and~Changhao~Liu,~\IEEEmembership{Student~Member,~IEEE}%
-\thanks{All authors are with Beijing University of Posts and
-Telecommunications (e-mails: wangb@bupt.edu.cn;
-[Wenpeng Jing: e-mail to be added]; [Zhiqun Hu: e-mail to be added];
-[Shirui Zuo: e-mail to be added]; [Changhao Liu: e-mail to be added]).}}
+Changhao~Liu,~\IEEEmembership{Student~Member,~IEEE,}
+and~Shirui~Zuo,~\IEEEmembership{Student~Member,~IEEE}%
+\thanks{B.~Wang, W.~Jing, Z.~Hu, C.~Liu, and S.~Zuo are with the
+Beijing Key Laboratory of Network System Architecture and Convergence,
+Beijing Laboratory of Advanced Information Networks, Beijing University of
+Posts and Telecommunications, Beijing 100876, China (e-mails:
+\{wangb, jingwenpeng, huzhiqun, liuch, zsr0224\}@bupt.edu.cn).}}
 
 \begin{document}
 \bstctlcite{IEEEcontrol}
 \maketitle
 \begin{abstract}
-This paper investigates grant-free random access in low Earth orbit
-satellite Internet-of-Things systems without global navigation satellite
-system (GNSS) assistance, where devices operate without time and frequency
-precompensation. We propose a multi-frame affine frequency division
-multiplexing (AFDM) transmission scheme that accommodates large differential
-delays and Doppler shifts across devices and analyze its input-output
-relationship. Based on this model, we learn a score-based generative channel
-prior directly from AFDM
-effective-channel samples, without imposing sparse or grid-aligned channel
-assumptions. From the learned prior, we construct a minimum mean-squared
-error (MMSE) channel denoiser that also quantifies estimation uncertainty.
-We then incorporate the denoiser into a message-passing
-(MP) receiver with two modules: multi-frame linear estimation (MFLE), which
-suppresses inter-user interference; and generative-prior-aided joint
-denoising (GPJD), which jointly updates channel and activity estimates. GPJD
-employs a density-ratio estimator that learns the likelihood ratio required
-for activity detection. The two modules
-iteratively exchange soft information for joint activity detection and
-channel estimation (JADCE). Numerical simulations demonstrate that the
-proposed receiver outperforms the baseline receiver in activity detection
-and channel estimation, while requiring fewer pilot frames to reach the same
-channel-estimation target.
+This paper investigates global navigation satellite system (GNSS)-independent
+grant-free random access in low Earth orbit (LEO) satellite Internet of Things
+(IoT) systems without device-side time and frequency precompensation. To
+handle large differential delays and Doppler shifts, we propose a multi-frame
+affine frequency division multiplexing (AFDM) transmission scheme. Since AFDM
+yields a compact effective-channel representation shared across frames,
+transmitting additional pilot frames provides more observations without
+increasing the number of unknown channel coefficients. Building on this
+scheme, we develop a message-passing receiver for joint activity detection
+and channel estimation (JADCE). To account for fractional delays and Doppler
+shifts that weaken effective-channel sparsity, the receiver's channel denoiser
+employs a score-based generative prior learned from AFDM effective-channel
+samples without imposing sparse or grid-aligned assumptions. Exploiting the
+analytical relationship between the posterior mean and variance, the same
+denoiser provides both estimates without requiring a separately trained
+variance model. Furthermore, channel estimates are combined with device
+activity probabilities obtained from a density-ratio estimator trained via
+binary classification, avoiding a Gaussian approximation when evaluating the
+activity likelihood ratio. Numerical results show that the proposed receiver outperforms the
+adapted score-based turbo message passing (STMP) baseline in both activity
+detection and channel estimation while requiring fewer pilot frames to achieve
+the same estimation accuracy.
 \end{abstract}
 \begin{IEEEkeywords}
 Affine frequency division multiplexing, grant-free
@@ -77,7 +82,7 @@ score-based generative models.
 
 \input{sections/01_introduction}
 
-\noindent\textit{Notation:} Bold lowercase and uppercase letters denote vectors and matrices, respectively. $\CN(\bm\mu,\bm\Sigma)$ denotes a proper complex Gaussian distribution \cite{neeser1993}.
+\textit{Notation:} Bold lowercase and uppercase letters denote vectors and matrices, respectively. $\CN(\bm\mu,\bm\Sigma)$ denotes a proper complex Gaussian distribution \cite{neeser1993}.
 $\|\cdot\|_F$ denotes the Frobenius norm;
 $(\cdot)^{\mathsf H}$ and $\tr(\cdot)$ denote conjugate transpose and trace.
 $\vect(\cdot)$ stacks matrix columns, and $\I_n$ is the $n\times n$ identity matrix.
@@ -92,6 +97,7 @@ $\vect(\cdot)$ stacks matrix columns, and $\I_n$ is the $n\times n$ identity mat
 \ifdefined\FullManuscript
 \appendices
 \numberwithin{equation}{section}
+\input{sections/appendix_activity_sampling}
 \input{sections/appendix_evaluation_protocol}
 \fi
 

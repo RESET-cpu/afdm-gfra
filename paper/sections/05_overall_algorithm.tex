@@ -4,24 +4,21 @@
 \subsection{Overall Algorithm}
 \label{sec:schedule}
 
-The trained denoiser provides the channel mean
+Fig.~\ref{fig:learned-receiver} illustrates the generative-prior
+message-passing (GP-MP) receiver, which incorporates the trained channel
+denoiser and activity classifier into the MP framework.
+
+The trained denoiser provides the posterior mean
 $\mathbf F_k=\mathbf F_\theta(\mathbf R_k,v)$, while the variance
 estimate $\widehat\tau_k=\widehat\tau_\theta(\mathbf R_k,v)$ is given by
 \eqref{eq:derivative-trace}.
-Averaging $\widehat\tau_k$ over devices and applying the positive lower
-bound $\tau_{\min}$ gives $\tau^{\rm post}$.
 The trained activity classifier provides $p_k$ through
 \eqref{eq:activity-probability}.
-
-Fig.~\ref{fig:learned-receiver} illustrates the generative-prior
-message-passing (GP-MP) receiver, in which GPJD uses the trained
-denoiser and activity classifier, while MFLE is derived analytically.
 
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.92\textwidth]{learned_receiver.pdf}
-\caption{Message exchange between MFLE and GPJD, with an expanded view of GPJD.
-The denoising illustration follows \cite{cai2026}.}
+\caption{Block diagram of GP-MP.}
 \label{fig:learned-receiver}
 \end{figure*}
 
@@ -37,11 +34,11 @@ Algorithm~\ref{alg:gp-mp-ccd} presents the pseudocode for GP-MP.
 \begin{minipage}{\linewidth}
 \small
 \refstepcounter{algorithm}\label{alg:gp-mp-ccd}
-\hrule\vspace{3pt}
+\hrule height 0.8pt\vspace{3pt}
 \textbf{Algorithm \thealgorithm}\enspace GP-MP for JADCE\par
 \vspace{3pt}\hrule\vspace{3pt}
 \begin{algorithmic}[1]
- \Require $\mathbf Y$, $\{\mathbf p_{qk}\}$, available phases, $\rho$, trained
+ \Require $\mathbf Y$, $\{\mathbf p_{qk}\}$, available phases, $p$, trained
  $\mathbf f_\theta$ and $z_\phi$.
  \Ensure $\{s\widehat{\mathbf X}_k,s\mathbf H_k^{\rm post},p_k,\widehat\alpha_k\}_{k=1}^K$.
  \State Estimate $\widehat\sigma^2$; estimate any unknown phases once as described in
@@ -50,7 +47,7 @@ Algorithm~\ref{alg:gp-mp-ccd} presents the pseudocode for GP-MP.
  \State Compute the SVD of $\widehat{\mathbf A}$; draw one random sign vector
  per device and reuse it across iterations.
  \State Initialize $\mathbf X^{{\rm pri},(0)}\gets\mathbf0$,
- $\gamma^{(0)}\gets\rho\widehat P_H$.
+ $\gamma^{(0)}\gets p\widehat P_H$.
  \State Initialize $\mathbf E_k\gets\mathbf0$, $\tau_k^{\rm ext}\gets1$,
  $\kappa^{(1)}\gets1$.
  \For{$i=1,\ldots,I_{\max}$}
@@ -99,14 +96,14 @@ Algorithm~\ref{alg:gp-mp-ccd} presents the pseudocode for GP-MP.
 \label{sec:variance-update}
 \label{sec:damping}
 
-For noise estimation, the Wax--Kailath minimum description length
-(MDL) criterion \cite{wax1985,nadakuditi2008} is used to estimate the
-signal covariance rank $\widehat r_{\rm s}$ based on the eigenvalues
+We use the Wax--Kailath minimum description length (MDL) criterion
+\cite{wax1985} to estimate the signal covariance rank
+$\widehat r_{\rm s}$ from the eigenvalues
 $\lambda_1\geq\cdots\geq\lambda_M$ of the sample covariance matrix.
-Let $\mathbf y_{qr}$ denote column $r$ of $\mathbf Y_q$ and
-$N_{\rm s}=QN>M\geq2$. The sample covariance and noise estimate are
+Let $\mathbf y_{qr}$ denote column $r$ of $\mathbf Y_q$. For
+$QN>M\geq2$, the sample covariance and noise estimate are
 \begin{align}
- \widehat{\mathbf R}_y&=\frac1{N_{\rm s}}\sum_{q,r}
+ \widehat{\mathbf R}_y&=\frac1{QN}\sum_{q,r}
  \mathbf y_{qr}\mathbf y_{qr}^{\mathsf H},
  \label{eq:sample-spatial-covariance}\\
  \widehat\sigma^2&=\frac{\sum_{i=\widehat r_{\rm s}+1}^{M}\lambda_i}
@@ -116,31 +113,26 @@ $N_{\rm s}=QN>M\geq2$. The sample covariance and noise estimate are
 This estimate assumes a low-rank signal covariance and is held fixed
 during MP.
 
-For phase estimation, the observations are stacked into the matrix
+For phase estimation, we use marginal likelihood maximization
+\cite{tipping2003}. The observations are stacked into the matrix
 $\mathbf Y_{\rm s}=[\mathbf Y_0,\ldots,\mathbf Y_{Q-1}]^{\mathsf T}
 \in\mathbb C^{QN\times M}$.
-The dominant line-of-sight component of the default NTN-TDL-D
-channel motivates a single-path approximation of each device's
-channel for estimating its common Doppler shift. Absorbing the common scalar
-phase into the path gain gives
+With the common scalar phase absorbed into the path gain,
+the response of a single path is
 \begin{equation}
  [\mathbf h_k^{\rm p}(d,\nu)]_{qN+r}
- =e^{\mathrm j2\pi\nu qT_{\rm frame}}
- [\mathbf G_0(d,\nu)\mathbf p_{qk}]_r,
+ =e^{\mathrm j2\pi(\nu qT_{\rm frame}-c_1d^2)}
+ [\mathbf G(d,\nu;0)\mathbf p_{qk}]_r.
  \label{eq:phase-atom}
 \end{equation}
-where $\mathbf G_0(d,\nu)=e^{-\mathrm j2\pi c_1d^2}\mathbf G(d,\nu;0)$.
-
 With $\mathbf h_k^{\rm p}=\mathbf h_k^{\rm p}(d_k,\nu_k)$, the
 observations can be expressed as
 $\mathbf Y_{\rm s}\approx\sum_k\mathbf h_k^{\rm p}\mathbf b_k^{\mathsf T}
 +\mathbf W_{\rm s}$.
-This observation model is complemented by independent Gaussian priors
-over the gains, $\mathbf b_k\sim\CN(\mathbf0,\gamma_k\I_M)$,
+Here $\mathbf W_{\rm s}$ is the noise matrix, and the gains have
+independent Gaussian priors, $\mathbf b_k\sim\CN(\mathbf0,\gamma_k\I_M)$,
 $\gamma_k\geq0$.
-Phase estimation is formulated as the minimization of the negative log
-marginal likelihood \cite{tipping2003}, obtained by integrating out
-the gains:
+Integrating out the gains gives the negative log marginal likelihood:
 \begin{align}
  \mathbf S&=\widehat\sigma^2\I_{QN}
  +\sum_k\gamma_k\mathbf h_k^{\rm p}\mathbf h_k^{{\rm p},\mathsf H},
@@ -151,24 +143,20 @@ the gains:
 \end{align}
 The objective $\mathcal L$ is minimized by coordinate updates, with
 each $\gamma_k$ solved for analytically and $(d_k,\nu_k)$ refined
-using L-BFGS-B
-\cite{zhu1997}.
+using L-BFGS-B.
 
 The estimated Doppler determines $\widehat\beta_k$ and
 $\widehat{\mathbf A}$ through
 \eqref{eq:twc-frame-channel}--\eqref{eq:effective-pilot}.
 
-To match the scale used for denoiser training, the channel and
-observation quantities $(\mathbf H_k,\mathbf X_k,\mathbf Y,\mathbf W)$
-are divided by the root mean square $s$ of the training-channel
-entries, and the noise variance is divided by $s^2$.
+To match the denoiser's training scale, we divide the channel and
+observation quantities by the root mean square $s$ of the
+training-channel entries and the noise variance by $s^2$.
 The same symbols denote the normalized quantities.
 
-In each iteration, the mean and variance updates are damped using a
-linear combination of the current update and the previous damped
-message \cite{rangan2019}.
-With damping factor $\eta\in(0,1]$, the input messages to GPJD for
-$i\geq2$ are
+For $i\geq2$, we damp the mean and variance inputs to GPJD by
+linearly combining the current updates with the previous damped
+messages, using damping factor $\eta\in(0,1]$:
 \begin{align}
  \mathbf R_k^{(i)}&=(1-\eta)\mathbf R_k^{(i-1)}+\eta \mathbf R_{{\rm L},k}^{(i)},
  \label{eq:input-damping}\\
@@ -176,8 +164,8 @@ $i\geq2$ are
  \label{eq:input-variance-damping}
 \end{align}
 At iteration $i$, GPJD uses $v^{(i)}=\kappa^{(i)}\bar v^{(i)}$.
-After joint denoising, the update of the input variance follows from
-minimizing the expected Gaussian negative log likelihood, with the current
+After joint denoising, we update the input variance by minimizing
+the expected Gaussian negative log likelihood, with the current
 approximate posterior held fixed \cite{vila2013}.
 Setting the derivative with respect to the variance to zero yields
 \begin{equation}
@@ -189,7 +177,6 @@ The next scaling factor $\kappa^{(i+1)}$ is obtained by averaging
 $\kappa^{(i)}$ and $v_{\rm tar}^{(i)}/\bar v^{(i)}$ with weights
 $1-\eta$ and $\eta$, respectively.
 
-The input to MFLE is damped in a similar manner.
 In the feedback updates
 \eqref{eq:nonlinear-extrinsic}--\eqref{eq:nonlinear-extrinsic-mean},
 $b=\overline t_X/v$ is clipped to $[\varepsilon,1-\varepsilon]$,
@@ -208,16 +195,13 @@ With the same damping factor, the feedback messages for $i\geq2$ are
 \label{sec:complexity}
 
 With precomputed chirp factors, $L$ AFDM frames require at most
-$LC_{\rm FFT}(N)+2LN$ complex multiplications
-\cite{bemani2022}, where $C_{\rm FFT}(n)$ is the cost of an
+$LC_{\rm FFT}(N)+2LN$ complex multiplications, where $C_{\rm FFT}(n)$ is the cost of an
 $n$-point fast Fourier transform (FFT) or inverse FFT. For the same $LN$ useful symbols,
-rectangular-pulse OTFS without transmit windowing requires
+rectangular-pulse OTFS \cite{zou2021otfs} without transmit windowing requires
 $NC_{\rm FFT}(L)$ after cancelling the consecutive discrete Fourier transform (DFT)
-and inverse DFT operations
-\cite{zou2021otfs}.
+and inverse DFT operations.
 
-The computational complexity of the receiver is primarily determined
-by the operations in MFLE and GPJD, together with parameter estimation.
+
 With fixed phases and $Q\leq KN$, MFLE can be implemented using the
 singular value decomposition (SVD),
 $\widehat{\mathbf A}=\mathbf U\diag(s_1,\ldots,s_Q)\mathbf V^{\mathsf H}$,
@@ -238,17 +222,23 @@ X^{\rm pri})/f_{\rm L}$.
 
 For each block, the SVD and noise-variance estimation require
 $O(KNQ^2)$ and $O(QNM^2+M^3)$ operations, respectively.
-The phase-estimation cost is denoted by $C_{\rm phase}$, with
+For phase estimation, the covariance computations require
+$O(K^3+Q^2N^2(K+M))$ operations per device update, where the
+$K^3$ term arises from a $K\times K$ matrix factorization using
+the Woodbury identity. The covariance inverse is reused in the
+delay--Doppler search, where each evaluation of the marginal-likelihood
+objective and its gradient requires $O(N^3+Q^2N^2+QNM)$ operations.
+We denote the total cost of phase estimation, including coarse search
+and coordinate updates, by $C_{\rm phase}$, with
 $C_{\rm phase}=0$ for known phases.
 
 For each iteration, the MFLE transformations involve $O(QKMN^2)$
 operations, while the spatial covariance operations and matrix
 factorizations require $O(KM^2N^2)$ and $O(M^3)$ operations,
-respectively. The per-device costs of a forward pass through the
-denoiser and classifier are denoted by $C_\theta$ and $C_\phi$,
-respectively. Each GPJD update evaluates the denoiser $1+2L_z$ times
-and the classifier once per device. Consequently, these forward
-passes require $K[(1+2L_z)C_\theta+C_\phi]$ operations.
+respectively. Let $C_\theta$ and $C_\phi$ denote the per-device costs of a forward
+pass through the denoiser and classifier, respectively. Each GPJD
+update evaluates the denoiser $1+2L_z$ times and the classifier once
+per device, requiring $K[(1+2L_z)C_\theta+C_\phi]$ operations.
 
 Overall, the online complexity for $I$ iterations is
 $O(C_{\rm phase}+QNM^2+M^3+KNQ^2+I C_{\rm iter})$, where
